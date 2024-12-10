@@ -1,0 +1,1063 @@
+;------------------------------------------------------------------------------
+; 7800BASIC INITIALIZATION
+;------------------------------------------------------------------------------
+        set romsize 128kRAM
+        set pokeysupport on
+        set screenheight 224
+        set doublewide on
+        set collisionwrap off
+
+        const debug_hud = 1
+        const debug_time = 1
+
+;------------------------------------------------------------------------------
+; GAME STATES
+;------------------------------------------------------------------------------
+        const STATE_TITLE = 0
+        const STATE_FIELD = 1
+        const STATE_MENU  = 2
+        
+        const ANIM_TIME = 16
+        const INVULN_FRAMES = 60
+
+;------------------------------------------------------------------------------
+; MOVEMENT CONSTANTS
+;------------------------------------------------------------------------------
+        const DIR_LEFT = 3
+        const DIR_RIGHT = 2
+        const DIR_UP = 1
+        const DIR_DOWN = 0
+
+        const EXIT_NONE  = 0
+        const EXIT_NORTH = 1
+        const EXIT_SOUTH = 2
+        const EXIT_EAST  = 3
+        const EXIT_WEST  = 4
+
+;------------------------------------------------------------------------------
+; PLAYER DATA
+;------------------------------------------------------------------------------
+        const PLAYER_HEIGHT = 16
+        const PLAYER_WIDTH  = 12
+
+        const SWORD_FRAMES = 4
+        const SWORD_OFFSET_DOWN  = 15
+        const SWORD_OFFSET_UP    = -16
+        const SWORD_OFFSET_LEFT  = -12
+        const SWORD_OFFSET_RIGHT = 12
+        
+        const SHIELD_FRAMES = 4
+        const SHIELD_OFFSET_X = 8
+        const SHIELD_OFFSET_Y = 7
+
+        const STATE_STAND  = 0
+        const STATE_MOVING = 1
+        const STATE_ATTACK = 2
+        const STATE_CHANT  = 3
+
+        const FRAME_UP    = 2
+        const FRAME_DOWN  = 0
+        const FRAME_LEFT  = 4
+        const FRAME_RIGHT = 6
+        const FRAME_ATK_D = 8
+        const FRAME_ATK_U = 9
+        const FRAME_ATK_L = 10
+        const FRAME_ATK_R = 11
+
+;------------------------------------------------------------------------------
+; MAP DATA
+;------------------------------------------------------------------------------
+        const TILE_HEIGHT = 16
+        const TILE_WIDTH  = 8
+
+        const T_TITLE  = 0
+        const T_FOREST = 1
+        const T_CASTLE = 2
+        const T_RIVER  = 3
+        const T_HILLS  = 4
+
+        const ROOMS_PER_ROW = 7
+
+;==============================================================================
+; OBJECT DATA
+;==============================================================================
+        const TYPE_WOLF  = 1
+        const TYPE_TORCH = 2
+
+
+;------------------------------------------------------------------------------
+; SYSTEM VARIABLES
+;------------------------------------------------------------------------------
+        dim temp_hp_sign = temp1        ; tracks underflow during subtraction
+
+        autodim init a z
+        autodim byte index
+        autodim byte game_state
+        autodim byte pointer
+        autodim byte pointer_hi
+        autodim byte Xposition
+        autodim byte Yposition
+        autodim byte Xdirection
+        autodim byte Ydirection
+        autodim 8.8  Xvelocity
+        autodim 8.8  Yvelocity
+        autodim 8.8  move_speed
+        autodim 8.8  vel_cap
+        autodim 8.8  friction
+        autodim byte height
+        autodim byte width
+        autodim byte temp_hp_hi
+        autodim byte temp_hp_lo
+        autodim byte hp_change_hi
+        autodim byte hp_change_lo
+        autodim byte bg_color
+        autodim byte animation_timer
+
+;------------------------------------------------------------------------------
+; PLAYER
+;------------------------------------------------------------------------------
+        autodim init var0 var99
+        autodim byte player_Xpos
+        autodim byte player_Ypos
+        autodim 8.8  player_Xvel
+        autodim 8.8  player_Yvel
+        autodim 8.8  player_vel_cap
+        autodim 8.8  player_friction
+        autodim byte player_Xdir
+        autodim byte player_Ydir
+        autodim byte player_facing      ; facing is separate from direction for knockback purposes
+        autodim byte player_state
+        autodim byte player_frame
+        autodim byte player_flags
+        autodim byte player_timer
+        autodim byte player_hp_hi
+        autodim byte player_hp_lo
+        autodim byte player_max_hp_hi
+        autodim byte player_max_hp_lo
+        autodim byte player_mp_hi
+        autodim byte player_mp_lo
+        autodim byte player_max_mp_hi
+        autodim byte player_max_mp_lo
+        autodim byte player_level
+        dim player_exp = score1
+        autodim byte player_str
+        autodim byte player_atk ; str + wpn atk
+        autodim byte player_damage_hi
+        autodim byte player_damage_lo
+        autodim byte player_atk_elem
+        autodim byte player_def
+        autodim byte player_def_elem
+        autodim 8.8  player_speed
+        autodim byte player_sword
+        autodim byte player_shield
+        autodim byte player_helm
+        autodim byte player_armor
+        autodim byte player_relic
+        autodim byte player_status
+        autodim byte sword_pal
+        autodim byte sword_Xpos
+        autodim byte sword_Ypos
+        autodim byte sword_frame
+        autodim byte sword_width
+        autodim byte sword_height
+        autodim byte shield_pal
+        autodim byte shield_Xpos
+        autodim byte shield_Ypos
+        autodim byte shield_frame
+        autodim byte hp_seg_1
+        autodim byte hp_seg_2
+        autodim byte hp_seg_3
+        autodim byte hp_seg_4
+        autodim byte hp_seg_5
+        autodim byte hp_seg_6
+        autodim byte mp_seg_1
+        autodim byte mp_seg_2
+        autodim byte mp_seg_3
+        autodim byte mp_seg_4
+        autodim byte mp_seg_5
+        autodim byte mp_seg_6
+
+;------------------------------------------------------------------------------
+; MOVING OBJECT ARRAYS
+;------------------------------------------------------------------------------
+        autodim init $2200 $23FF
+        autodim byte object_type 16
+        autodim byte object_Xpos 16
+        autodim byte object_Ypos 16
+        autodim 8.8  object_Xvel 16
+        autodim 8.8  object_Yvel 16
+        autodim byte object_Xdir 16
+        autodim byte object_Ydir 16
+        autodim byte object_frame 16
+        autodim byte object_action 16
+        autodim 8.8  object_speed 16
+        autodim 8.8  object_vel_cap 16
+        autodim 8.8  object_friction 16
+        autodim byte object_height 16
+        autodim byte object_width 16
+        autodim byte object_hp_hi 16
+        autodim byte object_hp_lo 16
+        autodim byte object_damage_hi 16
+        autodim byte object_damage_lo 16
+        autodim byte object_contact_hi 16
+        autodim byte object_contact_lo 16
+        autodim byte object_flags 16
+        autodim byte object_timer 16
+
+        autodim init $2400 $24FF
+        autodim byte reload_map
+        autodim byte map_height
+        autodim byte map_width
+        autodim byte peekX
+        autodim byte peekY
+        autodim byte move_tile_1
+        autodim byte move_tile_2
+        autodim byte animation_frame
+        autodim byte frame
+        autodim byte flags
+        autodim byte obj_index
+        autodim byte joy0fire1_held
+
+        ; ROOM HEADER
+        autodim byte room
+        autodim byte tileset
+        autodim byte exit_dir
+        autodim byte music
+        autodim byte walkable
+        autodim byte walkable_1
+        autodim byte walkable_2
+        autodim byte walk_test
+        autodim byte walk_index
+        autodim byte room_index
+
+        dim current_map = $2600
+
+        P0C1=$60:P0C2=$76:P0C3=$0F
+        P1C1=$10:P1C2=$23:P1C3=$3B
+        P2C1=$30:P2C2=$45:P2C3=$1F
+        P3C1=$50:P3C2=$55:P3C3=$5B
+        P4C1=$00:P4C2=$C0:P4C3=$C3
+        P5C1=$00:P5C2=$03:P5C3=$06
+        P6C1=$00:P6C2=$A1:P6C3=$06
+        P7C1=$00:P7C2=$24:P7C3=$5B
+
+        ; displaymode 320A
+
+        clearscreen
+
+        player_Xpos = 24
+        player_Ypos = 60
+
+        player_speed = 1.0
+        player_friction = player_speed
+        player_vel_cap = 5.0
+
+        dec player_max_hp_hi = $00
+        dec player_max_hp_lo = $48
+        dec player_hp_hi = $00
+        dec player_hp_lo = $48
+
+        dec hp_seg_1 = 8
+        dec hp_seg_2 = 8
+        dec hp_seg_3 = 8
+        dec hp_seg_4 = 8
+        dec hp_seg_5 = 8
+        dec hp_seg_6 = 8
+        dec mp_seg_1 = 8
+        dec mp_seg_2 = 8
+        dec mp_seg_3 = 8
+        dec mp_seg_4 = 8
+        dec mp_seg_5 = 8
+        dec mp_seg_6 = 8
+
+        sword_pal = 2
+        shield_pal = 2
+
+;==============================================================================
+; BANK 1
+;------------------------------------------------------------------------------
+; 7800basic initialization, title sequence code and graphics
+;------------------------------------------------------------------------------
+;==============================================================================
+        incgraphic gfx/title/logo.png  320B 0 2 3 3 1
+        incgraphic gfx/title/trees.png 320B 0 1 2 3 0
+        incgraphic gfx/title/moon.png  320B 0 1 2 3 0
+        incmapfile tiled/title_blackforest.tmx
+        game_state = STATE_TITLE
+
+title_init
+        displaymode 320B
+        bg_color = $00
+        ;P0C1 = $01 : P0C2 = $02 : P0C3 = $04
+        ;P1C1 = $01 : P1C2 = $01 : P1C3 = $02
+        clearscreen
+        characterset logo
+        plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 14
+        savescreen
+
+title_handler
+        restorescreen
+        ; TODO: Handle, well, everything
+        reload_map = 1
+        room_index = 17
+        tileset = T_FOREST
+        game_state = STATE_FIELD
+        
+        goto main
+
+;==============================================================================
+; BANK 2
+;------------------------------------------------------------------------------
+; Contains forest tileset graphics, maps, and enemy AI
+;==============================================================================
+        bank 2
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
+        incgraphic gfx/tiles/forest_map.png 160A 0 2 1 3
+        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
+         
+        incmapfile tiled/forest.tmx
+        incmapfile tiled/forest_room_1.tmx
+        incmapfile tiled/forest_room_2.tmx
+        incmapfile tiled/forest_room_3.tmx
+        incmapfile tiled/forest_room_4.tmx
+        incmapfile tiled/forest_room_5.tmx
+        incmapfile tiled/forest_room_6.tmx
+        incmapfile tiled/forest_room_7.tmx
+
+load_forest
+        bg_color = $11
+        characterset forest_trees
+        room = forest_rooms[room_index]
+        if room = 1 then pointer = forest_room_1_obj_lo : pointer_hi = forest_room_1_obj_hi : goto plot_forest_room_1
+        if room = 2 then pointer = forest_room_2_obj_lo : pointer_hi = forest_room_2_obj_hi : goto plot_forest_room_2
+        if room = 3 then pointer = forest_room_3_obj_lo : pointer_hi = forest_room_3_obj_hi : goto plot_forest_room_3
+        if room = 4 then pointer = forest_room_4_obj_lo : pointer_hi = forest_room_4_obj_hi : goto plot_forest_room_4
+        if room = 5 then pointer = forest_room_5_obj_lo : pointer_hi = forest_room_5_obj_hi : goto plot_forest_room_5
+        if room = 6 then pointer = forest_room_6_obj_lo : pointer_hi = forest_room_6_obj_hi : goto plot_forest_room_6
+        if room = 7 then pointer = forest_room_7_obj_lo : pointer_hi = forest_room_7_obj_hi : goto plot_forest_room_7
+
+; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
+plot_forest_room_1
+        plotmapfile tiled/forest_room_1.tmx forest_room_1 0 0 20 14
+        memcpy current_map forest_room_1 280
+        return
+
+        data forest_room_1_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+
+plot_forest_room_2
+        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
+        memcpy current_map forest_room_2 280
+        return
+
+        data forest_room_2_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_3
+        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
+        memcpy current_map forest_room_3 280
+        return
+
+        data forest_room_3_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_4
+        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
+        memcpy current_map forest_room_4 280
+        return
+
+        data forest_room_4_obj
+        $01, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_5
+        plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
+        memcpy current_map forest_room_5 280
+        return
+
+        data forest_room_5_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_6
+        plotmapfile tiled/forest_room_6.tmx forest_room_6 0 0 20 14
+        memcpy current_map forest_room_6 280
+        return
+
+        data forest_room_6_obj
+        $01, $30, $30,  $02, $69, $20,  $02, $39, $20,  $02, $5E, $AF,
+        $02, $42, $AF,  $01, $70, $30,  $01, $80, $90,  $00, $A0, $A0,
+        $00, $90, $88,  $00, $40, $70,  $00, $30, $20,  $00, $80, $40,
+        $00, $b0, $c0,  $00, $77, $55,  $00, $44, $22,  $00, $33, $66,
+end
+
+plot_forest_room_7
+        plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
+        memcpy current_map forest_room_7 280
+        return
+
+        data forest_room_7_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+        data forest_rooms
+        00, 00, 00, 07, 06, 00, 00,
+        00, 00, 00, 04, 05, 00, 00,
+        00, 00, 00, 03, 00, 00, 00,
+        00, 00, 00, 02, 01, 00, 00,
+        00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00
+end
+
+test_walkable_forest
+        for walk_index = 0 to forest_walkable_tiles_length
+        walk_test = forest_walkable_tiles[walk_index]
+        if walk_test = move_tile_1 then walkable_1 = 1
+        if walk_test = move_tile_2 then walkable_2 = 1
+        next
+        if !walkable_1 then walkable_return
+        if !walkable_2 then walkable_return
+        walkable = 1
+        goto walkable_return
+
+        data forest_walkable_tiles
+        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
+end
+
+;==============================================================================
+; WOLF AI
+;------------------------------------------------------------------------------
+; Wolves wait for the player to get close (WOLF_CHASE_DIST), then give chase
+;==============================================================================
+wolf_ai
+        const WOLF_CHASE_DIST = 32
+        ; Once wolves start chasing, they don't stop
+        if flags{7} then wolf_chase
+
+        ; Test player distance to wolf
+        temp1 = Xposition - player_Xpos
+        if temp1 < WOLF_CHASE_DIST then wolf_chase
+        temp1 = Yposition - player_Ypos
+        if temp1 < (WOLF_CHASE_DIST * 2) then wolf_chase
+
+wolf_anim
+        ; Wolves flip left or right facing depending on player position
+        frame = 0
+        if Xposition < player_Xpos then frame = frame + 2
+        if animation_frame then frame = frame + 1
+        return
+
+wolf_chase
+        flags{7} = 1
+        gosub followplayer
+        goto wolf_anim
+
+;==============================================================================
+; BANK 8
+;------------------------------------------------------------------------------
+; Permanently loaded bank. Contains sprites and code used with every tileset
+;==============================================================================
+        bank 8
+        incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
+        incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
+        incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
+        incgraphic gfx/sprites/heroine3.png  160B 0 4 5 6 3   ; FRAME_UP_2
+        incgraphic gfx/sprites/heroine4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
+        incgraphic gfx/sprites/heroine5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
+        incgraphic gfx/sprites/heroine6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
+        incgraphic gfx/sprites/heroine7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
+        incgraphic gfx/sprites/heroine8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
+        incgraphic gfx/sprites/heroine9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
+        incgraphic gfx/sprites/heroine10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
+        incgraphic gfx/sprites/heroine11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
+        incgraphic gfx/sprites/link.png 160A                  ; FRAME_CHANT (bugged if heroine12.png is used?)
+        incgraphic gfx/sprites/sword0.png 160A 0 1 3
+        incgraphic gfx/sprites/sword1.png 160A 0 3 1
+        incgraphic gfx/sprites/sword2.png 160A 0 1 3
+        incgraphic gfx/sprites/sword3.png 160A 0 1 3
+        incgraphic gfx/sprites/shield.png 160A 0 2 1
+        incgraphic gfx/sprites/torch0.png 160B 0 1 2 3 6 5 4
+        incgraphic gfx/sprites/torch1.png 160B 0 1 2 3 5 6 4
+        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
+        incgraphic gfx/sprites/mp.png 160A 0 3 1
+        incgraphic gfx/sprites/bar0.png 160A 0 1
+        incgraphic gfx/sprites/bar1.png 160A 0 2 1
+        incgraphic gfx/sprites/bar2.png 160A 0 2 1
+        incgraphic gfx/sprites/bar3.png 160A 0 2 1
+        incgraphic gfx/sprites/bar4.png 160A 0 2 1
+        incgraphic gfx/sprites/bar5.png 160A 0 2 1
+        incgraphic gfx/sprites/bar6.png 160A 0 2 1
+        incgraphic gfx/sprites/bar7.png 160A 0 2 1
+        incgraphic gfx/sprites/bar8.png 160A 0 2 1
+
+;==============================================================================
+; LOAD OBJECTS
+;------------------------------------------------------------------------------
+; Fills all 16 object slots with type and position data from ROM,
+; then interates through each type to set object properties
+; Utilizes pointers so multiple maps can reuse the same object data if desired
+;==============================================================================
+load_objects
+        temp1 = 0
+        for obj_index = 0 to 15
+        object_type[obj_index] = pointer[[temp1]]
+        temp1 = temp1 + 1
+        object_Xpos[obj_index] = pointer[[temp1]]
+        temp1 = temp1 + 1
+        object_Ypos[obj_index] = pointer[[temp1]]
+        temp1 = temp1 + 1
+        next
+        for obj_index = 0 to 15
+        if !object_type[obj_index] then next_obj_stats
+        if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
+        if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
+
+obj_next_stats
+        next
+        return
+
+obj_wolf_stats
+; TODO: Make this implementation suck less
+        const WOLF_SPEED_HI = 1
+        const WOLF_SPEED_LO = 50
+        const WOLF_WIDTH = 12
+        const WOLF_HEIGHT = 16
+        const WOLF_HP_HI = $0
+        const WOLF_HP_LO = $50
+        const WOLF_VEL_CAP_HI = 5
+        const WOLF_VEL_CAP_LO = 0
+        const WOLF_FRICTION_HI = 1
+        const WOLF_FRICTION_LO = 0
+        const WOLF_DAMAGE_HI = 0
+        const WOLF_DAMAGE_LO = 1
+        const WOLF_CONTACT_HI = 0
+        const WOLF_CONTACT_LO = 1
+
+        object_hp_hi[obj_index] = WOLF_HP_HI
+        object_hp_lo[obj_index] = WOLF_HP_LO
+        object_contact_hi[obj_index] = WOLF_CONTACT_HI
+        object_contact_lo[obj_index] = WOLF_CONTACT_LO
+        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
+        object_damage_hi[obj_index] = WOLF_DAMAGE_HI
+        object_damage_lo[obj_index] = WOLF_DAMAGE_LO
+        object_friction_hi[obj_index] = WOLF_FRICTION_HI
+        object_friction_lo[obj_index] = WOLF_FRICTION_LO
+        object_height[obj_index] = WOLF_HEIGHT
+        object_width[obj_index] = WOLF_WIDTH
+        object_speed_hi[obj_index] = WOLF_SPEED_HI
+        object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+obj_torch_stats
+        object_hp_hi[obj_index] = 1
+        object_hp_lo[obj_index] = 1
+        object_contact_hi[obj_index] = 0
+        object_contact_lo[obj_index] = 0
+        object_vel_cap_hi[obj_index] = 0
+        object_vel_cap_lo[obj_index] = 0
+        object_damage_hi[obj_index] = 0
+        object_damage_lo[obj_index] = 0
+        object_friction_hi[obj_index] = 0
+        object_friction_lo[obj_index] = 0
+        object_height[obj_index] = 16
+        object_width[obj_index] = 8
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 0
+        goto obj_next_stats
+
+load_map
+        clearscreen
+        displaymode 160A
+        game_state = STATE_FIELD
+        if tileset = T_FOREST then loadrombank 2 : gosub load_forest
+        savescreen
+        gosub load_objects
+        reload_map = 0
+        if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
+        if exit_dir = EXIT_NORTH then player_Ypos = 204 : player_Ydir = DIR_UP
+        if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
+        if exit_dir = EXIT_WEST  then player_Xpos = 16  : player_Xdir = DIR_RIGHT
+        exit_dir = EXIT_NONE
+
+field_handler
+        if reload_map = 1 then goto load_map
+        gosub player_handler
+        gosub object_handler
+        gosub check_collisions
+        player_timer = player_timer - 1 : if player_timer < 0 then player_timer = 0
+
+        ; Currently only two frames of animation supported. Needs to be changed if more than 2
+        animation_frame = 0
+        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+        
+        restorescreen
+        ; Iterates through all objects and determined which sprites need to be plotted by type
+        for index = 15 to 0 step -1
+        if !object_type[index] then goto plot_next
+        Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
+        if object_type[index] = TYPE_WOLF then plot_wolf
+        if object_type[index] = TYPE_TORCH then plot_torch
+plot_next
+        next
+        ; Plot the player, their shield, and sword if attacking
+        plotsprite heroine0 0 player_Xpos player_Ypos player_frame
+        if player_state = STATE_ATTACK then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
+        ; TODO: Multiple shield frames depending on direction/state
+        plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
+        gosub draw_hud
+        goto main
+
+plot_wolf
+        PLOTSPRITE wolf0 5 Xposition Yposition frame
+        goto plot_next
+
+plot_torch
+        PLOTSPRITE torch0 0 Xposition Yposition animation_frame
+        goto plot_next
+
+
+;==============================================================================
+; DRAW HUD
+;------------------------------------------------------------------------------
+; Draws the player's HP and MP bar in zones 1-2 using sprites.
+; Bars must be plotted in separate zones or there isn't enough DMA time
+;==============================================================================
+draw_hud
+        plotsprite  hp    0  8  0       ; HP is 160B
+        plotsprite  bar0 2 24  0 hp_seg_1
+        PLOTSPRITE4 bar0 2 32  0 hp_seg_2
+        PLOTSPRITE4 bar0 2 40  0 hp_seg_3
+        PLOTSPRITE4 bar0 2 48  0 hp_seg_4
+        PLOTSPRITE4 bar0 2 56  0 hp_seg_5
+        PLOTSPRITE4 bar0 2 64  0 hp_seg_6
+        plotsprite  mp   0  8 16        ; Need to use plotsprite here to avoid rendering error on MP bar
+        PLOTSPRITE4 bar0 0 24 16 mp_seg_1
+        PLOTSPRITE4 bar0 0 32 16 mp_seg_2
+        PLOTSPRITE4 bar0 0 40 16 mp_seg_3
+        PLOTSPRITE4 bar0 0 48 16 mp_seg_4
+        PLOTSPRITE4 bar0 0 56 16 mp_seg_5
+        PLOTSPRITE4 bar0 0 64 16 mp_seg_6
+        if debug_hud = 0 then return
+        plotvalue hud 0 player_Xpos 4 32 12
+        plotvalue hud2 0 move_tile_1 4 32 13
+        plotvalue hud 0 room_index 2 32 13
+        plotvalue hud 0 room 2 48 13
+        return
+
+menu_handler
+        goto field_handler
+
+followplayer
+        if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
+        if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
+        if Yposition > player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
+        if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
+        return
+
+object_handler
+        for index = 0 to 15
+        if !object_type[index] then object_done    ; 0 = no object
+        if object_type[index] = TYPE_TORCH then object_done ; torches are static decorations
+        gosub copy_object_props
+        gosub decelerate_object
+        if object_type[index] = TYPE_WOLF then gosub wolf_ai
+        gosub move_object
+        gosub restore_object_props
+object_done
+        next
+        return
+
+player_handler
+        dec player_damage_hi = $00
+        dec player_damage_lo = $10
+        gosub copy_player_props
+        gosub decelerate_object
+        gosub restore_player_props
+
+handle_input_field
+        if debug_time then BACKGRND = $70
+        if joy0fire1 then goto open_menu
+        joy0fire1_held = 0
+        if joy0fire0 then goto player_attack
+        ; TODO: cancel player movement if in knockback state
+        player_state = STATE_STAND
+        if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
+        if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
+        player_frame = FRAME_RIGHT
+frames_done
+        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_frame = FRAME_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING
+        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_frame = FRAME_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING
+        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_frame = FRAME_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING
+        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING
+
+        gosub copy_player_props
+        gosub move_object
+        gosub restore_player_props
+
+        if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
+        if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
+        if player_facing = DIR_LEFT then sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
+        sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
+sword_done
+        shield_Xpos = player_Xpos + SHIELD_OFFSET_X
+        shield_Ypos = player_Ypos + SHIELD_OFFSET_Y
+input_frame_done
+        if !player_Xvel && !player_Yvel && player_state <> STATE_ATTACK && player_state <> STATE_CHANT then player_state = STATE_STAND
+        if animation_frame && player_state = STATE_MOVING then player_frame = player_frame + 1
+
+check_room_boundary
+        if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1
+        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1
+        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW
+        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW
+        if exit_dir then reload_map = 1
+        if debug_time then BACKGRND = bg_color
+        return
+
+open_menu
+        game_state = STATE_MENU
+        return
+
+player_attack
+        if joy0fire1_held then player_chant
+        joy0fire1_held = 1
+        if player_facing = DIR_LEFT  then player_frame = FRAME_ATK_L : goto player_attack_return
+        if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : goto player_attack_return
+        if player_facing = DIR_UP    then player_frame = FRAME_ATK_U : goto player_attack_return
+        if player_facing = DIR_DOWN  then player_frame = FRAME_ATK_D
+
+player_attack_return
+        player_state = STATE_ATTACK
+        if debug_time then BACKGRND = bg_color
+        return
+
+player_chant
+        player_timer = player_timer + 1
+        if player_timer > 4 then player_state = STATE_CHANT
+        return
+
+decelerate_object
+        if !friction then decel_return
+        if !Xvelocity then decel_Y
+        Xvelocity = Xvelocity - friction
+        if Xvelocity < 0 then Xvelocity = 0
+decel_Y
+        if !Yvelocity then decel_return
+        Yvelocity = Yvelocity - friction
+        if Yvelocity < 0 then Yvelocity = 0
+decel_return
+        return
+
+;==============================================================================
+; SUBROUTINE: MOVE_OBJECT
+;------------------------------------------------------------------------------
+; Moves an object based on the non-fractional component of their velocities
+; Tests against an array of walkable tiles for current tileset before moving
+; KISS: Moving objects are assumed to fit player sprite proportions (12x16)
+; TODO: Replace bounding box magic numbers with variables based on object
+;==============================================================================
+move_object
+        if debug_time then BACKGRND = $96
+
+        ; Cap the object's velocity TODO: separate X/Y cap?
+        if Xvelocity > vel_cap then Xvelocity = vel_cap
+        if Yvelocity > vel_cap then Yvelocity = vel_cap
+
+        ; Current direction(s) are determined by player input or AI logic
+        if Ydirection = DIR_UP    then gosub move_test_up
+        if Ydirection = DIR_DOWN  then gosub move_test_down
+        if Xdirection = DIR_LEFT  then gosub move_test_left
+        if Xdirection = DIR_RIGHT then gosub move_test_right
+        goto move_return
+
+move_test_up
+        peekX = (Xposition + 2) / TILE_WIDTH
+        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly 
+        peekY = ((Yposition + 8) - Yvelocity_hi) / TILE_HEIGHT
+        move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
+        peekX = (Xposition + 8) / TILE_WIDTH
+        move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        gosub test_walkable
+        if walkable then Yposition = Yposition - Yvelocity_hi
+        return
+
+move_test_down
+        peekX = (Xposition + 2) / TILE_WIDTH
+        peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
+        move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
+        peekX = (Xposition + 8) / TILE_WIDTH
+        move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        gosub test_walkable
+        if walkable then Yposition = Yposition + Yvelocity_hi
+        return
+
+move_test_left
+        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
+        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
+        peekY = (Yposition + 8) / TILE_HEIGHT
+        move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
+        peekY = (Yposition + 15) / TILE_HEIGHT
+        move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        gosub test_walkable
+        if walkable then Xposition = Xposition - Xvelocity_hi
+        return
+
+move_test_right
+        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
+        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
+        peekY = (Yposition + 8) / TILE_HEIGHT
+        move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
+        peekY = (Yposition + 15) / TILE_HEIGHT
+        move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        gosub test_walkable
+        if walkable then Xposition = Xposition + Xvelocity_hi
+        return
+        
+move_return
+        if debug_time then BACKGRND = bg_color
+        return
+
+test_walkable
+        ; start by assuming the tile isn't walkable (fewer tests)
+        walkable = 0
+        walkable_1 = 0
+        walkable_2 = 0
+        if tileset = T_FOREST then test_walkable_forest
+walkable_return
+        return
+
+check_collisions
+        for index = 0 to 15
+        if !object_type[index] then cc_return
+        gosub copy_object_props
+        hp_change_hi = player_damage_hi[index] : hp_change_lo = player_damage_lo[index]
+        if player_state <> STATE_ATTACK then cc_player_contact
+        gosub sword_collision
+        if object_hp_hi[index] then cc_player_contact
+        if !object_hp_lo[index] then gosub kill_object
+cc_player_contact
+        if object_type[index] = TYPE_TORCH then player_block
+        hp_change_hi = object_contact_hi[index] : hp_change_lo = object_contact_lo[index]
+        gosub player_knockback
+        next
+cc_return
+        return
+
+kill_object
+        object_type[index] = 0
+        return
+
+sword_collision
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, width, height) then return
+sword_damage
+        temp_hp_hi = object_hp_hi[index]
+        temp_hp_lo = object_hp_lo[index]
+        hp_change_hi = player_damage_hi
+        hp_change_lo = player_damage_lo
+        gosub decrease_hp
+        object_hp_hi[index] = temp_hp_hi
+        object_hp_lo[index] = temp_hp_lo
+        return
+
+player_block
+        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, width, height) then return
+        player_Xvel = 0 : player_Yvel = 0
+        goto cc_return
+
+player_knockback
+        ; if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
+        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, width, height) then return
+        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
+        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
+        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
+        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
+pc_damage
+        ; avoid a tail call with goto
+        goto damage_player_hp
+
+        return
+
+; copies player movement variables to be manipulated by movement subroutines
+copy_player_props
+        Xposition  = player_Xpos
+        Xdirection = player_Xdir
+        Xvelocity  = player_Xvel
+        Yposition  = player_Ypos
+        Ydirection = player_Ydir
+        Yvelocity  = player_Yvel
+        vel_cap    = player_vel_cap
+        friction   = player_friction
+        width      = PLAYER_WIDTH
+        height     = PLAYER_HEIGHT
+        return
+
+; restores movement variables from subroutines back to player
+restore_player_props
+        player_Xpos = Xposition
+        player_Xvel = Xvelocity
+        player_Ypos = Yposition
+        player_Yvel = Yvelocity
+        return
+
+copy_object_props
+        if debug_time then BACKGRND = $D6
+        Xposition  = object_Xpos[index]
+        Xdirection = object_Xdir[index]
+        Xvelocity  = object_Xvel[index]
+        Yposition  = object_Ypos[index]
+        Ydirection = object_Ydir[index]
+        Yvelocity  = object_Yvel[index]
+        move_speed = object_speed[index]
+        vel_cap    = object_vel_cap[index]
+        friction   = object_friction[index]
+        width      = object_width[index]
+        height     = object_height[index]
+        frame      = object_frame[index]
+        flags      = object_flags[index]
+        if debug_time then BACKGRND = bg_color
+        return
+
+restore_object_props
+        if debug_time then BACKGRND = $36
+        object_Xpos[index]  = Xposition
+        object_Xvel[index]  = Xvelocity
+        object_Ypos[index]  = Yposition
+        object_Yvel[index]  = Yvelocity
+        object_frame[index] = frame
+        object_flags[index] = flags
+        if debug_time then BACKGRND = bg_color
+        return
+
+
+damage_player_hp
+        ; TODO: This currently can't scale, only works with max HP 48...
+        dec temp1 = player_hp_lo        ; temp1 used to detect underflow
+        dec player_hp_lo = player_hp_lo - hp_change_lo
+        if player_hp_lo > temp1 then player_hp_lo = 0
+        dec temp1 = player_hp_lo
+        dec hp_seg_1 = player_hp_lo - 8
+        if hp_seg_1 > temp1 then hp_seg_1 = 0
+        dec temp1 = hp_seg_1
+        dec hp_seg_2 = hp_seg_1 - 8
+        if hp_seg_2 > temp1 then hp_seg_2 = 0
+        dec temp1 = hp_seg_2
+        dec hp_seg_3 = hp_seg_2 - 8
+        if hp_seg_3 > temp1 then hp_seg_3 = 0
+        dec temp1 = hp_seg_3
+        dec hp_seg_4 = hp_seg_3 - 8
+        if hp_seg_4 > temp1 then hp_seg_4 = 0
+        dec temp1 = hp_seg_4
+        dec hp_seg_5 = hp_seg_4 - 8
+        if hp_seg_5 > temp1 then hp_seg_5 = 0
+        dec temp1 = hp_seg_5
+        dec hp_seg_6 = hp_seg_5 - 8
+        if hp_seg_6 > temp1 then hp_seg_6 = 0
+        if hp_seg_6 > 8 then hp_seg_6 = 8
+        if hp_seg_5 > 8 then hp_seg_5 = 8
+        if hp_seg_4 > 8 then hp_seg_4 = 8
+        if hp_seg_3 > 8 then hp_seg_3 = 8
+        if hp_seg_2 > 8 then hp_seg_2 = 8
+        if hp_seg_1 > 8 then hp_seg_1 = 8
+        return
+
+increase_hp
+        asm
+        sed
+        clc
+        lda temp_hp_lo
+        adc hp_change_lo
+        sta temp_hp_lo
+        lda temp_hp_hi
+        adc hp_change_hi
+        sta temp_hp_hi
+        cld
+end
+        return
+
+decrease_hp
+        asm
+        lda #$FF
+        sta temp_hp_sign
+        sed
+        sec
+        lda temp_hp_lo
+        sbc hp_change_lo
+        sta temp_hp_lo
+        lda temp_hp_hi
+        sbc hp_change_hi
+        sta temp_hp_hi
+        lda temp_hp_sign
+        sbc #$FF
+        beq decrease_hp_return  ; prevent underflow
+        lda #0
+        sta temp_hp_hi
+        sta temp_hp_lo
+decrease_hp_return
+        cld
+end
+        return
+
+clear_palettes
+        BACKGRND = $00
+        P0C1 = $00 : P0C2 = $00 : P0C3 = $00
+        P1C1 = $00 : P1C2 = $00 : P1C3 = $00
+        P2C1 = $00 : P2C2 = $00 : P2C3 = $00
+        P3C1 = $00 : P3C2 = $00 : P3C3 = $00
+        P4C1 = $00 : P4C2 = $00 : P4C3 = $00
+        P5C1 = $00 : P5C2 = $00 : P5C3 = $00
+        P6C1 = $00 : P6C2 = $00 : P6C3 = $00
+        P7C1 = $00 : P7C2 = $00 : P7C3 = $00
+        return
+
+main
+        drawscreen
+        animation_timer = animation_timer + 1
+        if animation_timer > ANIM_TIME then animation_timer = 0
+        if game_state = STATE_TITLE then title_handler
+        if game_state = STATE_FIELD then field_handler
+        if game_state = STATE_MENU  then menu_handler
+        goto main
+
+topscreenroutine
+        WSYNC=1
+        BACKGRND=bg_color
+        return
+
+bottomscreenroutine
+        WSYNC=1
+        BACKGRND=$00
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then BACKGRND=$60
+        return
