@@ -640,7 +640,9 @@ plot_next
         goto main
 
 plot_wolf
+        if debug_time then BACKGRND = $06
         PLOTSPRITE wolf0 5 Xposition Yposition frame
+        if debug_time then BACKGRND = bg_color
         goto plot_next
 
 plot_torch
@@ -655,6 +657,7 @@ plot_torch
 ; Bars must be plotted in separate zones or there isn't enough DMA time
 ;==============================================================================
 draw_hud
+        if debug_time then BACKGRND = $43
         plotsprite  hp    0  8  0       ; HP is 160B
         plotsprite  bar0 2 24  0 hp_seg_1
         PLOTSPRITE4 bar0 2 32  0 hp_seg_2
@@ -674,6 +677,7 @@ draw_hud
         plotvalue hud2 0 move_tile_1 4 32 13
         plotvalue hud 0 room_index 2 32 13
         plotvalue hud 0 room 2 48 13
+        if debug_time then BACKGRND = bg_color
         return
 
 menu_handler
