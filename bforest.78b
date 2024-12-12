@@ -1083,30 +1083,84 @@ restore_player_props
 
 copy_object_props
         if debug_time then BACKGRND = $D6
-        Xposition  = object_Xpos[index]
-        Xdirection = object_Xdir[index]
-        Xvelocity  = object_Xvel[index]
-        Yposition  = object_Ypos[index]
-        Ydirection = object_Ydir[index]
-        Yvelocity  = object_Yvel[index]
-        move_speed = object_speed[index]
-        vel_cap    = object_vel_cap[index]
-        friction   = object_friction[index]
-        width      = object_width[index]
-        height     = object_height[index]
-        frame      = object_frame[index]
-        flags      = object_flags[index]
+        asm
+        ldx index
+        lda object_Xpos,x
+        sta Xposition
+        lda object_Xpos,x
+        sta Xdirection
+        lda #0
+        sta Xvelocity_lo
+        lda object_Xvel,x
+        sta Xvelocity
+        lda object_Ypos,x
+        sta Yposition
+        lda object_Ydir,x
+        sta Ydirection
+        lda #0
+        sta Yvelocity_lo
+        lda object_Yvel,x
+        sta Yvelocity
+        lda #0
+        sta move_speed_lo
+        lda object_speed,x
+        sta move_speed
+        lda #0
+        sta vel_cap_lo,x
+        lda object_vel_cap,x
+        sta vel_cap
+        lda #0
+        sta friction_lo
+        lda object_friction,x
+        sta friction
+        lda object_frame,x
+        sta frame
+        lda object_flags,x
+        sta flags
+end
+;        Xposition  = object_Xpos[index]
+;        Xdirection = object_Xdir[index]
+;        Xvelocity  = object_Xvel[index]
+;        Yposition  = object_Ypos[index]
+;        Ydirection = object_Ydir[index]
+;        Yvelocity  = object_Yvel[index]
+;        move_speed = object_speed[index]
+;        vel_cap    = object_vel_cap[index]
+;        friction   = object_friction[index]
+;        width      = object_width[index]
+;        height     = object_height[index]
+;        frame      = object_frame[index]
+;        flags      = object_flags[index]
         if debug_time then BACKGRND = bg_color
         return
 
 restore_object_props
         if debug_time then BACKGRND = $36
-        object_Xpos[index]  = Xposition
-        object_Xvel[index]  = Xvelocity
-        object_Ypos[index]  = Yposition
-        object_Yvel[index]  = Yvelocity
-        object_frame[index] = frame
-        object_flags[index] = flags
+        asm
+        ldx index
+        lda Xposition
+        sta object_Xpos,x
+        lda Xvelocity_lo
+        sta object_Xvel_lo,x
+        lda Xvelocity
+        sta object_Xvel,x
+        lda Yposition
+        sta object_Ypos,x
+        lda Yvelocity_lo
+        sta object_Yvel_lo,x
+        lda Yvelocity
+        sta object_Yvel,x
+        lda frame
+        sta object_frame,x
+        lda flags
+        sta object_flags,x
+end
+;        object_Xpos[index]  = Xposition
+;        object_Xvel[index]  = Xvelocity
+;        object_Ypos[index]  = Yposition
+;        object_Yvel[index]  = Yvelocity
+;        object_frame[index] = frame
+;        object_flags[index] = flags
         if debug_time then BACKGRND = bg_color
         return
 
