@@ -440,15 +440,40 @@ end
 end
 
 test_walkable_forest
-        for walk_index = 0 to forest_walkable_tiles_length
-        walk_test = forest_walkable_tiles[walk_index]
-        if walk_test = move_tile_1 then walkable_1 = 1
-        if walk_test = move_tile_2 then walkable_2 = 1
-        next
-        if !walkable_1 then walkable_return
-        if !walkable_2 then walkable_return
-        walkable = 1
+        asm
+        ldx #0
+.loop   lda forest_walkable_tiles,x
+        cmp move_tile_1
+        bne .tile2
+        pha
+        lda #1
+        sta walkable_1
+        pla
+.tile2  cmp move_tile_2
+        bne .next
+        lda #1
+        sta walkable_2
+.next   inx
+        cpx #forest_walkable_tiles_length
+        bne .loop
+        lda walkable_1
+        beq .done
+        lda walkable_2
+        beq .done
+        lda #1
+        sta walkable
+.done
+end
         goto walkable_return
+;        for walk_index = 0 to forest_walkable_tiles_length
+;        walk_test = forest_walkable_tiles[walk_index]
+;        if walk_test = move_tile_1 then walkable_1 = 1
+;        if walk_test = move_tile_2 then walkable_2 = 1
+;        next
+;        if !walkable_1 then walkable_return
+;        if !walkable_2 then walkable_return
+;        walkable = 1
+;        goto walkable_return
 
         data forest_walkable_tiles
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
@@ -808,43 +833,157 @@ move_object
         goto move_return
 
 move_test_up
-        peekX = (Xposition + 2) / TILE_WIDTH
-        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly 
-        peekY = ((Yposition + 8) - Yvelocity_hi) / TILE_HEIGHT
+;        peekX = (Xposition + 2) / TILE_WIDTH
+        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
+;        peekY = ((Yposition + 8) - Yvelocity_hi) / TILE_HEIGHT
+        asm
+        lda Xposition
+        clc
+        adc #2
+        lsr
+        lsr
+        lsr
+        sta peekX
+        lda Yposition
+        clc
+        adc #8
+        sec
+        sbc Yvelocity_hi
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
-        peekX = (Xposition + 8) / TILE_WIDTH
+;        peekX = (Xposition + 8) / TILE_WIDTH
+        asm
+        lda Xposition
+        clc
+        adc #8
+        lsr
+        lsr
+        lsr
+        sta peekX
+end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if walkable then Yposition = Yposition - Yvelocity_hi
         return
 
 move_test_down
-        peekX = (Xposition + 2) / TILE_WIDTH
-        peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
+        ;peekX = (Xposition + 2) / TILE_WIDTH
+        ;peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
+        asm
+        lda Xposition
+        clc
+        adc #2
+        lsr
+        lsr
+        lsr
+        sta peekX
+        lda Yposition
+        clc
+        adc #15
+        clc
+        adc Yvelocity_hi
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
-        peekX = (Xposition + 8) / TILE_WIDTH
+        ;peekX = (Xposition + 8) / TILE_WIDTH
+        asm
+        lda Xposition
+        clc
+        adc #8
+        lsr
+        lsr
+        lsr
+        sta peekX
+end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if walkable then Yposition = Yposition + Yvelocity_hi
         return
 
 move_test_left
-        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
+;        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
-        peekY = (Yposition + 8) / TILE_HEIGHT
+;        peekY = (Yposition + 8) / TILE_HEIGHT
+        asm
+        lda Xposition
+        clc
+        adc #2
+        sec
+        sbc Xvelocity_hi
+        lsr
+        lsr
+        lsr
+        sta peekX
+        lda Yposition
+        clc
+        adc #8
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
-        peekY = (Yposition + 15) / TILE_HEIGHT
+;        peekY = (Yposition + 15) / TILE_HEIGHT
+        asm
+        lda Yposition
+        clc
+        adc #15
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if walkable then Xposition = Xposition - Xvelocity_hi
         return
 
 move_test_right
-        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
+;        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
-        peekY = (Yposition + 8) / TILE_HEIGHT
+;        peekY = (Yposition + 8) / TILE_HEIGHT
+        asm
+        lda Xposition
+        clc
+        adc #9
+        clc
+        adc Xvelocity_hi
+        lsr
+        lsr
+        lsr
+        sta peekX
+        lda Yposition
+        clc
+        adc #8
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
-        peekY = (Yposition + 15) / TILE_HEIGHT
+;        peekY = (Yposition + 15) / TILE_HEIGHT
+        asm
+        lda Yposition
+        clc
+        adc #15
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if walkable then Xposition = Xposition + Xvelocity_hi
@@ -856,9 +995,15 @@ move_return
 
 test_walkable
         ; start by assuming the tile isn't walkable (fewer tests)
-        walkable = 0
-        walkable_1 = 0
-        walkable_2 = 0
+;        walkable = 0
+;        walkable_1 = 0
+;        walkable_2 = 0
+        asm
+        lda #0
+        sta walkable
+        sta walkable_1
+        sta walkable_2
+end
         if tileset = T_FOREST then test_walkable_forest
 walkable_return
         return
