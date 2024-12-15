@@ -7,8 +7,8 @@
         set doublewide on
         set collisionwrap off
 
-        const debug_hud = 1
-        const debug_time = 1
+        const debug_hud = 0
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -330,6 +330,9 @@ title_handler
         incmapfile tiled/forest_room_5.tmx
         incmapfile tiled/forest_room_6.tmx
         incmapfile tiled/forest_room_7.tmx
+        incmapfile tiled/forest_room_8.tmx
+        incmapfile tiled/forest_room_9.tmx
+        incmapfile tiled/forest_room_10.tmx
 
 load_forest
         bg_color = $11
@@ -342,6 +345,9 @@ load_forest
         if room = 5 then pointer = forest_room_5_obj_lo : pointer_hi = forest_room_5_obj_hi : goto plot_forest_room_5
         if room = 6 then pointer = forest_room_6_obj_lo : pointer_hi = forest_room_6_obj_hi : goto plot_forest_room_6
         if room = 7 then pointer = forest_room_7_obj_lo : pointer_hi = forest_room_7_obj_hi : goto plot_forest_room_7
+        if room = 8 then pointer = forest_room_8_obj_lo : pointer_hi = forest_room_8_obj_hi : goto plot_forest_room_8
+        if room = 9 then pointer = forest_room_9_obj_lo : pointer_hi = forest_room_9_obj_hi : goto plot_forest_room_9
+        if room = 10 then pointer = forest_room_10_obj_lo : pointer_hi = forest_room_10_obj_hi : goto plot_forest_room_10
 
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
@@ -429,11 +435,47 @@ plot_forest_room_7
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
+plot_forest_room_8
+        plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
+        memcpy current_map forest_room_8 280
+        return
+
+        data forest_room_8_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_9
+        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
+        memcpy current_map forest_room_9 280
+        return
+
+        data forest_room_9_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_forest_room_10
+        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
+        memcpy current_map forest_room_10 280
+        return
+
+        data forest_room_10_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
         data forest_rooms
-        00, 00, 00, 07, 06, 00, 00,
-        00, 00, 00, 04, 05, 00, 00,
+        00, 00,  8, 07, 06, 00, 00,
+        00,  9, 10, 04, 05, 00, 00,
         00, 00, 00, 03, 00, 00, 00,
-        00, 00, 00, 02, 01, 00, 00,
+        00, 00, 00, 02, 00, 00, 00,
         00, 00, 00, 01, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00
@@ -648,6 +690,7 @@ field_handler
         if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
         
         restorescreen
+        if debug_time then BACKGRND = $06
         ; Iterates through all objects and determined which sprites need to be plotted by type
         for index = 15 to 0 step -1
         if !object_type[index] then goto plot_next
@@ -661,11 +704,11 @@ plot_next
         if player_state = STATE_ATTACK then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
         ; TODO: Multiple shield frames depending on direction/state
         plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
+        if debug_time then BACKGRND = bg_color
         gosub draw_hud
         goto main
 
 plot_wolf
-        if debug_time then BACKGRND = $06
         PLOTSPRITE wolf0 5 Xposition Yposition frame
         if debug_time then BACKGRND = bg_color
         goto plot_next
@@ -747,11 +790,12 @@ handle_input_field
         if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
         player_frame = FRAME_RIGHT
 frames_done
-        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_frame = FRAME_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING
-        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_frame = FRAME_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING
-        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_frame = FRAME_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING
-        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING
+        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_frame = FRAME_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_frame = FRAME_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_frame = FRAME_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
 
+test_joy_done
         gosub copy_player_props
         gosub move_object
         gosub restore_player_props
