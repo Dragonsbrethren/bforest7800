@@ -83,9 +83,11 @@
 ;==============================================================================
 ; OBJECT DATA
 ;==============================================================================
-        const TYPE_WOLF  = 1
-        const TYPE_TORCH = 2
-
+        const TYPE_WOLF    =  1
+        const TYPE_TORCH   =  2
+        const TYPE_SPAWNER =  3
+        const TYPE_COIN    =  4
+        const TYPE_PRISM   =  5
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -219,6 +221,7 @@
         autodim byte flags
         autodim byte obj_index
         autodim byte joy0fire1_held
+        autodim byte drop_rate
 
         ; ROOM HEADER
         autodim byte room
@@ -588,6 +591,8 @@ wolf_chase
         incgraphic gfx/sprites/bar6.png 160A 0 2 1
         incgraphic gfx/sprites/bar7.png 160A 0 2 1
         incgraphic gfx/sprites/bar8.png 160A 0 2 1
+        incgraphic gfx/sprites/coin.png 160A 0 3 2
+        incgraphic gfx/sprites/prism.png 160A
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -631,6 +636,7 @@ obj_wolf_stats
         const WOLF_DAMAGE_LO = 1
         const WOLF_CONTACT_HI = 0
         const WOLF_CONTACT_LO = 1
+        const WOLF_DROP_RATE = 255
 
         object_hp_hi[obj_index] = WOLF_HP_HI
         object_hp_lo[obj_index] = WOLF_HP_LO
@@ -696,9 +702,12 @@ field_handler
         ; Iterates through all objects and determined which sprites need to be plotted by type
         for index = 15 to 0 step -1
         if !object_type[index] then goto plot_next
+        if object_type[index] = TYPE_SPAWNER then plot_next
         Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
         if object_type[index] = TYPE_WOLF then plot_wolf
         if object_type[index] = TYPE_TORCH then plot_torch
+        if object_type[index] = TYPE_COIN then plot_coin
+        if object_type[index] = TYPE_PRISM then plot_prism
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -719,6 +728,14 @@ plot_torch
         PLOTSPRITE torch0 0 Xposition Yposition animation_frame
         goto plot_next
 
+plot_coin
+        plotsprite coin 3 Xposition Yposition
+        goto plot_next
+
+plot_prism
+        plotsprite prism 0 Xposition Yposition
+        goto plot_next
+
 
 ;==============================================================================
 ; DRAW HUD
@@ -728,7 +745,7 @@ plot_torch
 ;==============================================================================
 draw_hud
         if debug_time then BACKGRND = $43
-        plotsprite  hp    0  8  0       ; HP is 160B
+        plotsprite  hp   0  8  0       ; HP is 160B
         plotsprite  bar0 2 24  0 hp_seg_1
         PLOTSPRITE4 bar0 2 32  0 hp_seg_2
         PLOTSPRITE4 bar0 2 40  0 hp_seg_3
@@ -764,6 +781,7 @@ object_handler
         for index = 0 to 15
         if !object_type[index] then object_done    ; 0 = no object
         if object_type[index] = TYPE_TORCH then object_done ; torches are static decorations
+        if object_type[index] = TYPE_SPAWNER then goto spawn_object
         gosub copy_object_props
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
@@ -772,6 +790,32 @@ object_handler
 object_done
         next
         return
+
+spawn_object
+        ; index is still set by object_handler
+        if object_flags[index] = TYPE_TORCH then goto spawns_torch
+        if object_flags[index] = TYPE_WOLF then drop_rate = WOLF_DROP_RATE
+
+        if rand > drop_rate then spawn_nothing
+
+        if object_flags[index] = TYPE_WOLF then spawns_wolf
+
+spawns_wolf
+        ; TODO: Unique wolf item drops
+spawns_torch
+        if player_mp_hi = player_max_mp_hi && player_mp_lo = player_max_mp_lo then _spawn_coin
+
+_spawn_mana
+        object_type[index] = TYPE_PRISM
+        goto object_done
+
+_spawn_coin
+        object_type[index] = TYPE_COIN
+        goto object_done
+
+spawn_nothing
+        object_type[index] = 0
+        goto object_done
 
 player_handler
         dec player_damage_hi = $00
@@ -1072,7 +1116,10 @@ cc_return
         return
 
 kill_object
-        object_type[index] = 0
+        ; TODO: Death animation
+        ; switch the object's flags to its old type and its type to a spwaner
+        object_flags[index] = object_type[index]
+        object_type[index] = TYPE_SPAWNER
         return
 
 sword_collision
