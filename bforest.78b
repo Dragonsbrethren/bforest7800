@@ -237,19 +237,6 @@
 
         dim current_map = $2600
 
-        P0C1=$60:P0C2=$76:P0C3=$0F
-        P1C1=$10:P1C2=$23:P1C3=$3B
-        P2C1=$30:P2C2=$45:P2C3=$1F
-        P3C1=$50:P3C2=$55:P3C3=$5B
-        P4C1=$00:P4C2=$C0:P4C3=$C3
-        P5C1=$00:P5C2=$03:P5C3=$06
-        P6C1=$00:P6C2=$A1:P6C3=$06
-        P7C1=$00:P7C2=$24:P7C3=$5B
-
-        ; displaymode 320A
-
-        clearscreen
-
         player_Xpos = 24
         player_Ypos = 60
 
@@ -284,17 +271,18 @@
 ; 7800basic initialization, title sequence code and graphics
 ;------------------------------------------------------------------------------
 ;==============================================================================
-        incgraphic gfx/title/logo.png  320B 0 2 3 3 1
-        incgraphic gfx/title/trees.png 320B 0 1 2 3 0
-        incgraphic gfx/title/moon.png  320B 0 1 2 3 0
+        incgraphic gfx/title/logo.png  320B 1 2 3 1 4
+        incgraphic gfx/title/trees.png 320B 0 3 0 0 0
+        incgraphic gfx/title/moon.png  320B 0 3 2 2 4
+        incgraphic gfx/font.png        320A 0 2
         incmapfile tiled/title_blackforest.tmx
         game_state = STATE_TITLE
 
 title_init
+        P0C1 = 0 : P0C2 = 0 : P0C3 = 0
+        P4C1 = 0 : P4C2 = 0 : P4C3 = 0
         displaymode 320B
-        bg_color = $00
-        ;P0C1 = $01 : P0C2 = $02 : P0C3 = $04
-        ;P1C1 = $01 : P1C2 = $01 : P1C3 = $02
+        bg_color = $71
         clearscreen
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 14
@@ -302,7 +290,9 @@ title_init
 
 title_handler
         restorescreen
+        adjustvisible 0 4
         ; TODO: Handle, well, everything
+        if !joy0fire0 || !joy0fire1 then goto main
         reload_map = 1
         room_index = 17
         tileset = T_FOREST
@@ -341,6 +331,14 @@ title_handler
 
 load_forest
         bg_color = $11
+        P0C1=$60:P0C2=$76:P0C3=$0F
+        P1C1=$10:P1C2=$23:P1C3=$3B
+        P2C1=$30:P2C2=$45:P2C3=$1F
+        P3C1=$50:P3C2=$55:P3C3=$5B
+        P4C1=$00:P4C2=$C0:P4C3=$C3
+        P5C1=$00:P5C2=$03:P5C3=$06
+        P6C1=$00:P6C2=$A1:P6C3=$06
+        P7C1=$00:P7C2=$24:P7C3=$5B
         characterset forest_trees
         room = forest_rooms[room_index]
         if room = 1 then pointer = forest_room_1_obj_lo : pointer_hi = forest_room_1_obj_hi : goto plot_forest_room_1
@@ -675,6 +673,7 @@ obj_torch_stats
 load_map
         clearscreen
         displaymode 160A
+        adjustvisible 0 14
         game_state = STATE_FIELD
         if tileset = T_FOREST then loadrombank 2 : gosub load_forest
         savescreen
@@ -1350,10 +1349,22 @@ main
 topscreenroutine
         WSYNC=1
         BACKGRND=bg_color
+        if game_state = STATE_TITLE then set_title_top_pal
+        return
+
+set_title_top_pal
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $80 : P4C2 = $0F : P4C3 = $04
         return
 
 bottomscreenroutine
         WSYNC=1
         BACKGRND=$00
+        if game_state = STATE_TITLE then set_title_bottom_pal
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then BACKGRND=$60
+        return
+
+set_title_bottom_pal
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
