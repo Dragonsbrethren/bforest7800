@@ -1058,7 +1058,7 @@ check_collisions
         for index = 0 to 15
         if !object_type[index] then cc_return
         gosub copy_object_props
-        hp_change_hi = player_damage_hi[index] : hp_change_lo = player_damage_lo[index]
+        hp_change_hi = player_damage_hi : hp_change_lo = player_damage_lo
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if object_hp_hi[index] then cc_player_contact
