@@ -750,8 +750,10 @@ followplayer
 object_handler
         for index = 0 to 15
         if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] = TYPE_TORCH then object_done ; torches are static decorations
-        if object_type[index] = TYPE_SPAWNER then goto spawn_object
+        if object_type[index] = TYPE_TORCH then object_done ; torches, coins, prisms are static
+        if object_type[index] = TYPE_COIN then object_done
+        if object_type[index] = TYPE_PRISM then object_done
+        if object_type[index] = TYPE_SPAWNER then spawn_object
         gosub copy_object_props
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
@@ -763,7 +765,7 @@ object_done
 
 spawn_object
         ; index is still set by object_handler
-        if object_flags[index] = TYPE_TORCH then goto spawns_torch
+        if object_flags[index] = TYPE_TORCH then spawns_torch
         if object_flags[index] = TYPE_WOLF then drop_rate = WOLF_DROP_RATE
 
         if rand > drop_rate then spawn_nothing
