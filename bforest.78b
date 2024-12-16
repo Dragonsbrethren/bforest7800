@@ -283,6 +283,12 @@ title_handler
         room_index = 17
         tileset = T_FOREST
         game_state = STATE_FIELD
+
+        ; shared_palettes
+        P0C1 = $60 : P0C2 = $76 : P0C3 = $0F    ; purple, light purple, white -- magic HUD, torches
+        P1C1 = $10 : P1C2 = $23 : P1C3 = $3B    ; dark brown, light brown, peach -- Johanna
+        P2C1 = $30 : P2C2 = $45 : P2C3 = $1F    ; red, light red, gold -- HP HUD, equipment
+        P3C1 = $50 : P3C2 = $55 : P3C3 = $5B    ; currently unused blues, equipment
         
         goto main
 
@@ -316,15 +322,14 @@ title_handler
         incmapfile tiled/forest_room_10.tmx
 
 load_forest
+
+        ; forest_palettes
         bg_color = $11
-        P0C1=$60:P0C2=$76:P0C3=$0F
-        P1C1=$10:P1C2=$23:P1C3=$3B
-        P2C1=$30:P2C2=$45:P2C3=$1F
-        P3C1=$50:P3C2=$55:P3C3=$5B
-        P4C1=$00:P4C2=$C0:P4C3=$C3
-        P5C1=$00:P5C2=$03:P5C3=$06
-        P6C1=$00:P6C2=$A1:P6C3=$06
-        P7C1=$00:P7C2=$24:P7C3=$5B
+        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees
+        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by rocks and wolves
+        P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
+        P7C1 = $00 : P7C2 = $24 : P7C3 = $5B    ; currently unused, light browns?
+
         characterset forest_trees
         room = forest_rooms[room_index]
         if room = 1 then pointer = forest_room_1_obj_lo : pointer_hi = forest_room_1_obj_hi : goto plot_forest_room_1
