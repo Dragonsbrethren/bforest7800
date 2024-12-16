@@ -52,10 +52,11 @@
         const SHIELD_OFFSET_X = 8
         const SHIELD_OFFSET_Y = 7
 
-        const STATE_STAND  = 0
-        const STATE_MOVING = 1
-        const STATE_ATTACK = 2
-        const STATE_CHANT  = 3
+        const STATE_STAND     = 0
+        const STATE_MOVING    = 1
+        const STATE_ATTACK    = 2
+        const STATE_CHANT     = 3
+        const STATE_KNOCKBACK = 4
 
         const FRAME_UP    = 2
         const FRAME_DOWN  = 0
@@ -279,8 +280,7 @@
         game_state = STATE_TITLE
 
 title_init
-        P0C1 = 0 : P0C2 = 0 : P0C3 = 0
-        P4C1 = 0 : P4C2 = 0 : P4C3 = 0
+        gosub clear_palettes
         displaymode 320B
         bg_color = $71
         clearscreen
@@ -552,6 +552,41 @@ wolf_chase
         gosub followplayer
         goto wolf_anim
 
+obj_wolf_stats
+; TODO: Make this implementation suck less
+        const WOLF_SPEED_HI = 1
+        const WOLF_SPEED_LO = 50
+        const WOLF_WIDTH = 12
+        const WOLF_HEIGHT = 16
+        const WOLF_HP_HI = $0
+        const WOLF_HP_LO = $50
+        const WOLF_VEL_CAP_HI = 5
+        const WOLF_VEL_CAP_LO = 0
+        const WOLF_FRICTION_HI = 1
+        const WOLF_FRICTION_LO = 0
+        const WOLF_DAMAGE_HI = 0
+        const WOLF_DAMAGE_LO = 1
+        const WOLF_CONTACT_HI = 0
+        const WOLF_CONTACT_LO = 1
+        const WOLF_DROP_RATE = 64
+
+        object_hp_hi[obj_index] = WOLF_HP_HI
+        object_hp_lo[obj_index] = WOLF_HP_LO
+        object_contact_hi[obj_index] = WOLF_CONTACT_HI
+        object_contact_lo[obj_index] = WOLF_CONTACT_LO
+        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
+        object_damage_hi[obj_index] = WOLF_DAMAGE_HI
+        object_damage_lo[obj_index] = WOLF_DAMAGE_LO
+        object_friction_hi[obj_index] = WOLF_FRICTION_HI
+        object_friction_lo[obj_index] = WOLF_FRICTION_LO
+        object_height[obj_index] = WOLF_HEIGHT
+        object_width[obj_index] = WOLF_WIDTH
+        object_speed_hi[obj_index] = WOLF_SPEED_HI
+        object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
 ;==============================================================================
 ; BANK 8
 ;------------------------------------------------------------------------------
@@ -590,7 +625,7 @@ wolf_chase
         incgraphic gfx/sprites/bar7.png 160A 0 2 1
         incgraphic gfx/sprites/bar8.png 160A 0 2 1
         incgraphic gfx/sprites/coin.png 160A 0 3 2
-        incgraphic gfx/sprites/prism.png 160A
+        incgraphic gfx/sprites/prism.png 160A 0 3 2 1
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -617,41 +652,6 @@ load_objects
 obj_next_stats
         next
         return
-
-obj_wolf_stats
-; TODO: Make this implementation suck less
-        const WOLF_SPEED_HI = 1
-        const WOLF_SPEED_LO = 50
-        const WOLF_WIDTH = 12
-        const WOLF_HEIGHT = 16
-        const WOLF_HP_HI = $0
-        const WOLF_HP_LO = $50
-        const WOLF_VEL_CAP_HI = 5
-        const WOLF_VEL_CAP_LO = 0
-        const WOLF_FRICTION_HI = 1
-        const WOLF_FRICTION_LO = 0
-        const WOLF_DAMAGE_HI = 0
-        const WOLF_DAMAGE_LO = 1
-        const WOLF_CONTACT_HI = 0
-        const WOLF_CONTACT_LO = 1
-        const WOLF_DROP_RATE = 255
-
-        object_hp_hi[obj_index] = WOLF_HP_HI
-        object_hp_lo[obj_index] = WOLF_HP_LO
-        object_contact_hi[obj_index] = WOLF_CONTACT_HI
-        object_contact_lo[obj_index] = WOLF_CONTACT_LO
-        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
-        object_damage_hi[obj_index] = WOLF_DAMAGE_HI
-        object_damage_lo[obj_index] = WOLF_DAMAGE_LO
-        object_friction_hi[obj_index] = WOLF_FRICTION_HI
-        object_friction_lo[obj_index] = WOLF_FRICTION_LO
-        object_height[obj_index] = WOLF_HEIGHT
-        object_width[obj_index] = WOLF_WIDTH
-        object_speed_hi[obj_index] = WOLF_SPEED_HI
-        object_speed_lo[obj_index] = WOLF_SPEED_LO
-        object_flags[obj_index] = 0
-        goto obj_next_stats
 
 obj_torch_stats
         object_hp_hi[obj_index] = 1
@@ -728,11 +728,11 @@ plot_torch
         goto plot_next
 
 plot_coin
-        plotsprite coin 3 Xposition Yposition
+        PLOTSPRITE coin 3 Xposition Yposition 0
         goto plot_next
 
 plot_prism
-        plotsprite prism 0 Xposition Yposition
+        PLOTSPRITE prism 0 Xposition Yposition 0
         goto plot_next
 
 
@@ -802,14 +802,18 @@ spawn_object
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
+        player_mp_hi = 0
+        player_max_mp_hi = 48
         if player_mp_hi = player_max_mp_hi && player_mp_lo = player_max_mp_lo then _spawn_coin
 
 _spawn_mana
         object_type[index] = TYPE_PRISM
+        object_hp_lo[index] = 1
         goto object_done
 
 _spawn_coin
         object_type[index] = TYPE_COIN
+        object_hp_lo[index] = 1
         goto object_done
 
 spawn_nothing
@@ -825,10 +829,13 @@ player_handler
 
 handle_input_field
         if debug_time then BACKGRND = $70
-        if joy0fire1 then goto open_menu
+        if !player_timer then no_player_timer
+        player_timer = player_timer - 1
+        if player_state = STATE_KNOCKBACK then test_joy_done
+no_player_timer
+        player_flags{0} = 0
         joy0fire1_held = 0
         if joy0fire0 then goto player_attack
-        ; TODO: cancel player movement if in knockback state
         player_state = STATE_STAND
         if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
         if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
@@ -841,6 +848,7 @@ frames_done
         if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
+        if joy0fire1 then goto open_menu
         gosub copy_player_props
         gosub move_object
         gosub restore_player_props
@@ -1139,7 +1147,7 @@ player_block
         goto cc_return
 
 player_knockback
-        ; if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
+        if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
         if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, width, height) then return
         if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
         if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
@@ -1147,9 +1155,10 @@ player_knockback
         if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 pc_damage
         ; avoid a tail call with goto
+        player_flags{0} = 1
+        player_state = STATE_KNOCKBACK
+        player_timer = INVULN_FRAMES
         goto damage_player_hp
-
-        return
 
 ; copies player movement variables to be manipulated by movement subroutines
 copy_player_props
