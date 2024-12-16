@@ -1077,19 +1077,27 @@ walkable_return
 
 check_collisions
         for index = 0 to 15
-        if !object_type[index] then cc_return
+        if !object_type[index] then cc_next
+        if object_type[index] = TYPE_COIN then cc_pickup
+        if object_type[index] = TYPE_PRISM then cc_pickup
         gosub copy_object_props
         hp_change = player_damage
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then gosub kill_object
 cc_player_contact
-        if object_type[index] = TYPE_TORCH then player_block
+        ; need to test torches here so the sword can still damage them
+        ; but they don't knock the player back on contact
+        if object_type[index] = TYPE_TORCH then cc_next
         hp_change = object_contact[index]
         gosub player_knockback
+cc_next
         next
 cc_return
         return
+
+cc_pickup
+        goto cc_next
 
 kill_object
         ; TODO: Death animation
@@ -1099,18 +1107,14 @@ kill_object
         return
 
 sword_collision
-        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, width, height) then return
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
 sword_damage
+        ; TODO: Much better damage calculations
         temp_hp = object_hp[index]
         hp_change = player_damage
         gosub decrease_hp
         object_hp[index] = temp_hp
         return
-
-player_block
-        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, width, height) then return
-        player_Xvel = 0 : player_Yvel = 0
-        goto cc_return
 
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
