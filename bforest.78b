@@ -1086,7 +1086,7 @@ check_collisions
         hp_change = player_damage
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
-        if !object_hp[index] then gosub kill_object
+        if !object_hp[index] then kill_object
 cc_player_contact
         ; need to test torches here so the sword can still damage them
         ; but they don't knock the player back on contact
@@ -1106,7 +1106,7 @@ kill_object
         ; switch the object's flags to its old type and its type to a spwaner
         object_flags[index] = object_type[index]
         object_type[index] = TYPE_SPAWNER
-        return
+        goto cc_next
 
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
