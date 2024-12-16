@@ -111,10 +111,8 @@
         autodim 8.8  friction
         autodim byte height
         autodim byte width
-        autodim byte temp_hp_hi
-        autodim byte temp_hp_lo
-        autodim byte hp_change_hi
-        autodim byte hp_change_lo
+        autodim byte temp_hp
+        autodim byte hp_change
         autodim byte bg_color
         autodim byte animation_timer
 
@@ -135,20 +133,15 @@
         autodim byte player_frame
         autodim byte player_flags
         autodim byte player_timer
-        autodim byte player_hp_hi
-        autodim byte player_hp_lo
-        autodim byte player_max_hp_hi
-        autodim byte player_max_hp_lo
-        autodim byte player_mp_hi
-        autodim byte player_mp_lo
-        autodim byte player_max_mp_hi
-        autodim byte player_max_mp_lo
+        autodim byte player_hp
+        autodim byte player_max_hp
+        autodim byte player_mp
+        autodim byte player_max_mp
         autodim byte player_level
         dim player_exp = score1
         autodim byte player_str
         autodim byte player_atk ; str + wpn atk
-        autodim byte player_damage_hi
-        autodim byte player_damage_lo
+        autodim byte player_damage
         autodim byte player_atk_elem
         autodim byte player_def
         autodim byte player_def_elem
@@ -198,14 +191,9 @@
         autodim 8.8  object_speed 16
         autodim 8.8  object_vel_cap 16
         autodim 8.8  object_friction 16
-        autodim byte object_height 16
-        autodim byte object_width 16
-        autodim byte object_hp_hi 16
-        autodim byte object_hp_lo 16
-        autodim byte object_damage_hi 16
-        autodim byte object_damage_lo 16
-        autodim byte object_contact_hi 16
-        autodim byte object_contact_lo 16
+        autodim byte object_hp 16
+        autodim byte object_damage 16
+        autodim byte object_contact 16
         autodim byte object_flags 16
         autodim byte object_timer 16
 
@@ -245,10 +233,8 @@
         player_friction = player_speed
         player_vel_cap = 5.0
 
-        dec player_max_hp_hi = $00
-        dec player_max_hp_lo = $48
-        dec player_hp_hi = $00
-        dec player_hp_lo = $48
+        dec player_max_hp = $48
+        dec player_hp = $48
 
         dec hp_seg_1 = 8
         dec hp_seg_2 = 8
@@ -556,32 +542,22 @@ obj_wolf_stats
 ; TODO: Make this implementation suck less
         const WOLF_SPEED_HI = 1
         const WOLF_SPEED_LO = 50
-        const WOLF_WIDTH = 12
-        const WOLF_HEIGHT = 16
-        const WOLF_HP_HI = $0
-        const WOLF_HP_LO = $50
-        const WOLF_VEL_CAP_HI = 5
+        const WOLF_HP = 2
+        const WOLF_VEL_CAP_HI = 2
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
-        const WOLF_DAMAGE_HI = 0
-        const WOLF_DAMAGE_LO = 1
-        const WOLF_CONTACT_HI = 0
-        const WOLF_CONTACT_LO = 1
+        const WOLF_DAMAGE = 1
+        const WOLF_CONTACT = 1
         const WOLF_DROP_RATE = 64
 
-        object_hp_hi[obj_index] = WOLF_HP_HI
-        object_hp_lo[obj_index] = WOLF_HP_LO
-        object_contact_hi[obj_index] = WOLF_CONTACT_HI
-        object_contact_lo[obj_index] = WOLF_CONTACT_LO
+        object_hp[obj_index] = WOLF_HP
+        object_contact[obj_index] = WOLF_CONTACT
         object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
-        object_damage_hi[obj_index] = WOLF_DAMAGE_HI
-        object_damage_lo[obj_index] = WOLF_DAMAGE_LO
+        object_damage[obj_index] = WOLF_DAMAGE
         object_friction_hi[obj_index] = WOLF_FRICTION_HI
         object_friction_lo[obj_index] = WOLF_FRICTION_LO
-        object_height[obj_index] = WOLF_HEIGHT
-        object_width[obj_index] = WOLF_WIDTH
         object_speed_hi[obj_index] = WOLF_SPEED_HI
         object_speed_lo[obj_index] = WOLF_SPEED_LO
         object_flags[obj_index] = 0
@@ -654,18 +630,13 @@ obj_next_stats
         return
 
 obj_torch_stats
-        object_hp_hi[obj_index] = 1
-        object_hp_lo[obj_index] = 1
-        object_contact_hi[obj_index] = 0
-        object_contact_lo[obj_index] = 0
+        object_hp[obj_index] = 1
+        object_contact[obj_index] = 0
         object_vel_cap_hi[obj_index] = 0
         object_vel_cap_lo[obj_index] = 0
-        object_damage_hi[obj_index] = 0
-        object_damage_lo[obj_index] = 0
+        object_damage[obj_index] = 0
         object_friction_hi[obj_index] = 0
         object_friction_lo[obj_index] = 0
-        object_height[obj_index] = 16
-        object_width[obj_index] = 8
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 0
         goto obj_next_stats
@@ -802,18 +773,18 @@ spawn_object
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
-        player_mp_hi = 0
-        player_max_mp_hi = 48
-        if player_mp_hi = player_max_mp_hi && player_mp_lo = player_max_mp_lo then _spawn_coin
+        player_mp = 0
+        dec player_max_mp = 48
+        if player_mp = player_max_mp then _spawn_coin
 
 _spawn_mana
         object_type[index] = TYPE_PRISM
-        object_hp_lo[index] = 1
+        object_hp[index] = 1
         goto object_done
 
 _spawn_coin
         object_type[index] = TYPE_COIN
-        object_hp_lo[index] = 1
+        object_hp[index] = 1
         goto object_done
 
 spawn_nothing
@@ -821,8 +792,7 @@ spawn_nothing
         goto object_done
 
 player_handler
-        dec player_damage_hi = $00
-        dec player_damage_lo = $10
+        dec player_damage = $1
         gosub copy_player_props
         gosub decelerate_object
         gosub restore_player_props
@@ -1109,14 +1079,13 @@ check_collisions
         for index = 0 to 15
         if !object_type[index] then cc_return
         gosub copy_object_props
-        hp_change_hi = player_damage_hi : hp_change_lo = player_damage_lo
+        hp_change = player_damage
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
-        if object_hp_hi[index] then cc_player_contact
-        if !object_hp_lo[index] then gosub kill_object
+        if !object_hp[index] then gosub kill_object
 cc_player_contact
         if object_type[index] = TYPE_TORCH then player_block
-        hp_change_hi = object_contact_hi[index] : hp_change_lo = object_contact_lo[index]
+        hp_change = object_contact[index]
         gosub player_knockback
         next
 cc_return
@@ -1132,13 +1101,10 @@ kill_object
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, width, height) then return
 sword_damage
-        temp_hp_hi = object_hp_hi[index]
-        temp_hp_lo = object_hp_lo[index]
-        hp_change_hi = player_damage_hi
-        hp_change_lo = player_damage_lo
+        temp_hp = object_hp[index]
+        hp_change = player_damage
         gosub decrease_hp
-        object_hp_hi[index] = temp_hp_hi
-        object_hp_lo[index] = temp_hp_lo
+        object_hp[index] = temp_hp
         return
 
 player_block
@@ -1268,11 +1234,11 @@ end
 
 damage_player_hp
         ; TODO: This currently can't scale, only works with max HP 48...
-        dec temp1 = player_hp_lo        ; temp1 used to detect underflow
-        dec player_hp_lo = player_hp_lo - hp_change_lo
-        if player_hp_lo > temp1 then player_hp_lo = 0
-        dec temp1 = player_hp_lo
-        dec hp_seg_1 = player_hp_lo - 8
+        dec temp1 = player_hp        ; temp1 used to detect underflow
+        dec player_hp = player_hp - hp_change
+        if player_hp > temp1 then player_hp = 0
+        dec temp1 = player_hp
+        dec hp_seg_1 = player_hp - 8
         if hp_seg_1 > temp1 then hp_seg_1 = 0
         dec temp1 = hp_seg_1
         dec hp_seg_2 = hp_seg_1 - 8
@@ -1298,40 +1264,11 @@ damage_player_hp
         return
 
 increase_hp
-        asm
-        sed
-        clc
-        lda temp_hp_lo
-        adc hp_change_lo
-        sta temp_hp_lo
-        lda temp_hp_hi
-        adc hp_change_hi
-        sta temp_hp_hi
-        cld
-end
+        temp_hp = temp_hp + hp_change
         return
 
 decrease_hp
-        asm
-        lda #$FF
-        sta temp_hp_sign
-        sed
-        sec
-        lda temp_hp_lo
-        sbc hp_change_lo
-        sta temp_hp_lo
-        lda temp_hp_hi
-        sbc hp_change_hi
-        sta temp_hp_hi
-        lda temp_hp_sign
-        sbc #$FF
-        beq decrease_hp_return  ; prevent underflow
-        lda #0
-        sta temp_hp_hi
-        sta temp_hp_lo
-decrease_hp_return
-        cld
-end
+        temp_hp = temp_hp - hp_change
         return
 
 clear_palettes
