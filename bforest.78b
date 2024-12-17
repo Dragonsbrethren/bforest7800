@@ -89,6 +89,7 @@
         const TYPE_SPAWNER =  3
         const TYPE_COIN    =  4
         const TYPE_PRISM   =  5
+        const TYPE_SLIME   =  6
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -308,6 +309,8 @@ title_handler
         incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
          
         incmapfile tiled/forest.tmx
         incmapfile tiled/forest_room_1.tmx
@@ -324,8 +327,8 @@ title_handler
 load_forest
 
         ; forest_palettes
-        bg_color = $11
-        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees
+        bg_color = $11                          ; brown
+        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
         P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by rocks and wolves
         P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
         P7C1 = $00 : P7C2 = $24 : P7C3 = $5B    ; currently unused, light browns?
@@ -387,7 +390,7 @@ plot_forest_room_4
         return
 
         data forest_room_4_obj
-        $01, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
+        TYPE_SLIME, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -411,10 +414,22 @@ plot_forest_room_6
         return
 
         data forest_room_6_obj
-        $01, $30, $30,  $02, $69, $20,  $02, $39, $20,  $02, $5E, $AF,
-        $02, $42, $AF,  $01, $70, $30,  $01, $80, $90,  $00, $A0, $A0,
-        $00, $90, $88,  $00, $40, $70,  $00, $30, $20,  $00, $80, $40,
-        $00, $b0, $c0,  $00, $77, $55,  $00, $44, $22,  $00, $33, $66,
+        TYPE_WOLF, $30, $30,
+        TYPE_TORCH, $69, $20,
+        TYPE_TORCH, $39, $20,
+        TYPE_TORCH, $5E, $AF,
+        TYPE_TORCH, $42, $AF,
+        TYPE_WOLF, $70, $30,
+        TYPE_SLIME, $40, $67,
+        $00, $80, $90,
+        $00, $90, $88,
+        $00, $40, $70,
+        $00, $30, $20,
+        $00, $80, $40,
+        $00, $b0, $c0,
+        $00, $77, $55,
+        $00, $44, $22,
+        $00, $33, $66,
 end
 
 plot_forest_room_7
@@ -546,7 +561,7 @@ wolf_chase
 obj_wolf_stats
 ; TODO: Make this implementation suck less
         const WOLF_SPEED_HI = 1
-        const WOLF_SPEED_LO = 50
+        const WOLF_SPEED_LO = 0
         const WOLF_HP = 2
         const WOLF_VEL_CAP_HI = 2
         const WOLF_VEL_CAP_LO = 0
@@ -565,6 +580,30 @@ obj_wolf_stats
         object_friction_lo[obj_index] = WOLF_FRICTION_LO
         object_speed_hi[obj_index] = WOLF_SPEED_HI
         object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
+; SLIME AI
+;------------------------------------------------------------------------------
+; A Slime draws near!
+; Command?
+;==============================================================================
+slime_ai
+        gosub followplayer
+        return
+
+obj_slime_stats
+        const SLIME_DROP_RATE = 128
+        object_hp[obj_index] = 4
+        object_contact[obj_index] = 2
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 50
         object_flags[obj_index] = 0
         goto obj_next_stats
 
@@ -629,6 +668,7 @@ load_objects
         if !object_type[obj_index] then next_obj_stats
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
+        if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
 
 obj_next_stats
         next
@@ -675,7 +715,7 @@ field_handler
         restorescreen
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determined which sprites need to be plotted by type
-        for index = 15 to 0 step -1
+        for index = 0 to 15
         if !object_type[index] then goto plot_next
         if object_type[index] = TYPE_SPAWNER then plot_next
         Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
@@ -683,6 +723,7 @@ field_handler
         if object_type[index] = TYPE_TORCH then plot_torch
         if object_type[index] = TYPE_COIN then plot_coin
         if object_type[index] = TYPE_PRISM then plot_prism
+        if object_type[index] = TYPE_SLIME then plot_slime
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -696,7 +737,6 @@ plot_next
 
 plot_wolf
         PLOTSPRITE wolf0 5 Xposition Yposition frame
-        if debug_time then BACKGRND = bg_color
         goto plot_next
 
 plot_torch
@@ -709,6 +749,10 @@ plot_coin
 
 plot_prism
         PLOTSPRITE prism 0 Xposition Yposition 0
+        goto plot_next
+
+plot_slime
+        PLOTSPRITE slime0 4 Xposition Yposition animation_frame
         goto plot_next
 
 
@@ -762,6 +806,7 @@ object_handler
         gosub copy_object_props
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
+        if object_type[index] = TYPE_SLIME then gosub slime_ai
         gosub move_object
         gosub restore_object_props
 object_done
@@ -771,11 +816,18 @@ object_done
 spawn_object
         ; index is still set by object_handler
         if object_flags[index] = TYPE_TORCH then spawns_torch
+        drop_rate = 0
         if object_flags[index] = TYPE_WOLF then drop_rate = WOLF_DROP_RATE
+        if object_flags[index] = TYPE_SLIME then drop_rate = SLIME_DROP_RATE
 
         if rand > drop_rate then spawn_nothing
 
         if object_flags[index] = TYPE_WOLF then spawns_wolf
+        if object_flags[index] = TYPE_SLIME then spawns_slime
+        goto object_done
+
+spawns_slime
+        ; TODO: Unique drops
 
 spawns_wolf
         ; TODO: Unique wolf item drops
@@ -1167,7 +1219,7 @@ copy_object_props
         sta Xposition
         lda object_Xpos,x
         sta Xdirection
-        lda #0
+        lda object_Xvel_lo,x
         sta Xvelocity_lo
         lda object_Xvel,x
         sta Xvelocity
@@ -1175,19 +1227,19 @@ copy_object_props
         sta Yposition
         lda object_Ydir,x
         sta Ydirection
-        lda #0
+        lda object_Yvel_lo,x
         sta Yvelocity_lo
         lda object_Yvel,x
         sta Yvelocity
-        lda #0
+        lda object_speed_lo,x
         sta move_speed_lo
         lda object_speed,x
         sta move_speed
-        lda #0
+        lda object_vel_cap_lo,x
         sta vel_cap_lo,x
         lda object_vel_cap,x
         sta vel_cap
-        lda #0
+        lda object_friction_lo,x
         sta friction_lo
         lda object_friction,x
         sta friction
