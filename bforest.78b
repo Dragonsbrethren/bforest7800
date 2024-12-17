@@ -379,7 +379,7 @@ plot_forest_room_3
 
         data forest_room_3_obj
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  TYPE_SLIME, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
@@ -1199,8 +1199,6 @@ copy_player_props
         Yvelocity  = player_Yvel
         vel_cap    = player_vel_cap
         friction   = player_friction
-        width      = PLAYER_WIDTH
-        height     = PLAYER_HEIGHT
         return
 
 ; restores movement variables from subroutines back to player
@@ -1221,28 +1219,28 @@ copy_object_props
         sta Xdirection
         lda object_Xvel_lo,x
         sta Xvelocity_lo
-        lda object_Xvel,x
-        sta Xvelocity
+        lda object_Xvel_hi,x
+        sta Xvelocity_hi
         lda object_Ypos,x
         sta Yposition
         lda object_Ydir,x
         sta Ydirection
         lda object_Yvel_lo,x
         sta Yvelocity_lo
-        lda object_Yvel,x
-        sta Yvelocity
+        lda object_Yvel_hi,x
+        sta Yvelocity_hi
         lda object_speed_lo,x
         sta move_speed_lo
-        lda object_speed,x
-        sta move_speed
+        lda object_speed_hi,x
+        sta move_speed_hi
         lda object_vel_cap_lo,x
-        sta vel_cap_lo,x
-        lda object_vel_cap,x
-        sta vel_cap
+        sta vel_cap_lo
+        lda object_vel_cap_hi,x
+        sta vel_cap_hi
         lda object_friction_lo,x
         sta friction_lo
-        lda object_friction,x
-        sta friction
+        lda object_friction_hi,x
+        sta friction_hi
         lda object_frame,x
         sta frame
         lda object_flags,x
@@ -1272,14 +1270,14 @@ restore_object_props
         sta object_Xpos,x
         lda Xvelocity_lo
         sta object_Xvel_lo,x
-        lda Xvelocity
-        sta object_Xvel,x
+        lda Xvelocity_hi
+        sta object_Xvel_hi,x
         lda Yposition
         sta object_Ypos,x
         lda Yvelocity_lo
         sta object_Yvel_lo,x
-        lda Yvelocity
-        sta object_Yvel,x
+        lda Yvelocity_hi
+        sta object_Yvel_hi,x
         lda frame
         sta object_frame,x
         lda flags
