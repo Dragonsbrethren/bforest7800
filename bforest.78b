@@ -1311,7 +1311,7 @@ topscreenroutine
 
 set_title_top_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        P4C1 = $80 : P4C2 = $0F : P4C3 = $04
+        P4C1 = $80 : P4C2 = $0F : P4C3 = $08
         return
 
 bottomscreenroutine
