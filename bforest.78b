@@ -90,6 +90,7 @@
         const TYPE_COIN    =  4
         const TYPE_PRISM   =  5
         const TYPE_SLIME   =  6
+        const TYPE_MSLIME  =  7
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -311,6 +312,8 @@ title_handler
         incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
         incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
         incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
          
         incmapfile tiled/forest.tmx
         incmapfile tiled/forest_room_1.tmx
@@ -595,6 +598,7 @@ slime_ai
 
 obj_slime_stats
         const SLIME_DROP_RATE = 128
+        const MSLIME_HP = 2
         object_hp[obj_index] = 4
         object_contact[obj_index] = 2
         object_vel_cap_hi[obj_index] = 1
@@ -724,6 +728,7 @@ field_handler
         if object_type[index] = TYPE_COIN then plot_coin
         if object_type[index] = TYPE_PRISM then plot_prism
         if object_type[index] = TYPE_SLIME then plot_slime
+        if object_type[index] = TYPE_MSLIME then plot_minislime
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -753,6 +758,10 @@ plot_prism
 
 plot_slime
         PLOTSPRITE slime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_minislime
+        PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
         goto plot_next
 
 
@@ -807,6 +816,7 @@ object_handler
         if object_type[index] = TYPE_TORCH then torch_tile_block
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
+        if object_type[index] = TYPE_MSLIME then gosub slime_ai
         gosub move_object
         gosub restore_object_props
 object_done
@@ -1170,9 +1180,23 @@ kill_object
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 0
 change_to_spawner
+        if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
         ; switch the object's flags to its old type and its type to a spwaner
         object_flags[index] = object_type[index]
         object_type[index] = TYPE_SPAWNER
+        goto cc_next
+
+split_slime
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        object_Xpos[index] = object_Xpos[index] - 4
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        gosub find_new_object
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        object_Xpos[index] = temp1 + 12
+        object_Ypos[index] = temp2
         goto cc_next
 
 sword_collision
@@ -1361,6 +1385,22 @@ increase_hp
 decrease_hp
         temp_hp = temp_hp - hp_change
         return
+
+find_new_object
+        asm
+        ldx #0
+new_obj_loop
+        lda object_type,x
+        beq new_obj_found
+        inx
+        cpx #15
+        bne new_obj_loop
+        ; no empty obj slot found
+        rts
+new_obj_found
+        stx index
+        rts
+end
 
 clear_palettes
         BACKGRND = $00
