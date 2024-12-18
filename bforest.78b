@@ -799,12 +799,12 @@ followplayer
 object_handler
         for index = 0 to 15
         if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] = TYPE_TORCH then object_done ; torches, coins, prisms are static
-        if object_type[index] = TYPE_COIN then object_done
+        if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_PRISM then object_done
         if object_type[index] = TYPE_SPAWNER then spawn_object
         gosub copy_object_props
         gosub decelerate_object
+        if object_type[index] = TYPE_TORCH then torch_tile_block
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         gosub move_object
@@ -812,6 +812,11 @@ object_handler
 object_done
         next
         return
+
+torch_tile_block
+        gosub get_torch_pos
+        pokechar current_map peekX peekY 20 14 10
+        goto object_done
 
 spawn_object
         ; index is still set by object_handler
@@ -1160,6 +1165,11 @@ cc_pickup
 
 kill_object
         ; TODO: Death animation
+        if object_type[index] <> TYPE_TORCH then change_to_spawner
+        ; torches make their tile walkable
+        gosub get_torch_pos
+        pokechar current_map peekX peekY 20 14 0
+change_to_spawner
         ; switch the object's flags to its old type and its type to a spwaner
         object_flags[index] = object_type[index]
         object_type[index] = TYPE_SPAWNER
@@ -1188,6 +1198,26 @@ pc_damage
         player_state = STATE_KNOCKBACK
         player_timer = INVULN_FRAMES
         goto damage_player_hp
+
+get_torch_pos
+        asm
+        lda Xposition
+        clc
+        adc #4
+        lsr
+        lsr
+        lsr
+        sta peekX
+        lda Yposition
+        clc
+        adc #8
+        lsr
+        lsr
+        lsr
+        lsr
+        sta peekY
+end
+        return
 
 ; copies player movement variables to be manipulated by movement subroutines
 copy_player_props
