@@ -824,8 +824,10 @@ object_done
         return
 
 torch_tile_block
+        if debug_time = 1 then BACKGRND = $76
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 10
+        if debug_time = 1 then BACKGRND = bg_color
         goto object_done
 
 spawn_object
@@ -1177,8 +1179,10 @@ kill_object
         ; TODO: Death animation
         if object_type[index] <> TYPE_TORCH then change_to_spawner
         ; torches make their tile walkable
+        if debug_time = 1 then BACKGRND = $73
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 0
+        if debug_time = 1 then BACKGRND = bg_color
 change_to_spawner
         if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
         ; switch the object's flags to its old type and its type to a spwaner
@@ -1187,6 +1191,7 @@ change_to_spawner
         goto cc_next
 
 split_slime
+        if debug_time = 1 then BACKGRND = $B9
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
         object_Xpos[index] = object_Xpos[index] - 4
@@ -1197,6 +1202,7 @@ split_slime
         object_hp[index] = MSLIME_HP
         object_Xpos[index] = temp1 + 12
         object_Ypos[index] = temp2
+        if debug_time = 1 then BACKGRND = bg_color
         goto cc_next
 
 sword_collision
