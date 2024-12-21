@@ -9,8 +9,8 @@
         set multibutton on
         set multibuttonpause on
 
-        const debug_hud = 1
-        const debug_time = 1
+        const debug_hud = 0
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -406,10 +406,22 @@ plot_forest_room_5
         return
 
         data forest_room_5_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_SLIME, $30, $30,
+        TYPE_SLIME, $69, $20,
+        TYPE_SLIME, $39, $20,
+        TYPE_SLIME, $5E, $AF,
+        TYPE_SLIME, $42, $AF,
+        TYPE_SLIME, $70, $30,
+        TYPE_SLIME, $40, $67,
+        TYPE_SLIME, $80, $90,
+        TYPE_SLIME, $90, $88,
+        TYPE_SLIME, $40, $70,
+        TYPE_SLIME, $30, $20,
+        TYPE_SLIME, $80, $40,
+        TYPE_SLIME, $b0, $c0,
+        TYPE_SLIME, $77, $55,
+        TYPE_SLIME, $44, $22,
+        TYPE_SLIME, $33, $66,
 end
 
 plot_forest_room_6
@@ -1208,26 +1220,26 @@ split_slime
         ; replace slime mobj with mini slime
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
-        gosub find_new_object
-        ; if no slots, the slime just becomes a single mini slime
-        if no_empty_slot then cc_next
-        ; if the slime can split, mini slime is moved to the left of the parent slime's pos
-        object_Xpos[index] = object_Xpos[index] - 4
         temp1 = object_Xpos[index]
         temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
         ; initialize the new mini slime object
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
-        object_contact[obj_index] = SLIME_CONTACT
-        object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
-        object_damage[obj_index] = SLIME_DAMAGE
-        object_friction_hi[obj_index] = SLIME_FRICTION_HI
-        object_friction_lo[obj_index] = SLIME_FRICTION_LO
-        object_speed_hi[obj_index] = SLIME_SPEED_HI
-        object_speed_lo[obj_index] = SLIME_SPEED_LO
+        object_contact[index] = SLIME_CONTACT
+        object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
+        object_damage[index] = SLIME_DAMAGE
+        object_friction_hi[index] = SLIME_FRICTION_HI
+        object_friction_lo[index] = SLIME_FRICTION_LO
+        object_speed_hi[index] = SLIME_SPEED_HI
+        object_speed_lo[index] = SLIME_SPEED_LO
         ; mini slime spawns to the right of the parent slime's pos
-        object_Xpos[index] = temp1 + 12
+        object_Xpos[index] = temp1 + 9
         object_Ypos[index] = temp2
         goto cc_next
 
