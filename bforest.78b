@@ -9,8 +9,8 @@
         set multibutton on
         set multibuttonpause on
 
-        const debug_hud = 0
-        const debug_time = 0
+        const debug_hud = 1
+        const debug_time = 1
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -213,6 +213,7 @@
         autodim byte obj_index
         autodim byte joy0fire1_held
         autodim byte drop_rate
+        autodim byte no_empty_slot
 
         ; ROOM HEADER
         autodim byte room
@@ -424,7 +425,7 @@ plot_forest_room_6
         TYPE_TORCH, $42, $AF,
         TYPE_WOLF, $70, $30,
         TYPE_SLIME, $40, $67,
-        $00, $80, $90,
+        TYPE_SLIME, $80, $90,
         $00, $90, $88,
         $00, $40, $70,
         $00, $30, $20,
@@ -598,16 +599,25 @@ slime_ai
 
 obj_slime_stats
         const SLIME_DROP_RATE = 128
-        const MSLIME_HP = 2
-        object_hp[obj_index] = 4
-        object_contact[obj_index] = 2
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 2
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 50
+        const SLIME_HP = 4
+        const MSLIME_HP = SLIME_HP / 2
+        const SLIME_CONTACT = 4
+        const SLIME_VEL_CAP_HI = 1
+        const SLIME_VEL_CAP_LO = 0
+        const SLIME_DAMAGE = 4
+        const SLIME_FRICTION_HI = 1
+        const SLIME_FRICTION_LO = 0
+        const SLIME_SPEED_HI = 0
+        const SLIME_SPEED_LO = 50
+        object_hp[obj_index] = SLIME_HP
+        object_contact[obj_index] = SLIME_CONTACT
+        object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
+        object_damage[obj_index] = SLIME_DAMAGE
+        object_friction_hi[obj_index] = SLIME_FRICTION_HI
+        object_friction_lo[obj_index] = SLIME_FRICTION_LO
+        object_speed_hi[obj_index] = SLIME_SPEED_HI
+        object_speed_lo[obj_index] = SLIME_SPEED_LO
         object_flags[obj_index] = 0
         goto obj_next_stats
 
@@ -673,6 +683,8 @@ load_objects
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
         if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
+        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp = MSLIME_HP
+
 
 obj_next_stats
         next
@@ -1168,6 +1180,7 @@ cc_player_contact
         hp_change = object_contact[index]
         gosub player_knockback
 cc_next
+        if debug_time = 1 then BACKGRND = bg_color
         next
 cc_return
         return
@@ -1192,17 +1205,30 @@ change_to_spawner
 
 split_slime
         if debug_time = 1 then BACKGRND = $B9
+        ; replace slime mobj with mini slime
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then cc_next
+        ; if the slime can split, mini slime is moved to the left of the parent slime's pos
         object_Xpos[index] = object_Xpos[index] - 4
         temp1 = object_Xpos[index]
         temp2 = object_Ypos[index]
-        gosub find_new_object
+        ; initialize the new mini slime object
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
+        object_contact[obj_index] = SLIME_CONTACT
+        object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
+        object_damage[obj_index] = SLIME_DAMAGE
+        object_friction_hi[obj_index] = SLIME_FRICTION_HI
+        object_friction_lo[obj_index] = SLIME_FRICTION_LO
+        object_speed_hi[obj_index] = SLIME_SPEED_HI
+        object_speed_lo[obj_index] = SLIME_SPEED_LO
+        ; mini slime spawns to the right of the parent slime's pos
         object_Xpos[index] = temp1 + 12
         object_Ypos[index] = temp2
-        if debug_time = 1 then BACKGRND = bg_color
         goto cc_next
 
 sword_collision
@@ -1229,18 +1255,19 @@ pc_damage
         player_timer = INVULN_FRAMES
         goto damage_player_hp
 
+; takes a torch's X & Y position and determines the map tile under it, stores in peekX & Y
 get_torch_pos
         asm
         lda Xposition
         clc
-        adc #4
+        adc #4          ; forces X calculation onto correct map tile
         lsr
         lsr
         lsr
         sta peekX
         lda Yposition
         clc
-        adc #8
+        adc #8          ; forces Y calculation onto correct map tile
         lsr
         lsr
         lsr
@@ -1251,23 +1278,61 @@ end
 
 ; copies player movement variables to be manipulated by movement subroutines
 copy_player_props
-        Xposition  = player_Xpos
-        Xdirection = player_Xdir
-        Xvelocity  = player_Xvel
-        Yposition  = player_Ypos
-        Ydirection = player_Ydir
-        Yvelocity  = player_Yvel
-        vel_cap    = player_vel_cap
-        friction   = player_friction
-        return
+        asm
+        lda player_Xpos
+        sta Xposition
+        lda player_Xdir
+        sta Xdirection
+        lda player_Xvel_lo
+        sta Xvelocity_lo
+        lda player_Xvel_hi
+        sta Xvelocity_hi
+        lda player_Ypos
+        sta Yposition
+        lda player_Ydir
+        sta Ydirection
+        lda player_Yvel_lo
+        sta Yvelocity_lo
+        lda player_Yvel_hi
+        sta Yvelocity_hi
+        lda player_vel_cap
+        sta vel_cap
+        lda player_friction
+        sta friction
+        rts
+end
+;        Xposition  = player_Xpos
+;        Xdirection = player_Xdir
+;        Xvelocity  = player_Xvel
+;        Yposition  = player_Ypos
+;        Ydirection = player_Ydir
+;        Yvelocity  = player_Yvel
+;        vel_cap    = player_vel_cap
+;        friction   = player_friction
+;        return
 
 ; restores movement variables from subroutines back to player
 restore_player_props
-        player_Xpos = Xposition
-        player_Xvel = Xvelocity
-        player_Ypos = Yposition
-        player_Yvel = Yvelocity
-        return
+        asm
+        lda Xposition
+        sta player_Xpos
+        lda Xvelocity_lo
+        sta player_Xvel_lo
+        lda Xvelocity_hi
+        sta player_Xvel_hi
+        lda Yposition
+        sta player_Ypos
+        lda Yvelocity_lo
+        sta player_Yvel_lo
+        lda Yvelocity_hi
+        sta player_Yvel_hi
+        rts
+end
+;        player_Xpos = Xposition
+;        player_Xvel = Xvelocity
+;        player_Ypos = Yposition
+;        player_Yvel = Yvelocity
+;        return
 
 copy_object_props
         if debug_time then BACKGRND = $D6
@@ -1392,6 +1457,11 @@ decrease_hp
         temp_hp = temp_hp - hp_change
         return
 
+;==============================================================================
+; SUBROUTINE: FIND NEW OBJECT
+;------------------------------------------------------------------------------
+; Iterates through all 16 object slots and sets the index variable to a 0 slot
+;==============================================================================
 find_new_object
         asm
         ldx #0
@@ -1401,7 +1471,8 @@ new_obj_loop
         inx
         cpx #15
         bne new_obj_loop
-        ; no empty obj slot found
+        ; no empty obj slot found, routines can test if this is non-zero
+        stx no_empty_slot
         rts
 new_obj_found
         stx index
