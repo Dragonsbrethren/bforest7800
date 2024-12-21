@@ -1278,6 +1278,7 @@ end
 
 ; copies player movement variables to be manipulated by movement subroutines
 copy_player_props
+        if debug_time = 1 then BACKGRND = $E9
         asm
         lda player_Xpos
         sta Xposition
@@ -1299,8 +1300,9 @@ copy_player_props
         sta vel_cap
         lda player_friction
         sta friction
-        rts
 end
+        if debug_time = 1 then BACKGRND = bg_color
+        return
 ;        Xposition  = player_Xpos
 ;        Xdirection = player_Xdir
 ;        Xvelocity  = player_Xvel
@@ -1313,6 +1315,7 @@ end
 
 ; restores movement variables from subroutines back to player
 restore_player_props
+        if debug_time = 1 then BACKGRND = $E7
         asm
         lda Xposition
         sta player_Xpos
@@ -1326,8 +1329,9 @@ restore_player_props
         sta player_Yvel_lo
         lda Yvelocity_hi
         sta player_Yvel_hi
-        rts
 end
+        if debug_time = 1 then BACKGRND = bg_color
+        return
 ;        player_Xpos = Xposition
 ;        player_Xvel = Xvelocity
 ;        player_Ypos = Yposition
