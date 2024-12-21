@@ -844,6 +844,7 @@ object_handler
         gosub move_object
         gosub restore_object_props
 object_done
+        if debug_time = 1 then BACKGRND = bg_color
         next
         return
 
@@ -852,7 +853,7 @@ torch_tile_block
         if object_flags[index] then object_done
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 10
-        if debug_time = 1 then BACKGRND = bg_color
+        object_flags[index] = 1
         goto object_done
 
 spawn_object
