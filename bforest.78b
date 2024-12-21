@@ -9,8 +9,8 @@
         set multibutton on
         set multibuttonpause on
 
-        const debug_hud = 0
-        const debug_time = 0
+        const debug_hud = 1
+        const debug_time = 1
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -849,6 +849,7 @@ object_done
 
 torch_tile_block
         if debug_time = 1 then BACKGRND = $76
+        if object_flags[index] then object_done
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 10
         if debug_time = 1 then BACKGRND = bg_color
