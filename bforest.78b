@@ -835,9 +835,9 @@ object_handler
         if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_PRISM then object_done
         if object_type[index] = TYPE_SPAWNER then spawn_object
-        gosub copy_object_props
-        gosub decelerate_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
+         gosub copy_object_props
+        gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
@@ -1270,14 +1270,15 @@ pc_damage
 ; takes a torch's X & Y position and determines the map tile under it, stores in peekX & Y
 get_torch_pos
         asm
-        lda Xposition
+        ldx index
+        lda object_Xpos,x
         clc
         adc #4          ; forces X calculation onto correct map tile
         lsr
         lsr
         lsr
         sta peekX
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #8          ; forces Y calculation onto correct map tile
         lsr
