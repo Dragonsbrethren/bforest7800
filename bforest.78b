@@ -712,6 +712,7 @@ obj_torch_stats
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 0
+        object_flags = 0
         goto obj_next_stats
 
 load_map
@@ -1406,7 +1407,9 @@ end
 ;        frame      = object_frame[index]
 ;        flags      = object_flags[index]
         if debug_time then BACKGRND = bg_color
-        return
+        asm
+        rts
+end
 
 restore_object_props
         if debug_time then BACKGRND = $36
@@ -1436,7 +1439,9 @@ end
 ;        object_frame[index] = frame
 ;        object_flags[index] = flags
         if debug_time then BACKGRND = bg_color
-        return
+        asm
+        rts
+end
 
 
 damage_player_hp
