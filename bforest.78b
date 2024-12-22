@@ -712,7 +712,7 @@ obj_torch_stats
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 0
-        object_flags = 0
+        object_flags[obj_index] = 0
         goto obj_next_stats
 
 load_map
@@ -839,7 +839,7 @@ object_handler
         if object_type[index] = TYPE_PRISM then object_done
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
-         gosub copy_object_props
+        gosub copy_object_props
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
@@ -1181,6 +1181,7 @@ walkable_return
         return
 
 check_collisions
+        if debug_time = 1 then BACKGRND = $95
         for index = 0 to 15
         if !object_type[index] then cc_next
         if object_type[index] = TYPE_COIN then cc_pickup
