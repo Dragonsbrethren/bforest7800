@@ -1363,7 +1363,7 @@ copy_object_props
         ldx index
         lda object_Xpos,x
         sta Xposition
-        lda object_Xpos,x
+        lda object_Xdir,x
         sta Xdirection
         lda object_Xvel_lo,x
         sta Xvelocity_lo
