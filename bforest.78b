@@ -973,12 +973,14 @@ player_chant
 decelerate_object
         if !friction then decel_return
         if !Xvelocity then decel_Y
+        temp1 = Xvelocity
         Xvelocity = Xvelocity - friction
-        if Xvelocity < 0 then Xvelocity = 0
+        if temp1 < Xvelocity then Xvelocity = 0
 decel_Y
         if !Yvelocity then decel_return
+        temp1 = Yvelocity
         Yvelocity = Yvelocity - friction
-        if Yvelocity < 0 then Yvelocity = 0
+        if temp1 < Yvelocity then Yvelocity = 0
 decel_return
         return
 
