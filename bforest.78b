@@ -1492,6 +1492,7 @@ decrease_hp
 find_new_object
         asm
         ldx #0
+        stx no_empty_slot
 new_obj_loop
         lda object_type,x
         beq new_obj_found
