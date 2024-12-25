@@ -91,6 +91,7 @@
         const TYPE_PRISM   =  5
         const TYPE_SLIME   =  6
         const TYPE_MSLIME  =  7
+        const TYPE_RAVEN   =  8
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -394,7 +395,7 @@ plot_forest_room_4
         return
 
         data forest_room_4_obj
-        TYPE_SLIME, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
+        TYPE_RAVEN, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -634,6 +635,92 @@ obj_slime_stats
         goto obj_next_stats
 
 ;==============================================================================
+; RAVEN AI
+;------------------------------------------------------------------------------
+; Flies without testing walkability and perches on trees
+;==============================================================================
+raven_ai
+        if debug_time = 1 then BACKGRND = $A0
+        flags{2} = 1
+        temp1 = 0
+        temp2 = 0
+        ; flags{7} = perched
+        if !flags{7} then goto raven_change_pos
+
+test_dist_to_player
+        object_timer[index] = RAVEN_FLIGHT_TIME
+        if Xposition > player_Xpos then wake_raven_right
+        if Xposition < player_Xpos then wake_raven_left
+        if Yposition > player_Ypos then wake_raven_down
+        if Yposition < player_Ypos then wake_raven_up
+        ; raven and player occupy same space, handle this
+
+wake_raven_right
+        temp1 = Xposition - player_Xpos
+        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_left
+        temp1 = Xposition + player_Xpos
+        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_up
+        temp2 = Yposition + player_Ypos
+        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_down
+        temp2 = Yposition - player_Ypos
+        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+
+raven_change_pos
+        ; reuse the player position caculation in follow player
+        gosub followplayer
+        ; skew the movement slightly
+        if rand > 128 then Xvelocity_lo = Xvelocity_lo + 20 : raven_perch
+
+raven_perch
+        if object_timer[index] > 0 then raven_return
+        temp1 = object_timer[index]
+        object_timer[index] = object_timer[index] - 1
+        if temp1 < object_timer[index] then object_timer[index] = 0
+        gosub test_walkable
+        if !walkable then flags{7} = 1
+
+
+raven_return
+        if debug_time = 1 then BACKGRND = bg_color
+        return
+
+obj_raven_stats
+        const RAVEN_CHASE_DIST = 50
+        const RAVEN_FLIGHT_TIME = 10
+        const RAVEN_DROP_RATE = 128
+        const RAVEN_HP = 4
+        const RAVEN_CONTACT = 4
+        const RAVEN_VEL_CAP_HI = 2
+        const RAVEN_VEL_CAP_LO = 0
+        const RAVEN_DAMAGE = 4
+        const RAVEN_FRICTION_HI = 0
+        const RAVEN_FRICTION_LO = 0
+        const RAVEN_SPEED_HI = 1
+        const RAVEN_SPEED_LO = 50
+        object_hp[obj_index] = RAVEN_HP
+        object_contact[obj_index] = RAVEN_CONTACT
+        object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
+        object_damage[obj_index] = RAVEN_DAMAGE
+        object_friction_hi[obj_index] = RAVEN_FRICTION_HI
+        object_friction_lo[obj_index] = RAVEN_FRICTION_LO
+        object_speed_hi[obj_index] = RAVEN_SPEED_HI
+        object_speed_lo[obj_index] = RAVEN_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
 ; BANK 8
 ;------------------------------------------------------------------------------
 ; Permanently loaded bank. Contains sprites and code used with every tileset
@@ -754,6 +841,7 @@ field_handler
         if object_type[index] = TYPE_PRISM then plot_prism
         if object_type[index] = TYPE_SLIME then plot_slime
         if object_type[index] = TYPE_MSLIME then plot_minislime
+        if object_type[index] = TYPE_RAVEN then plot_raven
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -789,6 +877,10 @@ plot_slime
 
 plot_minislime
         PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_raven
+        PLOTSPRITE wolf0 5 Xposition Yposition frame
         goto plot_next
 
 
@@ -844,6 +936,7 @@ object_handler
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
+        if object_type[index] = TYPE_RAVEN then gosub raven_ai
         gosub move_object
         gosub restore_object_props
 object_done
@@ -1007,6 +1100,7 @@ move_object
         goto move_return
 
 move_test_up
+        if flags{2} then move_up
 ;        peekX = (Xposition + 2) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = ((Yposition + 8) - Yvelocity_hi) / TILE_HEIGHT
@@ -1042,10 +1136,13 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if walkable then Yposition = Yposition - Yvelocity_hi
+        if !walkable then return
+move_up
+        Yposition = Yposition - Yvelocity_hi
         return
 
 move_test_down
+        if flags{2} then move_down
         ;peekX = (Xposition + 2) / TILE_WIDTH
         ;peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
         asm
@@ -1080,10 +1177,13 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if walkable then Yposition = Yposition + Yvelocity_hi
+        if !walkable then return
+move_down
+        Yposition = Yposition + Yvelocity_hi
         return
 
 move_test_left
+        if flags{2} then move_left
 ;        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
@@ -1120,10 +1220,13 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if walkable then Xposition = Xposition - Xvelocity_hi
+        if !walkable then return
+move_left
+        Xposition = Xposition - Xvelocity_hi
         return
 
 move_test_right
+        if flags{2} then move_right
 ;        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
@@ -1160,7 +1263,9 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if walkable then Xposition = Xposition + Xvelocity_hi
+        if !walkable then return
+move_right
+        Xposition = Xposition + Xvelocity_hi
         return
         
 move_return
