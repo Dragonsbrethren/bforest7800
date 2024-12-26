@@ -9,8 +9,8 @@
         set multibutton on
         set multibuttonpause on
 
-        const debug_hud = 1
-        const debug_time = 1
+        const debug_hud = 0
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -644,11 +644,11 @@ raven_ai
         flags{2} = 1
         temp1 = 0
         temp2 = 0
-        ; flags{7} = perched
-        if !flags{7} then goto raven_change_pos
+        ; flags{7} = not perched
+        if flags{7} then goto raven_change_pos
 
 test_dist_to_player
-        object_timer[index] = RAVEN_FLIGHT_TIME
+
         if Xposition > player_Xpos then wake_raven_right
         if Xposition < player_Xpos then wake_raven_left
         if Yposition > player_Ypos then wake_raven_down
@@ -677,19 +677,20 @@ wake_raven_down
 
 
 raven_change_pos
+        flags{7} = 1
+        if !object_timer[index] then object_timer[index] = RAVEN_FLIGHT_TIME
         ; reuse the player position caculation in follow player
         gosub followplayer
         ; skew the movement slightly
         if rand > 128 then Xvelocity_lo = Xvelocity_lo + 20 : raven_perch
 
 raven_perch
-        if object_timer[index] > 0 then raven_return
         temp1 = object_timer[index]
         object_timer[index] = object_timer[index] - 1
         if temp1 < object_timer[index] then object_timer[index] = 0
+        if object_timer[index] > 0 then raven_return
         gosub test_walkable
-        if !walkable then flags{7} = 1
-
+        if !walkable then flags{7} = 0
 
 raven_return
         if debug_time = 1 then BACKGRND = bg_color
@@ -701,13 +702,13 @@ obj_raven_stats
         const RAVEN_DROP_RATE = 128
         const RAVEN_HP = 4
         const RAVEN_CONTACT = 4
-        const RAVEN_VEL_CAP_HI = 2
+        const RAVEN_VEL_CAP_HI = 4
         const RAVEN_VEL_CAP_LO = 0
         const RAVEN_DAMAGE = 4
         const RAVEN_FRICTION_HI = 0
         const RAVEN_FRICTION_LO = 0
-        const RAVEN_SPEED_HI = 1
-        const RAVEN_SPEED_LO = 50
+        const RAVEN_SPEED_HI = 2
+        const RAVEN_SPEED_LO = 0
         object_hp[obj_index] = RAVEN_HP
         object_contact[obj_index] = RAVEN_CONTACT
         object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
