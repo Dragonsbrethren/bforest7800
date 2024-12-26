@@ -6,11 +6,11 @@
         set screenheight 224
         set doublewide on
         set collisionwrap off
-        set multibutton on
-        set multibuttonpause on
+;        set multibutton on
+;        set multibuttonpause on
 
-        const debug_hud = 0
-        const debug_time = 0
+        const debug_hud = 1
+        const debug_time = 1
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
