@@ -105,6 +105,8 @@
         autodim byte pointer_hi
         autodim byte Xposition
         autodim byte Yposition
+        autodim byte Xdestination
+        autodim byte Ydestination
         autodim byte Xdirection
         autodim byte Ydirection
         autodim 8.8  Xvelocity
@@ -112,8 +114,6 @@
         autodim 8.8  move_speed
         autodim 8.8  vel_cap
         autodim 8.8  friction
-        autodim byte height
-        autodim byte width
         autodim byte temp_hp
         autodim byte hp_change
         autodim byte bg_color
@@ -316,7 +316,13 @@ title_handler
         incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
         incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
         incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
-         
+        incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
+
         incmapfile tiled/forest.tmx
         incmapfile tiled/forest_room_1.tmx
         incmapfile tiled/forest_room_2.tmx
@@ -572,7 +578,8 @@ wolf_anim
 
 wolf_chase
         flags{7} = 1
-        gosub followplayer
+        gosub get_player_pos
+        gosub go_to_destination
         goto wolf_anim
 
 obj_wolf_stats
@@ -607,7 +614,8 @@ obj_wolf_stats
 ; Command?
 ;==============================================================================
 slime_ai
-        gosub followplayer
+        gosub get_player_pos
+        gosub go_to_destination
         return
 
 obj_slime_stats
@@ -646,6 +654,7 @@ raven_ai
         temp2 = 0
         ; flags{7} = not perched
         if flags{7} then goto raven_change_pos
+        frame = 0
 
 test_dist_to_player
 
@@ -678,11 +687,14 @@ wake_raven_down
 
 raven_change_pos
         flags{7} = 1
+        frame = 1
+        if animation_frame then frame = frame + 2
         if !object_timer[index] then object_timer[index] = RAVEN_FLIGHT_TIME
-        ; reuse the player position caculation in follow player
-        gosub followplayer
-        ; skew the movement slightly
-        if rand > 128 then Xvelocity_lo = Xvelocity_lo + 20 : raven_perch
+        if flags{3} then raven_move
+        if rand > 128 then gosub swoop_Y : raven_move
+        gosub swoop_X
+raven_move
+        gosub go_to_destination
 
 raven_perch
         temp1 = object_timer[index]
@@ -693,6 +705,7 @@ raven_perch
         if !walkable then flags{7} = 0
 
 raven_return
+        if Xposition > player_Xpos then frame = frame + 1
         if debug_time = 1 then BACKGRND = bg_color
         return
 
@@ -702,12 +715,12 @@ obj_raven_stats
         const RAVEN_DROP_RATE = 128
         const RAVEN_HP = 4
         const RAVEN_CONTACT = 4
-        const RAVEN_VEL_CAP_HI = 4
+        const RAVEN_VEL_CAP_HI = 2
         const RAVEN_VEL_CAP_LO = 0
         const RAVEN_DAMAGE = 4
         const RAVEN_FRICTION_HI = 0
         const RAVEN_FRICTION_LO = 0
-        const RAVEN_SPEED_HI = 2
+        const RAVEN_SPEED_HI = 1
         const RAVEN_SPEED_LO = 0
         object_hp[obj_index] = RAVEN_HP
         object_contact[obj_index] = RAVEN_CONTACT
@@ -881,7 +894,7 @@ plot_minislime
         goto plot_next
 
 plot_raven
-        PLOTSPRITE wolf0 5 Xposition Yposition frame
+        PLOTSPRITE raven0 5 Xposition Yposition frame
         goto plot_next
 
 
@@ -923,6 +936,48 @@ followplayer
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
         if Yposition > player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
         if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
+        return
+
+get_player_pos
+        Xdestination = player_Xpos : Ydestination = player_Ypos
+        return
+
+get_player_dir
+        Xdirection = player_Xdir
+        Ydirection = player_Ydir
+        return
+
+go_to_destination
+        if Xposition > Xdestination then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
+        if Xposition < Xdestination then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
+        if Yposition > Ydestination then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
+        if Yposition < Ydestination then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
+        if Xposition = Xdestination then flags{3} = 0
+        if Yposition = Ydestination then flags{3} = 0
+        return
+
+swoop_X
+        gosub get_player_dir
+        gosub get_player_pos
+        if Ydirection = DIR_DOWN then Ydestination = Ydestination + 32
+        Ydestination = Ydestination - 32
+swoop_X_vel
+        Xvelocity = Xvelocity + move_speed
+        Yvelocity = Yvelocity + move_speed
+        flags{3} = 1
+        return
+
+swoop_Y
+        gosub get_player_dir
+        gosub get_player_pos
+        if Xdirection = DIR_LEFT then Xdestination = Xdestination - 16 : swoop_Y_vel
+        Xdestination = Xdestination + 16
+swoop_Y_vel
+        temp3 = move_speed / 2
+        temp4 = move_speed + move_speed
+        Xvelocity = Xvelocity + temp3
+        Yvelocity = Yvelocity + temp4
+        flags{3} = 1
         return
 
 object_handler
@@ -1369,7 +1424,7 @@ sword_damage
 
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
-        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, width, height) then return
+        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
         if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
         if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
         if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
