@@ -9,8 +9,8 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
-        const debug_time = 1
+        const debug_hud = 0
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -655,9 +655,10 @@ raven_ai
         ; flags{7} = not perched
         if flags{7} then goto raven_change_pos
         frame = 0
+        Xvelocity = 0.0
+        Yvelocity = 0.0
 
 test_dist_to_player
-
         if Xposition > player_Xpos then wake_raven_right
         if Xposition < player_Xpos then wake_raven_left
         if Yposition > player_Ypos then wake_raven_down
@@ -796,7 +797,8 @@ load_objects
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
         if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
-        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp = MSLIME_HP
+        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP
+        if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
 
 
 obj_next_stats
