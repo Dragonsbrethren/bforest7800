@@ -25,10 +25,10 @@
 ;------------------------------------------------------------------------------
 ; MOVEMENT CONSTANTS
 ;------------------------------------------------------------------------------
-        const DIR_LEFT = 3
-        const DIR_RIGHT = 2
-        const DIR_UP = 1
-        const DIR_DOWN = 0
+        const DIR_UP    = 1
+        const DIR_DOWN  = 2
+        const DIR_LEFT  = 3
+        const DIR_RIGHT = 4
 
         const EXIT_NONE  = 0
         const EXIT_NORTH = 1
@@ -1049,9 +1049,9 @@ spawn_nothing
 
 player_handler
         dec player_damage = $1
-        gosub copy_player_props
-        gosub decelerate_object
-        gosub restore_player_props
+;        gosub copy_player_props
+        gosub decelerate_player
+;        gosub restore_player_props
 
 handle_input_field
         if debug_time then BACKGRND = $70
@@ -1121,19 +1121,92 @@ player_chant
         if player_timer > 4 then player_state = STATE_CHANT
         return
 
+decelerate_player
+        asm
+        lda player_friction
+        beq decel_preturn
+        lda player_Xvel
+        beq decel_pY
+        pha
+;        lda player_Xvel_lo
+        sec
+;        sbc player_friction_lo
+;        sta player_Xvel_lo
+;        lda player_Xvel_hi
+        sbc player_friction_hi
+        sta player_Xvel_hi
+        pla
+        cmp player_Xvel_hi
+        bcs decel_pY
+        lda #0
+        sta player_Xvel_lo
+        sta player_Xvel_hi
+
+decel_pY
+        lda player_Yvel_hi
+        beq decel_preturn
+        pha
+        lda player_Yvel_lo
+        sec
+        sbc player_friction_lo
+        sta player_Yvel_lo
+        lda player_Yvel_hi
+        sbc player_friction_hi
+        sta player_Yvel_hi
+        pla
+        cmp player_Yvel_hi
+        bcs decel_return
+        lda #0
+        sta player_Yvel_lo
+        sta player_Yvel_hi
+
+decel_preturn
+        rts
+end
+
 decelerate_object
-        if !friction then decel_return
-        if !Xvelocity then decel_Y
-        temp1 = Xvelocity
-        Xvelocity = Xvelocity - friction
-        if temp1 < Xvelocity then Xvelocity = 0
+        asm
+        ldx index
+        lda object_friction,x
+        beq decel_return
+        lda object_Xvel,x
+        beq decel_Y
+        pha
+        lda object_Xvel_lo,x
+        sec
+        sbc object_friction_lo,x
+        sta object_Xvel_lo,x
+        lda object_Xvel_hi,x
+        sbc object_friction_hi,x
+        sta object_Xvel_hi,x
+        pla
+        cmp object_Xvel_hi,x
+        bcs decel_Y
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Xvel_hi,x
+
 decel_Y
-        if !Yvelocity then decel_return
-        temp1 = Yvelocity
-        Yvelocity = Yvelocity - friction
-        if temp1 < Yvelocity then Yvelocity = 0
+        lda object_Yvel_hi,x
+        beq decel_return
+        pha
+        lda object_Yvel_lo,x
+        sec
+        sbc object_friction_lo,x
+        sta object_Yvel_lo,x
+        lda object_Yvel_hi,x
+        sbc object_friction_hi,x
+        sta object_Yvel_hi,x
+        pla
+        cmp object_Yvel_hi,x
+        bcs decel_return
+        lda #0
+        sta object_Yvel_lo,x
+        sta object_Yvel_hi,x
+
 decel_return
-        return
+        rts
+end
 
 ;==============================================================================
 ; SUBROUTINE: MOVE_OBJECT
