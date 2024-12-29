@@ -851,8 +851,8 @@ plot_next
         next
         ; Plot the player, their shield, and sword if attacking
         if player_state = STATE_CHANT then plotsprite link 0 player_Xpos player_Ypos 0 : goto plot_hud
-        plotsprite heroine0 0 player_Xpos player_Ypos player_frame
         if player_state = STATE_ATTACK then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
+        plotsprite heroine0 0 player_Xpos player_Ypos player_frame
         ; TODO: Multiple shield frames depending on direction/state
         plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
         if debug_time then BACKGRND = bg_color
