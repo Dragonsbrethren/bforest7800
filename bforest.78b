@@ -1084,11 +1084,6 @@ test_joy_done
 
 player_move_done
 
-        if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
-        if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
-        if player_facing = DIR_LEFT then sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
-        sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
-sword_done
         shield_Xpos = player_Xpos + SHIELD_OFFSET_X
         shield_Ypos = player_Ypos + SHIELD_OFFSET_Y
 input_frame_done
@@ -1111,6 +1106,11 @@ open_menu
 player_attack
         if joy0fire1_held then player_chant
         joy0fire1_held = 1
+        if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
+        if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
+        if player_facing = DIR_LEFT then sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
+        sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
+sword_done
         if player_facing = DIR_LEFT  then player_frame = FRAME_ATK_L : goto player_attack_return
         if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : goto player_attack_return
         if player_facing = DIR_UP    then player_frame = FRAME_ATK_U : goto player_attack_return
