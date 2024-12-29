@@ -120,6 +120,7 @@
         autodim byte hp_change
         autodim byte bg_color
         autodim byte animation_timer
+        autodim byte retract_counter
 
 ;------------------------------------------------------------------------------
 ; PLAYER
@@ -1050,7 +1051,9 @@ handle_input_field
         if player_state = STATE_ATTACK then test_joy_done
 no_player_timer
         player_flags{0} = 0
+        if player_state = STATE_ATTACK then retract_sword
         joy0fire1_held = 0
+        retract_counter = 0
         if joy0fire0 then goto player_attack
         player_state = STATE_STAND
         if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
@@ -1109,6 +1112,17 @@ player_attack_return
         player_timer = ATTACK_FRAMES
         if debug_time then BACKGRND = bg_color
         return
+
+retract_sword
+        if player_facing = DIR_DOWN then sword_Ypos = sword_Ypos - 4 : retract_step_done
+        if player_facing = DIR_UP   then sword_Ypos = sword_Ypos + 4 : retract_step_done
+        if player_facing = DIR_LEFT then sword_Xpos = sword_Xpos + 2 : retract_step_done
+                                         sword_Xpos = sword_Xpos - 2
+
+retract_step_done
+        retract_counter = retract_counter + 1
+        if retract_counter = 3 then player_state = STATE_STAND
+        goto test_joy_done
 
 player_chant
         player_timer = player_timer + 1
