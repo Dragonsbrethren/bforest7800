@@ -9,8 +9,8 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
-        const debug_time = 0
+        const debug_hud = 1
+        const debug_time = 1
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -66,6 +66,8 @@
         const FRAME_ATK_U = 9
         const FRAME_ATK_L = 10
         const FRAME_ATK_R = 11
+
+        const ATTACK_FRAMES = 8
 
 ;------------------------------------------------------------------------------
 ; MAP DATA
@@ -838,7 +840,6 @@ field_handler
         gosub player_handler
         gosub object_handler
         gosub check_collisions
-        player_timer = player_timer - 1 : if player_timer < 0 then player_timer = 0
 
         ; Currently only two frames of animation supported. Needs to be changed if more than 2
         animation_frame = 0
@@ -1058,6 +1059,7 @@ handle_input_field
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
         if player_state = STATE_KNOCKBACK then test_joy_done
+        if player_state = STATE_ATTACK then test_joy_done
 no_player_timer
         player_flags{0} = 0
         joy0fire1_held = 0
@@ -1075,9 +1077,12 @@ frames_done
 
 test_joy_done
         if joy0fire1 then goto open_menu
+        if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         gosub copy_player_props
         gosub move_object
         gosub restore_player_props
+
+player_move_done
 
         if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
         if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
@@ -1113,6 +1118,7 @@ player_attack
 
 player_attack_return
         player_state = STATE_ATTACK
+        player_timer = ATTACK_FRAMES
         if debug_time then BACKGRND = bg_color
         return
 
