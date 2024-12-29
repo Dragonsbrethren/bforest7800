@@ -415,22 +415,10 @@ plot_forest_room_5
         return
 
         data forest_room_5_obj
-        TYPE_SLIME, $30, $30,
-        TYPE_SLIME, $69, $20,
-        TYPE_SLIME, $39, $20,
-        TYPE_SLIME, $5E, $AF,
-        TYPE_SLIME, $42, $AF,
-        TYPE_SLIME, $70, $30,
-        TYPE_SLIME, $40, $67,
-        TYPE_SLIME, $80, $90,
-        TYPE_SLIME, $90, $88,
-        TYPE_SLIME, $40, $70,
-        TYPE_SLIME, $30, $20,
-        TYPE_SLIME, $80, $40,
-        TYPE_SLIME, $b0, $c0,
-        TYPE_SLIME, $77, $55,
-        TYPE_SLIME, $44, $22,
-        TYPE_SLIME, $33, $66,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
 plot_forest_room_6
