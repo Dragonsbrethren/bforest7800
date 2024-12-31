@@ -9,8 +9,8 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
-        const debug_time = 1
+        const debug_hud = 0
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -979,12 +979,12 @@ object_handler
         if object_type[index] = TYPE_PRISM then object_done
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
-        gosub copy_object_props
+        gosub copy_object_props 
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
-        if object_type[index] = TYPE_RAVEN then gosub raven_ai
+        if object_type[index] = TYPE_RAVEN then gosub raven_ai     
         gosub move_object
         gosub restore_object_props
 object_done
@@ -1052,9 +1052,8 @@ handle_input_field
 no_player_timer
         player_flags{0} = 0
         if player_state = STATE_ATTACK then retract_sword
-        joy0fire1_held = 0
-        retract_counter = 0
         if joy0fire0 then goto player_attack
+        retract_counter = 0
         player_state = STATE_STAND
         if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
         if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
@@ -1095,8 +1094,7 @@ open_menu
         return
 
 player_attack
-        if joy0fire1_held then player_chant
-        joy0fire1_held = 1
+        if retract_counter then retract_sword
         if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
         if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
         if player_facing = DIR_LEFT then sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
@@ -1114,20 +1112,22 @@ player_attack_return
         return
 
 retract_sword
-        if player_facing = DIR_DOWN then sword_Ypos = sword_Ypos - 4 : retract_step_done
-        if player_facing = DIR_UP   then sword_Ypos = sword_Ypos + 4 : retract_step_done
-        if player_facing = DIR_LEFT then sword_Xpos = sword_Xpos + 2 : retract_step_done
-                                         sword_Xpos = sword_Xpos - 2
+        if player_facing = DIR_DOWN  then sword_Ypos = sword_Ypos - 4 : retract_step_done
+        if player_facing = DIR_UP    then sword_Ypos = sword_Ypos + 4 : retract_step_done
+        if player_facing = DIR_LEFT  then sword_Xpos = sword_Xpos + 2 : retract_step_done
+        if player_facing = DIR_RIGHT then sword_Xpos = sword_Xpos - 2
 
 retract_step_done
         retract_counter = retract_counter + 1
-        if retract_counter = 3 then player_state = STATE_STAND
-        goto test_joy_done
+        if !retract_counter = 3 then test_joy_done
+
+retract_stand
+        if !joy0fire0 then player_state = STATE_STAND : goto test_joy_done
+        ; retract finished and button still held - code runs into player_chant
 
 player_chant
-        player_timer = player_timer + 1
-        if player_timer > 4 then player_state = STATE_CHANT
-        return
+        player_state = STATE_CHANT
+        goto test_joy_done
 
 decelerate_player
         asm
@@ -1432,7 +1432,8 @@ check_collisions
         if !object_type[index] then cc_next
         if object_type[index] = TYPE_COIN then cc_pickup
         if object_type[index] = TYPE_PRISM then cc_pickup
-        gosub copy_object_props
+        Xposition = object_Xpos[index]
+        Yposition = object_Ypos[index]
         hp_change = player_damage
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
