@@ -70,6 +70,7 @@
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
+        const CHANT_COLOR = $60
 
 ;------------------------------------------------------------------------------
 ; MAP DATA
@@ -1052,7 +1053,7 @@ handle_input_field
         player_timer = player_timer - 1
         if player_state = STATE_KNOCKBACK then test_joy_done
         if player_state = STATE_ATTACK then test_joy_done
-        if player_state = STATE_CHANT then test_joy_done
+        if player_state = STATE_CHANT then chant_handler
 no_player_timer
         player_flags{0} = 0
         if player_state = STATE_ATTACK then retract_sword
@@ -1816,7 +1817,19 @@ bottomscreenroutine
         WSYNC=1
         BACKGRND=$00
         if game_state = STATE_TITLE then set_title_bottom_pal
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then BACKGRND=$60
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then chant_colors
+        P4C1 = $00
+        P5C1 = $00
+        P6C1 = $00
+        P7C1 = $00
+        return
+
+chant_colors
+        BACKGRND = CHANT_COLOR
+        P4C1 = CHANT_COLOR
+        P5C1 = CHANT_COLOR
+        P6C1 = CHANT_COLOR
+        P7C1 = CHANT_COLOR
         return
 
 set_title_bottom_pal
