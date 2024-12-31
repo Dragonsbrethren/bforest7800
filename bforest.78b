@@ -52,11 +52,12 @@
         const SHIELD_OFFSET_X = 8
         const SHIELD_OFFSET_Y = 7
 
-        const STATE_STAND     = 0
-        const STATE_MOVING    = 1
-        const STATE_ATTACK    = 2
-        const STATE_CHANT     = 3
-        const STATE_KNOCKBACK = 4
+        const STATE_STAND       = 0
+        const STATE_MOVING      = 1
+        const STATE_ATTACK      = 2
+        const STATE_CHANT_START = 3
+        const STATE_CHANT       = 4
+        const STATE_KNOCKBACK   = 5
 
         const FRAME_UP    = 2
         const FRAME_DOWN  = 0
@@ -68,6 +69,7 @@
         const FRAME_ATK_R = 11
 
         const ATTACK_FRAMES = 8
+        const CHANT_START_TIME = 12
 
 ;------------------------------------------------------------------------------
 ; MAP DATA
@@ -180,6 +182,7 @@
         autodim byte mp_seg_4
         autodim byte mp_seg_5
         autodim byte mp_seg_6
+        autodim byte chant_timer
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -1049,12 +1052,17 @@ handle_input_field
         player_timer = player_timer - 1
         if player_state = STATE_KNOCKBACK then test_joy_done
         if player_state = STATE_ATTACK then test_joy_done
+        if player_state = STATE_CHANT then test_joy_done
 no_player_timer
         player_flags{0} = 0
         if player_state = STATE_ATTACK then retract_sword
         if joy0fire0 then goto player_attack
-        retract_counter = 0
-        player_state = STATE_STAND
+        asm
+        lda #0
+        sta retract_counter
+        sta chant_timer
+        sta player_state        ; STATE_STAND
+end
         if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
         if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
         if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
@@ -1123,10 +1131,28 @@ retract_step_done
 
 retract_stand
         if !joy0fire0 then player_state = STATE_STAND : goto test_joy_done
-        ; retract finished and button still held - code runs into player_chant
+        ; retract finished and button still held - code runs into player_chant_start
 
-player_chant
+player_chant_start
+        if chant_timer > CHANT_START_TIME then set_state_chant
+        player_state = STATE_CHANT_START
+        asm
+        inc chant_timer
+end
+        if player_facing = DIR_UP    then player_frame = FRAME_UP
+        if player_facing = DIR_DOWN  then player_frame = FRAME_DOWN
+        if player_facing = DIR_LEFT  then player_frame = FRAME_LEFT
+        if player_facing = DIR_RIGHT then player_frame = FRAME_RIGHT
+        goto test_joy_done
+
+set_state_chant
+        ; set player state to chant and facing direction to down
+        ; facing down when coming out of chant just feels more natural
         player_state = STATE_CHANT
+        player_facing = DIR_DOWN
+
+chant_handler
+        ; TODO: EVERYTHING!!!
         goto test_joy_done
 
 decelerate_player
