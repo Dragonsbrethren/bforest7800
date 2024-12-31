@@ -85,6 +85,7 @@
         const T_HILLS  = 4
 
         const ROOMS_PER_ROW = 7
+        const MAX_MAP_OBJECTS = 13
 
 ;==============================================================================
 ; OBJECT DATA
@@ -779,7 +780,7 @@ obj_raven_stats
 ;==============================================================================
 load_objects
         temp1 = 0
-        for obj_index = 0 to 15
+        for obj_index = 0 to MAX_MAP_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         object_Xpos[obj_index] = pointer[[temp1]]
@@ -787,7 +788,7 @@ load_objects
         object_Ypos[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         next
-        for obj_index = 0 to 15
+        for obj_index = 0 to MAX_MAP_OBJECTS
         if !object_type[obj_index] then next_obj_stats
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
@@ -1771,7 +1772,7 @@ new_obj_loop
         lda object_type,x
         beq new_obj_found
         inx
-        cpx #15
+        cpx #MAX_MAP_OBJECTS
         bne new_obj_loop
         ; no empty obj slot found, routines can test if this is non-zero
         stx no_empty_slot
