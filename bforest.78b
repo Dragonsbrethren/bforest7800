@@ -185,6 +185,7 @@
         autodim byte mp_seg_5
         autodim byte mp_seg_6
         autodim byte chant_timer
+        autodim byte flash_color
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -1818,19 +1819,12 @@ bottomscreenroutine
         WSYNC=1
         BACKGRND=$00
         if game_state = STATE_TITLE then set_title_bottom_pal
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then chant_colors
-        P4C1 = $00
-        P5C1 = $00
-        P6C1 = $00
-        P7C1 = $00
-        return
-
-chant_colors
-        BACKGRND = CHANT_COLOR
-        P4C1 = CHANT_COLOR
-        P5C1 = CHANT_COLOR
-        P6C1 = CHANT_COLOR
-        P7C1 = CHANT_COLOR
+        flash_color = $00
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
+        P4C1 = flash_color
+        P5C1 = flash_color
+        P6C1 = flash_color
+        P7C1 = flash_color
         return
 
 set_title_bottom_pal
