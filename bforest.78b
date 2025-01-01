@@ -187,6 +187,7 @@
         autodim byte mp_seg_4
         autodim byte mp_seg_5
         autodim byte mp_seg_6
+        autodim byte mp_change
         autodim byte chant_timer
         autodim byte flash_color
         autodim byte player_exiting_chant
@@ -252,6 +253,9 @@
 
         dec player_max_hp = $48
         dec player_hp = $48
+
+        dec player_mp = $48
+        dec player_max_mp = $48
 
         dec hp_seg_1 = 8
         dec hp_seg_2 = 8
@@ -1030,8 +1034,6 @@ spawns_slime
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
-        player_mp = 0
-        dec player_max_mp = 48
         if player_mp = player_max_mp then _spawn_coin
 
 _spawn_mana
@@ -1196,9 +1198,13 @@ chant_done
 chant_done_no_hold
         player_state = STATE_STAND
         chant_timer = 0
+        gosub decrease_player_mp
         goto test_joy_done
 
 summon_test_wolf
+        dec mp_change = $20
+        gosub test_spell_cost
+        if !mp_change then test_joy_done ; allow player to try a different input
         object_type[14] = TYPE_WOLF
         object_Xpos[14] = player_Xpos
         object_Ypos[14] = player_Ypos + 18
@@ -1294,10 +1300,13 @@ end
 ;==============================================================================
 ; SUBROUTINE: MOVE_OBJECT
 ;------------------------------------------------------------------------------
-; Moves an object based on the non-fractional component of their velocities
-; Tests against an array of walkable tiles for current tileset before moving
-; KISS: Moving objects are assumed to fit player sprite proportions (12x16)
-; TODO: Replace bounding box magic numbers with variables based on object
+; Moves an object based on the non-fractional component of their velocities.
+; Tests against an array of walkable tiles for current tileset before moving.
+;
+; All move test labels add 8 to Yposistion to allow objects to overlap
+; unwalkable tiles that are above them. Objects are assumed to be 12x16
+; and magic numbers are used throughout the code to improve the feel of
+; player collisions with map tiles at the expense of other sprite proportions
 ;==============================================================================
 move_object
         if debug_time then BACKGRND = $96
@@ -1315,9 +1324,6 @@ move_object
 
 move_test_up
         if flags{2} then move_up
-;        peekX = (Xposition + 2) / TILE_WIDTH
-        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
-;        peekY = ((Yposition + 8) - Yvelocity_hi) / TILE_HEIGHT
         asm
         lda Xposition
         clc
@@ -1643,15 +1649,6 @@ copy_player_props
 end
         if debug_time = 1 then BACKGRND = bg_color
         return
-;        Xposition  = player_Xpos
-;        Xdirection = player_Xdir
-;        Xvelocity  = player_Xvel
-;        Yposition  = player_Ypos
-;        Ydirection = player_Ydir
-;        Yvelocity  = player_Yvel
-;        vel_cap    = player_vel_cap
-;        friction   = player_friction
-;        return
 
 ; restores movement variables from subroutines back to player
 restore_player_props
@@ -1672,11 +1669,6 @@ restore_player_props
 end
         if debug_time = 1 then BACKGRND = bg_color
         return
-;        player_Xpos = Xposition
-;        player_Xvel = Xvelocity
-;        player_Ypos = Yposition
-;        player_Yvel = Yvelocity
-;        return
 
 copy_object_props
         if debug_time then BACKGRND = $D6
@@ -1715,19 +1707,6 @@ copy_object_props
         lda object_flags,x
         sta flags
 end
-;        Xposition  = object_Xpos[index]
-;        Xdirection = object_Xdir[index]
-;        Xvelocity  = object_Xvel[index]
-;        Yposition  = object_Ypos[index]
-;        Ydirection = object_Ydir[index]
-;        Yvelocity  = object_Yvel[index]
-;        move_speed = object_speed[index]
-;        vel_cap    = object_vel_cap[index]
-;        friction   = object_friction[index]
-;        width      = object_width[index]
-;        height     = object_height[index]
-;        frame      = object_frame[index]
-;        flags      = object_flags[index]
         if debug_time then BACKGRND = bg_color
         asm
         rts
@@ -1756,12 +1735,6 @@ restore_object_props
         lda #0
         sta flags
 end
-;        object_Xpos[index]  = Xposition
-;        object_Xvel[index]  = Xvelocity
-;        object_Ypos[index]  = Yposition
-;        object_Yvel[index]  = Yvelocity
-;        object_frame[index] = frame
-;        object_flags[index] = flags
         if debug_time then BACKGRND = bg_color
         asm
         rts
@@ -1797,6 +1770,43 @@ damage_player_hp
         if hp_seg_3 > 8 then hp_seg_3 = 8
         if hp_seg_2 > 8 then hp_seg_2 = 8
         if hp_seg_1 > 8 then hp_seg_1 = 8
+        return
+
+decrease_player_mp
+        ; TODO: This currently can't scale, only works with max HP 48...
+        dec temp1 = player_mp        ; temp1 used to detect underflow
+        dec player_mp = player_mp - mp_change
+        if player_mp > temp1 then player_mp = 0
+        dec temp1 = player_mp
+        dec mp_seg_1 = player_mp - 8
+        if mp_seg_1 > temp1 then mp_seg_1 = 0
+        dec temp1 = mp_seg_1
+        dec mp_seg_2 = mp_seg_1 - 8
+        if mp_seg_2 > temp1 then mp_seg_2 = 0
+        dec temp1 = mp_seg_2
+        dec mp_seg_3 = mp_seg_2 - 8
+        if mp_seg_3 > temp1 then mp_seg_3 = 0
+        dec temp1 = mp_seg_3
+        dec mp_seg_4 = mp_seg_3 - 8
+        if mp_seg_4 > temp1 then mp_seg_4 = 0
+        dec temp1 = mp_seg_4
+        dec mp_seg_5 = mp_seg_4 - 8
+        if mp_seg_5 > temp1 then mp_seg_5 = 0
+        dec temp1 = mp_seg_5
+        dec mp_seg_6 = mp_seg_5 - 8
+        if mp_seg_6 > temp1 then mp_seg_6 = 0
+        if mp_seg_6 > 8 then mp_seg_6 = 8
+        if mp_seg_5 > 8 then mp_seg_5 = 8
+        if mp_seg_4 > 8 then mp_seg_4 = 8
+        if mp_seg_3 > 8 then mp_seg_3 = 8
+        if mp_seg_2 > 8 then mp_seg_2 = 8
+        if mp_seg_1 > 8 then mp_seg_1 = 8
+        return
+
+test_spell_cost
+        if mp_change < player_mp then return
+        ; routines can test if mp_change is 0 after calling this subroutine
+        mp_change = 0
         return
 
 increase_hp
