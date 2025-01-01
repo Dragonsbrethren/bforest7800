@@ -189,6 +189,7 @@
         autodim byte mp_seg_6
         autodim byte chant_timer
         autodim byte flash_color
+        autodim byte player_exiting_chant
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -1081,6 +1082,7 @@ no_player_timer
         sta retract_counter
         sta chant_timer
         sta player_state        ; STATE_STAND
+        sta player_exiting_chant
 end
 
 ;------------------------------------------------------------------------------
@@ -1126,6 +1128,8 @@ open_menu
         return
 
 player_attack
+        ; player exiting chant tracks if the player cast magic to exit chant with button held
+        if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
         if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
         if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
@@ -1184,10 +1188,12 @@ chant_handler
         
         ; Test: summon a wolf on left input
         if joy0left then summon_test_wolf
-        if !joy0fire0 then chant_done
+        if !joy0fire0 then chant_done_no_hold
         goto test_joy_done
 
 chant_done
+        player_exiting_chant = 1
+chant_done_no_hold
         player_state = STATE_STAND
         chant_timer = 0
         goto test_joy_done
