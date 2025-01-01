@@ -85,7 +85,8 @@
         const T_HILLS  = 4
 
         const ROOMS_PER_ROW = 7
-        const MAX_MAP_OBJECTS = 13
+        const MAX_MAP_OBJECTS = 12
+        const MAX_OBJECTS = 15
 
 ;==============================================================================
 ; OBJECT DATA
@@ -781,7 +782,7 @@ obj_raven_stats
 ;==============================================================================
 load_objects
         temp1 = 0
-        for obj_index = 0 to MAX_MAP_OBJECTS
+        for obj_index = 0 to MAX_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         object_Xpos[obj_index] = pointer[[temp1]]
