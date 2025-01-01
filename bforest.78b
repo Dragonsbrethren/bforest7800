@@ -1747,6 +1747,8 @@ restore_object_props
         sta object_frame,x
         lda flags
         sta object_flags,x
+        lda #0
+        sta flags
 end
 ;        object_Xpos[index]  = Xposition
 ;        object_Xvel[index]  = Xvelocity
