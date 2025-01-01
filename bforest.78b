@@ -9,7 +9,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -926,6 +926,7 @@ draw_hud
         plotvalue hud2 0 move_tile_1 4 32 13
         plotvalue hud 0 room_index 2 32 13
         plotvalue hud 0 room 2 48 13
+        plotvalue hud 0 retract_counter 2 64 13
         if debug_time then BACKGRND = bg_color
         return
 
@@ -1052,27 +1053,43 @@ player_handler
         gosub decelerate_player
 ;        gosub restore_player_props
 
+;==============================================================================
+; SUBROUTINE: HANDLE INPUT FIELD
+;------------------------------------------------------------------------------
+; This routine handles all player input in the field
+;==============================================================================
 handle_input_field
         if debug_time then BACKGRND = $70
+
+        ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
         if player_state = STATE_KNOCKBACK then test_joy_done
         if player_state = STATE_ATTACK then test_joy_done
+
 no_player_timer
-        player_flags{0} = 0
+        player_flags{0} = 0     ; clear invulnerability flag
+
+;------------------------------------------------------------------------------
+        ; handles chanting and sword retracting. Zero if not doing these
         if player_state = STATE_CHANT then chant_handler
         if player_state = STATE_ATTACK then retract_sword
         if joy0fire0 then goto player_attack
+
         asm
         lda #0
         sta retract_counter
         sta chant_timer
         sta player_state        ; STATE_STAND
 end
+
+;------------------------------------------------------------------------------
+
         if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
         if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
         if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
         player_frame = FRAME_RIGHT
+
 frames_done
         if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_frame = FRAME_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
         if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_frame = FRAME_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
@@ -1090,6 +1107,7 @@ player_move_done
 
         shield_Xpos = player_Xpos + SHIELD_OFFSET_X
         shield_Ypos = player_Ypos + SHIELD_OFFSET_Y
+
 input_frame_done
         if !player_Xvel && !player_Yvel && player_state <> STATE_ATTACK && player_state <> STATE_CHANT then player_state = STATE_STAND
         if animation_frame && player_state = STATE_MOVING then player_frame = player_frame + 1
@@ -1133,7 +1151,7 @@ retract_sword
 
 retract_step_done
         retract_counter = retract_counter + 1
-        if !retract_counter = 3 then test_joy_done
+        if retract_counter < 3 then test_joy_done
 
 retract_stand
         if !joy0fire0 then player_state = STATE_STAND : goto test_joy_done
@@ -1843,7 +1861,7 @@ bottomscreenroutine
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
         BACKGRND = flash_color
-        P1C1     = flash_color
+        P1C1     = flash_color  ; Johanna's hair
         P4C1     = flash_color
         P5C1     = flash_color
         P6C1     = flash_color
