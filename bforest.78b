@@ -1034,7 +1034,7 @@ spawns_slime
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
-        if player_mp = player_max_mp then _spawn_coin
+        ; if player_mp = player_max_mp then _spawn_coin
 
 _spawn_mana
         object_type[index] = TYPE_PRISM
@@ -1511,10 +1511,10 @@ check_collisions
         if debug_time = 1 then BACKGRND = $95
         for index = 0 to 15
         if !object_type[index] then cc_next
-        if object_type[index] = TYPE_COIN then cc_pickup
-        if object_type[index] = TYPE_PRISM then cc_pickup
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
+        if object_type[index] = TYPE_COIN then cc_pickup
+        if object_type[index] = TYPE_PRISM then cc_pickup
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
@@ -1531,7 +1531,12 @@ cc_return
         return
 
 cc_pickup
+        if Xposition > player_Xpos && Xposition < player_Xpos + 12 && Yposition > player_Ypos && Yposition < player_Ypos + 16 then pickup_item
         goto cc_next
+
+pickup_item
+        if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
+        ; runs into kill_object
 
 kill_object
         ; TODO: Death animation
@@ -1746,6 +1751,8 @@ damage_player_hp
         dec temp1 = player_hp        ; temp1 used to detect underflow
         dec player_hp = player_hp - hp_change
         if player_hp > temp1 then player_hp = 0
+
+update_hp_bar
         dec temp1 = player_hp
         dec hp_seg_1 = player_hp - 8
         if hp_seg_1 > temp1 then hp_seg_1 = 0
@@ -1772,11 +1779,18 @@ damage_player_hp
         if hp_seg_1 > 8 then hp_seg_1 = 8
         return
 
+increase_player_mp
+        dec player_mp = player_mp + mp_change
+        if player_mp > player_max_mp then player_hp = player_max_mp
+        goto update_mp_bar
+
 decrease_player_mp
         ; TODO: This currently can't scale, only works with max HP 48...
         dec temp1 = player_mp        ; temp1 used to detect underflow
         dec player_mp = player_mp - mp_change
         if player_mp > temp1 then player_mp = 0
+
+update_mp_bar
         dec temp1 = player_mp
         dec mp_seg_1 = player_mp - 8
         if mp_seg_1 > temp1 then mp_seg_1 = 0
