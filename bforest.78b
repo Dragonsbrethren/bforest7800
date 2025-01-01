@@ -1156,6 +1156,9 @@ set_state_chant
 
 chant_handler
         ; TODO: EVERYTHING!!!
+
+        ; Test: summon a wolf on left input
+        if joy0left then object_type[14] = TYPE_WOLF : object_Xpos[14] = player_Xpos : object_Ypos[14] = player_Ypos + 18
         goto test_joy_done
 
 decelerate_player
@@ -1463,7 +1466,6 @@ check_collisions
         if object_type[index] = TYPE_PRISM then cc_pickup
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
-        hp_change = player_damage
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
