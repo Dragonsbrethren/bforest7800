@@ -70,6 +70,7 @@
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
+        const HAIR_COLOR = $10
         const CHANT_COLOR = $60
         const BAR_NORMAL_COLOR = $76
         const BAR_FLASH_COLOR = $79
@@ -1900,7 +1901,7 @@ bottomscreenroutine
         P6C1     = flash_color
         P7C1     = flash_color
         ; Johanna's hair
-        P1C1 = $10
+        if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
 
