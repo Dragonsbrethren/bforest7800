@@ -927,11 +927,13 @@ draw_hud
         PLOTSPRITE4 bar0 0 56 16 mp_seg_5
         PLOTSPRITE4 bar0 0 64 16 mp_seg_6
         if debug_hud = 0 then return
+        plotvalue hud 0 player_hp 2 72 0
+        plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
         plotvalue hud2 0 move_tile_1 4 32 13
         plotvalue hud 0 room_index 2 32 13
         plotvalue hud 0 room 2 48 13
-        plotvalue hud 0 retract_counter 2 64 13
+        ; plotvalue hud 0 retract_counter 2 64 13
         if debug_time then BACKGRND = bg_color
         return
 
@@ -1531,7 +1533,7 @@ cc_return
         return
 
 cc_pickup
-        if Xposition > player_Xpos && Xposition < player_Xpos + 12 && Yposition > player_Ypos && Yposition < player_Ypos + 16 then pickup_item
+        if Xposition > player_Xpos && Xposition < (player_Xpos + 12) && Yposition > player_Ypos && Yposition < (player_Ypos + 16) then pickup_item
         goto cc_next
 
 pickup_item
@@ -1754,7 +1756,7 @@ damage_player_hp
 
 update_hp_bar
         dec temp1 = player_hp
-        dec hp_seg_1 = player_hp - 8
+        dec hp_seg_1 = player_hp
         if hp_seg_1 > temp1 then hp_seg_1 = 0
         dec temp1 = hp_seg_1
         dec hp_seg_2 = hp_seg_1 - 8
@@ -1781,7 +1783,7 @@ update_hp_bar
 
 increase_player_mp
         dec player_mp = player_mp + mp_change
-        if player_mp > player_max_mp then player_hp = player_max_mp
+        if player_mp > player_max_mp then player_mp = player_max_mp
         goto update_mp_bar
 
 decrease_player_mp
@@ -1792,7 +1794,7 @@ decrease_player_mp
 
 update_mp_bar
         dec temp1 = player_mp
-        dec mp_seg_1 = player_mp - 8
+        dec mp_seg_1 = player_mp
         if mp_seg_1 > temp1 then mp_seg_1 = 0
         dec temp1 = mp_seg_1
         dec mp_seg_2 = mp_seg_1 - 8
@@ -1893,11 +1895,13 @@ bottomscreenroutine
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
         BACKGRND = flash_color
-        P1C1     = flash_color  ; Johanna's hair
         P4C1     = flash_color
         P5C1     = flash_color
         P6C1     = flash_color
         P7C1     = flash_color
+        ; Johanna's hair
+        P1C1 = $10
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
 
 set_title_bottom_pal
