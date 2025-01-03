@@ -1037,7 +1037,7 @@ spawns_slime
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
-        ; if player_mp = player_max_mp then _spawn_coin
+        if player_mp = player_max_mp then _spawn_coin
 
 _spawn_mana
         object_type[index] = TYPE_PRISM
