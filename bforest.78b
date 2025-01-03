@@ -352,6 +352,7 @@ title_handler
         incmapfile tiled/forest_room_8.tmx
         incmapfile tiled/forest_room_9.tmx
         incmapfile tiled/forest_room_10.tmx
+        incmapfile tiled/forest_room_11.tmx
 
 load_forest
 
@@ -374,6 +375,7 @@ load_forest
         if room = 8 then pointer = forest_room_8_obj_lo : pointer_hi = forest_room_8_obj_hi : goto plot_forest_room_8
         if room = 9 then pointer = forest_room_9_obj_lo : pointer_hi = forest_room_9_obj_hi : goto plot_forest_room_9
         if room = 10 then pointer = forest_room_10_obj_lo : pointer_hi = forest_room_10_obj_hi : goto plot_forest_room_10
+        if room = 11 then pointer = forest_room_11_obj_lo : pointer_hi = forest_room_11_obj_hi : goto plot_forest_room_11
 
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
@@ -509,9 +511,21 @@ plot_forest_room_10
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
+plot_forest_room_11
+        plotmapfile tiled/forest_room_11.tmx forest_room_11 0 0 20 14
+        memcpy current_map forest_room_11 280
+        return
+
+        data forest_room_11_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
-        00,  9, 10, 04, 05, 00, 00,
+        00,  9, 10, 04, 05, 11, 00,
         00, 00, 00, 03, 00, 00, 00,
         00, 00, 00, 02, 00, 00, 00,
         00, 00, 00, 01, 00, 00, 00,
@@ -1192,6 +1206,7 @@ chant_handler
         ; if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P0C2 = BAR_FLASH_COLOR
         
         ; Test: summon a wolf on left input
+
         if joy0left then summon_test_wolf
         if !joy0fire0 then chant_done_no_hold
         goto test_joy_done
