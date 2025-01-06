@@ -1939,12 +1939,12 @@ held_buttons
 ; omitting tap check, currently unneeded
 
 clear_button_counters
-        if !controller_button1_press_bit1 then controller_button1_counter = 0
-        if !controller_button2_press_bit4 then controller_button2_counter = 0
+        if !controller_button1_press_bit1{1} then controller_button1_counter = 0
+        if !controller_button2_press_bit4{4} then controller_button2_counter = 0
 
 clear_debounce
         if controller_state = %00000001 then controller_button_debounce_bit0{0} = 0
-        if controller_button_debounce_bit0 = %00000001 then controller_button_debounce_bit0 = 0
+        if controller_button_debounce_bit0 = %00000001 then controller_button_debounce_bit0{0} = 0
 
 read_controller_done
         return
