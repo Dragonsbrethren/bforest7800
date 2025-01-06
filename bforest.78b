@@ -10,7 +10,7 @@
 ;        set multibuttonpause on
 
         const debug_hud = 1
-        const debug_time = 0
+        const debug_time = 1
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -265,6 +265,16 @@
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index
+
+        autodim init $2500 $25FF
+        ; BUFFER FOR X FRAMES OF INPUTS - currently 3 seconds worth
+        const INPUT_BUFFER_FRAMES = 180
+        autodim byte input_buffer 180
+        autodim byte input_buffer_index
+        autodim byte chant_index
+        autodim byte chant_input_start
+        ; possible to start a chant on index 0 so need another variable        
+        autodim byte chant_indexed
 
         dim current_map = $2600
 
@@ -1222,16 +1232,26 @@ set_state_chant
         player_facing = DIR_DOWN
 
 chant_handler
+        if debug_time = 1 then BACKGRND = $B9
+        if chant_indexed then chant_input_loop
+        chant_input_start = input_buffer_index
+        chant_indexed = 1
+
+chant_input_loop
+        for chant_index = chant_input_start to input_buffer_index
+        if chant_index > INPUT_BUFFER_FRAMES then chant_index = 0
         ; TODO: EVERYTHING!!!
+        if !controller_button2_hold_bit6{6} then chant_done_no_hold
+        ; Test: summon a wolf on left input
+        if input_buffer[chant_index] = %00000010 then summon_test_wolf
+        if input_buffer[chant_index] = %00000011 then summon_test_wolf
+        next
 
         ; flash the light purple palette entry (MP bar)
         ; P0C2 = BAR_NORMAL_COLOR
         ; if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P0C2 = BAR_FLASH_COLOR
-        
-        ; Test: summon a wolf on left input
 
-        if joy0left then summon_test_wolf
-        if !joy0fire0 then chant_done_no_hold
+;        if joy0left then summon_test_wolf
         goto test_joy_done
 
 chant_done
@@ -1823,6 +1843,7 @@ update_hp_bar
 increase_player_mp
         dec player_mp = player_mp + mp_change
         if player_mp > player_max_mp then player_mp = player_max_mp
+        mp_change = 0
         goto update_mp_bar
 
 decrease_player_mp
@@ -1953,6 +1974,11 @@ main
         drawscreen
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
+        ; TODO: This could probably be inlined
+        gosub read_controller
+        input_buffer[input_buffer_index] = controller_state
+        input_buffer_index = input_buffer_index + 1
+        if input_buffer_index > INPUT_BUFFER_FRAMES then input_buffer_index = 0
         if game_state = STATE_TITLE then title_handler
         if game_state = STATE_FIELD then field_handler
         if game_state = STATE_MENU  then menu_handler
