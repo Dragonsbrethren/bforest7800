@@ -36,6 +36,8 @@
         const EXIT_EAST  = 3
         const EXIT_WEST  = 4
 
+        const BUTTON_HOLD_FRAMES = 15
+
 ;------------------------------------------------------------------------------
 ; PLAYER DATA
 ;------------------------------------------------------------------------------
@@ -192,6 +194,27 @@
         autodim byte chant_timer
         autodim byte flash_color
         autodim byte player_exiting_chant
+
+;------------------------------------------------------------------------------
+; CONTROLLER
+;------------------------------------------------------------------------------
+        autodim byte controller_state
+        dim controller_debounce_bit0 = controller_state
+        dim controller_left_bit1     = controller_state
+        dim controller_right_bit2    = controller_state
+        dim controller_up_bit3       = controller_state
+        dim controller_down_bit4     = controller_state
+        autodim byte controller_button_state
+        dim controller_button_debounce_bit0 = controller_button_state
+        dim controller_button1_press_bit1   = controller_button_state
+        dim controller_button1_tap_bit2     = controller_button_state
+        dim controller_button1_hold_bit3    = controller_button_state
+        dim controller_button2_press_bit4   = controller_button_state
+        dim controller_button2_tap_bit5     = controller_button_state
+        dim controller_button2_hold_bit6    = controller_button_state
+        autodim byte controller_button1_counter
+        autodim byte controller_button2_counter
+
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -1882,6 +1905,48 @@ clear_palettes
         P5C1 = $00 : P5C2 = $00 : P5C3 = $00
         P6C1 = $00 : P6C2 = $00 : P6C3 = $00
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
+        return
+        
+;==============================================================================
+; SUBROUTINE: READ CONTROLLER
+;------------------------------------------------------------------------------
+; Adapted from mksmith's post on AtariAge forums
+; https://tinyurl.com/mv9srrhj
+;==============================================================================
+read_controller
+        ; clear but don't touch debounce state
+        controller_state = controller_state & %00000001
+        controller_button_state = controller_button_state & %00000001
+
+read_joystick
+        if !joy0any  then read_buttons
+        if joy0left  then controller_left_bit1{1} = 1
+        if joy0right then controller_right_bit2{2} = 1
+        if joy0up    then controller_up_bit3{3} = 1
+        if joy0down  then controller_down_bit4{4} = 1
+
+read_buttons
+        if joy0fire1 then controller_button1_press_bit1{1} = 1
+        if joy0fire0 then controller_button2_press_bit4{4} = 1
+
+        if controller_button1_press_bit1{1} then controller_button1_counter = controller_button1_counter + 1
+        if controller_button2_press_bit4{4} then controller_button2_counter = controller_button2_counter + 1
+
+held_buttons
+        if controller_button1_counter > BUTTON_HOLD_FRAMES then controller_button1_hold_bit3{3} = 1
+        if controller_button2_counter > BUTTON_HOLD_FRAMES then controller_button2_hold_bit6{6} = 1
+
+; omitting tap check, currently unneeded
+
+clear_button_counters
+        if !controller_button1_press_bit1 then controller_button1_counter = 0
+        if !controller_button2_press_bit4 then controller_button2_counter = 0
+
+clear_debounce
+        if controller_state = %00000001 then controller_button_debounce_bit0{0} = 0
+        if controller_button_debounce_bit0 = %00000001 then controller_button_debounce_bit0 = 0
+
+read_controller_done
         return
 
 main
