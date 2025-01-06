@@ -1263,7 +1263,7 @@ chant_done_no_hold
         goto test_joy_done
 
 summon_test_wolf
-        dec mp_change = $20
+        dec mp_change = $00
         gosub test_spell_cost
         if !mp_change then test_joy_done ; allow player to try a different input
         object_type[14] = TYPE_WOLF
