@@ -592,7 +592,7 @@ wolf_ai
 wolf_anim
         ; Wolves flip left or right facing depending on player position
         frame = 0
-        if Xposition < player_Xpos then frame = frame + 2
+        if Xposition <= player_Xpos then frame = frame + 2
         if animation_frame then frame = frame + 1
         return
 
@@ -726,7 +726,7 @@ raven_perch
         if !walkable then flags{7} = 0
 
 raven_return
-        if Xposition > player_Xpos then frame = frame + 1
+        if Xposition >= player_Xpos then frame = frame + 1
         if debug_time = 1 then BACKGRND = bg_color
         return
 
