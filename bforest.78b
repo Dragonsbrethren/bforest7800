@@ -694,7 +694,6 @@ obj_slime_stats
         goto obj_next_stats
 
 split_slime
-        if debug_time = 1 then BACKGRND = $B9
         ; replace slime mobj with mini slime
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
@@ -985,7 +984,6 @@ plot_raven
 ; Bars must be plotted in separate zones or there isn't enough DMA time
 ;==============================================================================
 draw_hud
-        if debug_time then BACKGRND = $43
         plotsprite  hp   0  8  0       ; HP is 160B
         plotsprite  bar0 2 24  0 hp_seg_1
         PLOTSPRITE4 bar0 2 32  0 hp_seg_2
@@ -1001,15 +999,14 @@ draw_hud
         PLOTSPRITE4 bar0 0 56 16 mp_seg_5
         PLOTSPRITE4 bar0 0 64 16 mp_seg_6
         if debug_hud = 0 then return
-        plotvalue hud 0 player_hp 2 72 0
-        plotvalue hud 0 player_mp 2 72 1
+        ; plotvalue hud 0 player_hp 2 72 0
+        ; plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
         plotvalue hud2 0 move_tile_1 4 32 13
-        plotvalue hud 0 room_index 2 32 13
-        plotvalue hud 0 room 2 48 13
+        ; plotvalue hud 0 room_index 2 32 13
+        ; plotvalue hud 0 room 2 48 13
         plotvalue hud 0 chant_input 2 72 13
         ; plotvalue hud 0 retract_counter 2 64 13
-        if debug_time then BACKGRND = bg_color
         return
 
 menu_handler
@@ -1080,12 +1077,11 @@ object_handler
         gosub move_object
         gosub restore_object_props
 object_done
-        if debug_time = 1 then BACKGRND = bg_color
         next
         return
 
 torch_tile_block
-        if debug_time = 1 then BACKGRND = $76
+ 
         if object_flags[index] then object_done
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 10
@@ -1223,7 +1219,6 @@ sword_done
 player_attack_return
         player_state = STATE_ATTACK
         player_timer = ATTACK_FRAMES
-        if debug_time then BACKGRND = bg_color
         return
 
 retract_sword
@@ -1660,10 +1655,8 @@ kill_object
         ; TODO: Death animation
         if object_type[index] <> TYPE_TORCH then change_to_spawner
         ; torches make their tile walkable
-        if debug_time = 1 then BACKGRND = $73
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 0
-        if debug_time = 1 then BACKGRND = bg_color
 change_to_spawner
         if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
         ; switch the object's flags to its old type and its type to a spwaner
@@ -1719,7 +1712,6 @@ end
 
 ; copies player movement variables to be manipulated by movement subroutines
 copy_player_props
-        if debug_time = 1 then BACKGRND = $E9
         asm
         lda player_Xpos
         sta Xposition
@@ -1741,13 +1733,11 @@ copy_player_props
         sta vel_cap
         lda player_friction
         sta friction
+        rts
 end
-        if debug_time = 1 then BACKGRND = bg_color
-        return
 
 ; restores movement variables from subroutines back to player
 restore_player_props
-        if debug_time = 1 then BACKGRND = $E7
         asm
         lda Xposition
         sta player_Xpos
@@ -1761,12 +1751,10 @@ restore_player_props
         sta player_Yvel_lo
         lda Yvelocity_hi
         sta player_Yvel_hi
+        rts
 end
-        if debug_time = 1 then BACKGRND = bg_color
-        return
 
 copy_object_props
-        if debug_time then BACKGRND = $D6
         asm
         ldx index
         lda object_Xpos,x
@@ -1801,14 +1789,10 @@ copy_object_props
         sta frame
         lda object_flags,x
         sta flags
-end
-        if debug_time then BACKGRND = bg_color
-        asm
         rts
 end
 
 restore_object_props
-        if debug_time then BACKGRND = $36
         asm
         ldx index
         lda Xposition
@@ -1829,9 +1813,6 @@ restore_object_props
         sta object_flags,x
         lda #0
         sta flags
-end
-        if debug_time then BACKGRND = bg_color
-        asm
         rts
 end
 
