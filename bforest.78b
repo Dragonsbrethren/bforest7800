@@ -10,7 +10,7 @@
 ;        set multibuttonpause on
 
         const debug_hud = 1
-        const debug_time = 1
+        const debug_time = 0
 
 ;------------------------------------------------------------------------------
 ; GAME STATES
@@ -267,6 +267,7 @@
         autodim byte room_index
 
         autodim init $2500 $25FF
+        const INPUT_BUFFER_MAX = 8
         autodim byte input_buffer 8
         autodim byte input_buffer_index
         autodim byte chant_index
@@ -441,7 +442,7 @@ plot_forest_room_3
 
         data forest_room_3_obj
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  TYPE_SLIME, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
@@ -1005,7 +1006,8 @@ draw_hud
         plotvalue hud2 0 move_tile_1 4 32 13
         ; plotvalue hud 0 room_index 2 32 13
         ; plotvalue hud 0 room 2 48 13
-        plotvalue hud 0 chant_input 2 72 13
+        plotvalue hud 0 input_buffer 16 24 13
+        plotvalue hud 0 chant_input 2 8 13
         ; plotvalue hud 0 retract_counter 2 64 13
         return
 
@@ -1258,29 +1260,33 @@ chant_handler
 
         if !joy0fire0 then chant_done_no_hold
 
-;        if !input_buffer[3] then chant_test_dirs
-        if input_buffer = DIR_UP    then chant_spells_up
-        if input_buffer = DIR_DOWN  then chant_spells_down
-        if chant_input = DIR_LEFT  then chant_spells_left
-        if input_buffer = DIR_RIGHT then chant_spells_right
+        if chant_indexed then chant_input_test_release
+
+;        if input_buffer[chant_index] = DIR_UP    then chant_spells_up
+;        if input_buffer[chant_index] = DIR_DOWN  then chant_spells_down
+;        if input_buffer[chant_index] = DIR_LEFT  then chant_spells_left
+;        if input_buffer[chant_index] = DIR_RIGHT then chant_spells_right
 
 chant_test_dirs
-        if joy0left  then chant_input = DIR_LEFT  : chant_input_test_release
-        if joy0right then chant_input = DIR_RIGHT : chant_input_test_release
-        if joy0up    then chant_input = DIR_UP    : chant_input_test_release
-        if joy0down  then chant_input = DIR_DOWN  : chant_input_test_release
+        if joy0left  then chant_input = DIR_LEFT  : chant_indexed = 1
+        if joy0right then chant_input = DIR_RIGHT : chant_indexed = 1
+        if joy0up    then chant_input = DIR_UP    : chant_indexed = 1
+        if joy0down  then chant_input = DIR_DOWN  : chant_indexed = 1
         goto test_joy_done
 
 ; Require a release of a single direction (TODO: 8dir?) before buffering input
 chant_input_test_release
-        if joy0any then test_joy_done
+        if joy0up    then test_joy_done
+        if joy0down  then test_joy_done
+        if joy0left  then test_joy_done
+        if joy0right then test_joy_done
         ; TODO: Test for holds? Long times between inputs?
-        chant_indexed = 1
 
 chant_buffer_input
-        input_buffer = chant_input
+        input_buffer[input_buffer_index] = chant_input
         input_buffer_index = input_buffer_index + 1
-        if input_buffer_index > 8 then input buffer_index = 8
+        if input_buffer_index > INPUT_BUFFER_MAX then input buffer_index = 8
+        chant_indexed = 0
         goto test_joy_done
 
 chant_spells_up
@@ -1305,10 +1311,10 @@ chant_done_no_hold
         sta chant_input
         sta input_buffer_index
         sta chant_indexed
-        ldx #7
+        ldx #8
 clear_input_buffer
-        sta input_buffer,x
         dex
+        sta input_buffer,x
         bne clear_input_buffer
 end
         gosub decrease_player_mp
@@ -1607,9 +1613,6 @@ move_return
 
 test_walkable
         ; start by assuming the tile isn't walkable (fewer tests)
-;        walkable = 0
-;        walkable_1 = 0
-;        walkable_2 = 0
         asm
         lda #0
         sta walkable
