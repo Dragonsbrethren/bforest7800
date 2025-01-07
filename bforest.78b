@@ -332,7 +332,11 @@ title_handler
         restorescreen
         adjustvisible 0 4
         ; TODO: Handle, well, everything
-        if !joy0fire0 || !joy0fire1 then goto main
+        if joy0fire0 then title_new_game
+        if joy0fire1 then title_new_game
+        goto main
+
+title_new_game
         reload_map = 1
         room_index = 17
         tileset = T_FOREST
@@ -345,6 +349,16 @@ title_handler
         P3C1 = $50 : P3C2 = $55 : P3C3 = $5B    ; currently unused blues, equipment
         
         goto main
+
+set_title_top_pal
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $80 : P4C2 = $0F : P4C3 = $08
+        return
+
+set_title_bottom_pal
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
+        return
 
 ;==============================================================================
 ; BANK 2
@@ -2023,11 +2037,6 @@ topscreenroutine
         if game_state = STATE_TITLE then set_title_top_pal
         return
 
-set_title_top_pal
-        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        P4C1 = $80 : P4C2 = $0F : P4C3 = $08
-        return
-
 bottomscreenroutine
         WSYNC=1
         BACKGRND=$00
@@ -2042,9 +2051,4 @@ bottomscreenroutine
         ; Johanna's hair
         if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
-        return
-
-set_title_bottom_pal
-        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
