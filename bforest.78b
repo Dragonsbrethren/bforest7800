@@ -267,12 +267,10 @@
         autodim byte room_index
 
         autodim init $2500 $25FF
-        ; BUFFER FOR X FRAMES OF INPUTS - currently 3 seconds worth
-        const INPUT_BUFFER_FRAMES = 180
-        autodim byte input_buffer 180
+        autodim byte input_buffer 8
         autodim byte input_buffer_index
         autodim byte chant_index
-        autodim byte chant_input_start
+        autodim byte chant_input
         ; possible to start a chant on index 0 so need another variable        
         autodim byte chant_indexed
 
@@ -695,6 +693,34 @@ obj_slime_stats
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+split_slime
+        if debug_time = 1 then BACKGRND = $B9
+        ; replace slime mobj with mini slime
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
+        ; initialize the new mini slime object
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        object_contact[index] = SLIME_CONTACT
+        object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
+        object_damage[index] = SLIME_DAMAGE
+        object_friction_hi[index] = SLIME_FRICTION_HI
+        object_friction_lo[index] = SLIME_FRICTION_LO
+        object_speed_hi[index] = SLIME_SPEED_HI
+        object_speed_lo[index] = SLIME_SPEED_LO
+        ; mini slime spawns to the right of the parent slime's pos
+        object_Xpos[index] = temp1 + 9
+        object_Ypos[index] = temp2
+        goto cc_next
+
 ;==============================================================================
 ; RAVEN AI
 ;------------------------------------------------------------------------------
@@ -981,6 +1007,7 @@ draw_hud
         plotvalue hud2 0 move_tile_1 4 32 13
         plotvalue hud 0 room_index 2 32 13
         plotvalue hud 0 room 2 48 13
+        plotvalue hud 0 chant_input 2 72 13
         ; plotvalue hud 0 retract_counter 2 64 13
         if debug_time then BACKGRND = bg_color
         return
@@ -1233,37 +1260,67 @@ set_state_chant
 
 chant_handler
         if debug_time = 1 then BACKGRND = $B9
-        if chant_indexed then chant_input_loop
-        chant_input_start = input_buffer_index
+
+        if !joy0fire0 then chant_done_no_hold
+
+;        if !input_buffer[3] then chant_test_dirs
+        if input_buffer = DIR_UP    then chant_spells_up
+        if input_buffer = DIR_DOWN  then chant_spells_down
+        if chant_input = DIR_LEFT  then chant_spells_left
+        if input_buffer = DIR_RIGHT then chant_spells_right
+
+chant_test_dirs
+        if joy0left  then chant_input = DIR_LEFT  : chant_input_test_release
+        if joy0right then chant_input = DIR_RIGHT : chant_input_test_release
+        if joy0up    then chant_input = DIR_UP    : chant_input_test_release
+        if joy0down  then chant_input = DIR_DOWN  : chant_input_test_release
+        goto test_joy_done
+
+; Require a release of a single direction (TODO: 8dir?) before buffering input
+chant_input_test_release
+        if joy0any then test_joy_done
+        ; TODO: Test for holds? Long times between inputs?
         chant_indexed = 1
 
-chant_input_loop
-        for chant_index = chant_input_start to input_buffer_index
-        if chant_index > INPUT_BUFFER_FRAMES then chant_index = 0
-        ; TODO: EVERYTHING!!!
-        if !controller_button2_hold_bit6{6} then chant_done_no_hold
-        ; Test: summon a wolf on left input
-        if input_buffer[chant_index] = %00000010 then summon_test_wolf
-        if input_buffer[chant_index] = %00000011 then summon_test_wolf
-        next
+chant_buffer_input
+        input_buffer = chant_input
+        input_buffer_index = input_buffer_index + 1
+        if input_buffer_index > 8 then input buffer_index = 8
+        goto test_joy_done
 
-        ; flash the light purple palette entry (MP bar)
-        ; P0C2 = BAR_NORMAL_COLOR
-        ; if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P0C2 = BAR_FLASH_COLOR
+chant_spells_up
+        goto test_joy_done
 
-;        if joy0left then summon_test_wolf
+chant_spells_down
+        goto test_joy_done
+
+chant_spells_left
+        goto summon_test_wolf
+
+chant_spells_right
         goto test_joy_done
 
 chant_done
         player_exiting_chant = 1
 chant_done_no_hold
-        player_state = STATE_STAND
-        chant_timer = 0
+        asm
+        lda #0
+        sta player_state        ; STATE_STAND
+        sta chant_timer
+        sta chant_input
+        sta input_buffer_index
+        sta chant_indexed
+        ldx #7
+clear_input_buffer
+        sta input_buffer,x
+        dex
+        bne clear_input_buffer
+end
         gosub decrease_player_mp
         goto test_joy_done
 
 summon_test_wolf
-        dec mp_change = $00
+        dec mp_change = $01
         gosub test_spell_cost
         if !mp_change then test_joy_done ; allow player to try a different input
         object_type[14] = TYPE_WOLF
@@ -1614,34 +1671,6 @@ change_to_spawner
         object_type[index] = TYPE_SPAWNER
         goto cc_next
 
-split_slime
-        if debug_time = 1 then BACKGRND = $B9
-        ; replace slime mobj with mini slime
-        object_type[index] = TYPE_MSLIME
-        object_hp[index] = MSLIME_HP
-        temp1 = object_Xpos[index]
-        temp2 = object_Ypos[index]
-        ; mini slime is moved to the left of the parent slime's pos
-        object_Xpos[index] = object_Xpos[index] - 1
-        gosub find_new_object
-        ; if no slots, the slime just becomes a single mini slime
-        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
-        ; initialize the new mini slime object
-        object_type[index] = TYPE_MSLIME
-        object_hp[index] = MSLIME_HP
-        object_contact[index] = SLIME_CONTACT
-        object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
-        object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
-        object_damage[index] = SLIME_DAMAGE
-        object_friction_hi[index] = SLIME_FRICTION_HI
-        object_friction_lo[index] = SLIME_FRICTION_LO
-        object_speed_hi[index] = SLIME_SPEED_HI
-        object_speed_lo[index] = SLIME_SPEED_LO
-        ; mini slime spawns to the right of the parent slime's pos
-        object_Xpos[index] = temp1 + 9
-        object_Ypos[index] = temp2
-        goto cc_next
-
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
 sword_damage
@@ -1927,58 +1956,11 @@ clear_palettes
         P6C1 = $00 : P6C2 = $00 : P6C3 = $00
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
-        
-;==============================================================================
-; SUBROUTINE: READ CONTROLLER
-;------------------------------------------------------------------------------
-; Adapted from mksmith's post on AtariAge forums
-; https://tinyurl.com/mv9srrhj
-;==============================================================================
-read_controller
-        ; clear but don't touch debounce state
-        controller_state = controller_state & %00000001
-        controller_button_state = controller_button_state & %00000001
-
-read_joystick
-        if !joy0any  then read_buttons
-        if joy0left  then controller_left_bit1{1} = 1
-        if joy0right then controller_right_bit2{2} = 1
-        if joy0up    then controller_up_bit3{3} = 1
-        if joy0down  then controller_down_bit4{4} = 1
-
-read_buttons
-        if joy0fire1 then controller_button1_press_bit1{1} = 1
-        if joy0fire0 then controller_button2_press_bit4{4} = 1
-
-        if controller_button1_press_bit1{1} then controller_button1_counter = controller_button1_counter + 1
-        if controller_button2_press_bit4{4} then controller_button2_counter = controller_button2_counter + 1
-
-held_buttons
-        if controller_button1_counter > BUTTON_HOLD_FRAMES then controller_button1_hold_bit3{3} = 1
-        if controller_button2_counter > BUTTON_HOLD_FRAMES then controller_button2_hold_bit6{6} = 1
-
-; omitting tap check, currently unneeded
-
-clear_button_counters
-        if !controller_button1_press_bit1{1} then controller_button1_counter = 0
-        if !controller_button2_press_bit4{4} then controller_button2_counter = 0
-
-clear_debounce
-        if controller_state = %00000001 then controller_button_debounce_bit0{0} = 0
-        if controller_button_debounce_bit0 = %00000001 then controller_button_debounce_bit0{0} = 0
-
-read_controller_done
-        return
 
 main
         drawscreen
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
-        ; TODO: This could probably be inlined
-        gosub read_controller
-        input_buffer[input_buffer_index] = controller_state
-        input_buffer_index = input_buffer_index + 1
-        if input_buffer_index > INPUT_BUFFER_FRAMES then input_buffer_index = 0
         if game_state = STATE_TITLE then title_handler
         if game_state = STATE_FIELD then field_handler
         if game_state = STATE_MENU  then menu_handler
