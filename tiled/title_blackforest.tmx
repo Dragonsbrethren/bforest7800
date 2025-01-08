@@ -9,6 +9,9 @@
  <tileset firstgid="39" name="moon" tilewidth="8" tileheight="16" tilecount="6" columns="6">
   <image source="../gfx/title/moon.png" width="48" height="24"/>
  </tileset>
+ <tileset firstgid="45" name="font" tilewidth="8" tileheight="16" tilecount="72" columns="72">
+  <image source="../gfx/font.png" width="576" height="16"/>
+ </tileset>
  <layer id="1" name="Tile Layer 1" width="40" height="14">
   <data>
    <tile gid="29"/>
@@ -422,10 +425,24 @@
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
+   <tile gid="71"/>
+   <tile gid="102"/>
+   <tile gid="100"/>
+   <tile gid="89"/>
    <tile gid="22"/>
+   <tile gid="57"/>
+   <tile gid="102"/>
+   <tile gid="101"/>
+   <tile gid="101"/>
+   <tile gid="96"/>
+   <tile gid="95"/>
    <tile gid="22"/>
+   <tile gid="47"/>
    <tile gid="22"/>
+   <tile gid="96"/>
+   <tile gid="99"/>
    <tile gid="22"/>
+   <tile gid="48"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
@@ -486,42 +503,28 @@
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
+   <tile gid="116"/>
+   <tile gid="48"/>
+   <tile gid="46"/>
+   <tile gid="48"/>
+   <tile gid="51"/>
    <tile gid="22"/>
    <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
-   <tile gid="22"/>
+   <tile gid="59"/>
+   <tile gid="73"/>
+   <tile gid="56"/>
+   <tile gid="62"/>
+   <tile gid="70"/>
+   <tile gid="69"/>
+   <tile gid="74"/>
+   <tile gid="57"/>
+   <tile gid="73"/>
+   <tile gid="60"/>
+   <tile gid="75"/>
+   <tile gid="63"/>
+   <tile gid="73"/>
+   <tile gid="60"/>
+   <tile gid="69"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>

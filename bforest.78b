@@ -131,6 +131,7 @@
         autodim byte bg_color
         autodim byte animation_timer
         autodim byte retract_counter
+        autodim byte action_button
 
 ;------------------------------------------------------------------------------
 ; PLAYER
@@ -196,27 +197,6 @@
         autodim byte player_exiting_chant
 
 ;------------------------------------------------------------------------------
-; CONTROLLER
-;------------------------------------------------------------------------------
-        autodim byte controller_state
-        dim controller_debounce_bit0 = controller_state
-        dim controller_left_bit1     = controller_state
-        dim controller_right_bit2    = controller_state
-        dim controller_up_bit3       = controller_state
-        dim controller_down_bit4     = controller_state
-        autodim byte controller_button_state
-        dim controller_button_debounce_bit0 = controller_button_state
-        dim controller_button1_press_bit1   = controller_button_state
-        dim controller_button1_tap_bit2     = controller_button_state
-        dim controller_button1_hold_bit3    = controller_button_state
-        dim controller_button2_press_bit4   = controller_button_state
-        dim controller_button2_tap_bit5     = controller_button_state
-        dim controller_button2_hold_bit6    = controller_button_state
-        autodim byte controller_button1_counter
-        autodim byte controller_button2_counter
-
-
-;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
 ;------------------------------------------------------------------------------
         autodim init $2200 $23FF
@@ -250,7 +230,6 @@
         autodim byte frame
         autodim byte flags
         autodim byte obj_index
-        autodim byte joy0fire1_held
         autodim byte drop_rate
         autodim byte no_empty_slot
 
@@ -312,10 +291,10 @@
 ; 7800basic initialization, title sequence code and graphics
 ;------------------------------------------------------------------------------
 ;==============================================================================
+        incgraphic gfx/font.png        320B 2 0 1 0 0
         incgraphic gfx/title/logo.png  320B 1 2 3 1 4
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
         incgraphic gfx/title/moon.png  320B 0 3 2 2 4
-        incgraphic gfx/font.png        320A 0 2
         incmapfile tiled/title_blackforest.tmx
         game_state = STATE_TITLE
 
@@ -331,9 +310,12 @@ title_init
 title_handler
         restorescreen
         adjustvisible 0 4
+        alphachars ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.!?/-:`@'
+        characterset font
+;        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
         ; TODO: Handle, well, everything
-        if joy0fire0 then title_new_game
-        if joy0fire1 then title_new_game
+        if joy0fire0 then action_button = 0 : goto title_new_game
+        if joy0fire1 then action_button = 1 : goto title_new_game
         goto main
 
 title_new_game
@@ -1166,7 +1148,8 @@ no_player_timer
         ; handles chanting and sword retracting. Zero if not doing these
         if player_state = STATE_CHANT then chant_handler
         if player_state = STATE_ATTACK then retract_sword
-        if joy0fire0 then goto player_attack
+        if joy0fire0 && action_button = 0 then goto player_attack
+        if joy0fire1 && action_button = 1 then goto player_attack
 
         asm
         lda #0
@@ -1190,7 +1173,8 @@ frames_done
         if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
-        if joy0fire1 then goto open_menu
+        if joy0fire0 && action_button = 1 then goto open_menu
+        if joy0fire1 && action_button = 0 then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         gosub copy_player_props
         gosub move_object
@@ -1248,7 +1232,8 @@ retract_step_done
         if retract_counter < 3 then test_joy_done
 
 retract_stand
-        if !joy0fire0 then player_state = STATE_STAND : goto test_joy_done
+        if !joy0fire0 && action_button = 0 then player_state = STATE_STAND : goto test_joy_done
+        if !joy0fire1 && action_button = 1 then player_state = STATE_STAND : goto test_joy_done
         ; retract finished and button still held - code runs into player_chant_start
 
 player_chant_start
@@ -1272,7 +1257,8 @@ set_state_chant
 chant_handler
         if debug_time = 1 then BACKGRND = $B9
 
-        if !joy0fire0 then chant_done_no_hold
+        if !joy0fire0 && action_button = 0 then chant_done_no_hold
+        if !joy0fire1 && action_button = 1 then chant_done_no_hold
 
         ; chant_new_input is set when a direction is pressed
         if chant_new_input then chant_input_test_release
