@@ -810,6 +810,22 @@ obj_raven_stats
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+plot_wolf
+        PLOTSPRITE wolf0 5 Xposition Yposition frame
+        goto plot_next
+
+plot_slime
+        PLOTSPRITE slime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_minislime
+        PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_raven
+        PLOTSPRITE raven0 5 Xposition Yposition frame
+        goto plot_next
+
 ;==============================================================================
 ; BANK 8
 ;------------------------------------------------------------------------------
@@ -945,10 +961,6 @@ plot_hud
         gosub draw_hud
         goto main
 
-plot_wolf
-        PLOTSPRITE wolf0 5 Xposition Yposition frame
-        goto plot_next
-
 plot_torch
         PLOTSPRITE torch0 0 Xposition Yposition animation_frame
         goto plot_next
@@ -959,18 +971,6 @@ plot_coin
 
 plot_prism
         PLOTSPRITE prism 0 Xposition Yposition 0
-        goto plot_next
-
-plot_slime
-        PLOTSPRITE slime0 4 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_minislime
-        PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_raven
-        PLOTSPRITE raven0 5 Xposition Yposition frame
         goto plot_next
 
 
