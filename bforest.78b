@@ -6,10 +6,11 @@
         set screenheight 224
         set doublewide on
         set collisionwrap off
+        set pauseroutine off
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
+        const debug_hud = 0
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -220,6 +221,7 @@
 
         autodim init $2400 $24FF
         autodim byte reload_map
+        autodim byte save_objects
         autodim byte map_height
         autodim byte map_width
         autodim byte peekX
@@ -232,6 +234,7 @@
         autodim byte obj_index
         autodim byte drop_rate
         autodim byte no_empty_slot
+        autodim byte menu_debounce
 
         ; ROOM HEADER
         autodim byte room
@@ -325,6 +328,7 @@ title_new_game
         game_state = STATE_FIELD
 
         ; shared_palettes
+load_shared_palettes
         P0C1 = $60 : P0C2 = $76 : P0C3 = $0F    ; purple, light purple, white -- magic HUD, torches
         P1C1 = $10 : P1C2 = $23 : P1C3 = $3B    ; dark brown, light brown, peach -- Johanna
         P2C1 = $30 : P2C2 = $45 : P2C3 = $1F    ; red, light red, gold -- HP HUD, equipment
@@ -341,6 +345,31 @@ set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
+
+menu_handler
+        game_state = STATE_MENU
+        menu_debounce = 1
+        drawwait
+        clearscreen
+        displaymode 320B
+        WSYNC = 1
+        BACKGRND = $00
+        savescreen
+
+main_menu_handler
+        if joy0fire0 && action_button = 1 then close_menu
+        if joy0fire1 && action_button = 0 then close_menu
+        if switchpause then close_menu
+        goto main
+
+close_menu
+        gosub clear_palettes
+        game_state = STATE_FIELD
+        reload_map = 1
+        save_objects = 1
+        menu_debounce = 1
+        goto load_shared_palettes ; goes to main, which loads field handler
+
 
 ;==============================================================================
 ; BANK 2
@@ -826,6 +855,29 @@ plot_raven
         PLOTSPRITE raven0 5 Xposition Yposition frame
         goto plot_next
 
+
+;==============================================================================
+; BANK 3
+;------------------------------------------------------------------------------
+; Sound Effect Data
+;==============================================================================
+        data sfx_poof2
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0a,$08,$04 ; first chunk of freq,channel,volume
+        $12,$08,$06
+        $09,$08,$08
+        $11,$08,$08
+        $08,$08,$0a
+        $10,$08,$0a
+        $07,$08,$0a
+        $0F,$08,$0a
+        $06,$08,$08
+        $0E,$08,$06
+        $05,$08,$04
+        $0D,$08,$02
+        $00,$00,$00
+end
+
 ;==============================================================================
 ; BANK 8
 ;------------------------------------------------------------------------------
@@ -916,8 +968,12 @@ load_map
         game_state = STATE_FIELD
         if tileset = T_FOREST then loadrombank 2 : gosub load_forest
         savescreen
-        gosub load_objects
-        reload_map = 0
+        if !save_objects then gosub load_objects
+        asm
+        lda #0
+        sta reload_map
+        sta save_objects
+end
         if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
         if exit_dir = EXIT_NORTH then player_Ypos = 204 : player_Ydir = DIR_UP
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
@@ -1007,8 +1063,10 @@ draw_hud
         ; plotvalue hud 0 retract_counter 2 64 13
         return
 
-menu_handler
-        goto field_handler
+open_menu
+        gosub clear_palettes
+        loadrombank 1
+        goto menu_handler
 
 followplayer
         if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
@@ -1175,6 +1233,7 @@ frames_done
 test_joy_done
         if joy0fire0 && action_button = 1 then goto open_menu
         if joy0fire1 && action_button = 0 then goto open_menu
+        if switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         gosub copy_player_props
         gosub move_object
@@ -1196,10 +1255,6 @@ check_room_boundary
         if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW
         if exit_dir then reload_map = 1
         if debug_time then BACKGRND = bg_color
-        return
-
-open_menu
-        game_state = STATE_MENU
         return
 
 player_attack
@@ -2010,6 +2065,10 @@ clear_palettes
 
 main
         drawscreen
+        if switchreset then reboot
+        if switchselect && action_button = 0 then action_button = 1 : goto main_animation_timer
+        if switchselect && action_button = 1 then action_button = 0
+main_animation_timer
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
         if game_state = STATE_TITLE then title_handler
