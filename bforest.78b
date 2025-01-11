@@ -235,6 +235,7 @@
         autodim byte drop_rate
         autodim byte no_empty_slot
         autodim byte menu_debounce
+        autodim byte select_debounce
 
         ; ROOM HEADER
         autodim byte room
@@ -2066,8 +2067,10 @@ clear_palettes
 main
         drawscreen
         if switchreset then reboot
-        if switchselect && action_button = 0 then action_button = 1 : goto main_animation_timer
-        if switchselect && action_button = 1 then action_button = 0
+        if !switchselect then select_debounce = 0
+        if switchselect && select_debounce then goto main_animation_timer
+        if switchselect && action_button = 0 then action_button = 1 : select_debounce = 1 : goto main_animation_timer
+        if switchselect && action_button = 1 then action_button = 0 : select_debounce = 1
 main_animation_timer
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
