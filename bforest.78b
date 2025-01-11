@@ -1200,6 +1200,7 @@ spawns_torch
         if rand > 128 then _spawn_food
 torch_mp_check
         if player_mp = player_max_mp then _spawn_coin
+        goto _spawn_mana
 
 _spawn_food
         object_type[index] = TYPE_FOOD
