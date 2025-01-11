@@ -1048,15 +1048,15 @@ plot_torch
         goto plot_next
 
 plot_coin
-        PLOTSPRITE coin 3 Xposition Yposition 0
+        plotsprite coin 3 Xposition Yposition 0
         goto plot_next
 
 plot_prism
-        PLOTSPRITE prism 0 Xposition Yposition 0
+        plotsprite prism 0 Xposition Yposition 0
         goto plot_next
 
 plot_food
-        PLOTSPRITE chimkin 1 Xposition Yposition 0
+        plotsprite chimkin 1 Xposition Yposition 0
         goto plot_next
 
 
