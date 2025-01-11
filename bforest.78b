@@ -236,6 +236,7 @@
         autodim byte no_empty_slot
         autodim byte menu_debounce
         autodim byte select_debounce
+        autodim byte pause_debounce
 
         ; ROOM HEADER
         autodim byte room
@@ -349,7 +350,6 @@ set_title_bottom_pal
 
 menu_handler
         game_state = STATE_MENU
-        menu_debounce = 1
         drawwait
         clearscreen
         displaymode 320B
@@ -358,9 +358,9 @@ menu_handler
         savescreen
 
 main_menu_handler
-        if joy0fire0 && action_button = 1 then close_menu
-        if joy0fire1 && action_button = 0 then close_menu
-        if switchpause then close_menu
+        if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
+        if !pause_debounce && switchpause then close_menu
         goto main
 
 close_menu
@@ -369,8 +369,8 @@ close_menu
         reload_map = 1
         save_objects = 1
         menu_debounce = 1
+        pause_debounce = 1
         goto load_shared_palettes ; goes to main, which loads field handler
-
 
 ;==============================================================================
 ; BANK 2
@@ -1067,6 +1067,8 @@ draw_hud
 open_menu
         gosub clear_palettes
         loadrombank 1
+        menu_debounce = 1
+        pause_debounce = 1
         goto menu_handler
 
 followplayer
@@ -1232,9 +1234,9 @@ frames_done
         if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
-        if joy0fire0 && action_button = 1 then goto open_menu
-        if joy0fire1 && action_button = 0 then goto open_menu
-        if switchpause then goto open_menu
+        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
+        if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         gosub copy_player_props
         gosub move_object
@@ -2068,6 +2070,9 @@ main
         drawscreen
         if switchreset then reboot
         if !switchselect then select_debounce = 0
+        if !switchpause then pause_debounce = 0
+        if !joy0fire0 && action_button = 1 then menu_debounce = 0
+        if !joy0fire1 && action_button = 0 then menu_debounce = 0
         if select_debounce then goto main_animation_timer
         if switchselect then gosub swap_action_button
 main_animation_timer
