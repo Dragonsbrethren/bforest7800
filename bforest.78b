@@ -2068,9 +2068,8 @@ main
         drawscreen
         if switchreset then reboot
         if !switchselect then select_debounce = 0
-        if switchselect && select_debounce then goto main_animation_timer
-        if switchselect && action_button = 0 then action_button = 1 : select_debounce = 1 : goto main_animation_timer
-        if switchselect && action_button = 1 then action_button = 0 : select_debounce = 1
+        if select_debounce then goto main_animation_timer
+        if switchselect then gosub swap_action_button
 main_animation_timer
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
@@ -2078,6 +2077,16 @@ main_animation_timer
         if game_state = STATE_FIELD then field_handler
         if game_state = STATE_MENU  then menu_handler
         goto main
+
+swap_action_button
+        select_debounce = 1
+        ; if the player is actively using the action button, don't swap
+        ; (shouldn't happen often since it's a console switch)
+        if player_state = STATE_ATTACK then return
+        if player_state = STATE_CHANT_START then return
+        if player_state = STATE_CHANT then return
+        if action_button then action_button = 0 : return
+        action_button = 1 : return
 
 topscreenroutine
         WSYNC=1
