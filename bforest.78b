@@ -123,6 +123,7 @@
         const TYPE_SLIME   =  6
         const TYPE_MSLIME  =  7
         const TYPE_RAVEN   =  8
+        const TYPE_FOOD    =  9
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -945,6 +946,7 @@ end
         incgraphic gfx/sprites/bar8.png 160A 0 2 1
         incgraphic gfx/sprites/coin.png 160A 0 3 2
         incgraphic gfx/sprites/prism.png 160A 0 3 2 1
+        incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -1027,6 +1029,7 @@ field_handler
         if object_type[index] = TYPE_SLIME then plot_slime
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
+        if object_type[index] = TYPE_FOOD then plot_food
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -1050,6 +1053,10 @@ plot_coin
 
 plot_prism
         PLOTSPRITE prism 0 Xposition Yposition 0
+        goto plot_next
+
+plot_food
+        PLOTSPRITE chimkin 1 Xposition Yposition 0
         goto plot_next
 
 
@@ -1147,6 +1154,7 @@ object_handler
         if !object_type[index] then object_done    ; 0 = no object
         if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_PRISM then object_done
+        if object_type[index] = TYPE_FOOD then object_done
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
@@ -1188,7 +1196,15 @@ spawns_slime
 spawns_wolf
         ; TODO: Unique wolf item drops
 spawns_torch
+        if player_hp = player_max_hp then torch_mp_check
+        if rand > 128 then _spawn_food
+torch_mp_check
         if player_mp = player_max_mp then _spawn_coin
+
+_spawn_food
+        object_type[index] = TYPE_FOOD
+        object_hp[index] = 1
+        goto object_done
 
 _spawn_mana
         object_type[index] = TYPE_PRISM
@@ -1776,8 +1792,10 @@ check_collisions
         if !object_type[index] then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
+        ; TODO: include all pickups in a range of type values
         if object_type[index] = TYPE_COIN then cc_pickup
         if object_type[index] = TYPE_PRISM then cc_pickup
+        if object_type[index] = TYPE_FOOD then cc_pickup
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
@@ -1798,6 +1816,7 @@ cc_pickup
         goto cc_next
 
 pickup_item
+        if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp : kill_object
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
         ; runs into kill_object
 
@@ -1965,6 +1984,12 @@ restore_object_props
         sta flags
         rts
 end
+
+increase_player_hp
+        dec player_hp = player_hp + hp_change
+        if player_hp > player_max_hp then player_hp = player_max_hp
+        hp_change = 0
+        goto update_hp_bar
 
 
 damage_player_hp
