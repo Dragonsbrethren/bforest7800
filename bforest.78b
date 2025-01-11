@@ -352,12 +352,19 @@ menu_handler
         game_state = STATE_MENU
         drawwait
         clearscreen
-        displaymode 320B
-        WSYNC = 1
-        BACKGRND = $00
+        displaymode 320A
+        P0C2 = $0F
+        plotchars 'Johanna' 0 56 1
+        plotchars 'HP   /' 0 64 2
+        plotchars 'MP   /' 0 64 3
+        plotchars 'The map gets plotted here' 0 28 7
+        plotchars 'Items  Magic  Equip  Relics' 0 12 12
         savescreen
 
 main_menu_handler
+        restorescreen
+        plotvalue font 0 player_hp 2 80 2
+        plotvalue font 0 player_max_hp 2 96 2
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
@@ -366,11 +373,14 @@ main_menu_handler
 close_menu
         gosub clear_palettes
         game_state = STATE_FIELD
-        reload_map = 1
-        save_objects = 1
-        menu_debounce = 1
-        pause_debounce = 1
-        goto load_shared_palettes ; goes to main, which loads field handler
+        asm
+        lda #1
+        sta reload_map
+        sta save_objects
+        sta menu_debounce
+        sta pause_debounce
+        jmp .load_shared_palettes ; goes to main, which loads field handler
+end
 
 ;==============================================================================
 ; BANK 2
@@ -966,7 +976,6 @@ load_map
         clearscreen
         displaymode 160A
         adjustvisible 0 14
-        game_state = STATE_FIELD
         if tileset = T_FOREST then loadrombank 2 : gosub load_forest
         savescreen
         if !save_objects then gosub load_objects
@@ -987,10 +996,6 @@ field_handler
         gosub object_handler
         gosub check_collisions
 
-        ; Currently only two frames of animation supported. Needs to be changed if more than 2
-        animation_frame = 0
-        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
-        
         restorescreen
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determined which sprites need to be plotted by type
@@ -2078,6 +2083,9 @@ main
 main_animation_timer
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
+        ; Currently only two frames of animation supported. Needs to be changed if more than 2
+        animation_frame = 0
+        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
         if game_state = STATE_TITLE then title_handler
         if game_state = STATE_FIELD then field_handler
         if game_state = STATE_MENU  then menu_handler
@@ -2095,6 +2103,7 @@ swap_action_button
 
 topscreenroutine
         WSYNC=1
+        if game_state = STATE_MENU then return
         BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
