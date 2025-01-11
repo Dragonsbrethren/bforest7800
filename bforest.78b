@@ -73,7 +73,25 @@
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
-        const HAIR_COLOR = $10
+
+;------------------------------------------------------------------------------
+; SHARED PALETTES
+;------------------------------------------------------------------------------
+        const PAL_DKPURP = $60
+        const PAL_LTPURP = $76
+        const PAL_WHITE  = $0F
+        const PAL_DKBRWN = $10
+        const PAL_LTBRWN = $23
+        const PAL_SKIN   = $3B
+        const PAL_DKRED  = $30
+        const PAL_LTRED  = $45
+        const PAL_GOLD   = $19
+        const PAL_DKBLUE = $91
+        const PAL_LTBLUE = $A3
+        const PAL_COPPER = $D5
+
+
+        const HAIR_COLOR = PAL_DKBRWN
         const CHANT_COLOR = $60
         const BAR_NORMAL_COLOR = $76
         const BAR_FLASH_COLOR = $79
@@ -315,8 +333,6 @@ title_init
 title_handler
         restorescreen
         adjustvisible 0 4
-        alphachars ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.!?/-:`@'
-        characterset font
 ;        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
         ; TODO: Handle, well, everything
         if joy0fire0 then action_button = 0 : goto title_new_game
@@ -328,13 +344,6 @@ title_new_game
         room_index = 17
         tileset = T_FOREST
         game_state = STATE_FIELD
-
-        ; shared_palettes
-load_shared_palettes
-        P0C1 = $60 : P0C2 = $76 : P0C3 = $0F    ; purple, light purple, white -- magic HUD, torches
-        P1C1 = $10 : P1C2 = $23 : P1C3 = $3B    ; dark brown, light brown, peach -- Johanna
-        P2C1 = $30 : P2C2 = $45 : P2C3 = $1F    ; red, light red, gold -- HP HUD, equipment
-        P3C1 = $50 : P3C2 = $55 : P3C3 = $5B    ; currently unused blues, equipment
         
         goto main
 
@@ -350,11 +359,12 @@ set_title_bottom_pal
 
 menu_handler
         game_state = STATE_MENU
-        drawwait
         clearscreen
         displaymode 320A
-        P0C2 = $0F
-        alphachars ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.!?/-:`@'
+        drawwait
+        BACKGRND = $2D
+        P0C2 = $10
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@'
         characterset font
         plotchars 'Johanna' 0 56 0
         plotchars 'HP   /' 0 64 1
@@ -366,7 +376,9 @@ menu_handler
 main_menu_handler
         restorescreen
         plotvalue font 0 player_hp 2 76 1
-        plotvalue font 0 player_max_hp 2 96 1
+        plotvalue font 0 player_max_hp 2 88 1
+        plotvalue font 0 player_mp 2 76 2
+        plotvalue font 0 player_max_mp 2 88 2
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
@@ -381,8 +393,8 @@ close_menu
         sta save_objects
         sta menu_debounce
         sta pause_debounce
-        jmp .load_shared_palettes ; goes to main, which loads field handler
 end
+        goto main ; shared palettes are now included in each tileset
 
 ;==============================================================================
 ; BANK 2
@@ -425,9 +437,12 @@ end
         incmapfile tiled/forest_room_11.tmx
 
 load_forest
-
         ; forest_palettes
         bg_color = $11                          ; brown
+        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
+        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
+        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
+        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
         P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by rocks and wolves
         P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
