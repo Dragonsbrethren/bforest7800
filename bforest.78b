@@ -354,17 +354,19 @@ menu_handler
         clearscreen
         displaymode 320A
         P0C2 = $0F
-        plotchars 'Johanna' 0 56 1
-        plotchars 'HP   /' 0 64 2
-        plotchars 'MP   /' 0 64 3
+        alphachars ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.!?/-:`@'
+        characterset font
+        plotchars 'Johanna' 0 56 0
+        plotchars 'HP   /' 0 64 1
+        plotchars 'MP   /' 0 64 2
         plotchars 'The map gets plotted here' 0 28 7
-        plotchars 'Items  Magic  Equip  Relics' 0 12 12
+        plotchars 'Items  Magic  Equipment  Relics' 0 16 12
         savescreen
 
 main_menu_handler
         restorescreen
-        plotvalue font 0 player_hp 2 80 2
-        plotvalue font 0 player_max_hp 2 96 2
+        plotvalue font 0 player_hp 2 76 1
+        plotvalue font 0 player_max_hp 2 96 1
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
