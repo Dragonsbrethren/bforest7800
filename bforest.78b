@@ -1407,28 +1407,28 @@ chant_spells_up
         chant_index = chant_index - 1
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] = DIR_UP then parse_fireball_up
+        if input_buffer[chant_index] = DIR_DOWN then parse_fireball_up
         goto chant_test_dirs
 
 chant_spells_down
         chant_index = chant_index - 1
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] = DIR_DOWN then parse_fireball_down
+        if input_buffer[chant_index] = DIR_UP then parse_fireball_down
         goto chant_test_dirs
 
 chant_spells_left
         chant_index = chant_index - 1
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] = DIR_LEFT then parse_fireball_left
+        if input_buffer[chant_index] = DIR_RIGHT then parse_fireball_left
         goto chant_test_dirs
 
 chant_spells_right
         chant_index = chant_index - 1
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] = DIR_RIGHT then parse_fireball_right
+        if input_buffer[chant_index] = DIR_LEFT then parse_fireball_right
         goto chant_test_dirs
 
 parse_fireball_up
