@@ -359,45 +359,6 @@ set_title_bottom_pal
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
 
-menu_handler
-        game_state = STATE_MENU
-        clearscreen
-        displaymode 320A
-        drawwait
-        BACKGRND = $2D
-        P0C2 = $10
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@'
-        characterset font
-        plotchars 'Johanna' 0 56 0
-        plotchars 'HP   /' 0 64 1
-        plotchars 'MP   /' 0 64 2
-        plotchars 'The map gets plotted here' 0 28 7
-        plotchars 'Items  Magic  Equipment  Relics' 0 16 12
-        savescreen
-
-main_menu_handler
-        restorescreen
-        plotvalue font 0 player_hp 2 76 1
-        plotvalue font 0 player_max_hp 2 88 1
-        plotvalue font 0 player_mp 2 76 2
-        plotvalue font 0 player_max_mp 2 88 2
-        if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
-        if !pause_debounce && switchpause then close_menu
-        goto main
-
-close_menu
-        gosub clear_palettes
-        game_state = STATE_FIELD
-        asm
-        lda #1
-        sta reload_map
-        sta save_objects
-        sta menu_debounce
-        sta pause_debounce
-end
-        goto main ; shared palettes are now included in each tileset
-
 ;==============================================================================
 ; BANK 2
 ;------------------------------------------------------------------------------
@@ -889,8 +850,78 @@ plot_raven
 ;==============================================================================
 ; BANK 3
 ;------------------------------------------------------------------------------
-; Sound Effect Data
+; Menu graphics and code
 ;==============================================================================
+        bank 3
+
+        incgraphic gfx/menu/atascii.png 320A
+        incgraphic gfx/menu/menu_bar0.png 320B 0 2
+        incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar3.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar4.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar5.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar6.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar7.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar9.png 320B 0 2
+
+menu_handler
+        game_state = STATE_MENU
+        clearscreen
+        displaymode 320B
+        drawwait
+        BACKGRND = $2D
+        P0C1 = PAL_LTBLUE
+        P0C2 = $10
+        P0C3 = PAL_LTPURP
+        P4C1 = PAL_COPPER
+        P4C2 = $10
+        P4C3 = PAL_LTRED
+        characterset atascii
+        alphachars ASCII
+        plotchars 'Johanna' 0 56 0
+        plotchars 'HP' 0 64 1
+        plotchars 'MP' 0 64 2
+        plotchars 'The map gets plotted here' 0 28 7
+        plotchars 'Items  Magic  Equipment  Relics' 0 16 12
+        savescreen
+
+main_menu_handler
+        restorescreen
+        plotsprite menu_bar0 4 24  0 hp_seg_1
+        plotsprite menu_bar0 4 32  0 hp_seg_2
+        plotsprite menu_bar0 4 40  0 hp_seg_3
+        plotsprite menu_bar0 4 48  0 hp_seg_4
+        plotsprite menu_bar0 4 56  0 hp_seg_5
+        plotsprite menu_bar0 4 64  0 hp_seg_6
+        plotsprite menu_bar0 0 24 16 mp_seg_1
+        plotsprite menu_bar0 0 32 16 mp_seg_2
+        plotsprite menu_bar0 0 40 16 mp_seg_3
+        plotsprite menu_bar0 0 48 16 mp_seg_4
+        plotsprite menu_bar0 0 56 16 mp_seg_5
+        plotsprite menu_bar0 0 64 16 mp_seg_6
+        plotvalue font 0 player_hp 2 76 1
+        plotvalue font 0 player_max_hp 2 88 1
+        plotvalue font 0 player_mp 2 76 2
+        plotvalue font 0 player_max_mp 2 88 2
+        if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
+        if !pause_debounce && switchpause then close_menu
+        goto main
+
+close_menu
+        gosub clear_palettes
+        game_state = STATE_FIELD
+        asm
+        lda #1
+        sta reload_map
+        sta save_objects
+        sta menu_debounce
+        sta pause_debounce
+end
+        goto main ; shared palettes are now included in each tileset
+
         data sfx_poof2
         $10,$10,$00 ; version, priority, frames per chunk
         $0a,$08,$04 ; first chunk of freq,channel,volume
@@ -1103,7 +1134,7 @@ draw_hud
 
 open_menu
         gosub clear_palettes
-        loadrombank 1
+        loadrombank 3
         menu_debounce = 1
         pause_debounce = 1
         goto menu_handler
@@ -2164,6 +2195,7 @@ topscreenroutine
 
 bottomscreenroutine
         WSYNC=1
+        if game_state = STATE_MENU then return
         BACKGRND=$00
         if game_state = STATE_TITLE then set_title_bottom_pal
         flash_color = $00
