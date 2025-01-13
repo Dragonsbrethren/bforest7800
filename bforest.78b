@@ -880,31 +880,29 @@ menu_handler
         P4C3 = PAL_LTRED
         characterset atascii
         alphachars ASCII
-        plotchars 'Johanna' 0 56 0
-        plotchars 'HP' 0 64 1
-        plotchars 'MP' 0 64 2
+        plotchars 'Johanna' 0 64 0
+        plotchars 'HP' 0 72 1
+        plotchars 'MP' 0 72 2
         plotchars 'The map gets plotted here' 0 28 7
         plotchars 'Items  Magic  Equipment  Relics' 0 16 12
         savescreen
 
 main_menu_handler
         restorescreen
-        plotsprite menu_bar0 4 24  0 hp_seg_1
-        plotsprite menu_bar0 4 32  0 hp_seg_2
-        plotsprite menu_bar0 4 40  0 hp_seg_3
-        plotsprite menu_bar0 4 48  0 hp_seg_4
-        plotsprite menu_bar0 4 56  0 hp_seg_5
-        plotsprite menu_bar0 4 64  0 hp_seg_6
-        plotsprite menu_bar0 0 24 16 mp_seg_1
-        plotsprite menu_bar0 0 32 16 mp_seg_2
-        plotsprite menu_bar0 0 40 16 mp_seg_3
-        plotsprite menu_bar0 0 48 16 mp_seg_4
-        plotsprite menu_bar0 0 56 16 mp_seg_5
-        plotsprite menu_bar0 0 64 16 mp_seg_6
-        plotvalue font 0 player_hp 2 76 1
-        plotvalue font 0 player_max_hp 2 88 1
-        plotvalue font 0 player_mp 2 76 2
-        plotvalue font 0 player_max_mp 2 88 2
+        plotsprite menu_bar9 4  88 16
+        plotsprite menu_bar0 4  96 16 hp_seg_1
+        plotsprite menu_bar0 4 104 16 hp_seg_2
+        plotsprite menu_bar0 4 112 16 hp_seg_3
+        plotsprite menu_bar0 4 120 16 hp_seg_4
+        plotsprite menu_bar0 4 128 16 hp_seg_5
+        plotsprite menu_bar0 4 136 16 hp_seg_6
+        plotsprite menu_bar9 0  88 32
+        plotsprite menu_bar0 0  96 32 mp_seg_1
+        plotsprite menu_bar0 0 104 32 mp_seg_2
+        plotsprite menu_bar0 0 112 32 mp_seg_3
+        plotsprite menu_bar0 0 120 32 mp_seg_4
+        plotsprite menu_bar0 0 128 32 mp_seg_5
+        plotsprite menu_bar0 0 136 32 mp_seg_6
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
