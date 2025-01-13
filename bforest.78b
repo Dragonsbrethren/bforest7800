@@ -126,6 +126,17 @@
         const TYPE_FOOD    =  9
 
 ;------------------------------------------------------------------------------
+; MENU DATA
+;------------------------------------------------------------------------------
+        const MENU_MAIN   = 0
+        const MENU_ITEMS  = 1
+        const MENU_MAGIC  = 2
+        const MENU_EQUIP  = 3
+        const MENU_RELICS = 4
+        const MENU_SETUP  = 5
+        const MENU_MAIN_MAX_OPTIONS = 4 ; setup menu cut (for now)
+
+;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
 ;------------------------------------------------------------------------------
         dim temp_hp_sign = temp1        ; tracks underflow during subtraction
@@ -254,9 +265,14 @@
         autodim byte obj_index
         autodim byte drop_rate
         autodim byte no_empty_slot
+
+        ; MENUS
         autodim byte menu_debounce
         autodim byte select_debounce
         autodim byte pause_debounce
+        autodim byte menu
+        autodim byte menu_change
+        autodim byte menu_selection
 
         ; ROOM HEADER
         autodim byte room
@@ -866,7 +882,7 @@ plot_raven
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
 
-menu_handler
+menu_init
         game_state = STATE_MENU
         clearscreen
         displaymode 320B
@@ -880,14 +896,22 @@ menu_handler
         P4C3 = PAL_LTRED
         characterset atascii
         alphachars ASCII
+        menu_change = 1
+
+menu_handler
+        if menu = MENU_MAIN && menu_change then goto plot_main_menu
+        if menu = MENU_MAIN then goto main_menu_updater
+
+plot_main_menu
         plotchars 'Johanna' 0 64 0
         plotchars 'HP' 0 72 1
         plotchars 'MP' 0 72 2
         plotchars 'The map gets plotted here' 0 28 7
         plotchars 'Items  Magic  Equipment  Relics' 0 16 12
         savescreen
+        menu_change = 0
 
-main_menu_handler
+main_menu_updater
         restorescreen
         plotsprite menu_bar9 4  88 16
         plotsprite menu_bar0 4  96 16 hp_seg_1
@@ -903,10 +927,14 @@ main_menu_handler
         plotsprite menu_bar0 0 120 32 mp_seg_4
         plotsprite menu_bar0 0 128 32 mp_seg_5
         plotsprite menu_bar0 0 136 32 mp_seg_6
+
+main_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
+        ; TODO: handle left/right input and submenu selections
         goto main
+
 
 close_menu
         gosub clear_palettes
@@ -1135,7 +1163,7 @@ open_menu
         loadrombank 3
         menu_debounce = 1
         pause_debounce = 1
-        goto menu_handler
+        goto menu_init
 
 followplayer
         if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
