@@ -870,7 +870,7 @@ plot_raven
 ;==============================================================================
         bank 3
 
-        incgraphic gfx/menu/atascii.png 320A
+        incgraphic gfx/menu/menu_font.png 320A 1 0
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
         incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
@@ -894,8 +894,8 @@ menu_init
         P4C1 = PAL_COPPER
         P4C2 = $10
         P4C3 = PAL_LTRED
-        characterset atascii
-        alphachars ASCII
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@'
         menu_change = 1
 
 menu_handler
@@ -903,11 +903,12 @@ menu_handler
         if menu = MENU_MAIN then goto main_menu_updater
 
 plot_main_menu
-        plotchars 'Johanna' 0 64 0
-        plotchars 'HP' 0 72 1
-        plotchars 'MP' 0 72 2
-        plotchars 'The map gets plotted here' 0 28 7
-        plotchars 'Items  Magic  Equipment  Relics' 0 16 12
+        gosub disable_double_wide_mode
+        plotchars 'Johanna' 0 64 0 singlewide
+        plotchars 'HP' 0 72 1 singlewide
+        plotchars 'MP' 0 72 2 singlewide
+        plotchars 'The map gets plotted here' 0 28 7 singlewide
+        plotchars 'Items  Magic  Equipment  Relics' 0 16 12 singlewide
         savescreen
         menu_change = 0
 
@@ -937,6 +938,7 @@ main_menu_controls
 
 
 close_menu
+        gosub enable_double_wide_mode
         gosub clear_palettes
         game_state = STATE_FIELD
         asm
@@ -947,6 +949,14 @@ close_menu
         sta pause_debounce
 end
         goto main ; shared palettes are now included in each tileset
+
+enable_double_wide_mode
+        sCTRL{4} = 1 : CTRL = sCTRL
+        return
+
+disable_double_wide_mode
+        sCTRL{4} = 0 : CTRL = sCTRL
+        return
 
         data sfx_poof2
         $10,$10,$00 ; version, priority, frames per chunk
