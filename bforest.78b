@@ -134,7 +134,7 @@
         const MENU_EQUIP  = 3
         const MENU_RELICS = 4
         const MENU_SETUP  = 5
-        const MENU_MAIN_MAX_OPTIONS = 4 ; setup menu cut (for now)
+        const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -270,9 +270,13 @@
         autodim byte menu_debounce
         autodim byte select_debounce
         autodim byte pause_debounce
+        autodim byte left_debounce
+        autodim byte right_debounce
         autodim byte menu
         autodim byte menu_change
         autodim byte menu_selection
+        autodim byte menu_cursor_X
+        autodim byte menu_cursor_Y
 
         ; ROOM HEADER
         autodim byte room
@@ -350,6 +354,7 @@ title_init
 
 title_handler
         restorescreen
+        savescreen
         adjustvisible 0 4
 ;        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
         ; TODO: Handle, well, everything
@@ -881,6 +886,8 @@ plot_raven
         incgraphic gfx/menu/menu_bar7.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
+        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
+        incgraphic gfx/menu/menu_cursor1.png 320A 0 1
 
 menu_init
         game_state = STATE_MENU
@@ -910,6 +917,8 @@ plot_main_menu
         plotchars 'The map gets plotted here' 0 28 7 singlewide
         plotchars 'Items  Magic  Equipment  Relics' 0 16 12 singlewide
         savescreen
+        menu_cursor_X = MENU_MAIN_ITEMS_X
+        menu_cursor_Y = MENU_MAIN_ITEMS_Y
         menu_change = 0
 
 main_menu_updater
@@ -928,13 +937,28 @@ main_menu_updater
         plotsprite menu_bar0 0 120 32 mp_seg_4
         plotsprite menu_bar0 0 128 32 mp_seg_5
         plotsprite menu_bar0 0 136 32 mp_seg_6
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 main_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
         ; TODO: handle left/right input and submenu selections
+        if !right_debounce && joy0right then menu_selection = menu_selection + 1 : right_debounce = 1
+        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0
+        if !left_debounce && joy0left then menu_selection = menu_selection - 1 : left_debounce  = 1
+        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = MENU_MAIN_MAX_OPTIONS
+        if menu_selection = 0 then menu_cursor_X = MENU_MAIN_ITEMS_X
+        if menu_selection = 1 then menu_cursor_X = MENU_MAIN_MAGIC_X
+        if menu_selection = 2 then menu_cursor_X = MENU_MAIN_EQUIP_X
+        if menu_selection = 3 then menu_cursor_X = MENU_MAIN_RELICS_X
         goto main
+
+        const MENU_MAIN_ITEMS_X = 12
+        const MENU_MAIN_ITEMS_Y = 192
+        const MENU_MAIN_MAGIC_X = 40
+        const MENU_MAIN_EQUIP_X = 68
+        const MENU_MAIN_RELICS_X = 112
 
 
 close_menu
@@ -2199,6 +2223,8 @@ main
         if !switchpause then pause_debounce = 0
         if !joy0fire0 && action_button = 1 then menu_debounce = 0
         if !joy0fire1 && action_button = 0 then menu_debounce = 0
+        if !joy0left then left_debounce = 0
+        if !joy0right then right_debounce = 0
         if select_debounce then goto main_animation_timer
         if switchselect then gosub swap_action_button
 main_animation_timer
