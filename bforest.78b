@@ -944,10 +944,13 @@ main_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
         ; TODO: handle left/right input and submenu selections
-        if !right_debounce && joy0right then menu_selection = menu_selection + 1 : right_debounce = 1
-        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0
-        if !left_debounce && joy0left then menu_selection = menu_selection - 1 : left_debounce  = 1
+        if right_debounce > MENU_HOLD_FRAMES then gosub menu_selection_right
+        if !right_debounce && joy0right then gosub menu_selection_right
+        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
+        if left_debounce > MENU_HOLD_FRAMES then gosub menu_selection_left
+        if !left_debounce && joy0left then gosub menu_selection_left
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = MENU_MAIN_MAX_OPTIONS
+menu_main_dirs_done
         if menu_selection = 0 then menu_cursor_X = MENU_MAIN_ITEMS_X
         if menu_selection = 1 then menu_cursor_X = MENU_MAIN_MAGIC_X
         if menu_selection = 2 then menu_cursor_X = MENU_MAIN_EQUIP_X
@@ -959,6 +962,15 @@ main_menu_controls
         const MENU_MAIN_MAGIC_X = 40
         const MENU_MAIN_EQUIP_X = 68
         const MENU_MAIN_RELICS_X = 112
+        const MENU_HOLD_FRAMES = 8
+
+menu_selection_right
+        menu_selection = menu_selection + 1 : right_debounce = 1
+        return
+
+menu_selection_left
+        menu_selection = menu_selection - 1 : left_debounce  = 1
+        return
 
 
 close_menu
@@ -2225,6 +2237,9 @@ main
         if !joy0fire1 && action_button = 0 then menu_debounce = 0
         if !joy0left then left_debounce = 0
         if !joy0right then right_debounce = 0
+        ; menu code prevents these from overflowing
+        if joy0left then left_debounce = left_debounce + 1
+        if joy0right then right_debounce = right_debounce + 1 
         if select_debounce then goto main_animation_timer
         if switchselect then gosub swap_action_button
 main_animation_timer
