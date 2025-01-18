@@ -877,6 +877,7 @@ plot_raven
         bank 3
 
         incgraphic gfx/menu/menu_font.png 320A 1 0
+        incgraphic gfx/menu/menu_arrows.png 320A 1 0
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
         incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
@@ -901,8 +902,6 @@ menu_init
         P4C1 = PAL_COPPER
         P4C2 = $10
         P4C3 = PAL_LTRED
-        characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         menu_change = 1
 
 menu_handler
@@ -912,7 +911,10 @@ menu_handler
 plot_main_menu
         if !menu_change then goto main_menu_updater
         gosub disable_double_wide_mode
+        clearscreen
         gosub plot_menu_border
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         plotchars 'Portrait' 0 16 1 singlewide
         plotchars 'Johanna' 0 64 0 singlewide
         plotchars 'HP' 0 72 1 singlewide
@@ -974,10 +976,15 @@ plot_magic_menu
         clearscreen
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
-        plotchars 'Fireball' 0 16 1 singlewide
-        plotchars 'Forward, Backward, Forward' 0 24 2 singlewide
-        plotchars 'Windslash' 0 16 3 singlewide
-        plotchars 'Forward, Forward Left, Left' 0 24 4 singlewide
+        plotchars 'Fireball' 0 8 1 singlewide
+        plotchars 'Windslash' 0 8 3 singlewide
+        ; TODO: Show different directions on different frames?
+        characterset menu_arrows
+        alphachars '7894 6123'
+        ; Fireball
+        plotchars '646' 0 12 2 singlewide
+        ; Windslash
+        plotchars '632' 0 12 4 singlewide
         savescreen
         menu_change = 0
 
@@ -1011,6 +1018,8 @@ menu_selection_left
         return
 
 open_main_menu
+        action_debounce = 1
+        menu_debounce = 1
         menu_change = 1
         menu = MENU_MAIN
         goto main
@@ -1030,6 +1039,8 @@ end
 
 plot_menu_border
         ; TODO: Automate this drawing?
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
         plotchars '}&' 0 152 1 singlewide
