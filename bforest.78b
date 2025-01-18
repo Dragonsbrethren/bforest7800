@@ -976,15 +976,15 @@ plot_magic_menu
         clearscreen
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
-        plotchars 'Fireball' 0 8 1 singlewide
-        plotchars 'Windslash' 0 8 3 singlewide
+        plotchars 'Fireball' 0 16 1 singlewide
+        plotchars 'Windslash' 0 16 3 singlewide
         ; TODO: Show different directions on different frames?
         characterset menu_arrows
         alphachars '7894 6123'
         ; Fireball
-        plotchars '646' 0 12 2 singlewide
+        plotchars '646' 0 24 2 singlewide
         ; Windslash
-        plotchars '632' 0 12 4 singlewide
+        plotchars '632' 0 24 4 singlewide
         savescreen
         menu_change = 0
 
