@@ -894,7 +894,6 @@ menu_init
         clearscreen
         displaymode 320B
         drawwait
-        BACKGRND = $2D
         P0C1 = PAL_LTBLUE
         P0C2 = $10
         P0C3 = PAL_LTPURP
@@ -902,7 +901,7 @@ menu_init
         P4C2 = $10
         P4C3 = PAL_LTRED
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         menu_change = 1
 
 menu_handler
@@ -911,6 +910,8 @@ menu_handler
 
 plot_main_menu
         gosub disable_double_wide_mode
+        gosub draw_menu_border
+        plotchars 'Portrait' 0 16 1 singlewide
         plotchars 'Johanna' 0 64 0 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
@@ -944,10 +945,10 @@ main_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
         ; TODO: handle left/right input and submenu selections
-        if right_debounce > MENU_HOLD_FRAMES then gosub menu_selection_right
+        if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
-        if left_debounce > MENU_HOLD_FRAMES then gosub menu_selection_left
+        if left_debounce > MENU_TAP_FRAMES then gosub menu_selection_left
         if !left_debounce && joy0left then gosub menu_selection_left
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = MENU_MAIN_MAX_OPTIONS
 menu_main_dirs_done
@@ -962,7 +963,7 @@ menu_main_dirs_done
         const MENU_MAIN_MAGIC_X = 40
         const MENU_MAIN_EQUIP_X = 68
         const MENU_MAIN_RELICS_X = 112
-        const MENU_HOLD_FRAMES = 8
+        const MENU_TAP_FRAMES = 4
 
 menu_selection_right
         menu_selection = menu_selection + 1 : right_debounce = 1
@@ -985,6 +986,36 @@ close_menu
         sta pause_debounce
 end
         goto main ; shared palettes are now included in each tileset
+
+draw_menu_border
+        ; TODO: Automate this drawing?
+        plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
+        plotchars '&{' 0   0 1 singlewide
+        plotchars '}&' 0 152 1 singlewide
+        plotchars '&{' 0   0 2 singlewide
+        plotchars '}&' 0 152 2 singlewide
+        plotchars '&{' 0   0 3 singlewide
+        plotchars '}&' 0 152 3 singlewide
+        plotchars '&{' 0   0 4 singlewide
+        plotchars '}&' 0 152 4 singlewide
+        plotchars '&{' 0   0 5 singlewide
+        plotchars '}&' 0 152 5 singlewide
+        plotchars '&{' 0   0 6 singlewide
+        plotchars '}&' 0 152 6 singlewide
+        plotchars '&{' 0   0 7 singlewide
+        plotchars '}&' 0 152 7 singlewide
+        plotchars '&{' 0   0 8 singlewide
+        plotchars '}&' 0 152 8 singlewide
+        plotchars '&{' 0   0 9 singlewide
+        plotchars '}&' 0 152 9 singlewide
+        plotchars '&{' 0   0 10 singlewide
+        plotchars '}&' 0 152 10 singlewide
+        plotchars '&{' 0   0 11 singlewide
+        plotchars '}&' 0 152 11 singlewide
+        plotchars '&{' 0   0 12 singlewide
+        plotchars '}&' 0 152 12 singlewide
+        plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
+        return
 
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
@@ -2265,14 +2296,14 @@ swap_action_button
 
 topscreenroutine
         WSYNC=1
-        if game_state = STATE_MENU then return
+        if game_state = STATE_MENU then WSYNC = 1 : BACKGRND = $2D : return
         BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
 
 bottomscreenroutine
         WSYNC=1
-        if game_state = STATE_MENU then return
+        if game_state = STATE_MENU then BACKGRND = $10 : return
         BACKGRND=$00
         if game_state = STATE_TITLE then set_title_bottom_pal
         flash_color = $00
