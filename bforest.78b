@@ -267,6 +267,7 @@
         autodim byte no_empty_slot
 
         ; MENUS
+        autodim byte action_debounce
         autodim byte menu_debounce
         autodim byte select_debounce
         autodim byte pause_debounce
@@ -905,12 +906,13 @@ menu_init
         menu_change = 1
 
 menu_handler
-        if menu = MENU_MAIN && menu_change then goto plot_main_menu
-        if menu = MENU_MAIN then goto main_menu_updater
+        if menu = MENU_MAIN then goto plot_main_menu
+        if menu = MENU_MAGIC then goto plot_magic_menu
 
 plot_main_menu
+        if !menu_change then goto main_menu_updater
         gosub disable_double_wide_mode
-        gosub draw_menu_border
+        gosub plot_menu_border
         plotchars 'Portrait' 0 16 1 singlewide
         plotchars 'Johanna' 0 64 0 singlewide
         plotchars 'HP' 0 72 1 singlewide
@@ -944,6 +946,8 @@ main_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
         if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then open_submenu
+        if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
         ; TODO: handle left/right input and submenu selections
         if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
@@ -956,6 +960,39 @@ menu_main_dirs_done
         if menu_selection = 1 then menu_cursor_X = MENU_MAIN_MAGIC_X
         if menu_selection = 2 then menu_cursor_X = MENU_MAIN_EQUIP_X
         if menu_selection = 3 then menu_cursor_X = MENU_MAIN_RELICS_X
+        goto main
+
+open_submenu
+        action_debounce = 1
+        menu_change = 1
+        if menu_selection = 1 then goto plot_magic_menu
+        goto main
+
+plot_magic_menu
+        menu = MENU_MAGIC
+        if !menu_change then goto magic_menu_updater
+        clearscreen
+;        gosub disable_double_wide_mode
+        gosub plot_menu_border
+        plotchars 'Fireball' 0 16 1 singlewide
+        plotchars 'Forward, Backward, Forward' 0 24 2 singlewide
+        plotchars 'Windslash' 0 16 3 singlewide
+        plotchars 'Forward, Forward Left, Left' 0 24 4 singlewide
+        savescreen
+        menu_change = 0
+
+magic_menu_updater
+        restorescreen
+
+magic_menu_controls
+        ; Either joystick button can go back to the main menu
+        ; Maybe have an Exit "button" always highlighted to signify this?
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 then open_main_menu
+        if !action_debounce && joy0fire1 then open_main_menu
         goto main
 
         const MENU_MAIN_ITEMS_X = 12
@@ -973,6 +1010,10 @@ menu_selection_left
         menu_selection = menu_selection - 1 : left_debounce  = 1
         return
 
+open_main_menu
+        menu_change = 1
+        menu = MENU_MAIN
+        goto main
 
 close_menu
         gosub enable_double_wide_mode
@@ -987,7 +1028,7 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
-draw_menu_border
+plot_menu_border
         ; TODO: Automate this drawing?
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
@@ -1237,6 +1278,8 @@ draw_hud
 
 open_menu
         gosub clear_palettes
+        ; TODO: Should previously opened submenu be remembered?
+        menu = MENU_MAIN
         loadrombank 3
         menu_debounce = 1
         pause_debounce = 1
@@ -2264,7 +2307,9 @@ main
         if switchreset then reboot
         if !switchselect then select_debounce = 0
         if !switchpause then pause_debounce = 0
+        if !joy0fire0 && action_button = 0 then action_debounce = 0
         if !joy0fire0 && action_button = 1 then menu_debounce = 0
+        if !joy0fire1 && action_button = 1 then action_debounce = 0
         if !joy0fire1 && action_button = 0 then menu_debounce = 0
         if !joy0left then left_debounce = 0
         if !joy0right then right_debounce = 0
