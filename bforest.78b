@@ -920,7 +920,7 @@ plot_main_menu
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
         plotchars 'The map gets plotted here' 0 28 7 singlewide
-        plotchars 'Items  Magic  Equipment  Relics' 0 16 12 singlewide
+        plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
         savescreen
         menu_cursor_X = MENU_MAIN_ITEMS_X
         menu_cursor_Y = MENU_MAIN_ITEMS_Y
@@ -1005,8 +1005,8 @@ magic_menu_controls
         const MENU_MAIN_ITEMS_X = 12
         const MENU_MAIN_ITEMS_Y = 192
         const MENU_MAIN_MAGIC_X = 40
-        const MENU_MAIN_EQUIP_X = 68
-        const MENU_MAIN_RELICS_X = 112
+        const MENU_MAIN_EQUIP_X = 72
+        const MENU_MAIN_RELICS_X = 116
         const MENU_TAP_FRAMES = 4
 
 menu_selection_right
