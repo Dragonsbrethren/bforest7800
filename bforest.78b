@@ -115,15 +115,16 @@
 ;==============================================================================
 ; OBJECT DATA
 ;==============================================================================
-        const TYPE_WOLF    =  1
-        const TYPE_TORCH   =  2
-        const TYPE_SPAWNER =  3
-        const TYPE_COIN    =  4
-        const TYPE_PRISM   =  5
-        const TYPE_SLIME   =  6
-        const TYPE_MSLIME  =  7
-        const TYPE_RAVEN   =  8
-        const TYPE_FOOD    =  9
+        const TYPE_WOLF     =  1
+        const TYPE_TORCH    =  2
+        const TYPE_SPAWNER  =  3
+        const TYPE_COIN     =  4
+        const TYPE_PRISM    =  5
+        const TYPE_SLIME    =  6
+        const TYPE_MSLIME   =  7
+        const TYPE_RAVEN    =  8
+        const TYPE_FOOD     =  9
+        const TYPE_FIREBALL = 10
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
@@ -1136,6 +1137,11 @@ end
         incgraphic gfx/sprites/coin.png 160A 0 3 2
         incgraphic gfx/sprites/prism.png 160A 0 3 2 1
         incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
+        incgraphic gfx/sprites/fireball0.png 160A
+        incgraphic gfx/sprites/fireball1.png 160A
+        incgraphic gfx/sprites/fireball2.png 160A
+        incgraphic gfx/sprites/fireball3.png 160A
+        incgraphic gfx/sprites/fireball4.png 160A
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -1221,6 +1227,7 @@ field_handler
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_FOOD then plot_food
+        if object_type[index] = TYPE_FIREBALL then plot_fireball
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -1255,6 +1262,10 @@ plot_prism
 
 plot_food
         plotsprite chimkin 1 Xposition Yposition 0
+        goto plot_next
+
+plot_fireball
+        plotsprite fireball0 2 Xposition Yposition animation_frame
         goto plot_next
 
 
@@ -1362,7 +1373,7 @@ object_handler
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
-        if object_type[index] = TYPE_RAVEN then gosub raven_ai     
+        if object_type[index] = TYPE_RAVEN then gosub raven_ai
         gosub move_object
         gosub restore_object_props
 object_done
@@ -1631,28 +1642,28 @@ parse_fireball_up
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_UP then chant_test_dirs
         player_facing = DIR_UP : player_frame = FRAME_UP
-        goto summon_test_wolf
+        goto cast_fireball
 
 parse_fireball_down
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_DOWN then chant_test_dirs
         player_frame = FRAME_DOWN
-        goto summon_test_wolf
+        goto cast_fireball
 
 parse_fireball_left
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_LEFT then chant_test_dirs
         player_facing = DIR_LEFT : player_frame = FRAME_LEFT
-        goto summon_test_wolf
+        goto cast_fireball
 
 parse_fireball_right
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_RIGHT then chant_test_dirs
         player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
-        goto summon_test_wolf
+        goto cast_fireball
 
 chant_done
         player_exiting_chant = 1
@@ -1673,29 +1684,43 @@ end
         gosub decrease_player_mp
         goto test_joy_done
 
-summon_test_wolf
+cast_fireball
         dec mp_change = $01
         gosub test_spell_cost
         if !mp_change then test_joy_done ; allow player to try a different input
-        object_type[14] = TYPE_WOLF
-        if player_facing = DIR_UP then wolf_spell_up
-        if player_facing = DIR_DOWN then wolf_spell_down
-        if player_facing = DIR_LEFT then wolf_spell_left
-wolf_spell_right
+        object_type[14] = TYPE_FIREBALL
+        object_vel_cap[14] = 2.0
+        object_frame[14] = animation_frame
+        if player_facing = DIR_UP then cast_fireball_up
+        if player_facing = DIR_DOWN then cast_fireball_down
+        if player_facing = DIR_LEFT then cast_fireball_left
+cast_fireball_right
         object_Xpos[14] = player_Xpos + 14
         object_Ypos[14] = player_Ypos
+        object_Xvel[14] = 1
+        object_Yvel[14] = 0
+        object_Xdir[14] = DIR_RIGHT
         goto chant_done
-wolf_spell_up
-        object_Xpos[14] = player_Xpos
-        object_Ypos[14] = player_Ypos - 18
+cast_fireball_up
+        object_Xpos[14] = player_Xpos + 2
+        object_Ypos[14] = player_Ypos - 10
+        object_Xvel[14] = 0
+        object_Yvel[14] = 1
+        object_Ydir[14] = DIR_UP
         goto chant_done
-wolf_spell_down
-        object_Xpos[14] = player_Xpos
-        object_Ypos[14] = player_Ypos + 18
+cast_fireball_down
+        object_Xpos[14] = player_Xpos + 2
+        object_Ypos[14] = player_Ypos + 10
+        object_Xvel[14] = 0
+        object_Yvel[14] = 1
+        object_Ydir[14] = DIR_DOWN
         goto chant_done
-wolf_spell_left
-        object_Xpos[14] = player_Xpos - 14
+cast_fireball_left
+        object_Xpos[14] = player_Xpos - 8
         object_Ypos[14] = player_Ypos
+        object_Xvel[14] = 1
+        object_Yvel[14] = 0
+        object_Xdir[14] = DIR_LEFT
         goto chant_done
 
 decelerate_player
@@ -1984,6 +2009,7 @@ check_collisions
         if object_type[index] = TYPE_COIN then cc_pickup
         if object_type[index] = TYPE_PRISM then cc_pickup
         if object_type[index] = TYPE_FOOD then cc_pickup
+        if object_type[index] = TYPE_FIREBALL then cc_next ; need to test colisions with enemies
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
