@@ -1693,16 +1693,10 @@ wolf_spell_left
 
 decelerate_player
         asm
-        lda player_friction
-        beq decel_preturn
         lda player_Xvel
         beq decel_pY
         pha
-;        lda player_Xvel_lo
         sec
-;        sbc player_friction_lo
-;        sta player_Xvel_lo
-;        lda player_Xvel_hi
         sbc player_friction_hi
         sta player_Xvel_hi
         pla
@@ -1716,11 +1710,7 @@ decel_pY
         lda player_Yvel_hi
         beq decel_preturn
         pha
-        lda player_Yvel_lo
         sec
-        sbc player_friction_lo
-        sta player_Yvel_lo
-        lda player_Yvel_hi
         sbc player_friction_hi
         sta player_Yvel_hi
         pla
@@ -1742,11 +1732,7 @@ decelerate_object
         lda object_Xvel,x
         beq decel_Y
         pha
-        lda object_Xvel_lo,x
         sec
-        sbc object_friction_lo,x
-        sta object_Xvel_lo,x
-        lda object_Xvel_hi,x
         sbc object_friction_hi,x
         sta object_Xvel_hi,x
         pla
@@ -1760,11 +1746,7 @@ decel_Y
         lda object_Yvel_hi,x
         beq decel_return
         pha
-        lda object_Yvel_lo,x
         sec
-        sbc object_friction_lo,x
-        sta object_Yvel_lo,x
-        lda object_Yvel_hi,x
         sbc object_friction_hi,x
         sta object_Yvel_hi,x
         pla
