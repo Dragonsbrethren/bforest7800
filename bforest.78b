@@ -265,6 +265,7 @@
         autodim byte obj_index
         autodim byte drop_rate
         autodim byte no_empty_slot
+        autodim byte torch_reblock
 
         ; MENUS
         autodim byte action_debounce
@@ -1034,6 +1035,7 @@ close_menu
         sta save_objects
         sta menu_debounce
         sta pause_debounce
+        sta torch_reblock
 end
         goto main ; shared palettes are now included in each tileset
 
@@ -1200,6 +1202,8 @@ field_handler
         if reload_map = 1 then goto load_map
         gosub player_handler
         gosub object_handler
+        ; set by close menu, needed to make torches block movement after menu access
+        torch_reblock = 0
         gosub check_collisions
 
         restorescreen
@@ -1366,8 +1370,11 @@ object_done
         return
 
 torch_tile_block
- 
+        ; flags are used to track if the tile has already been blocked
+        ; however, this fails when the map reloads after the menu is opened
+        if torch_reblock then goto torch_tile_block_get_pos
         if object_flags[index] then object_done
+torch_tile_block_get_pos
         gosub get_torch_pos
         pokechar current_map peekX peekY 20 14 10
         object_flags[index] = 1
