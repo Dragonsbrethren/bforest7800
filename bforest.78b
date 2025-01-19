@@ -228,6 +228,9 @@
         autodim byte flash_color
         autodim byte player_exiting_chant
         autodim byte sword_hit
+        autodim byte mtarget
+        autodim byte magic_Xpos
+        autodim byte magic_Ypos
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -1691,6 +1694,7 @@ cast_fireball
         object_type[14] = TYPE_FIREBALL
         object_vel_cap[14] = 2.0
         object_frame[14] = animation_frame
+        object_damage[14] = 2
         if player_facing = DIR_UP then cast_fireball_up
         if player_facing = DIR_DOWN then cast_fireball_down
         if player_facing = DIR_LEFT then cast_fireball_left
@@ -2009,7 +2013,7 @@ check_collisions
         if object_type[index] = TYPE_COIN then cc_pickup
         if object_type[index] = TYPE_PRISM then cc_pickup
         if object_type[index] = TYPE_FOOD then cc_pickup
-        if object_type[index] = TYPE_FIREBALL then cc_next ; need to test colisions with enemies
+        if object_type[index] = TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
@@ -2058,13 +2062,42 @@ sword_damage
         object_hp[index] = temp_hp
         return
 
+magic_collision
+        for mtarget = 0 to 15
+        if !object_type[mtarget] then magic_cc_next
+        Xposition = object_Xpos[mtarget]
+        Yposition = object_Ypos[mtarget]
+        magic_Xpos = object_Xpos[index]
+        magic_Ypos = object_Ypos[index]
+        ; TODO: include all pickups in a range of type values
+        if object_type[mtarget] = TYPE_COIN then magic_cc_next
+        if object_type[mtarget] = TYPE_PRISM then magic_cc_next
+        if object_type[mtarget] = TYPE_FOOD then magic_cc_next
+        if object_type[mtarget] = TYPE_FIREBALL then magic_cc_next
+        if object_type[mtarget] = TYPE_SPAWNER then magic_cc_next
+        if boxcollision(Xposition, Yposition, 12, 16, magic_Xpos, magic_Ypos, 8, 8) then goto magic_damage
+magic_cc_next
+        next
+        return
+magic_damage
+        temp_hp = object_hp[mtarget]
+        temp1 = temp_hp
+        hp_change = object_damage[index]
+        gosub decrease_hp
+        if temp1 > temp_hp then temp_hp = 0
+        object_hp[mtarget] = temp_hp
+        if !object_hp[mtarget] then object_type[mtarget] = 0
+        ; TODO: Poof away the fireball
+        object_frame[index] = 3
+        return
+
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
         if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
-        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
-        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
-        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
-        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
+;        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
+;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
+;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
+;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 pc_damage
         ; avoid a tail call with goto
         player_flags{0} = 1
