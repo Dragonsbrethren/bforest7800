@@ -114,17 +114,17 @@
 
 ;==============================================================================
 ; OBJECT DATA
-;==============================================================================
-        const TYPE_WOLF     =  1
-        const TYPE_TORCH    =  2
-        const TYPE_SPAWNER  =  3
-        const TYPE_COIN     =  4
-        const TYPE_PRISM    =  5
+;==============================================================================0
+        const TYPE_TORCH    =  1
+        const TYPE_WOLF     =  2
         const TYPE_SLIME    =  6
         const TYPE_MSLIME   =  7
         const TYPE_RAVEN    =  8
-        const TYPE_FOOD     =  9
-        const TYPE_FIREBALL = 10
+        const TYPE_SPAWNER  = 128
+        const TYPE_FIREBALL = 129
+        const TYPE_COIN     = 200
+        const TYPE_PRISM    = 201
+        const TYPE_FOOD     = 202
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
@@ -2063,33 +2063,7 @@ sword_damage
         return
 
 magic_collision
-        for mtarget = 0 to 15
-        if !object_type[mtarget] then magic_cc_next
-        Xposition = object_Xpos[mtarget]
-        Yposition = object_Ypos[mtarget]
-        magic_Xpos = object_Xpos[index]
-        magic_Ypos = object_Ypos[index]
-        ; TODO: include all pickups in a range of type values
-        if object_type[mtarget] = TYPE_COIN then magic_cc_next
-        if object_type[mtarget] = TYPE_PRISM then magic_cc_next
-        if object_type[mtarget] = TYPE_FOOD then magic_cc_next
-        if object_type[mtarget] = TYPE_FIREBALL then magic_cc_next
-        if object_type[mtarget] = TYPE_SPAWNER then magic_cc_next
-        if boxcollision(Xposition, Yposition, 12, 16, magic_Xpos, magic_Ypos, 8, 8) then goto magic_damage
-magic_cc_next
-        next
-        return
-magic_damage
-        temp_hp = object_hp[mtarget]
-        temp1 = temp_hp
-        hp_change = object_damage[index]
-        gosub decrease_hp
-        if temp1 > temp_hp then temp_hp = 0
-        object_hp[mtarget] = temp_hp
-        if !object_hp[mtarget] then object_type[mtarget] = 0
-        ; TODO: Poof away the fireball
-        object_frame[index] = 3
-        return
+        inline magic_collision.asm
 
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
