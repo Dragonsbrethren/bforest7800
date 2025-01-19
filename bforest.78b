@@ -2217,7 +2217,6 @@ update_hp_bar
 increase_player_mp
         dec player_mp = player_mp + mp_change
         if player_mp > player_max_mp then player_mp = player_max_mp
-        mp_change = 0
         goto update_mp_bar
 
 decrease_player_mp
@@ -2227,6 +2226,7 @@ decrease_player_mp
         if player_mp > temp1 then player_mp = 0
 
 update_mp_bar
+        mp_change = 0
         dec temp1 = player_mp
         dec mp_seg_1 = player_mp
         if mp_seg_1 > temp1 then mp_seg_1 = 0
