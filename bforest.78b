@@ -57,10 +57,10 @@
 
         const STATE_STAND       = 0
         const STATE_MOVING      = 1
-        const STATE_ATTACK      = 2
-        const STATE_CHANT_START = 3
-        const STATE_CHANT       = 4
-        const STATE_KNOCKBACK   = 5
+        const STATE_ATTACK      = 3
+        const STATE_CHANT_START = 4
+        const STATE_CHANT       = 5
+        const STATE_KNOCKBACK   = 2
 
         const FRAME_UP    = 2
         const FRAME_DOWN  = 0
@@ -2366,9 +2366,7 @@ swap_action_button
         select_debounce = 1
         ; if the player is actively using the action button, don't swap
         ; (shouldn't happen often since it's a console switch)
-        if player_state = STATE_ATTACK then return
-        if player_state = STATE_CHANT_START then return
-        if player_state = STATE_CHANT then return
+        if player_state >= STATE_ATTACK then return
         if action_button then action_button = 0 : return
         action_button = 1 : return
 
