@@ -634,8 +634,9 @@ tw_next inx
         beq tw_done
         sta walkable
 tw_done
-        jmp test_floatable_forest
-        jmp .walkable_return
+        lda flags
+        and #%00010000
+        bne tf_done
 
 test_floatable_forest
         ldx #0
@@ -675,7 +676,7 @@ end
 end
 
         data forest_floatable_tiles
-        $22, $24, $28, $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
+        $22, $24, $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
 end
 
 ;==============================================================================
