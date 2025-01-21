@@ -10,7 +10,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -290,8 +290,11 @@
         autodim byte exit_dir
         autodim byte music
         autodim byte walkable
+        autodim byte floatable
         autodim byte walkable_1
+        autodim byte floatable_1
         autodim byte walkable_2
+        autodim byte floatable_2
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index
@@ -611,29 +614,52 @@ end
 test_walkable_forest
         asm
         ldx #0
-.loop   lda forest_walkable_tiles,x
+tw_loop lda forest_walkable_tiles,x
         cmp move_tile_1
-        bne .tile2
+        bne twtile2
         pha
         lda #1
         sta walkable_1
         pla
-.tile2  cmp move_tile_2
-        bne .next
+twtile2 cmp move_tile_2
+        bne tw_next
         lda #1
         sta walkable_2
-.next   inx
+tw_next inx
         cpx #forest_walkable_tiles_length
-        bne .loop
+        bne tw_loop
         lda walkable_1
-        beq .done
+        beq tw_done
         lda walkable_2
-        beq .done
-        lda #1
+        beq tw_done
         sta walkable
-.done
+tw_done
+        jmp test_floatable_forest
+        jmp .walkable_return
+
+test_floatable_forest
+        ldx #0
+tf_loop   lda forest_floatable_tiles,x
+        cmp move_tile_1
+        bne tftile2
+        pha
+        lda #1
+        sta floatable_1
+        pla
+tftile2 cmp move_tile_2
+        bne tf_next
+        lda #1
+        sta floatable_2
+tf_next inx
+        cpx #forest_floatable_tiles_length
+        bne tf_loop
+        lda floatable_1
+        beq tf_done
+        lda floatable_2
+        beq tf_done
+        sta floatable
+tf_done jmp .walkable_return
 end
-        goto walkable_return
 ;        for walk_index = 0 to forest_walkable_tiles_length
 ;        walk_test = forest_walkable_tiles[walk_index]
 ;        if walk_test = move_tile_1 then walkable_1 = 1
@@ -646,6 +672,10 @@ end
 
         data forest_walkable_tiles
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
+end
+
+        data forest_floatable_tiles
+        $22, $24, $28, $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
 end
 
 ;==============================================================================
@@ -1695,6 +1725,7 @@ cast_fireball
         object_vel_cap[14] = 2.0
         object_frame[14] = animation_frame
         object_damage[14] = 2
+        object_flags[14] = %0010000
         if player_facing = DIR_UP then cast_fireball_up
         if player_facing = DIR_DOWN then cast_fireball_down
         if player_facing = DIR_LEFT then cast_fireball_left
@@ -1855,6 +1886,9 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !flags{4} then test_walkable_up
+        if floatable then move_up
+test_walkable_up
         if !walkable then return
 move_up
         Yposition = Yposition - Yvelocity_hi
@@ -1896,6 +1930,9 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !flags{4} then test_walkable_down
+        if floatable then move_down
+test_walkable_down
         if !walkable then return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -1939,6 +1976,9 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !flags{4} then test_walkable_left
+        if floatable then move_left
+test_walkable_left
         if !walkable then return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -1982,6 +2022,9 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !flags{4} then test_walkable_right
+        if floatable then move_right
+test_walkable_right
         if !walkable then return
 move_right
         Xposition = Xposition + Xvelocity_hi
