@@ -49,8 +49,26 @@
         sta object_hp,y
         bne .magic_damage_done
         ; TODO: multi-purpose kill object that preserves index
+        lda object_type,y
+        cmp #TYPE_TORCH
+        beq .magic_killed_torch
+.magic_kill_object
         lda #0
-        sta object_type,y
         sta object_type,x
+        ; change to spawner
+        lda object_type,y
+        sta object_flags,y
+        lda #TYPE_SPAWNER
+        sta object_type,y
 .magic_damage_done
         rts
+
+.magic_killed_torch
+        ; TODO: Rewrite subroutines this calls to preserve x/y
+        tya
+        pha
+        jsr .kill_torch
+        pla
+        tay
+        ldx index
+        jmp .magic_kill_object

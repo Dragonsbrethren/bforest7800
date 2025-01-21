@@ -679,6 +679,16 @@ end
         $22, $24, $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
 end
 
+torch_tile_block_forest
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 forest_floatable_tiles
+        return
+
+torch_tile_unblock_forest
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 forest_walkable_tiles
+        return
+
 ;==============================================================================
 ; WOLF AI
 ;------------------------------------------------------------------------------
@@ -1421,7 +1431,7 @@ torch_tile_block
         if object_flags[index] then object_done
 torch_tile_block_get_pos
         gosub get_torch_pos
-        pokechar current_map peekX peekY 20 14 10
+        if tileset = T_FOREST then gosub torch_tile_block_forest
         object_flags[index] = 1
         goto object_done
 
@@ -2086,8 +2096,7 @@ kill_object
         ; TODO: Death animation
         if object_type[index] <> TYPE_TORCH then change_to_spawner
         ; torches make their tile walkable
-        gosub get_torch_pos
-        pokechar current_map peekX peekY 20 14 0
+        gosub kill_torch
 change_to_spawner
         if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
         ; switch the object's flags to its old type and its type to a spwaner
@@ -2108,6 +2117,11 @@ sword_damage
 
 magic_collision
         inline magic_collision.asm
+
+kill_torch
+        gosub get_torch_pos
+        if tileset = T_FOREST then gosub torch_tile_unblock_forest
+        return
 
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles
