@@ -1309,7 +1309,7 @@ plot_food
         goto plot_next
 
 plot_fireball
-        plotsprite fireball0 2 Xposition Yposition animation_frame
+        plotsprite fireball0 2 Xposition Yposition frame
         goto plot_next
 
 
@@ -1381,27 +1381,9 @@ go_to_destination
         return
 
 swoop_X
-        gosub get_player_dir
-        gosub get_player_pos
-        if Ydirection = DIR_DOWN then Ydestination = Ydestination + 32
-        Ydestination = Ydestination - 32
-swoop_X_vel
-        Xvelocity = Xvelocity + move_speed
-        Yvelocity = Yvelocity + move_speed
-        flags{3} = 1
         return
 
 swoop_Y
-        gosub get_player_dir
-        gosub get_player_pos
-        if Xdirection = DIR_LEFT then Xdestination = Xdestination - 16 : swoop_Y_vel
-        Xdestination = Xdestination + 16
-swoop_Y_vel
-        temp3 = move_speed / 2
-        temp4 = move_speed + move_speed
-        Xvelocity = Xvelocity + temp3
-        Yvelocity = Yvelocity + temp4
-        flags{3} = 1
         return
 
 object_handler
@@ -1418,11 +1400,35 @@ object_handler
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
         if object_type[index] = TYPE_RAVEN then gosub raven_ai
+        if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
         gosub move_object
         gosub restore_object_props
 object_done
         next
         return
+
+;==============================================================================
+; FIREBALL AI
+;------------------------------------------------------------------------------
+; Fireballs poof out of existence when velocities = 0
+;==============================================================================
+        const FIREBALL_MAX_FRAMES = 4
+fireball_ai
+        if Xvelocity then fireball_animate
+        if Yvelocity then fireball_animate
+        object_timer[index] = ANIM_TIME
+        object_timer[index] = object_timer[index] - 1
+        if object_timer[index] then fireball_done
+        frame = frame + 1
+        if object_frame[index] < FIREBALL_MAX_FRAMES then return
+        object_type[index] = 0
+        return
+fireball_animate
+        frame = 0
+        if animation_frame then frame = 1
+fireball_done
+        return
+
 
 torch_tile_block
         ; flags are used to track if the tile has already been blocked
@@ -1951,9 +1957,10 @@ end
         if !flags{4} then test_walkable_up
         if floatable then move_up
 test_walkable_up
-        if !walkable then return
+        if !walkable then Yvelocity = 0 : return
 move_up
         Yposition = Yposition - Yvelocity_hi
+        if Yposition > 224 then move_down
         return
 
 move_test_down
@@ -1995,9 +2002,10 @@ end
         if !flags{4} then test_walkable_down
         if floatable then move_down
 test_walkable_down
-        if !walkable then return
+        if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
+        if Yposition > 224 then move_up
         return
 
 move_test_left
@@ -2041,9 +2049,10 @@ end
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
-        if !walkable then return
+        if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
+        if Xposition > 160 then move_right
         return
 
 move_test_right
@@ -2087,9 +2096,10 @@ end
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
-        if !walkable then return
+        if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
+        if Xposition > 160 then move_left
         return
         
 move_return
