@@ -10,7 +10,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
+        const debug_hud = 0
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -1729,45 +1729,96 @@ end
         goto test_joy_done
 
 cast_fireball
-        dec mp_change = $01
-        gosub test_spell_cost
-        if !mp_change then test_joy_done ; allow player to try a different input
-        object_type[14] = TYPE_FIREBALL
-        object_vel_cap[14] = 2.0
-        object_frame[14] = animation_frame
-        object_damage[14] = 2
-        object_flags[14] = %0010000
-        if player_facing = DIR_UP then cast_fireball_up
-        if player_facing = DIR_DOWN then cast_fireball_down
-        if player_facing = DIR_LEFT then cast_fireball_left
+        asm
+        lda #1
+        sta mp_change
+        jsr .test_spell_cost
+        bne .load_fireball_data
+        jmp .test_joy_done ; allow player to try a different input
+.load_fireball_data
+        ldx #14
+        lda #TYPE_FIREBALL
+        sta object_type,x
+        lda #2
+        sta object_vel_cap_hi,x
+        lda #0
+        sta object_vel_cap_lo,x
+        lda #2
+        sta object_damage,x
+        lda #%00010000
+        sta object_flags,x
+        lda player_facing
+        cmp #DIR_UP
+        beq cast_fireball_up
+        cmp #DIR_DOWN
+        beq cast_fireball_down
+        cmp #DIR_LEFT
+        beq cast_fireball_left
 cast_fireball_right
-        object_Xpos[14] = player_Xpos + 14
-        object_Ypos[14] = player_Ypos
-        object_Xvel[14] = 1
-        object_Yvel[14] = 0
-        object_Xdir[14] = DIR_RIGHT
-        goto chant_done
+        sta object_Xdir,x
+        lda player_Xpos
+        clc
+        adc #14
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,x
+        lda #1
+        sta object_Xvel_hi,x
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        jmp .chant_done
 cast_fireball_up
-        object_Xpos[14] = player_Xpos + 2
-        object_Ypos[14] = player_Ypos - 10
-        object_Xvel[14] = 0
-        object_Yvel[14] = 1
-        object_Ydir[14] = DIR_UP
-        goto chant_done
+        sta object_Ydir,x
+        lda player_Xpos
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos
+        sec
+        sbc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        sta object_Yvel_lo,x
+        lda #1
+        sta object_Yvel_hi,x
+        jmp .chant_done
 cast_fireball_down
-        object_Xpos[14] = player_Xpos + 2
-        object_Ypos[14] = player_Ypos + 10
-        object_Xvel[14] = 0
-        object_Yvel[14] = 1
-        object_Ydir[14] = DIR_DOWN
-        goto chant_done
+        sta object_Ydir,x
+        lda player_Xpos
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos
+        clc
+        adc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        sta object_Yvel_lo,x
+        lda #1
+        sta object_Yvel_hi,x
+        jmp .chant_done
 cast_fireball_left
-        object_Xpos[14] = player_Xpos - 8
-        object_Ypos[14] = player_Ypos
-        object_Xvel[14] = 1
-        object_Yvel[14] = 0
-        object_Xdir[14] = DIR_LEFT
-        goto chant_done
+        sta object_Xdir,x
+        lda player_Xpos
+        sec
+        sbc #8
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,x
+        lda #1
+        sta object_Xvel_hi,x
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        jmp .chant_done
+end
 
 decelerate_player
         asm

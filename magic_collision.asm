@@ -65,10 +65,15 @@
 
 .magic_killed_torch
         ; TODO: Rewrite subroutines this calls to preserve x/y
+        txa
+        pha
         tya
         pha
+        sta index       ; overwrite current index for kill torch subroutine
         jsr .kill_torch
         pla
+        sta index       ; restore index
         tay
-        ldx index
+        pla
+        tax
         jmp .magic_kill_object
