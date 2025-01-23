@@ -1387,25 +1387,43 @@ swoop_Y
         return
 
 object_handler
-        for index = 0 to 15
-        if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
-        if object_type[index] = TYPE_PRISM then object_done
-        if object_type[index] = TYPE_FOOD then object_done
-        if object_type[index] = TYPE_SPAWNER then spawn_object
-        if object_type[index] = TYPE_TORCH then torch_tile_block
-        gosub copy_object_props 
-        gosub decelerate_object
-        if object_type[index] = TYPE_WOLF then gosub wolf_ai
-        if object_type[index] = TYPE_SLIME then gosub slime_ai
-        if object_type[index] = TYPE_MSLIME then gosub slime_ai
-        if object_type[index] = TYPE_RAVEN then gosub raven_ai
-        if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
-        gosub move_object
-        gosub restore_object_props
-object_done
-        next
-        return
+        asm
+        ldx #MAX_OBJECTS
+o_loop  lda object_type,x
+        beq .object_done
+        cmp #TYPE_SPAWNER
+        bne o_torch
+        jmp .spawn_object
+o_torch cmp #TYPE_TORCH
+        bne o_range
+        jmp .torch_tile_block
+o_range bmi .object_done
+        stx index
+        jsr .copy_object_props
+        jsr .decelerate_object
+o_fireb cmp #TYPE_FIREBALL
+        bne o_wolf
+        jsr .fireball_ai
+o_wolf  cmp #TYPE_WOLF
+        bne o_slime
+        jsr .wolf_ai
+o_slime cmp #TYPE_SLIME
+        bne o_mslim
+        jsr .slime_ai
+o_mslim cmp #TYPE_MSLIME
+        bne o_raven
+        jsr .slime_ai
+o_raven cmp #TYPE_RAVEN
+        bne o_move
+        jsr .raven_ai
+o_move
+        jsr .move_object
+        jsr .restore_object_props
+.object_done
+        dex
+        bne o_loop
+        rts
+end
 
 ;==============================================================================
 ; FIREBALL AI
@@ -1907,13 +1925,27 @@ end
 ; player collisions with map tiles at the expense of other sprite proportions
 ;==============================================================================
 move_object
-        if debug_time then BACKGRND = $96
-
-        ; Cap the object's velocity TODO: separate X/Y cap?
-        if Xvelocity > vel_cap then Xvelocity = vel_cap
-        if Yvelocity > vel_cap then Yvelocity = vel_cap
+        asm
+        lda object_vel_cap_hi,x
+        cmp object_Xvel_hi,x
+        bcs m_X_lo
+        sta object_Xvel_hi,x
+m_X_lo  lda object_vel_cap_lo,x
+        cmp object_Xvel_lo,x
+        bcs m_Y_hi
+        sta object_Xvel_lo,x
+m_Y_hi  lda object_vel_cap_hi,x
+        cmp object_Yvel_hi,x
+        bcs m_Y_lo
+        sta object_Yvel_hi,x
+m_Y_lo  lda object_vel_cap_lo,x
+        cmp object_Yvel_lo,x
+        bcs m_dirs
+        sta object_Yvel_lo,x
 
         ; Current direction(s) are determined by player input or AI logic
+m_dirs
+end
         if Ydirection = DIR_UP    then gosub move_test_up
         if Ydirection = DIR_DOWN  then gosub move_test_down
         if Xdirection = DIR_LEFT  then gosub move_test_left
