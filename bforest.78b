@@ -1028,7 +1028,7 @@ plot_magic_menu
         plotchars 'Forward' 0 24 11 singlewide
         plotchars 'Backward' 0 80 11 singlewide
         plotchars 'Clockwise' 0 24 12 singlewide
-        plotchars 'Counter Clockwise' 0 80 12 singlewide
+        plotchars 'Counterclockwise' 0 80 12 singlewide
         ; TODO: Show different directions on different frames?
         characterset menu_arrows
         alphachars '7894 6123'
