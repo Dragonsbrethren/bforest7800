@@ -278,9 +278,12 @@
         autodim byte pause_debounce
         autodim byte left_debounce
         autodim byte right_debounce
+        autodim byte updown_debounce
         autodim byte menu
         autodim byte menu_change
         autodim byte menu_selection
+        autodim byte menu_columns
+        autodim byte menu_rows
         autodim byte menu_cursor_X
         autodim byte menu_cursor_Y
 
@@ -1000,7 +1003,6 @@ main_menu_controls
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 && action_button = 0 then open_submenu
         if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
-        ; TODO: handle left/right input and submenu selections
         if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
@@ -1091,23 +1093,27 @@ plot_equip_menu
         clearscreen
         gosub plot_menu_border
         menu_change = 0
+        menu_selection = 0
+        menu_columns = 1        ; technically 2 but code handles each menu pane separately
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         plotchars 'Portrait' 0 16 1 singlewide
         plotchars 'Johanna' 0 64 0 singlewide
         plotchars 'Attack   0  Speed    0' 0 60 1 singlewide
         plotchars 'Defense  0  Mag.Def. 0' 0 60 2 singlewide
-        plotchars 'Inventory' 0 24 4 singlewide
-        plotchars 'Equipped'  0 96 4 singlewide
-        plotchars 'Weapon'    0 80 5 singlewide
-        plotchars 'Shield'    0 80 7 singlewide
-        plotchars 'Armor'     0 80 9 singlewide
-        plotchars 'Charm'     0 80 11 singlewide
+        plotchars 'Inventory' 0 24 3 singlewide
+        plotchars 'Equipped'  0 96 3 singlewide
+        plotchars 'Weapon'    0 80 4 singlewide
+        plotchars 'Shield'    0 80 6 singlewide
+        plotchars 'Armor'     0 80 8 singlewide
+        plotchars 'Talisman'     0 80 10 singlewide
+        plotchars 'Exit'      0 112 12 singlewide
         savescreen
 
 equip_menu_updater
         restorescreen
-        plotsprite menu_sword0 0 84 96
+        plotchars sword_names 0 92 5 16
+        plotsprite menu_sword0 0 84 80
 
 equip_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
@@ -1116,6 +1122,12 @@ equip_menu_controls
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 then open_main_menu
         if !action_debounce && joy0fire1 then open_main_menu
+        if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
+        if !right_debounce && joy0right then gosub menu_selection_right
+        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
+        if left_debounce > MENU_TAP_FRAMES then gosub menu_selection_left
+        if !left_debounce && joy0left then gosub menu_selection_left
+        if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = MENU_MAIN_MAX_OPTIONS
         goto main
 
 plot_relics_menu
@@ -1152,6 +1164,14 @@ menu_selection_right
 
 menu_selection_left
         menu_selection = menu_selection - 1 : left_debounce  = 1
+        return
+
+menu_selection_down
+        menu_selection = menu_selection + menu_columns : updown_debounce = 1
+        return
+
+menu_selection_up
+        menu_selection = menu_selection - menu_columns : updown_debounce = 1
         return
 
 open_main_menu
@@ -1206,6 +1226,10 @@ plot_menu_border
         plotchars '}&' 0 152 12 singlewide
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
+
+        alphadata sword_names menu_font singlewide
+        'Rapier          '
+end
 
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
