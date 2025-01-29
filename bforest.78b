@@ -1090,17 +1090,18 @@ magic_menu_controls
         goto main
 
 plot_equip_menu
+        ; turn on Kangaroo mode so palette color 1 is more manageable
+        sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_EQUIP
         if !menu_change then goto equip_menu_updater
         clearscreen
-        gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
         menu_columns = 1        ; technically 2 but code handles each menu pane separately
+        gosub plot_menu_border
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
-        plotchars 'Portrait' 0 16 1 singlewide
-        plotchars 'Johanna' 0 64 0 singlewide
+        plotchars 'Johanna' 0 16 1 singlewide
         plotchars 'Attack   0  Speed    0' 0 60 1 singlewide
         plotchars 'Defense  0  Mag.Def. 0' 0 60 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
