@@ -1157,19 +1157,47 @@ equip_menu_dirs_done
         goto main
 
 equip_menu_sword_inv
-        ; TODO: draw all swords in player's inventory
+        plotsprite menu_sword0 0 16 80 player_sword
+        plotmap sword_names 0 24 5 13 1 0 0 13
+        plotsprite menu_sword0 0 16 112 player_sword
+        plotmap sword_names 0 24 7 13 1 0 1 13
+        plotsprite menu_sword0 0 16 144 player_sword
+        plotmap sword_names 0 24 9 13 1 0 2 13
+        plotsprite menu_sword0 0 16 176 1 0 player_sword
+        plotmap sword_names 0 24 11 13 1 0 3 13
         goto main
 
 equip_menu_shield_inv
-        ; TODO: draw all shields in player's inventory
+        plotsprite menu_shield0 0 16 80 player_shield
+        plotmap shield_names 0 24 5 13 1 0 0 13
+        plotsprite menu_shield0 0 16 112 player_shield
+        plotmap shield_names 0 24 7 13 1 0 1 13
+        plotsprite menu_shield0 0 16 144 player_shield
+        plotmap shield_names 0 24 9 13 1 0 2 13
+        plotsprite menu_shield0 0 16 176 1 0 player_shield
+        plotmap shield_names 0 24 11 13 1 0 3 13
         goto main
 
 equip_menu_armor_inv
-        ; TODO: draw all armor in player's inventory
+        plotsprite menu_sword0 0 16 80 player_armor
+        plotmap armor_names 0 24 5 13 1 0 0 13
+        plotsprite menu_sword0 0 16 112 player_armor
+        plotmap armor_names 0 24 7 13 1 0 1 13
+        plotsprite menu_sword0 0 16 144 player_armor
+        plotmap armor_names 0 24 9 13 1 0 2 13
+        plotsprite menu_sword0 0 16 176 1 0 player_armor
+        plotmap armor_names 0 24 11 13 1 0 3 13
         goto main
 
 equip_menu_charm_inv
-        ; TODO: draw all charms in player's inventory
+        plotsprite menu_sword0 0 16 80 player_charm
+        plotmap charm_names 0 24 5 13 1 0 0 13
+        plotsprite menu_sword0 0 16 112 player_charm
+        plotmap charm_names 0 24 7 13 1 0 1 13
+        plotsprite menu_sword0 0 16 144 player_charm
+        plotmap charm_names 0 24 9 13 1 0 2 13
+        plotsprite menu_sword0 0 16 176 1 0 player_charm
+        plotmap charm_names 0 24 11 13 1 0 3 13
         goto main
 
 equip_menu_change_to_inv
@@ -1278,21 +1306,29 @@ plot_menu_border
         alphadata sword_names menu_font singlewide
         'Rapier       '
         'Longsword    '
+        'Broadsword   '
+        'Firebrand    '
 end
 
         alphadata shield_names menu_font singlewide
         'Buckler      '
         'Kite Shield  '
         'Large Shield '
+        'Mirror Shield'
 end
 
         alphadata armor_names menu_font singlewide
         'Bronze Plate '
         'Steel Plate  '
+        'Silver Plate '
+        'Maiden Armor '
 end
 
         alphadata charm_names menu_font singlewide
         'Pendant      '
+        'Charm        '
+        'Locket       '
+        'Coral Ring   '
 end
 
 enable_double_wide_mode
