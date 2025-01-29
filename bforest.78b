@@ -942,6 +942,7 @@ plot_raven
         incgraphic gfx/menu/menu_cursor1.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_shield0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_shield1.png 320B 0 2 1 3
 
 menu_init
         game_state = STATE_MENU
@@ -1164,7 +1165,7 @@ equip_menu_sword_inv
 equip_menu_shield_inv
         plotsprite menu_shield0 0 16 80 player_shield
         plotmap shield_names 0 24 5 13 1 0 0 13
-        plotsprite menu_shield0 0 16 112 player_shield
+        plotsprite menu_shield0 0 16 112 1
         plotmap shield_names 0 24 7 13 1 0 1 13
         plotsprite menu_shield0 0 16 144 player_shield
         plotmap shield_names 0 24 9 13 1 0 2 13
@@ -1323,8 +1324,8 @@ end
 
         alphadata shield_names menu_font singlewide
         'Buckler      '
+        'Cross Shield '
         'Kite Shield  '
-        'Large Shield '
         'Mirror Shield'
 end
 
