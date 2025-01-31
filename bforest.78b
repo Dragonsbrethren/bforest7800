@@ -1094,6 +1094,31 @@ plot_equip_menu
         ; turn on Kangaroo mode so palette color 1 is more manageable
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_EQUIP
+        for index = 0 to 48
+        WSYNC = 1
+        next
+        P0C1 = $FB
+        P0C3 = $FF
+        for index = 0 to 24
+        WSYNC = 1
+        next
+        P0C1 = $33
+        P0C3 = $3A
+        for index = 0 to 16
+        WSYNC = 1
+        next
+        P0C1 = $53
+        P0C3 = $58
+        for index = 0 to 24
+        WSYNC = 1
+        next
+        P0C1 = $86
+        P0C3 = $8B
+        for index = 0 to 24
+        WSYNC = 1
+        next
+        P0C1 = $2B
+        P0C3 = $2F
         if !menu_change then goto equip_menu_updater
         clearscreen
         menu_change = 0
