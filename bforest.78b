@@ -941,8 +941,10 @@ plot_raven
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incgraphic gfx/menu/menu_cursor1.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
-        incgraphic gfx/menu/menu_shield0.png 320B 0 2 1 3
-        incgraphic gfx/menu/menu_shield1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
 
 menu_init
         game_state = STATE_MENU
@@ -1097,28 +1099,35 @@ plot_equip_menu
         for index = 0 to 48
         WSYNC = 1
         next
-        P0C1 = $FB
-        P0C3 = $FF
+        ; palettes used for inv 0 and sword
+        P0C1 = $1E
+        P0C3 = $44
+        P4C1 = $07
+        P4C3 = $04
         for index = 0 to 24
         WSYNC = 1
         next
-        P0C1 = $33
-        P0C3 = $3A
-        for index = 0 to 16
+        ; palettes used for inv 1 and shield
+        P0C1 = $F3
+        P0C3 = $F5
+        P4C1 = $77
+        P4C3 = $04
+        for index = 0 to 36
         WSYNC = 1
         next
-        P0C1 = $53
-        P0C3 = $58
+        ; palettes used for inv 2 and armor
+        P0C1 = $25
+        P0C3 = $27
+        P4C1 = $FB
+        P4C3 = $FF
         for index = 0 to 24
-        WSYNC = 1
+        WSYNC = 1                              
         next
-        P0C1 = $86
-        P0C3 = $8B
-        for index = 0 to 24
-        WSYNC = 1
-        next
-        P0C1 = $2B
-        P0C3 = $2F
+        ; palettes used for inv 3 and charm
+        P0C1 = $AA
+        P0C3 = $0F
+        P4C1 = $36
+        P4C3 = $33
         if !menu_change then goto equip_menu_updater
         clearscreen
         menu_change = 0
@@ -1128,8 +1137,8 @@ plot_equip_menu
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         plotchars 'Johanna' 0 16 1 singlewide
-        plotchars 'Attack   0  Speed    0' 0 60 1 singlewide
-        plotchars 'Defense  0  Mag.Def. 0' 0 60 2 singlewide
+        plotchars 'Attack   0  Defense  0' 0 60 1 singlewide
+        plotchars '------------------------------------' 0 8 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
         plotchars 'Equipped'  0 96 3 singlewide
         plotchars 'Weapon'    0 80 4 singlewide
@@ -1177,46 +1186,46 @@ equip_menu_dirs_done
         goto equip_menu_charm_inv
 
 equip_menu_sword_inv
-        plotsprite menu_sword0 0 16 80 player_sword
+        plotsprite menu_sword0 4 16 80 player_sword
         plotmap sword_names 0 24 5 13 1 0 1 13
-        plotsprite menu_sword0 0 16 112 player_sword
-        plotmap sword_names 0 24 7 13 1 0 1 13
-        plotsprite menu_sword0 0 16 144 player_sword
-        plotmap sword_names 0 24 9 13 1 0 2 13
-        plotsprite menu_sword0 0 16 176 1 0 player_sword
-        plotmap sword_names 0 24 11 13 1 0 3 13
+        plotsprite menu_sword0 4 16 112 player_sword
+        plotmap sword_names 0 24 7 13 1 0 2 13
+        plotsprite menu_sword0 4 16 144 player_sword
+        plotmap sword_names 0 24 9 13 1 0 3 13
+        plotsprite menu_sword0 4 16 176 1 0 player_sword
+        plotmap sword_names 0 24 11 13 1 0 4 13
         goto equip_menu_draw_sprites
 
 equip_menu_shield_inv
-        plotsprite menu_shield0 0 16 80 player_shield
+        plotsprite menu_shield0 4 16 80 player_shield
         plotmap shield_names 0 24 5 13 1 0 0 13
-        plotsprite menu_shield0 0 16 112 1
+        plotsprite menu_shield0 4 16 112 1
         plotmap shield_names 0 24 7 13 1 0 1 13
-        plotsprite menu_shield0 0 16 144 player_shield
+        plotsprite menu_shield0 4 16 144 player_shield
         plotmap shield_names 0 24 9 13 1 0 2 13
-        plotsprite menu_shield0 0 16 176 1 0 player_shield
+        plotsprite menu_shield0 4 16 176 1 0 player_shield
         plotmap shield_names 0 24 11 13 1 0 3 13
         goto equip_menu_draw_sprites
 
 equip_menu_armor_inv
-        plotsprite menu_sword0 0 16 80 player_armor
+        plotsprite menu_armor0 4 16 80 player_armor
         plotmap armor_names 0 24 5 13 1 0 0 13
-        plotsprite menu_sword0 0 16 112 player_armor
+        plotsprite menu_armor0 4 16 112 player_armor
         plotmap armor_names 0 24 7 13 1 0 1 13
-        plotsprite menu_sword0 0 16 144 player_armor
+        plotsprite menu_armor0 4 16 144 player_armor
         plotmap armor_names 0 24 9 13 1 0 2 13
-        plotsprite menu_sword0 0 16 176 1 0 player_armor
+        plotsprite menu_armor0 4 16 176 1 0 player_armor
         plotmap armor_names 0 24 11 13 1 0 3 13
         goto equip_menu_draw_sprites
 
 equip_menu_charm_inv
-        plotsprite menu_sword0 0 16 80 player_charm
+        plotsprite menu_charm0 4 16 80 player_charm
         plotmap charm_names 0 24 5 13 1 0 0 13
-        plotsprite menu_sword0 0 16 112 player_charm
+        plotsprite menu_charm0 4 16 112 player_charm
         plotmap charm_names 0 24 7 13 1 0 1 13
-        plotsprite menu_sword0 0 16 144 player_charm
+        plotsprite menu_charm0 4 16 144 player_charm
         plotmap charm_names 0 24 9 13 1 0 2 13
-        plotsprite menu_sword0 0 16 176 1 0 player_charm
+        plotsprite menu_charm0 4 16 176 1 0 player_charm
         plotmap charm_names 0 24 11 13 1 0 3 13
         goto equip_menu_draw_sprites
 
@@ -1227,9 +1236,9 @@ equip_menu_draw_sprites
         plotmap sword_names 0 92 5 13 1 0 player_sword 13
         plotsprite menu_shield0 0 84 112 player_shield
         plotmap shield_names 0 92 7 13 1 0 player_shield 13
-        plotsprite menu_sword0 0 84 144 player_armor
+        plotsprite menu_armor0 0 84 144 player_armor
         plotmap armor_names 0 92 9 13 1 0 player_armor 13
-        plotsprite menu_sword0 0 84 176 1 0 player_charm
+        plotsprite menu_charm0 0 84 176 1 0 player_charm
         plotmap charm_names 0 92 11 13 1 0 player_charm 13
         goto main
 
@@ -1344,6 +1353,7 @@ plot_menu_border
         'Rapier       '
         'Longsword    '
         'Broadsword   '
+        'Estoc        '
         'Firebrand    '
 end
 
