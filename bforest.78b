@@ -287,6 +287,25 @@
         autodim byte menu_rows
         autodim byte menu_cursor_X
         autodim byte menu_cursor_Y
+        autodim byte m_inv_index
+        autodim byte m_inv_scroll
+        autodim byte m_inv_slot
+        autodim byte m_sword_pal1
+        autodim byte m_sword_pal2
+        autodim byte m_shield_pal1
+        autodim byte m_shield_pal2
+        autodim byte m_armor_pal1
+        autodim byte m_armor_pal2
+        autodim byte m_charm_pal1
+        autodim byte m_charm_pal2
+        autodim byte m_inv0_pal1
+        autodim byte m_inv0_pal2
+        autodim byte m_inv1_pal1
+        autodim byte m_inv1_pal2
+        autodim byte m_inv2_pal1
+        autodim byte m_inv2_pal2
+        autodim byte m_inv3_pal1
+        autodim byte m_inv3_pal2
 
         ; ROOM HEADER
         autodim byte room
@@ -311,6 +330,15 @@
         autodim byte chant_input
         ; possible to start a chant on index 0 so need another variable        
         autodim byte chant_new_input
+        autodim byte m_sword_inv  16
+        autodim byte m_shield_inv 16
+        autodim byte m_armor_inv  16
+        autodim byte m_charm_inv  16
+        autodim byte m_inv_item_0
+        autodim byte m_inv_item_1
+        autodim byte m_inv_item_2
+        autodim byte m_inv_item_3
+        autodim byte m_inv_item_4
 
         dim current_map = $2600
 
@@ -941,22 +969,37 @@ plot_raven
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incgraphic gfx/menu/menu_cursor1.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword1.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword2.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword3.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword4.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword5.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield4.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield5.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor4.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor5.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm5.png 320B 0 2 1 3
 
 menu_init
         game_state = STATE_MENU
         clearscreen
         displaymode 320B
         drawwait
-        P0C1 = PAL_LTBLUE
         P0C2 = $10
-        P0C3 = PAL_LTPURP
-        P4C1 = PAL_COPPER
         P4C2 = $10
-        P4C3 = PAL_LTRED
         menu_change = 1
 
 menu_handler
@@ -967,6 +1010,8 @@ menu_handler
         if menu = MENU_RELICS then goto plot_relics_menu
 
 plot_main_menu
+        P0C3 = PAL_LTPURP
+        P4C3 = PAL_LTRED
         if !menu_change then goto main_menu_updater
         gosub disable_double_wide_mode
         clearscreen
@@ -1071,6 +1116,7 @@ plot_magic_menu
         plotchars '646' 0 24 2 singlewide
         ; Windslash
         plotchars '632' 0 24 4 singlewide
+        ; Legend
         plotchars '6' 0 16 11 singlewide
         plotchars '4' 0 72 11 singlewide
         plotchars '2' 0 16 12 singlewide
@@ -1093,41 +1139,78 @@ magic_menu_controls
         goto main
 
 plot_equip_menu
+        ; TODO: Remove these once tests are done
+        player_sword = 1
+        player_shield = 1
+        player_armor = 1
+        player_charm = 1
+        m_sword_inv[0] = 4
+        m_sword_inv[1] = 1
+        m_sword_inv[2] = 3
+        m_sword_inv[3] = 2
+        m_shield_inv[0] = 1
+        m_shield_inv[1] = 2
+        m_shield_inv[2] = 3
+        m_shield_inv[3] = 4
+        m_armor_inv[0] = 1
+        m_armor_inv[1] = 2
+        m_armor_inv[2] = 3
+        m_armor_inv[3] = 4
+        m_charm_inv[0] = 1
+        m_charm_inv[1] = 2
+        m_charm_inv[2] = 3
+        m_charm_inv[3] = 4
         ; turn on Kangaroo mode so palette color 1 is more manageable
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_EQUIP
-        for index = 0 to 48
+        ; TODO: Load colors based on inventory items
+        m_sword_pal1 = $1E
+        m_sword_pal2 = $44
+        m_inv0_pal1 = $07
+        m_inv0_pal2 = $04
+        m_shield_pal1 = $F3
+        m_shield_pal2 = $F5
+        m_inv1_pal1 = $77
+        m_inv1_pal1 = $04
+        m_armor_pal1 = $25
+        m_armor_pal2 = $27
+        m_inv2_pal1 = $FB
+        m_inv2_pal2 = $FF
+        m_charm_pal1 = $AA
+        m_charm_pal2 = $0F
+        m_inv3_pal1 = $36
+        m_inv3_pal2 = $33
+        for index = 0 to 49
         WSYNC = 1
         next
-        ; palettes used for inv 0 and sword
-        P0C1 = $1E
-        P0C3 = $44
-        P4C1 = $07
-        P4C3 = $04
+        P0C1 = m_sword_pal1
+        P0C3 = m_sword_pal2
+        P4C1 = m_inv0_pal1
+        P4C3 = m_inv0_pal2
         for index = 0 to 24
         WSYNC = 1
         next
         ; palettes used for inv 1 and shield
-        P0C1 = $F3
-        P0C3 = $F5
-        P4C1 = $77
-        P4C3 = $04
-        for index = 0 to 36
+        P0C1 = m_shield_pal1
+        P0C3 = m_shield_pal2
+        P4C1 = m_inv1_pal1
+        P4C3 = m_inv1_pal2
+        for index = 0 to 37
         WSYNC = 1
         next
         ; palettes used for inv 2 and armor
-        P0C1 = $25
-        P0C3 = $27
-        P4C1 = $FB
-        P4C3 = $FF
+        P0C1 = m_armor_pal1
+        P0C3 = m_armor_pal2
+        P4C1 = m_inv2_pal1
+        P4C3 = m_inv2_pal2
         for index = 0 to 24
         WSYNC = 1                              
         next
         ; palettes used for inv 3 and charm
-        P0C1 = $AA
-        P0C3 = $0F
-        P4C1 = $36
-        P4C3 = $33
+        P0C1 = m_charm_pal1
+        P0C3 = m_charm_pal2
+        P4C1 = m_inv3_pal1
+        P4C3 = m_inv3_pal2
         if !menu_change then goto equip_menu_updater
         clearscreen
         menu_change = 0
@@ -1137,14 +1220,14 @@ plot_equip_menu
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
         plotchars 'Johanna' 0 16 1 singlewide
-        plotchars 'Attack   0  Defense  0' 0 60 1 singlewide
+        plotchars 'Attack  0  Defense  0' 0 60 1 singlewide
         plotchars '------------------------------------' 0 8 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
         plotchars 'Equipped'  0 96 3 singlewide
         plotchars 'Weapon'    0 80 4 singlewide
         plotchars 'Shield'    0 80 6 singlewide
         plotchars 'Armor'     0 80 8 singlewide
-        plotchars 'Talisman'     0 80 10 singlewide
+        plotchars 'Talisman'  0 80 10 singlewide
         plotchars 'Exit'      0 128 12 singlewide
         savescreen
 
@@ -1186,47 +1269,76 @@ equip_menu_dirs_done
         goto equip_menu_charm_inv
 
 equip_menu_sword_inv
-        plotsprite menu_sword0 4 16 80 player_sword
-        plotmap sword_names 0 24 5 13 1 0 1 13
-        plotsprite menu_sword0 4 16 112 player_sword
-        plotmap sword_names 0 24 7 13 1 0 2 13
-        plotsprite menu_sword0 4 16 144 player_sword
-        plotmap sword_names 0 24 9 13 1 0 3 13
-        plotsprite menu_sword0 4 16 176 1 0 player_sword
-        plotmap sword_names 0 24 11 13 1 0 4 13
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_sword_next 
+        next
+
+        ; TODO: LUT for item icons
+        plotsprite menu_sword0 4 16 80 m_inv_item_0
+        plotmap sword_names 0 24 5 13 1 0 m_inv_item_0 13
+        plotsprite menu_sword0 4 16 112 m_inv_item_1
+        plotmap sword_names 0 24 7 13 1 0 m_inv_item_1 13
+        plotsprite menu_sword0 4 16 144 m_inv_item_2
+        plotmap sword_names 0 24 9 13 1 0 m_inv_item_2 13
+        plotsprite menu_sword0 4 16 176 1 0 m_inv_item_3
+        plotmap sword_names 0 24 11 13 1 0 m_inv_item_3 13
         goto equip_menu_draw_sprites
 
 equip_menu_shield_inv
-        plotsprite menu_shield0 4 16 80 player_shield
-        plotmap shield_names 0 24 5 13 1 0 0 13
-        plotsprite menu_shield0 4 16 112 1
-        plotmap shield_names 0 24 7 13 1 0 1 13
-        plotsprite menu_shield0 4 16 144 player_shield
-        plotmap shield_names 0 24 9 13 1 0 2 13
-        plotsprite menu_shield0 4 16 176 1 0 player_shield
-        plotmap shield_names 0 24 11 13 1 0 3 13
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_shield_next 
+        next
+
+        plotsprite menu_shield0 4 16 80 m_inv_item_0
+        plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
+        plotsprite menu_shield0 4 16 112 m_inv_item_1
+        plotmap shield_names 0 24 7 13 1 0 m_inv_item_2 13
+        plotsprite menu_shield0 4 16 144 m_inv_item_3
+        plotmap shield_names 0 24 9 13 1 0 m_inv_item_3 13
+        plotsprite menu_shield0 4 16 176 1 0 m_inv_item_4
+        plotmap shield_names 0 24 11 13 1 0 m_inv_item_4 13
         goto equip_menu_draw_sprites
 
 equip_menu_armor_inv
-        plotsprite menu_armor0 4 16 80 player_armor
-        plotmap armor_names 0 24 5 13 1 0 0 13
-        plotsprite menu_armor0 4 16 112 player_armor
-        plotmap armor_names 0 24 7 13 1 0 1 13
-        plotsprite menu_armor0 4 16 144 player_armor
-        plotmap armor_names 0 24 9 13 1 0 2 13
-        plotsprite menu_armor0 4 16 176 1 0 player_armor
-        plotmap armor_names 0 24 11 13 1 0 3 13
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_armor_next 
+        next
+
+        plotsprite menu_armor0 4 16 80  m_inv_item_0
+        plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
+        plotsprite menu_armor0 4 16 112  m_inv_item_1
+        plotmap armor_names 0 24 7 13 1 0  m_inv_item_1 13
+        plotsprite menu_armor0 4 16 144  m_inv_item_2
+        plotmap armor_names 0 24 9 13 1 0  m_inv_item_2 13
+        plotsprite menu_armor0 4 16 176 1 0  m_inv_item_3
+        plotmap armor_names 0 24 11 13 1 0  m_inv_item_3 13
         goto equip_menu_draw_sprites
 
 equip_menu_charm_inv
-        plotsprite menu_charm0 4 16 80 player_charm
-        plotmap charm_names 0 24 5 13 1 0 0 13
-        plotsprite menu_charm0 4 16 112 player_charm
-        plotmap charm_names 0 24 7 13 1 0 1 13
-        plotsprite menu_charm0 4 16 144 player_charm
-        plotmap charm_names 0 24 9 13 1 0 2 13
-        plotsprite menu_charm0 4 16 176 1 0 player_charm
-        plotmap charm_names 0 24 11 13 1 0 3 13
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_charm_next 
+        next
+
+        plotsprite menu_charm0 4 16 80  m_inv_item_0
+        plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
+        plotsprite menu_charm0 4 16 112  m_inv_item_1
+        plotmap charm_names 0 24 7 13 1 0  m_inv_item_1 13
+        plotsprite menu_charm0 4 16 144  m_inv_item_2
+        plotmap charm_names 0 24 9 13 1 0  m_inv_item_2 13
+        plotsprite menu_charm0 4 16 176 1 0  m_inv_item_3
+        plotmap charm_names 0 24 11 13 1 0  m_inv_item_3 13
         goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites
@@ -1317,6 +1429,8 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
+
+        dmahole 0
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
@@ -1350,32 +1464,79 @@ plot_menu_border
         return
 
         alphadata sword_names menu_font singlewide
+        '             '
         'Rapier       '
         'Longsword    '
         'Broadsword   '
         'Estoc        '
         'Firebrand    '
+        'Sword No. 6  '
+        'Sword No. 7  '
+        'Sword No. 8  '
+        'Sword No. 9  '
+        'Sword No. 10 '
+        'Sword No. 11 '
+        'Sword No. 12 '
+        'Sword No. 13 '
+        'Sword No. 14 '
+        'Sword No. 15 '
 end
 
         alphadata shield_names menu_font singlewide
+        '             '
         'Buckler      '
         'Cross Shield '
         'Kite Shield  '
         'Mirror Shield'
+        'Shield No. 5 '
+        'Shield No. 6 '
+        'Shield No. 7 '
+        'Shield No. 8 '
+        'Shield No. 9 '
+        'Shield No. 10'
+        'Shield No. 11'
+        'Shield No. 12'
+        'Shield No. 13'
+        'Shield No. 14'
+        'Shield No. 15'
 end
 
         alphadata armor_names menu_font singlewide
+        '             '
         'Bronze Plate '
         'Steel Plate  '
         'Silver Plate '
         'Maiden Armor '
+        'Armor No. 5  '
+        'Armor No. 6  '
+        'Armor No. 7  '
+        'Armor No. 8  '
+        'Armor No. 9  '
+        'Armor No. 10 '
+        'Armor No. 11 '
+        'Armor No. 12 '
+        'Armor No. 13 '
+        'Armor No. 14 '
+        'Armor No. 15 '
 end
 
         alphadata charm_names menu_font singlewide
+        '             '
         'Pendant      '
         'Charm        '
         'Locket       '
         'Coral Ring   '
+        'Charm No. 5  '
+        'Charm No. 6  '
+        'Charm No. 7  '
+        'Charm No. 8  '
+        'Charm No. 9  '
+        'Charm No. 10 '
+        'Charm No. 11 '
+        'Charm No. 12 '
+        'Charm No. 13 '
+        'Charm No. 14 '
+        'Charm No. 15 '
 end
 
 enable_double_wide_mode
