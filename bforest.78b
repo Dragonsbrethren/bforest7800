@@ -1203,34 +1203,6 @@ plot_equip_menu
 
 equip_menu_updater
         restorescreen
-        P0C1 = m_sword_pal1
-        P0C3 = m_sword_pal2
-        P4C1 = m_inv0_pal1
-        P4C3 = m_inv0_pal2
-        for index = 0 to 78
-        WSYNC = 1
-        next
-        ; palettes used for inv 1 and shield
-        P0C1 = m_shield_pal1
-        P0C3 = m_shield_pal2
-        P4C1 = m_inv1_pal1
-        P4C3 = m_inv1_pal2
-        for index = 0 to 32
-        WSYNC = 1
-        next
-        ; palettes used for inv 2 and armor
-        P0C1 = m_armor_pal1
-        P0C3 = m_armor_pal2
-        P4C1 = m_inv2_pal1
-        P4C3 = m_inv2_pal2
-        for index = 0 to 32
-        WSYNC = 1
-        next
-        ; palettes used for inv 3 and charm
-        P0C1 = m_charm_pal1
-        P0C3 = m_charm_pal2
-        P4C1 = m_inv3_pal1
-        P4C3 = m_inv3_pal2
 
 equip_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
@@ -1267,12 +1239,12 @@ equip_menu_dirs_done
         goto equip_menu_charm_inv
 
 equip_menu_sword_inv
-;        m_inv_index = 0 + m_inv_scroll
-;        for m_inv_slot = 0 to 3
-;        m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
-;        m_inv_index = m_inv_index + 1
-;menu_sword_next 
-;        next
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_sword_next 
+        next
 
         ; TODO: LUT for item icons
         plotsprite menu_sword0 4 16 80 m_inv_item_0
@@ -1286,12 +1258,12 @@ equip_menu_sword_inv
         goto equip_menu_draw_sprites
 
 equip_menu_shield_inv
-;        m_inv_index = 0 + m_inv_scroll
-;        for m_inv_slot = 0 to 3
-;        m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
-;        m_inv_index = m_inv_index + 1
-;menu_shield_next 
-;        next
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_shield_next 
+        next
 
         plotsprite menu_shield0 4 16 80 m_inv_item_0
         plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
@@ -1304,12 +1276,12 @@ equip_menu_shield_inv
         goto equip_menu_draw_sprites
 
 equip_menu_armor_inv
-;        m_inv_index = 0 + m_inv_scroll
-;        for m_inv_slot = 0 to 3
-;        m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
-;        m_inv_index = m_inv_index + 1
-;menu_armor_next 
-;        next
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_armor_next 
+        next
 
         plotsprite menu_armor0 4 16 80  m_inv_item_0
         plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
@@ -1322,12 +1294,12 @@ equip_menu_armor_inv
         goto equip_menu_draw_sprites
 
 equip_menu_charm_inv
-;        m_inv_index = 0 + m_inv_scroll
-;        for m_inv_slot = 0 to 3
-;        m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
-;        m_inv_index = m_inv_index + 1
-;menu_charm_next 
-;        next
+        m_inv_index = 0 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_charm_next 
+        next
 
         plotsprite menu_charm0 4 16 80  m_inv_item_0
         plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
@@ -1357,6 +1329,37 @@ equip_menu_change_to_inv
         ; TODO: handle moving cursor control to the inventory column
         ;       handle swapping the player's equipped gear
         goto main
+
+equip_menu_colors
+        P0C1 = m_sword_pal1
+        P0C3 = m_sword_pal2
+        P4C1 = m_inv0_pal1
+        P4C3 = m_inv0_pal2
+        for index = 0 to 96
+        WSYNC = 1
+        next
+        ; palettes used for inv 1 and shield
+        P0C1 = m_shield_pal1
+        P0C3 = m_shield_pal2
+        P4C1 = m_inv1_pal1
+        P4C3 = m_inv1_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 2 and armor
+        P0C1 = m_armor_pal1
+        P0C3 = m_armor_pal2
+        P4C1 = m_inv2_pal1
+        P4C3 = m_inv2_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 3 and charm
+        P0C1 = m_charm_pal1
+        P0C3 = m_charm_pal2
+        P4C1 = m_inv3_pal1
+        P4C3 = m_inv3_pal2
+        return
 
 plot_relics_menu
         menu = MENU_RELICS
@@ -1543,6 +1546,11 @@ enable_double_wide_mode
 
 disable_double_wide_mode
         sCTRL{4} = 0 : CTRL = sCTRL
+        return
+
+set_menu_top_pal
+        WSYNC = 1 : BACKGRND = $2D
+        if menu = MENU_EQUIP then equip_menu_colors
         return
 
         data sfx_poof2
@@ -2916,7 +2924,7 @@ swap_action_button
 
 topscreenroutine
         WSYNC=1
-        if game_state = STATE_MENU then WSYNC = 1 : BACKGRND = $2D : return
+        if game_state = STATE_MENU then set_menu_top_pal
         BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
