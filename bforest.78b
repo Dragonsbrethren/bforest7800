@@ -1252,18 +1252,11 @@ equip_menu_inv_controls
         if !action_debounce && joy0fire1 && action_button = 1 then equip_item
         if up_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_up
         if !up_debounce && joy0up then gosub equip_inv_sel_up
-        if equip_inv_sel > MENU_EQUIP_MAX_OPTIONS then m_inv_scroll = m_inv_scroll - 1 : goto equip_menu_dirs_done
         if down_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_down
         if !down_debounce && joy0down then gosub equip_inv_sel_down
-        if equip_inv_sel > MENU_EQUIP_MAX_OPTIONS then m_inv_scroll = m_inv_scroll + 1
 
 equip_menu_dirs_done
         menu_cursor_X = MENU_EQUIP_EQUIPPED_X
-        equip_inv_X = MENU_EQUIP_INV_X
-        if equip_inv_sel = 0 then equip_inv_Y = MENU_EQUIP_INV0_Y
-        if equip_inv_sel = 1 then equip_inv_Y = MENU_EQUIP_INV1_Y
-        if equip_inv_sel = 2 then equip_inv_Y = MENU_EQUIP_INV2_Y
-        if equip_inv_sel > 2 then equip_inv_Y = MENU_EQUIP_INV3_Y
         if menu_selection = 0 then menu_cursor_Y = MENU_EQUIP_SWORD_Y : goto equip_menu_sword_inv
         if menu_selection = 1 then menu_cursor_Y = MENU_EQUIP_SHIELD_Y : goto equip_menu_shield_inv
         if menu_selection = 2 then menu_cursor_Y = MENU_EQUIP_ARMOR_Y : goto equip_menu_armor_inv
@@ -1274,7 +1267,7 @@ equip_menu_dirs_done
         goto equip_menu_charm_inv
 
 equip_menu_sword_inv
-        m_inv_index = 0 + m_inv_scroll
+        m_inv_index = 1 + m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1293,7 +1286,7 @@ menu_sword_next
         goto equip_menu_draw_sprites
 
 equip_menu_shield_inv
-        m_inv_index = 0 + m_inv_scroll
+        m_inv_index = 1 + m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1311,7 +1304,7 @@ menu_shield_next
         goto equip_menu_draw_sprites
 
 equip_menu_armor_inv
-        m_inv_index = 0 + m_inv_scroll
+        m_inv_index = 1 + m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1329,7 +1322,7 @@ menu_armor_next
         goto equip_menu_draw_sprites
 
 equip_menu_charm_inv
-        m_inv_index = 0 + m_inv_scroll
+        m_inv_index = 1 + m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1370,6 +1363,8 @@ equip_menu_change_to_inv
         action_debounce = 1
         if menu_selection = MENU_EQUIP_MAX_OPTIONS then open_main_menu
         equip_inv_col = 1
+        equip_inv_X = MENU_EQUIP_INV_X
+        equip_inv_Y = MENU_EQUIP_INV0_Y
         goto equip_menu_dirs_done
 
 equip_item
@@ -1476,10 +1471,16 @@ menu_selection_up
 
 equip_inv_sel_down
         equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
+        if equip_inv_sel > 3 then m_inv_scroll = m_inv_scroll + 1 : return
+        equip_inv_Y = equip_inv_Y + 32
         return
 
 equip_inv_sel_up
+        if equip_inv_sel = 0 then return
         equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
+        if m_inv_scroll = 0 then return
+        if equip_inv_sel > 0 then m_inv_scroll = m_inv_scroll - 1 : return
+        equip_inv_Y = equip_inv_Y - 32
         return
 
 open_main_menu
