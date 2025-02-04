@@ -306,6 +306,10 @@
         autodim byte m_inv2_pal2
         autodim byte m_inv3_pal1
         autodim byte m_inv3_pal2
+        autodim byte equip_inv_col
+        autodim byte equip_inv_sel
+        autodim byte equip_inv_X
+        autodim byte equip_inv_Y
 
         ; ROOM HEADER
         autodim byte room
@@ -1205,10 +1209,12 @@ equip_menu_updater
         restorescreen
 
 equip_menu_controls
-        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
+        if equip_inv_col then equip_menu_inv_controls
+        equip_inv_sel = 0
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         if !action_debounce && joy0fire0 && action_button = 0 then equip_menu_change_to_inv
         if !action_debounce && joy0fire1 && action_button = 1 then equip_menu_change_to_inv
         if up_debounce > MENU_TAP_FRAMES then gosub menu_selection_up
@@ -1217,6 +1223,7 @@ equip_menu_controls
         if down_debounce > MENU_TAP_FRAMES then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
         if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = 0
+        goto equip_menu_dirs_done
 
         const MENU_EQUIP_MAX_OPTIONS = 4
         const MENU_EQUIP_EQUIPPED_X = 76
@@ -1224,11 +1231,39 @@ equip_menu_controls
         const MENU_EQUIP_SHIELD_Y   = 96
         const MENU_EQUIP_ARMOR_Y    = 128
         const MENU_EQUIP_CHARM_Y    = 160
+        const MENU_EQUIP_INV_X      = 12
+        const MENU_EQUIP_INV0_Y    = 80
+        const MENU_EQUIP_INV1_Y    = 112
+        const MENU_EQUIP_INV2_Y    = 142
+        const MENU_EQUIP_INV3_Y    = 176
         const MENU_EQUIP_EXIT_X     = 124
         const MENU_EQUIP_EXIT_Y     = 192
 
+equip_menu_return_from_inv
+        menu_debounce = 1
+        equip_inv_col = 0
+        equip_inv_sel = 0
+        goto equip_menu_dirs_done
+
+equip_menu_inv_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then equip_menu_return_from_inv
+        if !menu_debounce && joy0fire1 && action_button = 0 then equip_menu_return_from_inv
+        if !action_debounce && joy0fire0 && action_button = 0 then equip_item
+        if !action_debounce && joy0fire1 && action_button = 1 then equip_item
+        if up_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_up
+        if !up_debounce && joy0up then gosub equip_inv_sel_up
+        if equip_inv_sel > MENU_EQUIP_MAX_OPTIONS then m_inv_scroll = m_inv_scroll - 1 : goto equip_menu_dirs_done
+        if down_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_down
+        if !down_debounce && joy0down then gosub equip_inv_sel_down
+        if equip_inv_sel > MENU_EQUIP_MAX_OPTIONS then m_inv_scroll = m_inv_scroll + 1
+
 equip_menu_dirs_done
         menu_cursor_X = MENU_EQUIP_EQUIPPED_X
+        equip_inv_X = MENU_EQUIP_INV_X
+        if equip_inv_sel = 0 then equip_inv_Y = MENU_EQUIP_INV0_Y
+        if equip_inv_sel = 1 then equip_inv_Y = MENU_EQUIP_INV1_Y
+        if equip_inv_sel = 2 then equip_inv_Y = MENU_EQUIP_INV2_Y
+        if equip_inv_sel > 2 then equip_inv_Y = MENU_EQUIP_INV3_Y
         if menu_selection = 0 then menu_cursor_Y = MENU_EQUIP_SWORD_Y : goto equip_menu_sword_inv
         if menu_selection = 1 then menu_cursor_Y = MENU_EQUIP_SHIELD_Y : goto equip_menu_shield_inv
         if menu_selection = 2 then menu_cursor_Y = MENU_EQUIP_ARMOR_Y : goto equip_menu_armor_inv
@@ -1312,7 +1347,6 @@ menu_charm_next
         goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         ; draw the player's equipment based on variable offsets
         plotsprite menu_sword0 0 84 80 player_sword
         plotmap sword_names 0 92 5 13 1 0 player_sword 13
@@ -1322,13 +1356,44 @@ equip_menu_draw_sprites
         plotmap armor_names 0 92 9 13 1 0 player_armor 13
         plotsprite menu_charm0 0 84 176 1 0 player_charm
         plotmap charm_names 0 92 11 13 1 0 player_charm 13
+        if equip_inv_col then equip_menu_inv_cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        goto main
+
+equip_menu_inv_cursor
+        ; blink the equipped column cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y animation_frame
+        plotsprite menu_cursor0 0 equip_inv_X equip_inv_Y
         goto main
 
 equip_menu_change_to_inv
+        action_debounce = 1
         if menu_selection = MENU_EQUIP_MAX_OPTIONS then open_main_menu
-        ; TODO: handle moving cursor control to the inventory column
-        ;       handle swapping the player's equipped gear
-        goto main
+        equip_inv_col = 1
+        goto equip_menu_dirs_done
+
+equip_item
+        action_debounce = 1
+        equip_inv_col = 0
+        m_inv_scroll = 0
+        if menu_selection = 0 then equip_sword
+        if menu_selection = 1 then equip_shield
+        if menu_selection = 2 then equip_armor
+equip_charm
+        player_charm = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_sword
+        player_sword = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_shield
+        player_shield = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_armor
+        player_armor = equip_inv_sel
+        goto equip_menu_dirs_done
 
 equip_menu_colors
         P0C1 = m_sword_pal1
@@ -1407,6 +1472,14 @@ menu_selection_down
 menu_selection_up
         prev_menu_selection = menu_selection
         menu_selection = menu_selection - menu_columns : up_debounce = 1
+        return
+
+equip_inv_sel_down
+        equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
+        return
+
+equip_inv_sel_up
+        equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
         return
 
 open_main_menu
