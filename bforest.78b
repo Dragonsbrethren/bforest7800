@@ -972,31 +972,27 @@ plot_raven
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
-        incgraphic gfx/menu/menu_cursor1.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_sword2.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_sword3.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_sword4.png 320B 2 0 1 3
-        incgraphic gfx/menu/menu_sword5.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield3.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield4.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_shield5.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor4.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_armor5.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
-        incgraphic gfx/menu/menu_charm5.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_map.png 320A
 
 menu_init
         ; TODO: Remove these once tests are done
@@ -1355,7 +1351,7 @@ equip_menu_draw_sprites
 
 equip_menu_inv_cursor
         ; blink the equipped column cursor
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y animation_frame
+        if animation_frame then plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotsprite menu_cursor0 0 equip_inv_X equip_inv_Y
         goto main
 
