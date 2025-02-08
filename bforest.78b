@@ -961,6 +961,7 @@ plot_raven
         incgraphic gfx/menu/menu_digits.png 320B 0 2
         incgraphic gfx/menu/menu_font.png 320A 1 0
         incgraphic gfx/menu/menu_arrows.png 320A 1 0
+        incgraphic gfx/menu/menu_map.png 320A
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
         incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
@@ -992,7 +993,6 @@ plot_raven
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
-        incgraphic gfx/menu/menu_map.png 320A
 
 menu_init
         ; TODO: Remove these once tests are done
@@ -1061,8 +1061,9 @@ plot_main_menu
         plotchars 'Johanna' 0 64 0 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
-        plotchars 'The map gets plotted here' 0 28 7 singlewide
+
         plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
+        gosub gen_forest_map
         savescreen
         menu_cursor_X = MENU_MAIN_ITEMS_X
         menu_cursor_Y = MENU_MAIN_ITEMS_Y
@@ -1500,7 +1501,6 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
-
         dmahole 0
 plot_menu_border
         ; TODO: Automate this drawing?
@@ -1609,6 +1609,22 @@ end
         'Charm No. 14 '
         'Charm No. 15 '
 end
+
+        alphadata menu_forest menu_map singlewide
+        '23111145676D23'
+        '11111111A92B11'
+        '11111111111111'
+        '11111111111111'
+        '11111111111111'
+        '11111111111111'
+        '23111111111123'
+end
+
+gen_forest_map
+        ; TODO: Test which rooms have been entered
+        alphachars '0123456789ABCDEF'
+        plotmap menu_forest 0 52 4 14 7
+        return
 
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
