@@ -1057,10 +1057,9 @@ plot_main_menu
         gosub plot_menu_border
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
-        plotchars 'Portrait' 0 16 1 singlewide
-        plotchars 'Johanna' 0 64 0 singlewide
-        plotchars 'HP' 0 72 1 singlewide
-        plotchars 'MP' 0 72 2 singlewide
+        plotchars 'Johanna' 0 20 1 singlewide
+        plotchars 'HP' 0 76 1 singlewide
+        plotchars 'MP' 0 76 2 singlewide
 
         plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
         gosub gen_forest_map
@@ -1071,20 +1070,20 @@ plot_main_menu
 
 main_menu_updater
         restorescreen
-        plotsprite menu_bar9 4  88 16
-        plotsprite menu_bar0 4  96 16 hp_seg_1
-        plotsprite menu_bar0 4 104 16 hp_seg_2
-        plotsprite menu_bar0 4 112 16 hp_seg_3
-        plotsprite menu_bar0 4 120 16 hp_seg_4
-        plotsprite menu_bar0 4 128 16 hp_seg_5
-        plotsprite menu_bar0 4 136 16 hp_seg_6
-        plotsprite menu_bar9 0  88 32
-        plotsprite menu_bar0 0  96 32 mp_seg_1
-        plotsprite menu_bar0 0 104 32 mp_seg_2
-        plotsprite menu_bar0 0 112 32 mp_seg_3
-        plotsprite menu_bar0 0 120 32 mp_seg_4
-        plotsprite menu_bar0 0 128 32 mp_seg_5
-        plotsprite menu_bar0 0 136 32 mp_seg_6
+        plotsprite menu_bar9 4  80 16
+        plotsprite menu_bar0 4  88 16 hp_seg_1
+        plotsprite menu_bar0 4  96 16 hp_seg_2
+        plotsprite menu_bar0 4 104 16 hp_seg_3
+        plotsprite menu_bar0 4 112 16 hp_seg_4
+        plotsprite menu_bar0 4 120 16 hp_seg_5
+        plotsprite menu_bar0 4 128 16 hp_seg_6
+        plotsprite menu_bar9 0  80 32
+        plotsprite menu_bar0 0  88 32 mp_seg_1
+        plotsprite menu_bar0 0  96 32 mp_seg_2
+        plotsprite menu_bar0 0 104 32 mp_seg_3
+        plotsprite menu_bar0 0 112 32 mp_seg_4
+        plotsprite menu_bar0 0 120 32 mp_seg_5
+        plotsprite menu_bar0 0 128 32 mp_seg_6
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 main_menu_controls
@@ -1611,13 +1610,13 @@ end
 end
 
         alphadata menu_forest menu_map singlewide
-        '23111145676D23'
-        '11111111A92B11'
+        '1111C745676D11'
+        '11111111A32B11'
+        '11111111E98F11'
         '11111111111111'
         '11111111111111'
         '11111111111111'
         '11111111111111'
-        '23111111111123'
 end
 
 gen_forest_map
