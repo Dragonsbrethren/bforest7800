@@ -344,6 +344,9 @@
         autodim byte m_inv_item_3
         autodim byte m_inv_item_4
 
+        autodim byte menu_map_room 98
+        autodim byte menu_map_index
+
         dim current_map = $2600
 
         player_Xpos = 24
@@ -493,6 +496,10 @@ load_forest
 
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_1.tmx forest_room_1 0 0 20 14
         memcpy current_map forest_room_1 280
         return
@@ -506,6 +513,10 @@ end
 
 
 plot_forest_room_2
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0A
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0B
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
         memcpy current_map forest_room_2 280
         return
@@ -518,6 +529,10 @@ plot_forest_room_2
 end
 
 plot_forest_room_3
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0E
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 9
         plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
         memcpy current_map forest_room_3 280
         return
@@ -530,6 +545,10 @@ plot_forest_room_3
 end
 
 plot_forest_room_4
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0A
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
         memcpy current_map forest_room_4 280
         return
@@ -542,6 +561,10 @@ plot_forest_room_4
 end
 
 plot_forest_room_5
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0B
         plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
         memcpy current_map forest_room_5 280
         return
@@ -554,6 +577,10 @@ plot_forest_room_5
 end
 
 plot_forest_room_6
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_6.tmx forest_room_6 0 0 20 14
         memcpy current_map forest_room_6 280
         return
@@ -578,6 +605,10 @@ plot_forest_room_6
 end
 
 plot_forest_room_7
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 7
         plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
         memcpy current_map forest_room_7 280
         return
@@ -590,6 +621,10 @@ plot_forest_room_7
 end
 
 plot_forest_room_8
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
         memcpy current_map forest_room_8 280
         return
@@ -602,6 +637,10 @@ plot_forest_room_8
 end
 
 plot_forest_room_9
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
         plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
         memcpy current_map forest_room_9 280
         return
@@ -614,6 +653,10 @@ plot_forest_room_9
 end
 
 plot_forest_room_10
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
         memcpy current_map forest_room_10 280
         return
@@ -626,6 +669,10 @@ plot_forest_room_10
 end
 
 plot_forest_room_11
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0C
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 0 20 14
         memcpy current_map forest_room_11 280
         return
@@ -958,10 +1005,10 @@ plot_raven
 ;==============================================================================
         bank 3
 
+        incgraphic gfx/menu/menu_map.png 320A
         incgraphic gfx/menu/menu_digits.png 320B 0 2
         incgraphic gfx/menu/menu_font.png 320A 1 0
         incgraphic gfx/menu/menu_arrows.png 320A 1 0
-        incgraphic gfx/menu/menu_map.png 320A
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
         incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
@@ -1500,6 +1547,14 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
+gen_forest_map
+        ; TODO: Test which rooms have been entered
+        alphachars '0123456789ABCDEF'
+        characterset menu_map
+        plotmap menu_map_room 0 52 4 14 7
+        characterset menu_font
+        return
+
         dmahole 0
 plot_menu_border
         ; TODO: Automate this drawing?
@@ -1618,12 +1673,6 @@ end
         '11111111111111'
         '11111111111111'
 end
-
-gen_forest_map
-        ; TODO: Test which rooms have been entered
-        alphachars '0123456789ABCDEF'
-        plotmap menu_forest 0 52 4 14 7
-        return
 
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
