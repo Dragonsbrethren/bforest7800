@@ -1007,7 +1007,6 @@ plot_raven
         bank 3
 
         incgraphic gfx/menu/menu_map.png 320A
-        incgraphic gfx/menu/menu_digits.png 320B 0 2
         incgraphic gfx/menu/menu_font.png 320A 1 0
         incgraphic gfx/menu/menu_arrows.png 320A 1 0
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
@@ -1035,12 +1034,14 @@ plot_raven
         incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_armor4.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_potion1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_potion2.png 320B 0 2 3 1
 
 menu_init
         ; TODO: Remove these once tests are done
@@ -1104,7 +1105,7 @@ plot_main_menu
         clearscreen
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
         plotchars 'Johanna' 0 20 1 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
@@ -1169,6 +1170,7 @@ plot_items_menu
         gosub plot_menu_border
         menu_change = 0
         plotchars 'Items' 0 64 0 singlewide
+        plotvalue menu_font 0 player_hp 2 72 1
         savescreen
 
 items_menu_updater
@@ -1236,7 +1238,7 @@ plot_equip_menu
         menu_columns = 1        ; technically 2 but code handles each menu pane separately
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
         plotchars 'Johanna' 0 16 1 singlewide
         plotchars 'Attack  0  Defense  0' 0 60 1 singlewide
         plotchars '------------------------------------' 0 8 2 singlewide
@@ -1560,7 +1562,7 @@ gen_forest_map
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
         plotchars '}&' 0 152 1 singlewide
@@ -1596,16 +1598,16 @@ plot_menu_border
         'Broadsword   '
         'Estoc        '
         'Firebrand    '
-        'Sword No. 6  '
-        'Sword No. 7  '
-        'Sword No. 8  '
-        'Sword No. 9  '
-        'Sword No. 10 '
-        'Sword No. 11 '
-        'Sword No. 12 '
-        'Sword No. 13 '
-        'Sword No. 14 '
-        'Sword No. 15 '
+        'Sword Num 6  '
+        'Sword Num 7  '
+        'Sword Num 8  '
+        'Sword Num 9  '
+        'Sword Num 10 '
+        'Sword Num 11 '
+        'Sword Num 12 '
+        'Sword Num 13 '
+        'Sword Num 14 '
+        'Sword Num 15 '
 end
 
         alphadata shield_names menu_font singlewide
@@ -1614,17 +1616,17 @@ end
         'Cross Shield '
         'Kite Shield  '
         'Mirror Shield'
-        'Shield No. 5 '
-        'Shield No. 6 '
-        'Shield No. 7 '
-        'Shield No. 8 '
-        'Shield No. 9 '
-        'Shield No. 10'
-        'Shield No. 11'
-        'Shield No. 12'
-        'Shield No. 13'
-        'Shield No. 14'
-        'Shield No. 15'
+        'Shield Num 5 '
+        'Shield Num 6 '
+        'Shield Num 7 '
+        'Shield Num 8 '
+        'Shield Num 9 '
+        'Shield Num 10'
+        'Shield Num 11'
+        'Shield Num 12'
+        'Shield Num 13'
+        'Shield Num 14'
+        'Shield Num 15'
 end
 
         alphadata armor_names menu_font singlewide
@@ -1633,17 +1635,17 @@ end
         'Steel Plate  '
         'Silver Plate '
         'Maiden Armor '
-        'Armor No. 5  '
-        'Armor No. 6  '
-        'Armor No. 7  '
-        'Armor No. 8  '
-        'Armor No. 9  '
-        'Armor No. 10 '
-        'Armor No. 11 '
-        'Armor No. 12 '
-        'Armor No. 13 '
-        'Armor No. 14 '
-        'Armor No. 15 '
+        'Armor Num 5  '
+        'Armor Num 6  '
+        'Armor Num 7  '
+        'Armor Num 8  '
+        'Armor Num 9  '
+        'Armor Num 10 '
+        'Armor Num 11 '
+        'Armor Num 12 '
+        'Armor Num 13 '
+        'Armor Num 14 '
+        'Armor Num 15 '
 end
 
         alphadata charm_names menu_font singlewide
@@ -1652,17 +1654,17 @@ end
         'Charm        '
         'Locket       '
         'Coral Ring   '
-        'Charm No. 5  '
-        'Charm No. 6  '
-        'Charm No. 7  '
-        'Charm No. 8  '
-        'Charm No. 9  '
-        'Charm No. 10 '
-        'Charm No. 11 '
-        'Charm No. 12 '
-        'Charm No. 13 '
-        'Charm No. 14 '
-        'Charm No. 15 '
+        'Charm Num 5  '
+        'Charm Num 6  '
+        'Charm Num 7  '
+        'Charm Num 8  '
+        'Charm Num 9  '
+        'Charm Num 10 '
+        'Charm Num 11 '
+        'Charm Num 12 '
+        'Charm Num 13 '
+        'Charm Num 14 '
+        'Charm Num 15 '
 end
 
         alphadata menu_forest menu_map singlewide
@@ -3018,7 +3020,7 @@ clear_palettes
         P6C1 = $00 : P6C2 = $00 : P6C3 = $00
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
-
+        
 main
         drawscreen
         if switchreset then reboot
