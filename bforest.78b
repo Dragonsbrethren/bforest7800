@@ -136,6 +136,7 @@
         const MENU_RELICS = 4
         const MENU_SETUP  = 5
         const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
+        const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
@@ -1170,7 +1171,6 @@ plot_items_menu
         gosub plot_menu_border
         menu_change = 0
         plotchars 'Items' 0 64 0 singlewide
-        plotvalue menu_font 0 player_hp 2 72 1
         savescreen
 
 items_menu_updater
@@ -1191,9 +1191,9 @@ plot_magic_menu
         clearscreen
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
-        plotchars 'Spells Tome' 0 60 0 singlewide
-        plotchars 'Fireball' 0 16 1 singlewide
-        plotchars 'Windslash' 0 16 3 singlewide
+        plotchars 'Spells Tome' 0 60 1 singlewide
+        plotchars 'Fireball' 0 16 2 singlewide
+        plotchars 'Windslash' 0 16 4 singlewide
         plotchars 'Forward' 0 24 11 singlewide
         plotchars 'Backward' 0 80 11 singlewide
         plotchars 'Clockwise' 0 24 12 singlewide
@@ -1202,9 +1202,9 @@ plot_magic_menu
         characterset menu_arrows
         alphachars '7894 6123'
         ; Fireball
-        plotchars '646' 0 24 2 singlewide
+        plotchars '646' 0 24 3 singlewide
         ; Windslash
-        plotchars '632' 0 24 4 singlewide
+        plotchars '632' 0 24 5 singlewide
         ; Legend
         plotchars '6' 0 16 11 singlewide
         plotchars '4' 0 72 11 singlewide
@@ -1240,7 +1240,7 @@ plot_equip_menu
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
         plotchars 'Johanna' 0 16 1 singlewide
-        plotchars 'Attack  0  Defense  0' 0 60 1 singlewide
+        plotchars 'Attack     Defense' 0 60 1 singlewide
         plotchars '------------------------------------' 0 8 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
         plotchars 'Equipped'  0 96 3 singlewide
@@ -1395,6 +1395,54 @@ equip_menu_draw_sprites
         plotmap armor_names 0 92 9 13 1 0 player_armor 13
         plotsprite menu_charm0 0 84 176 1 0 player_charm
         plotmap charm_names 0 92 11 13 1 0 player_charm 13
+        ; plotvalue menu_font 0 player_atk 2 88 1
+        asm
+        lda	#<menu_font
+        sta	temp1
+        lda	#>menu_font
+        sta	temp2
+        lda	charactermode
+        sta	temp9
+        lda	#(menu_font_mode | %01100000)
+        sta	charactermode
+        lda	#30	; width in two's complement
+        ora	#0	; palette left shifted 5 bits
+        sta	temp3
+        lda	#88
+        sta	temp4
+        lda	#1
+        sta	temp5
+        lda	#2
+        sta	temp6
+        lda	#<player_atk
+        sta	temp7
+        lda	#>player_atk
+        sta	temp8
+        jsr	plotvaluesw
+        ; plotvalue menu_font 0 player_def 2 132 1
+        lda	#<menu_font
+        sta	temp1
+        lda	#>menu_font
+        sta	temp2
+        lda	charactermode
+        sta	temp9
+        lda	#(menu_font_mode | %01100000)
+        sta	charactermode
+        lda	#30	; width in two's complement
+        ora	#0	; palette left shifted 5 bits
+        sta	temp3
+        lda	#132
+        sta	temp4
+        lda	#1
+        sta	temp5
+        lda	#2
+        sta	temp6
+        lda	#<player_def
+        sta	temp7
+        lda	#>player_def
+        sta	temp8
+        jsr	plotvaluesw
+end
         if equip_inv_col then equip_menu_inv_cursor
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         goto main
@@ -1713,6 +1761,7 @@ end
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
         bank 8
+        inline plotvaluesw.asm
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
