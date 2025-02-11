@@ -142,6 +142,10 @@
 ; SYSTEM VARIABLES
 ;------------------------------------------------------------------------------
         dim temp_hp_sign = temp1        ; tracks underflow during subtraction
+        dim valueX       = temp4
+        dim valueY       = temp5
+        dim value_ptr_lo = temp7
+        dim value_ptr_hi = temp8
 
         autodim init a z
         autodim byte index
@@ -1386,6 +1390,7 @@ menu_charm_next
         goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites
+        dec player_atk = $99
         ; draw the player's equipment based on variable offsets
         plotsprite menu_sword0 0 84 80 player_sword
         plotmap sword_names 0 92 5 13 1 0 player_sword 13
@@ -1397,50 +1402,24 @@ equip_menu_draw_sprites
         plotmap charm_names 0 92 11 13 1 0 player_charm 13
         ; plotvalue menu_font 0 player_atk 2 88 1
         asm
-        lda	#<menu_font
-        sta	temp1
-        lda	#>menu_font
-        sta	temp2
-        lda	charactermode
-        sta	temp9
-        lda	#(menu_font_mode | %01100000)
-        sta	charactermode
-        lda	#30	; width in two's complement
-        ora	#0	; palette left shifted 5 bits
-        sta	temp3
         lda	#88
-        sta	temp4
+        sta	valueX
         lda	#1
-        sta	temp5
-        lda	#2
-        sta	temp6
+        sta	valueY
         lda	#<player_atk
-        sta	temp7
+        sta	value_ptr_lo
         lda	#>player_atk
-        sta	temp8
+        sta	value_ptr_hi
         jsr	plotvaluesw
-        ; plotvalue menu_font 0 player_def 2 132 1
-        lda	#<menu_font
-        sta	temp1
-        lda	#>menu_font
-        sta	temp2
-        lda	charactermode
-        sta	temp9
-        lda	#(menu_font_mode | %01100000)
-        sta	charactermode
-        lda	#30	; width in two's complement
-        ora	#0	; palette left shifted 5 bits
-        sta	temp3
-        lda	#132
-        sta	temp4
+        ; plotvalue menu_font 0 player_def 2 136 1
+        lda	#136
+        sta	valueX
         lda	#1
-        sta	temp5
-        lda	#2
-        sta	temp6
+        sta	valueY
         lda	#<player_def
-        sta	temp7
+        sta	value_ptr_lo
         lda	#>player_def
-        sta	temp8
+        sta	value_ptr_hi
         jsr	plotvaluesw
 end
         if equip_inv_col then equip_menu_inv_cursor
@@ -1733,6 +1712,8 @@ disable_double_wide_mode
         sCTRL{4} = 0 : CTRL = sCTRL
         return
 
+        inline plotvaluesw.asm
+
 set_menu_top_pal
         WSYNC = 1 : BACKGRND = $2D
         if menu = MENU_EQUIP then equip_menu_colors
@@ -1761,7 +1742,6 @@ end
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
         bank 8
-        inline plotvaluesw.asm
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
