@@ -738,6 +738,10 @@ twtile2 cmp move_tile_2
         bne tw_next
         lda #1
         sta walkable_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda walkable_1
+        bne tw_walkable
 tw_next inx
         cpx #forest_walkable_tiles_length
         bne tw_loop
@@ -745,6 +749,7 @@ tw_next inx
         beq tw_done
         lda walkable_2
         beq tw_done
+tw_walkable
         sta walkable
 tw_done
         lda flags
@@ -764,6 +769,8 @@ tftile2 cmp move_tile_2
         bne tf_next
         lda #1
         sta floatable_2
+        lda floatable_1
+        bne tf_floatable
 tf_next inx
         cpx #forest_floatable_tiles_length
         bne tf_loop
@@ -771,6 +778,7 @@ tf_next inx
         beq tf_done
         lda floatable_2
         beq tf_done
+tf_floatable
         sta floatable
 tf_done jmp .walkable_return
 end
@@ -2518,10 +2526,15 @@ move_object
         if Yvelocity > vel_cap then Yvelocity = vel_cap
 
         ; Current direction(s) are determined by player input or AI logic
+        ; optimization: bypass direction checks if no velocity
+        if !Yvelocity then move_object_X
         if Ydirection = DIR_UP    then gosub move_test_up
         if Ydirection = DIR_DOWN  then gosub move_test_down
+move_object_X
+        if !Xvelocity then move_object_done
         if Xdirection = DIR_LEFT  then gosub move_test_left
         if Xdirection = DIR_RIGHT then gosub move_test_right
+move_object_done
         goto move_return
 
 move_test_up
@@ -2711,6 +2724,7 @@ move_return
         return
 
 test_walkable
+        if debug_time then BACKGRND = $1A
         ; start by assuming the tile isn't walkable (fewer tests)
         asm
         lda #0
@@ -2720,6 +2734,7 @@ test_walkable
 end
         if tileset = T_FOREST then test_walkable_forest
 walkable_return
+        if debug_time then BACKGRND = bg_color
         return
 
 check_collisions
