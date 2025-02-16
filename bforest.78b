@@ -1,12 +1,13 @@
 ;------------------------------------------------------------------------------
 ; 7800BASIC INITIALIZATION
 ;------------------------------------------------------------------------------
-        set romsize 128kRAM
-        set pokeysupport on
+        set romsize 144k
+        set pokeysupport $450
         set screenheight 224
         set doublewide on
         set collisionwrap off
         set pauseroutine off
+        set trackersupport rmt
 ;        set multibutton on
 ;        set multibuttonpause on
 
@@ -356,6 +357,8 @@
 
         dim current_map = $2600
 
+        dim RMTRAM = $2720
+
         player_Xpos = 24
         player_Ypos = 60
 
@@ -436,6 +439,23 @@ set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
+
+        data sfx_poof2
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0a,$08,$04 ; first chunk of freq,channel,volume
+        $12,$08,$06
+        $09,$08,$08
+        $11,$08,$08
+        $08,$08,$0a
+        $10,$08,$0a
+        $07,$08,$0a
+        $0F,$08,$0a
+        $06,$08,$08
+        $0E,$08,$06
+        $05,$08,$04
+        $0D,$08,$02
+        $00,$00,$00
+end
 
 ;==============================================================================
 ; BANK 2
@@ -1727,29 +1747,14 @@ set_menu_top_pal
         if menu = MENU_EQUIP then equip_menu_colors
         return
 
-        data sfx_poof2
-        $10,$10,$00 ; version, priority, frames per chunk
-        $0a,$08,$04 ; first chunk of freq,channel,volume
-        $12,$08,$06
-        $09,$08,$08
-        $11,$08,$08
-        $08,$08,$0a
-        $10,$08,$0a
-        $07,$08,$0a
-        $0F,$08,$0a
-        $06,$08,$08
-        $0E,$08,$06
-        $05,$08,$04
-        $0D,$08,$02
-        $00,$00,$00
-end
+
 
 ;==============================================================================
-; BANK 8
+; BANK 9
 ;------------------------------------------------------------------------------
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
-        bank 8
+        bank 9
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
@@ -1837,7 +1842,7 @@ load_map
         clearscreen
         displaymode 160A
         adjustvisible 0 14
-        if tileset = T_FOREST then loadrombank 2 : gosub load_forest
+        if tileset = T_FOREST then gosub load_forest bank2
         savescreen
         if !save_objects then gosub load_objects
         asm
@@ -1889,11 +1894,7 @@ plot_hud
         gosub draw_hud
 
 play_sounds
-        ; can safely load another ROM bank after screen has been drawn
-        ; but might change this to playing from RAM to reduce lag
-        loadrombank 3
         if sword_hit then playsfx sfx_poof2
-        loadrombank 2
         goto main
 
 plot_torch
@@ -1954,10 +1955,9 @@ open_menu
         gosub clear_palettes
         ; TODO: Should previously opened submenu be remembered?
         menu = MENU_MAIN
-        loadrombank 3
         menu_debounce = 1
         pause_debounce = 1
-        goto menu_init
+        goto menu_init bank3
 
 followplayer
         if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
