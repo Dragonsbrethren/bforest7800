@@ -351,6 +351,8 @@
 
         autodim byte menu_map_room 98
         autodim byte menu_map_index
+        autodim byte menu_map_Xpos
+        autodim byte menu_map_Ypos
 
         dim current_map = $2600
 
@@ -418,6 +420,8 @@ title_handler
 title_new_game
         reload_map = 1
         room_index = 17
+        menu_map_Xpos = 78
+        menu_map_Ypos = 96
         tileset = T_FOREST
         game_state = STATE_FIELD
         
@@ -1024,6 +1028,7 @@ plot_raven
         incgraphic gfx/menu/menu_bar7.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
+        incgraphic gfx/menu/menu_pin.png 320B 0 3 2
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 1 3
@@ -1139,6 +1144,7 @@ main_menu_updater
         plotsprite menu_bar0 0 120 32 mp_seg_5
         plotsprite menu_bar0 0 128 32 mp_seg_6
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
 
 main_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
@@ -1174,7 +1180,7 @@ plot_items_menu
         clearscreen
         gosub plot_menu_border
         menu_change = 0
-        plotchars 'Items' 0 64 0 singlewide
+        plotchars 'Items' 0 64 1 singlewide
         savescreen
 
 items_menu_updater
@@ -1557,6 +1563,8 @@ equip_inv_sel_up
         return
 
 open_main_menu
+        ; turn off Kangaroo mode for position pin sprite
+        sCTRL{2} = 0 : CTRL = sCTRL
         action_debounce = 1
         menu_debounce = 1
         menu_change = 1
@@ -2152,10 +2160,10 @@ input_frame_done
         if animation_frame && player_state = STATE_MOVING then player_frame = player_frame + 1
 
 check_room_boundary
-        if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1
-        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1
-        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW
-        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW
+        if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
+        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
+        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
+        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1
         if debug_time then BACKGRND = bg_color
         goto player_handler_done
