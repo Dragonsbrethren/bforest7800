@@ -2538,25 +2538,33 @@ end
 ;==============================================================================
 move_object
         asm
-        lda object_vel_cap_hi,x
-        cmp object_Xvel_hi,x
-        bcs m_X_lo
-        sta object_Xvel_hi,x
-m_X_lo  lda object_vel_cap_lo,x
-        cmp object_Xvel_lo,x
-        bcs m_Y_hi
+        lda debug_time
+        beq mo_X_cap
+        lda #$96
+        sta BACKGRND
+
+        ; Cap the object's velocity TODO: separate X/Y cap?
+mo_X_cap
+        ldx index       ; TODO: Remove when object handler totally rewritten
+        lda object_vel_cap,x
+        cmp object_Xvel,x
+        bcs mo_Y_cap
+        sta object_Xvel,x
+        pha
+        lda object_vel_cap_lo,x
         sta object_Xvel_lo,x
-m_Y_hi  lda object_vel_cap_hi,x
-        cmp object_Yvel_hi,x
-        bcs m_Y_lo
-        sta object_Yvel_hi,x
-m_Y_lo  lda object_vel_cap_lo,x
-        cmp object_Yvel_lo,x
-        bcs m_dirs
+        pla
+mo_Y_cap
+        cmp object_Yvel,x
+        bcs .move_object_Y
+        sta object_Yvel,x
+        lda object_vel_cap_lo,x
         sta object_Yvel_lo,x
+end
 
         ; Current direction(s) are determined by player input or AI logic
         ; optimization: bypass direction checks if no velocity
+move_object_Y
         if !Yvelocity then move_object_X
         if Ydirection = DIR_UP    then gosub move_test_up
         if Ydirection = DIR_DOWN  then gosub move_test_down
