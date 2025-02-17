@@ -2003,6 +2003,7 @@ object_handler
         ldx #MAX_OBJECTS
 o_loop  lda object_type,x
         beq .object_done
+        stx index       ; TODO: remove when full rewrite complete
         cmp #TYPE_SPAWNER
         bne o_torch
         jmp .spawn_object
