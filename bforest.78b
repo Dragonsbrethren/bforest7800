@@ -1,12 +1,13 @@
 ;------------------------------------------------------------------------------
 ; 7800BASIC INITIALIZATION
 ;------------------------------------------------------------------------------
-        set romsize 128kRAM
-        set pokeysupport on
+        set romsize 144k
+        set pokeysupport $450
         set screenheight 224
         set doublewide on
         set collisionwrap off
         set pauseroutine off
+        set trackersupport rmt
 ;        set multibutton on
 ;        set multibuttonpause on
 
@@ -136,11 +137,16 @@
         const MENU_RELICS = 4
         const MENU_SETUP  = 5
         const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
+        const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
 
 ;------------------------------------------------------------------------------
 ; SYSTEM VARIABLES
 ;------------------------------------------------------------------------------
         dim temp_hp_sign = temp1        ; tracks underflow during subtraction
+        dim valueX       = temp4
+        dim valueY       = temp5
+        dim value_ptr_lo = temp7
+        dim value_ptr_hi = temp8
 
         autodim init a z
         autodim byte index
@@ -197,9 +203,8 @@
         autodim 8.8  player_speed
         autodim byte player_sword
         autodim byte player_shield
-        autodim byte player_helm
         autodim byte player_armor
-        autodim byte player_relic
+        autodim byte player_charm
         autodim byte player_status
         autodim byte sword_pal
         autodim byte sword_Xpos
@@ -278,11 +283,39 @@
         autodim byte pause_debounce
         autodim byte left_debounce
         autodim byte right_debounce
+        autodim byte up_debounce
+        autodim byte down_debounce
         autodim byte menu
         autodim byte menu_change
         autodim byte menu_selection
+        autodim byte prev_menu_selection
+        autodim byte menu_columns
+        autodim byte menu_rows
         autodim byte menu_cursor_X
         autodim byte menu_cursor_Y
+        autodim byte m_inv_index
+        autodim byte m_inv_scroll
+        autodim byte m_inv_slot
+        autodim byte m_sword_pal1
+        autodim byte m_sword_pal2
+        autodim byte m_shield_pal1
+        autodim byte m_shield_pal2
+        autodim byte m_armor_pal1
+        autodim byte m_armor_pal2
+        autodim byte m_charm_pal1
+        autodim byte m_charm_pal2
+        autodim byte m_inv0_pal1
+        autodim byte m_inv0_pal2
+        autodim byte m_inv1_pal1
+        autodim byte m_inv1_pal2
+        autodim byte m_inv2_pal1
+        autodim byte m_inv2_pal2
+        autodim byte m_inv3_pal1
+        autodim byte m_inv3_pal2
+        autodim byte equip_inv_col
+        autodim byte equip_inv_sel
+        autodim byte equip_inv_X
+        autodim byte equip_inv_Y
 
         ; ROOM HEADER
         autodim byte room
@@ -307,8 +340,24 @@
         autodim byte chant_input
         ; possible to start a chant on index 0 so need another variable        
         autodim byte chant_new_input
+        autodim byte m_sword_inv  16
+        autodim byte m_shield_inv 16
+        autodim byte m_armor_inv  16
+        autodim byte m_charm_inv  16
+        autodim byte m_inv_item_0
+        autodim byte m_inv_item_1
+        autodim byte m_inv_item_2
+        autodim byte m_inv_item_3
+        autodim byte m_inv_item_4
+
+        autodim byte menu_map_room 98
+        autodim byte menu_map_index
+        autodim byte menu_map_Xpos
+        autodim byte menu_map_Ypos
 
         dim current_map = $2600
+
+        dim RMTRAM = $2720
 
         player_Xpos = 24
         player_Ypos = 60
@@ -374,6 +423,8 @@ title_handler
 title_new_game
         reload_map = 1
         room_index = 17
+        menu_map_Xpos = 78
+        menu_map_Ypos = 96
         tileset = T_FOREST
         game_state = STATE_FIELD
         
@@ -388,6 +439,23 @@ set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return
+
+        data sfx_poof2
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0a,$08,$04 ; first chunk of freq,channel,volume
+        $12,$08,$06
+        $09,$08,$08
+        $11,$08,$08
+        $08,$08,$0a
+        $10,$08,$0a
+        $07,$08,$0a
+        $0F,$08,$0a
+        $06,$08,$08
+        $0E,$08,$06
+        $05,$08,$04
+        $0D,$08,$02
+        $00,$00,$00
+end
 
 ;==============================================================================
 ; BANK 2
@@ -457,6 +525,10 @@ load_forest
 
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_1.tmx forest_room_1 0 0 20 14
         memcpy current_map forest_room_1 280
         return
@@ -470,6 +542,10 @@ end
 
 
 plot_forest_room_2
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0A
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0B
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
         memcpy current_map forest_room_2 280
         return
@@ -482,6 +558,10 @@ plot_forest_room_2
 end
 
 plot_forest_room_3
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0E
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 9
         plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
         memcpy current_map forest_room_3 280
         return
@@ -494,6 +574,10 @@ plot_forest_room_3
 end
 
 plot_forest_room_4
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0A
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
         memcpy current_map forest_room_4 280
         return
@@ -506,6 +590,10 @@ plot_forest_room_4
 end
 
 plot_forest_room_5
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0B
         plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
         memcpy current_map forest_room_5 280
         return
@@ -518,6 +606,10 @@ plot_forest_room_5
 end
 
 plot_forest_room_6
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_6.tmx forest_room_6 0 0 20 14
         memcpy current_map forest_room_6 280
         return
@@ -542,6 +634,10 @@ plot_forest_room_6
 end
 
 plot_forest_room_7
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 7
         plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
         memcpy current_map forest_room_7 280
         return
@@ -554,6 +650,10 @@ plot_forest_room_7
 end
 
 plot_forest_room_8
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
         memcpy current_map forest_room_8 280
         return
@@ -566,6 +666,10 @@ plot_forest_room_8
 end
 
 plot_forest_room_9
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
         plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
         memcpy current_map forest_room_9 280
         return
@@ -578,6 +682,10 @@ plot_forest_room_9
 end
 
 plot_forest_room_10
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
         memcpy current_map forest_room_10 280
         return
@@ -590,6 +698,10 @@ plot_forest_room_10
 end
 
 plot_forest_room_11
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0C
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 0 20 14
         memcpy current_map forest_room_11 280
         return
@@ -611,6 +723,7 @@ end
         00, 00, 00, 00, 00, 00, 00
 end
 
+        dmahole 0
 test_walkable_forest
         asm
         ldx #0
@@ -625,6 +738,10 @@ twtile2 cmp move_tile_2
         bne tw_next
         lda #1
         sta walkable_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda walkable_1
+        bne tw_walkable
 tw_next inx
         cpx #forest_walkable_tiles_length
         bne tw_loop
@@ -632,6 +749,7 @@ tw_next inx
         beq tw_done
         lda walkable_2
         beq tw_done
+tw_walkable
         sta walkable
 tw_done
         lda flags
@@ -651,6 +769,8 @@ tftile2 cmp move_tile_2
         bne tf_next
         lda #1
         sta floatable_2
+        lda floatable_1
+        bne tf_floatable
 tf_next inx
         cpx #forest_floatable_tiles_length
         bne tf_loop
@@ -658,6 +778,7 @@ tf_next inx
         beq tf_done
         lda floatable_2
         beq tf_done
+tf_floatable
         sta floatable
 tf_done jmp .walkable_return
 end
@@ -922,6 +1043,7 @@ plot_raven
 ;==============================================================================
         bank 3
 
+        incgraphic gfx/menu/menu_map.png 320A
         incgraphic gfx/menu/menu_font.png 320A 1 0
         incgraphic gfx/menu/menu_arrows.png 320A 1 0
         incgraphic gfx/menu/menu_bar0.png 320B 0 2
@@ -934,39 +1056,100 @@ plot_raven
         incgraphic gfx/menu/menu_bar7.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
+        incgraphic gfx/menu/menu_pin.png 320B 0 3 2
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
-        incgraphic gfx/menu/menu_cursor1.png 320A 0 1
+        incgraphic gfx/menu/menu_sword0.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword1.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword2.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword3.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_sword4.png 320B 2 0 1 3
+        incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield4.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_potion1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_potion2.png 320B 0 2 3 1
 
 menu_init
+        ; TODO: Remove these once tests are done
+        player_sword = 1
+        player_shield = 1
+        player_armor = 1
+        player_charm = 1
+        m_sword_inv[0] = 4
+        m_sword_inv[1] = 1
+        m_sword_inv[2] = 3
+        m_sword_inv[3] = 2
+        m_shield_inv[0] = 1
+        m_shield_inv[1] = 2
+        m_shield_inv[2] = 3
+        m_shield_inv[3] = 4
+        m_armor_inv[0] = 1
+        m_armor_inv[1] = 2
+        m_armor_inv[2] = 3
+        m_armor_inv[3] = 4
+        m_charm_inv[0] = 1
+        m_charm_inv[1] = 2
+        m_charm_inv[2] = 3
+        m_charm_inv[3] = 4
+        ; TODO: Load colors based on inventory items
+        m_sword_pal1 = $1E
+        m_sword_pal2 = $44
+        m_inv0_pal1 = $07
+        m_inv0_pal2 = $04
+        m_shield_pal1 = $F3
+        m_shield_pal2 = $F5
+        m_inv1_pal1 = $77
+        m_inv1_pal1 = $04
+        m_armor_pal1 = $25
+        m_armor_pal2 = $27
+        m_inv2_pal1 = $FB
+        m_inv2_pal2 = $FF
+        m_charm_pal1 = $AA
+        m_charm_pal2 = $0F
+        m_inv3_pal1 = $36
+        m_inv3_pal2 = $33
         game_state = STATE_MENU
         clearscreen
         displaymode 320B
         drawwait
-        P0C1 = PAL_LTBLUE
         P0C2 = $10
-        P0C3 = PAL_LTPURP
-        P4C1 = PAL_COPPER
         P4C2 = $10
-        P4C3 = PAL_LTRED
         menu_change = 1
 
 menu_handler
         if menu = MENU_MAIN then goto plot_main_menu
+        if menu = MENU_ITEMS then goto plot_items_menu
         if menu = MENU_MAGIC then goto plot_magic_menu
+        if menu = MENU_EQUIP then goto plot_equip_menu
+        if menu = MENU_RELICS then goto plot_relics_menu
 
 plot_main_menu
+        P0C3 = PAL_LTPURP
+        P4C3 = PAL_LTRED
         if !menu_change then goto main_menu_updater
         gosub disable_double_wide_mode
         clearscreen
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
-        plotchars 'Portrait' 0 16 1 singlewide
-        plotchars 'Johanna' 0 64 0 singlewide
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
+        plotchars 'Johanna' 0 20 1 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
-        plotchars 'The map gets plotted here' 0 28 7 singlewide
+
         plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
+        gosub gen_forest_map
         savescreen
         menu_cursor_X = MENU_MAIN_ITEMS_X
         menu_cursor_Y = MENU_MAIN_ITEMS_Y
@@ -974,21 +1157,22 @@ plot_main_menu
 
 main_menu_updater
         restorescreen
-        plotsprite menu_bar9 4  88 16
-        plotsprite menu_bar0 4  96 16 hp_seg_1
-        plotsprite menu_bar0 4 104 16 hp_seg_2
-        plotsprite menu_bar0 4 112 16 hp_seg_3
-        plotsprite menu_bar0 4 120 16 hp_seg_4
-        plotsprite menu_bar0 4 128 16 hp_seg_5
-        plotsprite menu_bar0 4 136 16 hp_seg_6
-        plotsprite menu_bar9 0  88 32
-        plotsprite menu_bar0 0  96 32 mp_seg_1
-        plotsprite menu_bar0 0 104 32 mp_seg_2
-        plotsprite menu_bar0 0 112 32 mp_seg_3
-        plotsprite menu_bar0 0 120 32 mp_seg_4
-        plotsprite menu_bar0 0 128 32 mp_seg_5
-        plotsprite menu_bar0 0 136 32 mp_seg_6
+        plotsprite menu_bar9 4  80 16
+        plotsprite menu_bar0 4  88 16 hp_seg_1
+        plotsprite menu_bar0 4  96 16 hp_seg_2
+        plotsprite menu_bar0 4 104 16 hp_seg_3
+        plotsprite menu_bar0 4 112 16 hp_seg_4
+        plotsprite menu_bar0 4 120 16 hp_seg_5
+        plotsprite menu_bar0 4 128 16 hp_seg_6
+        plotsprite menu_bar9 0  80 32
+        plotsprite menu_bar0 0  88 32 mp_seg_1
+        plotsprite menu_bar0 0  96 32 mp_seg_2
+        plotsprite menu_bar0 0 104 32 mp_seg_3
+        plotsprite menu_bar0 0 112 32 mp_seg_4
+        plotsprite menu_bar0 0 120 32 mp_seg_5
+        plotsprite menu_bar0 0 128 32 mp_seg_6
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
 
 main_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
@@ -996,7 +1180,6 @@ main_menu_controls
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 && action_button = 0 then open_submenu
         if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
-        ; TODO: handle left/right input and submenu selections
         if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
@@ -1013,7 +1196,31 @@ menu_main_dirs_done
 open_submenu
         action_debounce = 1
         menu_change = 1
+        if menu_selection = 0 then goto plot_items_menu
         if menu_selection = 1 then goto plot_magic_menu
+        if menu_selection = 2 then goto plot_equip_menu
+        if menu_selection = 3 then goto plot_relics_menu
+        goto main
+
+plot_items_menu
+        menu = MENU_ITEMS
+        if !menu_change then goto items_menu_updater
+        clearscreen
+        gosub plot_menu_border
+        menu_change = 0
+        plotchars 'Items' 0 64 1 singlewide
+        savescreen
+
+items_menu_updater
+        restorescreen
+
+items_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 then open_main_menu
+        if !action_debounce && joy0fire1 then open_main_menu
         goto main
 
 plot_magic_menu
@@ -1022,15 +1229,25 @@ plot_magic_menu
         clearscreen
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
-        plotchars 'Fireball' 0 16 1 singlewide
-        plotchars 'Windslash' 0 16 3 singlewide
+        plotchars 'Spells Tome' 0 60 1 singlewide
+        plotchars 'Fireball' 0 16 2 singlewide
+        plotchars 'Windslash' 0 16 4 singlewide
+        plotchars 'Forward' 0 24 11 singlewide
+        plotchars 'Backward' 0 80 11 singlewide
+        plotchars 'Clockwise' 0 24 12 singlewide
+        plotchars 'Counterclockwise' 0 80 12 singlewide
         ; TODO: Show different directions on different frames?
         characterset menu_arrows
         alphachars '7894 6123'
         ; Fireball
-        plotchars '646' 0 24 2 singlewide
+        plotchars '646' 0 24 3 singlewide
         ; Windslash
-        plotchars '632' 0 24 4 singlewide
+        plotchars '632' 0 24 5 singlewide
+        ; Legend
+        plotchars '6' 0 16 11 singlewide
+        plotchars '4' 0 72 11 singlewide
+        plotchars '2' 0 16 12 singlewide
+        plotchars '8' 0 72 12 singlewide
         savescreen
         menu_change = 0
 
@@ -1048,6 +1265,290 @@ magic_menu_controls
         if !action_debounce && joy0fire1 then open_main_menu
         goto main
 
+plot_equip_menu
+        ; turn on Kangaroo mode so palette color 1 is more manageable
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_EQUIP
+        if !menu_change then goto equip_menu_updater
+        clearscreen
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 1        ; technically 2 but code handles each menu pane separately
+        gosub plot_menu_border
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
+        plotchars 'Johanna' 0 16 1 singlewide
+        plotchars 'Attack     Defense' 0 60 1 singlewide
+        plotchars '------------------------------------' 0 8 2 singlewide
+        plotchars 'Inventory' 0 24 3 singlewide
+        plotchars 'Equipped'  0 96 3 singlewide
+        plotchars 'Weapon'    0 80 4 singlewide
+        plotchars 'Shield'    0 80 6 singlewide
+        plotchars 'Armor'     0 80 8 singlewide
+        plotchars 'Talisman'  0 80 10 singlewide
+        plotchars 'Exit'      0 128 12 singlewide
+        savescreen
+
+equip_menu_updater
+        restorescreen
+
+equip_menu_controls
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if equip_inv_col then equip_menu_inv_controls
+        equip_inv_sel = 0
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then equip_menu_change_to_inv
+        if !action_debounce && joy0fire1 && action_button = 1 then equip_menu_change_to_inv
+        if up_debounce > MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = MENU_EQUIP_MAX_OPTIONS : goto equip_menu_dirs_done
+        if down_debounce > MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+        if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = 0
+        goto equip_menu_dirs_done
+
+        const MENU_EQUIP_MAX_OPTIONS = 4
+        const MENU_EQUIP_EQUIPPED_X = 76
+        const MENU_EQUIP_SWORD_Y    = 64
+        const MENU_EQUIP_SHIELD_Y   = 96
+        const MENU_EQUIP_ARMOR_Y    = 128
+        const MENU_EQUIP_CHARM_Y    = 160
+        const MENU_EQUIP_INV_X      = 12
+        const MENU_EQUIP_INV0_Y    = 80
+        const MENU_EQUIP_INV1_Y    = 112
+        const MENU_EQUIP_INV2_Y    = 142
+        const MENU_EQUIP_INV3_Y    = 176
+        const MENU_EQUIP_EXIT_X     = 124
+        const MENU_EQUIP_EXIT_Y     = 192
+
+equip_menu_return_from_inv
+        menu_debounce = 1
+        equip_inv_col = 0
+        equip_inv_sel = 0
+        goto equip_menu_dirs_done
+
+equip_menu_inv_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then equip_menu_return_from_inv
+        if !menu_debounce && joy0fire1 && action_button = 0 then equip_menu_return_from_inv
+        if !action_debounce && joy0fire0 && action_button = 0 then equip_item
+        if !action_debounce && joy0fire1 && action_button = 1 then equip_item
+        if up_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_up
+        if !up_debounce && joy0up then gosub equip_inv_sel_up
+        if down_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_down
+        if !down_debounce && joy0down then gosub equip_inv_sel_down
+
+equip_menu_dirs_done
+        menu_cursor_X = MENU_EQUIP_EQUIPPED_X
+        if menu_selection = 0 then menu_cursor_Y = MENU_EQUIP_SWORD_Y : goto equip_menu_sword_inv
+        if menu_selection = 1 then menu_cursor_Y = MENU_EQUIP_SHIELD_Y : goto equip_menu_shield_inv
+        if menu_selection = 2 then menu_cursor_Y = MENU_EQUIP_ARMOR_Y : goto equip_menu_armor_inv
+        if menu_selection = 3 then menu_cursor_Y = MENU_EQUIP_CHARM_Y : goto equip_menu_charm_inv
+        if menu_selection = 4 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        ; continue showing the inventory of the previously selected option
+        if prev_menu_selection = 0 then goto equip_menu_sword_inv
+        goto equip_menu_charm_inv
+
+equip_menu_sword_inv
+        m_inv_index = 1 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_sword_next 
+        next
+
+        ; TODO: LUT for item icons
+        plotsprite menu_sword0 4 16 80 m_inv_item_0
+        plotmap sword_names 0 24 5 13 1 0 m_inv_item_0 13
+        plotsprite menu_sword0 4 16 112 m_inv_item_1
+        plotmap sword_names 0 24 7 13 1 0 m_inv_item_1 13
+        plotsprite menu_sword0 4 16 144 m_inv_item_2
+        plotmap sword_names 0 24 9 13 1 0 m_inv_item_2 13
+        plotsprite menu_sword0 4 16 176 1 0 m_inv_item_3
+        plotmap sword_names 0 24 11 13 1 0 m_inv_item_3 13
+        goto equip_menu_draw_sprites
+
+equip_menu_shield_inv
+        m_inv_index = 1 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_shield_next 
+        next
+
+        plotsprite menu_shield0 4 16 80 m_inv_item_0
+        plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
+        plotsprite menu_shield0 4 16 112 m_inv_item_1
+        plotmap shield_names 0 24 7 13 1 0 m_inv_item_2 13
+        plotsprite menu_shield0 4 16 144 m_inv_item_3
+        plotmap shield_names 0 24 9 13 1 0 m_inv_item_3 13
+        plotsprite menu_shield0 4 16 176 1 0 m_inv_item_4
+        plotmap shield_names 0 24 11 13 1 0 m_inv_item_4 13
+        goto equip_menu_draw_sprites
+
+equip_menu_armor_inv
+        m_inv_index = 1 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_armor_next 
+        next
+
+        plotsprite menu_armor0 4 16 80  m_inv_item_0
+        plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
+        plotsprite menu_armor0 4 16 112  m_inv_item_1
+        plotmap armor_names 0 24 7 13 1 0  m_inv_item_1 13
+        plotsprite menu_armor0 4 16 144  m_inv_item_2
+        plotmap armor_names 0 24 9 13 1 0  m_inv_item_2 13
+        plotsprite menu_armor0 4 16 176 1 0  m_inv_item_3
+        plotmap armor_names 0 24 11 13 1 0  m_inv_item_3 13
+        goto equip_menu_draw_sprites
+
+equip_menu_charm_inv
+        m_inv_index = 1 + m_inv_scroll
+        for m_inv_slot = 0 to 3
+        m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
+        m_inv_index = m_inv_index + 1
+menu_charm_next 
+        next
+
+        plotsprite menu_charm0 4 16 80  m_inv_item_0
+        plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
+        plotsprite menu_charm0 4 16 112  m_inv_item_1
+        plotmap charm_names 0 24 7 13 1 0  m_inv_item_1 13
+        plotsprite menu_charm0 4 16 144  m_inv_item_2
+        plotmap charm_names 0 24 9 13 1 0  m_inv_item_2 13
+        plotsprite menu_charm0 4 16 176 1 0  m_inv_item_3
+        plotmap charm_names 0 24 11 13 1 0  m_inv_item_3 13
+        goto equip_menu_draw_sprites
+
+equip_menu_draw_sprites
+        dec player_atk = $99
+        ; draw the player's equipment based on variable offsets
+        plotsprite menu_sword0 0 84 80 player_sword
+        plotmap sword_names 0 92 5 13 1 0 player_sword 13
+        plotsprite menu_shield0 0 84 112 player_shield
+        plotmap shield_names 0 92 7 13 1 0 player_shield 13
+        plotsprite menu_armor0 0 84 144 player_armor
+        plotmap armor_names 0 92 9 13 1 0 player_armor 13
+        plotsprite menu_charm0 0 84 176 1 0 player_charm
+        plotmap charm_names 0 92 11 13 1 0 player_charm 13
+        ; plotvalue menu_font 0 player_atk 2 88 1
+        asm
+        lda	#88
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_atk
+        sta	value_ptr_lo
+        lda	#>player_atk
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+        ; plotvalue menu_font 0 player_def 2 136 1
+        lda	#136
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_def
+        sta	value_ptr_lo
+        lda	#>player_def
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+end
+        if equip_inv_col then equip_menu_inv_cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        goto main
+
+equip_menu_inv_cursor
+        ; blink the equipped column cursor
+        if animation_frame then plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotsprite menu_cursor0 0 equip_inv_X equip_inv_Y
+        goto main
+
+equip_menu_change_to_inv
+        action_debounce = 1
+        if menu_selection = MENU_EQUIP_MAX_OPTIONS then open_main_menu
+        equip_inv_col = 1
+        equip_inv_X = MENU_EQUIP_INV_X
+        equip_inv_Y = MENU_EQUIP_INV0_Y
+        goto equip_menu_dirs_done
+
+equip_item
+        action_debounce = 1
+        equip_inv_col = 0
+        m_inv_scroll = 0
+        if menu_selection = 0 then equip_sword
+        if menu_selection = 1 then equip_shield
+        if menu_selection = 2 then equip_armor
+equip_charm
+        player_charm = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_sword
+        player_sword = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_shield
+        player_shield = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_armor
+        player_armor = equip_inv_sel
+        goto equip_menu_dirs_done
+
+equip_menu_colors
+        P0C1 = m_sword_pal1
+        P0C3 = m_sword_pal2
+        P4C1 = m_inv0_pal1
+        P4C3 = m_inv0_pal2
+        for index = 0 to 96
+        WSYNC = 1
+        next
+        ; palettes used for inv 1 and shield
+        P0C1 = m_shield_pal1
+        P0C3 = m_shield_pal2
+        P4C1 = m_inv1_pal1
+        P4C3 = m_inv1_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 2 and armor
+        P0C1 = m_armor_pal1
+        P0C3 = m_armor_pal2
+        P4C1 = m_inv2_pal1
+        P4C3 = m_inv2_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 3 and charm
+        P0C1 = m_charm_pal1
+        P0C3 = m_charm_pal2
+        P4C1 = m_inv3_pal1
+        P4C3 = m_inv3_pal2
+        return
+
+plot_relics_menu
+        menu = MENU_RELICS
+        if !menu_change then goto relics_menu_updater
+        clearscreen
+        gosub plot_menu_border
+        menu_change = 0
+        plotchars 'Relics' 0 64 0 singlewide
+        savescreen
+
+relics_menu_updater
+        restorescreen
+
+relics_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 then open_main_menu
+        if !action_debounce && joy0fire1 then open_main_menu
+        goto main
+
         const MENU_MAIN_ITEMS_X = 12
         const MENU_MAIN_ITEMS_Y = 192
         const MENU_MAIN_MAGIC_X = 40
@@ -1056,14 +1557,42 @@ magic_menu_controls
         const MENU_TAP_FRAMES = 4
 
 menu_selection_right
+        prev_menu_selection = menu_selection
         menu_selection = menu_selection + 1 : right_debounce = 1
         return
 
 menu_selection_left
+        prev_menu_selection = menu_selection
         menu_selection = menu_selection - 1 : left_debounce  = 1
         return
 
+menu_selection_down
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection + menu_columns : down_debounce = 1
+        return
+
+menu_selection_up
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection - menu_columns : up_debounce = 1
+        return
+
+equip_inv_sel_down
+        equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
+        if equip_inv_sel > 3 then m_inv_scroll = m_inv_scroll + 1 : return
+        equip_inv_Y = equip_inv_Y + 32
+        return
+
+equip_inv_sel_up
+        if equip_inv_sel = 0 then return
+        equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
+        if m_inv_scroll = 0 then return
+        if equip_inv_sel > 0 then m_inv_scroll = m_inv_scroll - 1 : return
+        equip_inv_Y = equip_inv_Y - 32
+        return
+
 open_main_menu
+        ; turn off Kangaroo mode for position pin sprite
+        sCTRL{2} = 0 : CTRL = sCTRL
         action_debounce = 1
         menu_debounce = 1
         menu_change = 1
@@ -1084,10 +1613,19 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
+gen_forest_map
+        ; TODO: Test which rooms have been entered
+        alphachars '0123456789ABCDEF'
+        characterset menu_map
+        plotmap menu_map_room 0 52 4 14 7
+        characterset menu_font
+        return
+
+        dmahole 0
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ,.!?/-:`@&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
         plotchars '}&' 0 152 1 singlewide
@@ -1116,6 +1654,92 @@ plot_menu_border
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
 
+        alphadata sword_names menu_font singlewide
+        '             '
+        'Rapier       '
+        'Longsword    '
+        'Broadsword   '
+        'Estoc        '
+        'Firebrand    '
+        'Sword Num 6  '
+        'Sword Num 7  '
+        'Sword Num 8  '
+        'Sword Num 9  '
+        'Sword Num 10 '
+        'Sword Num 11 '
+        'Sword Num 12 '
+        'Sword Num 13 '
+        'Sword Num 14 '
+        'Sword Num 15 '
+end
+
+        alphadata shield_names menu_font singlewide
+        '             '
+        'Buckler      '
+        'Cross Shield '
+        'Kite Shield  '
+        'Mirror Shield'
+        'Shield Num 5 '
+        'Shield Num 6 '
+        'Shield Num 7 '
+        'Shield Num 8 '
+        'Shield Num 9 '
+        'Shield Num 10'
+        'Shield Num 11'
+        'Shield Num 12'
+        'Shield Num 13'
+        'Shield Num 14'
+        'Shield Num 15'
+end
+
+        alphadata armor_names menu_font singlewide
+        '             '
+        'Bronze Plate '
+        'Steel Plate  '
+        'Silver Plate '
+        'Maiden Armor '
+        'Armor Num 5  '
+        'Armor Num 6  '
+        'Armor Num 7  '
+        'Armor Num 8  '
+        'Armor Num 9  '
+        'Armor Num 10 '
+        'Armor Num 11 '
+        'Armor Num 12 '
+        'Armor Num 13 '
+        'Armor Num 14 '
+        'Armor Num 15 '
+end
+
+        alphadata charm_names menu_font singlewide
+        '             '
+        'Pendant      '
+        'Charm        '
+        'Locket       '
+        'Coral Ring   '
+        'Charm Num 5  '
+        'Charm Num 6  '
+        'Charm Num 7  '
+        'Charm Num 8  '
+        'Charm Num 9  '
+        'Charm Num 10 '
+        'Charm Num 11 '
+        'Charm Num 12 '
+        'Charm Num 13 '
+        'Charm Num 14 '
+        'Charm Num 15 '
+end
+
+        alphadata menu_forest menu_map singlewide
+        '1111C745676D11'
+        '11111111A32B11'
+        '11111111E98F11'
+        '11111111111111'
+        '11111111111111'
+        '11111111111111'
+        '11111111111111'
+end
+
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
         return
@@ -1124,29 +1748,21 @@ disable_double_wide_mode
         sCTRL{4} = 0 : CTRL = sCTRL
         return
 
-        data sfx_poof2
-        $10,$10,$00 ; version, priority, frames per chunk
-        $0a,$08,$04 ; first chunk of freq,channel,volume
-        $12,$08,$06
-        $09,$08,$08
-        $11,$08,$08
-        $08,$08,$0a
-        $10,$08,$0a
-        $07,$08,$0a
-        $0F,$08,$0a
-        $06,$08,$08
-        $0E,$08,$06
-        $05,$08,$04
-        $0D,$08,$02
-        $00,$00,$00
-end
+        inline plotvaluesw.asm
+
+set_menu_top_pal
+        WSYNC = 1 : BACKGRND = $2D
+        if menu = MENU_EQUIP then equip_menu_colors
+        return
+
+
 
 ;==============================================================================
-; BANK 8
+; BANK 9
 ;------------------------------------------------------------------------------
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
-        bank 8
+        bank 9
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
@@ -1234,7 +1850,7 @@ load_map
         clearscreen
         displaymode 160A
         adjustvisible 0 14
-        if tileset = T_FOREST then loadrombank 2 : gosub load_forest
+        if tileset = T_FOREST then gosub load_forest bank2
         savescreen
         if !save_objects then gosub load_objects
         asm
@@ -1250,7 +1866,8 @@ end
 
 field_handler
         if reload_map = 1 then goto load_map
-        gosub player_handler
+        goto player_handler
+player_handler_done
         gosub object_handler
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
@@ -1285,11 +1902,7 @@ plot_hud
         gosub draw_hud
 
 play_sounds
-        ; can safely load another ROM bank after screen has been drawn
-        ; but might change this to playing from RAM to reduce lag
-        loadrombank 3
         if sword_hit then playsfx sfx_poof2
-        loadrombank 2
         goto main
 
 plot_torch
@@ -1350,10 +1963,9 @@ open_menu
         gosub clear_palettes
         ; TODO: Should previously opened submenu be remembered?
         menu = MENU_MAIN
-        loadrombank 3
         menu_debounce = 1
         pause_debounce = 1
-        goto menu_init
+        goto menu_init bank3
 
 followplayer
         if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
@@ -1574,13 +2186,13 @@ input_frame_done
         if animation_frame && player_state = STATE_MOVING then player_frame = player_frame + 1
 
 check_room_boundary
-        if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1
-        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1
-        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW
-        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW
+        if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
+        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
+        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
+        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1
         if debug_time then BACKGRND = bg_color
-        return
+        goto player_handler_done
 
 player_attack
         sword_hit = 0
@@ -1600,7 +2212,7 @@ sword_done
 player_attack_return
         player_state = STATE_ATTACK
         player_timer = ATTACK_FRAMES
-        return
+        goto player_handler_done
 
 retract_sword
         if player_facing = DIR_DOWN  then sword_Ypos = sword_Ypos - 4 : retract_step_done
@@ -1944,12 +2556,15 @@ m_Y_lo  lda object_vel_cap_lo,x
         sta object_Yvel_lo,x
 
         ; Current direction(s) are determined by player input or AI logic
-m_dirs
-end
+        ; optimization: bypass direction checks if no velocity
+        if !Yvelocity then move_object_X
         if Ydirection = DIR_UP    then gosub move_test_up
         if Ydirection = DIR_DOWN  then gosub move_test_down
+move_object_X
+        if !Xvelocity then move_object_done
         if Xdirection = DIR_LEFT  then gosub move_test_left
         if Xdirection = DIR_RIGHT then gosub move_test_right
+move_object_done
         goto move_return
 
 move_test_up
@@ -2139,6 +2754,7 @@ move_return
         return
 
 test_walkable
+        if debug_time then BACKGRND = $1A
         ; start by assuming the tile isn't walkable (fewer tests)
         asm
         lda #0
@@ -2148,6 +2764,7 @@ test_walkable
 end
         if tileset = T_FOREST then test_walkable_forest
 walkable_return
+        if debug_time then BACKGRND = bg_color
         return
 
 check_collisions
@@ -2485,7 +3102,7 @@ clear_palettes
         P6C1 = $00 : P6C2 = $00 : P6C3 = $00
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
-
+        
 main
         drawscreen
         if switchreset then reboot
@@ -2497,9 +3114,13 @@ main
         if !joy0fire1 && action_button = 0 then menu_debounce = 0
         if !joy0left then left_debounce = 0
         if !joy0right then right_debounce = 0
+        if !joy0up then up_debounce = 0
+        if !joy0down then down_debounce = 0
         ; menu code prevents these from overflowing
         if joy0left then left_debounce = left_debounce + 1
         if joy0right then right_debounce = right_debounce + 1 
+        if joy0up then up_debounce = up_debounce + 1
+        if joy0down then down_debounce = down_debounce + 1
         if select_debounce then goto main_animation_timer
         if switchselect then gosub swap_action_button
 main_animation_timer
@@ -2523,7 +3144,7 @@ swap_action_button
 
 topscreenroutine
         WSYNC=1
-        if game_state = STATE_MENU then WSYNC = 1 : BACKGRND = $2D : return
+        if game_state = STATE_MENU then set_menu_top_pal
         BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
