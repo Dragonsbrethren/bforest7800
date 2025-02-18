@@ -1585,9 +1585,11 @@ equip_inv_sel_down
 equip_inv_sel_up
         if equip_inv_sel = 0 then return
         equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
-        if m_inv_scroll = 0 then return
-        if equip_inv_sel > 0 then m_inv_scroll = m_inv_scroll - 1 : return
+        if equip_inv_Y = MENU_EQUIP_INV0_Y then equip_inv_up_no_Y
         equip_inv_Y = equip_inv_Y - 32
+equip_inv_up_no_Y
+        if m_inv_scroll = 0 then return
+        m_inv_scroll = m_inv_scroll - 1
         return
 
 open_main_menu
