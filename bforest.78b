@@ -1482,19 +1482,19 @@ equip_item
         if menu_selection = 1 then equip_shield
         if menu_selection = 2 then equip_armor
 equip_charm
-        player_charm = equip_inv_sel
+        player_charm = m_inv_item_0[equip_inv_sel]
         goto equip_menu_dirs_done
 
 equip_sword
-        player_sword = equip_inv_sel
+        player_sword = m_inv_item_0[equip_inv_sel]
         goto equip_menu_dirs_done
 
 equip_shield
-        player_shield = equip_inv_sel
+        player_shield = m_inv_item_0[equip_inv_sel]
         goto equip_menu_dirs_done
 
 equip_armor
-        player_armor = equip_inv_sel
+        player_armor = m_inv_item_0[equip_inv_sel]
         goto equip_menu_dirs_done
 
 equip_menu_colors
