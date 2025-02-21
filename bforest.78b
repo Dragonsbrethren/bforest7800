@@ -11,7 +11,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -543,15 +543,15 @@ end
 
 plot_forest_room_2
         menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = $0A
+        menu_map_room[menu_map_index] = $08
         menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = $0B
+        menu_map_room[menu_map_index] = $0F
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
         memcpy current_map forest_room_2 280
         return
 
         data forest_room_2_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -561,7 +561,7 @@ plot_forest_room_3
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $0E
         menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 9
+        menu_map_room[menu_map_index] = $09
         plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
         memcpy current_map forest_room_3 280
         return
@@ -583,7 +583,7 @@ plot_forest_room_4
         return
 
         data forest_room_4_obj
-        TYPE_RAVEN, $54, $79,  $02, $2A, $30,  $00, $00, $00,  $00, $00, $00,
+        TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -599,7 +599,7 @@ plot_forest_room_5
         return
 
         data forest_room_5_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -716,7 +716,7 @@ end
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
         00,  9, 10, 04, 05, 11, 00,
-        00, 00, 00, 03, 00, 00, 00,
+        00, 00, 00, 03, 02, 00, 00,
         00, 00, 00, 02, 00, 00, 00,
         00, 00, 00, 01, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
@@ -1091,6 +1091,11 @@ menu_init
         m_sword_inv[1] = 1
         m_sword_inv[2] = 3
         m_sword_inv[3] = 2
+        m_sword_inv[4] = 4
+        m_sword_inv[5] = 5
+        m_sword_inv[6] = 6
+        m_sword_inv[7] = 7
+        m_sword_inv[8] = 8
         m_shield_inv[0] = 1
         m_shield_inv[1] = 2
         m_shield_inv[2] = 3
@@ -1583,7 +1588,7 @@ equip_inv_sel_down
         return
 
 equip_inv_sel_up
-        if equip_inv_sel = 0 then return
+        if equip_inv_sel = 0 then up_debounce = 1 : return
         equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
         if equip_inv_Y = MENU_EQUIP_INV0_Y then equip_inv_up_no_Y
         equip_inv_Y = equip_inv_Y - 32
