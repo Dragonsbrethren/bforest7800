@@ -11,7 +11,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
+        const debug_hud = 0
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -457,6 +457,58 @@ set_title_bottom_pal
         $00,$00,$00
 end
 
+        data sfx_strum
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0c,$0c,$09 ; first chunk of freq,channel,volume
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $1e,$04,$0f
+        $1e,$04,$0e
+        $07,$0c,$0f
+        $07,$0c,$0f
+        $07,$0c,$0b
+        $1e,$04,$0b
+        $07,$0c,$0c
+        $0c,$0c,$09
+        $07,$0c,$07
+        $07,$0c,$06
+        $07,$0c,$05
+        $07,$0c,$04
+        $07,$0c,$04
+        $07,$0c,$03
+        $07,$0c,$03
+        $07,$0c,$02
+        $07,$0c,$02
+        $07,$0c,$01
+        $07,$0c,$01
+        $00,$00,$00
+end
+
+        data sfx_bump
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0b,$0f,$00 ; first chunk of freq,channel,volume
+        $0c,$06,$0b
+        $0a,$06,$0f
+        $0b,$06,$0f
+        $0a,$06,$0e
+        $15,$0f,$0d
+        $0e,$06,$0c
+        $0d,$06,$0b
+        $19,$0f,$0a
+        $16,$0f,$09
+        $19,$0f,$08
+        $10,$06,$07
+        $0d,$0c,$06
+        $19,$0c,$05
+        $1c,$0c,$04
+        $1e,$0c,$03
+        $06,$06,$02
+        $06,$06,$01
+        $00,$00,$00
+end
+
 ;==============================================================================
 ; BANK 2
 ;------------------------------------------------------------------------------
@@ -551,7 +603,7 @@ plot_forest_room_2
         return
 
         data forest_room_2_obj
-        TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  $00, $00, $00,
+        TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  TYPE_SLIME, $51, $58,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -567,7 +619,7 @@ plot_forest_room_3
         return
 
         data forest_room_3_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -599,7 +651,7 @@ plot_forest_room_5
         return
 
         data forest_room_5_obj
-        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -616,11 +668,11 @@ plot_forest_room_6
 
         data forest_room_6_obj
         TYPE_WOLF, $30, $30,
-        TYPE_TORCH, $69, $20,
-        TYPE_TORCH, $39, $20,
+        $00, $69, $20,
+        $00, $39, $20,
         TYPE_TORCH, $5E, $AF,
         TYPE_TORCH, $42, $AF,
-        TYPE_WOLF, $70, $30,
+        TYPE_WOLF, $6B, $51,
         TYPE_SLIME, $40, $67,
         TYPE_SLIME, $80, $90,
         $00, $90, $88,
@@ -643,7 +695,7 @@ plot_forest_room_7
         return
 
         data forest_room_7_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -651,15 +703,15 @@ end
 
 plot_forest_room_8
         menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = 2
+        menu_map_room[menu_map_index] = $10
         menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 3
+        menu_map_room[menu_map_index] = 5
         plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
         memcpy current_map forest_room_8 280
         return
 
         data forest_room_8_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_RAVEN, $26, $28,  TYPE_RAVEN, $1E, $90,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -1236,7 +1288,6 @@ plot_magic_menu
         gosub plot_menu_border
         plotchars 'Spells Tome' 0 60 1 singlewide
         plotchars 'Fireball' 0 16 2 singlewide
-        plotchars 'Windslash' 0 16 4 singlewide
         plotchars 'Forward' 0 24 11 singlewide
         plotchars 'Backward' 0 80 11 singlewide
         plotchars 'Clockwise' 0 24 12 singlewide
@@ -1246,8 +1297,6 @@ plot_magic_menu
         alphachars '7894 6123'
         ; Fireball
         plotchars '646' 0 24 3 singlewide
-        ; Windslash
-        plotchars '632' 0 24 5 singlewide
         ; Legend
         plotchars '6' 0 16 11 singlewide
         plotchars '4' 0 72 11 singlewide
@@ -1907,9 +1956,6 @@ plot_next
         if debug_time then BACKGRND = bg_color
 plot_hud
         gosub draw_hud
-
-play_sounds
-        if sword_hit then playsfx sfx_poof2
         goto main
 
 plot_torch
@@ -2775,6 +2821,7 @@ cc_pickup
         goto cc_next
 
 pickup_item
+        playsfx sfx_strum
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp : kill_object
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
         ; runs into kill_object
@@ -2793,7 +2840,7 @@ change_to_spawner
 
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
-        sword_hit = 1
+        playsfx sfx_poof2
 sword_damage
         ; TODO: Much better damage calculations
         temp_hp = object_hp[index]
