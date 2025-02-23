@@ -1786,16 +1786,6 @@ end
         'Charm Num 15 '
 end
 
-        alphadata menu_forest menu_map singlewide
-        '1111C745676D11'
-        '11111111A32B11'
-        '11111111E98F11'
-        '11111111111111'
-        '11111111111111'
-        '11111111111111'
-        '11111111111111'
-end
-
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
         return
