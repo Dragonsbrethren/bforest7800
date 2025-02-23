@@ -1342,6 +1342,7 @@ plot_equip_menu
         plotchars 'Talisman'  0 80 10 singlewide
         plotchars 'Exit'      0 128 12 singlewide
         savescreen
+        goto update_player_stats
 
 equip_menu_updater
         restorescreen
@@ -1478,7 +1479,6 @@ menu_charm_next
         goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites
-        dec player_atk = $99
         ; draw the player's equipment based on variable offsets
         plotsprite menu_sword0 0 84 80 player_sword
         plotmap sword_names 0 92 5 13 1 0 player_sword 13
@@ -1537,18 +1537,31 @@ equip_item
         if menu_selection = 2 then equip_armor
 equip_charm
         player_charm = m_inv_item_0[equip_inv_sel]
-        goto equip_menu_dirs_done
+        goto update_player_stats
 
 equip_sword
         player_sword = m_inv_item_0[equip_inv_sel]
-        goto equip_menu_dirs_done
+        goto update_player_stats
 
 equip_shield
         player_shield = m_inv_item_0[equip_inv_sel]
-        goto equip_menu_dirs_done
+        goto update_player_stats
 
 equip_armor
         player_armor = m_inv_item_0[equip_inv_sel]
+
+update_player_stats
+        ; currently this just reads from an array for each type of equipment,
+        ; swords only do attack, shields/armor only defense, and charms both
+        dec player_atk = sword_atk[player_sword]
+        dec player_atk = player_atk + player_str
+        dec player_def = shield_def[player_shield]
+        dec temp1 = player_def 
+        dec player_def = armor_def[player_armor] + temp1
+        temp1 = player_charm * 2
+        dec player_atk = player_atk + charm_stats[temp1]
+        temp1 = (player_charm + 1) * 2
+        dec player_def = player_def + charm_stats[temp1]
         goto equip_menu_dirs_done
 
 equip_menu_colors
@@ -1677,7 +1690,6 @@ gen_forest_map
         characterset menu_font
         return
 
-        dmahole 0
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
@@ -1710,6 +1722,7 @@ plot_menu_border
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
 
+        dmahole 0
         alphadata sword_names menu_font singlewide
         '             '
         'Rapier       '
@@ -1784,6 +1797,22 @@ end
         'Charm Num 13 '
         'Charm Num 14 '
         'Charm Num 15 '
+end
+
+        data sword_atk
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data shield_def
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data armor_def
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data charm_stats
+        0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16
 end
 
 enable_double_wide_mode
