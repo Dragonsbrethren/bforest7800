@@ -876,7 +876,8 @@ tw_walkable
         jmp .walkable_return
 tw_done
 
-
+        ; non-player objects still need to run ledge
+        ; tests because they're floatable tiles
 test_ledge_forest
         ldx #0
 tl_loop lda forest_ledge_tiles,x
@@ -903,7 +904,7 @@ tl_next inx
         beq tl_done
 tl_ledge
         sta ledge
-        jsr .ledge_hop
+        sta walkable    ; test
 
 tl_done lda flags
         and #%00010000
@@ -2800,7 +2801,7 @@ end
         gosub test_walkable
         if !flags{4} then test_walkable_down
         if floatable then move_down
-        if ledge then return
+        if ledge then move_down
 test_walkable_down
         if !walkable then Yvelocity = 0 : return
 move_down
@@ -2849,6 +2850,7 @@ end
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
+        if ledge then move_left
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -2896,6 +2898,7 @@ end
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
+        if ledge then move_right
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
