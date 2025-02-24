@@ -11,7 +11,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -58,10 +58,11 @@
 
         const STATE_STAND       = 0
         const STATE_MOVING      = 1
-        const STATE_ATTACK      = 3
-        const STATE_CHANT_START = 4
-        const STATE_CHANT       = 5
+        const STATE_ATTACK      = 4
+        const STATE_CHANT_START = 5
+        const STATE_CHANT       = 6
         const STATE_KNOCKBACK   = 2
+        const STATE_HOP         = 3
 
         const FRAME_UP    = 2
         const FRAME_DOWN  = 0
@@ -236,6 +237,9 @@
         autodim byte mtarget
         autodim byte magic_Xpos
         autodim byte magic_Ypos
+        autodim byte player_on_ledge
+        autodim byte player_hop_dest
+        autodim byte hop_timer
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -323,10 +327,13 @@
         autodim byte exit_dir
         autodim byte music
         autodim byte walkable
+        autodim byte ledge
         autodim byte floatable
         autodim byte walkable_1
+        autodim byte ledge_1
         autodim byte floatable_1
         autodim byte walkable_2
+        autodim byte ledge_2
         autodim byte floatable_2
         autodim byte walk_test
         autodim byte walk_index
@@ -438,6 +445,69 @@ set_title_top_pal
 set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
+        return
+
+main
+        drawscreen
+        if switchreset then reboot
+        if !switchselect then select_debounce = 0
+        if !switchpause then pause_debounce = 0
+        if !joy0fire0 && action_button = 0 then action_debounce = 0
+        if !joy0fire0 && action_button = 1 then menu_debounce = 0
+        if !joy0fire1 && action_button = 1 then action_debounce = 0
+        if !joy0fire1 && action_button = 0 then menu_debounce = 0
+        if !joy0left then left_debounce = 0
+        if !joy0right then right_debounce = 0
+        if !joy0up then up_debounce = 0
+        if !joy0down then down_debounce = 0
+        ; menu code prevents these from overflowing
+        if joy0left then left_debounce = left_debounce + 1
+        if joy0right then right_debounce = right_debounce + 1 
+        if joy0up then up_debounce = up_debounce + 1
+        if joy0down then down_debounce = down_debounce + 1
+        if select_debounce then goto main_animation_timer
+        if switchselect then gosub swap_action_button
+main_animation_timer
+        animation_timer = animation_timer + 1
+        if animation_timer > ANIM_TIME then animation_timer = 0
+        ; Currently only two frames of animation supported. Needs to be changed if more than 2
+        animation_frame = 0
+        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+        if game_state = STATE_TITLE then title_handler
+        if game_state = STATE_FIELD then field_handler
+        if game_state = STATE_MENU  then menu_handler
+        goto main
+
+swap_action_button
+        select_debounce = 1
+        ; if the player is actively using the action button, don't swap
+        ; (shouldn't happen often since it's a console switch)
+        if player_state >= STATE_ATTACK then return
+        if action_button then action_button = 0 : return
+        action_button = 1 : return
+
+topscreenroutine
+        WSYNC=1
+        if game_state = STATE_MENU then set_menu_top_pal
+        BACKGRND=bg_color
+        if game_state = STATE_TITLE then set_title_top_pal
+        return
+
+bottomscreenroutine
+        WSYNC=1
+        if game_state = STATE_MENU then BACKGRND = $10 : return
+        BACKGRND=$00
+        if game_state = STATE_TITLE then set_title_bottom_pal
+        flash_color = $00
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
+        BACKGRND = flash_color
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        P7C1     = flash_color
+        ; Johanna's hair
+        if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
 
         data sfx_poof2
@@ -803,14 +873,48 @@ tw_next inx
         beq tw_done
 tw_walkable
         sta walkable
+        jmp .walkable_return
 tw_done
-        lda flags
+
+
+test_ledge_forest
+        ldx #0
+tl_loop lda forest_ledge_tiles,x
+        cmp move_tile_1
+        bne tltile2
+        pha
+        lda #1
+        sta ledge_1
+        pla
+tltile2 cmp move_tile_2
+        bne tl_next
+        lda #1
+        sta ledge_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda ledge_1
+        bne tl_ledge
+tl_next inx
+        cpx #forest_ledge_tiles_length
+        bne tl_loop
+        lda ledge_1
+        beq tl_done
+        lda ledge_2
+        beq tl_done
+tl_ledge
+        sta ledge
+        jsr .ledge_hop
+
+tl_done lda flags
         and #%00010000
         bne tf_done
+        ; ledges are always floatable tiles
+        lda ledge
+        bne tf_floatable
 
 test_floatable_forest
         ldx #0
-tf_loop   lda forest_floatable_tiles,x
+tf_loop lda forest_floatable_tiles,x
         cmp move_tile_1
         bne tftile2
         pha
@@ -848,8 +952,12 @@ end
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
+        data forest_ledge_tiles
+        $22, $24, $26
+end
+
         data forest_floatable_tiles
-        $22, $24, $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
+        $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
 end
 
 torch_tile_block_forest
@@ -2194,6 +2302,7 @@ no_player_timer
 
 ;------------------------------------------------------------------------------
         ; handles chanting and sword retracting. Zero if not doing these
+        if player_on_ledge then gosub ledge_hop : goto test_joy_done
         if player_state = STATE_CHANT then chant_handler
         if player_state = STATE_ATTACK then retract_sword
         if joy0fire0 && action_button = 0 then goto player_attack
@@ -2226,6 +2335,7 @@ test_joy_done
         if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
         if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
+        if player_on_ledge then player_move_done
         gosub copy_player_props
         gosub move_object
         gosub restore_player_props
@@ -2690,6 +2800,7 @@ end
         gosub test_walkable
         if !flags{4} then test_walkable_down
         if floatable then move_down
+        if ledge then return
 test_walkable_down
         if !walkable then Yvelocity = 0 : return
 move_down
@@ -3134,6 +3245,64 @@ new_obj_found
         rts
 end
 
+ledge_hop
+        asm
+        lda player_on_ledge
+        bne ledge_hop_find_dir
+        cmp #DIR_LEFT
+        beq hop_left
+        cmp #DIR_RIGHT
+        beq hop_right
+        ; must be down
+hop_down
+        lda hop_timer
+        beq hop_down_down
+        dec player_Ypos
+        dec hop_timer
+        rts
+hop_down_down
+        inc player_Ypos
+        lda player_hop_dest
+        cmp player_Ypos
+        bne hop_done
+        lda #0
+        sta player_on_ledge
+        rts
+
+hop_left
+        jmp hop_done
+
+hop_right
+        jmp hop_done
+
+ledge_hop_find_dir
+        lda player_Xvel
+        beq ledge_hop_down
+        lda player_Xdir
+        sta player_on_ledge
+        lda #6
+        sta hop_timer
+        jmp hop_done
+ledge_hop_down
+        ; if the player isn't moving on X axis, must be moving on Y
+        lda player_Ydir
+        cmp #DIR_DOWN
+        ; can't jump up ledges, just return to float test code here
+        bne hop_done
+        sta player_on_ledge
+        lda #8
+        sta hop_timer
+        lda player_Ypos
+        clc
+        adc #16
+        sta player_hop_dest
+hop_done
+        rts
+end
+
+
+
+
 clear_palettes
         BACKGRND = $00
         P0C1 = $00 : P0C2 = $00 : P0C3 = $00
@@ -3144,67 +3313,4 @@ clear_palettes
         P5C1 = $00 : P5C2 = $00 : P5C3 = $00
         P6C1 = $00 : P6C2 = $00 : P6C3 = $00
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
-        return
-        
-main
-        drawscreen
-        if switchreset then reboot
-        if !switchselect then select_debounce = 0
-        if !switchpause then pause_debounce = 0
-        if !joy0fire0 && action_button = 0 then action_debounce = 0
-        if !joy0fire0 && action_button = 1 then menu_debounce = 0
-        if !joy0fire1 && action_button = 1 then action_debounce = 0
-        if !joy0fire1 && action_button = 0 then menu_debounce = 0
-        if !joy0left then left_debounce = 0
-        if !joy0right then right_debounce = 0
-        if !joy0up then up_debounce = 0
-        if !joy0down then down_debounce = 0
-        ; menu code prevents these from overflowing
-        if joy0left then left_debounce = left_debounce + 1
-        if joy0right then right_debounce = right_debounce + 1 
-        if joy0up then up_debounce = up_debounce + 1
-        if joy0down then down_debounce = down_debounce + 1
-        if select_debounce then goto main_animation_timer
-        if switchselect then gosub swap_action_button
-main_animation_timer
-        animation_timer = animation_timer + 1
-        if animation_timer > ANIM_TIME then animation_timer = 0
-        ; Currently only two frames of animation supported. Needs to be changed if more than 2
-        animation_frame = 0
-        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
-        if game_state = STATE_TITLE then title_handler
-        if game_state = STATE_FIELD then field_handler
-        if game_state = STATE_MENU  then menu_handler
-        goto main
-
-swap_action_button
-        select_debounce = 1
-        ; if the player is actively using the action button, don't swap
-        ; (shouldn't happen often since it's a console switch)
-        if player_state >= STATE_ATTACK then return
-        if action_button then action_button = 0 : return
-        action_button = 1 : return
-
-topscreenroutine
-        WSYNC=1
-        if game_state = STATE_MENU then set_menu_top_pal
-        BACKGRND=bg_color
-        if game_state = STATE_TITLE then set_title_top_pal
-        return
-
-bottomscreenroutine
-        WSYNC=1
-        if game_state = STATE_MENU then BACKGRND = $10 : return
-        BACKGRND=$00
-        if game_state = STATE_TITLE then set_title_bottom_pal
-        flash_color = $00
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
-        BACKGRND = flash_color
-        P4C1     = flash_color
-        P5C1     = flash_color
-        P6C1     = flash_color
-        P7C1     = flash_color
-        ; Johanna's hair
-        if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
