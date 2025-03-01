@@ -588,6 +588,7 @@ end
         incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
         incgraphic gfx/tiles/forest_map.png 160A 0 2 1 3
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
         incgraphic gfx/forest/hud2.png 160A 0 3 1 2
@@ -629,7 +630,7 @@ load_forest
         P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
         P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by rocks and wolves
         P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
-        P7C1 = $00 : P7C2 = $24 : P7C3 = $5B    ; currently unused, light browns?
+        P7C1 = $00 : P7C2 = $10 : P7C3 = $12    ; ledges, dark and light browns
 
         characterset forest_trees
         room = forest_rooms[room_index]
@@ -952,8 +953,12 @@ end
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
+        data forest_walkable_half_tiles
+        $46
+end
+
         data forest_ledge_tiles
-        $22, $24, $26
+        $22, $24, $26, ; $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
 end
 
         data forest_floatable_tiles
@@ -3325,7 +3330,7 @@ hop_right
         adc #12
         sta player_hop_dest
 hop_right_up
-        cmp #8
+        cmp #6
         bcc hop_right_down
         dec player_Ypos
         inc player_Xpos
