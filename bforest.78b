@@ -237,9 +237,9 @@
         autodim byte mtarget
         autodim byte magic_Xpos
         autodim byte magic_Ypos
-        autodim byte player_on_ledge
-        autodim byte player_hop_dest
-        autodim byte hop_timer
+        autodim byte hop_dest
+        autodim byte timer
+        autodim byte hop_dir
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -958,7 +958,7 @@ end
 end
 
         data forest_ledge_tiles
-        $22, $24, $26, ; $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
+        $22, $24, $26, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
 end
 
         data forest_floatable_tiles
@@ -2295,7 +2295,7 @@ player_handler
 ;==============================================================================
 handle_input_field
         if debug_time then BACKGRND = $70
-
+        if player_flags{5} then gosub ledge_hop
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
@@ -2307,7 +2307,6 @@ no_player_timer
 
 ;------------------------------------------------------------------------------
         ; handles chanting and sword retracting. Zero if not doing these
-        if player_on_ledge then goto ledge_hop
         if player_state = STATE_CHANT then chant_handler
         if player_state = STATE_ATTACK then retract_sword
         if joy0fire0 && action_button = 0 then goto player_attack
@@ -2340,7 +2339,7 @@ test_joy_done
         if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
         if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
-        if player_on_ledge then player_move_done
+        if player_flags{5} then player_move_done
         gosub copy_player_props
         gosub move_object
         gosub restore_player_props
@@ -2806,7 +2805,7 @@ end
         if !flags{4} then test_walkable_down
         if floatable then move_down
 test_walkable_down
-        if ledge then player_on_ledge = DIR_DOWN : return
+        if ledge then Xdirection = 0 : return
         if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -2854,7 +2853,7 @@ end
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
-        if ledge then player_on_ledge = DIR_LEFT : return
+        if ledge then Xdirection = DIR_LEFT : return
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -2902,7 +2901,7 @@ end
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
-        if ledge then player_on_ledge = DIR_RIGHT : return
+        if ledge then Xdirection = DIR_RIGHT : return
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
@@ -3059,6 +3058,8 @@ copy_player_props
         sta vel_cap
         lda player_friction
         sta friction
+        lda player_flags
+        sta flags
         rts
 end
 
@@ -3077,6 +3078,8 @@ restore_player_props
         sta player_Yvel_lo
         lda Yvelocity_hi
         sta player_Yvel_hi
+        lda flags
+        sta player_flags
         rts
 end
 
@@ -3260,92 +3263,92 @@ end
 
 ledge_hop
         asm
-        lda player_on_ledge
+        lda Xdirection
         cmp #DIR_LEFT
         beq hop_left
         cmp #DIR_RIGHT
         beq hop_right
         ; must be down
 hop_down
-        lda hop_timer
+        lda timer
         bne hop_down_up
         lda #16
-        sta hop_timer
-        lda player_Ypos
+        sta timer
+        lda Yposition
         clc
         adc #16
-        sta player_hop_dest
+        sta hop_dest
 hop_down_up
         cmp #8
         bcc hop_down_down
-        dec player_Ypos
-        dec hop_timer
-        jmp .test_joy_done
+        dec Yposition
+        dec timer
+        rts
 hop_down_down
-        inc player_Ypos
-        lda player_hop_dest
-        cmp player_Ypos
+        inc Yposition
+        lda hop_dest
+        cmp Yposition
         bne hop_down_done
         lda #0
-        sta player_on_ledge
-        sta hop_timer
+        sta flags
+        sta timer
 hop_down_done
-        jmp .test_joy_done
+        rts
 
 hop_left
-        lda hop_timer
+        lda timer
         bne hop_left_up
         lda #12
-        sta hop_timer
-        lda player_Xpos
+        sta timer
+        lda Xposition
         sec
         sbc #12
-        sta player_hop_dest
+        sta hop_dest
 hop_left_up
         cmp #6
         bcc hop_left_down
-        dec player_Ypos
-        dec player_Xpos
-        dec hop_timer
-        jmp .test_joy_done
+        dec Yposition
+        dec Xposition
+        dec timer
+        rts
 hop_left_down
-        inc player_Ypos
-        dec player_Xpos
-        lda player_hop_dest
-        cmp player_Xpos
+        inc Yposition
+        dec Xposition
+        lda hop_dest
+        cmp Xposition
         bne hop_left_done
         lda #0
-        sta player_on_ledge
-        sta hop_timer
+        sta flags
+        sta timer
 hop_left_done
-        jmp .test_joy_done
+        rts
 
 hop_right
-        lda hop_timer
+        lda timer
         bne hop_right_up
         lda #12
-        sta hop_timer
-        lda player_Xpos
+        sta timer
+        lda Xposition
         clc
         adc #12
-        sta player_hop_dest
+        sta hop_dest
 hop_right_up
         cmp #6
         bcc hop_right_down
-        dec player_Ypos
-        inc player_Xpos
-        dec hop_timer
-        jmp .test_joy_done
+        dec Yposition
+        inc Xposition
+        dec timer
+        rts
 hop_right_down
-        inc player_Ypos
-        inc player_Xpos
-        lda player_hop_dest
-        cmp player_Xpos
+        inc Yposition
+        inc Xposition
+        lda hop_dest
+        cmp Xposition
         bne hop_right_done
         lda #0
-        sta player_on_ledge
+        sta flags
 hop_right_done
-        jmp .test_joy_done
+        rts
 end
 
 
