@@ -879,12 +879,10 @@ tw_walkable
         sta walkable
         jmp .walkable_return
 tw_done
-
-        ; non-player objects still need to run ledge
-        ; tests because they're floatable tiles
+        lda ledge_dir   ; if ledge_dir isn't set, bypass ledge check
+        beq tf_flags
 test_ledge_forest
         ldy #0
-        lda ledge_dir
         cmp #DIR_LEFT
         bne tlright
         lda #<forest_ledge_tiles_left
@@ -930,7 +928,10 @@ tl_next iny
 tl_ledge
         sta ledge
 
-tl_done lda flags
+tl_done lda #0
+        sta ledge_dir
+tf_flags
+        lda flags
         and #%00010000
         bne tf_done
         ; ledges are always floatable tiles
@@ -990,7 +991,7 @@ end
 end
 
         data forest_floatable_tiles
-        $2A, $2C, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
+        $22, $24, $26, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
 end
 
 torch_tile_block_forest
