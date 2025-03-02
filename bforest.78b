@@ -189,6 +189,7 @@
         autodim byte player_frame
         autodim byte player_flags
         autodim byte player_timer
+        autodim byte player_dest
         autodim byte player_hp
         autodim byte player_max_hp
         autodim byte player_mp
@@ -262,6 +263,7 @@
         autodim byte object_contact 16
         autodim byte object_flags 16
         autodim byte object_timer 16
+        autodim byte object_dest 16
 
         autodim init $2400 $24FF
         autodim byte reload_map
@@ -953,12 +955,8 @@ end
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
-        data forest_walkable_half_tiles
-        $46
-end
-
         data forest_ledge_tiles
-        $22, $24, $26, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
+        $22, $24, $26, $2C, $2E, $30, $32, $34, $36, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
 end
 
         data forest_floatable_tiles
@@ -2192,6 +2190,7 @@ object_handler
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
+        if flags{5} then gosub ledge_hop : goto object_restore
         gosub decelerate_object
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
@@ -2199,6 +2198,7 @@ object_handler
         if object_type[index] = TYPE_RAVEN then gosub raven_ai
         if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
         gosub move_object
+object_restore
         gosub restore_object_props
 object_done
         next
@@ -2295,7 +2295,12 @@ player_handler
 ;==============================================================================
 handle_input_field
         if debug_time then BACKGRND = $70
-        if player_flags{5} then gosub ledge_hop
+        if !player_flags{5} then player_no_hop
+        gosub copy_player_props
+        gosub ledge_hop
+        gosub restore_player_props
+        goto test_joy_done
+player_no_hop
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
@@ -2805,7 +2810,7 @@ end
         if !flags{4} then test_walkable_down
         if floatable then move_down
 test_walkable_down
-        if ledge then Xdirection = 0 : return
+        if ledge then Xdirection = 0 : flags{5} = 1 : return
         if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -2853,7 +2858,7 @@ end
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
-        if ledge then Xdirection = DIR_LEFT : return
+        if ledge then Xdirection = DIR_LEFT : flags{5} = 1 : return
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -2901,7 +2906,7 @@ end
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
-        if ledge then Xdirection = DIR_RIGHT : return
+        if ledge then Xdirection = DIR_RIGHT : flags{5} = 1 : return
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
@@ -3060,6 +3065,10 @@ copy_player_props
         sta friction
         lda player_flags
         sta flags
+        lda player_dest
+        sta hop_dest
+        lda player_timer
+        sta timer
         rts
 end
 
@@ -3068,18 +3077,26 @@ restore_player_props
         asm
         lda Xposition
         sta player_Xpos
+        lda Xdirection
+        sta player_Xdir
         lda Xvelocity_lo
         sta player_Xvel_lo
         lda Xvelocity_hi
         sta player_Xvel_hi
         lda Yposition
         sta player_Ypos
+        lda Ydirection
+        sta player_Ydir
         lda Yvelocity_lo
         sta player_Yvel_lo
         lda Yvelocity_hi
         sta player_Yvel_hi
         lda flags
         sta player_flags
+        lda hop_dest
+        sta player_dest
+        lda timer
+        sta player_timer
         rts
 end
 
@@ -3118,6 +3135,10 @@ copy_object_props
         sta frame
         lda object_flags,x
         sta flags
+        lda object_dest,x
+        sta hop_dest
+        lda object_timer,x
+        sta timer
         rts
 end
 
@@ -3142,6 +3163,10 @@ restore_object_props
         sta object_flags,x
         lda #0
         sta flags
+        lda hop_dest
+        sta object_dest,x
+        lda timer
+        sta object_timer,x
         rts
 end
 
@@ -3288,11 +3313,7 @@ hop_down_down
         inc Yposition
         lda hop_dest
         cmp Yposition
-        bne hop_down_done
-        lda #0
-        sta flags
-        sta timer
-hop_down_done
+        beq hop_done
         rts
 
 hop_left
@@ -3316,11 +3337,7 @@ hop_left_down
         dec Xposition
         lda hop_dest
         cmp Xposition
-        bne hop_left_done
-        lda #0
-        sta flags
-        sta timer
-hop_left_done
+        beq hop_done
         rts
 
 hop_right
@@ -3344,10 +3361,14 @@ hop_right_down
         inc Xposition
         lda hop_dest
         cmp Xposition
-        bne hop_right_done
+        beq hop_done
+        rts
+
+hop_done
         lda #0
         sta flags
-hop_right_done
+        sta timer
+        sta hop_dest
         rts
 end
 
