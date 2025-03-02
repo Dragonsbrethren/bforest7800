@@ -340,6 +340,7 @@
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index
+        autodim byte ledge_dir
 
         autodim init $2500 $25FF
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
@@ -882,8 +883,29 @@ tw_done
         ; non-player objects still need to run ledge
         ; tests because they're floatable tiles
 test_ledge_forest
-        ldx #0
-tl_loop lda forest_ledge_tiles,x
+        ldy #0
+        lda ledge_dir
+        cmp #DIR_LEFT
+        bne tlright
+        lda #<forest_ledge_tiles_left
+        sta pointer
+        lda #>forest_ledge_tiles_left
+        sta pointer_hi
+        jmp tl_loop
+tlright cmp #DIR_RIGHT
+        bne tldown
+        lda #<forest_ledge_tiles_right
+        sta pointer
+        lda #>forest_ledge_tiles_right
+        sta pointer_hi
+        jmp tl_loop
+tldown  cmp #DIR_DOWN
+        bne tl_done
+        lda #<forest_ledge_tiles_down
+        sta pointer
+        lda #>forest_ledge_tiles_down
+        sta pointer_hi
+tl_loop lda (pointer),y
         cmp move_tile_1
         bne tltile2
         pha
@@ -898,8 +920,8 @@ tltile2 cmp move_tile_2
         ;   further optimization possible by sorting arrays by tile frequency
         lda ledge_1
         bne tl_ledge
-tl_next inx
-        cpx #forest_ledge_tiles_length
+tl_next iny
+        cpy #forest_ledge_tiles_down_length
         bne tl_loop
         lda ledge_1
         beq tl_done
@@ -955,8 +977,16 @@ end
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
-        data forest_ledge_tiles
-        $22, $24, $26, $2C, $2E, $30, $32, $34, $36, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56
+        data forest_ledge_tiles_down
+        $22, $24, $26
+end
+
+        data forest_ledge_tiles_left
+        $32, $34, $36
+end
+
+        data forest_ledge_tiles_right
+        $2C, $2E, $30
 end
 
         data forest_floatable_tiles
@@ -2047,7 +2077,7 @@ end
         if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
         if exit_dir = EXIT_NORTH then player_Ypos = 204 : player_Ydir = DIR_UP
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
-        if exit_dir = EXIT_WEST  then player_Xpos = 16  : player_Xdir = DIR_RIGHT
+        if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
         exit_dir = EXIT_NONE
 
 field_handler
@@ -2806,6 +2836,7 @@ end
         sta peekX
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        ledge_dir = DIR_DOWN
         gosub test_walkable
         if !flags{4} then test_walkable_down
         if floatable then move_down
@@ -2854,6 +2885,7 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        ledge_dir = DIR_LEFT
         gosub test_walkable
         if !flags{4} then test_walkable_left
         if floatable then move_left
@@ -2902,6 +2934,7 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
+        ledge_dir = DIR_RIGHT
         gosub test_walkable
         if !flags{4} then test_walkable_right
         if floatable then move_right
