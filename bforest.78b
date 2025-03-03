@@ -919,7 +919,7 @@ tltile2 cmp move_tile_2
         lda ledge_1
         bne tl_ledge
 tl_next iny
-        cpy #forest_ledge_tiles_down_length
+        cpy #forest_ledge_tiles_down_length     ; HACK - all ledge arrays currently same length...
         bne tl_loop
         lda ledge_1
         beq tl_done
@@ -927,9 +927,8 @@ tl_next iny
         beq tl_done
 tl_ledge
         sta ledge
-
-tl_done lda #0
-        sta ledge_dir
+        lda #0
+tl_done sta ledge_dir   ; A = 0 if branched from tl_next
 tf_flags
         lda flags
         and #%00010000
