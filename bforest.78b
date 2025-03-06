@@ -1280,7 +1280,7 @@ menu_init
         player_shield = 1
         player_armor = 1
         player_charm = 1
-        m_sword_inv[0] = 4
+        m_sword_inv[0] = 0
         m_sword_inv[1] = 1
         m_sword_inv[2] = 3
         m_sword_inv[3] = 2
@@ -1547,7 +1547,7 @@ equip_menu_dirs_done
         goto equip_menu_charm_inv
 
 equip_menu_sword_inv
-        m_inv_index = 1 + m_inv_scroll
+        m_inv_index = m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1566,7 +1566,7 @@ menu_sword_next
         goto equip_menu_draw_sprites
 
 equip_menu_shield_inv
-        m_inv_index = 1 + m_inv_scroll
+        m_inv_index = m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_shield_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1584,7 +1584,7 @@ menu_shield_next
         goto equip_menu_draw_sprites
 
 equip_menu_armor_inv
-        m_inv_index = 1 + m_inv_scroll
+        m_inv_index = m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_armor_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1602,7 +1602,7 @@ menu_armor_next
         goto equip_menu_draw_sprites
 
 equip_menu_charm_inv
-        m_inv_index = 1 + m_inv_scroll
+        m_inv_index = m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_charm_inv[m_inv_index]
         m_inv_index = m_inv_index + 1
@@ -1677,19 +1677,19 @@ equip_item
         if menu_selection = 1 then equip_shield
         if menu_selection = 2 then equip_armor
 equip_charm
-        player_charm = m_inv_item_0[equip_inv_sel]
+        player_charm = m_charm_inv[equip_inv_sel]
         goto update_player_stats
 
 equip_sword
-        player_sword = m_inv_item_0[equip_inv_sel]
+        player_sword = m_sword_inv[equip_inv_sel]
         goto update_player_stats
 
 equip_shield
-        player_shield = m_inv_item_0[equip_inv_sel]
+        player_shield = m_shield_inv[equip_inv_sel]
         goto update_player_stats
 
 equip_armor
-        player_armor = m_inv_item_0[equip_inv_sel]
+        player_armor = m_armor_inv[equip_inv_sel]
 
 update_player_stats
         ; currently this just reads from an array for each type of equipment,
@@ -2841,7 +2841,7 @@ end
         if !flags{4} then test_walkable_down
         if floatable then move_down
 test_walkable_down
-        if ledge then Xdirection = 0 : flags{5} = 1 : return
+        if ledge then Xdirection = 0 : flags{5} = 1
         if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -2890,7 +2890,7 @@ end
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
-        if ledge then Xdirection = DIR_LEFT : flags{5} = 1 : return
+        if ledge then Xdirection = DIR_LEFT : flags{5} = 1
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -2939,7 +2939,7 @@ end
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
-        if ledge then Xdirection = DIR_RIGHT : flags{5} = 1 : return
+        if ledge then Xdirection = DIR_RIGHT : flags{5} = 1
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
