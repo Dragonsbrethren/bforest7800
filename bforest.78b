@@ -1623,8 +1623,7 @@ equip_menu_draw_sprites
         ; This block of code has gotten pretty messy!
         ; It tests each equipment slot to see if it is a non-zero value,
         ; then plots a sprite and a character map for that value.
-        ; If it IS zero, a special blank map is used to hide the item name,
-        ; which, behind the scenes, is the "Remove" option in the inventory
+        ; If it IS zero, no name is drawn, except in the case of weapon
         if player_sword then goto equip_menu_draw_sword
         plotmap unarmed_name 0 92 5 13 1 0 0
         goto equip_menu_test_shield
@@ -1633,21 +1632,18 @@ equip_menu_draw_sword
         plotmap sword_names 0 92 5 13 1 0 player_sword 13
 equip_menu_test_shield
         if player_shield then goto equip_menu_draw_shield
-        plotmap no_name 0 92 7 13 1 0 0
         goto equip_menu_test_armor
 equip_menu_draw_shield
         plotsprite menu_shield0 0 84 112 player_shield
         plotmap shield_names 0 92 7 13 1 0 player_shield 13
 equip_menu_test_armor
         if player_armor then goto equip_menu_draw_armor
-        plotmap no_name 0 92 9 13 1 0 0
         goto equip_menu_test_charm
 equip_menu_draw_armor
         plotsprite menu_armor0 0 84 144 player_armor
         plotmap armor_names 0 92 9 13 1 0 player_armor 13
 equip_menu_test_charm
         if player_charm then goto equip_menu_draw_charm
-        plotmap no_name 0 92 11 13 1 0 0
         goto equip_menu_draw_atk
 equip_menu_draw_charm
         plotsprite menu_charm0 0 84 176 1 0 player_charm
@@ -1972,10 +1968,6 @@ end
         ; used when attacking without a weapon
         alphadata unarmed_name menu_font singlewide
         'Unarmed      '
-end
-
-        alphadata no_name menu_font singlewide
-        '             '
 end
 
         data sword_atk
