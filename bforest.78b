@@ -1785,9 +1785,14 @@ menu_selection_up
         return
 
 equip_inv_sel_down
+        ; TODO: Inventory management and variable that sets the cap to the current number of items
+        if equip_inv_sel > 15 then equip_inv_sel = 15 : return
         equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
-        if equip_inv_sel > 3 then m_inv_scroll = m_inv_scroll + 1 : return
+        if equip_inv_Y = MENU_EQUIP_INV3_Y then equip_inv_down_no_Y
         equip_inv_Y = equip_inv_Y + 32
+        return
+equip_inv_down_no_Y
+        m_inv_scroll = m_inv_scroll + 1
         return
 
 equip_inv_sel_up
