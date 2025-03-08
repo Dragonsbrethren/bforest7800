@@ -312,12 +312,12 @@
         autodim byte m_charm_pal1
         autodim byte m_charm_pal2
         autodim byte m_inv0_pal1
-        autodim byte m_inv0_pal2
         autodim byte m_inv1_pal1
-        autodim byte m_inv1_pal2
         autodim byte m_inv2_pal1
-        autodim byte m_inv2_pal2
         autodim byte m_inv3_pal1
+        autodim byte m_inv0_pal2
+        autodim byte m_inv1_pal2
+        autodim byte m_inv2_pal2
         autodim byte m_inv3_pal2
         autodim byte equip_inv_col
         autodim byte equip_inv_sel
@@ -1523,6 +1523,7 @@ equip_menu_return_from_inv
         menu_debounce = 1
         equip_inv_col = 0
         equip_inv_sel = 0
+        m_inv_scroll = 0
         goto equip_menu_dirs_done
 
 equip_menu_inv_controls
@@ -1550,6 +1551,10 @@ equip_menu_sword_inv
         m_inv_index = m_inv_scroll
         for m_inv_slot = 0 to 3
         m_inv_item_0[m_inv_slot] = m_sword_inv[m_inv_index]
+        temp1 = (m_inv_item_0[m_inv_slot] * 2)
+        m_inv0_pal1[m_inv_slot] = pal_swords[temp1]
+        temp1 = temp1 + 1
+        m_inv0_pal2[m_inv_slot] = pal_swords[temp1]
         m_inv_index = m_inv_index + 1
 menu_sword_next 
         next
@@ -1708,18 +1713,26 @@ equip_item
         if menu_selection = 2 then equip_armor
 equip_charm
         player_charm = m_charm_inv[equip_inv_sel]
+        m_charm_pal1 = m_inv0_pal1[equip_inv_sel]
+        m_charm_pal2 = m_inv0_pal2[equip_inv_sel]
         goto update_player_stats
 
 equip_sword
         player_sword = m_sword_inv[equip_inv_sel]
+        m_sword_pal1 = m_inv0_pal1[equip_inv_sel]
+        m_sword_pal2 = m_inv0_pal2[equip_inv_sel]
         goto update_player_stats
 
 equip_shield
         player_shield = m_shield_inv[equip_inv_sel]
+        m_shield_pal1 = m_inv0_pal1[equip_inv_sel]
+        m_shield_pal2 = m_inv0_pal2[equip_inv_sel]
         goto update_player_stats
 
 equip_armor
         player_armor = m_armor_inv[equip_inv_sel]
+        m_armor_pal1 = m_inv0_pal1[equip_inv_sel]
+        m_armor_pal2 = m_inv0_pal2[equip_inv_sel]
 
 update_player_stats
         ; currently this just reads from an array for each type of equipment,
@@ -1794,6 +1807,7 @@ relics_menu_controls
         const MENU_MAIN_RELICS_X = 116
         const MENU_TAP_FRAMES = 4
 
+        dmahole 0
 menu_selection_right
         prev_menu_selection = menu_selection
         menu_selection = menu_selection + 1 : right_debounce = 1
@@ -1898,7 +1912,6 @@ plot_menu_border
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
 
-        dmahole 0
         alphadata sword_names menu_font singlewide
         'Remove       '
         'Rapier       '
@@ -1984,7 +1997,11 @@ end
         ; Unarmed
         $00, $00,
         ; Rapier
-        $FE, $44
+        $FE, $44,
+        ; Broadsword
+        $14, $D1,
+        ; Longsword
+        $09, $12
 end
 
         data sword_atk
