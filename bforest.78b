@@ -202,6 +202,7 @@
         autodim byte player_atk_elem
         autodim byte player_def
         autodim byte player_def_elem
+        autodim byte player_wisdom
         autodim 8.8  player_speed
         autodim byte player_sword
         autodim byte player_shield
@@ -1472,8 +1473,7 @@ plot_equip_menu
         gosub plot_menu_border
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
-        plotchars 'Johanna' 0 16 1 singlewide
-        plotchars 'Attack     Defense' 0 60 1 singlewide
+        plotchars 'Attack     Defense     Wisdom' 0 16 1 singlewide
         plotchars '------------------------------------' 0 8 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
         plotchars 'Equipped'  0 96 3 singlewide
@@ -1651,7 +1651,7 @@ equip_menu_draw_charm
 equip_menu_draw_atk
         ; plotvalue menu_font 0 player_atk 2 88 1
         asm
-        lda	#88
+        lda	#44
         sta	valueX
         lda	#1
         sta	valueY
@@ -1661,13 +1661,23 @@ equip_menu_draw_atk
         sta	value_ptr_hi
         jsr	plotvaluesw
         ; plotvalue menu_font 0 player_def 2 136 1
-        lda	#136
+        lda	#92
         sta	valueX
         lda	#1
         sta	valueY
         lda	#<player_def
         sta	value_ptr_lo
         lda	#>player_def
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+        ; Wisdom
+        lda	#136
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_wisdom
+        sta	value_ptr_lo
+        lda	#>player_wisdom
         sta	value_ptr_hi
         jsr	plotvaluesw
 end
@@ -1968,6 +1978,13 @@ end
         ; used when attacking without a weapon
         alphadata unarmed_name menu_font singlewide
         'Unarmed      '
+end
+
+        data pal_swords
+        ; Unarmed
+        $00, $00,
+        ; Rapier
+        $FE, $44
 end
 
         data sword_atk
