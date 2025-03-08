@@ -1378,10 +1378,10 @@ main_menu_controls
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 && action_button = 0 then open_submenu
         if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
-        if right_debounce > MENU_TAP_FRAMES then gosub menu_selection_right
+        if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = 0 : goto menu_main_dirs_done
-        if left_debounce > MENU_TAP_FRAMES then gosub menu_selection_left
+        if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
         if !left_debounce && joy0left then gosub menu_selection_left
         if menu_selection > MENU_MAIN_MAX_OPTIONS then menu_selection = MENU_MAIN_MAX_OPTIONS
 menu_main_dirs_done
@@ -1497,10 +1497,10 @@ equip_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         if !action_debounce && joy0fire0 && action_button = 0 then equip_menu_change_to_inv
         if !action_debounce && joy0fire1 && action_button = 1 then equip_menu_change_to_inv
-        if up_debounce > MENU_TAP_FRAMES then gosub menu_selection_up
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
         if !up_debounce && joy0up then gosub menu_selection_up
         if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = MENU_EQUIP_MAX_OPTIONS : goto equip_menu_dirs_done
-        if down_debounce > MENU_TAP_FRAMES then gosub menu_selection_down
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
         if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = 0
         goto equip_menu_dirs_done
@@ -1530,9 +1530,9 @@ equip_menu_inv_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then equip_menu_return_from_inv
         if !action_debounce && joy0fire0 && action_button = 0 then equip_item
         if !action_debounce && joy0fire1 && action_button = 1 then equip_item
-        if up_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_up
+        if up_debounce >= MENU_TAP_FRAMES then gosub equip_inv_sel_up
         if !up_debounce && joy0up then gosub equip_inv_sel_up
-        if down_debounce > MENU_TAP_FRAMES then gosub equip_inv_sel_down
+        if down_debounce >= MENU_TAP_FRAMES then gosub equip_inv_sel_down
         if !down_debounce && joy0down then gosub equip_inv_sel_down
 
 equip_menu_dirs_done
@@ -1795,8 +1795,8 @@ equip_inv_sel_up
         equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
         if equip_inv_Y = MENU_EQUIP_INV0_Y then equip_inv_up_no_Y
         equip_inv_Y = equip_inv_Y - 32
+        return
 equip_inv_up_no_Y
-        if m_inv_scroll = 0 then return
         m_inv_scroll = m_inv_scroll - 1
         return
 
