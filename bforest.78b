@@ -344,6 +344,7 @@
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index
+        autodim byte save_room_index
         autodim byte ledge_dir
 
         autodim init $2500 $25FF
@@ -368,6 +369,38 @@
         autodim byte menu_map_index
         autodim byte menu_map_Xpos
         autodim byte menu_map_Ypos
+
+        ; PASSWORD ARRAY
+        autodim byte pw_tileset
+        autodim byte pw_saveroom
+        autodim byte pw_sword
+        autodim byte pw_shield
+        autodim byte pw_armor
+        autodim byte pw_charm
+        autodim byte pw_inventory_1
+        autodim byte pw_inventory_2
+        autodim byte pw_spells
+        autodim byte pw_swords_1
+        autodim byte pw_swords_2
+        autodim byte pw_shields_1
+        autodim byte pw_shields_2
+        autodim byte pw_armor_1
+        autodim byte pw_armor_2
+        autodim byte pw_charms_1
+        autodim byte pw_charms_2
+        autodim byte pw_relics_1
+        autodim byte pw_relics_2
+        autodim byte pw_forest_rooms_1
+        autodim byte pw_forest_rooms_2
+        autodim byte pw_castle_rooms_1
+        autodim byte pw_castle_rooms_2
+        autodim byte pw_river_rooms_1
+        autodim byte pw_river_rooms_2
+        autodim byte pw_hills_rooms_1
+        autodim byte pw_hills_rooms_2
+        autodim byte pw_final_rooms_1
+        autodim byte pw_final_rooms_2
+
 
         dim current_map = $2600
 
@@ -457,6 +490,43 @@ set_title_bottom_pal
 kill_player
         player_frame = FRAME_DEATH
         return
+
+encode_password
+        asm
+        lda tileset
+        clc
+        adc save_room_index
+        sta pw_tileset  ; tileset limited to $0F, save room uses high nibble
+        lda player_sword
+        sta pw_sword
+        lda player_shield
+        sta pw_shield
+        lda player_armor
+        sta pw_armor
+        lda player_charm
+        sta pw_charm
+        ; TODO: encode inventory arrays to pw bytes
+end
+
+decode_password
+        asm
+        lda pw_tileset
+        and $F0 ; get save room index
+        sta save_room_index
+        lda pw_tileset
+        and $0F
+        sta tileset
+        ; TODO: handle determining map screen to start on from save room index
+        lda pw_sword
+        sta player_sword
+        lda pw_shield
+        sta player_shield
+        lda pw_armor
+        sta player_armor
+        lda pw_charm
+        sta player_charm
+        ; TODO: decode inventory arrays from pw bytes
+end
 
 main
         drawscreen
@@ -1792,11 +1862,18 @@ plot_relics_menu
         clearscreen
         gosub plot_menu_border
         menu_change = 0
-        plotchars 'Relics' 0 64 0 singlewide
+        menu_columns = 13
+        plotchars 'Password' 0 64 2 singlewide
+        plotchars 'ABCDEF GHIJKLM' 0 52 3 singlewide
+        plotchars 'NOPQRS TUVWXYZ' 0 52 4 singlewide
+        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 32 9 singlewide
+        plotchars 'A B C D E F G H I J K L M' 0 32 10 singlewide
+        plotchars 'N O P Q R S T U V W X Y Z' 0 32 11 singlewide
         savescreen
 
 relics_menu_updater
         restorescreen
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 relics_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
@@ -1805,6 +1882,26 @@ relics_menu_controls
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 then open_main_menu
         if !action_debounce && joy0fire1 then open_main_menu
+        if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
+        if !right_debounce && joy0right then gosub menu_selection_right
+        if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
+        if !left_debounce && joy0left then gosub menu_selection_left
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+relic_menu_dirs_done
+        ; Handles the Erase option spanning multiple columns
+        if menu_selection > 38 then menu_selection = 38
+        if menu_selection = 11 then menu_selection = 10
+        if menu_selection = 12 then menu_selection = 10
+        if menu_selection < 13 then menu_cursor_X = 28 + (menu_selection * 8) : goto relic_menu_cursor_Y
+        if menu_selection < 26 then menu_cursor_X = 28 + ((menu_selection - 13) * 8) : goto relic_menu_cursor_Y
+        menu_cursor_X = 28 + ((menu_selection - 26) * 8)
+relic_menu_cursor_Y
+        menu_cursor_Y = 144
+        if menu_selection > 13 then menu_cursor_Y = 160
+        if menu_selection > 26 then menu_cursor_Y = 176
         goto main
 
         const MENU_MAIN_ITEMS_X = 12
