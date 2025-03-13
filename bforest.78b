@@ -371,6 +371,10 @@
         autodim byte menu_map_Ypos
 
         ; PASSWORD ARRAY
+        dim pw_index0  = pw_tileset
+        dim pw_index6  = pw_inventory_1
+        dim pw_index12 = pw_shields_2
+        dim pw_index18 = pw_relics_2
         autodim byte pw_tileset
         autodim byte pw_saveroom
         autodim byte pw_sword
@@ -400,6 +404,7 @@
         autodim byte pw_hills_rooms_2
         autodim byte pw_final_rooms_1
         autodim byte pw_final_rooms_2
+        autodim byte pw_index
 
 
         dim current_map = $2600
@@ -1859,14 +1864,15 @@ equip_menu_colors
 plot_relics_menu
         menu = MENU_RELICS
         if !menu_change then goto relics_menu_updater
+        pw_tileset = 21
+        pw_saveroom = 21
         clearscreen
         gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
+        pw_index = 0
         menu_columns = 13
         plotchars 'Password' 0 64 2 singlewide
-        plotchars 'ABCDEF GHIJKL' 0 52 3 singlewide
-        plotchars 'NOPQRS TUVWXY' 0 52 4 singlewide
         plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 32 9 singlewide
         plotchars 'A B C D E F G H I J K L M' 0 32 10 singlewide
         plotchars 'N O P Q R S T U V W X Y Z' 0 32 11 singlewide
@@ -1875,15 +1881,19 @@ plot_relics_menu
 
 relics_menu_updater
         restorescreen
+        plotchars pw_index0 0 52 3 6 singlewide
+        plotchars pw_index6 0 80 3 6 singlewide
+        plotchars pw_index12 0 52 4 6 singlewide
+        plotchars pw_index18 0 80 4 6 singlewide
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 relics_menu_controls
-        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
+        if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 then open_main_menu
-        if !action_debounce && joy0fire1 then open_main_menu
+        if !action_debounce && joy0fire0 then encode_sel_to_pw
+        if !action_debounce && joy0fire1 then encode_sel_to_pw
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
@@ -1907,6 +1917,29 @@ relic_menu_cursor_Y
         if menu_selection = 39 then menu_cursor_X = 88 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         if menu_selection = 40 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         goto main
+
+
+        ; these are offsets added to the menu selection to get proper font characters
+        const PW_0 = 18
+        const PW_A = 15
+encode_sel_to_pw
+        action_debounce = 1
+        temp1 = PW_0
+        if menu_selection > 10 then temp1 = PW_A
+        if menu_selection = 10 then pw_backspace
+        if menu_selection = 39 then open_main_menu
+        if menu_selection = 40 then open_main_menu
+        pw_index0[pw_index] = menu_selection + temp1
+        pw_index = pw_index + 1
+        if pw_index > 24 then pw_index = 24
+        goto relic_menu_dirs_done
+
+pw_backspace
+        menu_debounce = 1
+        pw_index0[pw_index] = 0 ; TODO: Replace with dash char
+        pw_index = pw_index - 1
+        if pw_index > 23 then pw_index = 0
+        goto relic_menu_dirs_done
 
         const MENU_MAIN_ITEMS_X = 12
         const MENU_MAIN_ITEMS_Y = 192
