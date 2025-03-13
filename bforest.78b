@@ -1862,13 +1862,15 @@ plot_relics_menu
         clearscreen
         gosub plot_menu_border
         menu_change = 0
+        menu_selection = 0
         menu_columns = 13
         plotchars 'Password' 0 64 2 singlewide
-        plotchars 'ABCDEF GHIJKLM' 0 52 3 singlewide
-        plotchars 'NOPQRS TUVWXYZ' 0 52 4 singlewide
+        plotchars 'ABCDEF GHIJKL' 0 52 3 singlewide
+        plotchars 'NOPQRS TUVWXY' 0 52 4 singlewide
         plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 32 9 singlewide
         plotchars 'A B C D E F G H I J K L M' 0 32 10 singlewide
         plotchars 'N O P Q R S T U V W X Y Z' 0 32 11 singlewide
+        plotchars 'Confirm  Exit'             0  92 12 singlewide
         savescreen
 
 relics_menu_updater
@@ -1892,7 +1894,7 @@ relics_menu_controls
         if !down_debounce && joy0down then gosub menu_selection_down
 relic_menu_dirs_done
         ; Handles the Erase option spanning multiple columns
-        if menu_selection > 38 then menu_selection = 38
+        if menu_selection > 39 then menu_selection = 40
         if menu_selection = 11 then menu_selection = 10
         if menu_selection = 12 then menu_selection = 10
         if menu_selection < 13 then menu_cursor_X = 28 + (menu_selection * 8) : goto relic_menu_cursor_Y
@@ -1900,8 +1902,10 @@ relic_menu_dirs_done
         menu_cursor_X = 28 + ((menu_selection - 26) * 8)
 relic_menu_cursor_Y
         menu_cursor_Y = 144
-        if menu_selection > 13 then menu_cursor_Y = 160
-        if menu_selection > 26 then menu_cursor_Y = 176
+        if menu_selection > 12 then menu_cursor_Y = 160
+        if menu_selection > 25 then menu_cursor_Y = 176
+        if menu_selection = 39 then menu_cursor_X = 88 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 40 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         goto main
 
         const MENU_MAIN_ITEMS_X = 12
