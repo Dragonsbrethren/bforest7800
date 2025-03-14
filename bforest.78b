@@ -553,12 +553,19 @@ end
 
 decode_password
         asm
+        ldx #0
+decode_font_offset
+        lda pw_index0,x
+        sec
+        sbc #PW_0
+        sta pw_index0,x
+        inx
+        cpx #24
+        bne decode_font_offset
         lda pw_tileset
-        and $F0 ; get save room index
-        sta save_room_index
-        lda pw_tileset
-        and $0F
         sta tileset
+        lda pw_saveroom
+        sta save_room_index
         ; TODO: handle determining map screen to start on from save room index
         lda pw_sword
         sta player_sword
@@ -569,6 +576,7 @@ decode_password
         lda pw_charm
         sta player_charm
         ; TODO: decode inventory arrays from pw bytes
+        rts
 end
 
 main
@@ -1964,7 +1972,7 @@ encode_sel_to_pw
         temp1 = PW_0
         if menu_selection > 10 then temp1 = PW_A
         if menu_selection = 10 then pw_backspace
-        if menu_selection = 39 then open_main_menu
+        if menu_selection = 39 then gosub decode_password : goto open_main_menu
         if menu_selection = 40 then open_main_menu
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
