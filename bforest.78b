@@ -548,6 +548,8 @@ encode_font_offset
         inx
         cpx #24
         bne encode_font_offset
+        lda #24
+        sta pw_index
         rts
 end
 
@@ -1915,7 +1917,6 @@ plot_relics_menu
         gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
-        pw_index = 0
         menu_columns = 13
         plotchars 'Password' 0 64 2 singlewide
         plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 32 9 singlewide
