@@ -372,38 +372,34 @@
 
         ; PASSWORD ARRAY
         dim pw_index0  = pw_tileset
-        dim pw_index6  = pw_inventory_1
-        dim pw_index12 = pw_shields_2
-        dim pw_index18 = pw_relics_2
         autodim byte pw_tileset
         autodim byte pw_saveroom
         autodim byte pw_sword
         autodim byte pw_shield
         autodim byte pw_armor
         autodim byte pw_charm
+        dim pw_index6  = pw_inventory_1
         autodim byte pw_inventory_1
         autodim byte pw_inventory_2
         autodim byte pw_spells
         autodim byte pw_swords_1
         autodim byte pw_swords_2
         autodim byte pw_shields_1
+        dim pw_index12 = pw_shields_2
         autodim byte pw_shields_2
         autodim byte pw_armor_1
         autodim byte pw_armor_2
         autodim byte pw_charms_1
         autodim byte pw_charms_2
         autodim byte pw_relics_1
+        dim pw_index18 = pw_relics_2
         autodim byte pw_relics_2
-        autodim byte pw_forest_rooms_1
-        autodim byte pw_forest_rooms_2
-        autodim byte pw_castle_rooms_1
-        autodim byte pw_castle_rooms_2
-        autodim byte pw_river_rooms_1
-        autodim byte pw_river_rooms_2
-        autodim byte pw_hills_rooms_1
-        autodim byte pw_hills_rooms_2
-        autodim byte pw_final_rooms_1
-        autodim byte pw_final_rooms_2
+        autodim byte pw_index19
+        autodim byte pw_index20
+        autodim byte pw_index21
+        autodim byte pw_index22
+        autodim byte pw_index23
+
         autodim byte pw_index
 
 
@@ -499,9 +495,9 @@ kill_player
 encode_password
         asm
         lda tileset
-        clc
-        adc save_room_index
-        sta pw_tileset  ; tileset limited to $0F, save room uses high nibble
+        sta pw_tileset
+        lda save_room_index
+        sta pw_saveroom
         lda player_sword
         sta pw_sword
         lda player_shield
@@ -511,6 +507,48 @@ encode_password
         lda player_charm
         sta pw_charm
         ; TODO: encode inventory arrays to pw bytes
+        lda #0
+        sta pw_inventory_1
+        sta pw_inventory_2
+        sta pw_spells
+
+        ldy #10
+encode_sword_loop
+        lda m_sword_inv,y
+        beq encode_next_sword
+        cmp #1
+        bne encode_sword_2
+        lda pw_swords_1
+        ora #%00000001
+        sta pw_swords_1
+encode_sword_2
+        lda m_sword_inv,y
+        cmp #2
+        bne encode_sword_3
+        lda pw_swords_1
+        ora #%00000010
+        sta pw_swords_1
+encode_sword_3
+        lda m_sword_inv,y
+        cmp #3
+        bne encode_sword_4
+        lda pw_swords_1
+        ora #%00000100
+        sta pw_swords_1
+encode_sword_4
+encode_next_sword
+        dey
+        bne encode_sword_loop
+        ldx #0
+encode_font_offset
+        lda pw_index0,x
+        clc
+        adc #PW_0
+        sta pw_index0,x
+        inx
+        cpx #24
+        bne encode_font_offset
+        rts
 end
 
 decode_password
@@ -1864,9 +1902,8 @@ equip_menu_colors
 plot_relics_menu
         menu = MENU_RELICS
         if !menu_change then goto relics_menu_updater
-        pw_tileset = 21
-        pw_saveroom = 21
         clearscreen
+        gosub encode_password
         gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
@@ -1892,8 +1929,8 @@ relics_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 then encode_sel_to_pw
-        if !action_debounce && joy0fire1 then encode_sel_to_pw
+        if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
+        if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
         if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
@@ -1936,10 +1973,10 @@ encode_sel_to_pw
 
 pw_backspace
         menu_debounce = 1
-        pw_index0[pw_index] = 0 ; TODO: Replace with dash char
         pw_index = pw_index - 1
+        pw_index0[pw_index] = 0 ; TODO: Replace with dash char
         if pw_index > 23 then pw_index = 0
-        goto relic_menu_dirs_done
+        goto main
 
         const MENU_MAIN_ITEMS_X = 12
         const MENU_MAIN_ITEMS_Y = 192
@@ -1971,7 +2008,7 @@ menu_selection_up
 
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
-        if equip_inv_sel > 15 then equip_inv_sel = 15 : return
+        if equip_inv_sel > 10 then equip_inv_sel = 10 : return
         equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
         if equip_inv_Y = MENU_EQUIP_INV3_Y then equip_inv_down_no_Y
         equip_inv_Y = equip_inv_Y + 32
@@ -2065,11 +2102,6 @@ plot_menu_border
         'Sword Num 8  '
         'Sword Num 9  '
         'Sword Num 10 '
-        'Sword Num 11 '
-        'Sword Num 12 '
-        'Sword Num 13 '
-        'Sword Num 14 '
-        'Sword Num 15 '
 end
 
         alphadata shield_names menu_font singlewide
@@ -2084,11 +2116,6 @@ end
         'Shield Num 8 '
         'Shield Num 9 '
         'Shield Num 10'
-        'Shield Num 11'
-        'Shield Num 12'
-        'Shield Num 13'
-        'Shield Num 14'
-        'Shield Num 15'
 end
 
         alphadata armor_names menu_font singlewide
@@ -2103,11 +2130,6 @@ end
         'Armor Num 8  '
         'Armor Num 9  '
         'Armor Num 10 '
-        'Armor Num 11 '
-        'Armor Num 12 '
-        'Armor Num 13 '
-        'Armor Num 14 '
-        'Armor Num 15 '
 end
 
         alphadata charm_names menu_font singlewide
@@ -2122,11 +2144,6 @@ end
         'Charm Num 8  '
         'Charm Num 9  '
         'Charm Num 10 '
-        'Charm Num 11 '
-        'Charm Num 12 '
-        'Charm Num 13 '
-        'Charm Num 14 '
-        'Charm Num 15 '
 end
 
         ; used when attacking without a weapon
