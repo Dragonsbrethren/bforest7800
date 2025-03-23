@@ -355,10 +355,20 @@
         autodim byte chant_input
         ; possible to start a chant on index 0 so need another variable        
         autodim byte chant_new_input
-        autodim byte m_sword_inv  16
-        autodim byte m_shield_inv 16
-        autodim byte m_armor_inv  16
-        autodim byte m_charm_inv  16
+        autodim byte m_spell_bits_1
+        autodim byte m_spell_bits_2
+        autodim byte m_sword_bits_1
+        autodim byte m_sword_bits_2
+        autodim byte m_shield_bits_1
+        autodim byte m_shield_bits_2
+        autodim byte m_armor_bits_1
+        autodim byte m_armor_bits_2
+        autodim byte m_charm_bits_1
+        autodim byte m_charm_bits_2
+        autodim byte m_sword_inv  10
+        autodim byte m_shield_inv 10
+        autodim byte m_armor_inv  10
+        autodim byte m_charm_inv  10
         autodim byte m_inv_item_0
         autodim byte m_inv_item_1
         autodim byte m_inv_item_2
@@ -401,6 +411,7 @@
         autodim byte pw_index23
 
         autodim byte pw_index
+        autodim byte fade_count
 
 
         dim current_map = $2600
@@ -490,7 +501,21 @@ set_title_bottom_pal
 
 kill_player
         player_frame = FRAME_DEATH
+        fade_count = 60
         return
+
+death_fade
+        ; TODO: Slowly fade the palette to black here
+        ; fade_count = fade_count - 1
+        ; if !fade_count then death_password
+        goto death_password
+        goto player_handler_done
+
+death_password
+        menu = MENU_RELICS
+        menu_debounce = 1
+        pause_debounce = 1
+        goto menu_init bank3
 
 encode_password
         asm
@@ -501,7 +526,15 @@ encode_password
         lda player_sword
         sta pw_sword
         lda player_shield
-        sta pw_shield
+        asl a
+        adc #$80
+        rol
+        asl
+        adc #$80
+        rol
+        clc
+        adc pw_sword
+        sta pw_sword
         lda player_armor
         sta pw_armor
         lda player_charm
@@ -1674,8 +1707,7 @@ equip_menu_dirs_done
         if menu_selection = 3 then menu_cursor_Y = MENU_EQUIP_CHARM_Y : goto equip_menu_charm_inv
         if menu_selection = 4 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         ; continue showing the inventory of the previously selected option
-        if prev_menu_selection = 0 then goto equip_menu_sword_inv
-        goto equip_menu_charm_inv
+        if prev_menu_selection = 3 then goto equip_menu_charm_inv
 
 equip_menu_sword_inv
         m_inv_index = m_inv_scroll
@@ -1913,6 +1945,7 @@ plot_relics_menu
         menu = MENU_RELICS
         if !menu_change then goto relics_menu_updater
         clearscreen
+        gosub disable_double_wide_mode
         gosub encode_password
         gosub plot_menu_border
         menu_change = 0
@@ -2017,7 +2050,7 @@ menu_selection_up
 
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
-        if equip_inv_sel > 10 then equip_inv_sel = 10 : return
+        if equip_inv_sel > 16 then equip_inv_sel = 16 : return
         equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
         if equip_inv_Y = MENU_EQUIP_INV3_Y then equip_inv_down_no_Y
         equip_inv_Y = equip_inv_Y + 32
@@ -2111,6 +2144,11 @@ plot_menu_border
         'Sword Num 8  '
         'Sword Num 9  '
         'Sword Num 10 '
+        'Sword Num 11 '
+        'Sword Num 12 '
+        'Sword Num 13 '
+        'Sword Num 14 '
+        'Sword Num 15 '
 end
 
         alphadata shield_names menu_font singlewide
@@ -2125,6 +2163,11 @@ end
         'Shield Num 8 '
         'Shield Num 9 '
         'Shield Num 10'
+        'Shield Num 11'
+        'Shield Num 12'
+        'Shield Num 13'
+        'Shield Num 14'
+        'Shield Num 15'
 end
 
         alphadata armor_names menu_font singlewide
@@ -2546,7 +2589,7 @@ spawn_nothing
         goto object_done
 
 player_handler
-        if player_state = STATE_DEATH then goto player_handler_done
+        if player_state = STATE_DEATH then goto death_fade
         dec player_damage = $1
 ;        gosub copy_player_props
         gosub decelerate_player
