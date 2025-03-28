@@ -11,7 +11,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
+        const debug_hud = 0
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -140,6 +140,7 @@
         const MENU_EQUIP  = 3
         const MENU_RELICS = 4
         const MENU_SETUP  = 5
+        const MENU_GAMEOVER = 6
         const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
         const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
 
@@ -486,7 +487,10 @@ title_new_game
         menu_map_Ypos = 96
         tileset = T_FOREST
         game_state = STATE_FIELD
-        
+        player_sword = 1
+        player_armor = 1
+        m_sword_bits_1 = 1
+        m_armor_bits_1 = 1
         goto main
 
 set_title_top_pal
@@ -512,7 +516,7 @@ death_fade
         goto player_handler_done
 
 death_password
-        menu = MENU_RELICS
+        menu = MENU_GAMEOVER
         menu_debounce = 1
         pause_debounce = 1
         goto menu_init bank3
@@ -526,15 +530,7 @@ encode_password
         lda player_sword
         sta pw_sword
         lda player_shield
-        asl a
-        adc #$80
-        rol
-        asl
-        adc #$80
-        rol
-        clc
-        adc pw_sword
-        sta pw_sword
+        sta pw_shield
         lda player_armor
         sta pw_armor
         lda player_charm
@@ -544,35 +540,23 @@ encode_password
         sta pw_inventory_1
         sta pw_inventory_2
         sta pw_spells
+        lda m_sword_bits_1
+        sta pw_swords_1
+        lda m_sword_bits_2
+        sta pw_swords_2
+        lda m_shield_bits_1
+        sta pw_shields_1
+        lda m_shield_bits_2
+        sta pw_shields_2
+        lda m_armor_bits_1
+        sta pw_armor_1
+        lda m_armor_bits_2
+        sta pw_armor_2
+        lda m_charm_bits_1
+        sta pw_charms_1
+        lda m_charm_bits_2
+        sta pw_charms_2
 
-        ldy #10
-encode_sword_loop
-        lda m_sword_inv,y
-        beq encode_next_sword
-        cmp #1
-        bne encode_sword_2
-        lda pw_swords_1
-        ora #%00000001
-        sta pw_swords_1
-encode_sword_2
-        lda m_sword_inv,y
-        cmp #2
-        bne encode_sword_3
-        lda pw_swords_1
-        ora #%00000010
-        sta pw_swords_1
-encode_sword_3
-        lda m_sword_inv,y
-        cmp #3
-        bne encode_sword_4
-        lda pw_swords_1
-        ora #%00000100
-        sta pw_swords_1
-encode_sword_4
-encode_next_sword
-        dey
-        bne encode_sword_loop
-        ldx #0
 encode_font_offset
         lda pw_index0,x
         clc
@@ -610,9 +594,30 @@ decode_font_offset
         sta player_armor
         lda pw_charm
         sta player_charm
-        ; TODO: decode inventory arrays from pw bytes
-        rts
+        lda pw_swords_1
+        sta m_sword_bits_1
+        lda pw_swords_2
+        sta m_sword_bits_2
+        lda pw_shields_1
+        sta m_shield_bits_1
+        lda pw_shields_2
+        sta m_shield_bits_2
+        lda pw_armor_1
+        sta m_armor_bits_1
+        lda pw_armor_2
+        sta m_armor_bits_2
+        lda pw_charms_1
+        sta m_charm_bits_1
+        lda pw_charms_2
+        sta m_charm_bits_2
 end
+
+plot_password
+        plotchars pw_index0 0 52 3 6 singlewide
+        plotchars pw_index6 0 80 3 6 singlewide
+        plotchars pw_index12 0 52 4 6 singlewide
+        plotchars pw_index18 0 80 4 6 singlewide
+        return
 
 main
         drawscreen
@@ -1439,49 +1444,8 @@ plot_raven
         incgraphic gfx/menu/menu_potion2.png 320B 0 2 3 1
 
 menu_init
-        ; TODO: Remove these once tests are done
-        player_sword = 1
-        player_shield = 1
-        player_armor = 1
-        player_charm = 1
-        m_sword_inv[0] = 0
-        m_sword_inv[1] = 1
-        m_sword_inv[2] = 3
-        m_sword_inv[3] = 2
-        m_sword_inv[4] = 4
-        m_sword_inv[5] = 5
-        m_sword_inv[6] = 6
-        m_sword_inv[7] = 7
-        m_sword_inv[8] = 8
-        m_shield_inv[0] = 1
-        m_shield_inv[1] = 2
-        m_shield_inv[2] = 3
-        m_shield_inv[3] = 4
-        m_armor_inv[0] = 1
-        m_armor_inv[1] = 2
-        m_armor_inv[2] = 3
-        m_armor_inv[3] = 4
-        m_charm_inv[0] = 1
-        m_charm_inv[1] = 2
-        m_charm_inv[2] = 3
-        m_charm_inv[3] = 4
-        ; TODO: Load colors based on inventory items
-        m_sword_pal1 = $1E
-        m_sword_pal2 = $44
-        m_inv0_pal1 = $07
-        m_inv0_pal2 = $04
-        m_shield_pal1 = $F3
-        m_shield_pal2 = $F5
-        m_inv1_pal1 = $77
-        m_inv1_pal1 = $04
-        m_armor_pal1 = $25
-        m_armor_pal2 = $27
-        m_inv2_pal1 = $FB
-        m_inv2_pal2 = $FF
-        m_charm_pal1 = $AA
-        m_charm_pal2 = $0F
-        m_inv3_pal1 = $36
-        m_inv3_pal2 = $33
+        ; For some reason, removing this causes compilation to fail...
+        m_charm_inv[0] = 0
         game_state = STATE_MENU
         clearscreen
         displaymode 320B
@@ -1491,7 +1455,7 @@ menu_init
         menu_change = 1
 
 menu_handler
-        if menu = MENU_MAIN then goto plot_main_menu
+        if menu = MENU_GAMEOVER then goto plot_gameover
         if menu = MENU_ITEMS then goto plot_items_menu
         if menu = MENU_MAGIC then goto plot_magic_menu
         if menu = MENU_EQUIP then goto plot_equip_menu
@@ -1941,11 +1905,33 @@ equip_menu_colors
         P4C3 = m_inv3_pal2
         return
 
+plot_gameover
+        menu = MENU_GAMEOVER
+        if !menu_change then goto gameover_updater
+        clearscreen
+        gosub disable_double_wide_mode
+        gosub plot_menu_border
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 1
+        plotchars 'GAME OVER' 0 60 2 singlewide
+        plotchars 'Continue' 0 60 9 singlewide
+        plotchars 'Quit' 0 60 10 singlewide
+        savescreen
+
+gameover_updater
+        restorescreen
+        gosub plot_password
+
+gameover_controls
+        goto main
+
 plot_relics_menu
         menu = MENU_RELICS
         if !menu_change then goto relics_menu_updater
         clearscreen
         gosub disable_double_wide_mode
+        gosub calc_inv_array
         gosub encode_password
         gosub plot_menu_border
         menu_change = 0
@@ -1960,10 +1946,7 @@ plot_relics_menu
 
 relics_menu_updater
         restorescreen
-        plotchars pw_index0 0 52 3 6 singlewide
-        plotchars pw_index6 0 80 3 6 singlewide
-        plotchars pw_index12 0 52 4 6 singlewide
-        plotchars pw_index18 0 80 4 6 singlewide
+        gosub plot_password
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 relics_menu_controls
@@ -2050,7 +2033,7 @@ menu_selection_up
 
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
-        if equip_inv_sel > 16 then equip_inv_sel = 16 : return
+        if equip_inv_sel > 10 then equip_inv_sel = 10 : return
         equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
         if equip_inv_Y = MENU_EQUIP_INV3_Y then equip_inv_down_no_Y
         equip_inv_Y = equip_inv_Y + 32
@@ -2100,6 +2083,50 @@ gen_forest_map
         characterset menu_font
         return
 
+calc_inv_array
+        ; TODO: Optimize for ROM space, this is quick and dirty...
+        if m_sword_bits_1{0} then m_sword_inv[1] = 1
+        if m_sword_bits_1{1} then m_sword_inv[2] = 2
+        if m_sword_bits_1{2} then m_sword_inv[3] = 3
+        if m_sword_bits_1{3} then m_sword_inv[4] = 4
+        if m_sword_bits_1{4} then m_sword_inv[5] = 5
+        if m_sword_bits_2{0} then m_sword_inv[6] = 6
+        if m_sword_bits_2{1} then m_sword_inv[7] = 7
+        if m_sword_bits_2{2} then m_sword_inv[8] = 8
+        if m_sword_bits_2{3} then m_sword_inv[9] = 9
+        if m_sword_bits_2{4} then m_sword_inv[10] = 10
+        if m_shield_bits_1{0} then m_shield_inv[1] = 1
+        if m_shield_bits_1{1} then m_shield_inv[2] = 2
+        if m_shield_bits_1{2} then m_shield_inv[3] = 3
+        if m_shield_bits_1{3} then m_shield_inv[4] = 4
+        if m_shield_bits_1{4} then m_shield_inv[5] = 5
+        if m_shield_bits_2{0} then m_shield_inv[6] = 6
+        if m_shield_bits_2{1} then m_shield_inv[7] = 7
+        if m_shield_bits_2{2} then m_shield_inv[8] = 8
+        if m_shield_bits_2{3} then m_shield_inv[9] = 9
+        if m_shield_bits_2{4} then m_shield_inv[10] = 10
+        if m_armor_bits_1{0} then m_armor_inv[1] = 1
+        if m_armor_bits_1{1} then m_armor_inv[2] = 2
+        if m_armor_bits_1{2} then m_armor_inv[3] = 3
+        if m_armor_bits_1{3} then m_armor_inv[4] = 4
+        if m_armor_bits_1{4} then m_armor_inv[5] = 5
+        if m_armor_bits_2{0} then m_armor_inv[6] = 6
+        if m_armor_bits_2{1} then m_armor_inv[7] = 7
+        if m_armor_bits_2{2} then m_armor_inv[8] = 8
+        if m_armor_bits_2{3} then m_armor_inv[9] = 9
+        if m_armor_bits_2{4} then m_armor_inv[10] = 10
+        if m_charm_bits_1{0} then m_charm_inv[1] = 1
+        if m_charm_bits_1{1} then m_charm_inv[2] = 2
+        if m_charm_bits_1{2} then m_charm_inv[3] = 3
+        if m_charm_bits_1{3} then m_charm_inv[4] = 4
+        if m_charm_bits_1{4} then m_charm_inv[5] = 5
+        if m_charm_bits_2{0} then m_charm_inv[6] = 6
+        if m_charm_bits_2{1} then m_charm_inv[7] = 7
+        if m_charm_bits_2{2} then m_charm_inv[8] = 8
+        if m_charm_bits_2{3} then m_charm_inv[9] = 9
+        if m_charm_bits_2{4} then m_charm_inv[10] = 10
+        return
+
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
@@ -2144,11 +2171,6 @@ plot_menu_border
         'Sword Num 8  '
         'Sword Num 9  '
         'Sword Num 10 '
-        'Sword Num 11 '
-        'Sword Num 12 '
-        'Sword Num 13 '
-        'Sword Num 14 '
-        'Sword Num 15 '
 end
 
         alphadata shield_names menu_font singlewide
@@ -2163,11 +2185,6 @@ end
         'Shield Num 8 '
         'Shield Num 9 '
         'Shield Num 10'
-        'Shield Num 11'
-        'Shield Num 12'
-        'Shield Num 13'
-        'Shield Num 14'
-        'Shield Num 15'
 end
 
         alphadata armor_names menu_font singlewide
