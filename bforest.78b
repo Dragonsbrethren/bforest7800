@@ -593,10 +593,10 @@ decode_font_offset
 
         jsr .calculate_pw_checksum
         cmp pw_checksum
-;        beq write_to_gamestate
-;        lda #$E0
-;        sta pw_index
-;        rts
+        beq write_to_gamestate
+        lda #$E0
+        sta pw_index
+        rts
 
 write_to_gamestate
         lda pw_tileset
@@ -656,7 +656,7 @@ calculate_pw_checksum
         adc pw_index19
         adc pw_index20
         adc pw_index21
-        and #$E0
+        and #$1F
         rts
 end
 
