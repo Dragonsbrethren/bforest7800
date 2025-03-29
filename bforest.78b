@@ -392,24 +392,24 @@
         dim pw_index6  = pw_inventory_1
         autodim byte pw_inventory_1
         autodim byte pw_inventory_2
-        autodim byte pw_spells
+        autodim byte pw_spells_1
+        autodim byte pw_spells_2
         autodim byte pw_swords_1
         autodim byte pw_swords_2
+        dim pw_index12 = pw_shields_1
         autodim byte pw_shields_1
-        dim pw_index12 = pw_shields_2
         autodim byte pw_shields_2
         autodim byte pw_armor_1
         autodim byte pw_armor_2
         autodim byte pw_charms_1
         autodim byte pw_charms_2
+        dim pw_index18 = pw_relics_1
         autodim byte pw_relics_1
-        dim pw_index18 = pw_relics_2
         autodim byte pw_relics_2
         autodim byte pw_index19
         autodim byte pw_index20
         autodim byte pw_index21
-        autodim byte pw_index22
-        autodim byte pw_index23
+        autodim byte pw_checksum
 
         autodim byte pw_index
         autodim byte fade_count
@@ -539,7 +539,8 @@ encode_password
         lda #0
         sta pw_inventory_1
         sta pw_inventory_2
-        sta pw_spells
+        sta pw_spells_1
+        sta pw_spells_2
         lda m_sword_bits_1
         sta pw_swords_1
         lda m_sword_bits_2
@@ -556,6 +557,14 @@ encode_password
         sta pw_charms_1
         lda m_charm_bits_2
         sta pw_charms_2
+        lda #0
+        sta pw_relics_1
+        sta pw_relics_2
+        sta pw_index19
+        sta pw_index20
+        sta pw_index21
+        jsr .calculate_pw_checksum
+        sta pw_checksum
 
 encode_font_offset
         lda pw_index0,x
@@ -581,6 +590,15 @@ decode_font_offset
         inx
         cpx #24
         bne decode_font_offset
+
+        jsr .calculate_pw_checksum
+        cmp pw_checksum
+;        beq write_to_gamestate
+;        lda #$E0
+;        sta pw_index
+;        rts
+
+write_to_gamestate
         lda pw_tileset
         sta tileset
         lda pw_saveroom
@@ -610,6 +628,36 @@ decode_font_offset
         sta m_charm_bits_1
         lda pw_charms_2
         sta m_charm_bits_2
+end
+
+calculate_pw_checksum
+        asm
+        lda pw_tileset
+        clc
+        adc pw_saveroom
+        adc pw_sword
+        adc pw_shield
+        adc pw_armor
+        adc pw_charm
+        adc pw_inventory_1
+        adc pw_inventory_2
+        adc pw_spells_1
+        adc pw_spells_2
+        adc pw_swords_1
+        adc pw_swords_2
+        adc pw_shields_1
+        adc pw_shields_2
+        adc pw_armor_1
+        adc pw_armor_2
+        adc pw_charms_1
+        adc pw_charms_2
+        adc pw_relics_1
+        adc pw_relics_2
+        adc pw_index19
+        adc pw_index20
+        adc pw_index21
+        and #$E0
+        rts
 end
 
 plot_password
@@ -1973,6 +2021,8 @@ relics_menu_updater
         restorescreen
         gosub plot_password
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        if pw_index <> $E0 then goto relics_menu_controls
+        plotchars 'Password Error' 0 64 2 singlewide
 
 relics_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
