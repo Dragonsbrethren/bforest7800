@@ -8,6 +8,7 @@
         set collisionwrap off
         set pauseroutine off
         set trackersupport rmt
+        set hssupport $0355
 ;        set multibutton on
 ;        set multibuttonpause on
 
@@ -576,8 +577,9 @@ encode_font_offset
         bne encode_font_offset
         lda #24
         sta pw_index
-        rts
 end
+        savememory pw_tileset-pw_index
+        return
 
 decode_password
         asm
@@ -803,6 +805,8 @@ end
         $06,$06,$01
         $00,$00,$00
 end
+
+        inline hiscore.asm
 
 ;==============================================================================
 ; BANK 2
