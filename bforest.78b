@@ -594,6 +594,7 @@ decode_font_offset
         jsr .calculate_pw_checksum
         cmp pw_checksum
         beq write_to_gamestate
+        jsr encode_font_offset         ; reencode the font for display if the password fails
         lda #$E0
         sta pw_index
         rts
@@ -628,6 +629,10 @@ write_to_gamestate
         sta m_charm_bits_1
         lda pw_charms_2
         sta m_charm_bits_2
+        lda #MENU_MAIN
+        sta menu
+        lda #1
+        sta menu_change
 end
 
 calculate_pw_checksum
@@ -1517,7 +1522,7 @@ plot_main_menu
         clearscreen
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         plotchars 'Johanna' 0 20 1 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
@@ -1648,7 +1653,7 @@ plot_equip_menu
         menu_columns = 1        ; technically 2 but code handles each menu pane separately
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         plotchars 'Attack     Defense     Wisdom' 0 16 1 singlewide
         plotchars '------------------------------------' 0 8 2 singlewide
         plotchars 'Inventory' 0 24 3 singlewide
@@ -1987,7 +1992,7 @@ plot_gameover
         menu_change = 0
         menu_selection = 0
         menu_columns = 1
-        plotchars 'GAME OVER' 0 60 2 singlewide
+        plotchars 'GAME  OVER' 0 60 2 singlewide
         plotchars 'Continue' 0 60 9 singlewide
         plotchars 'Quit' 0 60 10 singlewide
         savescreen
@@ -2000,6 +2005,8 @@ gameover_controls
         goto main
 
 plot_relics_menu
+        ; turn on Kangaroo mode so "Password Error prints over saved screen"
+        sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_RELICS
         if !menu_change then goto relics_menu_updater
         clearscreen
@@ -2011,18 +2018,19 @@ plot_relics_menu
         menu_selection = 0
         menu_columns = 13
         plotchars 'Password' 0 64 2 singlewide
-        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 32 9 singlewide
-        plotchars 'A B C D E F G H I J K L M' 0 32 10 singlewide
-        plotchars 'N O P Q R S T U V W X Y Z' 0 32 11 singlewide
-        plotchars 'Confirm  Exit'             0  92 12 singlewide
+        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
+        plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
+        plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
+        plotchars 'Confirm  Exit'             0  84 12 singlewide
         savescreen
 
 relics_menu_updater
         restorescreen
         gosub plot_password
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        ; $E0 is a checksum error code set by the decode subroutine
         if pw_index <> $E0 then goto relics_menu_controls
-        plotchars 'Password Error' 0 64 2 singlewide
+        plotchars 'Password Error!' 0 48 2 singlewide
 
 relics_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
@@ -2044,15 +2052,15 @@ relic_menu_dirs_done
         if menu_selection > 39 then menu_selection = 40
         if menu_selection = 11 then menu_selection = 10
         if menu_selection = 12 then menu_selection = 10
-        if menu_selection < 13 then menu_cursor_X = 28 + (menu_selection * 8) : goto relic_menu_cursor_Y
-        if menu_selection < 26 then menu_cursor_X = 28 + ((menu_selection - 13) * 8) : goto relic_menu_cursor_Y
-        menu_cursor_X = 28 + ((menu_selection - 26) * 8)
+        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto relic_menu_cursor_Y
+        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto relic_menu_cursor_Y
+        menu_cursor_X = 24 + ((menu_selection - 26) * 8)
 relic_menu_cursor_Y
         menu_cursor_Y = 144
         if menu_selection > 12 then menu_cursor_Y = 160
         if menu_selection > 25 then menu_cursor_Y = 176
-        if menu_selection = 39 then menu_cursor_X = 88 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
-        if menu_selection = 40 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 39 then menu_cursor_X = 80 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 40 then menu_cursor_X = 116 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         goto main
 
 
@@ -2064,7 +2072,7 @@ encode_sel_to_pw
         temp1 = PW_0
         if menu_selection > 10 then temp1 = PW_A
         if menu_selection = 10 then pw_backspace
-        if menu_selection = 39 then gosub decode_password : goto open_main_menu
+        if menu_selection = 39 then gosub decode_password : goto main
         if menu_selection = 40 then open_main_menu
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
@@ -2073,8 +2081,9 @@ encode_sel_to_pw
 
 pw_backspace
         menu_debounce = 1
+        if pw_index > 24 then pw_index = 24
         pw_index = pw_index - 1
-        pw_index0[pw_index] = 0 ; TODO: Replace with dash char
+        pw_index0[pw_index] = 81
         if pw_index > 23 then pw_index = 0
         goto main
 
@@ -2205,7 +2214,7 @@ calc_inv_array
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
         plotchars '}&' 0 152 1 singlewide
