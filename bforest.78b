@@ -407,47 +407,19 @@
         dim pw_index18 = pw_relics_1
         autodim byte pw_relics_1
         autodim byte pw_relics_2
-        autodim byte pw_index19
         autodim byte pw_index20
         autodim byte pw_index21
+        autodim byte pw_index22
         autodim byte pw_checksum
 
         autodim byte pw_index
+        autodim byte pw_buffer 24
         autodim byte fade_count
 
 
         dim current_map = $2600
 
         dim RMTRAM = $2720
-
-        player_Xpos = 24
-        player_Ypos = 60
-
-        player_speed = 1.0
-        player_friction = player_speed
-        player_vel_cap = 5.0
-
-        dec player_max_hp = $48
-        dec player_hp = $48
-
-        dec player_mp = $48
-        dec player_max_mp = $48
-
-        dec hp_seg_1 = 8
-        dec hp_seg_2 = 8
-        dec hp_seg_3 = 8
-        dec hp_seg_4 = 8
-        dec hp_seg_5 = 8
-        dec hp_seg_6 = 8
-        dec mp_seg_1 = 8
-        dec mp_seg_2 = 8
-        dec mp_seg_3 = 8
-        dec mp_seg_4 = 8
-        dec mp_seg_5 = 8
-        dec mp_seg_6 = 8
-
-        sword_pal = 2
-        shield_pal = 2
 
 ;==============================================================================
 ; BANK 1
@@ -488,10 +460,35 @@ title_new_game
         menu_map_Ypos = 96
         tileset = T_FOREST
         game_state = STATE_FIELD
+        player_state = STATE_STAND
+        player_Xpos = 24
+        player_Ypos = 60
+        player_speed = 1.0
+        player_friction = player_speed
+        player_vel_cap = 5.0
+        dec player_max_hp = $48
+        dec player_hp = $48
+        dec player_mp = $48
+        dec player_max_mp = $48
+        dec hp_seg_1 = 8
+        dec hp_seg_2 = 8
+        dec hp_seg_3 = 8
+        dec hp_seg_4 = 8
+        dec hp_seg_5 = 8
+        dec hp_seg_6 = 8
+        dec mp_seg_1 = 8
+        dec mp_seg_2 = 8
+        dec mp_seg_3 = 8
+        dec mp_seg_4 = 8
+        dec mp_seg_5 = 8
+        dec mp_seg_6 = 8
+        sword_pal = 2
+        shield_pal = 2
         player_sword = 1
         player_armor = 1
         m_sword_bits_1 = 1
         m_armor_bits_1 = 1
+        gosub encode_password
         goto main
 
 set_title_top_pal
@@ -561,9 +558,9 @@ encode_password
         lda #0
         sta pw_relics_1
         sta pw_relics_2
-        sta pw_index19
         sta pw_index20
         sta pw_index21
+        sta pw_index22
         jsr .calculate_pw_checksum
         sta pw_checksum
 
@@ -578,7 +575,7 @@ encode_font_offset
         lda #24
         sta pw_index
 end
-        savememory pw_tileset-pw_index
+        savememory pw_index0-pw_index
         return
 
 decode_password
@@ -660,9 +657,9 @@ calculate_pw_checksum
         adc pw_charms_2
         adc pw_relics_1
         adc pw_relics_2
-        adc pw_index19
         adc pw_index20
         adc pw_index21
+        adc pw_index22
         and #$1F
         rts
 end
@@ -1997,7 +1994,7 @@ plot_gameover
         menu_change = 0
         menu_selection = 0
         menu_columns = 1
-        plotchars 'GAME  OVER' 0 60 2 singlewide
+        plotchars 'GAME OVER' 0 60 2 singlewide
         plotchars 'Continue' 0 60 9 singlewide
         plotchars 'Quit' 0 60 10 singlewide
         savescreen
@@ -2005,9 +2002,26 @@ plot_gameover
 gameover_updater
         restorescreen
         gosub plot_password
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 gameover_controls
+        if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
+        if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
+
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+        if menu_selection > 1 then menu_selection = 0
+        menu_cursor_X = 56
+        if !menu_selection then menu_cursor_Y = 144 : goto main
+        menu_cursor_Y = 160
         goto main
+
+gameover_input
+        if menu_selection then reboot
+        gosub decode_password
+        goto title_new_game
 
 plot_relics_menu
         ; turn on Kangaroo mode so "Password Error prints over saved screen"
