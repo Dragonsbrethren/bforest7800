@@ -503,14 +503,13 @@ set_title_bottom_pal
 
 kill_player
         player_frame = FRAME_DEATH
-        fade_count = 60
+        if !fade_count then fade_count = 60
         return
 
 death_fade
         ; TODO: Slowly fade the palette to black here
-        ; fade_count = fade_count - 1
-        ; if !fade_count then death_password
-        goto death_password
+        fade_count = fade_count - 1
+        if !fade_count then death_password
         goto player_handler_done
 
 death_password
