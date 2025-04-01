@@ -672,7 +672,7 @@ end
 
 password_to_buffer
         asm
-        ldx #25
+        ldx #24
 pw_buffer_loop
         lda pw_index0,x
         sta pw_buffer,x
@@ -685,7 +685,7 @@ end
 
 buffer_to_password
         asm
-        ldx #25
+        ldx #24
 buffer_pw_loop
         lda pw_buffer,x
         sta pw_index0,x
