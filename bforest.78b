@@ -445,12 +445,19 @@ title_init
 
 title_handler
         restorescreen
-        savescreen
         adjustvisible 0 4
-;        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+        characterset font
+        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
         ; TODO: Handle, well, everything
         if joy0fire0 then action_button = 0 : goto title_new_game
         if joy0fire1 then action_button = 1 : goto title_new_game
+        goto main
+
+
+title_menu
+        plotchars 'New Game' 0 96 10
+        plotchars 'Continue' 0 96 11
         goto main
 
 title_new_game
@@ -660,6 +667,32 @@ calculate_pw_checksum
         adc pw_index21
         adc pw_index22
         and #$1F
+        rts
+end
+
+password_to_buffer
+        asm
+        ldx #25
+pw_buffer_loop
+        lda pw_index0,x
+        sta pw_buffer,x
+        dex
+        bne pw_buffer_loop
+        lda pw_index0
+        sta pw_buffer
+        rts
+end
+
+buffer_to_password
+        asm
+        ldx #25
+buffer_pw_loop
+        lda pw_buffer,x
+        sta pw_index0,x
+        dex
+        bne buffer_pw_loop
+        lda pw_buffer
+        sta pw_index0
         rts
 end
 
@@ -2031,6 +2064,7 @@ plot_relics_menu
         gosub disable_double_wide_mode
         gosub calc_inv_array
         gosub encode_password
+        gosub password_to_buffer
         gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
@@ -2054,7 +2088,7 @@ relics_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
         if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
         ; Pause is a quickie way of getting back to the action
-        if !pause_debounce && switchpause then close_menu
+        if !pause_debounce && switchpause then gosub buffer_to_password : goto close_menu
         if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
         if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
@@ -2091,7 +2125,7 @@ encode_sel_to_pw
         if menu_selection > 10 then temp1 = PW_A
         if menu_selection = 10 then pw_backspace
         if menu_selection = 39 then gosub decode_password : goto main
-        if menu_selection = 40 then open_main_menu
+        if menu_selection = 40 then gosub buffer_to_password : goto open_main_menu
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         if pw_index > 24 then pw_index = 24
