@@ -1325,6 +1325,12 @@ obj_wolf_stats
 ; Command?
 ;==============================================================================
 slime_ai
+        ; slimes have no physical defense on their squished frame
+        if !animation_frame then temp1 = SLIME_DEF : goto slime_chase
+        ; this will allow them to split into mini-slimes
+        temp1 = 0
+slime_chase
+        object_def[index] = temp1
         gosub get_player_pos
         gosub go_to_destination
         return
@@ -1337,6 +1343,8 @@ obj_slime_stats
         const SLIME_VEL_CAP_HI = 1
         const SLIME_VEL_CAP_LO = 0
         const SLIME_DAMAGE = 4
+        const SLIME_DEF = 255
+        const MSLIME_DEF = 0
         const SLIME_FRICTION_HI = 1
         const SLIME_FRICTION_LO = 0
         const SLIME_SPEED_HI = 0
@@ -1346,6 +1354,7 @@ obj_slime_stats
         object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
         object_damage[obj_index] = SLIME_DAMAGE
+        object_def[obj_index] = SLIME_DEF
         object_friction_hi[obj_index] = SLIME_FRICTION_HI
         object_friction_lo[obj_index] = SLIME_FRICTION_LO
         object_speed_hi[obj_index] = SLIME_SPEED_HI
@@ -1357,6 +1366,7 @@ split_slime
         ; replace slime mobj with mini slime
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
+        object_def[index] = MSLIME_DEF
         temp1 = object_Xpos[index]
         temp2 = object_Ypos[index]
         ; mini slime is moved to the left of the parent slime's pos
@@ -1371,6 +1381,7 @@ split_slime
         object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
         object_damage[index] = SLIME_DAMAGE
+        object_def[index] = MSLIME_DEF
         object_friction_hi[index] = SLIME_FRICTION_HI
         object_friction_lo[index] = SLIME_FRICTION_LO
         object_speed_hi[index] = SLIME_SPEED_HI
