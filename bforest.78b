@@ -131,6 +131,16 @@
         const TYPE_COIN     = 200
         const TYPE_PRISM    = 201
         const TYPE_FOOD     = 202
+        const TYPE_ARMOR1   = 231
+        const TYPE_ARMOR2   = 232
+        const TYPE_ARMOR3   = 233
+        const TYPE_ARMOR4   = 234
+        const TYPE_ARMOR5   = 235
+        const TYPE_ARMOR6   = 236
+        const TYPE_ARMOR7   = 237
+        const TYPE_ARMOR8   = 238
+        const TYPE_ARMOR9   = 239
+        const TYPE_ARMOR10  = 240
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
@@ -709,6 +719,11 @@ plot_password
         plotchars pw_index18 0 80 4 6 singlewide
         return
 
+add_armor
+        m_armor_bits_1 = m_armor_bits_1 + temp1
+        m_armor_bits_2 = m_armor_bits_2 + temp2
+        return
+
 main
         drawscreen
         if switchreset then reboot
@@ -955,7 +970,7 @@ plot_forest_room_3
         return
 
         data forest_room_3_obj
-        TYPE_TORCH, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_ARMOR2, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -1715,7 +1730,7 @@ plot_equip_menu
         plotchars 'Equipped'  0 96 3 singlewide
         plotchars 'Weapon'    0 80 4 singlewide
         plotchars 'Shield'    0 80 6 singlewide
-        plotchars 'Armor'     0 80 8 singlewide
+        plotchars 'Body'     0 80 8 singlewide
         plotchars 'Talisman'  0 80 10 singlewide
         plotchars 'Exit'      0 128 12 singlewide
         savescreen
@@ -2426,10 +2441,10 @@ end
 end
 
         data pal_armor1
-        $00, $12
+        $00, $12, $F2
 end
         data pal_armor2
-        $00, $24
+        $00, $24, $F4
 end
 
         data pal_charms1
@@ -2518,6 +2533,7 @@ set_menu_top_pal
         incgraphic gfx/sprites/fireball2.png 160A
         incgraphic gfx/sprites/fireball3.png 160A
         incgraphic gfx/sprites/fireball4.png 160A
+        incgraphic gfx/sprites/armor0.png 160A 0 2 1
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -2541,7 +2557,7 @@ load_objects
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
         if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
-        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP
+        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
         if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
 
 
@@ -2604,6 +2620,7 @@ player_handler_done
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_FOOD then plot_food
+        if object_type[index] = TYPE_ARMOR2 then plot_armor2
         if object_type[index] = TYPE_FIREBALL then plot_fireball
 plot_next
         next
@@ -2613,7 +2630,7 @@ plot_next
         plotsprite heroine0 0 player_Xpos player_Ypos player_frame
         if player_state = STATE_DEATH then goto plot_hud
         ; TODO: Multiple shield frames depending on direction/state
-        plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
+        if player_shield then plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
         if debug_time then BACKGRND = bg_color
 plot_hud
         gosub draw_hud
@@ -2633,6 +2650,10 @@ plot_prism
 
 plot_food
         plotsprite chimkin 1 Xposition Yposition 0
+        goto plot_next
+
+plot_armor2
+        plotsprite armor0 2 Xposition Yposition 0
         goto plot_next
 
 plot_fireball
@@ -2715,9 +2736,7 @@ swoop_Y
 object_handler
         for index = 0 to 15
         if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
-        if object_type[index] = TYPE_PRISM then object_done
-        if object_type[index] = TYPE_FOOD then object_done
+        if object_type[index] >= TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
@@ -3481,6 +3500,7 @@ check_collisions
         if object_type[index] = TYPE_COIN then cc_pickup
         if object_type[index] = TYPE_PRISM then cc_pickup
         if object_type[index] = TYPE_FOOD then cc_pickup
+        if object_type[index] = TYPE_ARMOR2 then cc_pickup
         if object_type[index] = TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
@@ -3506,6 +3526,7 @@ pickup_item
         playsfx sfx_strum
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp : kill_object
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
+        if object_type[index] = TYPE_ARMOR2 then temp1 = %00000010 : temp2 = %00000000 : gosub add_armor
         ; runs into kill_object
 
 kill_object
