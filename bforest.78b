@@ -266,6 +266,9 @@
         autodim 8.8  object_friction 16
         autodim byte object_hp 16
         autodim byte object_damage 16
+        autodim byte object_elem_atk 16
+        autodim byte object_def 16
+        autodim byte object_elem_def 16
         autodim byte object_contact 16
         autodim byte object_flags 16
         autodim byte object_timer 16
@@ -368,6 +371,7 @@
         autodim byte m_charm_bits_1
         autodim byte m_charm_bits_2
         autodim byte m_sword_inv  10
+        autodim byte m_sword_max
         autodim byte m_shield_inv 10
         autodim byte m_armor_inv  10
         autodim byte m_charm_inv  10
@@ -493,9 +497,10 @@ title_new_game
         shield_pal = 2
         player_sword = 1
         player_armor = 1
-        m_sword_bits_1 = 1
+        m_sword_bits_1 = %0010001
         m_armor_bits_1 = 1
         gosub encode_password
+        gosub update_player_stats bank3
         goto main
 
 set_title_top_pal
@@ -2122,10 +2127,10 @@ relic_menu_cursor_Y
 encode_sel_to_pw
         action_debounce = 1
         temp1 = PW_0
-        if menu_selection > 10 then temp1 = PW_A
-        if menu_selection = 10 then pw_backspace
-        if menu_selection = 39 then gosub decode_password : goto main
-        if menu_selection = 40 then gosub buffer_to_password : goto open_main_menu
+        if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
+        if menu_selection = 10 then pw_backspace                                        ; Erase
+        if menu_selection = 39 then gosub decode_password : goto main                   ; Confirm
+        if menu_selection = 40 then gosub buffer_to_password : goto open_main_menu      ; Exit
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         if pw_index > 24 then pw_index = 24
@@ -2261,7 +2266,41 @@ calc_inv_array
         if m_charm_bits_2{2} then m_charm_inv[8] = 8
         if m_charm_bits_2{3} then m_charm_inv[9] = 9
         if m_charm_bits_2{4} then m_charm_inv[10] = 10
+
+; commented out until debugged, corrupts memory
+;remove_sword_zeros
+;        asm
+;        ldy #0
+;        lda #1
+;        sta temp1
+;rsz_loop
+;        iny
+;        lda m_sword_inv,y
+;        beq rsz_sword_zero
+;        sty temp2
+;        ldy temp1
+;        sta m_sword_inv,y
+;        iny
+;        sty temp1
+;        ldy temp2
+;rsz_sword_zero
+;        cpy #10
+;        bne rsz_loop
+;        ldy temp1
+;        sty m_sword_max
+;        jmp pad_inv_array       
+
+;pad_inv_array
+;        lda #0
+;pi_loop
+;        sta m_sword_inv,y
+;        iny
+;        cpy #11
+;        bne pi_loop
+;        rts
+;end
         return
+
 
 plot_menu_border
         ; TODO: Automate this drawing?
@@ -2760,7 +2799,6 @@ spawn_nothing
 
 player_handler
         if player_state = STATE_DEATH then goto death_fade
-        dec player_damage = $1
 ;        gosub copy_player_props
         gosub decelerate_player
 ;        gosub restore_player_props
@@ -3472,7 +3510,7 @@ sword_collision
 sword_damage
         ; TODO: Much better damage calculations
         temp_hp = object_hp[index]
-        hp_change = player_damage
+        hp_change = player_atk - object_def[index]
         gosub decrease_hp
         object_hp[index] = temp_hp
         return
