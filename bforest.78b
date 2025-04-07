@@ -3511,6 +3511,7 @@ sword_damage
         ; TODO: Much better damage calculations
         temp_hp = object_hp[index]
         hp_change = player_atk - object_def[index]
+        if hp_change > player_atk then hp_change = 0
         gosub decrease_hp
         object_hp[index] = temp_hp
         return
