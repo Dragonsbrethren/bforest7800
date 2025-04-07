@@ -3525,9 +3525,10 @@ sword_collision
         playsfx sfx_poof2
 sword_damage
         ; TODO: Much better damage calculations
+        if object_def[index] = 255 then return
         temp_hp = object_hp[index]
         hp_change = player_atk - object_def[index]
-        if hp_change > player_atk then hp_change = 0
+        if hp_change > player_atk then hp_change = 1
         gosub decrease_hp
         object_hp[index] = temp_hp
         return

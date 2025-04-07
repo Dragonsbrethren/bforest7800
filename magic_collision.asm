@@ -35,6 +35,11 @@
         rts
 
 .magic_damage
+        ; if object has max defense, bypass hp calc altogether
+        lda object_mdef,y
+        cmp #255
+        beq .magic_damage_done
+        ; backup object's hp to check for underflow on high def/low atk values
         lda object_hp,y
         sta temp1
         sta temp_hp
@@ -44,10 +49,12 @@
         sbc object_mdef,y
         cmp temp2
         bcs .nov_mdef
-        lda #0
+        ; if underflow, always do 1 damage
+        lda #1
 .nov_mdef
         sta hp_change
         jsr .decrease_hp
+        ; test HP for underflow
         lda temp_hp
         cmp temp1
         bcs .magic_damage_nov
