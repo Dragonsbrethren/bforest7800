@@ -720,9 +720,15 @@ plot_password
         return
 
 add_armor
-        m_armor_bits_1 = m_armor_bits_1 + temp1
-        m_armor_bits_2 = m_armor_bits_2 + temp2
-        return
+        asm
+        lda m_armor_bits_1
+        ora temp1
+        sta m_armor_bits_1
+        lda m_armor_bits_2
+        ora temp2
+        sta m_armor_bits_2
+        rts
+end
 
 main
         drawscreen
