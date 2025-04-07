@@ -268,6 +268,7 @@
         autodim byte object_damage 16
         autodim byte object_elem_atk 16
         autodim byte object_def 16
+        autodim byte object_mdef 16
         autodim byte object_elem_def 16
         autodim byte object_contact 16
         autodim byte object_flags 16
@@ -1303,6 +1304,8 @@ obj_wolf_stats
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
         const WOLF_DAMAGE = 1
+        const WOLF_DEF = 0
+        const WOLF_MDEF = 2
         const WOLF_CONTACT = 1
         const WOLF_DROP_RATE = 64
 
@@ -1311,6 +1314,8 @@ obj_wolf_stats
         object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
         object_damage[obj_index] = WOLF_DAMAGE
+        object_def[obj_index] = WOLF_DEF
+        object_mdef[obj_index] = WOLF_MDEF
         object_friction_hi[obj_index] = WOLF_FRICTION_HI
         object_friction_lo[obj_index] = WOLF_FRICTION_LO
         object_speed_hi[obj_index] = WOLF_SPEED_HI

@@ -39,6 +39,13 @@
         sta temp1
         sta temp_hp
         lda object_damage,y
+        sta temp2
+        sec
+        sbc object_mdef,y
+        cmp temp2
+        bcs .nov_mdef
+        lda #0
+.nov_mdef
         sta hp_change
         jsr .decrease_hp
         lda temp_hp
