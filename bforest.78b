@@ -795,6 +795,58 @@ add_charm
         m_charm_bits_2 = m_charm_bits_2 | temp2
         goto kill_object
 
+check_sword_bits
+        if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD6 && m_sword_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD7 && m_sword_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD8 && m_sword_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD9 && m_sword_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD10 && m_sword_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_shield_bits
+        if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD9 && m_shield_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD10 && m_shield_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_armor_bits
+        if object_type[index] = TYPE_ARMOR1 && m_armor_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR2 && m_armor_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR3 && m_armor_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_charm_bits
+        if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
 main
         drawscreen
         if switchreset then reboot
@@ -856,6 +908,18 @@ bottomscreenroutine
         ; Johanna's hair
         if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
+        return
+
+clear_palettes
+        BACKGRND = $00
+        P0C1 = $00 : P0C2 = $00 : P0C3 = $00
+        P1C1 = $00 : P1C2 = $00 : P1C3 = $00
+        P2C1 = $00 : P2C2 = $00 : P2C3 = $00
+        P3C1 = $00 : P3C2 = $00 : P3C3 = $00
+        P4C1 = $00 : P4C2 = $00 : P4C3 = $00
+        P5C1 = $00 : P5C2 = $00 : P5C3 = $00
+        P6C1 = $00 : P6C2 = $00 : P6C3 = $00
+        P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
 
         data sfx_poof2
@@ -2807,7 +2871,11 @@ swoop_Y
 object_handler
         for index = 0 to 15
         if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] >= TYPE_COIN then object_done      ;  coins, prisms are static
+        if object_type[index] >= TYPE_CHARM1 then check_charm_bits
+        if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
+        if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
+        if object_type[index] >= TYPE_SWORD1 then check_sword_bits
+        if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
@@ -3591,7 +3659,7 @@ cc_pickup
 
 pickup_item
         playsfx sfx_strum
-        if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp : kill_object
+        if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
         if object_type[index] >= TYPE_SWORD1 then temp1 = object_type[index]
         if temp1 > TYPE_ARMOR10 then pickup_charm
@@ -4000,18 +4068,3 @@ hop_done
         sta hop_dest
         rts
 end
-
-
-
-
-clear_palettes
-        BACKGRND = $00
-        P0C1 = $00 : P0C2 = $00 : P0C3 = $00
-        P1C1 = $00 : P1C2 = $00 : P1C3 = $00
-        P2C1 = $00 : P2C2 = $00 : P2C3 = $00
-        P3C1 = $00 : P3C2 = $00 : P3C3 = $00
-        P4C1 = $00 : P4C2 = $00 : P4C3 = $00
-        P5C1 = $00 : P5C2 = $00 : P5C3 = $00
-        P6C1 = $00 : P6C2 = $00 : P6C3 = $00
-        P7C1 = $00 : P7C2 = $00 : P7C3 = $00
-        return
