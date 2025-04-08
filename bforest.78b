@@ -131,16 +131,46 @@
         const TYPE_COIN     = 200
         const TYPE_PRISM    = 201
         const TYPE_FOOD     = 202
-        const TYPE_ARMOR1   = 231
-        const TYPE_ARMOR2   = 232
-        const TYPE_ARMOR3   = 233
-        const TYPE_ARMOR4   = 234
-        const TYPE_ARMOR5   = 235
-        const TYPE_ARMOR6   = 236
-        const TYPE_ARMOR7   = 237
-        const TYPE_ARMOR8   = 238
-        const TYPE_ARMOR9   = 239
-        const TYPE_ARMOR10  = 240
+        const TYPE_SWORD1   = 210
+        const TYPE_SWORD2   = 211
+        const TYPE_SWORD3   = 212
+        const TYPE_SWORD4   = 213
+        const TYPE_SWORD5   = 214
+        const TYPE_SWORD6   = 215
+        const TYPE_SWORD7   = 216
+        const TYPE_SWORD8   = 217
+        const TYPE_SWORD9   = 218
+        const TYPE_SWORD10  = 219
+        const TYPE_SHIELD1  = 220
+        const TYPE_SHIELD2  = 221
+        const TYPE_SHIELD3  = 222
+        const TYPE_SHIELD4  = 223
+        const TYPE_SHIELD5  = 224
+        const TYPE_SHIELD6  = 225
+        const TYPE_SHIELD7  = 226
+        const TYPE_SHIELD8  = 227
+        const TYPE_SHIELD9  = 228
+        const TYPE_SHIELD10 = 229
+        const TYPE_ARMOR1   = 230
+        const TYPE_ARMOR2   = 231
+        const TYPE_ARMOR3   = 232
+        const TYPE_ARMOR4   = 233
+        const TYPE_ARMOR5   = 234
+        const TYPE_ARMOR6   = 235
+        const TYPE_ARMOR7   = 236
+        const TYPE_ARMOR8   = 237
+        const TYPE_ARMOR9   = 238
+        const TYPE_ARMOR10  = 239
+        const TYPE_CHARM1   = 240
+        const TYPE_CHARM2   = 241
+        const TYPE_CHARM3   = 242
+        const TYPE_CHARM4   = 243
+        const TYPE_CHARM5   = 244
+        const TYPE_CHARM6   = 245
+        const TYPE_CHARM7   = 246
+        const TYPE_CHARM8   = 247
+        const TYPE_CHARM9   = 248
+        const TYPE_CHARM10  = 249
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
@@ -719,16 +749,51 @@ plot_password
         plotchars pw_index18 0 80 4 6 singlewide
         return
 
-add_armor
-        asm
-        lda m_armor_bits_1
-        ora temp1
-        sta m_armor_bits_1
-        lda m_armor_bits_2
-        ora temp2
-        sta m_armor_bits_2
-        rts
+        data inv_bits
+        %00000001, %00000010, %00000100, %00001000, %00010000
 end
+
+prep_inv_bits
+        if temp1 > 5 then prep_bits_2
+        temp1 = inv_bits[temp1]
+        temp2 = 0
+        return
+prep_bits_2
+        temp1 = temp1 - 5
+        temp2 = inv_bits[temp1]
+        temp1 = 0
+        return
+
+pickup_sword
+        temp1 = temp1 - 210
+        gosub prep_inv_bits
+add_sword
+        m_sword_bits_1 = m_sword_bits_1 | temp1
+        m_sword_bits_2 = m_sword_bits_2 | temp2
+        goto kill_object
+
+pickup_shield
+        temp1 = temp1 - 220
+        gosub prep_inv_bits
+add_shield
+        m_shield_bits_1 = m_shield_bits_1 | temp1
+        m_shield_bits_2 = m_shield_bits_2 | temp2
+        goto kill_object
+
+pickup_armor
+        temp1 = temp1 - 230
+        gosub prep_inv_bits
+add_armor
+        m_armor_bits_1 = m_armor_bits_1 | temp1
+        m_armor_bits_2 = m_armor_bits_2 | temp2
+        goto kill_object
+
+pickup_charm
+        temp1 = temp1 - 240
+add_charm
+        m_charm_bits_1 = m_charm_bits_1 | temp1
+        m_charm_bits_2 = m_charm_bits_2 | temp2
+        goto kill_object
 
 main
         drawscreen
@@ -3502,12 +3567,8 @@ check_collisions
         if !object_type[index] then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
-        ; TODO: include all pickups in a range of type values
-        if object_type[index] = TYPE_COIN then cc_pickup
-        if object_type[index] = TYPE_PRISM then cc_pickup
-        if object_type[index] = TYPE_FOOD then cc_pickup
-        if object_type[index] = TYPE_ARMOR2 then cc_pickup
-        if object_type[index] = TYPE_FIREBALL then magic_collision
+        if object_type[index] >= TYPE_COIN then cc_pickup
+        if object_type[index] >= TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
         if !object_hp[index] then kill_object
@@ -3532,8 +3593,11 @@ pickup_item
         playsfx sfx_strum
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp : kill_object
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
-        if object_type[index] = TYPE_ARMOR2 then temp1 = %00000010 : temp2 = %00000000 : gosub add_armor
-        ; runs into kill_object
+        if object_type[index] >= TYPE_SWORD1 then temp1 = object_type[index]
+        if temp1 > TYPE_ARMOR10 then pickup_charm
+        if temp1 > TYPE_SHIELD10 then pickup_armor
+        if temp1 > TYPE_SWORD10 then pickup_shield
+        goto pickup_sword
 
 kill_object
         ; TODO: Death animation
