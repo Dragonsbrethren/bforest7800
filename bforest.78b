@@ -180,7 +180,7 @@
         const MENU_MAGIC  = 2
         const MENU_EQUIP  = 3
         const MENU_RELICS = 4
-        const MENU_SETUP  = 5
+        const MENU_PASSWORD = 5
         const MENU_GAMEOVER = 6
         const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
         const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
@@ -459,6 +459,7 @@
 
         autodim byte pw_index
         autodim byte pw_buffer 24
+        autodim byte pw_error
         autodim byte fade_count
 
 
@@ -476,16 +477,20 @@
         incgraphic gfx/title/logo.png  320B 1 2 3 1 4
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
         incgraphic gfx/title/moon.png  320B 0 3 2 2 4
+        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incmapfile tiled/title_blackforest.tmx
-        game_state = STATE_TITLE
-
 title_init
+        game_state = STATE_TITLE
         gosub clear_palettes
         displaymode 320B
         bg_color = $71
         clearscreen
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 14
+        menu_cursor_X = 56
+        menu_cursor_Y = 160
+        menu_selection = 0
+        menu_columns = 1
         savescreen
 
 title_handler
@@ -493,17 +498,49 @@ title_handler
         adjustvisible 0 4
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
         characterset font
-        if animation_frame then plotchars 'Push Button 1 or 2' 0 96 10
-        ; TODO: Handle, well, everything
-        if joy0fire0 then action_button = 0 : goto title_new_game
-        if joy0fire1 then action_button = 1 : goto title_new_game
-        goto main
+        ; menu_change is set by title_flash, need to get 1 button input from player before drawing menu
+        if !menu_change then title_flash
 
+title_controls
+        if !action_debounce && joy0fire0 && action_button = 0 then title_selection
+        if !action_debounce && joy0fire1 && action_button = 1 then title_selection
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up bank3
+        if !up_debounce then gosub menu_selection_up bank3
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down bank3
+        if !down_debounce && joy0down then gosub menu_selection_down bank3
+;        if menu_selection > 1 then menu_selection = 0
+        if menu_selection then menu_cursor_Y = 176 : title_menu
+        menu_cursor_Y = 160
 
 title_menu
-        plotchars 'New Game' 0 96 10
-        plotchars 'Continue' 0 96 11
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotchars 'New Game' 0 60 10
+        plotchars 'Continue' 0 60 11        
         goto main
+
+title_selection
+        if menu_selection then title_continue
+        goto title_new_game
+
+title_flash
+        ; Whether the player pushes 1 or 2 determine's the game's default action button
+        if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
+        if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
+        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 10 17
+        goto main
+
+title_continue
+        pw_index = 0
+        ; password starts as all dashes
+        for index = 0 to 23
+        pw_index0[index] = 81
+        next
+        game_state = STATE_MENU
+        menu = MENU_PASSWORD
+        action_debounce = 1
+        menu_debounce = 1
+        pause_debounce = 1
+        goto menu_init bank3
 
 title_new_game
         reload_map = 1
@@ -647,7 +684,7 @@ decode_font_offset
         beq write_to_gamestate
         jsr encode_font_offset         ; reencode the font for display if the password fails
         lda #$E0
-        sta pw_index
+        sta pw_error
         rts
 
 write_to_gamestate
@@ -1677,7 +1714,6 @@ plot_raven
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
         incgraphic gfx/menu/menu_pin.png 320B 0 3 2
-        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword2.png 320B 2 0 3 1
@@ -1707,6 +1743,7 @@ menu_init
         game_state = STATE_MENU
         clearscreen
         displaymode 320B
+        adjustvisible 0 14
         drawwait
         P0C2 = $10
         P4C2 = $10
@@ -1718,6 +1755,7 @@ menu_handler
         if menu = MENU_MAGIC then goto plot_magic_menu
         if menu = MENU_EQUIP then goto plot_equip_menu
         if menu = MENU_RELICS then goto plot_relics_menu
+        if menu = MENU_PASSWORD then goto plot_password_menu
 
 plot_main_menu
         P0C3 = PAL_LTPURP
@@ -2227,14 +2265,15 @@ gameover_input
         goto title_new_game
 
 plot_relics_menu
+plot_password_menu
         ; turn on Kangaroo mode so "Password Error prints over saved screen"
         sCTRL{2} = 1 : CTRL = sCTRL
-        menu = MENU_RELICS
-        if !menu_change then goto relics_menu_updater
+        menu = MENU_PASSWORD
+        if !menu_change then goto password_menu_updater
         clearscreen
         gosub disable_double_wide_mode
         gosub calc_inv_array
-        gosub encode_password
+        ; gosub encode_password
         gosub password_to_buffer
         gosub plot_menu_border
         menu_change = 0
@@ -2247,15 +2286,15 @@ plot_relics_menu
         plotchars 'Confirm  Exit'             0  84 12 singlewide
         savescreen
 
-relics_menu_updater
+password_menu_updater
         restorescreen
         gosub plot_password
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         ; $E0 is a checksum error code set by the decode subroutine
-        if pw_index <> $E0 then goto relics_menu_controls
+        if !pw_error then goto password_menu_controls
         plotchars 'Password Error!' 0 48 2 singlewide
 
-relics_menu_controls
+password_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
         if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
         ; Pause is a quickie way of getting back to the action
@@ -2270,15 +2309,15 @@ relics_menu_controls
         if !up_debounce && joy0up then gosub menu_selection_up
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
-relic_menu_dirs_done
+password_menu_dirs_done
         ; Handles the Erase option spanning multiple columns
         if menu_selection > 39 then menu_selection = 40
         if menu_selection = 11 then menu_selection = 10
         if menu_selection = 12 then menu_selection = 10
-        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto relic_menu_cursor_Y
-        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto relic_menu_cursor_Y
+        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto password_menu_cursor_Y
+        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto password_menu_cursor_Y
         menu_cursor_X = 24 + ((menu_selection - 26) * 8)
-relic_menu_cursor_Y
+password_menu_cursor_Y
         menu_cursor_Y = 144
         if menu_selection > 12 then menu_cursor_Y = 160
         if menu_selection > 25 then menu_cursor_Y = 176
@@ -2294,13 +2333,13 @@ encode_sel_to_pw
         action_debounce = 1
         temp1 = PW_0
         if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
-        if menu_selection = 10 then pw_backspace                                        ; Erase
-        if menu_selection = 39 then gosub decode_password : goto main                   ; Confirm
-        if menu_selection = 40 then gosub buffer_to_password : goto open_main_menu      ; Exit
+        if menu_selection = 10 then pw_backspace                        ; Erase
+        if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
+        if menu_selection = 40 then reboot                              ; Exit
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         if pw_index > 24 then pw_index = 24
-        goto relic_menu_dirs_done
+        goto password_menu_dirs_done
 
 pw_backspace
         menu_debounce = 1
