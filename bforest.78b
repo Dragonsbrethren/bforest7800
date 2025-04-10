@@ -456,7 +456,6 @@
         autodim byte pw_index21
         autodim byte pw_index22
         autodim byte pw_checksum
-
         autodim byte pw_index
         autodim byte pw_buffer 24
         autodim byte pw_error
@@ -535,6 +534,7 @@ title_continue
         for index = 0 to 23
         pw_index0[index] = 81
         next
+        loadmemory pw_index0-pw_index
         game_state = STATE_MENU
         menu = MENU_PASSWORD
         action_debounce = 1
@@ -543,12 +543,19 @@ title_continue
         goto menu_init bank3
 
 title_new_game
+        tileset = T_FOREST
+        player_sword = 1
+        player_armor = 1
+        m_sword_bits_1 = %0010001
+        m_armor_bits_1 = 1
+
+init_field
+        ; code shared by new game and continue options
+        game_state = STATE_FIELD
         reload_map = 1
         room_index = 17
         menu_map_Xpos = 78
         menu_map_Ypos = 96
-        tileset = T_FOREST
-        game_state = STATE_FIELD
         player_state = STATE_STAND
         player_Xpos = 24
         player_Ypos = 60
@@ -573,10 +580,6 @@ title_new_game
         dec mp_seg_6 = 8
         sword_pal = 2
         shield_pal = 2
-        player_sword = 1
-        player_armor = 1
-        m_sword_bits_1 = %0010001
-        m_armor_bits_1 = 1
         gosub encode_password
         gosub update_player_stats bank3
         goto main
@@ -661,8 +664,8 @@ encode_font_offset
         inx
         cpx #24
         bne encode_font_offset
-        lda #24
-        sta pw_index
+;        lda #24
+;        sta pw_index
 end
         savememory pw_index0-pw_index
         return
@@ -717,10 +720,7 @@ write_to_gamestate
         sta m_charm_bits_1
         lda pw_charms_2
         sta m_charm_bits_2
-        lda #MENU_MAIN
-        sta menu
-        lda #1
-        sta menu_change
+        jmp .init_field
 end
 
 calculate_pw_checksum
@@ -781,9 +781,9 @@ end
 
 plot_password
         plotchars pw_index0 0 52 3 6 singlewide
-        plotchars pw_index6 0 80 3 6 singlewide
+        plotchars pw_index6 0 84 3 6 singlewide
         plotchars pw_index12 0 52 4 6 singlewide
-        plotchars pw_index18 0 80 4 6 singlewide
+        plotchars pw_index18 0 84 4 6 singlewide
         return
 
         data inv_bits
@@ -2279,7 +2279,7 @@ plot_password_menu
         menu_change = 0
         menu_selection = 0
         menu_columns = 13
-        plotchars 'Password' 0 64 2 singlewide
+        plotchars 'Enter Password' 0 52 2 singlewide
         plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
         plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
         plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
@@ -2292,7 +2292,9 @@ password_menu_updater
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         ; $E0 is a checksum error code set by the decode subroutine
         if !pw_error then goto password_menu_controls
-        plotchars 'Password Error!' 0 48 2 singlewide
+        plotchars 'Password Error' 0 52 2 singlewide
+        ; used to detect if cursor is moved after displaying error
+        prev_menu_selection = menu_selection
 
 password_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
@@ -2310,6 +2312,8 @@ password_menu_controls
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
 password_menu_dirs_done
+        ; clear the Password Error message if the cursor was moved
+        if menu_selection <> prev_menu_selection then pw_error = 0
         ; Handles the Erase option spanning multiple columns
         if menu_selection > 39 then menu_selection = 40
         if menu_selection = 11 then menu_selection = 10
@@ -2330,6 +2334,7 @@ password_menu_cursor_Y
         const PW_0 = 18
         const PW_A = 15
 encode_sel_to_pw
+        pw_error = 0
         action_debounce = 1
         temp1 = PW_0
         if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
@@ -2342,6 +2347,7 @@ encode_sel_to_pw
         goto password_menu_dirs_done
 
 pw_backspace
+        pw_error = 0
         menu_debounce = 1
         if pw_index > 24 then pw_index = 24
         pw_index = pw_index - 1
