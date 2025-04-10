@@ -374,6 +374,7 @@
         autodim byte equip_inv_Y
 
         ; ROOM HEADER
+        autodim byte first_load
         autodim byte room
         autodim byte tileset
         autodim byte exit_dir
@@ -553,12 +554,8 @@ init_field
         ; code shared by new game and continue options
         game_state = STATE_FIELD
         reload_map = 1
-        room_index = 17
-        menu_map_Xpos = 78
-        menu_map_Ypos = 96
+        first_load = 1
         player_state = STATE_STAND
-        player_Xpos = 24
-        player_Ypos = 60
         player_speed = 1.0
         player_friction = player_speed
         player_vel_cap = 5.0
@@ -1071,9 +1068,31 @@ end
         incmapfile tiled/forest_room_9.tmx
         incmapfile tiled/forest_room_10.tmx
         incmapfile tiled/forest_room_11.tmx
+        incmapfile tiled/forest_room_12.tmx
 
 load_forest
-        ; forest_palettes
+        if !first_load then forest_pals
+        first_load = 0
+        if save_room_index = 1 then forest_save_1
+
+; Initial player location on game start
+        room_index = 17
+        menu_map_Xpos = 78
+        menu_map_Ypos = 96
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+        goto forest_pals
+
+forest_save_1
+        room_index = 12
+        menu_map_Xpos = 94
+        menu_map_Ypos = 80
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+
+forest_pals
         bg_color = $11                          ; brown
         P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
         P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
@@ -1097,6 +1116,7 @@ load_forest
         if room = 9 then pointer = forest_room_9_obj_lo : pointer_hi = forest_room_9_obj_hi : goto plot_forest_room_9
         if room = 10 then pointer = forest_room_10_obj_lo : pointer_hi = forest_room_10_obj_hi : goto plot_forest_room_10
         if room = 11 then pointer = forest_room_11_obj_lo : pointer_hi = forest_room_11_obj_hi : goto plot_forest_room_11
+        if room = 12 then pointer = forest_room_12_obj_lo : pointer_hi = forest_room_12_obj_hi : goto plot_forest_room_12
 
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
@@ -1120,7 +1140,7 @@ plot_forest_room_2
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $08
         menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = $0F
+        menu_map_room[menu_map_index] = $09
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
         memcpy current_map forest_room_2 280
         return
@@ -1288,10 +1308,26 @@ plot_forest_room_11
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
+plot_forest_room_12
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $08
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0F
+        plotmapfile tiled/forest_room_12.tmx forest_room_12 0 0 20 14
+        memcpy current_map forest_room_12 280
+        return
+
+        data forest_room_12_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
         00,  9, 10, 04, 05, 11, 00,
-        00, 00, 00, 03, 02, 00, 00,
+        00, 00, 00, 03, 02, 12, 00,
         00, 00, 00, 02, 00, 00, 00,
         00, 00, 00, 01, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
@@ -2235,7 +2271,7 @@ plot_gameover
         menu_change = 0
         menu_selection = 0
         menu_columns = 1
-        plotchars 'GAME OVER' 0 60 2 singlewide
+        plotchars 'GAME  OVER' 0 60 2 singlewide
         plotchars 'Continue' 0 60 9 singlewide
         plotchars 'Quit' 0 60 10 singlewide
         savescreen
