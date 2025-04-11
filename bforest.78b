@@ -484,8 +484,6 @@ title_init
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
-        menu_cursor_Y = 160
-        menu_selection = 0
         menu_columns = 1
         displaymode 320B
         bg_color = $71
@@ -507,11 +505,11 @@ title_controls
         if !action_debounce && joy0fire0 && action_button = 0 then title_selection
         if !action_debounce && joy0fire1 && action_button = 1 then title_selection
         if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up bank3
-        if !up_debounce then gosub menu_selection_up bank3
+        if !up_debounce && joy0up then gosub menu_selection_up bank3
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down bank3
         if !down_debounce && joy0down then gosub menu_selection_down bank3
-;        if menu_selection > 1 then menu_selection = 0
-        if menu_selection then menu_cursor_Y = 176 : title_menu
+        if menu_selection > 1 then menu_selection = 0
+        if menu_selection then menu_cursor_Y = 176 : goto title_menu
         menu_cursor_Y = 160
 
 title_menu
