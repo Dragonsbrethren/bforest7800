@@ -546,9 +546,20 @@ title_continue
 title_new_game
         tileset = T_FOREST
         player_sword = 1
+        player_shield = 0
         player_armor = 1
-        m_sword_bits_1 = %0010001
+        player_charm = 0
+        m_sword_bits_1 = %0000001
+        m_sword_bits_2 = 0
+        m_shield_bits_1 = 0
+        m_shield_bits_2 = 0
         m_armor_bits_1 = 1
+        m_armor_bits_2 = 0
+        m_charm_bits_1 = 0
+        m_charm_bits_2 = 0
+        for index = 0 to 97
+        menu_map_room[index] = 0
+        next
 
 init_field
         ; code shared by new game and continue options
@@ -2298,7 +2309,7 @@ gameover_controls
         goto main
 
 gameover_input
-        if menu_selection then reboot
+        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
         gosub decode_password
         goto title_continue
 
@@ -2380,7 +2391,7 @@ encode_sel_to_pw
         if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
         if menu_selection = 10 then pw_backspace                        ; Erase
         if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
-        if menu_selection = 40 then reboot                              ; Exit
+        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init                             ; Exit
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         if pw_index > 24 then pw_index = 24
