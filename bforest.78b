@@ -460,6 +460,7 @@
         autodim byte pw_index
         autodim byte pw_buffer 24
         autodim byte pw_error
+        autodim byte pw_success
         autodim byte fade_count
 
 
@@ -473,7 +474,7 @@
 ; 7800basic initialization, title sequence code and graphics
 ;------------------------------------------------------------------------------
 ;==============================================================================
-        incgraphic gfx/font.png        320B 2 0 1 0 0
+        incgraphic gfx/title/font.png  320B 2 0 1 0 0
         incgraphic gfx/title/logo.png  320B 1 2 3 1 4
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
         incgraphic gfx/title/moon.png  320B 0 3 2 2 4
@@ -482,22 +483,23 @@
 title_init
         game_state = STATE_TITLE
         gosub clear_palettes
+        menu_cursor_X = 60
+        menu_cursor_Y = 160
+        menu_selection = 0
+        menu_columns = 1
         displaymode 320B
         bg_color = $71
         clearscreen
         characterset logo
-        plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 14
-        menu_cursor_X = 56
-        menu_cursor_Y = 160
-        menu_selection = 0
-        menu_columns = 1
+        plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
+        characterset font
+        plotchars '@2024-2025 CHRIS WIESE' 0 36 12
         savescreen
 
 title_handler
         restorescreen
         adjustvisible 0 4
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
-        characterset font
         ; menu_change is set by title_flash, need to get 1 button input from player before drawing menu
         if !menu_change then title_flash
 
@@ -514,8 +516,8 @@ title_controls
 
 title_menu
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
-        plotchars 'New Game' 0 60 10
-        plotchars 'Continue' 0 60 11        
+        plotchars 'New Game' 0 64 10
+        plotchars 'Continue' 0 64 11        
         goto main
 
 title_selection
@@ -594,7 +596,7 @@ set_title_bottom_pal
 kill_player
         player_frame = FRAME_DEATH
         if !fade_count then fade_count = 60
-        return
+        goto cc_next
 
 death_fade
         ; TODO: Slowly fade the palette to black here
@@ -717,7 +719,9 @@ write_to_gamestate
         sta m_charm_bits_1
         lda pw_charms_2
         sta m_charm_bits_2
-        jmp .init_field
+        lda #1
+        sta pw_success
+        rts
 end
 
 calculate_pw_checksum
@@ -2298,7 +2302,7 @@ gameover_controls
 gameover_input
         if menu_selection then reboot
         gosub decode_password
-        goto title_new_game
+        goto title_continue
 
 plot_relics_menu
 plot_password_menu
@@ -2348,6 +2352,8 @@ password_menu_controls
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
 password_menu_dirs_done
+        ; set by decode password subroutine
+        if pw_success = 1 then goto init_field
         ; clear the Password Error message if the cursor was moved
         if menu_selection <> prev_menu_selection then pw_error = 0
         ; Handles the Erase option spanning multiple columns
@@ -2956,7 +2962,7 @@ object_handler
         if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
-        if object_type[index] = TYPE_COIN then object_done      ;  coins, prisms are static
+        if object_type[index] >= TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
