@@ -611,13 +611,16 @@ kill_player
 death_fade
         ; TODO: Slowly fade the palette to black here
         fade_count = fade_count - 1
-        if !fade_count then death_password
+        if !fade_count then password_display
         goto player_handler_done
 
-death_password
+save_room_handler
+        gosub encode_password
+password_display
         menu = MENU_GAMEOVER
         menu_debounce = 1
         pause_debounce = 1
+        action_debounce = 1
         goto menu_init bank3
 
 encode_password
@@ -1307,7 +1310,8 @@ plot_forest_room_10
 end
 
 plot_forest_room_11
-        in_save_room = 1
+        if !pw_success then in_save_room = 1
+        pw_success = 0
         save_room_index = 1
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $0C
@@ -2288,7 +2292,9 @@ plot_gameover
         menu_change = 0
         menu_selection = 0
         menu_columns = 1
+        if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
         plotchars 'GAME  OVER' 0 60 2 singlewide
+gameover_options
         plotchars 'Continue' 0 60 9 singlewide
         plotchars 'Quit' 0 60 10 singlewide
         savescreen
@@ -2315,6 +2321,7 @@ gameover_controls
 gameover_input
         if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
         gosub decode_password
+        in_save_room = 0
         goto title_continue
 
 plot_relics_menu
@@ -3073,6 +3080,8 @@ spawn_nothing
         goto object_done
 
 player_handler
+        ; TODO: saving cutscene
+        if in_save_room then goto save_room_handler
         if player_state = STATE_DEATH then goto death_fade
 ;        gosub copy_player_props
         gosub decelerate_player
