@@ -898,6 +898,9 @@ check_charm_bits
         if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
         goto object_done
 
+magic_collision
+        inline magic_collision.asm
+
 main
         drawscreen
         if switchreset then reboot
@@ -3803,9 +3806,6 @@ sword_damage
         object_hp[index] = temp_hp
         return
 
-magic_collision
-        inline magic_collision.asm
-
 kill_torch
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_unblock_forest
@@ -3828,6 +3828,10 @@ pc_damage
 damage_player_hp
         ; TODO: This currently can't scale, only works with max HP 48...
         dec temp1 = player_hp        ; temp1 used to detect underflow
+        dec temp2 = hp_change
+        dec hp_change = hp_change - player_def
+        ; don't want total immunity to damage, that's boring!
+        if hp_change > temp2 then hp_change = 1
         dec player_hp = player_hp - hp_change
         if player_hp > temp1 then player_hp = 0
 
