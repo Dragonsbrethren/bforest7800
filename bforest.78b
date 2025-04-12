@@ -1170,6 +1170,7 @@ plot_forest_room_2
 end
 
 plot_forest_room_3
+        pw_success = 0
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $0E
         menu_map_index = menu_map_index + 1
@@ -1770,7 +1771,7 @@ plot_raven
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
         incgraphic gfx/menu/menu_pin.png 320B 0 3 2
-        incgraphic gfx/menu/menu_s.png 320B 0 3 2
+        incgraphic gfx/menu/menu_s.png 320A
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword2.png 320B 2 0 3 1
