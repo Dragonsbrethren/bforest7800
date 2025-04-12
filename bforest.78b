@@ -392,6 +392,7 @@
         autodim byte walk_index
         autodim byte room_index
         autodim byte save_room_index
+        autodim byte in_save_room
         autodim byte ledge_dir
 
         autodim init $2500 $25FF
@@ -1306,6 +1307,8 @@ plot_forest_room_10
 end
 
 plot_forest_room_11
+        in_save_room = 1
+        save_room_index = 1
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $0C
         menu_map_index = menu_map_index + 1
@@ -1763,6 +1766,7 @@ plot_raven
         incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
         incgraphic gfx/menu/menu_pin.png 320B 0 3 2
+        incgraphic gfx/menu/menu_s.png 320B 0 3 2
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword2.png 320B 2 0 3 1
@@ -2484,6 +2488,7 @@ gen_forest_map
         characterset menu_map
         plotmap menu_map_room 0 52 4 14 7
         characterset menu_font
+        if save_room_index{0} then plotsprite menu_s 0 94 80
         return
 
 calc_inv_array
