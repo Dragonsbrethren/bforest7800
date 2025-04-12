@@ -23,7 +23,7 @@
         const STATE_MENU  = 2
         
         const ANIM_TIME = 16
-        const INVULN_FRAMES = 60
+        const INVULN_FRAMES = 4
 
 ;------------------------------------------------------------------------------
 ; MOVEMENT CONSTANTS
@@ -3107,14 +3107,15 @@ player_no_hop
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
-        if player_state = STATE_KNOCKBACK then test_joy_done
         if player_state = STATE_ATTACK then test_joy_done
+        if player_flags{0} then player_test_state
 
 no_player_timer
         player_flags{0} = 0     ; clear invulnerability flag
 
 ;------------------------------------------------------------------------------
         ; handles chanting and sword retracting. Zero if not doing these
+player_test_state
         if player_state = STATE_CHANT then chant_handler
         if player_state = STATE_ATTACK then retract_sword
         if joy0fire0 && action_button = 0 then goto player_attack
