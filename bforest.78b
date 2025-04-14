@@ -221,21 +221,33 @@
 ; PLAYER
 ;------------------------------------------------------------------------------
         autodim init var0 var99
-        autodim byte player_Xpos
-        autodim byte player_Ypos
-        autodim 8.8  player_Xvel
-        autodim 8.8  player_Yvel
-        autodim 8.8  player_vel_cap
-        autodim 8.8  player_friction
-        autodim byte player_Xdir
-        autodim byte player_Ydir
-        autodim byte player_facing      ; facing is separate from direction for knockback purposes
-        autodim byte player_state
-        autodim byte player_frame
-        autodim byte player_flags
-        autodim byte player_timer
-        autodim byte player_dest
-        autodim byte player_hp
+
+        ; player is now treated as object 0, so these are just aliases
+        dim player_Xpos         = object_Xpos
+        dim player_Ypos         = object_Ypos
+        dim player_Xvel_hi      = object_Xvel_hi
+        dim player_Xvel_lo      = object_Xvel_lo
+        dim player_Xvel         = player_Xvel_hi
+        dim player_Yvel_hi      = object_Yvel_hi
+        dim player_Yvel_lo      = object_Yvel_lo
+        dim player_Yvel         = player_Yvel_hi
+        dim player_vel_cap_hi   = object_vel_cap_hi
+        dim player_vel_cap_lo   = object_vel_cap_lo
+        dim player_vel_cap      = player_vel_cap_hi
+        dim player_friction_hi  = object_friction_hi
+        dim player_friction_lo  = object_friction_lo
+        dim player_friction     = player_friction_hi
+        dim player_Xdir         = object_Xdir
+        dim player_Ydir         = object_Ydir
+        dim player_facing       = object_facing
+        dim player_frame        = object_frame
+        dim player_state        = object_state
+        dim player_flags        = object_flags
+        dim player_timer        = object_timer
+        dim player_dest         = object_dest
+        dim player_hop_dir      = object_hop_dir
+        dim player_hp           = object_hp
+
         autodim byte player_max_hp
         autodim byte player_mp
         autodim byte player_max_mp
@@ -281,6 +293,10 @@
         autodim byte flash_color
         autodim byte player_exiting_chant
         autodim byte sword_hit
+
+;------------------------------------------------------------------------------
+; MISC movement vars
+;------------------------------------------------------------------------------
         autodim byte mtarget
         autodim byte magic_Xpos
         autodim byte magic_Ypos
@@ -299,8 +315,9 @@
         autodim 8.8  object_Yvel 16
         autodim byte object_Xdir 16
         autodim byte object_Ydir 16
+        autodim byte object_facing 16
         autodim byte object_frame 16
-        autodim byte object_action 16
+        autodim byte object_state 16
         autodim 8.8  object_speed 16
         autodim 8.8  object_vel_cap 16
         autodim 8.8  object_friction 16
@@ -314,6 +331,7 @@
         autodim byte object_flags 16
         autodim byte object_timer 16
         autodim byte object_dest 16
+        autodim byte object_hop_dir 16
 
         autodim init $2400 $24FF
         autodim byte reload_map
@@ -2791,7 +2809,7 @@ set_menu_top_pal
 ;==============================================================================
 load_objects
         temp1 = 0
-        for obj_index = 0 to MAX_OBJECTS
+        for obj_index = 1 to MAX_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         object_Xpos[obj_index] = pointer[[temp1]]
@@ -2799,7 +2817,8 @@ load_objects
         object_Ypos[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         next
-        for obj_index = 0 to MAX_MAP_OBJECTS
+        ; TODO: pointer table for stats as well
+        for obj_index = 1 to MAX_MAP_OBJECTS
         if !object_type[obj_index] then next_obj_stats
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
@@ -2855,7 +2874,7 @@ player_handler_done
         restorescreen
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determined which sprites need to be plotted by type
-        for index = 0 to 15
+        for index = 1 to 15
         if !object_type[index] then goto plot_next
         if object_type[index] = TYPE_SPAWNER then plot_next
         Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
@@ -2981,7 +3000,7 @@ swoop_Y
         return
 
 object_handler
-        for index = 0 to 15
+        for index = 1 to 15
         if !object_type[index] then object_done    ; 0 = no object
         if object_type[index] >= TYPE_CHARM1 then check_charm_bits
         if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
@@ -3088,7 +3107,7 @@ player_handler
         if in_save_room then goto save_room_handler
         if player_state = STATE_DEATH then goto death_fade
 ;        gosub copy_player_props
-        gosub decelerate_player
+        index = 0 : gosub decelerate_player
 ;        gosub restore_player_props
 
 ;==============================================================================
@@ -3099,6 +3118,7 @@ player_handler
 handle_input_field
         if debug_time then BACKGRND = $70
         if !player_flags{5} then player_no_hop
+        index = 0
         gosub copy_player_props
         gosub ledge_hop
         gosub restore_player_props
@@ -3149,7 +3169,7 @@ test_joy_done
         if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         if player_flags{5} then player_move_done
-        gosub copy_player_props
+        index = 0 : gosub copy_player_props
         gosub move_object
         gosub restore_player_props
 
@@ -3434,38 +3454,6 @@ cast_fireball_left
 end
 
 decelerate_player
-        asm
-        lda player_Xvel
-        beq decel_pY
-        pha
-        sec
-        sbc player_friction_hi
-        sta player_Xvel_hi
-        pla
-        cmp player_Xvel_hi
-        bcs decel_pY
-        lda #0
-        sta player_Xvel_lo
-        sta player_Xvel_hi
-
-decel_pY
-        lda player_Yvel_hi
-        beq decel_preturn
-        pha
-        sec
-        sbc player_friction_hi
-        sta player_Yvel_hi
-        pla
-        cmp player_Yvel_hi
-        bcs decel_return
-        lda #0
-        sta player_Yvel_lo
-        sta player_Yvel_hi
-
-decel_preturn
-        rts
-end
-
 decelerate_object
         asm
         ldx index
@@ -3946,66 +3934,8 @@ get_torch_pos
 end
         return
 
-; copies player movement variables to be manipulated by movement subroutines
+
 copy_player_props
-        asm
-        lda player_Xpos
-        sta Xposition
-        lda player_Xdir
-        sta Xdirection
-        lda player_Xvel_lo
-        sta Xvelocity_lo
-        lda player_Xvel_hi
-        sta Xvelocity_hi
-        lda player_Ypos
-        sta Yposition
-        lda player_Ydir
-        sta Ydirection
-        lda player_Yvel_lo
-        sta Yvelocity_lo
-        lda player_Yvel_hi
-        sta Yvelocity_hi
-        lda player_vel_cap
-        sta vel_cap
-        lda player_friction
-        sta friction
-        lda player_flags
-        sta flags
-        lda player_dest
-        sta hop_dest
-        lda player_timer
-        sta timer
-        rts
-end
-
-; restores movement variables from subroutines back to player
-restore_player_props
-        asm
-        lda Xposition
-        sta player_Xpos
-        lda Xdirection
-        sta player_Xdir
-        lda Xvelocity_lo
-        sta player_Xvel_lo
-        lda Xvelocity_hi
-        sta player_Xvel_hi
-        lda Yposition
-        sta player_Ypos
-        lda Ydirection
-        sta player_Ydir
-        lda Yvelocity_lo
-        sta player_Yvel_lo
-        lda Yvelocity_hi
-        sta player_Yvel_hi
-        lda flags
-        sta player_flags
-        lda hop_dest
-        sta player_dest
-        lda timer
-        sta player_timer
-        rts
-end
-
 copy_object_props
         asm
         ldx index
@@ -4043,11 +3973,14 @@ copy_object_props
         sta flags
         lda object_dest,x
         sta hop_dest
+        lda object_hop_dir,x
+        sta hop_dir
         lda object_timer,x
         sta timer
         rts
 end
 
+restore_player_props
 restore_object_props
         asm
         ldx index
@@ -4071,6 +4004,8 @@ restore_object_props
         sta flags
         lda hop_dest
         sta object_dest,x
+        lda hop_dir
+        sta object_hop_dir,x
         lda timer
         sta object_timer,x
         rts
@@ -4086,9 +4021,9 @@ find_new_object
         ldx #0
         stx no_empty_slot
 new_obj_loop
+        inx
         lda object_type,x
         beq new_obj_found
-        inx
         cpx #MAX_MAP_OBJECTS
         bne new_obj_loop
         ; no empty obj slot found, routines can test if this is non-zero
