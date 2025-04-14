@@ -3986,12 +3986,16 @@ restore_object_props
         ldx index
         lda Xposition
         sta object_Xpos,x
+        lda Xdirection
+        sta object_Xdir,x
         lda Xvelocity_lo
         sta object_Xvel_lo,x
         lda Xvelocity_hi
         sta object_Xvel_hi,x
         lda Yposition
         sta object_Ypos,x
+        lda Ydirection
+        sta object_Ydir,x
         lda Yvelocity_lo
         sta object_Yvel_lo,x
         lda Yvelocity_hi
