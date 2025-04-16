@@ -859,6 +859,7 @@ add_armor
 
 pickup_charm
         temp1 = temp1 - 240
+        gosub prep_inv_bits
 add_charm
         m_charm_bits_1 = m_charm_bits_1 | temp1
         m_charm_bits_2 = m_charm_bits_2 | temp2
@@ -3768,7 +3769,7 @@ pickup_item
         if temp1 > TYPE_ARMOR10 then pickup_charm
         if temp1 > TYPE_SHIELD10 then pickup_armor
         if temp1 > TYPE_SWORD10 then pickup_shield
-        goto pickup_sword
+        if temp1 >= TYPE_SWORD1 then pickup_sword
 
 kill_object
         ; TODO: Death animation
