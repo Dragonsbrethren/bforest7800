@@ -568,8 +568,8 @@ title_new_game
         player_shield = 0
         player_armor = 1
         player_charm = 0
-        m_sword_bits_1 = %0010101
-        m_sword_bits_2 = %0001111
+        m_sword_bits_1 = %0000001
+        m_sword_bits_2 = %0000000
         m_shield_bits_1 = 0
         m_shield_bits_2 = 0
         m_armor_bits_1 = 1
@@ -1565,7 +1565,7 @@ obj_wolf_stats
         const WOLF_SPEED_HI = 1
         const WOLF_SPEED_LO = 0
         const WOLF_HP = 2
-        const WOLF_VEL_CAP_HI = 2
+        const WOLF_VEL_CAP_HI = 1
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
@@ -1615,17 +1615,20 @@ obj_slime_stats
         const SLIME_VEL_CAP_LO = 0
         const SLIME_DAMAGE = 4
         const SLIME_DEF = 255
+        const SLIME_MDEF = 0
         const MSLIME_DEF = 0
+        const MSLIME_MDEF = 0
         const SLIME_FRICTION_HI = 1
         const SLIME_FRICTION_LO = 0
         const SLIME_SPEED_HI = 0
-        const SLIME_SPEED_LO = 50
+        const SLIME_SPEED_LO = 5
         object_hp[obj_index] = SLIME_HP
         object_contact[obj_index] = SLIME_CONTACT
         object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
         object_damage[obj_index] = SLIME_DAMAGE
         object_def[obj_index] = SLIME_DEF
+        object_mdef[obj_index] = SLIME_MDEF
         object_friction_hi[obj_index] = SLIME_FRICTION_HI
         object_friction_lo[obj_index] = SLIME_FRICTION_LO
         object_speed_hi[obj_index] = SLIME_SPEED_HI
@@ -1653,6 +1656,7 @@ split_slime
         object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
         object_damage[index] = SLIME_DAMAGE
         object_def[index] = MSLIME_DEF
+        object_mdef[index] = MSLIME_MDEF
         object_friction_hi[index] = SLIME_FRICTION_HI
         object_friction_lo[index] = SLIME_FRICTION_LO
         object_speed_hi[index] = SLIME_SPEED_HI
@@ -1743,11 +1747,15 @@ obj_raven_stats
         const RAVEN_FRICTION_LO = 0
         const RAVEN_SPEED_HI = 1
         const RAVEN_SPEED_LO = 0
+        const RAVEN_DEF = 0
+        const RAVEN_MDEF = 0
         object_hp[obj_index] = RAVEN_HP
         object_contact[obj_index] = RAVEN_CONTACT
         object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
         object_damage[obj_index] = RAVEN_DAMAGE
+        object_def[obj_index] = RAVEN_DEF
+        object_mdef[obj_index] = RAVEN_MDEF
         object_friction_hi[obj_index] = RAVEN_FRICTION_HI
         object_friction_lo[obj_index] = RAVEN_FRICTION_LO
         object_speed_hi[obj_index] = RAVEN_SPEED_HI
@@ -2573,12 +2581,17 @@ calc_inv_array
         if m_charm_bits_2{3} then m_charm_inv[9] = 9
         if m_charm_bits_2{4} then m_charm_inv[10] = 10
 
+        const m_sword_inv_lo = #<m_sword_inv
+        const m_sword_inv_hi = #>m_sword_inv
+        pointer = m_sword_inv_lo
+        pointer_hi = m_sword_inv_hi
+
 remove_sword_zeros
         ; reads thru the inv array and removes any empty slots
         temp1 = 0
         for index = 1 to 10
-        if !m_sword_inv[index] then rsz_next
-        m_sword_inv[temp1] = m_sword_inv[index]
+        if !pointer[[index]] then rsz_next
+        pointer[[temp1]] = pointer[[index]]
         ; advance the index past the item we just moved
         index = index + 1
         temp1 = temp1 + 1
@@ -2586,7 +2599,7 @@ rsz_next
         next
         ; pad remaining inventory slots with zero
         for index = temp1 to 10
-        m_sword_inv[index] = 0
+        pointer[[index]] = 0
         next
 rsz_return
         return
