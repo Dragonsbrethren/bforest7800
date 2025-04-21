@@ -1930,8 +1930,9 @@ plot_items_menu
         m_spriteY = 80
         m_textX = 24
         m_textY = 5
-        for index = 0 to 7
-        item_name = m_item_inv[index]
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = 0 to 7
+        item_name = m_item_inv[obj_index]
         plotsprite menu_potion0 0 m_spriteX m_spriteY
         plotmap item_names 0 m_textX m_textY 11 1 0 item_name 11
         if m_spriteX = 16 then m_spriteX = 84 : m_textX = 92 : goto items_right
@@ -2347,11 +2348,16 @@ end
         goto equip_menu_dirs_done
 
 equip_menu_colors
+        P0C3 = PAL_LTRED
+        P4C3 = PAL_LTPURP
+        for index = 0 to 64
+        WSYNC = 1
+        next 
         P0C1 = m_sword_pal1
         P0C3 = m_sword_pal2
         P4C1 = m_inv0_pal1
         P4C3 = m_inv0_pal2
-        for index = 0 to 96
+        for index = 0 to 32
         WSYNC = 1
         next
         ; palettes used for inv 1 and shield
@@ -2902,7 +2908,7 @@ disable_double_wide_mode
 
 set_menu_top_pal
         WSYNC = 1 : BACKGRND = $2D
-        if menu = MENU_EQUIP then equip_menu_colors
+        if menu = MENU_ITEMS || menu = MENU_EQUIP then equip_menu_colors
         return
 
 
