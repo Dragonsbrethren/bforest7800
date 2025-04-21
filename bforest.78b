@@ -396,6 +396,8 @@
         autodim byte equip_inv_X
         autodim byte equip_inv_Y
         autodim byte item_name
+        autodim byte using_item
+        autodim byte m_desc
 
         ; ROOM HEADER
         autodim byte first_load
@@ -1946,6 +1948,11 @@ items_right
 items_menu_updater
         restorescreen
         gosub plot_menu_bars
+        ; bypass item description if on Exit
+        if menu_selection >= 8 then item_cursor_Y
+        temp1 = m_item_inv[menu_selection]
+        m_desc = m_desc_set[temp1]
+        plotmap item_desc 0 28 12 18 1 0 m_desc 18
 
 item_cursor_Y
         if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 80 : goto item_cursor_X
@@ -1971,9 +1978,19 @@ items_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 then open_main_menu
-        if !action_debounce && joy0fire1 then open_main_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then use_item
+        if !action_debounce && joy0fire1 && action_button = 1 then use_item
+        if using_item then use_item
         gosub menu_dirs
+        goto main
+
+        const ITEMS_HP_X = 80
+        const ITEMS_HP_Y = 32
+
+use_item
+        if menu_selection = 9 then open_main_menu
+        using_item = m_item_inv[menu_selection]
+        ; TODO: Handle item effects
         goto main
 
 plot_magic_menu
@@ -2519,8 +2536,6 @@ pw_backspace
         const MENU_MAIN_RELICS_X = 116
         const MENU_TAP_FRAMES = 4
 
-        dmahole 0
-
 menu_dirs
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
@@ -2532,6 +2547,8 @@ menu_dirs
         if !down_debounce && joy0down then gosub menu_selection_down
         return
 
+
+        dmahole 0
 menu_selection_right
         prev_menu_selection = menu_selection
         menu_selection = menu_selection + 1 : right_debounce = 1
@@ -2770,6 +2787,7 @@ plot_menu_border
         return
 
         alphadata item_names menu_font singlewide
+        '           '
         'Potion     '
         'High Potion'
         'Max Potion '
@@ -2782,13 +2800,20 @@ plot_menu_border
         'Life Apple '
 end
 
+        ; Item description assigments
+        data m_desc_set
+        0, 1, 1, 1, 2, 2, 3, 4, 5, 6, 7
+end
+
         alphadata item_desc menu_font singlewide
-        'Restores HP '
-        'Restores MP '
-        'Cures Poison'
-        'Cures Curse '
-        'Cures Stone '
-        'Revives     '
+        '                  '
+        'Restores HP       '
+        'Restores MP       '
+        'Restores HP and MP'
+        'Cures Poison      '
+        'Cures Curse       '
+        'Cures Stone       '
+        'Familiar Revives  '
 end
 
         alphadata sword_names menu_font singlewide
