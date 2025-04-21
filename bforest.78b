@@ -1916,11 +1916,14 @@ plot_items_menu
         menu = MENU_ITEMS
         if !menu_change then goto items_menu_updater
         clearscreen
+        gosub calc_inv_array
         gosub plot_menu_border
         menu_change = 0
         menu_columns = 2
+        menu_max = 9    ; bit of a hack for the exit option
         gosub plot_menu_hud
         plotchars '------------------------------------' 0 8 3 singlewide
+        plotchars 'Exit' 0 128 12 singlewide
 
         ; plot the inventory
         m_spriteX = 16
@@ -1943,6 +1946,23 @@ items_menu_updater
         restorescreen
         gosub plot_menu_bars
 
+item_cursor_Y
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 80 : goto item_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 80 + 32 : goto item_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 80 + 64 : goto item_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 80 + 96 : goto item_cursor_X
+        menu_cursor_Y = MENU_EQUIP_EXIT_Y
+
+item_cursor_X
+        ; kludge - makes up from the exit option go into right column instead of left
+        if menu_selection = 8 then menu_selection = 9
+        if menu_selection = 9 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
+        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
+        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto item_cursor_set
+        menu_cursor_X = 12
+
+item_cursor_set
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 
 items_menu_controls
