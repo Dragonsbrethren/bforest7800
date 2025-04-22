@@ -1840,9 +1840,9 @@ plot_raven
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
-        incgraphic gfx/menu/menu_potion0.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_potion1.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_potion2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_potion0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion2.png 320B 0 2 1 3
 
 menu_init
         ; For some reason, removing this causes compilation to fail...
@@ -1943,6 +1943,34 @@ plot_items_menu
         m_textY = m_textY + 2
 items_right
         next
+
+items_palettes
+        ; reuses palette variables from equip menu
+        temp1 = m_item_inv[0]
+        m_inv0_pal1 = pal_items1[temp1]
+        m_inv0_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[1]
+        m_sword_pal1 = pal_items1[temp1]
+        m_sword_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[2]
+        m_inv1_pal1 = pal_items1[temp1]
+        m_inv1_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[3]
+        m_shield_pal1 = pal_items1[temp1]
+        m_shield_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[4]
+        m_inv2_pal1 = pal_items1[temp1]
+        m_inv2_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[5]
+        m_armor_pal1 = pal_items1[temp1]
+        m_armor_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[6]
+        m_inv3_pal1 = pal_items1[temp1]
+        m_inv3_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[7]
+        m_charm_pal1 = pal_items1[temp1]
+        m_charm_pal2 = pal_items2[temp1]
+
         savescreen
 
 items_menu_updater
@@ -1990,7 +2018,7 @@ items_menu_controls
 use_item
         if menu_selection = 9 then open_main_menu
         using_item = m_item_inv[menu_selection]
-        ; TODO: Handle item effects
+        if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = 20 : gosub increase_player_hp : using_item = 0
         goto main
 
 plot_magic_menu
@@ -2365,8 +2393,8 @@ end
         goto equip_menu_dirs_done
 
 equip_menu_colors
-        P0C3 = PAL_LTRED
-        P4C3 = PAL_LTPURP
+        P0C3 = PAL_LTPURP
+        P4C3 = PAL_LTRED
         for index = 0 to 64
         WSYNC = 1
         next 
@@ -2547,8 +2575,6 @@ menu_dirs
         if !down_debounce && joy0down then gosub menu_selection_down
         return
 
-
-        dmahole 0
 menu_selection_right
         prev_menu_selection = menu_selection
         menu_selection = menu_selection + 1 : right_debounce = 1
@@ -2577,6 +2603,7 @@ menu_selection_up
         if menu_selection > menu_max then menu_selection = menu_max
         return
 
+        dmahole 0
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
         if equip_inv_sel > 10 then equip_inv_sel = 10 : return
@@ -2875,6 +2902,14 @@ end
         ; used when attacking without a weapon
         alphadata unarmed_name menu_font singlewide
         'Unarmed      '
+end
+
+        data pal_items1
+        $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $34
+end
+
+        data pal_items2
+        $83, $84, $85, $74, $75, $97, $45, $06, $1C, $27
 end
 
         data pal_swords1
