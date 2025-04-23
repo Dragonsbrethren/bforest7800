@@ -368,6 +368,7 @@
         autodim byte menu_rows
         autodim byte menu_cursor_X
         autodim byte menu_cursor_Y
+        autodim byte m_palette
         autodim byte m_spriteX
         autodim byte m_spriteY
         autodim byte m_textX
@@ -580,7 +581,7 @@ title_new_game
         player_armor = 1
         player_charm = 0
         m_item_bits_1 = %00011111
-        m_item_bits_2 = %00011111
+        m_item_bits_2 = %00000111
         m_sword_bits_1 = %00011111
         m_sword_bits_2 = %00011111
         m_shield_bits_1 = %00010000
@@ -1918,7 +1919,6 @@ plot_items_menu
         menu = MENU_ITEMS
         if !menu_change then goto items_menu_updater
         clearscreen
-        gosub calc_inv_array
         gosub plot_menu_border
         menu_change = 0
         menu_columns = 2
@@ -1926,23 +1926,12 @@ plot_items_menu
         gosub plot_menu_hud
         plotchars '------------------------------------' 0 8 3 singlewide
         plotchars 'Exit' 0 128 12 singlewide
+        savescreen
 
-        ; plot the inventory
-        m_spriteX = 16
-        m_spriteY = 80
-        m_textX = 24
-        m_textY = 5
-        ; reuse obj_index here because index is used by menu coloring code and breaks item list
-        for obj_index = 0 to 7
-        item_name = m_item_inv[obj_index]
-        plotsprite menu_potion0 0 m_spriteX m_spriteY
-        plotmap item_names 0 m_textX m_textY 11 1 0 item_name 11
-        if m_spriteX = 16 then m_spriteX = 84 : m_textX = 92 : goto items_right
-        m_spriteX = 16 : m_textX = 24
-        m_spriteY = m_spriteY + 32
-        m_textY = m_textY + 2
-items_right
-        next
+items_menu_updater
+        restorescreen
+        gosub calc_inv_array
+        gosub plot_menu_bars
 
 items_palettes
         ; reuses palette variables from equip menu
@@ -1970,12 +1959,26 @@ items_palettes
         temp1 = m_item_inv[7]
         m_charm_pal1 = pal_items1[temp1]
         m_charm_pal2 = pal_items2[temp1]
+        
+        ; plot the inventory
+        m_spriteX = 16
+        m_spriteY = 80
+        m_textX = 24
+        m_textY = 5
+        m_palette = 4
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = 0 to 7
+        item_name = m_item_inv[obj_index]
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
+        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
+        m_palette = 4
+        m_spriteX = 16 : m_textX = 24
+        m_spriteY = m_spriteY + 32
+        m_textY = m_textY + 2
+items_right
+        next
 
-        savescreen
-
-items_menu_updater
-        restorescreen
-        gosub plot_menu_bars
         ; bypass item description if on Exit
         if menu_selection >= 8 then item_cursor_Y
         temp1 = m_item_inv[menu_selection]
@@ -2659,8 +2662,8 @@ gen_forest_map
 
 calc_inv_array
         ; zero the inventory arrays to prevent duplication
-        for index = 0 to 44
-        m_sword_inv[index] = 0
+        for index = 0 to 55
+        m_item_inv[index] = 0
         next
         ; populate arrays based on equipment bits
         ; TODO: Optimize for ROM space, this is quick and dirty...
@@ -2715,6 +2718,8 @@ calc_inv_array
         if m_charm_bits_2{3} then m_charm_inv[9] = 9
         if m_charm_bits_2{4} then m_charm_inv[10] = 10
 
+        const m_item_inv_lo = #<m_item_inv
+        const m_item_inv_hi = #>m_item_inv
         const m_sword_inv_lo = #<m_sword_inv
         const m_sword_inv_hi = #>m_sword_inv
         const m_shield_inv_lo = #<m_shield_inv
@@ -2725,6 +2730,9 @@ calc_inv_array
         const m_charm_inv_hi = #>m_charm_inv
 
         ; inventory-by-inventory, remove zeros
+        pointer = m_item_inv_lo
+        pointer_hi = m_item_inv_hi
+        gosub remove_inv_zeros
         pointer = m_sword_inv_lo
         pointer_hi = m_sword_inv_hi
         gosub remove_inv_zeros
@@ -2905,11 +2913,11 @@ end
 end
 
         data pal_items1
-        $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $34
+        $00, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $34
 end
 
         data pal_items2
-        $83, $84, $85, $74, $75, $97, $45, $06, $1C, $27
+        $00, $83, $84, $85, $74, $75, $97, $45, $06, $1C, $27
 end
 
         data pal_swords1
