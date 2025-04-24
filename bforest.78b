@@ -128,9 +128,19 @@
         const TYPE_RAVEN    =  8
         const TYPE_SPAWNER  = 128
         const TYPE_FIREBALL = 129
-        const TYPE_COIN     = 200
-        const TYPE_PRISM    = 201
-        const TYPE_FOOD     = 202
+        const TYPE_COIN     = 197
+        const TYPE_PRISM    = 198
+        const TYPE_FOOD     = 199
+        const TYPE_ITEM1    = 200
+        const TYPE_ITEM2    = 201
+        const TYPE_ITEM3    = 202
+        const TYPE_ITEM4    = 203
+        const TYPE_ITEM5    = 204
+        const TYPE_ITEM6    = 205
+        const TYPE_ITEM7    = 206
+        const TYPE_ITEM8    = 207
+        const TYPE_ITEM9    = 208
+        const TYPE_ITEM10   = 209
         const TYPE_SWORD1   = 210
         const TYPE_SWORD2   = 211
         const TYPE_SWORD3   = 212
@@ -580,8 +590,8 @@ title_new_game
         player_shield = 0
         player_armor = 1
         player_charm = 0
-        m_item_bits_1 = %00011111
-        m_item_bits_2 = %00000111
+        m_item_bits_1 = %00000000
+        m_item_bits_2 = %00000000
         m_sword_bits_1 = %00011111
         m_sword_bits_2 = %00011111
         m_shield_bits_1 = %00010000
@@ -982,6 +992,14 @@ prep_bits_2
         temp1 = 0
         return
 
+pickup_item
+        temp1 = temp1 - 200
+        gosub prep_inv_bits
+add_item
+        m_item_bits_1 = m_item_bits_1 | temp1
+        m_item_bits_2 = m_item_bits_2 | temp2
+        goto kill_object
+
 pickup_sword
         temp1 = temp1 - 210
         gosub prep_inv_bits
@@ -1013,6 +1031,18 @@ add_charm
         m_charm_bits_1 = m_charm_bits_1 | temp1
         m_charm_bits_2 = m_charm_bits_2 | temp2
         goto kill_object
+
+check_item_bits
+        if object_type[index] = TYPE_ITEM1 && m_item_bits_1{0} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM2 && m_item_bits_1{1} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM3 && m_item_bits_1{2} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM4 && m_item_bits_1{3} then object_type[index] = TYPE_PRISM
+        if object_type[index] = TYPE_ITEM5 && m_item_bits_1{4} then object_type[index] = TYPE_PRISM
+        if object_type[index] = TYPE_ITEM6 && m_item_bits_2{0} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM7 && m_item_bits_2{1} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM8 && m_item_bits_2{2} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM9 && m_item_bits_2{3} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM10 && m_item_bits_2{4} then object_type[index] = TYPE_FOOD
 
 check_sword_bits
         if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
@@ -1351,7 +1381,7 @@ plot_forest_room_3
         return
 
         data forest_room_3_obj
-        TYPE_ARMOR2, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_ITEM1, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -2098,8 +2128,10 @@ items_palettes
         ; reuse obj_index here because index is used by menu coloring code and breaks item list
         for obj_index = 0 to 7
         item_name = m_item_inv[obj_index]
+        if !item_name then items_left
         plotsprite menu_potion0 m_palette m_spriteX m_spriteY
         plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
+items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
         m_palette = 4
         m_spriteX = 16 : m_textX = 24
@@ -3059,6 +3091,7 @@ set_menu_top_pal
         incgraphic gfx/sprites/fireball2.png 160A
         incgraphic gfx/sprites/fireball3.png 160A
         incgraphic gfx/sprites/fireball4.png 160A
+        incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
 
 ;==============================================================================
@@ -3147,6 +3180,7 @@ player_handler_done
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_FOOD then plot_food
+        if object_type[index] = TYPE_ITEM1 then plot_item1
         if object_type[index] = TYPE_ARMOR2 then plot_armor2
         if object_type[index] = TYPE_FIREBALL then plot_fireball
 plot_next
@@ -3177,6 +3211,10 @@ plot_prism
 
 plot_food
         plotsprite chimkin 1 Xposition Yposition 0
+        goto plot_next
+
+plot_item1
+        plotsprite potion0 0 Xposition Yposition 0
         goto plot_next
 
 plot_armor2
@@ -3267,6 +3305,7 @@ object_handler
         if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
+        if object_type[index] >= TYPE_ITEM1 then check_item_bits
         if object_type[index] >= TYPE_COIN then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
@@ -3333,7 +3372,9 @@ spawn_object
         goto object_done
 
 spawns_slime
-        ; TODO: Unique drops
+        object_type[index] = TYPE_ITEM1
+        object_hp[index] = 1
+        goto object_done
 
 spawns_wolf
         ; TODO: Unique wolf item drops
@@ -4018,18 +4059,19 @@ cc_return
         return
 
 cc_pickup
-        if Xposition > player_Xpos && Xposition < (player_Xpos + 12) && Yposition > player_Ypos && Yposition < (player_Ypos + 16) then pickup_item
+        if Xposition > player_Xpos && Xposition < (player_Xpos + 12) && Yposition > player_Ypos && Yposition < (player_Ypos + 16) then pickup_object
         goto cc_next
 
-pickup_item
+pickup_object
         playsfx sfx_strum
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
-        if object_type[index] >= TYPE_SWORD1 then temp1 = object_type[index]
+        if object_type[index] >= TYPE_ITEM1 then temp1 = object_type[index]
         if temp1 > TYPE_ARMOR10 then pickup_charm
         if temp1 > TYPE_SHIELD10 then pickup_armor
         if temp1 > TYPE_SWORD10 then pickup_shield
-        if temp1 >= TYPE_SWORD1 then pickup_sword
+        if temp1 > TYPE_ITEM10 then pickup_sword
+        if temp1 >= TYPE_ITEM1 then pickup_item
 
 kill_object
         ; TODO: Death animation
