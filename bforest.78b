@@ -831,6 +831,135 @@ buffer_pw_loop
         rts
 end
 
+plot_gameover
+        menu = MENU_GAMEOVER
+        if !menu_change then goto gameover_updater
+        clearscreen
+        gosub disable_double_wide_mode
+        gosub plot_menu_border
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 1
+        if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
+        plotchars 'GAME  OVER' 0 60 2 singlewide
+gameover_options
+        plotchars 'Continue' 0 60 9 singlewide
+        plotchars 'Quit' 0 60 10 singlewide
+        savescreen
+
+gameover_updater
+        restorescreen
+        gosub plot_password
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+
+gameover_controls
+        if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
+        if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
+
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+        if menu_selection > 1 then menu_selection = 0
+        menu_cursor_X = 56
+        if !menu_selection then menu_cursor_Y = 144 : goto main
+        menu_cursor_Y = 160
+        goto main
+
+gameover_input
+        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
+        gosub decode_password
+        in_save_room = 0
+        goto title_continue
+
+plot_relics_menu
+plot_password_menu
+        ; turn on Kangaroo mode so "Password Error prints over saved screen"
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_PASSWORD
+        if !menu_change then goto password_menu_updater
+        clearscreen
+        gosub disable_double_wide_mode
+        gosub calc_inv_array
+        ; gosub encode_password
+        gosub password_to_buffer
+        gosub plot_menu_border
+        menu_change = 0
+        menu_selection = 0
+        menu_max = 40
+        menu_columns = 13
+        plotchars 'Enter Password' 0 52 2 singlewide
+        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
+        plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
+        plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
+        plotchars 'Confirm  Exit'             0  84 12 singlewide
+        savescreen
+
+password_menu_updater
+        restorescreen
+        gosub plot_password
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        ; $E0 is a checksum error code set by the decode subroutine
+        if !pw_error then goto password_menu_controls
+        plotchars 'Password Error' 0 52 2 singlewide
+        ; used to detect if cursor is moved after displaying error
+        prev_menu_selection = menu_selection
+
+password_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
+        if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then gosub buffer_to_password : goto close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
+        if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
+        gosub menu_dirs
+
+password_menu_dirs_done
+        ; set by decode password subroutine
+        if pw_success = 1 then goto init_field
+        ; clear the Password Error message if the cursor was moved
+        if menu_selection <> prev_menu_selection then pw_error = 0
+        ; Handles the Erase option spanning multiple columns
+        if menu_selection > 39 then menu_selection = 40
+        if menu_selection = 11 then menu_selection = 10
+        if menu_selection = 12 then menu_selection = 10
+        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto password_menu_cursor_Y
+        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto password_menu_cursor_Y
+        menu_cursor_X = 24 + ((menu_selection - 26) * 8)
+password_menu_cursor_Y
+        menu_cursor_Y = 144
+        if menu_selection > 12 then menu_cursor_Y = 160
+        if menu_selection > 25 then menu_cursor_Y = 176
+        if menu_selection = 39 then menu_cursor_X = 80 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 40 then menu_cursor_X = 116 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        goto main
+
+
+        ; these are offsets added to the menu selection to get proper font characters
+        const PW_0 = 18
+        const PW_A = 15
+encode_sel_to_pw
+        pw_error = 0
+        action_debounce = 1
+        temp1 = PW_0
+        if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
+        if menu_selection = 10 then pw_backspace                        ; Erase
+        if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
+        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init                             ; Exit
+        pw_index0[pw_index] = menu_selection + temp1
+        pw_index = pw_index + 1
+        if pw_index > 24 then pw_index = 24
+        goto password_menu_dirs_done
+
+pw_backspace
+        pw_error = 0
+        menu_debounce = 1
+        if pw_index > 24 then pw_index = 24
+        pw_index = pw_index - 1
+        pw_index0[pw_index] = 81
+        if pw_index > 23 then pw_index = 0
+        goto main
+
 plot_password
         plotchars pw_index0 0 52 3 6 singlewide
         plotchars pw_index6 0 84 3 6 singlewide
@@ -2018,10 +2147,41 @@ items_menu_controls
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32
 
+        const HP_CHANGE_POTION = $20
+        const HP_CHANGE_HIPOTION = $30
+        const HP_CHANGE_XPOTION = $48
+        const MP_CHANGE_ETHER = $10
+        const MP_CHANGE_XETHER = $48
 use_item
+        action_debounce = 1
         if menu_selection = 9 then open_main_menu
         using_item = m_item_inv[menu_selection]
-        if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = 20 : gosub increase_player_hp : using_item = 0
+        ; TODO: Prevent item use if full HP/MP or normal status
+        if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = HP_CHANGE_POTION : goto use_potion
+        if using_item = 2 then m_item_bits_1{1} = 0 : hp_change = HP_CHANGE_HIPOTION : goto use_potion
+        if using_item = 3 then m_item_bits_1{2} = 0 : hp_change = HP_CHANGE_XPOTION : goto use_potion
+        if using_item = 4 then m_item_bits_1{3} = 0 : mp_change = MP_CHANGE_ETHER : goto use_ether
+        if using_item = 5 then m_item_bits_1{4} = 0 : mp_change = MP_CHANGE_XETHER : goto use_ether
+        if using_item = 6 then m_item_bits_2{0} = 0 : hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
+        if using_item = 7 then m_item_bits_2{1} = 0 : goto use_antidote
+        if using_item = 8 then m_item_bits_2{2} = 0 : goto use_uncurse
+
+use_potion
+        gosub increase_player_hp
+        goto use_item_done
+
+use_elixir
+        gosub increase_player_hp
+
+use_ether
+        gosub increase_player_mp
+        goto use_item_done
+
+use_antidote
+use_uncurse
+
+use_item_done
+        using_item = 0
         goto main
 
 plot_magic_menu
@@ -2431,135 +2591,6 @@ equip_menu_colors
         P4C3 = m_inv3_pal2
         return
 
-plot_gameover
-        menu = MENU_GAMEOVER
-        if !menu_change then goto gameover_updater
-        clearscreen
-        gosub disable_double_wide_mode
-        gosub plot_menu_border
-        menu_change = 0
-        menu_selection = 0
-        menu_columns = 1
-        if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
-        plotchars 'GAME  OVER' 0 60 2 singlewide
-gameover_options
-        plotchars 'Continue' 0 60 9 singlewide
-        plotchars 'Quit' 0 60 10 singlewide
-        savescreen
-
-gameover_updater
-        restorescreen
-        gosub plot_password
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
-
-gameover_controls
-        if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
-        if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
-
-        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
-        if !up_debounce && joy0up then gosub menu_selection_up
-        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
-        if !down_debounce && joy0down then gosub menu_selection_down
-        if menu_selection > 1 then menu_selection = 0
-        menu_cursor_X = 56
-        if !menu_selection then menu_cursor_Y = 144 : goto main
-        menu_cursor_Y = 160
-        goto main
-
-gameover_input
-        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
-        gosub decode_password
-        in_save_room = 0
-        goto title_continue
-
-plot_relics_menu
-plot_password_menu
-        ; turn on Kangaroo mode so "Password Error prints over saved screen"
-        sCTRL{2} = 1 : CTRL = sCTRL
-        menu = MENU_PASSWORD
-        if !menu_change then goto password_menu_updater
-        clearscreen
-        gosub disable_double_wide_mode
-        gosub calc_inv_array
-        ; gosub encode_password
-        gosub password_to_buffer
-        gosub plot_menu_border
-        menu_change = 0
-        menu_selection = 0
-        menu_max = 40
-        menu_columns = 13
-        plotchars 'Enter Password' 0 52 2 singlewide
-        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
-        plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
-        plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
-        plotchars 'Confirm  Exit'             0  84 12 singlewide
-        savescreen
-
-password_menu_updater
-        restorescreen
-        gosub plot_password
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
-        ; $E0 is a checksum error code set by the decode subroutine
-        if !pw_error then goto password_menu_controls
-        plotchars 'Password Error' 0 52 2 singlewide
-        ; used to detect if cursor is moved after displaying error
-        prev_menu_selection = menu_selection
-
-password_menu_controls
-        if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
-        if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
-        ; Pause is a quickie way of getting back to the action
-        if !pause_debounce && switchpause then gosub buffer_to_password : goto close_menu
-        if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
-        if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
-        gosub menu_dirs
-
-password_menu_dirs_done
-        ; set by decode password subroutine
-        if pw_success = 1 then goto init_field
-        ; clear the Password Error message if the cursor was moved
-        if menu_selection <> prev_menu_selection then pw_error = 0
-        ; Handles the Erase option spanning multiple columns
-        if menu_selection > 39 then menu_selection = 40
-        if menu_selection = 11 then menu_selection = 10
-        if menu_selection = 12 then menu_selection = 10
-        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto password_menu_cursor_Y
-        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto password_menu_cursor_Y
-        menu_cursor_X = 24 + ((menu_selection - 26) * 8)
-password_menu_cursor_Y
-        menu_cursor_Y = 144
-        if menu_selection > 12 then menu_cursor_Y = 160
-        if menu_selection > 25 then menu_cursor_Y = 176
-        if menu_selection = 39 then menu_cursor_X = 80 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
-        if menu_selection = 40 then menu_cursor_X = 116 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
-        goto main
-
-
-        ; these are offsets added to the menu selection to get proper font characters
-        const PW_0 = 18
-        const PW_A = 15
-encode_sel_to_pw
-        pw_error = 0
-        action_debounce = 1
-        temp1 = PW_0
-        if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
-        if menu_selection = 10 then pw_backspace                        ; Erase
-        if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
-        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init                             ; Exit
-        pw_index0[pw_index] = menu_selection + temp1
-        pw_index = pw_index + 1
-        if pw_index > 24 then pw_index = 24
-        goto password_menu_dirs_done
-
-pw_backspace
-        pw_error = 0
-        menu_debounce = 1
-        if pw_index > 24 then pw_index = 24
-        pw_index = pw_index - 1
-        pw_index0[pw_index] = 81
-        if pw_index > 23 then pw_index = 0
-        goto main
-
         const MENU_MAIN_ITEMS_X = 12
         const MENU_MAIN_ITEMS_Y = 192
         const MENU_MAIN_MAGIC_X = 40
@@ -2635,6 +2666,7 @@ open_main_menu
         menu_debounce = 1
         menu_change = 1
         menu = MENU_MAIN
+        menu_selection = 0
         goto main
 
 close_menu
