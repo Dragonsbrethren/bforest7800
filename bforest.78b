@@ -526,6 +526,7 @@ title_init
         gosub clear_palettes
         menu_cursor_X = 60
         menu_columns = 1
+        menu_max = 1
         displaymode 320B
         bg_color = $71
         clearscreen
@@ -549,7 +550,6 @@ title_controls
         if !up_debounce && joy0up then gosub menu_selection_up bank3
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down bank3
         if !down_debounce && joy0down then gosub menu_selection_down bank3
-        if menu_selection > 1 then menu_selection = 0
         if menu_selection then menu_cursor_Y = 176 : goto title_menu
         menu_cursor_Y = 160
 
@@ -850,6 +850,8 @@ plot_gameover
         menu_change = 0
         menu_selection = 0
         menu_columns = 1
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
         plotchars 'GAME  OVER' 0 60 2 singlewide
 gameover_options
@@ -2070,7 +2072,7 @@ open_submenu
         if menu_selection = 0 then goto plot_items_menu
         if menu_selection = 1 then goto plot_magic_menu
         if menu_selection = 2 then goto plot_equip_menu
-        if menu_selection = 3 then goto plot_relics_menu
+        ; if menu_selection = 3 then goto plot_relics_menu
         goto main
 
 plot_items_menu
