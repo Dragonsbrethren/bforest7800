@@ -1399,7 +1399,7 @@ end
 
 plot_forest_room_4
         menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = $0A
+        menu_map_room[menu_map_index] = 2
         menu_map_index = menu_map_index + 1
         menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
@@ -1558,10 +1558,10 @@ end
 
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
-        00,  9, 10, 04, 05, 11, 00,
+        00, 10,  9, 04, 05, 11, 00,
         00, 00, 00, 03, 02, 12, 00,
-        00, 00, 00, 02, 00, 00, 00,
         00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00
 end
