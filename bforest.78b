@@ -904,7 +904,7 @@ plot_password_menu
         plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
         plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
         plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
-        plotchars 'Confirm  Exit'             0  84 12 singlewide
+        plotchars 'Confirm  Exit'             0 84 12 singlewide
         savescreen
 
 password_menu_updater

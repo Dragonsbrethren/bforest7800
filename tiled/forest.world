@@ -1,0 +1,90 @@
+{
+    "maps": [
+        {
+            "fileName": "forest_room_10.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1120,
+            "y": 0
+        },
+        {
+            "fileName": "forest_room_9.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1280,
+            "y": 0
+        },
+        {
+            "fileName": "forest_room_8.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1280,
+            "y": -224
+        },
+        {
+            "fileName": "forest_room_7.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1440,
+            "y": -224
+        },
+        {
+            "fileName": "forest_room_6.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1600,
+            "y": -224
+        },
+        {
+            "fileName": "forest_room_4.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1440,
+            "y": 0
+        },
+        {
+            "fileName": "forest_room_5.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1600,
+            "y": 0
+        },
+        {
+            "fileName": "forest_room_3.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1440,
+            "y": 224
+        },
+        {
+            "fileName": "forest_room_2.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1600,
+            "y": 224
+        },
+        {
+            "fileName": "forest_room_1.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1440,
+            "y": 448
+        },
+        {
+            "fileName": "forest_room_12.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1760,
+            "y": 224
+        },
+        {
+            "fileName": "forest_room_11.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 1760,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}
