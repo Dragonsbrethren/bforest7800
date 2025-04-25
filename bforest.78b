@@ -1176,6 +1176,14 @@ clear_palettes
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
 
+        data f_sword_pals
+        0, 2, 1, 1, 0, 2, 2, 2, 2, 2, 2
+end
+
+        data f_shield_pals
+        0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0
+end
+
         data sfx_poof2
         $10,$10,$00 ; version, priority, frames per chunk
         $0a,$08,$04 ; first chunk of freq,channel,volume
@@ -2542,10 +2550,12 @@ equip_charm
 
 equip_sword
         player_sword = m_sword_inv[equip_inv_sel]
+        sword_pal = f_sword_pals[player_sword]
         goto update_player_stats
 
 equip_shield
         player_shield = m_shield_inv[equip_inv_sel]
+        shield_pal = f_shield_pals[player_shield]
         goto update_player_stats
 
 equip_armor
