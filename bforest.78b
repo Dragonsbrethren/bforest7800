@@ -585,7 +585,7 @@ title_continue
         goto menu_init bank3
 
 title_new_game
-        tileset = T_FOREST
+        tileset = T_CASTLE
         player_sword = 1
         player_shield = 0
         player_armor = 1
@@ -3055,7 +3055,47 @@ set_menu_top_pal
         if menu = MENU_ITEMS || menu = MENU_EQUIP then equip_menu_colors
         return
 
+;==============================================================================
+; BANK 4
+;------------------------------------------------------------------------------
+; Cathedral graphics, maps, AI
+;==============================================================================
+        bank 4
+        incgraphic gfx/tiles/castle_stone.png
 
+load_castle
+        if !first_load then castle_pals
+        first_load = 0
+        if save_room_index = 1 then castle_save_1
+
+        room_index = 17
+        menu_map_Xpos = 78
+        menu_map_Ypos = 96
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+        goto castle_pals
+
+castle_save_1
+        room_index = 12
+        menu_map_Xpos = 94
+        menu_map_Ypos = 80
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+
+castle_pals
+        bg_color = $91                          ; dark blue
+        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
+        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
+        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
+        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
+        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
+        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by walls
+        P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
+        P7C1 = $00 : P7C2 = $10 : P7C3 = $12    ; ledges, dark and light browns
+
+        return
 
 ;==============================================================================
 ; BANK 9
@@ -3155,6 +3195,7 @@ load_map
         displaymode 160A
         adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
+        if tileset = T_CASTLE then gosub load_castle bank4
         savescreen
         if !save_objects then gosub load_objects
         asm
