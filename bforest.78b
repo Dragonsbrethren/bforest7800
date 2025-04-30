@@ -431,6 +431,7 @@
         autodim byte save_room_index
         autodim byte in_save_room
         autodim byte ledge_dir
+        autodim byte window_zone
 
         autodim init $2500 $25FF
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
@@ -1707,7 +1708,7 @@ end
 end
 
         data forest_floatable_tiles
-        $22, $24, $26, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
+        $2A, $24, $26, $22, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
 end
 
 torch_tile_block_forest
@@ -3061,40 +3062,238 @@ set_menu_top_pal
 ; Cathedral graphics, maps, AI
 ;==============================================================================
         bank 4
-        incgraphic gfx/tiles/castle_stone.png
+        incgraphic gfx/tiles/castle_stone.png  160A 0 1 2 3 4
+        incgraphic gfx/tiles/castle_tile.png  160A 0 1 2 3 6
+        incgraphic gfx/tiles/castle_carpet.png  160A 0 1 2 3 7
+        incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
+
+        incmapfile tiled/castle_room_1.tmx
+        incmapfile tiled/castle_room_2.tmx
 
 load_castle
         if !first_load then castle_pals
         first_load = 0
         if save_room_index = 1 then castle_save_1
 
-        room_index = 17
+        room_index = 45
         menu_map_Xpos = 78
-        menu_map_Ypos = 96
+        menu_map_Ypos = 160
         player_Xpos = 24
         player_Ypos = 60
-        player_facing = DIR_DOWN
+        player_facing = DIR_UP
         goto castle_pals
 
 castle_save_1
         room_index = 12
-        menu_map_Xpos = 94
-        menu_map_Ypos = 80
+        menu_map_Xpos = 112
+        menu_map_Ypos = 112
         player_Xpos = 24
         player_Ypos = 60
         player_facing = DIR_DOWN
 
 castle_pals
-        bg_color = $91                          ; dark blue
+        bg_color = $AC                          ; electric blue - lightning
         P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
         P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
-        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by walls
-        P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
-        P7C1 = $00 : P7C2 = $10 : P7C3 = $12    ; ledges, dark and light browns
+        P4C1 = $00 : P4C2 = $02 : P4C3 = $04    ; walls
+        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays
+        P6C1 = $00 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
+        P7C1 = $00 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
 
+        characterset castle_stone
+        room = castle_rooms[room_index]
+        if room = 1 then pointer = castle_room_1_obj_lo : pointer_hi = castle_room_1_obj_hi : goto plot_castle_room_1
+        if room = 2 then pointer = castle_room_2_obj_lo : pointer_hi = castle_room_2_obj_hi : goto plot_castle_room_2
+
+plot_castle_room_1
+        window_zone = 2
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
+        memcpy current_map castle_room_1 280
+        return
+
+        data castle_room_1_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_2
+        window_zone = 2
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
+        memcpy current_map castle_room_2 280
+        return
+
+        data castle_room_2_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+
+        data castle_rooms
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 02, 00, 00, 00,
+        00, 00, 00, 01, 00, 00, 00
+end
+
+test_walkable_castle
+        asm
+        ldx #0
+twc_loop lda castle_walkable_tiles,x
+        cmp move_tile_1
+        bne twctile2
+        pha
+        lda #1
+        sta walkable_1
+        pla
+twctile2 cmp move_tile_2
+        bne twc_next
+        lda #1
+        sta walkable_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda walkable_1
+        bne twc_walkable
+twc_next inx
+        cpx #castle_walkable_tiles_length
+        bne twc_loop
+        lda walkable_1
+        beq twc_done
+        lda walkable_2
+        beq twc_done
+twc_walkable
+        sta walkable
+        jmp .walkable_return
+twc_done
+        lda ledge_dir   ; if ledge_dir isn't set, bypass ledge check
+        beq tfc_flags
+test_ledge_castle
+        ldy #0
+        cmp #DIR_LEFT
+        bne tlcright
+        lda #<castle_ledge_tiles_left
+        sta pointer
+        lda #>castle_ledge_tiles_left
+        sta pointer_hi
+        jmp tlc_loop
+tlcright cmp #DIR_RIGHT
+        bne tlcdown
+        lda #<castle_ledge_tiles_right
+        sta pointer
+        lda #>castle_ledge_tiles_right
+        sta pointer_hi
+        jmp tlc_loop
+tlcdown  cmp #DIR_DOWN
+        bne tlc_done
+        lda #<castle_ledge_tiles_down
+        sta pointer
+        lda #>castle_ledge_tiles_down
+        sta pointer_hi
+tlc_loop lda (pointer),y
+        cmp move_tile_1
+        bne tlctile2
+        pha
+        lda #1
+        sta ledge_1
+        pla
+tlctile2 cmp move_tile_2
+        bne tlc_next
+        lda #1
+        sta ledge_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda ledge_1
+        bne tlc_ledge
+tlc_next iny
+        cpy #castle_ledge_tiles_down_length     ; HACK - all ledge arrays currently same length...
+        bne tlc_loop
+        lda ledge_1
+        beq tlc_done
+        lda ledge_2
+        beq tlc_done
+tlc_ledge
+        sta ledge
+        lda #0
+tlc_done sta ledge_dir   ; A = 0 if branched from tl_next
+tfc_flags
+        lda flags
+        and #%00010000
+        bne tfc_done
+        ; ledges are always floatable tiles
+        lda ledge
+        bne tfc_floatable
+
+test_floatable_castle
+        ldx #0
+tfc_loop lda castle_floatable_tiles,x
+        cmp move_tile_1
+        bne tfctile2
+        pha
+        lda #1
+        sta floatable_1
+        pla
+tfctile2 cmp move_tile_2
+        bne tfc_next
+        lda #1
+        sta floatable_2
+        lda floatable_1
+        bne tfc_floatable
+tfc_next inx
+        cpx #castle_floatable_tiles_length
+        bne tfc_loop
+        lda floatable_1
+        beq tfc_done
+        lda floatable_2
+        beq tfc_done
+tfc_floatable
+        sta floatable
+tfc_done jmp .walkable_return
+end
+
+        data castle_walkable_tiles
+        $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40
+end
+
+        data castle_ledge_tiles_down
+        $FA
+end
+
+        data castle_ledge_tiles_left
+        $FC
+end
+
+        data castle_ledge_tiles_right
+        $FE
+end
+
+        data castle_floatable_tiles
+        $FF
+end
+
+torch_tile_block_castle
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 castle_floatable_tiles
+        return
+
+torch_tile_unblock_castle
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 castle_walkable_tiles
         return
 
 ;==============================================================================
@@ -3301,6 +3500,7 @@ draw_hud
         PLOTSPRITE4 bar0 0 56 16 mp_seg_5
         PLOTSPRITE4 bar0 0 64 16 mp_seg_6
         if debug_hud = 0 then return
+        if tileset = T_CASTLE then plot_hud_castle
         ; plotvalue hud 0 player_hp 2 72 0
         ; plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
@@ -3310,6 +3510,12 @@ draw_hud
         plotvalue hud 0 input_buffer 16 16 13
         ; plotvalue hud 0 chant_input 2 8 13
         ; plotvalue hud 0 retract_counter 2 64 13
+        return
+
+plot_hud_castle
+        plotvalue castle_hud 0 player_Xpos 2 32 12
+        plotvalue castle_hud 0 player_Ypos 2 48 12
+        plotvalue castle_hud 0 move_tile_1 4 32 13
         return
 
 open_menu
@@ -4082,7 +4288,8 @@ test_walkable
         sta ledge_1
         sta ledge_2
 end
-        if tileset = T_FOREST then test_walkable_forest
+        if tileset = T_FOREST then goto test_walkable_forest
+        if tileset = T_CASTLE then goto test_walkable_castle
 walkable_return
         if debug_time then BACKGRND = bg_color
         return
