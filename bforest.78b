@@ -3075,6 +3075,7 @@ set_menu_top_pal
 
         incmapfile tiled/castle_room_1.tmx
         incmapfile tiled/castle_room_2.tmx
+        incmapfile tiled/castle_room_3.tmx
 
 load_castle
         if !first_load then castle_pals
@@ -3112,9 +3113,9 @@ castle_pals
         room = castle_rooms[room_index]
         if room = 1 then pointer = castle_room_1_obj_lo : pointer_hi = castle_room_1_obj_hi : goto plot_castle_room_1
         if room = 2 then pointer = castle_room_2_obj_lo : pointer_hi = castle_room_2_obj_hi : goto plot_castle_room_2
+        if room = 3 then pointer = castle_room_3_obj_lo : pointer_hi = castle_room_3_obj_hi : goto plot_castle_room_3
 
 plot_castle_room_1
-        window_zone = 2
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = 2
         menu_map_index = menu_map_index + 1
@@ -3131,7 +3132,6 @@ plot_castle_room_1
 end
 
 plot_castle_room_2
-        window_zone = 2
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = 10
         menu_map_index = menu_map_index + 1
@@ -3147,6 +3147,21 @@ plot_castle_room_2
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
+plot_castle_room_3
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        memcpy current_map castle_room_3 280
+        return
+
+        data castle_room_3_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
 
         data castle_rooms
         00, 00, 00, 00, 00, 00, 00,
@@ -3155,7 +3170,7 @@ end
         00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
         00, 00, 00, 02, 00, 00, 00,
-        00, 00, 00, 01, 00, 00, 00
+        00, 00, 03, 01, 03, 00, 00
 end
 
 test_walkable_castle
@@ -3273,7 +3288,7 @@ tfc_done jmp .walkable_return
 end
 
         data castle_walkable_tiles
-        $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40
+        $10, $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
 end
 
         data castle_ledge_tiles_down
