@@ -637,6 +637,7 @@ init_field
         goto main
 
 set_title_top_pal
+        BACKGRND = bg_color
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
         return
@@ -1145,7 +1146,7 @@ topscreenroutine
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
-        BACKGRND=bg_color
+        if tileset = T_FOREST then BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
 
@@ -1156,14 +1157,19 @@ bottomscreenroutine
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
         BACKGRND = flash_color
-        P4C1     = flash_color
-        P5C1     = flash_color
-        P6C1     = flash_color
-        P7C1     = flash_color
+        if tileset = T_FOREST then forest_flash
+hair_flash
         ; Johanna's hair
         if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
+
+forest_flash
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        P7C1     = flash_color
+        goto hair_flash
 
 clear_palettes
         BACKGRND = $00
@@ -3062,9 +3068,9 @@ set_menu_top_pal
 ; Cathedral graphics, maps, AI
 ;==============================================================================
         bank 4
-        incgraphic gfx/tiles/castle_stone.png  160A 0 1 2 3 4
-        incgraphic gfx/tiles/castle_tile.png  160A 0 1 2 3 6
-        incgraphic gfx/tiles/castle_carpet.png  160A 0 1 2 3 7
+        incgraphic gfx/tiles/castle_stone.png  160A 1 0 2 3 4
+        incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
+        incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
         incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
 
         incmapfile tiled/castle_room_1.tmx
@@ -3092,15 +3098,15 @@ castle_save_1
         player_facing = DIR_DOWN
 
 castle_pals
-        bg_color = $AC                          ; electric blue - lightning
+        bg_color = $00                                             ; black
         P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
         P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $00 : P4C2 = $02 : P4C3 = $04    ; walls
+        P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
         P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays
-        P6C1 = $00 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
-        P7C1 = $00 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
+        P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
+        P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
 
         characterset castle_stone
         room = castle_rooms[room_index]
