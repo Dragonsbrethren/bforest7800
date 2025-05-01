@@ -1144,12 +1144,12 @@ swap_action_button
 topscreenroutine
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
+        WSYNC=1
         BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
 
 bottomscreenroutine
-        WSYNC=1
         if game_state = STATE_MENU then BACKGRND = $10 : return
         BACKGRND=$00
         if game_state = STATE_TITLE then set_title_bottom_pal
