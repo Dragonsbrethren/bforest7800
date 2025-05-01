@@ -121,13 +121,15 @@
 ;==============================================================================
 ; OBJECT DATA
 ;==============================================================================0
-        const TYPE_TORCH    =  1
-        const TYPE_WOLF     =  2
-        const TYPE_SLIME    =  6
-        const TYPE_MSLIME   =  7
-        const TYPE_RAVEN    =  8
+        const TYPE_TORCH    =   1
+        const TYPE_WOLF     =   2
+        const TYPE_SLIME    =   6
+        const TYPE_MSLIME   =   7
+        const TYPE_RAVEN    =   8
+        const TYPE_PRIEST   =   9
         const TYPE_SPAWNER  = 128
         const TYPE_FIREBALL = 129
+        const TYPE_DARKSPARK = 130
         const TYPE_COIN     = 197
         const TYPE_PRISM    = 198
         const TYPE_FOOD     = 199
@@ -1102,6 +1104,98 @@ check_charm_bits
 
 magic_collision
         inline magic_collision.asm
+
+cast_fireball
+        asm
+        lda #1
+        sta mp_change
+        jsr .test_spell_cost
+        bne .load_fireball_data
+        jmp .test_joy_done ; allow player to try a different input
+.load_fireball_data
+        ldx #14
+        lda #TYPE_FIREBALL
+        sta object_type,x
+        lda #2
+        sta object_vel_cap_hi,x
+        lda #0
+        sta object_vel_cap_lo,x
+        lda #2
+        sta object_damage,x
+        lda #%00010000
+        sta object_flags,x
+        lda player_facing
+        cmp #DIR_UP
+        beq cast_fireball_up
+        cmp #DIR_DOWN
+        beq cast_fireball_down
+        cmp #DIR_LEFT
+        beq cast_fireball_left
+cast_fireball_right
+        sta object_Xdir,x
+        lda player_Xpos
+        clc
+        adc #14
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,x
+        lda #1
+        sta object_Xvel_hi,x
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        jmp .chant_done
+cast_fireball_up
+        sta object_Ydir,x
+        lda player_Xpos
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos
+        sec
+        sbc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        sta object_Yvel_lo,x
+        lda #1
+        sta object_Yvel_hi,x
+        jmp .chant_done
+cast_fireball_down
+        sta object_Ydir,x
+        lda player_Xpos
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos
+        clc
+        adc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        sta object_Yvel_lo,x
+        lda #1
+        sta object_Yvel_hi,x
+        jmp .chant_done
+cast_fireball_left
+        sta object_Xdir,x
+        lda player_Xpos
+        sec
+        sbc #8
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,x
+        lda #1
+        sta object_Xvel_hi,x
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        jmp .chant_done
+end
 
 main
         drawscreen
@@ -3075,6 +3169,19 @@ set_menu_top_pal
         incgraphic gfx/sprites/darkspark0.png 160A 0 3 2
         incgraphic gfx/sprites/darkspark1.png 160A 0 3 2
         incgraphic gfx/sprites/darkspark2.png 160A 0 1
+        incgraphic gfx/sprites/priest0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest1.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest2.png 160A 0 1 2
+        incgraphic gfx/sprites/priest3.png 160A 0 1 2
+        incgraphic gfx/sprites/priest4.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest5.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest6.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest7.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest8.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest9.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest10.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest11.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest12.png 160A 0 2 1 3
 
         incmapfile tiled/castle_room_1.tmx
         incmapfile tiled/castle_room_2.tmx
@@ -3129,7 +3236,7 @@ plot_castle_room_1
 
         data castle_room_1_obj
         TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_PRIEST, $4A, $30,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
@@ -3321,6 +3428,120 @@ torch_tile_unblock_castle
         return
 
 ;==============================================================================
+; PRIEST AI
+;------------------------------------------------------------------------------
+; Walks slowly until aligned with player, then casts dark spark
+;==============================================================================
+priest_ai
+
+priest_dir
+        if timer then goto priest_walk
+        timer = 20
+        temp1 = rand
+        if temp1 > 192 then priest_up
+        if temp1 > 128 then priest_down
+        if temp1 > 64 then priest_left
+
+priest_right
+        Xdirection = DIR_RIGHT
+        Ydirection = 0
+        goto priest_test_horz
+
+priest_left
+        Xdirection = DIR_LEFT
+        Ydirection = 0
+
+priest_test_horz
+        gosub priest_box
+        if temp4 > player_Ypos && temp5 < temp6 then goto priest_cast
+        goto priest_walk
+
+priest_up
+        Xdirection = 0
+        Ydirection = DIR_UP
+        goto priest_test_vert
+
+priest_down
+        Xdirection = 0
+        Ydirection = DIR_DOWN
+
+priest_test_vert
+        gosub priest_box
+        if temp1 > player_Xpos && temp2 < temp3 then goto priest_cast
+
+priest_walk
+        timer = timer - 1
+        if Xdirection = DIR_LEFT then priest_walk_x
+        if Xdirection = DIR_RIGHT then priest_walk_x
+        if Ydirection = DIR_UP then priest_walk_y
+        if Ydirection = DIR_DOWN then priest_walk_y
+        
+priest_walk_x
+        Xvelocity = Xvelocity + move_speed : Yvelocity = 0
+        goto priest_walk_anim
+
+priest_walk_y
+        Yvelocity = Yvelocity + move_speed : Xvelocity = 0
+
+priest_walk_anim
+        if Ydirection = DIR_DOWN then frame = 0
+        if Ydirection = DIR_UP then frame = 2
+        if Xdirection = DIR_LEFT then frame = 4
+        if Xdirection = DIR_RIGHT then frame = 6
+        if animation_frame then frame = frame + 1
+        goto priest_return
+
+priest_cast
+        ; frame = frame + 8
+
+priest_return
+        return
+
+
+priest_box
+        temp1 = Xposition - 2
+        temp2 = Xposition + 14
+        temp3 = player_Xpos + 12
+        temp4 = Yposition - 4
+        temp5 = Yposition + 20
+        temp6 = player_Ypos + 16
+        return
+
+obj_priest_stats
+        object_hp[obj_index] = 5
+        object_contact[obj_index] = 4
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 0
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+obj_darkspark_stats
+        object_hp[obj_index] = 1
+        object_contact[obj_index] = 4
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 50
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 255
+        object_mdef[obj_index] = 255
+        object_friction_hi[obj_index] = 0
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 50
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+plot_priest
+        plotsprite priest0 1 Xposition Yposition frame
+        goto plot_next
+
+;==============================================================================
 ; BANK 9
 ;------------------------------------------------------------------------------
 ; Permanently loaded bank. Contains sprites and code used with every tileset
@@ -3396,6 +3617,7 @@ load_objects
         if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
         if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
         if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
+        if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
 
 
 obj_next_stats
@@ -3445,7 +3667,7 @@ player_handler_done
 
         restorescreen
         if debug_time then BACKGRND = $06
-        ; Iterates through all objects and determined which sprites need to be plotted by type
+        ; Iterates through all objects and determines which sprites need to be plotted by type
         for index = 1 to 15
         if !object_type[index] then goto plot_next
         if object_type[index] = TYPE_SPAWNER then plot_next
@@ -3457,6 +3679,7 @@ player_handler_done
         if object_type[index] = TYPE_SLIME then plot_slime
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
+        if object_type[index] = TYPE_PRIEST then plot_priest
         if object_type[index] = TYPE_FOOD then plot_food
         if object_type[index] = TYPE_ITEM1 then plot_item1
         if object_type[index] = TYPE_ARMOR2 then plot_armor2
@@ -3603,7 +3826,9 @@ object_handler
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
         if object_type[index] = TYPE_RAVEN then gosub raven_ai
+        if object_type[index] = TYPE_PRIEST then gosub priest_ai
         if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
+        if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
         gosub move_object
 object_restore
         gosub restore_object_props
@@ -3948,98 +4173,6 @@ clear_input_buffer
 end
         gosub decrease_player_mp
         goto test_joy_done
-
-cast_fireball
-        asm
-        lda #1
-        sta mp_change
-        jsr .test_spell_cost
-        bne .load_fireball_data
-        jmp .test_joy_done ; allow player to try a different input
-.load_fireball_data
-        ldx #14
-        lda #TYPE_FIREBALL
-        sta object_type,x
-        lda #2
-        sta object_vel_cap_hi,x
-        lda #0
-        sta object_vel_cap_lo,x
-        lda #2
-        sta object_damage,x
-        lda #%00010000
-        sta object_flags,x
-        lda player_facing
-        cmp #DIR_UP
-        beq cast_fireball_up
-        cmp #DIR_DOWN
-        beq cast_fireball_down
-        cmp #DIR_LEFT
-        beq cast_fireball_left
-cast_fireball_right
-        sta object_Xdir,x
-        lda player_Xpos
-        clc
-        adc #14
-        sta object_Xpos,x
-        lda player_Ypos
-        sta object_Ypos,x
-        lda #1
-        sta object_Xvel_hi,x
-        lda #0
-        sta object_Xvel_lo,x
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,x
-        jmp .chant_done
-cast_fireball_up
-        sta object_Ydir,x
-        lda player_Xpos
-        clc
-        adc #2
-        sta object_Xpos,x
-        lda player_Ypos
-        sec
-        sbc #10
-        sta object_Ypos,x
-        lda #0
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,x
-        sta object_Yvel_lo,x
-        lda #1
-        sta object_Yvel_hi,x
-        jmp .chant_done
-cast_fireball_down
-        sta object_Ydir,x
-        lda player_Xpos
-        clc
-        adc #2
-        sta object_Xpos,x
-        lda player_Ypos
-        clc
-        adc #10
-        sta object_Ypos,x
-        lda #0
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,x
-        sta object_Yvel_lo,x
-        lda #1
-        sta object_Yvel_hi,x
-        jmp .chant_done
-cast_fireball_left
-        sta object_Xdir,x
-        lda player_Xpos
-        sec
-        sbc #8
-        sta object_Xpos,x
-        lda player_Ypos
-        sta object_Ypos,x
-        lda #1
-        sta object_Xvel_hi,x
-        lda #0
-        sta object_Xvel_lo,x
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,x
-        jmp .chant_done
-end
 
 decelerate_player
 decelerate_object
