@@ -13,6 +13,13 @@
             "width": 160,
             "x": 160,
             "y": 0
+        },
+        {
+            "fileName": "castle_room_3.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 320,
+            "y": 224
         }
     ],
     "onlyShowAdjacentMaps": false,

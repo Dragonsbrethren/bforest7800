@@ -12,7 +12,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -3128,7 +3128,7 @@ plot_castle_room_1
         return
 
         data castle_room_1_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
@@ -3347,6 +3347,8 @@ torch_tile_unblock_castle
         incgraphic gfx/sprites/shield.png 160A 0 2 1
         incgraphic gfx/sprites/torch0.png 160B 0 1 2 3 6 5 4
         incgraphic gfx/sprites/torch1.png 160B 0 1 2 3 5 6 4
+        incgraphic gfx/sprites/torch2.png 160B 0 1 2 3 6 4 5
+        incgraphic gfx/sprites/torch3.png 160B 0 1 2 6 4 5
         incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
         incgraphic gfx/sprites/mp.png 160A 0 3 1
         incgraphic gfx/sprites/bar0.png 160A 0 1
@@ -3474,7 +3476,9 @@ plot_hud
         goto main
 
 plot_torch
-        PLOTSPRITE torch0 0 Xposition Yposition animation_frame
+        temp1 = animation_frame
+        if tileset = T_CASTLE then temp1 = temp1 + 2
+        PLOTSPRITE torch0 0 Xposition Yposition temp1
         goto plot_next
 
 plot_coin
@@ -3638,6 +3642,7 @@ torch_tile_block
 torch_tile_block_get_pos
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_block_forest
+        if tileset = T_CASTLE then gosub torch_tile_block_castle
         object_flags[index] = 1
         goto object_done
 
@@ -3701,7 +3706,6 @@ player_handler
 ; This routine handles all player input in the field
 ;==============================================================================
 handle_input_field
-        if debug_time then BACKGRND = $70
         if !player_flags{5} then player_no_hop
         index = 0
         gosub copy_player_props
@@ -3773,7 +3777,6 @@ check_room_boundary
         if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
         if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1
-        if debug_time then BACKGRND = bg_color
         goto player_handler_done
 
 player_attack
@@ -4385,6 +4388,7 @@ sword_damage
 kill_torch
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_unblock_forest
+        if tileset = T_CASTLE then gosub torch_tile_unblock_castle
         return
 
 player_knockback
