@@ -3186,14 +3186,28 @@ set_menu_top_pal
         incmapfile tiled/castle_room_1.tmx
         incmapfile tiled/castle_room_2.tmx
         incmapfile tiled/castle_room_3.tmx
+        incmapfile tiled/castle_room_4.tmx
+        incmapfile tiled/castle_room_5.tmx
+        incmapfile tiled/castle_room_6.tmx
+        incmapfile tiled/castle_room_7.tmx
+        incmapfile tiled/castle_room_8.tmx
+        incmapfile tiled/castle_room_9.tmx
+        incmapfile tiled/castle_room_10.tmx
+        incmapfile tiled/castle_room_11.tmx
+        incmapfile tiled/castle_room_12.tmx
+        incmapfile tiled/castle_room_13.tmx
+        incmapfile tiled/castle_room_14.tmx
+        incmapfile tiled/castle_room_15.tmx
+        incmapfile tiled/castle_room_16.tmx
+;       incmapfile tiled/castle_room_17.tmx
 
 load_castle
         if !first_load then castle_pals
         first_load = 0
         if save_room_index = 1 then castle_save_1
 
-        room_index = 45
-        menu_map_Xpos = 78
+        room_index = 44
+        menu_map_Xpos = 70
         menu_map_Ypos = 160
         player_Xpos = 24
         player_Ypos = 60
@@ -3224,6 +3238,20 @@ castle_pals
         if room = 1 then pointer = castle_room_1_obj_lo : pointer_hi = castle_room_1_obj_hi : goto plot_castle_room_1
         if room = 2 then pointer = castle_room_2_obj_lo : pointer_hi = castle_room_2_obj_hi : goto plot_castle_room_2
         if room = 3 then pointer = castle_room_3_obj_lo : pointer_hi = castle_room_3_obj_hi : goto plot_castle_room_3
+        if room = 4 then pointer = castle_room_4_obj_lo : pointer_hi = castle_room_4_obj_hi : goto plot_castle_room_4
+        if room = 5 then pointer = castle_room_5_obj_lo : pointer_hi = castle_room_5_obj_hi : goto plot_castle_room_5
+        if room = 6 then pointer = castle_room_6_obj_lo : pointer_hi = castle_room_6_obj_hi : goto plot_castle_room_6
+        if room = 7 then pointer = castle_room_7_obj_lo : pointer_hi = castle_room_7_obj_hi : goto plot_castle_room_7
+        if room = 8 then pointer = castle_room_8_obj_lo : pointer_hi = castle_room_8_obj_hi : goto plot_castle_room_8
+        if room = 9 then pointer = castle_room_9_obj_lo : pointer_hi = castle_room_9_obj_hi : goto plot_castle_room_9
+        if room = 10 then pointer = castle_room_10_obj_lo : pointer_hi = castle_room_10_obj_hi : goto plot_castle_room_10
+        if room = 11 then pointer = castle_room_11_obj_lo : pointer_hi = castle_room_11_obj_hi : goto plot_castle_room_11
+        if room = 12 then pointer = castle_room_12_obj_lo : pointer_hi = castle_room_12_obj_hi : goto plot_castle_room_12
+        if room = 13 then pointer = castle_room_13_obj_lo : pointer_hi = castle_room_13_obj_hi : goto plot_castle_room_13
+        if room = 14 then pointer = castle_room_14_obj_lo : pointer_hi = castle_room_14_obj_hi : goto plot_castle_room_14
+        if room = 15 then pointer = castle_room_15_obj_lo : pointer_hi = castle_room_15_obj_hi : goto plot_castle_room_15
+        if room = 16 then pointer = castle_room_16_obj_lo : pointer_hi = castle_room_16_obj_hi : goto plot_castle_room_16
+;       if room = 17 then pointer = castle_room_17_obj_lo : pointer_hi = castle_room_17_obj_hi : goto plot_castle_room_17
 
 plot_castle_room_1
         menu_map_index = room_index * 2
@@ -3259,9 +3287,9 @@ end
 
 plot_castle_room_3
         menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index] = 4
         menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 11
+        menu_map_room[menu_map_index] = 5
         plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
         memcpy current_map castle_room_3 280
         return
@@ -3273,14 +3301,240 @@ plot_castle_room_3
         $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
 end
 
+plot_castle_room_4
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 8
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 15
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
+        memcpy current_map castle_room_4 280
+        return
+
+        data castle_room_4_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_5
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
+        memcpy current_map castle_room_5 280
+        return
+
+        data castle_room_5_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_6
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
+        memcpy current_map castle_room_6 280
+        return
+
+        data castle_room_6_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_7
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
+        plotmapfile tiled/castle_room_7.tmx castle_room_7 0 0 20 14
+        memcpy current_map castle_room_7 280
+        return
+
+        data castle_room_7_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_8
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 13
+        plotmapfile tiled/castle_room_8.tmx castle_room_8 0 0 20 14
+        memcpy current_map castle_room_8 280
+        return
+
+        data castle_room_8_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+        dmahole 0
+
+plot_castle_room_9
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
+        memcpy current_map castle_room_9 280
+        return
+
+        data castle_room_9_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_10
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_10.tmx castle_room_10 0 0 20 14
+        memcpy current_map castle_room_10 280
+        return
+
+        data castle_room_10_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_11
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 12
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 13
+        plotmapfile tiled/castle_room_11.tmx castle_room_11 0 0 20 14
+        memcpy current_map castle_room_11 280
+        return
+
+        data castle_room_11_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_12
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_12.tmx castle_room_12 0 0 20 14
+        memcpy current_map castle_room_12 280
+        return
+
+        data castle_room_12_obj
+        TYPE_PRIEST, $58, $20,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_13
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
+        memcpy current_map castle_room_13 280
+        return
+
+        data castle_room_13_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_14
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 11
+        plotmapfile tiled/castle_room_14.tmx castle_room_14 0 0 20 14
+        memcpy current_map castle_room_14 280
+        return
+
+        data castle_room_14_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_15
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
+        plotmapfile tiled/castle_room_15.tmx castle_room_15 0 0 20 14
+        memcpy current_map castle_room_15 280
+        return
+
+        data castle_room_15_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_16
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 12
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 13
+        plotmapfile tiled/castle_room_16.tmx castle_room_16 0 0 20 14
+        memcpy current_map castle_room_16 280
+        return
+
+        data castle_room_16_obj
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+end
+
+plot_castle_room_17
+;       menu_map_index = room_index * 2
+;       menu_map_room[menu_map_index] = 4
+;       menu_map_index = menu_map_index + 1
+;       menu_map_room[menu_map_index] = 5
+;       plotmapfile tiled/castle_room_17.tmx castle_room_17 0 0 20 14
+;       memcpy current_map castle_room_17 280
+;       return
+;
+;      data castle_room_17_obj
+;      $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+;       $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+;      $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+;       $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+; end
+
         data castle_rooms
         00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 02, 00, 00, 00,
-        00, 00, 03, 01, 03, 00, 00
+        00, 00, 16, 00, 00, 00, 00,
+        00, 15, 13, 17, 00, 00, 00,
+        00, 00, 14, 00, 11, 00, 00,
+        00, 00, 12, 00, 06, 07,  8,
+        00, 00, 02, 00, 05, 00,  9,
+        00, 03, 01, 03, 04, 00, 10
 end
 
 test_walkable_castle
@@ -3398,7 +3652,8 @@ tfc_done jmp .walkable_return
 end
 
         data castle_walkable_tiles
-        $10, $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44
+        $10, $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E,
+        $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48, $4A
 end
 
         data castle_ledge_tiles_down
