@@ -583,9 +583,12 @@ title_continue
         loadmemory pw_index0-pw_index
         game_state = STATE_MENU
         menu = MENU_PASSWORD
-        action_debounce = 1
-        menu_debounce = 1
-        pause_debounce = 1
+        asm
+        lda #1
+        sta action_debounce
+        sta menu_debounce
+        sta pause_debounce
+end
         goto menu_init bank3
 
 title_new_game
@@ -2835,7 +2838,15 @@ gen_forest_map
         characterset menu_map
         plotmap menu_map_room 0 52 4 14 7
         characterset menu_font
+        if tileset = T_FOREST then gen_forest_s
+        if tileset = T_CASTLE then gen_castle_s
+
+gen_forest_s
         if save_room_index{0} then plotsprite menu_s 0 94 80
+        return
+
+gen_castle_s
+        if save_room_index{0} then plotsprite menu_s 0 86 96
         return
 
 calc_inv_array
@@ -3279,9 +3290,9 @@ load_castle
         goto castle_pals
 
 castle_save_1
-        room_index = 12
-        menu_map_Xpos = 112
-        menu_map_Ypos = 112
+        room_index = 18
+        menu_map_Xpos = 86
+        menu_map_Ypos = 96
         player_Xpos = 24
         player_Ypos = 60
         player_facing = DIR_DOWN
@@ -3462,8 +3473,8 @@ plot_castle_room_10
 end
 
 plot_castle_room_11
-        menu_map_room[menu_map_index] = 12
-        menu_map_room[menu_map_index_2] = 13
+        menu_map_room[menu_map_index] = 2
+        menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_11.tmx castle_room_11 0 0 20 14
         memcpy current_map castle_room_11 280
         return
@@ -3490,8 +3501,8 @@ plot_castle_room_12
 end
 
 plot_castle_room_13
-        menu_map_room[menu_map_index] = 2
-        menu_map_room[menu_map_index_2] = 3
+        menu_map_room[menu_map_index] = 6
+        menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
         memcpy current_map castle_room_13 280
         return
@@ -3504,8 +3515,11 @@ plot_castle_room_13
 end
 
 plot_castle_room_14
-        menu_map_room[menu_map_index] = 10
-        menu_map_room[menu_map_index_2] = 11
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 1
+        menu_map_room[menu_map_index] = 12
+        menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_14.tmx castle_room_14 0 0 20 14
         memcpy current_map castle_room_14 280
         return
@@ -3561,9 +3575,9 @@ end
 
         data castle_rooms
         00, 00, 00, 00, 00, 00, 00,
-        00, 00, 15, 00, 00, 00, 00,
-        00, 14, 12, 16, 00, 00, 00,
-        00, 00, 13, 00, 10, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 15, 00, 13, 00, 00,
+        00, 14, 12, 16, 10, 00, 00,
         00, 00, 11, 00, 05, 06,  7,
         00, 00, 01, 00, 04, 00,  8,
         00, 02, 00, 02, 03, 00,  9
