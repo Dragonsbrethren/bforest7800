@@ -3298,14 +3298,24 @@ castle_pals
         P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
 
         characterset castle_stone
-        room = castle_rooms[room_index]
-        pointer = castle_obj_lo[room]
-        pointer_hi = castle_obj_hi[room]
-        menu_map_index = room_index *2
-        menu_map_index_2 = menu_map_index + 1
-        temp1 = castle_map_lo[room]
-        temp2 = castle_map_hi[room]
         asm
+        ldx room_index
+        lda castle_rooms,x
+        tax
+        lda castle_map_lo,x
+        sta temp1               ; temp1 + 2 used for indirect jmp
+        lda castle_map_hi,x
+        sta temp2
+        lda castle_obj_lo,x
+        sta pointer
+        lda castle_obj_hi,x
+        sta pointer_hi
+        lda room_index
+        asl
+        sta menu_map_index
+        clc
+        adc #1
+        sta menu_map_index_2
         jmp (temp1)
 end
 
