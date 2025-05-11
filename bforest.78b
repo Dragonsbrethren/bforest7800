@@ -529,8 +529,13 @@ title_init
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
-        menu_columns = 1
-        menu_max = 1
+        asm
+        lda #1
+        sta menu_columns
+        sta menu_max
+        sta action_debounce
+        sta menu_debounce
+end
         displaymode 320B
         bg_color = $71
         clearscreen
@@ -687,7 +692,6 @@ encode_password
         sta pw_armor
         lda player_charm
         sta pw_charm
-        ; TODO: encode inventory arrays to pw bytes
         lda m_item_bits_1
         sta pw_inventory_1
         lda m_item_bits_2
