@@ -362,6 +362,7 @@
         autodim byte no_empty_slot
         autodim byte torch_reblock
         autodim byte spawn_index
+        autodim byte frame_index
 
         ; MENUS
         autodim byte action_debounce
@@ -3165,7 +3166,7 @@ set_menu_top_pal
         incgraphic gfx/sprites/priest6.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest7.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest8.png 160A 0 2 1 3
-        incgraphic gfx/sprites/priest9.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest9.png 160A 0 1 2 3
         incgraphic gfx/sprites/priest10.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest11.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest12.png 160A 0 2 1 3
@@ -3596,7 +3597,7 @@ torch_tile_unblock_castle
 ; Walks slowly until aligned with player, then casts dark spark
 ;==============================================================================
 priest_ai
-
+        if flags{6} then goto priest_cast_2
 priest_dir
         if timer then goto priest_walk
         timer = 20
@@ -3616,7 +3617,8 @@ priest_left
 
 priest_test_horz
         gosub priest_box
-        if temp4 > player_Ypos && temp5 < temp6 then goto priest_cast
+        ; if temp4 > player_Ypos && temp5 < temp6 then goto priest_cast
+        goto priest_cast
         goto priest_walk
 
 priest_up
@@ -3656,14 +3658,25 @@ priest_walk_anim
         goto priest_return
 
 priest_cast
+        const PRIEST_CAST_FRAMES = 30
         gosub find_new_object
         if no_empty_slot then priest_return
+        flags{6} = 1
+        timer = PRIEST_CAST_FRAMES
+        if Xdirection then frame_index = Xdirection else frame_index = Ydirection
+        frame = priest_cast_frames[frame_index]
+priest_cast_2
+        timer = timer - 1
+        if timer then goto priest_return
         ; todo: roll off into its own spawn projectile subroutine
         object_type[spawn_index] = TYPE_DARKSPARK
         object_Xpos[spawn_index] = Xposition
         object_Ypos[spawn_index] = Yposition
-        frame = frame + 8
-        timer = 0
+        object_Xvel[spawn_index] = 1
+        object_Xdir[spawn_index] = Xdirection
+        object_Yvel[spawn_index] = 1
+        object_Ydir[spawn_index] = Ydirection
+        flags{6} = 0
 
 priest_return
         return
@@ -3677,6 +3690,10 @@ priest_box
         temp5 = Yposition + 20
         temp6 = player_Ypos + 16
         return
+
+        data priest_cast_frames
+        0, 9, 8, 10, 11
+end
 
 obj_priest_stats
         object_hp[obj_index] = 5
