@@ -1466,10 +1466,7 @@ plot_forest_room_1
         return
 
         data forest_room_1_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
 
@@ -1484,9 +1481,7 @@ plot_forest_room_2
 
         data forest_room_2_obj
         TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  TYPE_SLIME, $51, $58,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
 plot_forest_room_3
@@ -1500,10 +1495,7 @@ plot_forest_room_3
         return
 
         data forest_room_3_obj
-        TYPE_ITEM1, $4E, $3D,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_ITEM1, $4E, $3D,  $00
 end
 
 plot_forest_room_4
@@ -1516,10 +1508,7 @@ plot_forest_room_4
         return
 
         data forest_room_4_obj
-        TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00
 end
 
 plot_forest_room_5
@@ -1532,10 +1521,7 @@ plot_forest_room_5
         return
 
         data forest_room_5_obj
-        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00
 end
 
 plot_forest_room_6
@@ -1576,10 +1562,7 @@ plot_forest_room_7
         return
 
         data forest_room_7_obj
-        TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
 end
 
 plot_forest_room_8
@@ -1592,10 +1575,7 @@ plot_forest_room_8
         return
 
         data forest_room_8_obj
-        TYPE_RAVEN, $26, $28,  TYPE_RAVEN, $1E, $90,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        TYPE_RAVEN, $26, $28,  TYPE_RAVEN, $1E, $90,  $00
 end
 
 plot_forest_room_9
@@ -1608,10 +1588,7 @@ plot_forest_room_9
         return
 
         data forest_room_9_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
 plot_forest_room_10
@@ -1624,10 +1601,7 @@ plot_forest_room_10
         return
 
         data forest_room_10_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
 plot_forest_room_11
@@ -1643,10 +1617,7 @@ plot_forest_room_11
         return
 
         data forest_room_11_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
 plot_forest_room_12
@@ -1659,10 +1630,7 @@ plot_forest_room_12
         return
 
         data forest_room_12_obj
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
-        $00, $00, $00,  $00, $00, $00,  $00, $00, $00,  $00, $00, $00,
+        $00
 end
 
         data forest_rooms
@@ -3181,6 +3149,7 @@ set_menu_top_pal
         incgraphic gfx/tiles/castle_stone.png  160A 1 0 2 3 4
         incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
         incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
+        incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/darkspark0.png 160A 0 3 2
         incgraphic gfx/sprites/darkspark1.png 160A 0 3 2
@@ -3308,7 +3277,7 @@ castle_pals
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
-        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays
+        P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
         P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
         P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
 
@@ -3474,6 +3443,8 @@ plot_castle_room_13
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
         memcpy current_map castle_room_13 280
+        ; override tile colors with maroons for carpeted stairs
+        P6C1 = $42 : P6C2 = $40 : P6C3 = $40
         return
 
         data castle_room_13_obj
@@ -3524,7 +3495,7 @@ plot_castle_room_17
         return
 
         data castle_room_17_obj
-        $00
+        TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70, $00
 end
 
         data castle_rooms
