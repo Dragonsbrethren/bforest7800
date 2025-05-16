@@ -3901,6 +3901,7 @@ plot_next
         if debug_time then BACKGRND = bg_color
 plot_hud
         gosub draw_hud
+        if debug_hud then gosub plot_debug_hud
         goto main
 
 plot_torch
@@ -3943,19 +3944,33 @@ plot_fireball
 draw_hud
         plotsprite  hp   0  8  0       ; HP is 160B
         plotsprite  bar0 2 24  0 hp_seg_1
-        PLOTSPRITE4 bar0 2 32  0 hp_seg_2
-        PLOTSPRITE4 bar0 2 40  0 hp_seg_3
-        PLOTSPRITE4 bar0 2 48  0 hp_seg_4
-        PLOTSPRITE4 bar0 2 56  0 hp_seg_5
-        PLOTSPRITE4 bar0 2 64  0 hp_seg_6
+        ; prep plot_par to draw the rest of the HP segments
+        Xposition = 32
+        asm
+        lda #0
+        sta Yposition
+        sta temp1
+end
+        temp2 = 4
+        temp3 = (2 * 32)
+        gosub plot_bar
         plotsprite  mp   0  8 16        ; Need to use plotsprite here to avoid rendering error on MP bar
-        PLOTSPRITE4 bar0 0 24 16 mp_seg_1
-        PLOTSPRITE4 bar0 0 32 16 mp_seg_2
-        PLOTSPRITE4 bar0 0 40 16 mp_seg_3
-        PLOTSPRITE4 bar0 0 48 16 mp_seg_4
-        PLOTSPRITE4 bar0 0 56 16 mp_seg_5
-        PLOTSPRITE4 bar0 0 64 16 mp_seg_6
-        if debug_hud = 0 then return
+        ; prep plot_bar for MP bar
+        Xposition = 24
+        Yposition = 16
+        temp1 = 5
+        temp2 = 10
+        temp3 = 0
+        ; code runs directly into 
+plot_bar
+        for index = temp1 to temp2
+        frame = hp_seg_2[index]
+        PLOTSPRITE4 bar0 temp3 Xposition Yposition frame
+        Xposition = Xposition + 8
+        next
+        return
+
+plot_debug_hud
         if tileset = T_CASTLE then plot_hud_castle
         ; plotvalue hud 0 player_hp 2 72 0
         ; plotvalue hud 0 player_mp 2 72 1
