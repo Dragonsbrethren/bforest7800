@@ -3607,33 +3607,35 @@ priest_dir
         if temp1 > 64 then priest_left
 
 priest_right
+        object_facing[index] = DIR_RIGHT
         Xdirection = DIR_RIGHT
         Ydirection = 0
         goto priest_test_horz
 
 priest_left
+        object_facing[index] = DIR_LEFT
         Xdirection = DIR_LEFT
         Ydirection = 0
 
 priest_test_horz
         gosub priest_box
-        ; if temp4 > player_Ypos && temp5 < temp6 then goto priest_cast
-        goto priest_cast
+        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast
         goto priest_walk
 
 priest_up
+        object_facing[index] = DIR_UP
         Xdirection = 0
         Ydirection = DIR_UP
         goto priest_test_vert
 
 priest_down
+        object_facing[index] = DIR_DOWN
         Xdirection = 0
         Ydirection = DIR_DOWN
 
 priest_test_vert
         gosub priest_box
-        ; if temp1 > player_Xpos && temp2 < temp3 then goto priest_cast
-        goto priest_cast
+        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast
 
 priest_walk
         timer = timer - 1
@@ -3658,12 +3660,12 @@ priest_walk_anim
         goto priest_return
 
 priest_cast
-        const PRIEST_CAST_FRAMES = 30
+        const PRIEST_CAST_FRAMES = 20
         gosub find_new_object
         if no_empty_slot then priest_return
         flags{6} = 1
         timer = PRIEST_CAST_FRAMES
-        if Xdirection then frame_index = Xdirection else frame_index = Ydirection
+        frame_index = object_facing[index]
         frame = priest_cast_frames[frame_index]
 priest_cast_2
         timer = timer - 1
