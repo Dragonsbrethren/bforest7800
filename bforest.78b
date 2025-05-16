@@ -3583,7 +3583,7 @@ end
 end
 
         data castle_floatable_tiles
-        $FF
+        $4C, $4E, $50, $52, $54, $56, $58
 end
 
 torch_tile_block_castle
