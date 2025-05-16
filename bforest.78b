@@ -130,6 +130,7 @@
         const TYPE_SPAWNER  = 128
         const TYPE_FIREBALL = 129
         const TYPE_DARKSPARK = 130
+        const TYPE_BLOOD    = 196
         const TYPE_COIN     = 197
         const TYPE_PRISM    = 198
         const TYPE_FOOD     = 199
@@ -3154,6 +3155,7 @@ set_menu_top_pal
         incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
         incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
+        incgraphic gfx/sprites/blood.png 160A 0 1
         incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
         incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
         incgraphic gfx/sprites/darkspark2.png 160A 1 0
@@ -3359,7 +3361,7 @@ plot_castle_room_5
         return
 
         data castle_room_5_obj
-        $00
+        TYPE_BLOOD, $80, $20, $00
 end
 
 plot_castle_room_6
@@ -3740,6 +3742,10 @@ plot_darkspark
         plotsprite darkspark0 0 Xposition Yposition frame
         goto plot_next
 
+plot_blood
+        plotsprite blood 2 Xposition Yposition 0
+        goto plot_next
+
 ;==============================================================================
 ; BANK 9
 ;------------------------------------------------------------------------------
@@ -3889,6 +3895,7 @@ player_handler_done
         if object_type[index] = TYPE_ARMOR2 then plot_armor2
         if object_type[index] = TYPE_FIREBALL then plot_fireball
         if object_type[index] = TYPE_DARKSPARK then plot_darkspark
+        if object_type[index] = TYPE_BLOOD then plot_blood
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -4036,7 +4043,7 @@ object_handler
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
         if object_type[index] >= TYPE_ITEM1 then check_item_bits
-        if object_type[index] >= TYPE_COIN then object_done      ;  coins, prisms are static
+        if object_type[index] >= TYPE_BLOOD then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 
