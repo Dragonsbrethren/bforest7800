@@ -9,6 +9,9 @@
  <tileset firstgid="28" name="castle_carpet" tilewidth="8" tileheight="16" tilecount="11" columns="11">
   <image source="../gfx/tiles/castle_carpet.png" width="88" height="16"/>
  </tileset>
+ <tileset firstgid="39" name="castle_tables" tilewidth="8" tileheight="16" tilecount="13" columns="13">
+  <image source="../gfx/tiles/castle_tables.png" width="104" height="16"/>
+ </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14" offsetx="0.273538" offsety="-1.42109e-14">
   <data>
    <tile gid="9"/>
@@ -139,10 +142,10 @@
    <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="28"/>
-   <tile gid="35"/>
-   <tile gid="35"/>
-   <tile gid="35"/>
-   <tile gid="35"/>
+   <tile gid="28"/>
+   <tile gid="28"/>
+   <tile gid="28"/>
+   <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="28"/>
@@ -159,10 +162,10 @@
    <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="33"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="43"/>
+   <tile gid="44"/>
+   <tile gid="44"/>
+   <tile gid="45"/>
    <tile gid="32"/>
    <tile gid="28"/>
    <tile gid="28"/>
@@ -248,7 +251,7 @@
    <tile gid="35"/>
    <tile gid="35"/>
    <tile gid="35"/>
-   <tile gid="36"/>
+   <tile gid="42"/>
    <tile gid="5"/>
    <tile gid="9"/>
    <tile gid="9"/>

@@ -3451,6 +3451,11 @@ plot_castle_room_13
         return
 
         data castle_room_13_obj
+        TYPE_TORCH, $10, $20,
+        TYPE_TORCH, $88, $20,
+        TYPE_TORCH, $38, $40,
+        TYPE_TORCH, $60, $40,
+        TYPE_PRIEST, $50, $26,
         $00
 end
 
