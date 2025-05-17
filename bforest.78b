@@ -4118,11 +4118,6 @@ object_done
 fireball_ai
         if Xvelocity then fireball_animate
         if Yvelocity then fireball_animate
-        object_timer[index] = ANIM_TIME
-        object_timer[index] = object_timer[index] - 1
-        if object_timer[index] then fireball_done
-        frame = frame + 1
-        if object_frame[index] < FIREBALL_MAX_FRAMES then return
         object_type[index] = 0
         return
 fireball_animate
@@ -4808,6 +4803,9 @@ player_knockback
 ;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
 ;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
 ;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
+
+        ; projectiles are destroyed on contact
+        if object_type[index] >= TYPE_DARKSPARK then object_type[index] = 0
 pc_damage
         player_flags{0} = 1
         player_state = STATE_KNOCKBACK
