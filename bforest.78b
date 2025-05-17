@@ -3632,32 +3632,24 @@ priest_right
         object_facing[index] = DIR_RIGHT
         Xdirection = DIR_RIGHT
         Ydirection = 0
-        goto priest_test_horz
+        goto priest_walk
 
 priest_left
         object_facing[index] = DIR_LEFT
         Xdirection = DIR_LEFT
         Ydirection = 0
-
-priest_test_horz
-        gosub priest_box
-        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
         goto priest_walk
 
 priest_up
         object_facing[index] = DIR_UP
         Xdirection = 0
         Ydirection = DIR_UP
-        goto priest_test_vert
+        goto priest_walk
 
 priest_down
         object_facing[index] = DIR_DOWN
         Xdirection = 0
         Ydirection = DIR_DOWN
-
-priest_test_vert
-        gosub priest_box
-        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
 
 priest_walk
         timer = timer - 1
@@ -3667,10 +3659,16 @@ priest_walk
         if Ydirection = DIR_DOWN then priest_walk_y
         
 priest_walk_x
+priest_test_horz
+        gosub priest_box
+        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
         Xvelocity = Xvelocity + move_speed : Yvelocity = 0
         goto priest_walk_anim
 
 priest_walk_y
+priest_test_vert
+        gosub priest_box
+        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
         Yvelocity = Yvelocity + move_speed : Xvelocity = 0
 
 priest_walk_anim
@@ -3687,8 +3685,8 @@ priest_cast_horiz
         goto priest_cast
 
 priest_cast_vert
-        object_facing[index] = DIR_DOWN
-        if Yposition < player_Ypos then object_facing[index] = DIR_UP
+        object_facing[index] = DIR_UP
+        if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
 
 priest_cast
         const PRIEST_CAST_FRAMES = 20
