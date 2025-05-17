@@ -128,8 +128,8 @@
         const TYPE_RAVEN    =   8
         const TYPE_PRIEST   =   9
         const TYPE_SPAWNER  = 128
-        const TYPE_FIREBALL = 129
-        const TYPE_DARKSPARK = 130
+        const TYPE_DARKSPARK = 129
+        const TYPE_FIREBALL = 130
         const TYPE_BLOOD    = 196
         const TYPE_COIN     = 197
         const TYPE_PRISM    = 198
@@ -4746,7 +4746,7 @@ cc_player_contact
         ; need to test torches here so the sword can still damage them
         ; but they don't knock the player back on contact
         if object_type[index] = TYPE_TORCH then cc_next
-        hp_change = object_contact[index]
+        hp_change = object_damage[index]
         gosub player_knockback
         if player_state = STATE_DEATH then goto kill_player
 cc_next
@@ -4809,7 +4809,6 @@ player_knockback
 ;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
 ;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 pc_damage
-        ; avoid a tail call with goto
         player_flags{0} = 1
         player_state = STATE_KNOCKBACK
         player_timer = INVULN_FRAMES
