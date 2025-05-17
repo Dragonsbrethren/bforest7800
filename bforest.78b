@@ -1130,7 +1130,7 @@ cast_fireball
         jmp .test_joy_done ; allow player to try a different input
 .load_fireball_index
         ldx #14
-        ldy #0
+        ldy #0  ; player index
 load_fireball_data
         lda #TYPE_FIREBALL
         sta object_type,x
@@ -1144,7 +1144,8 @@ load_fireball_data
         sta object_damage,x
         lda #%00010000
         sta object_flags,x
-        lda player_facing
+set_cast_direction
+        lda player_facing,y
         cmp #DIR_UP
         beq cast_fireball_up
         cmp #DIR_DOWN
@@ -1167,7 +1168,7 @@ cast_fireball_right
         lda #0
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
-        jmp .chant_done
+        rts
 cast_fireball_up
         sta object_Ydir,x
         lda player_Xpos,y
@@ -1185,7 +1186,7 @@ cast_fireball_up
         sta object_Yvel_lo,x
         lda object_speed_hi,x
         sta object_Yvel_hi,x
-        jmp .chant_done
+        rts
 cast_fireball_down
         sta object_Ydir,x
         lda player_Xpos,y
@@ -1203,7 +1204,7 @@ cast_fireball_down
         sta object_Yvel_lo,x
         lda object_speed_hi,x
         sta object_Yvel_hi,x
-        jmp .chant_done
+        rts
 cast_fireball_left
         sta object_Xdir,x
         lda player_Xpos,y
@@ -1219,7 +1220,7 @@ cast_fireball_left
         lda #0
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
-        jmp .chant_done
+        rts
 end
 
 main
@@ -3692,13 +3693,27 @@ priest_cast_2
         timer = timer - 1
         if timer then goto priest_return
         ; todo: roll off into its own spawn projectile subroutine
-        object_type[spawn_index] = TYPE_DARKSPARK
-        object_Xpos[spawn_index] = Xposition
-        object_Ypos[spawn_index] = Yposition
-        object_Xvel[spawn_index] = 1
-        object_Xdir[spawn_index] = Xdirection
-        object_Yvel[spawn_index] = 1
-        object_Ydir[spawn_index] = Ydirection
+
+        const DARKSPARK_SPEED_HI = 2
+        const DARKSPARK_SPEED_LO = 0
+        const DARKSPARK_DAMAGE = 6
+
+load_darkspark
+        asm
+        ldx spawn_index
+        ldy index
+        lda #TYPE_DARKSPARK
+        sta object_type,x
+        lda #DARKSPARK_SPEED_HI
+        sta object_vel_cap_hi,x
+        sta object_speed_hi,x
+        lda #DARKSPARK_SPEED_LO
+        sta object_vel_cap_lo,x
+        sta object_speed_lo,x
+        lda #DARKSPARK_DAMAGE
+        sta object_damage,x
+        jsr set_cast_direction
+end
         flags{6} = 0
 
 priest_return
@@ -4373,28 +4388,32 @@ parse_fireball_up
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_UP then chant_test_dirs
         player_facing = DIR_UP : player_frame = FRAME_UP
-        goto cast_fireball
+        gosub cast_fireball
+        goto chant_done
 
 parse_fireball_down
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_DOWN then chant_test_dirs
         player_frame = FRAME_DOWN
-        goto cast_fireball
+        gosub cast_fireball
+        goto chant_done
 
 parse_fireball_left
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_LEFT then chant_test_dirs
         player_facing = DIR_LEFT : player_frame = FRAME_LEFT
-        goto cast_fireball
+        gosub cast_fireball
+        goto chant_done
 
 parse_fireball_right
         chant_index = chant_index - 1
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] <> DIR_RIGHT then chant_test_dirs
         player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
-        goto cast_fireball
+        gosub cast_fireball
+        goto chant_done ; because I know I'll cause a bug adding code later...
 
 chant_done
         player_exiting_chant = 1
