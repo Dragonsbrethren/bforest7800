@@ -4553,7 +4553,7 @@ test_walkable_up
         if !walkable then Yvelocity = 0 : return
 move_up
         Yposition = Yposition - Yvelocity_hi
-        if Yposition > 224 then move_down
+        if Yposition > 224 then object_type[index] = 0
         return
 
 move_test_down
@@ -4600,7 +4600,7 @@ test_walkable_down
         if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
-        if Yposition > 224 then move_up
+        if Yposition > 224 then object_type[index] = 0
         return
 
 move_test_left
@@ -4649,7 +4649,7 @@ test_walkable_left
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
-        if Xposition > 160 then move_right
+        if Xposition > 160 then object_type[index] = 0
         return
 
 move_test_right
@@ -4698,7 +4698,7 @@ test_walkable_right
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
-        if Xposition > 160 then move_left
+        if Xposition > 160 then object_type[index] = 0
         return
         
 move_return
