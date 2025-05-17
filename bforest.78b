@@ -3287,7 +3287,7 @@ end
 end
 
         data castle_obj_hi
-        castle_room_1_obj_hi, castle_room_2_obj_lo, castle_room_3_obj_hi, castle_room_4_obj_hi, castle_room_5_obj_hi
+        castle_room_1_obj_hi, castle_room_2_obj_hi, castle_room_3_obj_hi, castle_room_4_obj_hi, castle_room_5_obj_hi
         castle_room_6_obj_hi, castle_room_7_obj_hi, castle_room_8_obj_hi, castle_room_9_obj_hi, castle_room_10_obj_hi
         castle_room_11_obj_hi, castle_room_12_obj_hi, castle_room_13_obj_hi, castle_room_14_obj_hi, castle_room_15_obj_hi
         castle_room_16_obj_hi, castle_room_17_obj_hi
