@@ -1116,22 +1116,31 @@ check_charm_bits
 magic_collision
         inline magic_collision.asm
 
+        const FIREBALL_SPEED_HI = 2
+        const FIREBALL_SPEED_LO = 0
+        const FIREBALL_DAMAGE = 2
+        const FIREBALL_MP_COST = 8
+
 cast_fireball
         asm
-        lda #1
+        lda #FIREBALL_MP_COST
         sta mp_change
         jsr .test_spell_cost
-        bne .load_fireball_data
+        bne .load_fireball_index
         jmp .test_joy_done ; allow player to try a different input
-.load_fireball_data
+.load_fireball_index
         ldx #14
+        ldy #0
+load_fireball_data
         lda #TYPE_FIREBALL
         sta object_type,x
-        lda #2
+        lda #FIREBALL_SPEED_HI
         sta object_vel_cap_hi,x
-        lda #0
+        sta object_speed_hi,x
+        lda #FIREBALL_SPEED_LO
         sta object_vel_cap_lo,x
-        lda #2
+        sta object_speed_lo,x
+        lda #FIREBALL_DAMAGE
         sta object_damage,x
         lda #%00010000
         sta object_flags,x
@@ -1141,68 +1150,73 @@ cast_fireball
         cmp #DIR_DOWN
         beq cast_fireball_down
         cmp #DIR_LEFT
-        beq cast_fireball_left
+        bne cast_fireball_right
+        jmp cast_fireball_left
 cast_fireball_right
         sta object_Xdir,x
-        lda player_Xpos
+        lda player_Xpos,y
         clc
         adc #14
         sta object_Xpos,x
-        lda player_Ypos
+        lda player_Ypos,y
         sta object_Ypos,x
-        lda #1
+        lda object_speed_hi,x
         sta object_Xvel_hi,x
-        lda #0
+        lda object_speed_lo,x
         sta object_Xvel_lo,x
+        lda #0
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
         jmp .chant_done
 cast_fireball_up
         sta object_Ydir,x
-        lda player_Xpos
+        lda player_Xpos,y
         clc
         adc #2
         sta object_Xpos,x
-        lda player_Ypos
+        lda player_Ypos,y
         sec
         sbc #10
         sta object_Ypos,x
         lda #0
         sta object_Xvel_hi,x
         sta object_Xvel_lo,x
+        lda object_speed_lo,x
         sta object_Yvel_lo,x
-        lda #1
+        lda object_speed_hi,x
         sta object_Yvel_hi,x
         jmp .chant_done
 cast_fireball_down
         sta object_Ydir,x
-        lda player_Xpos
+        lda player_Xpos,y
         clc
         adc #2
         sta object_Xpos,x
-        lda player_Ypos
+        lda player_Ypos,y
         clc
         adc #10
         sta object_Ypos,x
         lda #0
         sta object_Xvel_hi,x
         sta object_Xvel_lo,x
+        lda object_speed_lo,x
         sta object_Yvel_lo,x
-        lda #1
+        lda object_speed_hi,x
         sta object_Yvel_hi,x
         jmp .chant_done
 cast_fireball_left
         sta object_Xdir,x
-        lda player_Xpos
+        lda player_Xpos,y
         sec
         sbc #8
         sta object_Xpos,x
-        lda player_Ypos
+        lda player_Ypos,y
         sta object_Ypos,x
-        lda #1
+        lda object_speed_hi,x
         sta object_Xvel_hi,x
-        lda #0
+        lda object_speed_lo,x
         sta object_Xvel_lo,x
+        lda #0
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
         jmp .chant_done
