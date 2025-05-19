@@ -3648,9 +3648,10 @@ priest_dir
         if timer then goto priest_walk
         timer = 20
         temp1 = rand
-        if temp1 > 192 then priest_up
-        if temp1 > 128 then priest_down
-        if temp1 > 64 then priest_left
+        if temp1 > 128 then priest_vert
+
+priest_horiz
+        if Xposition >= player_Xpos then priest_left
 
 priest_right
         object_facing[index] = DIR_RIGHT
@@ -3663,6 +3664,9 @@ priest_left
         Xdirection = DIR_LEFT
         Ydirection = 0
         goto priest_walk
+
+priest_vert
+        if Yposition < player_Ypos then priest_down
 
 priest_up
         object_facing[index] = DIR_UP
