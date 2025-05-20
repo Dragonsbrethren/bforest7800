@@ -3777,6 +3777,8 @@ priest_box
         0, 9, 8, 10, 11
 end
 
+
+
 obj_priest_stats
         object_hp[obj_index] = 5
         object_contact[obj_index] = 4
@@ -4106,6 +4108,53 @@ swoop_X
         return
 
 swoop_Y
+        return
+
+;==============================================================================
+; TEST MELEE
+;------------------------------------------------------------------------------
+; Can object hit player with melee attack?
+; ** temp1: object X to left of player
+; ** temp2: object X to right of player
+; ** temp4: object Y above player
+; ** temp5: object Y below player
+; ** temp6: if set, player within melee range
+;==============================================================================
+test_melee
+        temp6 = 0
+        if object_facing[index] = DIR_UP then melee_up
+        if object_facing[index] = DIR_DOWN then melee_down
+        if object_facing[index] = DIR_LEFT then melee_left
+melee_right
+        temp1 = Xposition
+        temp2 = Xposition + 16
+        temp4 = Yposition - 8
+        temp5 = Yposition + 16
+        goto melee_range
+
+melee_up
+        temp1 = Xposition - 4
+        temp2 = Xposition + 8
+        temp4 = Yposition
+        temp5 = Yposition - 24
+        goto melee_range
+
+melee_down
+        temp1 = Xposition - 4
+        temp2 = Xposition + 8
+        temp4 = Yposition + 24
+        temp5 = Yposition
+        goto melee_range
+
+melee_left
+        temp1 = Xposition - 16
+        temp2 = Xposition
+        temp4 = Yposition - 4
+        temp5 = Yposition + 16
+
+melee_range
+        if player_Xpos >= temp1 && player_Xpos < temp2 then temp6 = 1
+        if player_Ypos < temp4 && player_Ypos >= temp5 then temp6 = 0
         return
 
 object_handler
