@@ -130,7 +130,8 @@
         const TYPE_SKELETON =  10
         const TYPE_SPAWNER  = 128
         const TYPE_DARKSPARK = 129
-        const TYPE_FIREBALL = 130
+        const TYPE_SKELSWORD = 130
+        const TYPE_FIREBALL = 150
         const TYPE_BLOOD    = 196
         const TYPE_COIN     = 197
         const TYPE_PRISM    = 198
@@ -736,8 +737,8 @@ encode_font_offset
         inx
         cpx #24
         bne encode_font_offset
-;        lda #24
-;        sta pw_index
+        lda #24
+        sta pw_index
 end
         savememory pw_index0-pw_index
         return
@@ -3426,6 +3427,7 @@ plot_castle_room_7
         $00
 end
 
+
 plot_castle_room_8
         menu_map_room[menu_map_index] = 6
         menu_map_room[menu_map_index_2] = 13
@@ -3437,7 +3439,6 @@ plot_castle_room_8
         $00
 end
 
-        dmahole 0
 
 plot_castle_room_9
         menu_map_room[menu_map_index] = 10
@@ -3449,6 +3450,8 @@ plot_castle_room_9
         data castle_room_9_obj
         $00
 end
+
+        dmahole 0
 
 plot_castle_room_10
         menu_map_room[menu_map_index] = 10
@@ -3748,8 +3751,10 @@ end
 priest_cast_2
         timer = timer - 1
         if timer then goto priest_return
-        ; todo: roll off into its own spawn projectile subroutine
 
+        if object_type[index] = TYPE_SKELETON then goto skel_sword
+
+        ; todo: roll off into its own spawn projectile subroutine
         const DARKSPARK_SPEED_HI = 2
         const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_DAMAGE = 6
@@ -3790,7 +3795,60 @@ priest_box
         0, 9, 8, 10, 11
 end
 
+        const SKELSWORD_DAMAGE = 10
 
+skel_sword
+        asm
+        jsr .position_sword
+        ldx spawn_index
+        ldy index
+        lda #TYPE_SKELSWORD
+        sta object_type,x
+        lda #0
+        sta object_vel_cap_hi,x
+        sta object_speed_hi,x
+        sta object_vel_cap_lo,x
+        sta object_speed_lo,x
+        lda #SKELSWORD_DAMAGE
+        sta object_damage,x
+        sta object_hp,x ; dummy stat but needed for damage code
+        lda temp1
+        sta object_Xpos,x
+        lda temp2
+        sta object_Ypos,x
+        lda temp5
+        sta object_frame,x
+        lda object_facing,y
+        sta object_facing,x
+        lda #1
+        sta object_timer,x
+end
+        flags{6} = 0
+        goto priest_return
+
+        const RETRACT_FRAMES = 4
+
+;==============================================================================
+; SKELSWORD AI
+;------------------------------------------------------------------------------
+; Exists for ATTACK_FRAMES duration, then kills itself
+;==============================================================================
+skelsword_ai
+        timer = timer - 1
+        if timer then return
+        if flags{7} then ss_kill
+        timer = ATTACK_FRAMES
+        flags{7} = 1 : return
+
+ss_retract
+        if object_facing[index] = DIR_DOWN  then Yposition = Yposition - 4 : return
+        if object_facing[index] = DIR_UP    then Yposition = Yposition + 4 : return
+        if object_facing[index] = DIR_LEFT  then Xposition = Xposition + 2 : return
+        Xposition = Xposition - 2 : return
+
+ss_kill
+        object_type[index] = 0
+        return
 
 obj_priest_stats
         object_hp[obj_index] = 5
@@ -3841,12 +3899,16 @@ plot_priest
         plotsprite priest0 1 Xposition Yposition frame
         goto plot_next
 
+plot_darkspark
+        plotsprite darkspark0 0 Xposition Yposition frame
+        goto plot_next
+
 plot_skeleton
         plotsprite priest0 0 Xposition Yposition frame
         goto plot_next
 
-plot_darkspark
-        plotsprite darkspark0 0 Xposition Yposition frame
+plot_skelsword
+        plotsprite sword0 0 Xposition Yposition frame
         goto plot_next
 
 plot_blood
@@ -4004,6 +4066,7 @@ player_handler_done
         if object_type[index] = TYPE_ARMOR2 then plot_armor2
         if object_type[index] = TYPE_FIREBALL then plot_fireball
         if object_type[index] = TYPE_DARKSPARK then plot_darkspark
+        if object_type[index] = TYPE_SKELSWORD then plot_skelsword
         if object_type[index] = TYPE_BLOOD then plot_blood
 plot_next
         next
@@ -4191,6 +4254,48 @@ melee_range
         if player_Ypos < temp4 && player_Ypos >= temp5 then temp6 = 0
         return
 
+;==============================================================================
+; POSITION SWORD
+;------------------------------------------------------------------------------
+; Same as player code (can probably be shared with some tweaks)
+;-=============================================================================
+position_sword
+        if object_facing[index] = DIR_DOWN then pos_swd_down
+        if object_facing[index] = DIR_UP then pos_swd_up
+        if object_facing[index] = DIR_LEFT then pos_swd_left
+
+pos_swd_right
+        temp1 = object_Xpos[index] + SWORD_OFFSET_RIGHT
+        temp2 = object_Ypos[index]
+        ;temp3 = 12
+        ;temp4 = 4
+        temp5 = 2
+        return
+
+pos_swd_down
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index] + SWORD_OFFSET_DOWN
+        ;temp3 = 4
+        ;temp4 = 16
+        temp5 = 0
+        return
+
+pos_swd_up
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index] + SWORD_OFFSET_UP
+        ;temp3 = 4
+        ;temp4 = 16
+        temp5 = 1
+        return
+
+pos_swd_left
+        temp1 = object_Xpos[index] + SWORD_OFFSET_LEFT
+        temp2 = object_Ypos[index]
+        ;temp3 = 12
+        ;temp4 = 4
+        temp5 = 3
+        return
+
 object_handler
         for index = 1 to 15
         if !object_type[index] then object_done    ; 0 = no object
@@ -4205,6 +4310,7 @@ object_handler
         gosub copy_object_props 
         if flags{5} then gosub ledge_hop : goto object_restore
         gosub decelerate_object
+        if object_type[index] = TYPE_SKELSWORD then gosub skelsword_ai
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
