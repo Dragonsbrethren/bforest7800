@@ -3212,7 +3212,18 @@ set_menu_top_pal
         incgraphic gfx/sprites/priest9.png 160A 0 1 2 3
         incgraphic gfx/sprites/priest10.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest11.png 160A 0 2 1 3
-        incgraphic gfx/sprites/priest12.png 160A 0 2 1 3
+        incgraphic gfx/sprites/skeleton0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton3.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton4.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton5.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton6.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton7.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton8.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton9.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
 
         incmapfile tiled/castle_room_1.tmx
         incmapfile tiled/castle_room_2.tmx
@@ -3904,7 +3915,7 @@ plot_darkspark
         goto plot_next
 
 plot_skeleton
-        plotsprite priest0 0 Xposition Yposition frame
+        plotsprite skeleton0 0 Xposition Yposition frame
         goto plot_next
 
 plot_skelsword
