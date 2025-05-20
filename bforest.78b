@@ -127,6 +127,7 @@
         const TYPE_MSLIME   =   7
         const TYPE_RAVEN    =   8
         const TYPE_PRIEST   =   9
+        const TYPE_SKELETON =  10
         const TYPE_SPAWNER  = 128
         const TYPE_DARKSPARK = 129
         const TYPE_FIREBALL = 130
@@ -3356,7 +3357,7 @@ plot_castle_room_1
 
         data castle_room_1_obj
         TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
-        TYPE_PRIEST, $4A, $30,  $00
+        TYPE_SKELETON, $4A, $30,  $00
 end
 
 plot_castle_room_2
@@ -3638,9 +3639,9 @@ torch_tile_unblock_castle
         return
 
 ;==============================================================================
-; PRIEST AI
+; PRIEST & SKELETON AI
 ;------------------------------------------------------------------------------
-; Walks slowly until aligned with player, then casts dark spark
+; Walks slowly until aligned with player, then casts dark spark or sword attack
 ;==============================================================================
 priest_ai
         if flags{6} then goto priest_cast_2
@@ -3687,16 +3688,20 @@ priest_walk
         if Ydirection = DIR_DOWN then priest_walk_y
         
 priest_walk_x
+        if object_type[index] <> TYPE_PRIEST then skel_melee_x
 priest_test_horz
         gosub priest_box
         if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
+priest_walk_x_2
         Xvelocity = Xvelocity + move_speed : Yvelocity = 0
         goto priest_walk_anim
 
 priest_walk_y
+        if object_type[index] <> TYPE_PRIEST then skel_melee_y
 priest_test_vert
         gosub priest_box
         if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
+priest_walk_y_2
         Yvelocity = Yvelocity + move_speed : Xvelocity = 0
 
 priest_walk_anim
@@ -3707,10 +3712,18 @@ priest_walk_anim
         if animation_frame then frame = frame + 1
         goto priest_return
 
+skel_melee_x
+        gosub test_melee
+        if !temp6 then goto priest_walk_x_2
+
 priest_cast_horiz
         object_facing[index] = DIR_LEFT
         if Xposition < player_Xpos then object_facing[index] = DIR_RIGHT
         goto priest_cast
+
+skel_melee_y
+        gosub test_melee
+        if !temp6 then goto priest_walk_y_2
 
 priest_cast_vert
         object_facing[index] = DIR_UP
@@ -3794,6 +3807,21 @@ obj_priest_stats
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+obj_skel_stats
+        object_hp[obj_index] = 5
+        object_contact[obj_index] = 4
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 0
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
 obj_darkspark_stats
         object_hp[obj_index] = 1
         object_contact[obj_index] = 4
@@ -3811,6 +3839,10 @@ obj_darkspark_stats
 
 plot_priest
         plotsprite priest0 1 Xposition Yposition frame
+        goto plot_next
+
+plot_skeleton
+        plotsprite priest0 0 Xposition Yposition frame
         goto plot_next
 
 plot_darkspark
@@ -3903,6 +3935,7 @@ pad_objects
         if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
         if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
         if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
+        if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
 
 
 obj_next_stats
@@ -3965,6 +3998,7 @@ player_handler_done
         if object_type[index] = TYPE_MSLIME then plot_minislime
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_PRIEST then plot_priest
+        if object_type[index] = TYPE_SKELETON then plot_skeleton
         if object_type[index] = TYPE_FOOD then plot_food
         if object_type[index] = TYPE_ITEM1 then plot_item1
         if object_type[index] = TYPE_ARMOR2 then plot_armor2
@@ -4176,6 +4210,7 @@ object_handler
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
         if object_type[index] = TYPE_RAVEN then gosub raven_ai
         if object_type[index] = TYPE_PRIEST then gosub priest_ai
+        if object_type[index] = TYPE_SKELETON then gosub priest_ai
         if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
         if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
         gosub move_object
