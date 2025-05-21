@@ -129,8 +129,8 @@
         const TYPE_PRIEST   =   9
         const TYPE_SKELETON =  10
         const TYPE_SPAWNER  = 128
-        const TYPE_DARKSPARK = 129
-        const TYPE_SKELSWORD = 130
+        const TYPE_SKELSWORD = 129
+        const TYPE_DARKSPARK = 140
         const TYPE_FIREBALL = 150
         const TYPE_BLOOD    = 196
         const TYPE_COIN     = 197
@@ -342,7 +342,7 @@
         autodim byte object_def 16
         autodim byte object_mdef 16
         autodim byte object_elem_def 16
-        autodim byte object_contact 16
+        autodim byte object_parent 16
         autodim byte object_flags 16
         autodim byte object_timer 16
         autodim byte object_dest 16
@@ -1882,11 +1882,9 @@ obj_wolf_stats
         const WOLF_DAMAGE = 1
         const WOLF_DEF = 0
         const WOLF_MDEF = 2
-        const WOLF_CONTACT = 1
         const WOLF_DROP_RATE = 64
 
         object_hp[obj_index] = WOLF_HP
-        object_contact[obj_index] = WOLF_CONTACT
         object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
         object_damage[obj_index] = WOLF_DAMAGE
@@ -1920,7 +1918,6 @@ obj_slime_stats
         const SLIME_DROP_RATE = 128
         const SLIME_HP = 4
         const MSLIME_HP = SLIME_HP / 2
-        const SLIME_CONTACT = 4
         const SLIME_VEL_CAP_HI = 1
         const SLIME_VEL_CAP_LO = 0
         const SLIME_DAMAGE = 4
@@ -1933,7 +1930,6 @@ obj_slime_stats
         const SLIME_SPEED_HI = 0
         const SLIME_SPEED_LO = 5
         object_hp[obj_index] = SLIME_HP
-        object_contact[obj_index] = SLIME_CONTACT
         object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
         object_damage[obj_index] = SLIME_DAMAGE
@@ -1962,7 +1958,6 @@ split_slime
         ; initialize the new mini slime object
         object_type[index] = TYPE_MSLIME
         object_hp[index] = MSLIME_HP
-        object_contact[index] = SLIME_CONTACT
         object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
         object_damage[index] = SLIME_DAMAGE
@@ -2050,7 +2045,6 @@ obj_raven_stats
         const RAVEN_FLIGHT_TIME = 10
         const RAVEN_DROP_RATE = 128
         const RAVEN_HP = 4
-        const RAVEN_CONTACT = 4
         const RAVEN_VEL_CAP_HI = 2
         const RAVEN_VEL_CAP_LO = 0
         const RAVEN_DAMAGE = 4
@@ -2061,7 +2055,6 @@ obj_raven_stats
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
         object_hp[obj_index] = RAVEN_HP
-        object_contact[obj_index] = RAVEN_CONTACT
         object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
         object_damage[obj_index] = RAVEN_DAMAGE
@@ -3863,10 +3856,9 @@ ss_kill
 
 obj_priest_stats
         object_hp[obj_index] = 5
-        object_contact[obj_index] = 4
         object_vel_cap_hi[obj_index] = 1
         object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 0
+        object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
         object_friction_hi[obj_index] = 1
@@ -3878,10 +3870,9 @@ obj_priest_stats
 
 obj_skel_stats
         object_hp[obj_index] = 5
-        object_contact[obj_index] = 4
         object_vel_cap_hi[obj_index] = 1
         object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 0
+        object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
         object_friction_hi[obj_index] = 1
@@ -3893,7 +3884,6 @@ obj_skel_stats
 
 obj_darkspark_stats
         object_hp[obj_index] = 1
-        object_contact[obj_index] = 4
         object_vel_cap_hi[obj_index] = 1
         object_vel_cap_lo[obj_index] = 50
         object_damage[obj_index] = 4
@@ -4017,7 +4007,6 @@ obj_next_stats
 
 obj_torch_stats
         object_hp[obj_index] = 1
-        object_contact[obj_index] = 0
         object_vel_cap_hi[obj_index] = 0
         object_vel_cap_lo[obj_index] = 0
         object_damage[obj_index] = 0
