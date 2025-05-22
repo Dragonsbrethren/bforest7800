@@ -3736,12 +3736,14 @@ priest_cast_vert
         object_facing[index] = DIR_UP
         if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
 
+        ; prep the priest/skeleton object for spawning their attacks
 priest_cast
         const PRIEST_CAST_FRAMES = 20
         gosub find_new_object
         if no_empty_slot then priest_return
+        ; set the spawned object slot's parent to the index of this object
+        object_parent[spawn_index] = index
         flags{6} = 1
-        timer = PRIEST_CAST_FRAMES
         frame_index = object_facing[index]
         frame = priest_cast_frames[frame_index]
         asm
@@ -3751,12 +3753,12 @@ priest_cast
         sta Yvelocity_hi
         sta Yvelocity_lo
 end
+        timer = PRIEST_CAST_FRAMES
 
 priest_cast_2
+        if object_type[index] = TYPE_SKELETON then goto skel_sword
         timer = timer - 1
         if timer then goto priest_return
-
-        if object_type[index] = TYPE_SKELETON then goto skel_sword
 
         ; todo: roll off into its own spawn projectile subroutine
         const DARKSPARK_SPEED_HI = 2
@@ -3802,6 +3804,7 @@ end
         const SKELSWORD_DAMAGE = 10
 
 skel_sword
+        if flags{7} then priest_return
         asm
         jsr .position_sword
         ldx spawn_index
@@ -3809,6 +3812,7 @@ skel_sword
         lda #TYPE_SKELSWORD
         sta object_type,x
         lda #0
+        sta object_flags,x
         sta object_vel_cap_hi,x
         sta object_speed_hi,x
         sta object_vel_cap_lo,x
@@ -3827,7 +3831,7 @@ skel_sword
         lda #1
         sta object_timer,x
 end
-        flags{6} = 0
+        flags{7} = 1
         goto priest_return
 
         const RETRACT_FRAMES = 4
@@ -3838,21 +3842,39 @@ end
 ; Exists for ATTACK_FRAMES duration, then kills itself
 ;==============================================================================
 skelsword_ai
+        temp1 = object_parent[index]
+        ; if Skeleton has died, remove sword instantly
+        if !object_type[temp1] then ss_kill
         timer = timer - 1
+        if flags{7} then ss_retract_2
         if timer then return
-        if flags{7} then ss_kill
+        if flags{6} then ss_retract
         timer = ATTACK_FRAMES
-        flags{7} = 1 : return
+        flags{6} = 1
+        return
 
 ss_retract
+        timer = RETRACT_FRAMES
+        flags{7} = 1
+
+ss_retract_2
+        if !timer then ss_kill
+        return  ; bypass retract code until object priority handling is added
         if object_facing[index] = DIR_DOWN  then Yposition = Yposition - 4 : return
         if object_facing[index] = DIR_UP    then Yposition = Yposition + 4 : return
         if object_facing[index] = DIR_LEFT  then Xposition = Xposition + 2 : return
         Xposition = Xposition - 2 : return
 
 ss_kill
-        object_type[index] = 0
-        return
+        asm
+        lda #0
+        ldx temp1
+        ldy index
+        ; unset flags 6 and 7 on parent skeleton
+        sta object_flags,x
+        sta object_type,y
+        rts
+end
 
 obj_priest_stats
         object_hp[obj_index] = 5
