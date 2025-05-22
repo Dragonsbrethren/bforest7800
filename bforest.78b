@@ -3327,7 +3327,7 @@ castle_pals
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
-        P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
+        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
         P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
 
@@ -3352,6 +3352,14 @@ castle_pals
         sta menu_map_index_2
         jmp (temp1)
 end
+
+castle_gold_pal
+        P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
+
+castle_maroon_pal
+        ; override tile colors with maroons for carpeted stairs
+        P6C1 = $42 : P6C2 = $40 : P6C3 = $40
+        return
 
 plot_castle_room_1
         menu_map_room[menu_map_index] = 2
@@ -3484,7 +3492,7 @@ plot_castle_room_12
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_12.tmx castle_room_12 0 0 20 14
         memcpy current_map castle_room_12 280
-        return
+        goto castle_gold_pal
 
         data castle_room_12_obj
         TYPE_PRIEST, $58, $20,  $00
@@ -3495,9 +3503,7 @@ plot_castle_room_13
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
         memcpy current_map castle_room_13 280
-        ; override tile colors with maroons for carpeted stairs
-        P6C1 = $42 : P6C2 = $40 : P6C3 = $40
-        return
+        goto castle_gold_pal
 
         data castle_room_13_obj
         TYPE_TORCH, $10, $20,
@@ -3516,7 +3522,7 @@ plot_castle_room_14
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_14.tmx castle_room_14 0 0 20 14
         memcpy current_map castle_room_14 280
-        return
+        goto castle_gold_pal
 
         data castle_room_14_obj
         $00
@@ -3927,7 +3933,7 @@ plot_darkspark
         goto plot_next
 
 plot_skeleton
-        plotsprite skeleton0 0 Xposition Yposition frame
+        plotsprite skeleton0 5 Xposition Yposition frame
         goto plot_next
 
 plot_skelsword
