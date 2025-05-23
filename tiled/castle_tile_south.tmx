@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="castle_stone" tilewidth="8" tileheight="16" tilecount="13" columns="13">
+  <image source="../gfx/tiles/castle_stone.png" width="104" height="16"/>
+ </tileset>
+ <tileset firstgid="14" name="castle_tile" tilewidth="8" tileheight="16" tilecount="14" columns="14">
+  <image source="../gfx/tiles/castle_tile.png" width="112" height="16"/>
+ </tileset>
+ <tileset firstgid="28" name="castle_carpet" tilewidth="8" tileheight="16" tilecount="11" columns="11">
+  <image source="../gfx/tiles/castle_carpet.png" width="88" height="16"/>
+ </tileset>
+ <tileset firstgid="39" name="castle_tables" tilewidth="8" tileheight="16" tilecount="13" columns="13">
+  <image source="../gfx/tiles/castle_tables.png" width="104" height="16"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="4" height="1">
+  <data>
+   <tile gid="21"/>
+   <tile gid="21"/>
+   <tile gid="21"/>
+   <tile gid="21"/>
+  </data>
+ </layer>
+</map>

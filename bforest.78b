@@ -1268,7 +1268,7 @@ topscreenroutine
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
-        if tileset = T_FOREST then BACKGRND=bg_color
+        BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return
 
@@ -3184,10 +3184,10 @@ set_menu_top_pal
 ; Cathedral graphics, maps, AI
 ;==============================================================================
         bank 4
-        incgraphic gfx/tiles/castle_stone.png  160A 1 0 2 3 4
-        incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
-        incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
-        incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/castle_stone.png  160A 0 1 2 3 4
+        incgraphic gfx/tiles/castle_tile.png  160A 0 1 2 3 6
+        incgraphic gfx/tiles/castle_carpet.png  160A 0 1 2 3 7
+        incgraphic gfx/tiles/castle_tables.png 160A 0 1 2 3 5
         incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/blood.png 160A 0 1
         incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
@@ -3218,7 +3218,15 @@ set_menu_top_pal
         incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
 
-        incmapfile tiled/castle_room_1.tmx
+        incmapfile tiled/castle_room_0.tmx
+        incmapfile tiled/castle_wall_north.tmx
+        incmapfile tiled/castle_wall_south.tmx
+        incmapfile tiled/castle_wall_east.tmx
+        incmapfile tiled/castle_wall_west.tmx
+        incmapfile tiled/castle_tile_north.tmx
+        incmapfile tiled/castle_tile_south.tmx
+        incmapfile tiled/castle_tile_east.tmx
+        incmapfile tiled/castle_tile_west.tmx
         incmapfile tiled/castle_room_2.tmx
         incmapfile tiled/castle_room_3.tmx
         incmapfile tiled/castle_room_4.tmx
@@ -3321,15 +3329,27 @@ castle_save_1
         player_facing = DIR_DOWN
 
 castle_pals
-        bg_color = $00                                             ; black
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
-        P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
+        ; TODO: PAL color variants
+        const PAL_BLACK = $00
+        const PAL_C_SKY = $90
+        const PAL_C_WALL_D = $02
+        const PAL_C_WALL_L = $04
+        const PAL_C_TILE_D = $A0
+        const PAL_C_TILE_L = $A1
+        const PAL_SKEL_RED = $33
+        const PAL_SKEL_WHITE = $0F
+        const PAL_C_CARP_D = $40
+        const PAL_C_CARP_L = $41
+
+        bg_color = PAL_C_SKY                                            ; blue
+        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP   : P0C3 = PAL_WHITE      ; magic HUD, torches
+        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN   : P1C3 = PAL_SKIN       ; Johanna
+        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED    : P2C3 = PAL_GOLD       ; HP HUD, red equipment
+        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE   : P3C3 = PAL_COPPER     ; blue/green equipment
+        P4C1 = PAL_BLACK  : P4C2 = PAL_C_WALL_D : P4C3 = PAL_C_WALL_L   ; walls
+        P5C1 = PAL_BLACK  : P5C2 = PAL_SKEL_RED : P5C3 = PAL_SKEL_WHITE ; skeletons
+        P6C1 = PAL_BLACK  : P6C2 = PAL_C_TILE_D : P6C3 = PAL_C_TILE_L   ; blue-green tiles
+        P7C1 = PAL_BLACK  : P7C2 = PAL_C_CARP_D : P7C3 = PAL_C_CARP_L   ; maroon carpets
 
         characterset castle_stone
         asm
@@ -3353,19 +3373,90 @@ castle_pals
         jmp (temp1)
 end
 
+        const PAL_C_GOLD_D = $23
+        const PAL_C_GOLD_L = $27
 castle_gold_pal
-        P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
+        P5C1 = PAL_BLACK : P5C2 = PAL_C_GOLD_D : P5C3 = PAL_C_GOLD_L   ; golds, browns
 
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
-        P6C1 = $42 : P6C2 = $40 : P6C3 = $40
+        bg_color = $42 : P6C1 = PAL_BLACK : P6C2 = PAL_C_CARP_L : P6C3 = $42
+        return
+
+plot_castle_room_base
+        plotmapfile tiled/castle_room_0.tmx castle_room_0 0 0 20 14
+        memcpy current_map castle_room_0 280
+        return
+
+        const C_SOLID = 0
+
+plot_castle_wall_north
+        ; TODO: Can probably share north/south and east/west plotmap commands
+        plotmap castle_wall_north 4 64 0 4 2
+        ; pokechar current_map 9 1 20 14 C_SOLID
+        asm
+        ldy	#1
+        lda	current_map_mult_lo,y
+        sta	temp1
+        lda	current_map_mult_hi,y
+        sta	temp2
+        ldy	#9
+        lda	#C_SOLID
+        sta	(temp1),y
+        iny
+        sta     (temp1),y
+end
+
+plot_castle_floor_north
+        plotmap castle_tile_north 6 64 2 4 1
+        return
+
+plot_castle_wall_south
+        plotmap castle_wall_south 4 64 12 4 2
+        ; pokechar current_map 9 1 20 14 C_SOLID
+        asm
+        ldy	#12
+        lda	current_map_mult_lo,y
+        sta	temp1
+        lda	current_map_mult_hi,y
+        sta	temp2
+        ldy	#9
+        lda	#C_SOLID
+        sta	(temp1),y
+        iny
+        sta     (temp1),y
+end
+
+plot_castle_floor_south
+        plotmap castle_tile_south 6 64 11 4 1
+        return
+
+plot_castle_wall_east
+        plotmap castle_wall_east 4 144 5 2 4
+        pokechar current_map 18 6 20 14 C_SOLID
+        pokechar current_map 18 7 20 14 C_SOLID
+
+plot_castle_floor_east
+        plotmap castle_tile_east 6 136 6 1 2
+        return
+
+plot_castle_wall_west
+        plotmap castle_wall_west 4 0 5 2 4
+        pokechar current_map 1 6 20 14 C_SOLID
+        pokechar current_map 1 7 20 14 C_SOLID
+
+plot_castle_floor_west
+        plotmap castle_tile_west 6 16 6 1 2
         return
 
 plot_castle_room_1
+        gosub plot_castle_room_base
+;        gosub plot_castle_wall_north
+        gosub plot_castle_wall_south
+;        gosub plot_castle_wall_east
+;        gosub plot_castle_wall_west
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 3
-        memcpy current_map castle_room_1 280
-        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
         return
 
         data castle_room_1_obj
@@ -3374,10 +3465,13 @@ plot_castle_room_1
 end
 
 plot_castle_room_2
+        gosub plot_castle_room_base
+        gosub plot_castle_wall_east
+        gosub plot_castle_wall_west
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
-        memcpy current_map castle_room_2 280
+        ; plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
+        ; memcpy current_map castle_room_2 280
         return
 
         data castle_room_2_obj
@@ -3385,10 +3479,13 @@ plot_castle_room_2
 end
 
 plot_castle_room_3
+        gosub plot_castle_room_base
+        gosub plot_castle_wall_north
+        gosub plot_castle_wall_south
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
-        memcpy current_map castle_room_3 280
+        ;plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        ;memcpy current_map castle_room_3 280
         return
 
         data castle_room_3_obj
