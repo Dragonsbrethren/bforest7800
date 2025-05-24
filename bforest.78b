@@ -3218,6 +3218,7 @@ set_menu_top_pal
         incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
 
+        incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
         incmapfile tiled/castle_room_11.tmx
         incmapfile tiled/castle_room_12.tmx
@@ -3242,7 +3243,6 @@ set_menu_top_pal
         incmapfile tiled/castle_room_6.tmx
         incmapfile tiled/castle_room_7.tmx
         incmapfile tiled/castle_room_8.tmx
-        incmapfile tiled/castle_room_9.tmx
 
         const plot_castle_room_0_lo = #<.plot_castle_room_0
         const plot_castle_room_0_hi = #>.plot_castle_room_0
@@ -3492,11 +3492,7 @@ plot_castle_room_8
 end
 
 plot_castle_room_9
-        menu_map_room[menu_map_index] = 10
-        menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
-        memcpy current_map castle_room_9 280
-        return
+        goto load_castle_room_9 bank5
 
         data castle_room_9_obj
         $00
@@ -4021,6 +4017,7 @@ plot_blood
         incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
 
+        incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
         incmapfile tiled/castle_room_11.tmx
         incmapfile tiled/castle_room_12.tmx
@@ -4037,6 +4034,13 @@ plot_blood
         incmapfile tiled/castle_room_23.tmx
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
+
+load_castle_room_9
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
+        memcpy current_map castle_room_9 280
+        goto plot_castle_bank5_return bank4
 
 load_castle_room_10
         menu_map_room[menu_map_index] = 10
@@ -4083,6 +4087,8 @@ load_castle_room_15
         memcpy current_map castle_room_15 280
         goto plot_castle_bank5_return bank4
 
+        dmahole 0
+
 load_castle_room_16
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 13
@@ -4110,8 +4116,6 @@ load_castle_room_19
         plotmapfile tiled/castle_room_19.tmx castle_room_19 0 0 20 14
         memcpy current_map castle_room_19 280
         goto plot_castle_bank5_return bank4
-
-        dmahole 0
 
 load_castle_room_20
         menu_map_room[menu_map_index] = 4
