@@ -3294,7 +3294,8 @@ set_menu_top_pal
         const plot_castle_room_23_hi = #>.plot_castle_room_23
         const plot_castle_room_24_lo = #<.plot_castle_room_24
         const plot_castle_room_24_hi = #>.plot_castle_room_24
-
+        const plot_castle_room_25_lo = #<.plot_castle_room_25
+        const plot_castle_room_25_hi = #>.plot_castle_room_25
 
         data castle_map_lo
         plot_castle_room_0_lo,
@@ -3302,7 +3303,7 @@ set_menu_top_pal
         plot_castle_room_6_lo, plot_castle_room_7_lo, plot_castle_room_8_lo, plot_castle_room_9_lo, plot_castle_room_10_lo,
         plot_castle_room_11_lo, plot_castle_room_12_lo, plot_castle_room_13_lo, plot_castle_room_14_lo, plot_castle_room_15_lo,
         plot_castle_room_16_lo, plot_castle_room_17_lo, plot_castle_room_18_lo, plot_castle_room_19_lo, plot_castle_room_20_lo,
-        plot_castle_room_21_lo, plot_castle_room_22_lo, plot_castle_room_23_lo, plot_castle_room_24_lo
+        plot_castle_room_21_lo, plot_castle_room_22_lo, plot_castle_room_23_lo, plot_castle_room_24_lo, plot_castle_room_25_lo
 end
 
         data castle_map_hi
@@ -3311,7 +3312,7 @@ end
         plot_castle_room_6_hi, plot_castle_room_7_hi, plot_castle_room_8_hi, plot_castle_room_9_hi, plot_castle_room_10_hi,
         plot_castle_room_11_hi, plot_castle_room_12_hi, plot_castle_room_13_hi, plot_castle_room_14_hi, plot_castle_room_15_hi,
         plot_castle_room_16_hi, plot_castle_room_17_hi, plot_castle_room_18_hi, plot_castle_room_19_hi, plot_castle_room_20_hi,
-        plot_castle_room_21_hi, plot_castle_room_22_hi, plot_castle_room_23_hi, plot_castle_room_24_hi
+        plot_castle_room_21_hi, plot_castle_room_22_hi, plot_castle_room_23_hi, plot_castle_room_24_hi, plot_castle_room_25_hi
 end
 
         data castle_obj_lo
@@ -3320,7 +3321,7 @@ end
         castle_room_6_obj_lo, castle_room_7_obj_lo, castle_room_8_obj_lo, castle_room_9_obj_lo, castle_room_10_obj_lo,
         castle_room_11_obj_lo, castle_room_12_obj_lo, castle_room_13_obj_lo, castle_room_14_obj_lo, castle_room_15_obj_lo,
         castle_room_16_obj_lo, castle_room_17_obj_lo, castle_room_18_obj_lo, castle_room_19_obj_lo, castle_room_20_obj_lo,
-        castle_room_21_obj_lo, castle_room_22_obj_lo, castle_room_23_obj_lo, castle_room_24_obj_lo
+        castle_room_21_obj_lo, castle_room_22_obj_lo, castle_room_23_obj_lo, castle_room_24_obj_lo, castle_room_25_obj_lo
 end
 
         data castle_obj_hi
@@ -3329,7 +3330,7 @@ end
         castle_room_6_obj_hi, castle_room_7_obj_hi, castle_room_8_obj_hi, castle_room_9_obj_hi, castle_room_10_obj_hi,
         castle_room_11_obj_hi, castle_room_12_obj_hi, castle_room_13_obj_hi, castle_room_14_obj_hi, castle_room_15_obj_hi,
         castle_room_16_obj_hi, castle_room_17_obj_hi, castle_room_18_obj_hi, castle_room_19_obj_hi, castle_room_20_obj_hi,
-        castle_room_21_obj_hi, castle_room_22_obj_hi, castle_room_23_obj_hi, castle_room_24_obj_hi
+        castle_room_21_obj_hi, castle_room_22_obj_hi, castle_room_23_obj_hi, castle_room_24_obj_hi, castle_room_25_obj_hi
 end
 
 load_castle
@@ -3605,6 +3606,13 @@ plot_castle_room_24
         goto load_castle_room_24 bank5
 
         data castle_room_24_obj
+        $00
+end
+
+plot_castle_room_25
+        goto load_castle_room_25 bank5
+
+        data castle_room_25_obj
         $00
 end
 
@@ -4129,6 +4137,9 @@ load_castle_room_21
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
         memcpy current_map castle_room_21 280
+        ; secret passage!
+        pokechar current_map 14 6 20 14 $10
+        pokechar current_map 14 7 20 14 $10
         goto plot_castle_bank5_return bank4
 
 load_castle_room_22
