@@ -95,7 +95,7 @@
             "fileName": "castle_room_15.tmx",
             "height": 224,
             "width": 160,
-            "x": -168,
+            "x": -160,
             "y": 224
         },
         {
@@ -118,6 +118,62 @@
             "width": 160,
             "x": 0,
             "y": -448
+        },
+        {
+            "fileName": "castle_room_19.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": -448
+        },
+        {
+            "fileName": "castle_room_25.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 0,
+            "y": -896
+        },
+        {
+            "fileName": "castle_room_20.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": 0
+        },
+        {
+            "fileName": "castle_room_21.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": -224
+        },
+        {
+            "fileName": "castle_room_22.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 0,
+            "y": -224
+        },
+        {
+            "fileName": "castle_room_23.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": -672
+        },
+        {
+            "fileName": "castle_room_24.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": -896
+        },
+        {
+            "fileName": "castle_room_0.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 0,
+            "y": 224
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -128,6 +128,8 @@
         const TYPE_RAVEN    =   8
         const TYPE_PRIEST   =   9
         const TYPE_SKELETON =  10
+        const TYPE_RSLIME   =  11
+        const TYPE_MRSLIME  =  12       ; Mr. Slime lol
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_DARKSPARK = 140
@@ -3217,7 +3219,12 @@ set_menu_top_pal
         incgraphic gfx/sprites/skeleton9.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_minislime0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_minislime1.png 160A 0 3 1 2
 
+        incmapfile tiled/castle_room_8.tmx
         incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
         incmapfile tiled/castle_room_11.tmx
@@ -3242,7 +3249,6 @@ set_menu_top_pal
         incmapfile tiled/castle_room_5.tmx
         incmapfile tiled/castle_room_6.tmx
         incmapfile tiled/castle_room_7.tmx
-        incmapfile tiled/castle_room_8.tmx
 
         const plot_castle_room_0_lo = #<.plot_castle_room_0
         const plot_castle_room_0_hi = #>.plot_castle_room_0
@@ -3455,7 +3461,7 @@ plot_castle_room_5
         return
 
         data castle_room_5_obj
-        TYPE_BLOOD, $80, $20, $00
+        TYPE_RSLIME, $68, $40, TYPE_RSLIME, $80, $40, TYPE_BLOOD, $80, $20, $00
 end
 
 plot_castle_room_6
@@ -3482,11 +3488,7 @@ end
 
 
 plot_castle_room_8
-        menu_map_room[menu_map_index] = 6
-        menu_map_room[menu_map_index_2] = 13
-        plotmapfile tiled/castle_room_8.tmx castle_room_8 0 0 20 14
-        memcpy current_map castle_room_8 280
-        return
+        goto load_castle_room_8
 
         data castle_room_8_obj
         $00
@@ -3965,6 +3967,81 @@ obj_skel_stats
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+;==============================================================================
+; RED SLIME AI
+;------------------------------------------------------------------------------
+; A Red Slime draws near!
+; Command?
+;==============================================================================
+redslime_ai
+        ; slimes have no physical defense on their squished frame
+        if !animation_frame then temp1 = RSLIME_DEF : goto rslime_chase
+        ; this will allow them to split into mini-slimes
+        temp1 = 0
+rslime_chase
+        object_def[index] = temp1
+        gosub get_player_pos
+        gosub go_to_destination
+        return
+
+obj_redslime_stats
+        const RSLIME_DROP_RATE = 128
+        const RSLIME_HP = 4
+        const MRSLIME_HP = RSLIME_HP / 2
+        const RSLIME_VEL_CAP_HI = 1
+        const RSLIME_VEL_CAP_LO = 0
+        const RSLIME_DAMAGE = 8
+        const RSLIME_DEF = 255
+        const RSLIME_MDEF = 0
+        const MRSLIME_DEF = 0
+        const MRSLIME_MDEF = 0
+        const RSLIME_FRICTION_HI = 1
+        const RSLIME_FRICTION_LO = 0
+        const RSLIME_SPEED_HI = 0
+        const RSLIME_SPEED_LO = 5
+        object_hp[obj_index] = RSLIME_HP
+        object_vel_cap_hi[obj_index] = RSLIME_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = RSLIME_VEL_CAP_LO
+        object_damage[obj_index] = RSLIME_DAMAGE
+        object_def[obj_index] = RSLIME_DEF
+        object_mdef[obj_index] = RSLIME_MDEF
+        object_friction_hi[obj_index] = RSLIME_FRICTION_HI
+        object_friction_lo[obj_index] = RSLIME_FRICTION_LO
+        object_speed_hi[obj_index] = RSLIME_SPEED_HI
+        object_speed_lo[obj_index] = RSLIME_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+split_rslime
+        ; replace slime mobj with mini slime
+        object_type[index] = TYPE_MRSLIME
+        object_hp[index] = MRSLIME_HP
+        object_def[index] = MRSLIME_DEF
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        gosub find_new_object
+        index = spawn_index
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
+        ; initialize the new mini slime object
+        object_type[index] = TYPE_MRSLIME
+        object_hp[index] = MRSLIME_HP
+        object_vel_cap_hi[index] = RSLIME_VEL_CAP_HI
+        object_vel_cap_lo[index] = RSLIME_VEL_CAP_LO
+        object_damage[index] = RSLIME_DAMAGE
+        object_def[index] = MRSLIME_DEF
+        object_mdef[index] = MRSLIME_MDEF
+        object_friction_hi[index] = RSLIME_FRICTION_HI
+        object_friction_lo[index] = RSLIME_FRICTION_LO
+        object_speed_hi[index] = RSLIME_SPEED_HI
+        object_speed_lo[index] = RSLIME_SPEED_LO
+        ; mini slime spawns to the right of the parent slime's pos
+        object_Xpos[index] = temp1 + 9
+        object_Ypos[index] = temp2
+        goto cc_next
+
 plot_priest
         plotsprite priest0 1 Xposition Yposition frame
         goto plot_next
@@ -3979,6 +4056,14 @@ plot_skeleton
 
 plot_skelsword
         plotsprite sword0 0 Xposition Yposition frame
+        goto plot_next
+
+plot_rslime
+        PLOTSPRITE c_slime0 7 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_mrslime
+        PLOTSPRITE c_minislime0 7 Xposition Yposition animation_frame
         goto plot_next
 
 plot_blood
@@ -4024,7 +4109,12 @@ plot_blood
         incgraphic gfx/sprites/skeleton9.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
         incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_slime1.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_minislime0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_minislime1.png 160A 0 2 1 3
 
+        incmapfile tiled/castle_room_8.tmx
         incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
         incmapfile tiled/castle_room_11.tmx
@@ -4042,6 +4132,13 @@ plot_blood
         incmapfile tiled/castle_room_23.tmx
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
+
+load_castle_room_8
+        menu_map_room[menu_map_index] = 6
+        menu_map_room[menu_map_index_2] = 13
+        plotmapfile tiled/castle_room_8.tmx castle_room_8 0 0 20 14
+        memcpy current_map castle_room_8 280
+        goto plot_castle_bank5_return bank4
 
 load_castle_room_9
         menu_map_room[menu_map_index] = 10
@@ -4089,8 +4186,8 @@ load_castle_room_14
         goto castle_gold_pal bank4
 
 load_castle_room_15
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 14
+        menu_map_room[menu_map_index_2] = 9
         plotmapfile tiled/castle_room_15.tmx castle_room_15 0 0 20 14
         memcpy current_map castle_room_15 280
         goto plot_castle_bank5_return bank4
@@ -4119,22 +4216,22 @@ load_castle_room_18
         goto plot_castle_bank5_return bank4
 
 load_castle_room_19
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 3
         plotmapfile tiled/castle_room_19.tmx castle_room_19 0 0 20 14
         memcpy current_map castle_room_19 280
         goto plot_castle_bank5_return bank4
 
 load_castle_room_20
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_20.tmx castle_room_20 0 0 20 14
         memcpy current_map castle_room_20 280
         goto plot_castle_bank5_return bank4
 
 load_castle_room_21
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
         memcpy current_map castle_room_21 280
         ; secret passage!
@@ -4143,29 +4240,29 @@ load_castle_room_21
         goto plot_castle_bank5_return bank4
 
 load_castle_room_22
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 8
+        menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_22.tmx castle_room_22 0 0 20 14
         memcpy current_map castle_room_22 280
         goto plot_castle_bank5_return bank4
 
 load_castle_room_23
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_23.tmx castle_room_23 0 0 20 14
         memcpy current_map castle_room_23 280
         goto plot_castle_bank5_return bank4
 
 load_castle_room_24
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = 12
+        menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_24.tmx castle_room_24 0 0 20 14
         memcpy current_map castle_room_24 280
         goto plot_castle_bank5_return bank4
 
 load_castle_room_25
         menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index_2] = 17
         plotmapfile tiled/castle_room_25.tmx castle_room_25 0 0 20 14
         memcpy current_map castle_room_25 280
         goto plot_castle_bank5_return bank4
@@ -4250,6 +4347,8 @@ pad_objects
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
         if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
         if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
+        if object_type[obj_index] = TYPE_RSLIME then obj_redslime_stats
+        if object_type[obj_index] = TYPE_MRSLIME then obj_redslime_stats : object_hp[obj_index] = MRSLIME_HP : object_def[obj_index] = MRSLIME_DEF
         if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
         if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
         if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
@@ -4312,6 +4411,8 @@ player_handler_done
         if object_type[index] = TYPE_PRISM then plot_prism
         if object_type[index] = TYPE_SLIME then plot_slime
         if object_type[index] = TYPE_MSLIME then plot_minislime
+        if object_type[index] = TYPE_RSLIME then plot_rslime
+        if object_type[index] = TYPE_MRSLIME then plot_mrslime
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_PRIEST then plot_priest
         if object_type[index] = TYPE_SKELETON then plot_skeleton
@@ -4570,6 +4671,8 @@ object_handler
         if object_type[index] = TYPE_WOLF then gosub wolf_ai
         if object_type[index] = TYPE_SLIME then gosub slime_ai
         if object_type[index] = TYPE_MSLIME then gosub slime_ai
+        if object_type[index] = TYPE_RSLIME then gosub redslime_ai
+        if object_type[index] = TYPE_MRSLIME then gosub redslime_ai
         if object_type[index] = TYPE_RAVEN then gosub raven_ai
         if object_type[index] = TYPE_PRIEST then gosub priest_ai
         if object_type[index] = TYPE_SKELETON then gosub priest_ai
@@ -5245,6 +5348,7 @@ kill_object
         gosub kill_torch
 change_to_spawner
         if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
+        if object_type[index] = TYPE_RSLIME && animation_frame then goto split_rslime
         ; switch the object's flags to its old type and its type to a spwaner
         object_flags[index] = object_type[index]
         object_type[index] = TYPE_SPAWNER
