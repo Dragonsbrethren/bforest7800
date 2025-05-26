@@ -2859,6 +2859,7 @@ gen_forest_s
 
 gen_castle_s
         if save_room_index{0} then plotsprite menu_s 0 86 96
+        if save_room_index{1} then plotsprite menu_s 0 54 80
         return
 
 calc_inv_array
@@ -3224,6 +3225,8 @@ set_menu_top_pal
         incgraphic gfx/sprites/c_minislime0.png 160A 0 3 1 2
         incgraphic gfx/sprites/c_minislime1.png 160A 0 3 1 2
 
+        incmapfile tiled/castle_room_6.tmx
+        incmapfile tiled/castle_room_7.tmx
         incmapfile tiled/castle_room_8.tmx
         incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
@@ -3247,9 +3250,6 @@ set_menu_top_pal
         incmapfile tiled/castle_room_3.tmx
         incmapfile tiled/castle_room_4.tmx
         incmapfile tiled/castle_room_5.tmx
-        incmapfile tiled/castle_room_6.tmx
-        incmapfile tiled/castle_room_7.tmx
-
         const plot_castle_room_0_lo = #<.plot_castle_room_0
         const plot_castle_room_0_hi = #>.plot_castle_room_0
         const plot_castle_room_1_lo = #<.plot_castle_room_1
@@ -3343,6 +3343,7 @@ load_castle
         if !first_load then castle_pals
         first_load = 0
         if save_room_index = 1 then castle_save_1
+        if save_room_index = 2 then castle_save_2
 
         room_index = 44
         menu_map_Xpos = 70
@@ -3356,6 +3357,14 @@ castle_save_1
         room_index = 18
         menu_map_Xpos = 86
         menu_map_Ypos = 96
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+
+castle_save_2
+        room_index = 7
+        menu_map_Xpos = 54
+        menu_map_Ypos = 80
         player_Xpos = 24
         player_Ypos = 60
         player_facing = DIR_DOWN
@@ -3419,6 +3428,8 @@ end
         TYPE_SKELETON, $4A, $30,  $00
 end
 
+        dmahole 0
+
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
@@ -3427,9 +3438,11 @@ plot_castle_room_2
         return
 
         data castle_room_2_obj
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $40, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $80, TYPE_TORCH, $38, $A0,
+        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $40, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $80, TYPE_TORCH, $60, $A0,
+        TYPE_SKELETON, $4C, $60,
         $00
 end
-        dmahole 0
 
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
@@ -3454,7 +3467,7 @@ plot_castle_room_4
 
         data castle_room_4_obj
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0,
-        TYPE_SKELETON, $50, $50,
+        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
         $00
 end
 
@@ -3466,27 +3479,21 @@ plot_castle_room_5
         return
 
         data castle_room_5_obj
-        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_RSLIME, $78, $50, TYPE_BLOOD, $80, $20, $00
+        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
+        $00
 end
 
 plot_castle_room_6
-        menu_map_room[menu_map_index] = 10
-        menu_map_room[menu_map_index_2] = 3
-        plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
-        memcpy current_map castle_room_6 280
-        return
+        goto load_castle_room_6 bank5
 
         data castle_room_6_obj
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40, $00
+        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40,
+        $00
 end
 
 plot_castle_room_7
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_7.tmx castle_room_7 0 0 20 14
-        memcpy current_map castle_room_7 280
-        return
+        goto load_castle_room_7 bank5
 
         data castle_room_7_obj
         $00
@@ -3494,7 +3501,7 @@ end
 
 
 plot_castle_room_8
-        goto load_castle_room_8
+        goto load_castle_room_8 bank5
 
         data castle_room_8_obj
         $00
@@ -3518,7 +3525,8 @@ plot_castle_room_11
         goto load_castle_room_11 bank5
 
         data castle_room_11_obj
-        $00
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,
+        TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $50, $00
 end
 
 plot_castle_room_12
@@ -3551,6 +3559,9 @@ plot_castle_room_15
         goto load_castle_room_15 bank5
 
         data castle_room_15_obj
+        TYPE_RSLIME, $28, $90, TYPE_RSLIME, $50, $A0,
+        TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
         $00
 end
 
@@ -3579,6 +3590,8 @@ plot_castle_room_19
         goto load_castle_room_19 bank5
 
         data castle_room_19_obj
+        TYPE_SKELETON, $30, $80, TYPE_SKELETON, $68, $90,
+        TYPE_BLOOD, $50, $30,
         $00
 end
 
@@ -3593,6 +3606,9 @@ plot_castle_room_21
         goto load_castle_room_21 bank5
 
         data castle_room_21_obj
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $40, TYPE_TORCH, $38, $80, TYPE_TORCH, $38, $A0,
+        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $40, TYPE_TORCH, $60, $80, TYPE_TORCH, $60, $A0,
+        TYPE_PRIEST, $4C, $60,
         $00
 end
 
@@ -3607,7 +3623,7 @@ plot_castle_room_23
         goto load_castle_room_23 bank5
 
         data castle_room_23_obj
-        $00
+        TYPE_BLOOD, $58, $28, TYPE_BLOOD, $60, $A0, $00
 end
 
 plot_castle_room_24
@@ -3621,7 +3637,7 @@ plot_castle_room_25
         goto load_castle_room_25 bank5
 
         data castle_room_25_obj
-        $00
+        TYPE_SKELETON, $4C, $50, $00
 end
 
         data castle_rooms
@@ -3630,7 +3646,7 @@ end
         23, 00, 16, 00, 14, 00, 00,
         19, 18, 13, 17, 11, 00, 00,
         21, 22, 12, 00, 06,  7,  8,
-        20, 00, 02, 00, 05, 00,  9,
+        02, 00, 02, 00, 05, 00,  9,
         15, 03, 01, 03, 04, 00, 10
 end
 
@@ -3903,13 +3919,12 @@ end
         flags{7} = 1
         goto priest_return
 
-        const RETRACT_FRAMES = 4
-
 ;==============================================================================
 ; SKELSWORD AI
 ;------------------------------------------------------------------------------
 ; Exists for ATTACK_FRAMES duration, then kills itself
 ;==============================================================================
+        const RETRACT_FRAMES = 4
 skelsword_ai
         temp1 = object_parent[index]
         ; if Skeleton has died, remove sword instantly
@@ -4120,6 +4135,8 @@ plot_blood
         incgraphic gfx/sprites/c_minislime0.png 160A 0 2 1 3
         incgraphic gfx/sprites/c_minislime1.png 160A 0 2 1 3
 
+        incmapfile tiled/castle_room_6.tmx
+        incmapfile tiled/castle_room_7.tmx
         incmapfile tiled/castle_room_8.tmx
         incmapfile tiled/castle_room_9.tmx
         incmapfile tiled/castle_room_10.tmx
@@ -4138,6 +4155,20 @@ plot_blood
         incmapfile tiled/castle_room_23.tmx
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
+
+load_castle_room_6
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 3
+        plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
+        memcpy current_map castle_room_6 280
+        goto plot_castle_bank5_return bank4
+
+load_castle_room_7
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_7.tmx castle_room_7 0 0 20 14
+        memcpy current_map castle_room_7 280
+        goto plot_castle_bank5_return bank4
 
 load_castle_room_8
         menu_map_room[menu_map_index] = 6
@@ -4174,6 +4205,7 @@ load_castle_room_12
         memcpy current_map castle_room_12 280
         goto castle_gold_pal bank4
 
+        dmahole 0
 load_castle_room_13
         menu_map_room[menu_map_index] = 6
         menu_map_room[menu_map_index_2] = 7
@@ -4197,8 +4229,6 @@ load_castle_room_15
         plotmapfile tiled/castle_room_15.tmx castle_room_15 0 0 20 14
         memcpy current_map castle_room_15 280
         goto plot_castle_bank5_return bank4
-
-        dmahole 0
 
 load_castle_room_16
         menu_map_room[menu_map_index] = 12
@@ -4241,8 +4271,8 @@ load_castle_room_21
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
         memcpy current_map castle_room_21 280
         ; secret passage!
-        pokechar current_map 14 6 20 14 $10
-        pokechar current_map 14 7 20 14 $10
+        pokechar current_map 13 6 20 14 $10
+        pokechar current_map 13 7 20 14 $10
         goto plot_castle_bank5_return bank4
 
 load_castle_room_22
@@ -4260,6 +4290,9 @@ load_castle_room_23
         goto plot_castle_bank5_return bank4
 
 load_castle_room_24
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 2
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_24.tmx castle_room_24 0 0 20 14
@@ -4399,14 +4432,6 @@ obj_next_stats
 
 obj_torch_stats
         object_hp[obj_index] = 1
-        object_vel_cap_hi[obj_index] = 0
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 0
-        object_friction_hi[obj_index] = 0
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 0
-        object_flags[obj_index] = 0
         goto obj_next_stats
 
 load_map
