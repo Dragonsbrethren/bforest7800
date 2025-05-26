@@ -3439,6 +3439,9 @@ plot_castle_room_3
         return
 
         data castle_room_3_obj
+        TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
+        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70,
         $00
 end
 
@@ -3450,6 +3453,8 @@ plot_castle_room_4
         return
 
         data castle_room_4_obj
+        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0,
+        TYPE_SKELETON, $50, $50,
         $00
 end
 
@@ -3461,18 +3466,19 @@ plot_castle_room_5
         return
 
         data castle_room_5_obj
-        TYPE_RSLIME, $68, $40, TYPE_RSLIME, $80, $40, TYPE_BLOOD, $80, $20, $00
+        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_RSLIME, $78, $50, TYPE_BLOOD, $80, $20, $00
 end
 
 plot_castle_room_6
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 3
+        plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
         memcpy current_map castle_room_6 280
-        plotmapfile tiled/castle_room_6.tmx current_map 0 0 20 14
         return
 
         data castle_room_6_obj
-        $00
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
+        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40, $00
 end
 
 plot_castle_room_7
@@ -4326,10 +4332,46 @@ load_castle_room_25
 ; Utilizes pointers so multiple maps can reuse the same object data if desired
 ;==============================================================================
 load_objects
-        temp1 = 0
+        asm
+        ldx #MAX_OBJECTS
+        lda #0
+clear_obj_loop
+        sta object_type,x
+        sta object_Xpos,x
+        sta object_Ypos,x
+        sta object_Xvel_lo,x
+        sta object_Xvel_hi,x
+        sta object_Yvel_lo,x
+        sta object_Yvel_hi,x
+        sta object_Xdir,x
+        sta object_Ydir,x
+        sta object_facing,x
+        sta object_frame,x
+        sta object_state,x
+        sta object_speed_lo,x
+        sta object_speed_hi,x
+        sta object_vel_cap_lo,x
+        sta object_vel_cap_hi,x
+        sta object_friction_lo,x
+        sta object_friction_hi,x
+        sta object_hp,x
+        sta object_damage,x
+        sta object_elem_atk,x
+        sta object_def,x
+        sta object_mdef,x
+        sta object_elem_def,x
+        sta object_parent,x
+        sta object_flags,x
+        sta object_timer,x
+        sta object_dest,x
+        sta object_hop_dir,x
+        dex
+        bne clear_obj_loop
+        sta temp1
+end
         for obj_index = 1 to MAX_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
-        if !object_type[obj_index] then pad_objects
+        if !object_type[obj_index] then object_stats
         temp1 = temp1 + 1
         object_Xpos[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
@@ -4337,10 +4379,7 @@ load_objects
         temp1 = temp1 + 1
         next
         ; TODO: pointer table for stats as well
-pad_objects
-        for index = obj_index to MAX_OBJECTS
-        object_type[index] = 0
-        next
+object_stats
         for obj_index = 1 to MAX_MAP_OBJECTS
         if !object_type[obj_index] then next_obj_stats
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
