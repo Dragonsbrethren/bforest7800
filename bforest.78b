@@ -118,6 +118,9 @@
         const MAX_MAP_OBJECTS = 12
         const MAX_OBJECTS = 15
 
+        const LIGHTNING_FRAMES = 8
+        const LIGHTNING_DELAY = 120
+
 ;==============================================================================
 ; OBJECT DATA
 ;==============================================================================0
@@ -440,7 +443,9 @@
         autodim byte save_room_index
         autodim byte in_save_room
         autodim byte ledge_dir
-        autodim byte window_zone
+        autodim byte window_zone        ; depreciated
+        autodim byte lightning_timer
+        autodim byte lightning_delay
 
         autodim init $2500 $25FF
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
@@ -1253,6 +1258,24 @@ main_animation_timer
         ; Currently only two frames of animation supported. Needs to be changed if more than 2
         animation_frame = 0
         if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+
+main_lightning
+        asm
+        lda lightning_timer
+        beq lightning_flash
+        dec lightning_timer
+        bne .main_state_handler
+lightning_flash
+        dec lightning_delay
+        lda lightning_delay
+        bne .main_state_handler
+        jsr randomize
+        bmi .main_state_handler
+        lda #LIGHTNING_FRAMES
+        sta lightning_timer
+end
+
+main_state_handler
         if game_state = STATE_TITLE then title_handler
         if game_state = STATE_FIELD then field_handler
         if game_state = STATE_MENU  then menu_handler
@@ -3340,7 +3363,7 @@ end
 end
 
 load_castle
-        if !first_load then castle_pals
+        if !first_load then castle_rooms
         first_load = 0
         if save_room_index = 1 then castle_save_1
         if save_room_index = 2 then castle_save_2
@@ -3369,17 +3392,7 @@ castle_save_2
         player_Ypos = 60
         player_facing = DIR_DOWN
 
-castle_pals
-        bg_color = $00                                             ; black
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
-        P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
-
+castle_rooms
         characterset castle_stone
         asm
         ldx room_index
@@ -3401,6 +3414,31 @@ castle_pals
         sta menu_map_index_2
         jmp (temp1)
 end
+
+castle_pals
+        bg_color = $00                                             ; black
+        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
+        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
+        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
+        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
+        P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
+        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
+        P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
+        P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
+        goto lightning_done
+
+castle_lightning
+        bg_color = $00                                             ; black
+        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
+        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
+        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
+        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
+        P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
+        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
+        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles
+        P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
+        lightning_delay = LIGHTNING_DELAY
+        goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 
 castle_gold_pal
         P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
@@ -4455,6 +4493,7 @@ end
 
 field_handler
         if reload_map = 1 then goto load_map
+
         goto player_handler
 player_handler_done
         gosub object_handler
@@ -4462,6 +4501,13 @@ player_handler_done
         torch_reblock = 0
         gosub check_collisions
 
+        if !lightning_timer then no_lightning
+        if tileset = T_CASTLE then goto castle_lightning
+no_lightning
+        if tileset = T_CASTLE then goto castle_pals
+
+lightning_done
+plot_objects
         restorescreen
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determines which sprites need to be plotted by type
