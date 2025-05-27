@@ -446,6 +446,8 @@
         autodim byte window_zone        ; depreciated
         autodim byte lightning_timer
         autodim byte lightning_delay
+        autodim byte no_flash
+        autodim byte alt_palette
 
         autodim init $2500 $25FF
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
@@ -3395,6 +3397,9 @@ castle_save_2
 castle_rooms
         characterset castle_stone
         asm
+        lda #0
+        sta no_flash
+        sta alt_palette
         ldx room_index
         lda castle_rooms,x
         tax
@@ -3424,28 +3429,33 @@ castle_pals
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
-        P7C1 = $43 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
-        goto lightning_done
+        if alt_palette then gosub castle_gold_pal
+        P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
+        goto castle_shared_pals
 
 castle_lightning
+        if no_flash then goto castle_pals
+        P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
+        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
+        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles
+        if alt_palette then gosub castle_gold_pal
+        P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
+        lightning_delay = LIGHTNING_DELAY
+
+castle_shared_pals
         bg_color = $00                                             ; black
         P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
         P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles
-        P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
-        lightning_delay = LIGHTNING_DELAY
-        goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 castle_gold_pal
         P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
 
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
-        P6C1 = $42 : P6C2 = $40 : P6C3 = $40
+        P6C2 = $41 : P6C3 = $40
         return
 
 plot_castle_room_0
@@ -3469,6 +3479,7 @@ end
         dmahole 0
 
 plot_castle_room_2
+        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
@@ -3510,6 +3521,7 @@ plot_castle_room_4
 end
 
 plot_castle_room_5
+        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
@@ -4195,6 +4207,7 @@ plot_blood
         incmapfile tiled/castle_room_25.tmx
 
 load_castle_room_6
+        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 3
         plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
@@ -4202,6 +4215,7 @@ load_castle_room_6
         goto plot_castle_bank5_return bank4
 
 load_castle_room_7
+        no_flash = 1
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_7.tmx castle_room_7 0 0 20 14
@@ -4209,6 +4223,7 @@ load_castle_room_7
         goto plot_castle_bank5_return bank4
 
 load_castle_room_8
+        no_flash = 1
         menu_map_room[menu_map_index] = 6
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_8.tmx castle_room_8 0 0 20 14
@@ -4216,6 +4231,7 @@ load_castle_room_8
         goto plot_castle_bank5_return bank4
 
 load_castle_room_9
+        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
@@ -4230,6 +4246,7 @@ load_castle_room_10
         goto plot_castle_bank5_return bank4
 
 load_castle_room_11
+        no_flash = 1
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_11.tmx castle_room_11 0 0 20 14
@@ -4237,29 +4254,32 @@ load_castle_room_11
         goto plot_castle_bank5_return bank4
 
 load_castle_room_12
+        alt_palette = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_12.tmx castle_room_12 0 0 20 14
         memcpy current_map castle_room_12 280
-        goto castle_gold_pal bank4
+        goto plot_castle_bank5_return bank4
 
         dmahole 0
 load_castle_room_13
+        alt_palette = 1
         menu_map_room[menu_map_index] = 6
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
         memcpy current_map castle_room_13 280
-        goto castle_gold_pal bank4
+        goto plot_castle_bank5_return bank4
 
 load_castle_room_14
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 1
+        alt_palette = 1
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_14.tmx castle_room_14 0 0 20 14
         memcpy current_map castle_room_14 280
-        goto castle_gold_pal bank4
+        goto plot_castle_bank5_return bank4
 
 load_castle_room_15
         menu_map_room[menu_map_index] = 14
@@ -4276,6 +4296,7 @@ load_castle_room_16
         goto plot_castle_bank5_return bank4
 
 load_castle_room_17
+        no_flash = 1
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_17.tmx castle_room_17 0 0 20 14
@@ -4304,6 +4325,7 @@ load_castle_room_20
         goto plot_castle_bank5_return bank4
 
 load_castle_room_21
+        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
