@@ -3427,19 +3427,19 @@ castle_pals
         P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
+        P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
+        if alt_palette then goto castle_gold_pal
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
-        if alt_palette then gosub castle_gold_pal
-        P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
         goto castle_shared_pals
 
 castle_lightning
         if no_flash then goto castle_pals
         P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles
-        if alt_palette then gosub castle_gold_pal
         P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
+        if alt_palette then goto castle_gold_pal
+        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles        
+        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         lightning_delay = LIGHTNING_DELAY
 
 castle_shared_pals
@@ -3456,7 +3456,8 @@ castle_gold_pal
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
         P6C2 = $41 : P6C3 = $40
-        return
+        if !lightning_delay then lightning_delay = LIGHTNING_DELAY
+        goto castle_shared_pals
 
 plot_castle_room_0
 plot_castle_room_1
@@ -3476,29 +3477,12 @@ end
         TYPE_SKELETON, $4A, $30,  $00
 end
 
-        dmahole 0
-
-plot_castle_room_2
-        no_flash = 1
-        menu_map_room[menu_map_index] = 10
-        menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
-        memcpy current_map castle_room_2 280
-        return
-
         data castle_room_2_obj
         TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $40, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $80, TYPE_TORCH, $38, $A0,
         TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $40, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $80, TYPE_TORCH, $60, $A0,
         TYPE_SKELETON, $4C, $60,
         $00
 end
-
-plot_castle_room_3
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
-        memcpy current_map castle_room_3 280
-        return
 
         data castle_room_3_obj
         TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
@@ -3507,18 +3491,55 @@ plot_castle_room_3
         $00
 end
 
+        data castle_room_4_obj
+        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0,
+        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
+        $00
+end
+
+        data castle_room_5_obj
+        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
+        $00
+end
+
+        data castle_room_6_obj
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
+        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40,
+        $00
+end
+
+        data castle_room_7_obj
+        TYPE_RSLIME, $58, $A0,
+        TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
+        TYPE_ARMOR2, $4C, $38, $00
+end
+
+        data castle_room_8_obj
+        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90, $00
+end
+
+        dmahole 0
+
+plot_castle_room_2
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
+        memcpy current_map castle_room_2 280
+        return
+
+plot_castle_room_3
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        memcpy current_map castle_room_3 280
+        return
+
 plot_castle_room_4
         menu_map_room[menu_map_index] = 8
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
         memcpy current_map castle_room_4 280
         return
-
-        data castle_room_4_obj
-        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0,
-        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
-        $00
-end
 
 plot_castle_room_5
         no_flash = 1
@@ -3528,40 +3549,23 @@ plot_castle_room_5
         memcpy current_map castle_room_5 280
         return
 
-        data castle_room_5_obj
-        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
-        $00
-end
-
 plot_castle_room_6
         goto load_castle_room_6 bank5
 
-        data castle_room_6_obj
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40,
-        $00
-end
-
 plot_castle_room_7
         goto load_castle_room_7 bank5
-
-        data castle_room_7_obj
-        $00
-end
 
 
 plot_castle_room_8
         goto load_castle_room_8 bank5
 
-        data castle_room_8_obj
-        $00
-end
-
 plot_castle_room_9
         goto load_castle_room_9 bank5
 
         data castle_room_9_obj
-        $00
+        TYPE_SKELETON, $48, $90, TYPE_SKELETON, $58, $70,
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $60, $20,
+        TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0, $00
 end
 
 plot_castle_room_10
@@ -4325,7 +4329,6 @@ load_castle_room_20
         goto plot_castle_bank5_return bank4
 
 load_castle_room_21
-        no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
@@ -5488,7 +5491,7 @@ change_to_spawner
 
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
-        playsfx sfx_poof2
+        if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
 sword_damage
         ; TODO: Much better damage calculations
         if object_def[index] = 255 then return
