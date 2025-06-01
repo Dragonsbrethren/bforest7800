@@ -3504,9 +3504,9 @@ castle_pals
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
         P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
         if alt_palette = 1 then P5C1 = $40 : goto castle_maroon_pal
+        P6C1 = $A2 : P6C2 = $A1 : P6C3 = $A0    ; blue-green tiles
         if alt_palette = 2 then P5C1 = $90 : goto castle_gold_pal
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $A2 : P6C2 = $A1 : P6C3 = $A0    ; blue-green tiles
         goto castle_shared_pals
 
 castle_lightning
@@ -3514,8 +3514,8 @@ castle_lightning
         P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
         P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
         if alt_palette = 1  then P5C1 = $41 : goto castle_maroon_pal
-        if alt_palette = 2  then P5C1 = $AA : goto castle_gold_pal
-        P6C1 = $AA : P6C2 = $A2 : P6C3 = $A1    ; blue-green tiles        
+        P6C1 = $AA : P6C2 = $A2 : P6C3 = $A1    ; blue-green tiles    
+        if alt_palette = 2  then P5C1 = $AA : goto castle_gold_pal    
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         lightning_delay = LIGHTNING_DELAY
 
