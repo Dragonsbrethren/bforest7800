@@ -3503,17 +3503,19 @@ castle_pals
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
         P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
-        if alt_palette then goto castle_gold_pal
+        if alt_palette = 1 then P5C1 = $40 : goto castle_maroon_pal
+        if alt_palette = 2 then P5C1 = $90 : goto castle_gold_pal
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
-        P6C1 = $A2 : P6C2 = $A0 : P6C3 = $A1    ; blue-green tiles
+        P6C1 = $A2 : P6C2 = $A1 : P6C3 = $A0    ; blue-green tiles
         goto castle_shared_pals
 
 castle_lightning
         if no_flash then goto castle_pals
         P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
         P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
-        if alt_palette then goto castle_gold_pal
-        P6C1 = $AA : P6C2 = $A1 : P6C3 = $A2    ; blue-green tiles        
+        if alt_palette = 1  then P5C1 = $41 : goto castle_maroon_pal
+        if alt_palette = 2  then P5C1 = $AA : goto castle_gold_pal
+        P6C1 = $AA : P6C2 = $A2 : P6C3 = $A1    ; blue-green tiles        
         P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
         lightning_delay = LIGHTNING_DELAY
 
@@ -3525,12 +3527,12 @@ castle_shared_pals
         P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
         goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
-castle_gold_pal
-        P5C1 = $40 : P5C2 = $23 : P5C3 = $27    ; golds, browns
-
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
         P6C2 = $41 : P6C3 = $40
+
+castle_gold_pal
+        P5C2 = $23 : P5C3 = $27    ; golds, browns
         if !lightning_delay then lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
 
@@ -3647,6 +3649,8 @@ plot_castle_room_10
         goto load_castle_room_10 bank5
 
         data castle_room_10_obj
+        TYPE_SKELETON, $40, $80, TYPE_PRIEST, $58, $80,
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
         $00
 end
 
@@ -3688,7 +3692,7 @@ plot_castle_room_15
         goto load_castle_room_15 bank5
 
         data castle_room_15_obj
-        TYPE_RSLIME, $28, $90, TYPE_RSLIME, $50, $A0,
+        TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $A0,
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
         $00
@@ -3766,7 +3770,7 @@ plot_castle_room_25
         goto load_castle_room_25 bank5
 
         data castle_room_25_obj
-        TYPE_SKELETON, $4C, $50, $00
+        TYPE_PRIEST, $4C, $50, $00
 end
 
         data castle_rooms
@@ -4431,6 +4435,7 @@ load_castle_room_24
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 2
+        alt_palette = 2
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_24.tmx castle_room_24 0 0 20 14
@@ -4438,6 +4443,7 @@ load_castle_room_24
         goto plot_castle_bank5_return bank4
 
 load_castle_room_25
+        alt_palette = 2
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 17
         plotmapfile tiled/castle_room_25.tmx castle_room_25 0 0 20 14
