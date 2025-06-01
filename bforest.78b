@@ -12,7 +12,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 0
+        const debug_hud = 1
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -3845,12 +3845,12 @@ tfc_done jmp .walkable_return
 end
 
         data castle_walkable_tiles
-        $10, $16, $18, $1A, $1C, $1E, $20, $22, $24, $26, $28, $2A, $2C, $2E,
-        $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48, $4A
+        $10, $16, $18, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A,
+        $3C, $3E, $40, $42, $44, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56, $58
 end
 
         data castle_floatable_tiles
-        $4C, $4E, $50, $52, $54, $56, $58
+        $5A, $5C, $5E, $60, $62, $64, $66
 end
 
 torch_tile_block_castle
@@ -4176,24 +4176,23 @@ split_rslime
         ; mini slime is moved to the left of the parent slime's pos
         object_Xpos[index] = object_Xpos[index] - 1
         gosub find_new_object
-        index = spawn_index
         ; if no slots, the slime just becomes a single mini slime
         if no_empty_slot then object_Xpos[index] = temp1 : cc_next
         ; initialize the new mini slime object
-        object_type[index] = TYPE_MRSLIME
-        object_hp[index] = MRSLIME_HP
-        object_vel_cap_hi[index] = RSLIME_VEL_CAP_HI
-        object_vel_cap_lo[index] = RSLIME_VEL_CAP_LO
-        object_damage[index] = RSLIME_DAMAGE
-        object_def[index] = MRSLIME_DEF
-        object_mdef[index] = MRSLIME_MDEF
-        object_friction_hi[index] = RSLIME_FRICTION_HI
-        object_friction_lo[index] = RSLIME_FRICTION_LO
-        object_speed_hi[index] = RSLIME_SPEED_HI
-        object_speed_lo[index] = RSLIME_SPEED_LO
+        object_type[spawn_index] = TYPE_MRSLIME
+        object_hp[spawn_index] = MRSLIME_HP
+        object_vel_cap_hi[spawn_index] = RSLIME_VEL_CAP_HI
+        object_vel_cap_lo[spawn_index] = RSLIME_VEL_CAP_LO
+        object_damage[spawn_index] = RSLIME_DAMAGE
+        object_def[spawn_index] = MRSLIME_DEF
+        object_mdef[spawn_index] = MRSLIME_MDEF
+        object_friction_hi[spawn_index] = RSLIME_FRICTION_HI
+        object_friction_lo[spawn_index] = RSLIME_FRICTION_LO
+        object_speed_hi[spawn_index] = RSLIME_SPEED_HI
+        object_speed_lo[spawn_index] = RSLIME_SPEED_LO
         ; mini slime spawns to the right of the parent slime's pos
-        object_Xpos[index] = temp1 + 9
-        object_Ypos[index] = temp2
+        object_Xpos[spawn_index] = temp1 + 9
+        object_Ypos[spawn_index] = temp2
         goto cc_next
 
 plot_priest
