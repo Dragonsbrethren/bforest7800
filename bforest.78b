@@ -12,7 +12,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
 
-        const debug_hud = 1
+        const debug_hud = 0
         const debug_time = 0
 
 ;------------------------------------------------------------------------------
@@ -442,6 +442,7 @@
         autodim byte room_index
         autodim byte save_room_index
         autodim byte in_save_room
+        autodim byte entered_save_room
         autodim byte ledge_dir
         autodim byte window_zone        ; depreciated
         autodim byte lightning_timer
@@ -1754,6 +1755,7 @@ plot_forest_room_11
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 1
+        entered_save_room{0} = 1
         menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $0C
         menu_map_index = menu_map_index + 1
@@ -2954,12 +2956,12 @@ gen_forest_map
         if tileset = T_CASTLE then gen_castle_s
 
 gen_forest_s
-        if save_room_index{0} then plotsprite menu_s 0 94 80
+        if entered_save_room{0} then plotsprite menu_s 0 94 80
         return
 
 gen_castle_s
-        if save_room_index{0} then plotsprite menu_s 0 86 96
-        if save_room_index{1} then plotsprite menu_s 0 54 80
+        if entered_save_room{0} then plotsprite menu_s 0 86 96
+        if entered_save_room{1} then plotsprite menu_s 0 54 80
         return
 
 calc_inv_array
@@ -3451,7 +3453,7 @@ load_castle
         player_Xpos = 24
         player_Ypos = 60
         player_facing = DIR_UP
-        goto castle_pals
+        goto castle_rooms
 
 castle_save_1
         room_index = 18
@@ -3460,6 +3462,7 @@ castle_save_1
         player_Xpos = 24
         player_Ypos = 60
         player_facing = DIR_DOWN
+        goto castle_rooms
 
 castle_save_2
         room_index = 7
@@ -3591,10 +3594,6 @@ end
         TYPE_ARMOR2, $4C, $38, $00
 end
 
-        data castle_room_8_obj
-        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90, $00
-end
-
         dmahole 0
 
 plot_castle_room_2
@@ -3635,6 +3634,10 @@ plot_castle_room_7
 
 plot_castle_room_8
         goto load_castle_room_8 bank5
+
+        data castle_room_8_obj
+        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90, $00
+end
 
 plot_castle_room_9
         goto load_castle_room_9 bank5
@@ -3709,6 +3712,7 @@ plot_castle_room_17
         goto load_castle_room_17 bank5
 
         data castle_room_17_obj
+        TYPE_FOOD, $44, $30, TYPE_PRIEST, $6C, $30
         TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70, $00
 end
 
@@ -3716,7 +3720,9 @@ plot_castle_room_18
         goto load_castle_room_18 bank5
 
         data castle_room_18_obj
-        $00
+        TYPE_PRIEST, $18, $50, TYPE_PRIEST, $80, $50,
+        TYPE_TORCH, $08, $40, TYPE_TORCH, $90, $40, 
+        TYPE_SHIELD1, $4C, $B0, $00
 end
 
 plot_castle_room_19
@@ -3756,7 +3762,8 @@ plot_castle_room_23
         goto load_castle_room_23 bank5
 
         data castle_room_23_obj
-        TYPE_BLOOD, $58, $28, TYPE_BLOOD, $60, $A0, $00
+        TYPE_TORCH, $38, $A0, TYPE_TORCH, $60, $A0,
+        TYPE_BLOOD, $58, $28, TYPE_BLOOD, $60, $B0, $00
 end
 
 plot_castle_room_24
@@ -4356,6 +4363,7 @@ load_castle_room_14
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 1
+        entered_save_room{0} = 1
         alt_palette = 1
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 13
@@ -4434,6 +4442,7 @@ load_castle_room_24
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 2
+        entered_save_room{1} = 1
         alt_palette = 2
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 7
