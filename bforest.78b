@@ -3546,7 +3546,7 @@ plot_castle_room_1
         memcpy current_map castle_room_1 280
         plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
 plot_castle_bank5_return
-        return
+        return thisbank
 
         data castle_room_0_obj
         $00
@@ -3601,21 +3601,21 @@ plot_castle_room_2
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
         memcpy current_map castle_room_2 280
-        return
+        return thisbank
 
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
         memcpy current_map castle_room_3 280
-        return
+        return thisbank
 
 plot_castle_room_4
         menu_map_room[menu_map_index] = 8
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
         memcpy current_map castle_room_4 280
-        return
+        return thisbank
 
 plot_castle_room_5
         no_flash = 1
@@ -3623,7 +3623,7 @@ plot_castle_room_5
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
         memcpy current_map castle_room_5 280
-        return
+        return thisbank
 
 plot_castle_room_6
         goto load_castle_room_6 bank5
@@ -3863,12 +3863,12 @@ end
 torch_tile_block_castle
         ; block with a floatable tile so projectiles can hit torch
         pokechar current_map peekX peekY 20 14 castle_floatable_tiles
-        return
+        return thisbank
 
 torch_tile_unblock_castle
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 castle_walkable_tiles
-        return
+        return thisbank
 
 ;==============================================================================
 ; PRIEST & SKELETON AI
@@ -3942,7 +3942,7 @@ priest_walk_anim
         if Xdirection = DIR_LEFT then frame = 4
         if Xdirection = DIR_RIGHT then frame = 6
         if animation_frame then frame = frame + 1
-        goto priest_return
+        return thisbank
 
 skel_melee_x
         gosub test_melee
@@ -3965,7 +3965,7 @@ priest_cast_vert
 priest_cast
         const PRIEST_CAST_FRAMES = 20
         gosub find_new_object
-        if no_empty_slot then priest_return
+        if no_empty_slot then return thisbank
         ; set the spawned object slot's parent to the index of this object
         object_parent[spawn_index] = index
         flags{6} = 1
@@ -3983,7 +3983,7 @@ end
 priest_cast_2
         if object_type[index] = TYPE_SKELETON then goto skel_sword
         timer = timer - 1
-        if timer then goto priest_return
+        if timer then return thisbank
 
         ; todo: roll off into its own spawn projectile subroutine
         const DARKSPARK_SPEED_HI = 2
@@ -4008,9 +4008,7 @@ load_darkspark
         jsr set_cast_direction
 end
         flags{6} = 0
-
-priest_return
-        return
+        return thisbank
 
 
 priest_box
@@ -4029,7 +4027,7 @@ end
         const SKELSWORD_DAMAGE = 10
 
 skel_sword
-        if flags{7} then priest_return
+        if flags{7} then return thisbank
         asm
         jsr .position_sword
         ldx spawn_index
@@ -4057,7 +4055,7 @@ skel_sword
         sta object_timer,x
 end
         flags{7} = 1
-        goto priest_return
+        return thisbank
 
 ;==============================================================================
 ; SKELSWORD AI
@@ -4919,12 +4917,12 @@ fireball_ai
         if Xvelocity then fireball_animate
         if Yvelocity then fireball_animate
         object_type[index] = 0
-        return
+        return thisbank
 fireball_animate
         frame = 0
         if animation_frame then frame = 1
 fireball_done
-        return
+        return thisbank
 
 
 torch_tile_block
