@@ -4113,8 +4113,7 @@ redslime_ai
         temp1 = 0
 rslime_chase
         object_def[index] = temp1
-        gosub get_player_pos
-        gosub go_to_destination
+        gosub followplayer
         return
 
 obj_redslime_stats
@@ -5596,9 +5595,11 @@ sword_damage
         ; TODO: Much better damage calculations
         if object_def[index] = 255 then return
         temp_hp = object_hp[index]
+        temp1 = temp_hp
         hp_change = player_atk - object_def[index]
         if hp_change > player_atk then hp_change = 1
         gosub decrease_hp
+        if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
         return
 
