@@ -1,0 +1,52 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "river_room_1.tmx": {
+            "scale": 3.6558035714285713,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 79.87300036634511,
+                "y": 146.47942361704725
+            }
+        },
+        "river_room_1.tmx#forest_ledges": {
+            "scaleInDock": 2
+        },
+        "river_room_1.tmx#forest_rocks": {
+            "scaleInDock": 2
+        },
+        "river_room_1.tmx#forest_trees": {
+            "scaleInDock": 2
+        },
+        "river_room_1.tmx#forest_water": {
+            "scaleInDock": 2
+        }
+    },
+    "last.imagePath": "C:/Users/Chris/7800/bforest7800/gfx/tiles",
+    "last.worldFilePath": "C:/Users/Chris/7800/bforest7800/tiled",
+    "loadedWorlds": [
+        "C:/Users/Chris/7800/bforest7800/tiled/river.world"
+    ],
+    "map.height": 14,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 8,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "river.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 8
+    }
+}

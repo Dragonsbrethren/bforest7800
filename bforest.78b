@@ -1311,19 +1311,16 @@ bottomscreenroutine
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
         BACKGRND = flash_color
-        if tileset = T_FOREST then forest_flash
+        if tileset = T_CASTLE then hair_flash   ; Cathedral tileset uses black as BG, not C1
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        P7C1     = flash_color
 hair_flash
         ; Johanna's hair
         if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         return
-
-forest_flash
-        P4C1     = flash_color
-        P5C1     = flash_color
-        P6C1     = flash_color
-        P7C1     = flash_color
-        goto hair_flash
 
 clear_palettes
         BACKGRND = $00
@@ -4468,7 +4465,10 @@ plot_castle_room_25
 ; River tileset and data
 ;==============================================================================
         bank 6
-
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
         incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
@@ -4483,6 +4483,12 @@ plot_castle_room_25
         incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
         incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
         incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+        incgraphic gfx/sprites/octopus0.png 160A
+        incgraphic gfx/sprites/octopus1.png 160A
+        incgraphic gfx/sprites/octopus2.png 160A
+
+        incmapfile tiled/river_room_0.tmx
+        incmapfile tiled/river_room_1.tmx
 
 ;==============================================================================
 ; BANK 7
@@ -4490,7 +4496,10 @@ plot_castle_room_25
 ; Reserved for additional river data
 ;==============================================================================
         bank 7
-
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
         incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
@@ -4505,6 +4514,12 @@ plot_castle_room_25
         incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
         incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
         incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+        incgraphic gfx/sprites/octopus0.png 160A
+        incgraphic gfx/sprites/octopus1.png 160A
+        incgraphic gfx/sprites/octopus2.png 160A
+
+        incmapfile tiled/river_room_0.tmx
+        incmapfile tiled/river_room_1.tmx
 
 ;==============================================================================
 ; BANK 8
