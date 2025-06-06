@@ -1,7 +1,7 @@
 ;------------------------------------------------------------------------------
 ; 7800BASIC INITIALIZATION
 ;------------------------------------------------------------------------------
-        set romsize 144k
+        set romsize 272k
         set pokeysupport $450
         set screenheight 224
         set doublewide on
@@ -4463,11 +4463,62 @@ plot_castle_room_25
         return otherbank
 
 ;==============================================================================
-; BANK 9
+; BANK 6
+;------------------------------------------------------------------------------
+; River tileset and data
+;==============================================================================
+        bank 6
+
+        incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
+        incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
+        incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
+        incgraphic gfx/sprites/joswim3.png  160B 0 4 5 6 3   ; FRAME_UP_2
+        incgraphic gfx/sprites/joswim4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
+        incgraphic gfx/sprites/joswim5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
+        incgraphic gfx/sprites/joswim6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
+        incgraphic gfx/sprites/joswim7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
+        incgraphic gfx/sprites/joswim8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
+        incgraphic gfx/sprites/joswim9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
+        incgraphic gfx/sprites/joswim10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
+        incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
+        incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
+        incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+
+;==============================================================================
+; BANK 7
+;------------------------------------------------------------------------------
+; Reserved for additional river data
+;==============================================================================
+        bank 7
+
+        incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
+        incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
+        incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
+        incgraphic gfx/sprites/joswim3.png  160B 0 4 5 6 3   ; FRAME_UP_2
+        incgraphic gfx/sprites/joswim4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
+        incgraphic gfx/sprites/joswim5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
+        incgraphic gfx/sprites/joswim6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
+        incgraphic gfx/sprites/joswim7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
+        incgraphic gfx/sprites/joswim8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
+        incgraphic gfx/sprites/joswim9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
+        incgraphic gfx/sprites/joswim10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
+        incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
+        incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
+        incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+
+;==============================================================================
+; BANK 8
+;------------------------------------------------------------------------------
+; Hills tileset and data
+;==============================================================================
+        bank 8
+
+;==============================================================================
+; BANK 17
 ;------------------------------------------------------------------------------
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
-        bank 9
+        bank 17
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
