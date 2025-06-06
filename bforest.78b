@@ -133,6 +133,7 @@
         const TYPE_SKELETON =  10
         const TYPE_RSLIME   =  11
         const TYPE_MRSLIME  =  12       ; Mr. Slime lol
+        const TYPE_GHOST    =  13
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_DARKSPARK = 140
@@ -354,6 +355,8 @@
         autodim byte object_hop_dir 16
 
         autodim init $2400 $24FF
+        autodim byte object_pal 16
+        autodim byte sprite_pal
         autodim byte reload_map
         autodim byte save_objects
         autodim byte map_height
@@ -3298,6 +3301,8 @@ set_menu_top_pal
         incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
         incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
         incgraphic gfx/sprites/darkspark2.png 160A 1 0
+        incgraphic gfx/sprites/ghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/ghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/priest0.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest1.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest2.png 160A 0 1 2
@@ -3577,7 +3582,7 @@ end
 end
 
         data castle_room_5_obj
-        TYPE_SKELETON, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
+        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
         $00
 end
 
@@ -3585,13 +3590,13 @@ end
 
         data castle_room_6_obj
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_ITEM1, $7C, $30, TYPE_SKELETON, $48, $40,
+        TYPE_ITEM1, $7C, $30, TYPE_GHOST, $48, $40,
         $00
 end
         data castle_room_7_obj
         TYPE_RSLIME, $58, $A0,
         TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
-        TYPE_ARMOR2, $4C, $38, $00
+        TYPE_ARMOR2, $4C, $38, TYPE_GHOST, $70, $40, $00
 end
 
 plot_castle_room_2
@@ -4066,6 +4071,36 @@ obj_skel_stats
         goto obj_next_stats
 
 ;==============================================================================
+; GHOST AI
+;------------------------------------------------------------------------------
+; Floats through walls to attack player
+;==============================================================================
+ghost_ai
+        flags{2} = 1
+        if timer then goto ghost_follow
+        timer = 4
+        if !object_pal[index] then object_pal[index] = 2 : goto ghost_follow
+        object_pal[index] = 0
+ghost_follow
+        timer = timer - 1
+        gosub followplayer
+        return thisbank
+
+obj_ghost_stats
+        object_hp[obj_index] = 5
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 2
+        object_mdef[obj_index] = 0
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
 ; RED SLIME AI
 ;------------------------------------------------------------------------------
 ; A Red Slime draws near!
@@ -4156,15 +4191,19 @@ plot_skelsword
         goto plot_next
 
 plot_rslime
-        PLOTSPRITE c_slime0 7 Xposition Yposition animation_frame
+        plotsprite c_slime0 7 Xposition Yposition animation_frame
         goto plot_next
 
 plot_mrslime
-        PLOTSPRITE c_minislime0 7 Xposition Yposition animation_frame
+        plotsprite c_minislime0 7 Xposition Yposition animation_frame
         goto plot_next
 
 plot_blood
         plotsprite blood 2 Xposition Yposition 0
+        goto plot_next
+
+plot_ghost
+        plotsprite ghost0 sprite_pal Xposition Yposition animation_frame
         goto plot_next
 
 ;==============================================================================
@@ -4182,6 +4221,8 @@ plot_blood
         incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
         incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
         incgraphic gfx/sprites/darkspark2.png 160A 1 0
+        incgraphic gfx/sprites/ghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/ghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/priest0.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest1.png 160A 0 2 1 3
         incgraphic gfx/sprites/priest2.png 160A 0 1 2
@@ -4514,6 +4555,7 @@ clear_obj_loop
         sta object_timer,x
         sta object_dest,x
         sta object_hop_dir,x
+        sta object_pal,x
         dex
         bne clear_obj_loop
         sta temp1
@@ -4540,6 +4582,7 @@ object_stats
         if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
         if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
         if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
+        if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
 
 
 obj_next_stats
@@ -4593,6 +4636,7 @@ plot_objects
         if !object_type[index] then goto plot_next
         if object_type[index] = TYPE_SPAWNER then plot_next
         Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
+        sprite_pal = object_pal[index]
         if object_type[index] = TYPE_WOLF then plot_wolf
         if object_type[index] = TYPE_TORCH then plot_torch
         if object_type[index] = TYPE_COIN then plot_coin
@@ -4611,6 +4655,7 @@ plot_objects
         if object_type[index] = TYPE_DARKSPARK then plot_darkspark
         if object_type[index] = TYPE_SKELSWORD then plot_skelsword
         if object_type[index] = TYPE_BLOOD then plot_blood
+        if object_type[index] = TYPE_GHOST then plot_ghost
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -4866,6 +4911,7 @@ object_handler
         if object_type[index] = TYPE_SKELETON then gosub priest_ai
         if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
         if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
+        if object_type[index] = TYPE_GHOST then gosub ghost_ai
         gosub move_object
 object_restore
         gosub restore_object_props
