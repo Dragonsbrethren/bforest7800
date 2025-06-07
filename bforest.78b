@@ -4269,6 +4269,20 @@ plot_ghost
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
 
+spawns_priest
+        object_type[index] = TYPE_ITEM4 ; Ether
+        if rand >= 128 then object_type[index] = TYPE_ITEM5     ; Hi-Ether
+        if rand >= 224 then object_type[index] = TYPE_CHARM2
+        object_hp[index] = 1
+        goto object_done bank4  ; reload bank 4
+
+spawns_skeleton
+        object_type[index] = TYPE_COIN
+        if rand >= 192 then object_type[index] = TYPE_SHIELD2
+        if rand >= 224 then object_type[index] = TYPE_SWORD2
+        object_hp[index] = 1
+        goto object_done bank4
+
         data castle_map_b5_lo
         plot_castle_room_0_lo,
         plot_castle_room_1_lo, plot_castle_room_2_lo, plot_castle_room_3_lo, plot_castle_room_4_lo, plot_castle_room_5_lo,
@@ -4713,14 +4727,14 @@ plot_objects
         if object_type[index] = TYPE_RAVEN then plot_raven
         if object_type[index] = TYPE_PRIEST then plot_priest
         if object_type[index] = TYPE_SKELETON then plot_skeleton
-        if object_type[index] = TYPE_FOOD then plot_food
-        if object_type[index] = TYPE_ITEM1 then plot_item1
-        if object_type[index] = TYPE_ARMOR2 then plot_armor2
         if object_type[index] = TYPE_FIREBALL then plot_fireball
         if object_type[index] = TYPE_DARKSPARK then plot_darkspark
         if object_type[index] = TYPE_SKELSWORD then plot_skelsword
         if object_type[index] = TYPE_BLOOD then plot_blood
         if object_type[index] = TYPE_GHOST then plot_ghost
+        if object_type[index] = TYPE_FOOD then plot_food
+        if object_type[index] = TYPE_ARMOR2 then plot_armor2
+        if object_type[index] >= TYPE_ITEM1 then plot_item1
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -5017,15 +5031,18 @@ torch_tile_block_get_pos
 spawn_object
         ; index is still set by object_handler
         if object_flags[index] = TYPE_TORCH then spawns_torch
+        if object_flags[index] = TYPE_PRIEST then goto spawns_priest bank5
+        if object_flags[index] = TYPE_SKELETON then goto spawns_skeleton bank5
         drop_rate = 0
         if object_flags[index] = TYPE_WOLF then drop_rate = WOLF_DROP_RATE
         if object_flags[index] = TYPE_SLIME then drop_rate = SLIME_DROP_RATE
+        if object_flags[index] = TYPE_PRIEST then drop_rate = 128
 
         if rand > drop_rate then spawn_nothing
 
         if object_flags[index] = TYPE_WOLF then spawns_wolf
         if object_flags[index] = TYPE_SLIME then spawns_slime
-        goto object_done
+        goto spawn_nothing
 
 spawns_slime
         object_type[index] = TYPE_ITEM1
