@@ -152,6 +152,16 @@
         const TYPE_ITEM8    = 207
         const TYPE_ITEM9    = 208
         const TYPE_ITEM10   = 209
+        const TYPE_POTION   = TYPE_ITEM1
+        const TYPE_HIPOTION = TYPE_ITEM2
+        const TYPE_XPOTION  = TYPE_ITEM3
+        const TYPE_ETHER    = TYPE_ITEM4
+        const TYPE_HIETHER  = TYPE_ITEM5
+        const TYPE_ELIXIR   = TYPE_ITEM6
+        const TYPE_ANTIDOTE = TYPE_ITEM7
+        const TYPE_UNCURSE  = TYPE_ITEM8
+        const TYPE_SOFT     = TYPE_ITEM9
+        const TYPE_LIFEAPPLE = TYPE_ITEM10
         const TYPE_SWORD1   = 210
         const TYPE_SWORD2   = 211
         const TYPE_SWORD3   = 212
@@ -192,6 +202,9 @@
         const TYPE_CHARM8   = 247
         const TYPE_CHARM9   = 248
         const TYPE_CHARM10  = 249
+
+        const RARE_DROP_RATE = 248
+        const COMMON_DROP_RATE = 192
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
@@ -1343,7 +1356,7 @@ end
 end
 
         data f_shield_pals
-        0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0
+        0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0
 end
 
         data f_armor_pals
@@ -3237,17 +3250,17 @@ end
 end
 
         data pal_swords1
-        $00, $44, $76, $02, $02, $34
+        $00, $44, $74, $02, $02, $34
 end
         data pal_swords2
         $00, $FE, $0F, $05, $51, $36
 end
 
         data pal_shields1
-        $00, $44
+        $00, $44, $0C
 end
         data pal_shields2
-        $00, $FE
+        $00, $FE, $0F
 end
 
         data pal_armor1
@@ -4281,20 +4294,6 @@ plot_ghost
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
 
-spawns_priest
-        object_type[index] = TYPE_ITEM4 ; Ether
-        if rand >= 128 then object_type[index] = TYPE_ITEM5     ; Hi-Ether
-        if rand >= 224 then object_type[index] = TYPE_CHARM2
-        object_hp[index] = 1
-        goto object_done bank4  ; reload bank 4
-
-spawns_skeleton
-        object_type[index] = TYPE_COIN
-        if rand >= 192 then object_type[index] = TYPE_SHIELD2
-        if rand >= 224 then object_type[index] = TYPE_SWORD2
-        object_hp[index] = 1
-        goto object_done bank4
-
         data castle_map_b5_lo
         plot_castle_room_0_lo,
         plot_castle_room_1_lo, plot_castle_room_2_lo, plot_castle_room_3_lo, plot_castle_room_4_lo, plot_castle_room_5_lo,
@@ -4604,7 +4603,7 @@ plot_castle_room_25
         incgraphic gfx/sprites/fireball4.png 160A
         incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
-        incgraphic gfx/sprites/rosary.png 160A
+        incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -4750,7 +4749,7 @@ plot_objects
         if object_type[index] >= TYPE_ARMOR1 then plot_armor
         if object_type[index] >= TYPE_SHIELD1 then plot_shields
         if object_type[index] >= TYPE_SWORD1 then plot_swords
-        if object_type[index] >= TYPE_ITEM1 then plot_item1
+        if object_type[index] >= TYPE_ITEM1 then plot_items
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -4784,30 +4783,32 @@ plot_food
         plotsprite chimkin 1 Xposition Yposition 0
         goto plot_next
 
-plot_item1
-        plotsprite potion0 0 Xposition Yposition 0
+plot_items
+        temp1 = object_type[index] - (TYPE_ITEM1 - 1)
+        sprite_pal = f_item_pals[temp1]
+        plotsprite potion0 sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_swords
-        temp1 = object_type[index] - TYPE_SWORD1
+        temp1 = object_type[index] - (TYPE_SWORD1 - 1)
         sprite_pal = f_sword_pals[temp1]
         plotsprite sword0 sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_shields
-        temp1 = object_type[index] - TYPE_SHIELD1
+        temp1 = object_type[index] - (TYPE_SHIELD1 - 1)
         sprite_pal = f_shield_pals[temp1]
         plotsprite shield sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_armor
-        temp1 = object_type[index] - TYPE_ARMOR1
+        temp1 = object_type[index] - (TYPE_ARMOR1 - 1)
         sprite_pal = f_armor_pals[temp1]
         plotsprite armor0 sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_charms
-        temp1 = object_type[index] - TYPE_CHARM1
+        temp1 = object_type[index] - (TYPE_CHARM1 - 1)
 ;        plotsprite charm0 sprite_pal Xposition Yposition 0
 ;        goto plot_next
 
@@ -5070,27 +5071,51 @@ torch_tile_block_get_pos
 
 spawn_object
         ; index is still set by object_handler
-        if object_flags[index] = TYPE_TORCH then spawns_torch
-        if object_flags[index] = TYPE_PRIEST then goto spawns_priest bank5
-        if object_flags[index] = TYPE_SKELETON then goto spawns_skeleton bank5
-        drop_rate = 0
-        if object_flags[index] = TYPE_WOLF then drop_rate = WOLF_DROP_RATE
-        if object_flags[index] = TYPE_SLIME then drop_rate = SLIME_DROP_RATE
-        if object_flags[index] = TYPE_PRIEST then drop_rate = 128
+        temp1 = object_flags[index]
+        if temp1 = TYPE_TORCH then spawns_torch
 
-        if rand > drop_rate then spawn_nothing
+        ; exclude projectiles and collectible objects
+        if temp1 >=TYPE_SPAWNER then spawn_nothing
 
-        if object_flags[index] = TYPE_WOLF then spawns_wolf
-        if object_flags[index] = TYPE_SLIME then spawns_slime
-        goto spawn_nothing
+        if rand >= RARE_DROP_RATE then spawn_rare
+        if rand >= COMMON_DROP_RATE then spawn_common
 
-spawns_slime
-        object_type[index] = TYPE_ITEM1
-        object_hp[index] = 1
+spawn_nothing
+        object_type[index] = 0
         goto object_done
 
-spawns_wolf
-        ; TODO: Unique wolf item drops
+spawn_rare
+        object_type[index] = rare_drops[temp1]
+        goto object_done
+
+spawn_common
+        object_type[index] = common_drops[temp1]
+        goto object_done
+
+        data rare_drops
+        TYPE_FOOD,      ; wolf
+        TYPE_HIETHER,   ; slime
+        TYPE_HIETHER,   ; mini-slime
+        TYPE_FOOD,      ; raven
+        TYPE_CHARM2,    ; priest
+        TYPE_SWORD2,    ; skeleton
+        TYPE_HIETHER,   ; red slime
+        TYPE_HIETHER,   ; mini red slime
+        TYPE_ETHER      ; ghost
+end
+
+        data common_drops
+        TYPE_FOOD,      ; wolf
+        TYPE_ANTIDOTE,  ; slime
+        TYPE_ANTIDOTE,  ; mini-slime
+        TYPE_FOOD,      ; raven
+        TYPE_ETHER,     ; priest
+        TYPE_POTION,    ; skeleton
+        TYPE_ANTIDOTE,  ; red slime
+        TYPE_ANTIDOTE,  ; mini red slime
+        TYPE_UNCURSE    ; ghost
+end
+
 spawns_torch
         if player_hp = player_max_hp then torch_mp_check
         if rand > 128 then _spawn_food
@@ -5111,10 +5136,6 @@ _spawn_mana
 _spawn_coin
         object_type[index] = TYPE_COIN
         object_hp[index] = 1
-        goto object_done
-
-spawn_nothing
-        object_type[index] = 0
         goto object_done
 
 player_handler
