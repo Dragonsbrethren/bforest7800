@@ -622,11 +622,11 @@ title_new_game
         player_charm = 0
         m_item_bits_1 = %00000000
         m_item_bits_2 = %00000000
-        m_sword_bits_1 = %00011111
-        m_sword_bits_2 = %00011111
-        m_shield_bits_1 = %00010000
+        m_sword_bits_1 = %00000001
+        m_sword_bits_2 = %00000000
+        m_shield_bits_1 = %00000000
         m_shield_bits_2 = 0
-        m_armor_bits_1 = %00011101
+        m_armor_bits_1 = %00000001
         m_armor_bits_2 = 0
         m_charm_bits_1 = 0
         m_charm_bits_2 = 0
@@ -1025,7 +1025,7 @@ prep_bits_2
         return
 
 pickup_item
-        temp1 = temp1 - 200
+        temp1 = temp1 - TYPE_ITEM1
         gosub prep_inv_bits
 add_item
         m_item_bits_1 = m_item_bits_1 | temp1
@@ -1033,7 +1033,7 @@ add_item
         goto kill_object
 
 pickup_sword
-        temp1 = temp1 - 210
+        temp1 = temp1 - TYPE_SWORD1
         gosub prep_inv_bits
 add_sword
         m_sword_bits_1 = m_sword_bits_1 | temp1
@@ -1041,7 +1041,7 @@ add_sword
         goto kill_object
 
 pickup_shield
-        temp1 = temp1 - 220
+        temp1 = temp1 - TYPE_SHIELD1
         gosub prep_inv_bits
 add_shield
         m_shield_bits_1 = m_shield_bits_1 | temp1
@@ -1049,7 +1049,7 @@ add_shield
         goto kill_object
 
 pickup_armor
-        temp1 = temp1 - 230
+        temp1 = temp1 - TYPE_ARMOR1
         gosub prep_inv_bits
 add_armor
         m_armor_bits_1 = m_armor_bits_1 | temp1
@@ -1057,7 +1057,7 @@ add_armor
         goto kill_object
 
 pickup_charm
-        temp1 = temp1 - 240
+        temp1 = temp1 - TYPE_CHARM1
         gosub prep_inv_bits
 add_charm
         m_charm_bits_1 = m_charm_bits_1 | temp1
@@ -1334,12 +1334,24 @@ clear_palettes
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
 
+        data f_item_pals
+        3, 3, 3, 0, 0, 0, 2, 1, 2, 2
+end
+
         data f_sword_pals
-        0, 2, 1, 1, 0, 2, 2, 2, 2, 2, 2
+        0, 2, 0, 1, 0, 2, 2, 2, 2, 2, 2
 end
 
         data f_shield_pals
         0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data f_armor_pals
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data f_charm_pals
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data sfx_poof2
@@ -3200,7 +3212,7 @@ end
         alphadata charm_names menu_font singlewide
         '             '
         'Pendant      '
-        'Charm        '
+        'Dark Rosary  '
         'Locket       '
         'Coral Ring   '
         'Charm Num 5  '
@@ -3225,10 +3237,10 @@ end
 end
 
         data pal_swords1
-        $00, $44, $12, $02, $02, $34
+        $00, $44, $76, $02, $02, $34
 end
         data pal_swords2
-        $00, $FE, $24, $05, $51, $36
+        $00, $FE, $0F, $05, $51, $36
 end
 
         data pal_shields1
@@ -4592,6 +4604,7 @@ plot_castle_room_25
         incgraphic gfx/sprites/fireball4.png 160A
         incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
+        incgraphic gfx/sprites/rosary.png 160A
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -4733,7 +4746,10 @@ plot_objects
         if object_type[index] = TYPE_BLOOD then plot_blood
         if object_type[index] = TYPE_GHOST then plot_ghost
         if object_type[index] = TYPE_FOOD then plot_food
-        if object_type[index] = TYPE_ARMOR2 then plot_armor2
+        if object_type[index] >= TYPE_CHARM1 then plot_charms
+        if object_type[index] >= TYPE_ARMOR1 then plot_armor
+        if object_type[index] >= TYPE_SHIELD1 then plot_shields
+        if object_type[index] >= TYPE_SWORD1 then plot_swords
         if object_type[index] >= TYPE_ITEM1 then plot_item1
 plot_next
         next
@@ -4772,8 +4788,32 @@ plot_item1
         plotsprite potion0 0 Xposition Yposition 0
         goto plot_next
 
-plot_armor2
-        plotsprite armor0 2 Xposition Yposition 0
+plot_swords
+        temp1 = object_type[index] - TYPE_SWORD1
+        sprite_pal = f_sword_pals[temp1]
+        plotsprite sword0 sprite_pal Xposition Yposition 0
+        goto plot_next
+
+plot_shields
+        temp1 = object_type[index] - TYPE_SHIELD1
+        sprite_pal = f_shield_pals[temp1]
+        plotsprite shield sprite_pal Xposition Yposition 0
+        goto plot_next
+
+plot_armor
+        temp1 = object_type[index] - TYPE_ARMOR1
+        sprite_pal = f_armor_pals[temp1]
+        plotsprite armor0 sprite_pal Xposition Yposition 0
+        goto plot_next
+
+plot_charms
+        temp1 = object_type[index] - TYPE_CHARM1
+;        plotsprite charm0 sprite_pal Xposition Yposition 0
+;        goto plot_next
+
+plot_rosary
+        sprite_pal = f_charm_pals[temp1]
+        plotsprite rosary sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_fireball
