@@ -3158,7 +3158,7 @@ end
         alphadata sword_names menu_font singlewide
         '             '
         'Rapier       '
-        'Longsword    '
+        'Bone Scimitar'
         'Broadsword   '
         'Estoc        '
         'Firebrand    '
@@ -3172,7 +3172,7 @@ end
         alphadata shield_names menu_font singlewide
         '             '
         'Buckler      '
-        'Cross Shield '
+        'Skull Shield '
         'Kite Shield  '
         'Mirror Shield'
         'Shield Num 5 '
