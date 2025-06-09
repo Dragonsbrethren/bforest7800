@@ -203,7 +203,7 @@
         const TYPE_CHARM9   = 248
         const TYPE_CHARM10  = 249
 
-        const RARE_DROP_RATE = 248
+        const RARE_DROP_RATE = 254
         const COMMON_DROP_RATE = 192
 
 ;------------------------------------------------------------------------------
@@ -1183,6 +1183,7 @@ set_cast_direction
         bne cast_fireball_right
         jmp cast_fireball_left
 cast_fireball_right
+        sta object_facing,x
         sta object_Xdir,x
         lda player_Xpos,y
         clc
@@ -1199,6 +1200,7 @@ cast_fireball_right
         sta object_Yvel_lo,x
         rts
 cast_fireball_up
+        sta object_facing,x
         sta object_Ydir,x
         lda player_Xpos,y
         clc
@@ -1217,6 +1219,7 @@ cast_fireball_up
         sta object_Yvel_hi,x
         rts
 cast_fireball_down
+        sta object_facing,x
         sta object_Ydir,x
         lda player_Xpos,y
         clc
@@ -1235,6 +1238,7 @@ cast_fireball_down
         sta object_Yvel_hi,x
         rts
 cast_fireball_left
+        sta object_facing,x
         sta object_Xdir,x
         lda player_Xpos,y
         sec
@@ -5110,7 +5114,7 @@ end
         TYPE_ANTIDOTE,  ; mini-slime
         TYPE_FOOD,      ; raven
         TYPE_ETHER,     ; priest
-        TYPE_POTION,    ; skeleton
+        TYPE_SHIELD2,   ; skeleton
         TYPE_ANTIDOTE,  ; red slime
         TYPE_ANTIDOTE,  ; mini red slime
         TYPE_UNCURSE    ; ghost
@@ -5761,8 +5765,9 @@ player_knockback
 ;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
 ;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 
-        ; projectiles are destroyed on contact
-        if object_type[index] >= TYPE_DARKSPARK then object_type[index] = 0
+        ;  check player's shield and destroy projectile
+        if object_type[index] >= TYPE_DARKSPARK then shield_check
+
 pc_damage
         player_flags{0} = 1
         player_state = STATE_KNOCKBACK
@@ -5807,6 +5812,17 @@ update_hp_bar
 
         if player_hp = 0 then player_state = STATE_DEATH
         return
+
+shield_check
+        ; projectiles are destroyed on contact
+        object_type[index] = 0
+        ; TODO: different shield properties
+        if !player_shield then goto pc_damage
+        if player_facing = DIR_UP && object_facing[index]    = DIR_DOWN  then return thisbank
+        if player_facing = DIR_DOWN && object_facing[index]  = DIR_UP    then return thisbank
+        if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then return thisbank
+        if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then return thisbank
+        goto pc_damage
 
 increase_player_hp
         dec player_hp = player_hp + hp_change
