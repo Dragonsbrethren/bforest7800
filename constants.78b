@@ -1,0 +1,152 @@
+
+;==============================================================================
+; CONSTANTS
+;==============================================================================
+
+        incbasic objects.78b
+        incbasic palettes.78b
+;------------------------------------------------------------------------------
+; GAME STATES
+;------------------------------------------------------------------------------
+        const STATE_TITLE = 0
+        const STATE_FIELD = 1
+        const STATE_MENU  = 2
+
+;------------------------------------------------------------------------------
+; MOVEMENT
+;------------------------------------------------------------------------------
+        const DIR_UP    = 1
+        const DIR_DOWN  = 2
+        const DIR_LEFT  = 3
+        const DIR_RIGHT = 4
+
+        const EXIT_NONE  = 0
+        const EXIT_NORTH = 1
+        const EXIT_SOUTH = 2
+        const EXIT_EAST  = 3
+        const EXIT_WEST  = 4
+        
+        const ANIM_TIME = 16
+        const BUTTON_HOLD_FRAMES = 15
+
+;------------------------------------------------------------------------------
+; PLAYER DATA
+;------------------------------------------------------------------------------
+        const PLAYER_HEIGHT = 16
+        const PLAYER_WIDTH  = 12
+
+        const SWORD_FRAMES = 4
+        const SWORD_OFFSET_DOWN  = 15
+        const SWORD_OFFSET_UP    = -16
+        const SWORD_OFFSET_LEFT  = -12
+        const SWORD_OFFSET_RIGHT = 12
+        
+        const SHIELD_FRAMES = 4
+        const SHIELD_OFFSET_X = 8
+        const SHIELD_OFFSET_Y = 7
+
+        const STATE_STAND       = 0
+        const STATE_MOVING      = 1
+        const STATE_ATTACK      = 4
+        const STATE_CHANT_START = 5
+        const STATE_CHANT       = 6
+        const STATE_KNOCKBACK   = 2
+        const STATE_HOP         = 3
+        const STATE_DEATH       = 7
+
+        const FRAME_UP    = 2
+        const FRAME_DOWN  = 0
+        const FRAME_LEFT  = 4
+        const FRAME_RIGHT = 6
+        const FRAME_ATK_D = 8
+        const FRAME_ATK_U = 9
+        const FRAME_ATK_L = 10
+        const FRAME_ATK_R = 11
+        const FRAME_CHANT = 12
+        const FRAME_DEATH = 13
+
+        const ATTACK_FRAMES = 8
+        const CHANT_START_TIME = 12
+        const INVULN_FRAMES = 4
+
+;------------------------------------------------------------------------------
+; MAP DATA
+;------------------------------------------------------------------------------
+        const TILE_HEIGHT = 16
+        const TILE_WIDTH  = 8
+
+        const T_TITLE  = 0
+        const T_FOREST = 1
+        const T_CASTLE = 2
+        const T_RIVER  = 3
+        const T_HILLS  = 4
+
+        const ROOMS_PER_ROW = 7
+        const MAX_MAP_OBJECTS = 12
+        const MAX_OBJECTS = 15
+
+        const LIGHTNING_FRAMES = 8
+        const LIGHTNING_DELAY = 120
+
+;------------------------------------------------------------------------------
+; MENU DATA
+;------------------------------------------------------------------------------
+        const MENU_MAIN   = 0
+        const MENU_ITEMS  = 1
+        const MENU_MAGIC  = 2
+        const MENU_EQUIP  = 3
+        const MENU_RELICS = 4
+        const MENU_PASSWORD = 5
+        const MENU_GAMEOVER = 6
+        const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
+        const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
+
+        const MENU_MAIN_ITEMS_X = 12
+        const MENU_MAIN_ITEMS_Y = 192
+        const MENU_MAIN_MAGIC_X = 40
+        const MENU_MAIN_EQUIP_X = 72
+        const MENU_MAIN_RELICS_X = 116
+
+        ; once menu debounce >= this value, act as button was tapped
+        const MENU_TAP_FRAMES = 4
+
+        const ITEMS_HP_X = 80
+        const ITEMS_HP_Y = 32
+
+        const MENU_EQUIP_MAX_OPTIONS = 4
+        const MENU_EQUIP_EQUIPPED_X = 76
+        const MENU_EQUIP_SWORD_Y    = 64
+        const MENU_EQUIP_SHIELD_Y   = 96
+        const MENU_EQUIP_ARMOR_Y    = 128
+        const MENU_EQUIP_CHARM_Y    = 160
+        const MENU_EQUIP_INV_X      = 12
+        const MENU_EQUIP_INV0_Y    = 80
+        const MENU_EQUIP_INV1_Y    = 112
+        const MENU_EQUIP_INV2_Y    = 142
+        const MENU_EQUIP_INV3_Y    = 176
+        const MENU_EQUIP_EXIT_X     = 124
+        const MENU_EQUIP_EXIT_Y     = 192
+
+        ; offsets added to menu selection to get proper font characters on password screen
+        const PW_0 = 18
+        const PW_A = 15
+
+        ; item healing values
+        const HP_CHANGE_POTION = $20
+        const HP_CHANGE_HIPOTION = $30
+        const HP_CHANGE_XPOTION = $48
+        const MP_CHANGE_ETHER = $10
+        const MP_CHANGE_XETHER = $48
+
+        ; pointers used in equip menu
+        const m_item_inv_lo = #<m_item_inv
+        const m_item_inv_hi = #>m_item_inv
+        const m_sword_inv_lo = #<m_sword_inv
+        const m_sword_inv_hi = #>m_sword_inv
+        const m_shield_inv_lo = #<m_shield_inv
+        const m_shield_inv_hi = #>m_shield_inv
+        const m_armor_inv_lo = #<m_armor_inv
+        const m_armor_inv_hi = #>m_armor_inv
+        const m_charm_inv_lo = #<m_charm_inv
+        const m_charm_inv_hi = #>m_charm_inv
+        

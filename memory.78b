@@ -1,0 +1,326 @@
+
+;------------------------------------------------------------------------------
+; SYSTEM VARIABLES
+;------------------------------------------------------------------------------
+        dim temp_hp_sign = temp1        ; tracks underflow during subtraction
+        dim valueX       = temp4
+        dim valueY       = temp5
+        dim value_ptr_lo = temp7
+        dim value_ptr_hi = temp8
+
+        autodim init a z
+        autodim byte index
+        autodim byte game_state
+        autodim byte pointer
+        autodim byte pointer_hi
+        autodim byte Xposition
+        autodim byte Yposition
+        autodim byte Xdestination
+        autodim byte Ydestination
+        autodim byte Xdirection
+        autodim byte Ydirection
+        autodim 8.8  Xvelocity
+        autodim 8.8  Yvelocity
+        autodim 8.8  move_speed
+        autodim 8.8  vel_cap
+        autodim 8.8  friction
+        autodim byte temp_hp
+        autodim byte hp_change
+        autodim byte bg_color
+        autodim byte animation_timer
+        autodim byte retract_counter
+        autodim byte action_button
+
+;------------------------------------------------------------------------------
+; PLAYER
+;------------------------------------------------------------------------------
+        autodim init var0 var99
+
+        ; player is now treated as object 0, so these are just aliases
+        dim player_Xpos         = object_Xpos
+        dim player_Ypos         = object_Ypos
+        dim player_Xvel_hi      = object_Xvel_hi
+        dim player_Xvel_lo      = object_Xvel_lo
+        dim player_Xvel         = player_Xvel_hi
+        dim player_Yvel_hi      = object_Yvel_hi
+        dim player_Yvel_lo      = object_Yvel_lo
+        dim player_Yvel         = player_Yvel_hi
+        dim player_vel_cap_hi   = object_vel_cap_hi
+        dim player_vel_cap_lo   = object_vel_cap_lo
+        dim player_vel_cap      = player_vel_cap_hi
+        dim player_friction_hi  = object_friction_hi
+        dim player_friction_lo  = object_friction_lo
+        dim player_friction     = player_friction_hi
+        dim player_Xdir         = object_Xdir
+        dim player_Ydir         = object_Ydir
+        dim player_facing       = object_facing
+        dim player_frame        = object_frame
+        dim player_state        = object_state
+        dim player_flags        = object_flags
+        dim player_timer        = object_timer
+        dim player_dest         = object_dest
+        dim player_hop_dir      = object_hop_dir
+        dim player_hp           = object_hp
+
+        autodim byte player_max_hp
+        autodim byte player_mp
+        autodim byte player_max_mp
+        autodim byte player_level
+        dim player_exp = score1
+        autodim byte player_str
+        autodim byte player_atk ; str + wpn atk
+        autodim byte player_damage
+        autodim byte player_atk_elem
+        autodim byte player_def
+        autodim byte player_def_elem
+        autodim byte player_wisdom
+        autodim 8.8  player_speed
+        autodim byte player_sword
+        autodim byte player_shield
+        autodim byte player_armor
+        autodim byte player_charm
+        autodim byte player_status
+        autodim byte sword_pal
+        autodim byte sword_Xpos
+        autodim byte sword_Ypos
+        autodim byte sword_frame
+        autodim byte sword_width
+        autodim byte sword_height
+        autodim byte shield_pal
+        autodim byte shield_Xpos
+        autodim byte shield_Ypos
+        autodim byte shield_frame
+        autodim byte hp_seg_1
+        autodim byte hp_seg_2
+        autodim byte hp_seg_3
+        autodim byte hp_seg_4
+        autodim byte hp_seg_5
+        autodim byte hp_seg_6
+        autodim byte mp_seg_1
+        autodim byte mp_seg_2
+        autodim byte mp_seg_3
+        autodim byte mp_seg_4
+        autodim byte mp_seg_5
+        autodim byte mp_seg_6
+        autodim byte mp_change
+        autodim byte chant_timer
+        autodim byte flash_color
+        autodim byte player_exiting_chant
+        autodim byte sword_hit
+
+;------------------------------------------------------------------------------
+; MISC movement vars
+;------------------------------------------------------------------------------
+        autodim byte mtarget
+        autodim byte magic_Xpos
+        autodim byte magic_Ypos
+        autodim byte hop_dest
+        autodim byte timer
+        autodim byte hop_dir
+
+;------------------------------------------------------------------------------
+; MOVING OBJECT ARRAYS
+;------------------------------------------------------------------------------
+        autodim init $2200 $23FF
+        autodim byte object_type 16
+        autodim byte object_Xpos 16
+        autodim byte object_Ypos 16
+        autodim 8.8  object_Xvel 16
+        autodim 8.8  object_Yvel 16
+        autodim byte object_Xdir 16
+        autodim byte object_Ydir 16
+        autodim byte object_facing 16
+        autodim byte object_frame 16
+        autodim byte object_state 16
+        autodim 8.8  object_speed 16
+        autodim 8.8  object_vel_cap 16
+        autodim 8.8  object_friction 16
+        autodim byte object_hp 16
+        autodim byte object_damage 16
+        autodim byte object_elem_atk 16
+        autodim byte object_def 16
+        autodim byte object_mdef 16
+        autodim byte object_elem_def 16
+        autodim byte object_parent 16
+        autodim byte object_flags 16
+        autodim byte object_timer 16
+        autodim byte object_dest 16
+        autodim byte object_hop_dir 16
+
+        autodim init $2400 $24FF
+        autodim byte object_pal 16
+        autodim byte sprite_pal
+        autodim byte reload_map
+        autodim byte save_objects
+        autodim byte map_height
+        autodim byte map_width
+        autodim byte peekX
+        autodim byte peekY
+        autodim byte move_tile_1
+        autodim byte move_tile_2
+        autodim byte animation_frame
+        autodim byte frame
+        autodim byte flags
+        autodim byte obj_index
+        autodim byte drop_rate
+        autodim byte no_empty_slot
+        autodim byte torch_reblock
+        autodim byte spawn_index
+        autodim byte frame_index
+
+        ; MENUS
+        autodim byte action_debounce
+        autodim byte menu_debounce
+        autodim byte select_debounce
+        autodim byte pause_debounce
+        autodim byte left_debounce
+        autodim byte right_debounce
+        autodim byte up_debounce
+        autodim byte down_debounce
+        autodim byte menu
+        autodim byte menu_change
+        autodim byte menu_selection
+        autodim byte prev_menu_selection
+        autodim byte menu_max
+        autodim byte menu_columns
+        autodim byte menu_rows
+        autodim byte menu_cursor_X
+        autodim byte menu_cursor_Y
+        autodim byte m_palette
+        autodim byte m_spriteX
+        autodim byte m_spriteY
+        autodim byte m_textX
+        autodim byte m_textY
+        autodim byte m_inv_index
+        autodim byte m_inv_scroll
+        autodim byte m_inv_slot
+        autodim byte m_sword_pal1
+        autodim byte m_sword_pal2
+        autodim byte m_shield_pal1
+        autodim byte m_shield_pal2
+        autodim byte m_armor_pal1
+        autodim byte m_armor_pal2
+        autodim byte m_charm_pal1
+        autodim byte m_charm_pal2
+        autodim byte m_inv0_pal1
+        autodim byte m_inv1_pal1
+        autodim byte m_inv2_pal1
+        autodim byte m_inv3_pal1
+        autodim byte m_inv0_pal2
+        autodim byte m_inv1_pal2
+        autodim byte m_inv2_pal2
+        autodim byte m_inv3_pal2
+        autodim byte equip_inv_col
+        autodim byte equip_inv_sel
+        autodim byte equip_inv_X
+        autodim byte equip_inv_Y
+        autodim byte item_name
+        autodim byte using_item
+        autodim byte m_desc
+
+        ; ROOM HEADER
+        autodim byte first_load
+        autodim byte room
+        autodim byte tileset
+        autodim byte exit_dir
+        autodim byte music
+        autodim byte walkable
+        autodim byte ledge
+        autodim byte floatable
+        autodim byte walkable_1
+        autodim byte ledge_1
+        autodim byte floatable_1
+        autodim byte walkable_2
+        autodim byte ledge_2
+        autodim byte floatable_2
+        autodim byte walk_test
+        autodim byte walk_index
+        autodim byte room_index
+        autodim byte save_room_index
+        autodim byte in_save_room
+        autodim byte entered_save_room
+        autodim byte ledge_dir
+        autodim byte window_zone        ; depreciated
+        autodim byte lightning_timer
+        autodim byte lightning_delay
+        autodim byte no_flash
+        autodim byte alt_palette
+
+        autodim init $2500 $25FF
+        const INPUT_BUFFER_MAX = 7      ; array starts at 0
+        autodim byte input_buffer 8
+        autodim byte input_buffer_index
+        autodim byte chant_index
+        autodim byte chant_input
+        ; possible to start a chant on index 0 so need another variable        
+        autodim byte chant_new_input
+        autodim byte m_item_bits_1
+        autodim byte m_item_bits_2
+        autodim byte m_spell_bits_1
+        autodim byte m_spell_bits_2
+        autodim byte m_sword_bits_1
+        autodim byte m_sword_bits_2
+        autodim byte m_shield_bits_1
+        autodim byte m_shield_bits_2
+        autodim byte m_armor_bits_1
+        autodim byte m_armor_bits_2
+        autodim byte m_charm_bits_1
+        autodim byte m_charm_bits_2
+        autodim byte m_item_inv   11
+        autodim byte m_sword_inv  11
+        autodim byte m_shield_inv 11
+        autodim byte m_armor_inv  11
+        autodim byte m_charm_inv  11
+        autodim byte m_inv_item_0
+        autodim byte m_inv_item_1
+        autodim byte m_inv_item_2
+        autodim byte m_inv_item_3
+        autodim byte m_inv_item_4
+        autodim byte m_sword_max
+
+        autodim byte menu_map_room 98
+        autodim byte menu_map_index
+        autodim byte menu_map_index_2
+        autodim byte menu_map_Xpos
+        autodim byte menu_map_Ypos
+
+        ; PASSWORD ARRAY
+        dim pw_index0  = pw_tileset
+        autodim byte pw_tileset
+        autodim byte pw_saveroom
+        autodim byte pw_sword
+        autodim byte pw_shield
+        autodim byte pw_armor
+        autodim byte pw_charm
+        dim pw_index6  = pw_inventory_1
+        autodim byte pw_inventory_1
+        autodim byte pw_inventory_2
+        autodim byte pw_spells_1
+        autodim byte pw_spells_2
+        autodim byte pw_swords_1
+        autodim byte pw_swords_2
+        dim pw_index12 = pw_shields_1
+        autodim byte pw_shields_1
+        autodim byte pw_shields_2
+        autodim byte pw_armor_1
+        autodim byte pw_armor_2
+        autodim byte pw_charms_1
+        autodim byte pw_charms_2
+        dim pw_index18 = pw_relics_1
+        autodim byte pw_relics_1
+        autodim byte pw_relics_2
+        autodim byte pw_index20
+        autodim byte pw_index21
+        autodim byte pw_index22
+        autodim byte pw_checksum
+        autodim byte pw_index
+        autodim byte pw_buffer 24
+        autodim byte pw_error
+        autodim byte pw_success
+        autodim byte fade_count
+
+
+        dim current_map = $2600
+
+        dim RMTRAM = $2720
+        

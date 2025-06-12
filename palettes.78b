@@ -1,0 +1,23 @@
+
+;------------------------------------------------------------------------------
+; SHARED PALETTES
+;------------------------------------------------------------------------------
+        const PAL_DKPURP = $60
+        const PAL_LTPURP = $76
+        const PAL_WHITE  = $0F
+        const PAL_DKBRWN = $10
+        const PAL_LTBRWN = $23
+        const PAL_SKIN   = $3B
+        const PAL_DKRED  = $30
+        const PAL_LTRED  = $45
+        const PAL_GOLD   = $19
+        const PAL_DKBLUE = $91
+        const PAL_LTBLUE = $A3
+        const PAL_COPPER = $D5
+
+
+        const HAIR_COLOR = PAL_DKBRWN
+        const CHANT_COLOR = $60
+        const BAR_NORMAL_COLOR = $76
+        const BAR_FLASH_COLOR = $79
+        

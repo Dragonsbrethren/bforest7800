@@ -15,679 +15,17 @@
         const debug_hud = 0
         const debug_time = 0
 
-;------------------------------------------------------------------------------
-; GAME STATES
-;------------------------------------------------------------------------------
-        const STATE_TITLE = 0
-        const STATE_FIELD = 1
-        const STATE_MENU  = 2
-        
-        const ANIM_TIME = 16
-        const INVULN_FRAMES = 4
-
-;------------------------------------------------------------------------------
-; MOVEMENT CONSTANTS
-;------------------------------------------------------------------------------
-        const DIR_UP    = 1
-        const DIR_DOWN  = 2
-        const DIR_LEFT  = 3
-        const DIR_RIGHT = 4
-
-        const EXIT_NONE  = 0
-        const EXIT_NORTH = 1
-        const EXIT_SOUTH = 2
-        const EXIT_EAST  = 3
-        const EXIT_WEST  = 4
-
-        const BUTTON_HOLD_FRAMES = 15
-
-;------------------------------------------------------------------------------
-; PLAYER DATA
-;------------------------------------------------------------------------------
-        const PLAYER_HEIGHT = 16
-        const PLAYER_WIDTH  = 12
-
-        const SWORD_FRAMES = 4
-        const SWORD_OFFSET_DOWN  = 15
-        const SWORD_OFFSET_UP    = -16
-        const SWORD_OFFSET_LEFT  = -12
-        const SWORD_OFFSET_RIGHT = 12
-        
-        const SHIELD_FRAMES = 4
-        const SHIELD_OFFSET_X = 8
-        const SHIELD_OFFSET_Y = 7
-
-        const STATE_STAND       = 0
-        const STATE_MOVING      = 1
-        const STATE_ATTACK      = 4
-        const STATE_CHANT_START = 5
-        const STATE_CHANT       = 6
-        const STATE_KNOCKBACK   = 2
-        const STATE_HOP         = 3
-        const STATE_DEATH       = 7
-
-        const FRAME_UP    = 2
-        const FRAME_DOWN  = 0
-        const FRAME_LEFT  = 4
-        const FRAME_RIGHT = 6
-        const FRAME_ATK_D = 8
-        const FRAME_ATK_U = 9
-        const FRAME_ATK_L = 10
-        const FRAME_ATK_R = 11
-        const FRAME_CHANT = 12
-        const FRAME_DEATH = 13
-
-        const ATTACK_FRAMES = 8
-        const CHANT_START_TIME = 12
-
-;------------------------------------------------------------------------------
-; SHARED PALETTES
-;------------------------------------------------------------------------------
-        const PAL_DKPURP = $60
-        const PAL_LTPURP = $76
-        const PAL_WHITE  = $0F
-        const PAL_DKBRWN = $10
-        const PAL_LTBRWN = $23
-        const PAL_SKIN   = $3B
-        const PAL_DKRED  = $30
-        const PAL_LTRED  = $45
-        const PAL_GOLD   = $19
-        const PAL_DKBLUE = $91
-        const PAL_LTBLUE = $A3
-        const PAL_COPPER = $D5
-
-
-        const HAIR_COLOR = PAL_DKBRWN
-        const CHANT_COLOR = $60
-        const BAR_NORMAL_COLOR = $76
-        const BAR_FLASH_COLOR = $79
-
-;------------------------------------------------------------------------------
-; MAP DATA
-;------------------------------------------------------------------------------
-        const TILE_HEIGHT = 16
-        const TILE_WIDTH  = 8
-
-        const T_TITLE  = 0
-        const T_FOREST = 1
-        const T_CASTLE = 2
-        const T_RIVER  = 3
-        const T_HILLS  = 4
-
-        const ROOMS_PER_ROW = 7
-        const MAX_MAP_OBJECTS = 12
-        const MAX_OBJECTS = 15
-
-        const LIGHTNING_FRAMES = 8
-        const LIGHTNING_DELAY = 120
-
-;==============================================================================
-; OBJECT DATA
-;==============================================================================0
-        const TYPE_TORCH    =   1
-        const TYPE_WOLF     =   2
-        const TYPE_SLIME    =   6
-        const TYPE_MSLIME   =   7
-        const TYPE_RAVEN    =   8
-        const TYPE_PRIEST   =   9
-        const TYPE_SKELETON =  10
-        const TYPE_RSLIME   =  11
-        const TYPE_MRSLIME  =  12       ; Mr. Slime lol
-        const TYPE_GHOST    =  13
-        const TYPE_SPAWNER  = 128
-        const TYPE_SKELSWORD = 129
-        const TYPE_DARKSPARK = 140
-        const TYPE_FIREBALL = 150
-        const TYPE_BLOOD    = 196
-        const TYPE_COIN     = 197
-        const TYPE_PRISM    = 198
-        const TYPE_FOOD     = 199
-        const TYPE_ITEM1    = 200
-        const TYPE_ITEM2    = 201
-        const TYPE_ITEM3    = 202
-        const TYPE_ITEM4    = 203
-        const TYPE_ITEM5    = 204
-        const TYPE_ITEM6    = 205
-        const TYPE_ITEM7    = 206
-        const TYPE_ITEM8    = 207
-        const TYPE_ITEM9    = 208
-        const TYPE_ITEM10   = 209
-        const TYPE_POTION   = TYPE_ITEM1
-        const TYPE_HIPOTION = TYPE_ITEM2
-        const TYPE_XPOTION  = TYPE_ITEM3
-        const TYPE_ETHER    = TYPE_ITEM4
-        const TYPE_HIETHER  = TYPE_ITEM5
-        const TYPE_ELIXIR   = TYPE_ITEM6
-        const TYPE_ANTIDOTE = TYPE_ITEM7
-        const TYPE_UNCURSE  = TYPE_ITEM8
-        const TYPE_SOFT     = TYPE_ITEM9
-        const TYPE_LIFEAPPLE = TYPE_ITEM10
-        const TYPE_SWORD1   = 210
-        const TYPE_SWORD2   = 211
-        const TYPE_SWORD3   = 212
-        const TYPE_SWORD4   = 213
-        const TYPE_SWORD5   = 214
-        const TYPE_SWORD6   = 215
-        const TYPE_SWORD7   = 216
-        const TYPE_SWORD8   = 217
-        const TYPE_SWORD9   = 218
-        const TYPE_SWORD10  = 219
-        const TYPE_SHIELD1  = 220
-        const TYPE_SHIELD2  = 221
-        const TYPE_SHIELD3  = 222
-        const TYPE_SHIELD4  = 223
-        const TYPE_SHIELD5  = 224
-        const TYPE_SHIELD6  = 225
-        const TYPE_SHIELD7  = 226
-        const TYPE_SHIELD8  = 227
-        const TYPE_SHIELD9  = 228
-        const TYPE_SHIELD10 = 229
-        const TYPE_ARMOR1   = 230
-        const TYPE_ARMOR2   = 231
-        const TYPE_ARMOR3   = 232
-        const TYPE_ARMOR4   = 233
-        const TYPE_ARMOR5   = 234
-        const TYPE_ARMOR6   = 235
-        const TYPE_ARMOR7   = 236
-        const TYPE_ARMOR8   = 237
-        const TYPE_ARMOR9   = 238
-        const TYPE_ARMOR10  = 239
-        const TYPE_CHARM1   = 240
-        const TYPE_CHARM2   = 241
-        const TYPE_CHARM3   = 242
-        const TYPE_CHARM4   = 243
-        const TYPE_CHARM5   = 244
-        const TYPE_CHARM6   = 245
-        const TYPE_CHARM7   = 246
-        const TYPE_CHARM8   = 247
-        const TYPE_CHARM9   = 248
-        const TYPE_CHARM10  = 249
-
-        const RARE_DROP_RATE = 254
-        const COMMON_DROP_RATE = 192
-
-;------------------------------------------------------------------------------
-; MENU DATA
-;------------------------------------------------------------------------------
-        const MENU_MAIN   = 0
-        const MENU_ITEMS  = 1
-        const MENU_MAGIC  = 2
-        const MENU_EQUIP  = 3
-        const MENU_RELICS = 4
-        const MENU_PASSWORD = 5
-        const MENU_GAMEOVER = 6
-        const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
-        const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
-
-;------------------------------------------------------------------------------
-; SYSTEM VARIABLES
-;------------------------------------------------------------------------------
-        dim temp_hp_sign = temp1        ; tracks underflow during subtraction
-        dim valueX       = temp4
-        dim valueY       = temp5
-        dim value_ptr_lo = temp7
-        dim value_ptr_hi = temp8
-
-        autodim init a z
-        autodim byte index
-        autodim byte game_state
-        autodim byte pointer
-        autodim byte pointer_hi
-        autodim byte Xposition
-        autodim byte Yposition
-        autodim byte Xdestination
-        autodim byte Ydestination
-        autodim byte Xdirection
-        autodim byte Ydirection
-        autodim 8.8  Xvelocity
-        autodim 8.8  Yvelocity
-        autodim 8.8  move_speed
-        autodim 8.8  vel_cap
-        autodim 8.8  friction
-        autodim byte temp_hp
-        autodim byte hp_change
-        autodim byte bg_color
-        autodim byte animation_timer
-        autodim byte retract_counter
-        autodim byte action_button
-
-;------------------------------------------------------------------------------
-; PLAYER
-;------------------------------------------------------------------------------
-        autodim init var0 var99
-
-        ; player is now treated as object 0, so these are just aliases
-        dim player_Xpos         = object_Xpos
-        dim player_Ypos         = object_Ypos
-        dim player_Xvel_hi      = object_Xvel_hi
-        dim player_Xvel_lo      = object_Xvel_lo
-        dim player_Xvel         = player_Xvel_hi
-        dim player_Yvel_hi      = object_Yvel_hi
-        dim player_Yvel_lo      = object_Yvel_lo
-        dim player_Yvel         = player_Yvel_hi
-        dim player_vel_cap_hi   = object_vel_cap_hi
-        dim player_vel_cap_lo   = object_vel_cap_lo
-        dim player_vel_cap      = player_vel_cap_hi
-        dim player_friction_hi  = object_friction_hi
-        dim player_friction_lo  = object_friction_lo
-        dim player_friction     = player_friction_hi
-        dim player_Xdir         = object_Xdir
-        dim player_Ydir         = object_Ydir
-        dim player_facing       = object_facing
-        dim player_frame        = object_frame
-        dim player_state        = object_state
-        dim player_flags        = object_flags
-        dim player_timer        = object_timer
-        dim player_dest         = object_dest
-        dim player_hop_dir      = object_hop_dir
-        dim player_hp           = object_hp
-
-        autodim byte player_max_hp
-        autodim byte player_mp
-        autodim byte player_max_mp
-        autodim byte player_level
-        dim player_exp = score1
-        autodim byte player_str
-        autodim byte player_atk ; str + wpn atk
-        autodim byte player_damage
-        autodim byte player_atk_elem
-        autodim byte player_def
-        autodim byte player_def_elem
-        autodim byte player_wisdom
-        autodim 8.8  player_speed
-        autodim byte player_sword
-        autodim byte player_shield
-        autodim byte player_armor
-        autodim byte player_charm
-        autodim byte player_status
-        autodim byte sword_pal
-        autodim byte sword_Xpos
-        autodim byte sword_Ypos
-        autodim byte sword_frame
-        autodim byte sword_width
-        autodim byte sword_height
-        autodim byte shield_pal
-        autodim byte shield_Xpos
-        autodim byte shield_Ypos
-        autodim byte shield_frame
-        autodim byte hp_seg_1
-        autodim byte hp_seg_2
-        autodim byte hp_seg_3
-        autodim byte hp_seg_4
-        autodim byte hp_seg_5
-        autodim byte hp_seg_6
-        autodim byte mp_seg_1
-        autodim byte mp_seg_2
-        autodim byte mp_seg_3
-        autodim byte mp_seg_4
-        autodim byte mp_seg_5
-        autodim byte mp_seg_6
-        autodim byte mp_change
-        autodim byte chant_timer
-        autodim byte flash_color
-        autodim byte player_exiting_chant
-        autodim byte sword_hit
-
-;------------------------------------------------------------------------------
-; MISC movement vars
-;------------------------------------------------------------------------------
-        autodim byte mtarget
-        autodim byte magic_Xpos
-        autodim byte magic_Ypos
-        autodim byte hop_dest
-        autodim byte timer
-        autodim byte hop_dir
-
-;------------------------------------------------------------------------------
-; MOVING OBJECT ARRAYS
-;------------------------------------------------------------------------------
-        autodim init $2200 $23FF
-        autodim byte object_type 16
-        autodim byte object_Xpos 16
-        autodim byte object_Ypos 16
-        autodim 8.8  object_Xvel 16
-        autodim 8.8  object_Yvel 16
-        autodim byte object_Xdir 16
-        autodim byte object_Ydir 16
-        autodim byte object_facing 16
-        autodim byte object_frame 16
-        autodim byte object_state 16
-        autodim 8.8  object_speed 16
-        autodim 8.8  object_vel_cap 16
-        autodim 8.8  object_friction 16
-        autodim byte object_hp 16
-        autodim byte object_damage 16
-        autodim byte object_elem_atk 16
-        autodim byte object_def 16
-        autodim byte object_mdef 16
-        autodim byte object_elem_def 16
-        autodim byte object_parent 16
-        autodim byte object_flags 16
-        autodim byte object_timer 16
-        autodim byte object_dest 16
-        autodim byte object_hop_dir 16
-
-        autodim init $2400 $24FF
-        autodim byte object_pal 16
-        autodim byte sprite_pal
-        autodim byte reload_map
-        autodim byte save_objects
-        autodim byte map_height
-        autodim byte map_width
-        autodim byte peekX
-        autodim byte peekY
-        autodim byte move_tile_1
-        autodim byte move_tile_2
-        autodim byte animation_frame
-        autodim byte frame
-        autodim byte flags
-        autodim byte obj_index
-        autodim byte drop_rate
-        autodim byte no_empty_slot
-        autodim byte torch_reblock
-        autodim byte spawn_index
-        autodim byte frame_index
-
-        ; MENUS
-        autodim byte action_debounce
-        autodim byte menu_debounce
-        autodim byte select_debounce
-        autodim byte pause_debounce
-        autodim byte left_debounce
-        autodim byte right_debounce
-        autodim byte up_debounce
-        autodim byte down_debounce
-        autodim byte menu
-        autodim byte menu_change
-        autodim byte menu_selection
-        autodim byte prev_menu_selection
-        autodim byte menu_max
-        autodim byte menu_columns
-        autodim byte menu_rows
-        autodim byte menu_cursor_X
-        autodim byte menu_cursor_Y
-        autodim byte m_palette
-        autodim byte m_spriteX
-        autodim byte m_spriteY
-        autodim byte m_textX
-        autodim byte m_textY
-        autodim byte m_inv_index
-        autodim byte m_inv_scroll
-        autodim byte m_inv_slot
-        autodim byte m_sword_pal1
-        autodim byte m_sword_pal2
-        autodim byte m_shield_pal1
-        autodim byte m_shield_pal2
-        autodim byte m_armor_pal1
-        autodim byte m_armor_pal2
-        autodim byte m_charm_pal1
-        autodim byte m_charm_pal2
-        autodim byte m_inv0_pal1
-        autodim byte m_inv1_pal1
-        autodim byte m_inv2_pal1
-        autodim byte m_inv3_pal1
-        autodim byte m_inv0_pal2
-        autodim byte m_inv1_pal2
-        autodim byte m_inv2_pal2
-        autodim byte m_inv3_pal2
-        autodim byte equip_inv_col
-        autodim byte equip_inv_sel
-        autodim byte equip_inv_X
-        autodim byte equip_inv_Y
-        autodim byte item_name
-        autodim byte using_item
-        autodim byte m_desc
-
-        ; ROOM HEADER
-        autodim byte first_load
-        autodim byte room
-        autodim byte tileset
-        autodim byte exit_dir
-        autodim byte music
-        autodim byte walkable
-        autodim byte ledge
-        autodim byte floatable
-        autodim byte walkable_1
-        autodim byte ledge_1
-        autodim byte floatable_1
-        autodim byte walkable_2
-        autodim byte ledge_2
-        autodim byte floatable_2
-        autodim byte walk_test
-        autodim byte walk_index
-        autodim byte room_index
-        autodim byte save_room_index
-        autodim byte in_save_room
-        autodim byte entered_save_room
-        autodim byte ledge_dir
-        autodim byte window_zone        ; depreciated
-        autodim byte lightning_timer
-        autodim byte lightning_delay
-        autodim byte no_flash
-        autodim byte alt_palette
-
-        autodim init $2500 $25FF
-        const INPUT_BUFFER_MAX = 7      ; array starts at 0
-        autodim byte input_buffer 8
-        autodim byte input_buffer_index
-        autodim byte chant_index
-        autodim byte chant_input
-        ; possible to start a chant on index 0 so need another variable        
-        autodim byte chant_new_input
-        autodim byte m_item_bits_1
-        autodim byte m_item_bits_2
-        autodim byte m_spell_bits_1
-        autodim byte m_spell_bits_2
-        autodim byte m_sword_bits_1
-        autodim byte m_sword_bits_2
-        autodim byte m_shield_bits_1
-        autodim byte m_shield_bits_2
-        autodim byte m_armor_bits_1
-        autodim byte m_armor_bits_2
-        autodim byte m_charm_bits_1
-        autodim byte m_charm_bits_2
-        autodim byte m_item_inv   11
-        autodim byte m_sword_inv  11
-        autodim byte m_shield_inv 11
-        autodim byte m_armor_inv  11
-        autodim byte m_charm_inv  11
-        autodim byte m_inv_item_0
-        autodim byte m_inv_item_1
-        autodim byte m_inv_item_2
-        autodim byte m_inv_item_3
-        autodim byte m_inv_item_4
-        autodim byte m_sword_max
-
-        autodim byte menu_map_room 98
-        autodim byte menu_map_index
-        autodim byte menu_map_index_2
-        autodim byte menu_map_Xpos
-        autodim byte menu_map_Ypos
-
-        ; PASSWORD ARRAY
-        dim pw_index0  = pw_tileset
-        autodim byte pw_tileset
-        autodim byte pw_saveroom
-        autodim byte pw_sword
-        autodim byte pw_shield
-        autodim byte pw_armor
-        autodim byte pw_charm
-        dim pw_index6  = pw_inventory_1
-        autodim byte pw_inventory_1
-        autodim byte pw_inventory_2
-        autodim byte pw_spells_1
-        autodim byte pw_spells_2
-        autodim byte pw_swords_1
-        autodim byte pw_swords_2
-        dim pw_index12 = pw_shields_1
-        autodim byte pw_shields_1
-        autodim byte pw_shields_2
-        autodim byte pw_armor_1
-        autodim byte pw_armor_2
-        autodim byte pw_charms_1
-        autodim byte pw_charms_2
-        dim pw_index18 = pw_relics_1
-        autodim byte pw_relics_1
-        autodim byte pw_relics_2
-        autodim byte pw_index20
-        autodim byte pw_index21
-        autodim byte pw_index22
-        autodim byte pw_checksum
-        autodim byte pw_index
-        autodim byte pw_buffer 24
-        autodim byte pw_error
-        autodim byte pw_success
-        autodim byte fade_count
-
-
-        dim current_map = $2600
-
-        dim RMTRAM = $2720
+        incbasic constants.78b
+        incbasic memory.78b
 
 ;==============================================================================
 ; BANK 1
 ;------------------------------------------------------------------------------
 ; 7800basic initialization, title sequence code and graphics
-;------------------------------------------------------------------------------
 ;==============================================================================
-        incgraphic gfx/title/font.png  320B 2 0 1 0 0
-        incgraphic gfx/title/logo.png  320B 1 2 3 1 4
-        incgraphic gfx/title/trees.png 320B 0 3 0 0 0
-        incgraphic gfx/title/moon.png  320B 0 3 2 2 4
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
-        incmapfile tiled/title_blackforest.tmx
-title_init
-        game_state = STATE_TITLE
-        gosub clear_palettes
-        menu_cursor_X = 60
-        asm
-        lda #1
-        sta menu_columns
-        sta menu_max
-        sta action_debounce
-        sta menu_debounce
-end
-        displaymode 320B
-        bg_color = $71
-        clearscreen
-        characterset logo
-        plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
-        characterset font
-        plotchars '@2024-2025 CHRIS WIESE' 0 36 12
-        savescreen
-
-title_handler
-        restorescreen
-        adjustvisible 0 4
-        ; menu_change is set by title_flash, need to get 1 button input from player before drawing menu
-        if !menu_change then title_flash
-
-title_controls
-        if !action_debounce && joy0fire0 && action_button = 0 then title_selection
-        if !action_debounce && joy0fire1 && action_button = 1 then title_selection
-        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up bank3
-        if !up_debounce && joy0up then gosub menu_selection_up bank3
-        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down bank3
-        if !down_debounce && joy0down then gosub menu_selection_down bank3
-        if menu_selection then menu_cursor_Y = 176 : goto title_menu
-        menu_cursor_Y = 160
-
-title_menu
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
-        plotchars 'New Game' 0 64 10
-        plotchars 'Continue' 0 64 11        
-        goto main
-
-title_selection
-        if menu_selection then title_continue
-        goto title_new_game
-
-title_flash
-        ; Whether the player pushes 1 or 2 determine's the game's default action button
-        if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
-        if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
-        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 10 17
-        goto main
-
-title_continue
-        pw_index = 0
-        ; password starts as all dashes
-        for index = 0 to 23
-        pw_index0[index] = 81
-        next
-        loadmemory pw_index0-pw_index
-        game_state = STATE_MENU
-        menu = MENU_PASSWORD
-        asm
-        lda #1
-        sta action_debounce
-        sta menu_debounce
-        sta pause_debounce
-end
-        goto menu_init bank3
-
-title_new_game
-        tileset = T_CASTLE
-        player_sword = 1
-        player_shield = 0
-        player_armor = 1
-        player_charm = 0
-        m_item_bits_1 = %00000000
-        m_item_bits_2 = %00000000
-        m_sword_bits_1 = %00000001
-        m_sword_bits_2 = %00000000
-        m_shield_bits_1 = %00000000
-        m_shield_bits_2 = 0
-        m_armor_bits_1 = %00000001
-        m_armor_bits_2 = 0
-        m_charm_bits_1 = 0
-        m_charm_bits_2 = 0
-        for index = 0 to 97
-        menu_map_room[index] = 0
-        next
-
-init_field
-        ; code shared by new game and continue options
-        game_state = STATE_FIELD
-        reload_map = 1
-        first_load = 1
-        player_state = STATE_STAND
-        player_speed = 1.0
-        player_friction = player_speed
-        player_vel_cap = 5.0
-        dec player_max_hp = $48
-        dec player_hp = $48
-        dec player_mp = $48
-        dec player_max_mp = $48
-        dec hp_seg_1 = 8
-        dec hp_seg_2 = 8
-        dec hp_seg_3 = 8
-        dec hp_seg_4 = 8
-        dec hp_seg_5 = 8
-        dec hp_seg_6 = 8
-        dec mp_seg_1 = 8
-        dec mp_seg_2 = 8
-        dec mp_seg_3 = 8
-        dec mp_seg_4 = 8
-        dec mp_seg_5 = 8
-        dec mp_seg_6 = 8
-        sword_pal = 2
-        shield_pal = 2
-        gosub encode_password
-        gosub update_player_stats bank3
-        goto main
-
-set_title_top_pal
-        BACKGRND = bg_color
-        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        P4C1 = $80 : P4C2 = $0F : P4C3 = $08
-        return
-
-set_title_bottom_pal
-        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
-        return
+        
+        incbasic title.78b
 
 kill_player
         player_frame = FRAME_DEATH
@@ -989,10 +327,6 @@ password_menu_cursor_Y
         if menu_selection = 40 then menu_cursor_X = 116 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
         goto main
 
-
-        ; these are offsets added to the menu selection to get proper font characters
-        const PW_0 = 18
-        const PW_A = 15
 encode_sel_to_pw
         pw_error = 0
         action_debounce = 1
@@ -1143,11 +477,6 @@ check_charm_bits
 
 magic_collision
         inline magic_collision.asm
-
-        const FIREBALL_SPEED_HI = 2
-        const FIREBALL_SPEED_LO = 0
-        const FIREBALL_DAMAGE = 2
-        const FIREBALL_MP_COST = 8
 
 cast_fireball
         playsfx sfx_bubbleup
@@ -1537,9 +866,94 @@ end
         $00,$00,$00
 end
 
-
         inline pokeysound.asm
         inline hiscore.asm
+
+ledge_hop
+        asm
+        lda Xdirection
+        cmp #DIR_LEFT
+        beq hop_left
+        cmp #DIR_RIGHT
+        beq hop_right
+        ; must be down
+hop_down
+        lda timer
+        bne hop_down_up
+        lda #16
+        sta timer
+        lda Yposition
+        clc
+        adc #16
+        sta hop_dest
+hop_down_up
+        cmp #8
+        bcc hop_down_down
+        dec Yposition
+        dec timer
+        rts
+hop_down_down
+        inc Yposition
+        lda hop_dest
+        cmp Yposition
+        beq hop_done
+        rts
+
+hop_left
+        lda timer
+        bne hop_left_up
+        lda #12
+        sta timer
+        lda Xposition
+        sec
+        sbc #12
+        sta hop_dest
+hop_left_up
+        cmp #6
+        bcc hop_left_down
+        dec Yposition
+        dec Xposition
+        dec timer
+        rts
+hop_left_down
+        inc Yposition
+        dec Xposition
+        lda hop_dest
+        cmp Xposition
+        beq hop_done
+        rts
+
+hop_right
+        lda timer
+        bne hop_right_up
+        lda #12
+        sta timer
+        lda Xposition
+        clc
+        adc #12
+        sta hop_dest
+hop_right_up
+        cmp #6
+        bcc hop_right_down
+        dec Yposition
+        inc Xposition
+        dec timer
+        rts
+hop_right_down
+        inc Yposition
+        inc Xposition
+        lda hop_dest
+        cmp Xposition
+        beq hop_done
+        rts
+
+hop_done
+        lda #0
+        sta flags
+        sta timer
+        sta hop_dest
+        rts
+end
 
 ;==============================================================================
 ; BANK 2
@@ -1980,7 +1394,6 @@ torch_tile_unblock_forest
 ; Wolves wait for the player to get close (WOLF_CHASE_DIST), then give chase
 ;==============================================================================
 wolf_ai
-        const WOLF_CHASE_DIST = 32
         ; Once wolves start chasing, they don't stop
         if flags{7} then wolf_chase
 
@@ -2005,18 +1418,6 @@ wolf_chase
 
 obj_wolf_stats
 ; TODO: Make this implementation suck less
-        const WOLF_SPEED_HI = 1
-        const WOLF_SPEED_LO = 0
-        const WOLF_HP = 2
-        const WOLF_VEL_CAP_HI = 1
-        const WOLF_VEL_CAP_LO = 0
-        const WOLF_FRICTION_HI = 1
-        const WOLF_FRICTION_LO = 0
-        const WOLF_DAMAGE = 1
-        const WOLF_DEF = 0
-        const WOLF_MDEF = 2
-        const WOLF_DROP_RATE = 64
-
         object_hp[obj_index] = WOLF_HP
         object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
@@ -2048,20 +1449,6 @@ slime_chase
         return
 
 obj_slime_stats
-        const SLIME_DROP_RATE = 128
-        const SLIME_HP = 4
-        const MSLIME_HP = SLIME_HP / 2
-        const SLIME_VEL_CAP_HI = 1
-        const SLIME_VEL_CAP_LO = 0
-        const SLIME_DAMAGE = 4
-        const SLIME_DEF = 255
-        const SLIME_MDEF = 0
-        const MSLIME_DEF = 0
-        const MSLIME_MDEF = 0
-        const SLIME_FRICTION_HI = 1
-        const SLIME_FRICTION_LO = 0
-        const SLIME_SPEED_HI = 0
-        const SLIME_SPEED_LO = 5
         object_hp[obj_index] = SLIME_HP
         object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
@@ -2174,19 +1561,6 @@ raven_return
         return
 
 obj_raven_stats
-        const RAVEN_CHASE_DIST = 50
-        const RAVEN_FLIGHT_TIME = 10
-        const RAVEN_DROP_RATE = 128
-        const RAVEN_HP = 4
-        const RAVEN_VEL_CAP_HI = 2
-        const RAVEN_VEL_CAP_LO = 0
-        const RAVEN_DAMAGE = 4
-        const RAVEN_FRICTION_HI = 0
-        const RAVEN_FRICTION_LO = 0
-        const RAVEN_SPEED_HI = 1
-        const RAVEN_SPEED_LO = 0
-        const RAVEN_DEF = 0
-        const RAVEN_MDEF = 0
         object_hp[obj_index] = RAVEN_HP
         object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
@@ -2434,14 +1808,6 @@ items_menu_controls
         gosub menu_dirs
         goto main
 
-        const ITEMS_HP_X = 80
-        const ITEMS_HP_Y = 32
-
-        const HP_CHANGE_POTION = $20
-        const HP_CHANGE_HIPOTION = $30
-        const HP_CHANGE_XPOTION = $48
-        const MP_CHANGE_ETHER = $10
-        const MP_CHANGE_XETHER = $48
 use_item
         action_debounce = 1
         if menu_selection = 9 then open_main_menu
@@ -2555,20 +1921,6 @@ equip_menu_controls
         if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = MENU_EQUIP_MAX_OPTIONS : goto equip_menu_dirs_done
         if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = 0
         goto equip_menu_dirs_done
-
-        const MENU_EQUIP_MAX_OPTIONS = 4
-        const MENU_EQUIP_EQUIPPED_X = 76
-        const MENU_EQUIP_SWORD_Y    = 64
-        const MENU_EQUIP_SHIELD_Y   = 96
-        const MENU_EQUIP_ARMOR_Y    = 128
-        const MENU_EQUIP_CHARM_Y    = 160
-        const MENU_EQUIP_INV_X      = 12
-        const MENU_EQUIP_INV0_Y    = 80
-        const MENU_EQUIP_INV1_Y    = 112
-        const MENU_EQUIP_INV2_Y    = 142
-        const MENU_EQUIP_INV3_Y    = 176
-        const MENU_EQUIP_EXIT_X     = 124
-        const MENU_EQUIP_EXIT_Y     = 192
 
 equip_menu_return_from_inv
         menu_debounce = 1
@@ -2883,13 +2235,6 @@ equip_menu_colors
         P4C3 = m_inv3_pal2
         return
 
-        const MENU_MAIN_ITEMS_X = 12
-        const MENU_MAIN_ITEMS_Y = 192
-        const MENU_MAIN_MAGIC_X = 40
-        const MENU_MAIN_EQUIP_X = 72
-        const MENU_MAIN_RELICS_X = 116
-        const MENU_TAP_FRAMES = 4
-
 menu_dirs
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
@@ -3050,17 +2395,6 @@ calc_inv_array
         if m_charm_bits_2{2} then m_charm_inv[8] = 8
         if m_charm_bits_2{3} then m_charm_inv[9] = 9
         if m_charm_bits_2{4} then m_charm_inv[10] = 10
-
-        const m_item_inv_lo = #<m_item_inv
-        const m_item_inv_hi = #>m_item_inv
-        const m_sword_inv_lo = #<m_sword_inv
-        const m_sword_inv_hi = #>m_sword_inv
-        const m_shield_inv_lo = #<m_shield_inv
-        const m_shield_inv_hi = #>m_shield_inv
-        const m_armor_inv_lo = #<m_armor_inv
-        const m_armor_inv_hi = #>m_armor_inv
-        const m_charm_inv_lo = #<m_charm_inv
-        const m_charm_inv_hi = #>m_charm_inv
 
         ; inventory-by-inventory, remove zeros
         pointer = m_item_inv_lo
@@ -3933,7 +3267,6 @@ priest_cast_vert
 
         ; prep the priest/skeleton object for spawning their attacks
 priest_cast
-        const PRIEST_CAST_FRAMES = 20
         gosub find_new_object
         if no_empty_slot then return thisbank
         ; set the spawned object slot's parent to the index of this object
@@ -3956,9 +3289,6 @@ priest_cast_2
         if timer then return thisbank
 
         ; todo: roll off into its own spawn projectile subroutine
-        const DARKSPARK_SPEED_HI = 2
-        const DARKSPARK_SPEED_LO = 0
-        const DARKSPARK_DAMAGE = 6
         playsfx sfx_nonobounce
 
 load_darkspark
@@ -3994,7 +3324,6 @@ priest_box
         0, 9, 8, 10, 11
 end
 
-        const SKELSWORD_DAMAGE = 10
 
 skel_sword
         if flags{7} then return thisbank
@@ -4032,7 +3361,6 @@ end
 ;------------------------------------------------------------------------------
 ; Exists for ATTACK_FRAMES duration, then kills itself
 ;==============================================================================
-        const RETRACT_FRAMES = 4
 skelsword_ai
         temp1 = object_parent[index]
         ; if Skeleton has died, remove sword instantly
@@ -4143,20 +3471,6 @@ rslime_chase
         return
 
 obj_redslime_stats
-        const RSLIME_DROP_RATE = 128
-        const RSLIME_HP = 4
-        const MRSLIME_HP = RSLIME_HP / 2
-        const RSLIME_VEL_CAP_HI = 1
-        const RSLIME_VEL_CAP_LO = 0
-        const RSLIME_DAMAGE = 8
-        const RSLIME_DEF = 255
-        const RSLIME_MDEF = 0
-        const MRSLIME_DEF = 0
-        const MRSLIME_MDEF = 0
-        const RSLIME_FRICTION_HI = 1
-        const RSLIME_FRICTION_LO = 0
-        const RSLIME_SPEED_HI = 0
-        const RSLIME_SPEED_LO = 5
         object_hp[obj_index] = RSLIME_HP
         object_vel_cap_hi[obj_index] = RSLIME_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = RSLIME_VEL_CAP_LO
@@ -4563,51 +3877,7 @@ plot_castle_room_25
 ; Permanently loaded bank. Contains sprites and code used with every tileset
 ;==============================================================================
         bank 17
-        incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
-        incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
-        incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
-        incgraphic gfx/sprites/heroine3.png  160B 0 4 5 6 3   ; FRAME_UP_2
-        incgraphic gfx/sprites/heroine4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
-        incgraphic gfx/sprites/heroine5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
-        incgraphic gfx/sprites/heroine6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
-        incgraphic gfx/sprites/heroine7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
-        incgraphic gfx/sprites/heroine8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
-        incgraphic gfx/sprites/heroine9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
-        incgraphic gfx/sprites/heroine10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
-        incgraphic gfx/sprites/heroine11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
-        incgraphic gfx/sprites/link.png      160B 0 4 5 6 3 1 ; FRAME_CHANT (bugged if heroine12.png is used?)
-        incgraphic gfx/sprites/heroine13.png 160B 0 4 5 3 6
-        incgraphic gfx/sprites/sword0.png 160A 0 1 3
-        incgraphic gfx/sprites/sword1.png 160A 0 3 1
-        incgraphic gfx/sprites/sword2.png 160A 0 1 3
-        incgraphic gfx/sprites/sword3.png 160A 0 1 3
-        incgraphic gfx/sprites/shield.png 160A 0 2 1
-        incgraphic gfx/sprites/torch0.png 160B 0 1 2 3 6 5 4
-        incgraphic gfx/sprites/torch1.png 160B 0 1 2 3 5 6 4
-        incgraphic gfx/sprites/torch2.png 160B 0 1 2 3 6 4 5
-        incgraphic gfx/sprites/torch3.png 160B 0 1 2 6 4 5
-        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
-        incgraphic gfx/sprites/mp.png 160A 0 3 1
-        incgraphic gfx/sprites/bar0.png 160A 0 1
-        incgraphic gfx/sprites/bar1.png 160A 0 2 1
-        incgraphic gfx/sprites/bar2.png 160A 0 2 1
-        incgraphic gfx/sprites/bar3.png 160A 0 2 1
-        incgraphic gfx/sprites/bar4.png 160A 0 2 1
-        incgraphic gfx/sprites/bar5.png 160A 0 2 1
-        incgraphic gfx/sprites/bar6.png 160A 0 2 1
-        incgraphic gfx/sprites/bar7.png 160A 0 2 1
-        incgraphic gfx/sprites/bar8.png 160A 0 2 1
-        incgraphic gfx/sprites/coin.png 160A 0 3 2
-        incgraphic gfx/sprites/prism.png 160A 0 3 2 1
-        incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
-        incgraphic gfx/sprites/fireball0.png 160A
-        incgraphic gfx/sprites/fireball1.png 160A
-        incgraphic gfx/sprites/fireball2.png 160A
-        incgraphic gfx/sprites/fireball3.png 160A
-        incgraphic gfx/sprites/fireball4.png 160A
-        incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/armor0.png 160A 0 2 1
-        incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
+        incbasic shared_gfx.78b
 
 ;==============================================================================
 ; LOAD OBJECTS
@@ -5048,7 +4318,6 @@ object_done
 ;------------------------------------------------------------------------------
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
-        const FIREBALL_MAX_FRAMES = 4
 fireball_ai
         if Xvelocity then fireball_animate
         if Yvelocity then fireball_animate
@@ -6006,91 +5275,5 @@ new_obj_loop
         rts
 new_obj_found
         stx spawn_index
-        rts
-end
-
-ledge_hop
-        asm
-        lda Xdirection
-        cmp #DIR_LEFT
-        beq hop_left
-        cmp #DIR_RIGHT
-        beq hop_right
-        ; must be down
-hop_down
-        lda timer
-        bne hop_down_up
-        lda #16
-        sta timer
-        lda Yposition
-        clc
-        adc #16
-        sta hop_dest
-hop_down_up
-        cmp #8
-        bcc hop_down_down
-        dec Yposition
-        dec timer
-        rts
-hop_down_down
-        inc Yposition
-        lda hop_dest
-        cmp Yposition
-        beq hop_done
-        rts
-
-hop_left
-        lda timer
-        bne hop_left_up
-        lda #12
-        sta timer
-        lda Xposition
-        sec
-        sbc #12
-        sta hop_dest
-hop_left_up
-        cmp #6
-        bcc hop_left_down
-        dec Yposition
-        dec Xposition
-        dec timer
-        rts
-hop_left_down
-        inc Yposition
-        dec Xposition
-        lda hop_dest
-        cmp Xposition
-        beq hop_done
-        rts
-
-hop_right
-        lda timer
-        bne hop_right_up
-        lda #12
-        sta timer
-        lda Xposition
-        clc
-        adc #12
-        sta hop_dest
-hop_right_up
-        cmp #6
-        bcc hop_right_down
-        dec Yposition
-        inc Xposition
-        dec timer
-        rts
-hop_right_down
-        inc Yposition
-        inc Xposition
-        lda hop_dest
-        cmp Xposition
-        beq hop_done
-        rts
-
-hop_done
-        lda #0
-        sta flags
-        sta timer
-        sta hop_dest
         rts
 end

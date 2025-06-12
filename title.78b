@@ -1,0 +1,139 @@
+
+        incgraphic gfx/title/font.png  320B 2 0 1 0 0
+        incgraphic gfx/title/logo.png  320B 1 2 3 1 4
+        incgraphic gfx/title/trees.png 320B 0 3 0 0 0
+        incgraphic gfx/title/moon.png  320B 0 3 2 2 4
+        incmapfile tiled/title_blackforest.tmx
+title_init
+        game_state = STATE_TITLE
+        gosub clear_palettes
+        menu_cursor_X = 60
+        asm
+        lda #1
+        sta menu_columns
+        sta menu_max
+        sta action_debounce
+        sta menu_debounce
+end
+        displaymode 320B
+        bg_color = $71
+        clearscreen
+        characterset logo
+        plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
+        characterset font
+        plotchars '@2024-2025 CHRIS WIESE' 0 36 12
+        savescreen
+
+title_handler
+        restorescreen
+        adjustvisible 0 4
+        ; menu_change is set by title_flash, need to get 1 button input from player before drawing menu
+        if !menu_change then title_flash
+
+title_controls
+        if !action_debounce && joy0fire0 && action_button = 0 then title_selection
+        if !action_debounce && joy0fire1 && action_button = 1 then title_selection
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up bank3
+        if !up_debounce && joy0up then gosub menu_selection_up bank3
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down bank3
+        if !down_debounce && joy0down then gosub menu_selection_down bank3
+        if menu_selection then menu_cursor_Y = 176 : goto title_menu
+        menu_cursor_Y = 160
+
+title_menu
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotchars 'New Game' 0 64 10
+        plotchars 'Continue' 0 64 11        
+        goto main
+
+title_selection
+        if menu_selection then title_continue
+        goto title_new_game
+
+title_flash
+        ; Whether the player pushes 1 or 2 determine's the game's default action button
+        if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
+        if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
+        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 10 17
+        goto main
+
+title_continue
+        pw_index = 0
+        ; password starts as all dashes
+        for index = 0 to 23
+        pw_index0[index] = 81
+        next
+        loadmemory pw_index0-pw_index
+        game_state = STATE_MENU
+        menu = MENU_PASSWORD
+        asm
+        lda #1
+        sta action_debounce
+        sta menu_debounce
+        sta pause_debounce
+end
+        goto menu_init bank3
+
+title_new_game
+        tileset = T_CASTLE
+        player_sword = 1
+        player_shield = 0
+        player_armor = 1
+        player_charm = 0
+        m_item_bits_1 = %00000000
+        m_item_bits_2 = %00000000
+        m_sword_bits_1 = %00000001
+        m_sword_bits_2 = %00000000
+        m_shield_bits_1 = %00000000
+        m_shield_bits_2 = 0
+        m_armor_bits_1 = %00000001
+        m_armor_bits_2 = 0
+        m_charm_bits_1 = 0
+        m_charm_bits_2 = 0
+        for index = 0 to 97
+        menu_map_room[index] = 0
+        next
+
+init_field
+        ; code shared by new game and continue options
+        game_state = STATE_FIELD
+        reload_map = 1
+        first_load = 1
+        player_state = STATE_STAND
+        player_speed = 1.0
+        player_friction = player_speed
+        player_vel_cap = 5.0
+        dec player_max_hp = $48
+        dec player_hp = $48
+        dec player_mp = $48
+        dec player_max_mp = $48
+        dec hp_seg_1 = 8
+        dec hp_seg_2 = 8
+        dec hp_seg_3 = 8
+        dec hp_seg_4 = 8
+        dec hp_seg_5 = 8
+        dec hp_seg_6 = 8
+        dec mp_seg_1 = 8
+        dec mp_seg_2 = 8
+        dec mp_seg_3 = 8
+        dec mp_seg_4 = 8
+        dec mp_seg_5 = 8
+        dec mp_seg_6 = 8
+        sword_pal = 2
+        shield_pal = 2
+        gosub encode_password
+        gosub update_player_stats bank3
+        goto main
+
+set_title_top_pal
+        BACKGRND = bg_color
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $80 : P4C2 = $0F : P4C3 = $08
+        return
+
+set_title_bottom_pal
+        P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
+        return
+        

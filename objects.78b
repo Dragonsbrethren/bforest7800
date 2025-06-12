@@ -1,0 +1,162 @@
+
+        ; TYPE DEFINITIONS
+        const TYPE_TORCH    =   1
+        const TYPE_WOLF     =   2
+        const TYPE_SLIME    =   6
+        const TYPE_MSLIME   =   7
+        const TYPE_RAVEN    =   8
+        const TYPE_PRIEST   =   9
+        const TYPE_SKELETON =  10
+        const TYPE_RSLIME   =  11
+        const TYPE_MRSLIME  =  12       ; Mr. Slime lol
+        const TYPE_GHOST    =  13
+        const TYPE_SPAWNER  = 128
+        const TYPE_SKELSWORD = 129
+        const TYPE_DARKSPARK = 140
+        const TYPE_FIREBALL = 150
+        const TYPE_BLOOD    = 196
+        const TYPE_COIN     = 197
+        const TYPE_PRISM    = 198
+        const TYPE_FOOD     = 199
+        const TYPE_ITEM1    = 200
+        const TYPE_ITEM2    = 201
+        const TYPE_ITEM3    = 202
+        const TYPE_ITEM4    = 203
+        const TYPE_ITEM5    = 204
+        const TYPE_ITEM6    = 205
+        const TYPE_ITEM7    = 206
+        const TYPE_ITEM8    = 207
+        const TYPE_ITEM9    = 208
+        const TYPE_ITEM10   = 209
+        ; Nicer names for items
+        const TYPE_POTION   = TYPE_ITEM1
+        const TYPE_HIPOTION = TYPE_ITEM2
+        const TYPE_XPOTION  = TYPE_ITEM3
+        const TYPE_ETHER    = TYPE_ITEM4
+        const TYPE_HIETHER  = TYPE_ITEM5
+        const TYPE_ELIXIR   = TYPE_ITEM6
+        const TYPE_ANTIDOTE = TYPE_ITEM7
+        const TYPE_UNCURSE  = TYPE_ITEM8
+        const TYPE_SOFT     = TYPE_ITEM9
+        const TYPE_LIFEAPPLE = TYPE_ITEM10
+        const TYPE_SWORD1   = 210
+        const TYPE_SWORD2   = 211
+        const TYPE_SWORD3   = 212
+        const TYPE_SWORD4   = 213
+        const TYPE_SWORD5   = 214
+        const TYPE_SWORD6   = 215
+        const TYPE_SWORD7   = 216
+        const TYPE_SWORD8   = 217
+        const TYPE_SWORD9   = 218
+        const TYPE_SWORD10  = 219
+        ; Nicer names for swords
+        const TYPE_RAPIER   = TYPE_SWORD1
+        const TYPE_BONE_SCIM = TYPE_SWORD2
+        const TYPE_SHIELD1  = 220
+        const TYPE_SHIELD2  = 221
+        const TYPE_SHIELD3  = 222
+        const TYPE_SHIELD4  = 223
+        const TYPE_SHIELD5  = 224
+        const TYPE_SHIELD6  = 225
+        const TYPE_SHIELD7  = 226
+        const TYPE_SHIELD8  = 227
+        const TYPE_SHIELD9  = 228
+        const TYPE_SHIELD10 = 229
+        const TYPE_ARMOR1   = 230
+        const TYPE_ARMOR2   = 231
+        const TYPE_ARMOR3   = 232
+        const TYPE_ARMOR4   = 233
+        const TYPE_ARMOR5   = 234
+        const TYPE_ARMOR6   = 235
+        const TYPE_ARMOR7   = 236
+        const TYPE_ARMOR8   = 237
+        const TYPE_ARMOR9   = 238
+        const TYPE_ARMOR10  = 239
+        const TYPE_CHARM1   = 240
+        const TYPE_CHARM2   = 241
+        const TYPE_CHARM3   = 242
+        const TYPE_CHARM4   = 243
+        const TYPE_CHARM5   = 244
+        const TYPE_CHARM6   = 245
+        const TYPE_CHARM7   = 246
+        const TYPE_CHARM8   = 247
+        const TYPE_CHARM9   = 248
+        const TYPE_CHARM10  = 249
+
+        ; DROP RATES
+        const RARE_DROP_RATE = 254
+        const COMMON_DROP_RATE = 192
+
+        ; STATS -- TODO: Move these to individual files for each object?
+        const WOLF_SPEED_HI = 1
+        const WOLF_SPEED_LO = 0
+        const WOLF_HP = 2
+        const WOLF_VEL_CAP_HI = 1
+        const WOLF_VEL_CAP_LO = 0
+        const WOLF_FRICTION_HI = 1
+        const WOLF_FRICTION_LO = 0
+        const WOLF_DAMAGE = 1
+        const WOLF_DEF = 0
+        const WOLF_MDEF = 2
+        const WOLF_DROP_RATE = 64       ; depreciated
+        const WOLF_CHASE_DIST = 32
+
+        const SLIME_DROP_RATE = 128     ; depreciated
+        const SLIME_HP = 4
+        const MSLIME_HP = SLIME_HP / 2
+        const SLIME_VEL_CAP_HI = 1
+        const SLIME_VEL_CAP_LO = 0
+        const SLIME_DAMAGE = 4
+        const SLIME_DEF = 255
+        const SLIME_MDEF = 0
+        const MSLIME_DEF = 0
+        const MSLIME_MDEF = 0
+        const SLIME_FRICTION_HI = 1
+        const SLIME_FRICTION_LO = 0
+        const SLIME_SPEED_HI = 0
+        const SLIME_SPEED_LO = 5
+
+        const RAVEN_CHASE_DIST = 50
+        const RAVEN_FLIGHT_TIME = 10
+        const RAVEN_DROP_RATE = 128
+        const RAVEN_HP = 4
+        const RAVEN_VEL_CAP_HI = 2
+        const RAVEN_VEL_CAP_LO = 0
+        const RAVEN_DAMAGE = 4
+        const RAVEN_FRICTION_HI = 0
+        const RAVEN_FRICTION_LO = 0
+        const RAVEN_SPEED_HI = 1
+        const RAVEN_SPEED_LO = 0
+        const RAVEN_DEF = 0
+        const RAVEN_MDEF = 0
+
+        const PRIEST_CAST_FRAMES = 20
+
+        const DARKSPARK_SPEED_HI = 2
+        const DARKSPARK_SPEED_LO = 0
+        const DARKSPARK_DAMAGE = 6
+
+        const SKELSWORD_DAMAGE = 10
+        const RETRACT_FRAMES = 4
+
+        const RSLIME_DROP_RATE = 128
+        const RSLIME_HP = 4
+        const MRSLIME_HP = RSLIME_HP / 2
+        const RSLIME_VEL_CAP_HI = 1
+        const RSLIME_VEL_CAP_LO = 0
+        const RSLIME_DAMAGE = 8
+        const RSLIME_DEF = 255
+        const RSLIME_MDEF = 0
+        const MRSLIME_DEF = 0
+        const MRSLIME_MDEF = 0
+        const RSLIME_FRICTION_HI = 1
+        const RSLIME_FRICTION_LO = 0
+        const RSLIME_SPEED_HI = 0
+        const RSLIME_SPEED_LO = 5
+
+        const FIREBALL_SPEED_HI = 2
+        const FIREBALL_SPEED_LO = 0
+        const FIREBALL_DAMAGE = 2
+        const FIREBALL_MP_COST = 8
+        const FIREBALL_MAX_FRAMES = 4
+        
