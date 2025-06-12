@@ -12,3 +12,6 @@ music/test.rmt
 7800.asm
 gfx/tiles/forest_ledges-alt.png
 gfx/tiles/forest_ledges_bak.png
+7800basic_variable_redefs.h
+bforest.78b.asm
+includes.7800

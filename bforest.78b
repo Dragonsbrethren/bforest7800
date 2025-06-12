@@ -1020,15 +1020,12 @@ forest_save_1
         player_facing = DIR_DOWN
 
 forest_pals
-        bg_color = $11                          ; brown
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $00 : P4C2 = $C0 : P4C3 = $C3    ; greens used by trees and slimes
-        P5C1 = $00 : P5C2 = $03 : P5C3 = $06    ; grays used by rocks and wolves
-        P6C1 = $00 : P6C2 = $A1 : P6C3 = $06    ; blue and gray used by water
-        P7C1 = $00 : P7C2 = $10 : P7C3 = $12    ; ledges, dark and light browns
+        bg_color = PAL_F_GRND                          ; brown
+        incbasic shared_pals.78b
+        P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
+        P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
+        P7C1 = PAL_BLACK  : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
 
         characterset forest_trees
         room = forest_rooms[room_index]
@@ -2888,10 +2885,7 @@ castle_lightning
 
 castle_shared_pals
         bg_color = $00                                             ; black
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
+        incbasic shared_pals.78b
         goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 castle_maroon_pal
@@ -3833,6 +3827,10 @@ plot_castle_room_25
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
 
+river_pals
+        bg_color = PAL_F_GRND   ; ground color shared with forest
+        incbasic shared_pals.78b
+
 ;==============================================================================
 ; BANK 7
 ;------------------------------------------------------------------------------
@@ -3870,6 +3868,14 @@ plot_castle_room_25
 ; Hills tileset and data
 ;==============================================================================
         bank 8
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+
+hills_pals
+        bg_color = PAL_F_GRND   ; ground color shared with forest
+        incbasic shared_pals.78b
 
 ;==============================================================================
 ; BANK 17

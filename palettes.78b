@@ -2,6 +2,7 @@
 ;------------------------------------------------------------------------------
 ; SHARED PALETTES
 ;------------------------------------------------------------------------------
+        const PAL_BLACK  = $00
         const PAL_DKPURP = $60
         const PAL_LTPURP = $76
         const PAL_WHITE  = $0F
@@ -15,9 +16,21 @@
         const PAL_LTBLUE = $A3
         const PAL_COPPER = $D5
 
-
         const HAIR_COLOR = PAL_DKBRWN
         const CHANT_COLOR = $60
-        const BAR_NORMAL_COLOR = $76
-        const BAR_FLASH_COLOR = $79
+        const BAR_NORMAL_COLOR = $76    ; depreciated
+        const BAR_FLASH_COLOR = $79     ; depreciated
+
+;------------------------------------------------------------------------------
+; FOREST
+;------------------------------------------------------------------------------
+        const PAL_F_GRND  = $11 ; ground/shorelines
+        const PAL_F_DKGRN = $C0 ; trees and slimes
+        const PAL_F_LTGRN = $C3
+        const PAL_F_DKGRY = $03 ; rocks and wolves
+        const PAL_F_LTGRY = $06
+        const PAL_F_WATER = $A1 ; water blue
+        const PAL_F_LTWTR = $06 ; duplicate gray
+        const PAL_F_DKBRN = $10 ; scrapped browns (for now)
+        const PAL_F_LTBRN = $12 
         
