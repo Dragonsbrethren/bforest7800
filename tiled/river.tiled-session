@@ -9,6 +9,40 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "castle_room_1.tmx": {
+            "scale": 3.6558035714285713,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 721.5923800219807,
+                "y": 180.94517035047016
+            }
+        },
+        "castle_room_1.tmx#castle_carpet": {
+            "scaleInDock": 1
+        },
+        "castle_room_1.tmx#castle_stone": {
+            "scaleInDock": 1
+        },
+        "castle_room_1.tmx#castle_tile": {
+            "scaleInDock": 1
+        },
+        "castle_room_10.tmx": {
+            "scale": 3.6558035714285713,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -506.3182317743315,
+                "y": 180.94517035047016
+            }
+        },
+        "castle_room_10.tmx#castle_carpet": {
+            "scaleInDock": 1
+        },
+        "castle_room_10.tmx#castle_stone": {
+            "scaleInDock": 1
+        },
+        "castle_room_10.tmx#castle_tile": {
+            "scaleInDock": 1
+        },
         "river_room_0.tmx": {
             "scale": 3.6558035714285713,
             "selectedLayer": 0,
@@ -53,6 +87,7 @@
     "last.imagePath": "C:/Users/Chris/7800/bforest7800/gfx/tiles",
     "last.worldFilePath": "C:/Users/Chris/7800/bforest7800/tiled",
     "loadedWorlds": [
+        "C:/Users/Chris/7800/bforest7800/tiled/castle.world",
         "C:/Users/Chris/7800/bforest7800/tiled/river.world"
     ],
     "map.height": 14,
