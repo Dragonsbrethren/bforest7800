@@ -2860,40 +2860,36 @@ castle_room_bank_4
 end
 
 castle_pals
-        bg_color = $00                                             ; black
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
-        P4C1 = $90 : P4C2 = $02 : P4C3 = $04    ; walls
-        P7C1 = $42 : P7C2 = $40 : P7C3 = $41    ; maroon carpets
-        if alt_palette = 1 then P5C1 = $40 : goto castle_maroon_pal
-        P6C1 = $A2 : P6C2 = $A1 : P6C3 = $A0    ; blue-green tiles
-        if alt_palette = 2 then P5C1 = $90 : goto castle_gold_pal
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
+        P4C1 = PAL_C_SKY    : P4C2 = PAL_C_DKWALL : P4C3 = PAL_C_LTWALL ; walls
+        P7C1 = PAL_C_BRCARP : P7C2 = PAL_C_DKCARP : P7C3 = PAL_C_LTCARP ; carpets
+        if alt_palette=1 then P5C1 = PAL_C_DKCARP : goto castle_maroon_pal   ; chapel
+        P6C1 = PAL_C_BRTILE : P6C2 = PAL_C_LTTILE : P6C3 = PAL_C_DKTILE ; tiled floors
+        if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
+        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
         goto castle_shared_pals
 
 castle_lightning
         if no_flash then goto castle_pals
-        P4C1 = $AA : P4C2 = $03 : P4C3 = $05    ; walls
-        P7C1 = $AA : P7C2 = $41 : P7C3 = $42    ; maroon carpets
-        if alt_palette = 1  then P5C1 = $41 : goto castle_maroon_pal
-        P6C1 = $AA : P6C2 = $A2 : P6C3 = $A1    ; blue-green tiles    
-        if alt_palette = 2  then P5C1 = $AA : goto castle_gold_pal    
-        P5C1 = $00 : P5C2 = $33 : P5C3 = $0F    ; skeletons
+        P4C1 = PAL_C_LIGHTN : P4C2 = PAL_C_MDWALL : P4C3 = PAL_C_BRWALL ; walls
+        P7C1 = PAL_C_LIGHTN : P7C2 = PAL_C_LTCARP : P7C3 = PAL_C_BRCARP ; carpets
+        if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal   ; chapel
+        P6C1 = PAL_C_LIGHTN : P6C2 = PAL_C_BRTILE : P6C3 = PAL_C_LTTILE ; blue-green tiles    
+        if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
+        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
         lightning_delay = LIGHTNING_DELAY
 
 castle_shared_pals
-        bg_color = $00                                             ; black
+        bg_color = PAL_BLACK
         incbasic shared_pals.78b
         goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
-        P6C2 = $41 : P6C3 = $40
+        P6C2 = PAL_C_LTCARP : P6C3 = PAL_C_DKCARP
 
 castle_gold_pal
-        P5C2 = $23 : P5C3 = $27    ; golds, browns
+        ; override skeleton colors with golds
+        P5C2 = PAL_C_DKGOLD : P5C3 = PAL_C_LTGOLD
         if !lightning_delay then lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
 

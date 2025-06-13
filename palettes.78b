@@ -1,4 +1,3 @@
-
 ;------------------------------------------------------------------------------
 ; SHARED PALETTES
 ;------------------------------------------------------------------------------
@@ -32,5 +31,25 @@
         const PAL_F_WATER = $A1 ; water blue
         const PAL_F_LTWTR = $06 ; duplicate gray
         const PAL_F_DKBRN = $10 ; scrapped browns (for now)
-        const PAL_F_LTBRN = $12 
-        
+        const PAL_F_LTBRN = $12
+
+;------------------------------------------------------------------------------
+; CATHEDRAL
+;------------------------------------------------------------------------------
+        const PAL_C_SKY    = $90
+        const PAL_C_LIGHTN = $AA        ; lightning flash
+        const PAL_C_DKWALL = $02
+        const PAL_C_MDWALL = $03
+        const PAL_C_LTWALL = $04
+        const PAL_C_BRWALL = $05        ; walls during lightning flash
+        const PAL_C_DKCARP = $40
+        const PAL_C_LTCARP = $41
+        const PAL_C_BRCARP = $42        ; window light on carpets
+        const PAL_C_DKTILE = $A0
+        const PAL_C_LTTILE = $A1
+        const PAL_C_BRTILE = $A2        ; window light on tiles
+        const PAL_C_SKELBL = $00        ; skeleton black
+        const PAL_C_SKELAR = $33        ; skeleton armor
+        const PAL_C_SKELWH = $0F        ; skeleton white
+        const PAL_C_DKGOLD = $23
+        const PAL_C_LTGOLD = $27

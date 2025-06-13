@@ -1,4 +1,3 @@
-
         incgraphic gfx/title/font.png  320B 2 0 1 0 0
         incgraphic gfx/title/logo.png  320B 1 2 3 1 4
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
@@ -130,10 +129,9 @@ set_title_top_pal
         BACKGRND = bg_color
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
-        return
+        return thisbank
 
 set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
-        return
-        
+        return thisbank

@@ -1,4 +1,3 @@
-
         ; TYPE DEFINITIONS
         const TYPE_TORCH    =   1
         const TYPE_WOLF     =   2
@@ -159,4 +158,3 @@
         const FIREBALL_DAMAGE = 2
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
-        
