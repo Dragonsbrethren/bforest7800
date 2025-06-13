@@ -1,0 +1,256 @@
+;==============================================================================
+; BANK 5
+;------------------------------------------------------------------------------
+; Cathedral graphics, maps, AI
+;==============================================================================
+        bank 5
+        incgraphic gfx/tiles/castle_stone.png  160A 1 0 2 3 4
+        incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
+        incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
+        incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
+        incgraphic gfx/sprites/blood.png 160A 0 1
+        incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
+        incgraphic gfx/sprites/darkspark2.png 160A 1 0
+        incgraphic gfx/sprites/ghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/ghost1.png 160A 0 1 2 3
+        incgraphic gfx/sprites/priest0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest1.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest2.png 160A 0 1 2
+        incgraphic gfx/sprites/priest3.png 160A 0 1 2
+        incgraphic gfx/sprites/priest4.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest5.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest6.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest7.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest8.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest9.png 160A 0 1 2 3
+        incgraphic gfx/sprites/priest10.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest11.png 160A 0 2 1 3
+        incgraphic gfx/sprites/skeleton0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton3.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton4.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton5.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton6.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton7.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton8.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton9.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_slime1.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_minislime0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/c_minislime1.png 160A 0 2 1 3
+
+        incmapfile tiled/castle_room_6.tmx
+        incmapfile tiled/castle_room_7.tmx
+        incmapfile tiled/castle_room_8.tmx
+        incmapfile tiled/castle_room_9.tmx
+        incmapfile tiled/castle_room_10.tmx
+        incmapfile tiled/castle_room_11.tmx
+        incmapfile tiled/castle_room_12.tmx
+        incmapfile tiled/castle_room_13.tmx
+        incmapfile tiled/castle_room_14.tmx
+        incmapfile tiled/castle_room_15.tmx
+        incmapfile tiled/castle_room_16.tmx
+        incmapfile tiled/castle_room_17.tmx 
+        incmapfile tiled/castle_room_18.tmx
+        incmapfile tiled/castle_room_19.tmx
+        incmapfile tiled/castle_room_20.tmx
+        incmapfile tiled/castle_room_21.tmx
+        incmapfile tiled/castle_room_22.tmx
+        incmapfile tiled/castle_room_23.tmx
+        incmapfile tiled/castle_room_24.tmx
+        incmapfile tiled/castle_room_25.tmx
+
+        data castle_map_b5_lo
+        plot_castle_room_0_lo,
+        plot_castle_room_1_lo, plot_castle_room_2_lo, plot_castle_room_3_lo, plot_castle_room_4_lo, plot_castle_room_5_lo,
+        plot_castle_room_6_lo, plot_castle_room_7_lo, plot_castle_room_8_lo, plot_castle_room_9_lo, plot_castle_room_10_lo,
+        plot_castle_room_11_lo, plot_castle_room_12_lo, plot_castle_room_13_lo, plot_castle_room_14_lo, plot_castle_room_15_lo,
+        plot_castle_room_16_lo, plot_castle_room_17_lo, plot_castle_room_18_lo, plot_castle_room_19_lo, plot_castle_room_20_lo,
+        plot_castle_room_21_lo, plot_castle_room_22_lo, plot_castle_room_23_lo, plot_castle_room_24_lo, plot_castle_room_25_lo
+end
+
+        data castle_map_b5_hi
+        plot_castle_room_0_hi,
+        plot_castle_room_1_hi, plot_castle_room_2_hi, plot_castle_room_3_hi, plot_castle_room_4_hi, plot_castle_room_5_hi,
+        plot_castle_room_6_hi, plot_castle_room_7_hi, plot_castle_room_8_hi, plot_castle_room_9_hi, plot_castle_room_10_hi,
+        plot_castle_room_11_hi, plot_castle_room_12_hi, plot_castle_room_13_hi, plot_castle_room_14_hi, plot_castle_room_15_hi,
+        plot_castle_room_16_hi, plot_castle_room_17_hi, plot_castle_room_18_hi, plot_castle_room_19_hi, plot_castle_room_20_hi,
+        plot_castle_room_21_hi, plot_castle_room_22_hi, plot_castle_room_23_hi, plot_castle_room_24_hi, plot_castle_room_25_hi
+end
+
+castle_room_bank_5
+        asm
+        lda castle_map_b5_lo,x
+        sta temp1
+        lda castle_map_b5_hi,x
+        sta temp2
+        jmp (temp1)
+end
+
+plot_castle_room_6
+        no_flash = 1
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 3
+        plotmapfile tiled/castle_room_6.tmx castle_room_6 0 0 20 14
+        memcpy current_map castle_room_6 280
+        return otherbank
+
+plot_castle_room_7
+        no_flash = 1
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_7.tmx castle_room_7 0 0 20 14
+        memcpy current_map castle_room_7 280
+        return otherbank
+
+plot_castle_room_8
+        no_flash = 1
+        menu_map_room[menu_map_index] = 6
+        menu_map_room[menu_map_index_2] = 13
+        plotmapfile tiled/castle_room_8.tmx castle_room_8 0 0 20 14
+        memcpy current_map castle_room_8 280
+        return otherbank
+
+plot_castle_room_9
+        no_flash = 1
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
+        memcpy current_map castle_room_9 280
+        return otherbank
+
+plot_castle_room_10
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_10.tmx castle_room_10 0 0 20 14
+        memcpy current_map castle_room_10 280
+        return otherbank
+
+plot_castle_room_11
+        no_flash = 1
+        menu_map_room[menu_map_index] = 2
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_11.tmx castle_room_11 0 0 20 14
+        memcpy current_map castle_room_11 280
+        return otherbank
+
+plot_castle_room_12
+        alt_palette = 1
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_12.tmx castle_room_12 0 0 20 14
+        memcpy current_map castle_room_12 280
+        return otherbank
+
+        dmahole 0
+plot_castle_room_13
+        alt_palette = 1
+        menu_map_room[menu_map_index] = 6
+        menu_map_room[menu_map_index_2] = 7
+        plotmapfile tiled/castle_room_13.tmx castle_room_13 0 0 20 14
+        memcpy current_map castle_room_13 280
+        return otherbank
+
+plot_castle_room_14
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 1
+        entered_save_room{0} = 1
+        alt_palette = 1
+        menu_map_room[menu_map_index] = 12
+        menu_map_room[menu_map_index_2] = 13
+        plotmapfile tiled/castle_room_14.tmx castle_room_14 0 0 20 14
+        memcpy current_map castle_room_14 280
+        return otherbank
+
+plot_castle_room_15
+        menu_map_room[menu_map_index] = 14
+        menu_map_room[menu_map_index_2] = 9
+        plotmapfile tiled/castle_room_15.tmx castle_room_15 0 0 20 14
+        memcpy current_map castle_room_15 280
+        return otherbank
+
+plot_castle_room_16
+        menu_map_room[menu_map_index] = 12
+        menu_map_room[menu_map_index_2] = 13
+        plotmapfile tiled/castle_room_16.tmx castle_room_16 0 0 20 14
+        memcpy current_map castle_room_16 280
+        return otherbank
+
+plot_castle_room_17
+        no_flash = 1
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_17.tmx castle_room_17 0 0 20 14
+        memcpy current_map castle_room_17 280
+        return otherbank
+
+plot_castle_room_18
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_18.tmx castle_room_18 0 0 20 14
+        memcpy current_map castle_room_18 280
+        return otherbank
+
+plot_castle_room_19
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 3
+        plotmapfile tiled/castle_room_19.tmx castle_room_19 0 0 20 14
+        memcpy current_map castle_room_19 280
+        return otherbank
+
+plot_castle_room_20
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_20.tmx castle_room_20 0 0 20 14
+        memcpy current_map castle_room_20 280
+        return otherbank
+
+plot_castle_room_21
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
+        memcpy current_map castle_room_21 280
+        ; secret passage!
+        pokechar current_map 13 6 20 14 $10
+        pokechar current_map 13 7 20 14 $10
+        return otherbank
+
+plot_castle_room_22
+        menu_map_room[menu_map_index] = 8
+        menu_map_room[menu_map_index_2] = 15
+        plotmapfile tiled/castle_room_22.tmx castle_room_22 0 0 20 14
+        memcpy current_map castle_room_22 280
+        return otherbank
+
+plot_castle_room_23
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_23.tmx castle_room_23 0 0 20 14
+        memcpy current_map castle_room_23 280
+        return otherbank
+
+plot_castle_room_24
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 2
+        entered_save_room{1} = 1
+        alt_palette = 2
+        menu_map_room[menu_map_index] = 12
+        menu_map_room[menu_map_index_2] = 7
+        plotmapfile tiled/castle_room_24.tmx castle_room_24 0 0 20 14
+        memcpy current_map castle_room_24 280
+        return otherbank
+
+plot_castle_room_25
+        alt_palette = 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 17
+        plotmapfile tiled/castle_room_25.tmx castle_room_25 0 0 20 14
+        memcpy current_map castle_room_25 280
+        return otherbank

@@ -1,0 +1,891 @@
+;==============================================================================
+; BANK 4
+;------------------------------------------------------------------------------
+; Cathedral graphics, maps, AI
+;==============================================================================
+        bank 4
+        incgraphic gfx/tiles/castle_stone.png  160A 1 0 2 3 4
+        incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
+        incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
+        incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
+        incgraphic gfx/sprites/blood.png 160A 0 1
+        incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
+        incgraphic gfx/sprites/darkspark2.png 160A 1 0
+        incgraphic gfx/sprites/ghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/ghost1.png 160A 0 1 2 3
+        incgraphic gfx/sprites/priest0.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest1.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest2.png 160A 0 1 2
+        incgraphic gfx/sprites/priest3.png 160A 0 1 2
+        incgraphic gfx/sprites/priest4.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest5.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest6.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest7.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest8.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest9.png 160A 0 1 2 3
+        incgraphic gfx/sprites/priest10.png 160A 0 2 1 3
+        incgraphic gfx/sprites/priest11.png 160A 0 2 1 3
+        incgraphic gfx/sprites/skeleton0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton3.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton4.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton5.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton6.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton7.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton8.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton9.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton10.png 160A 0 3 1 2
+        incgraphic gfx/sprites/skeleton11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_slime1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_minislime0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/c_minislime1.png 160A 0 3 1 2
+
+        incmapfile tiled/castle_room_6.tmx
+        incmapfile tiled/castle_room_7.tmx
+        incmapfile tiled/castle_room_8.tmx
+        incmapfile tiled/castle_room_9.tmx
+        incmapfile tiled/castle_room_10.tmx
+        incmapfile tiled/castle_room_11.tmx
+        incmapfile tiled/castle_room_12.tmx
+        incmapfile tiled/castle_room_13.tmx
+        incmapfile tiled/castle_room_14.tmx
+        incmapfile tiled/castle_room_15.tmx
+        incmapfile tiled/castle_room_16.tmx
+        incmapfile tiled/castle_room_17.tmx 
+        incmapfile tiled/castle_room_18.tmx
+        incmapfile tiled/castle_room_19.tmx
+        incmapfile tiled/castle_room_20.tmx
+        incmapfile tiled/castle_room_21.tmx
+        incmapfile tiled/castle_room_22.tmx
+        incmapfile tiled/castle_room_23.tmx
+        incmapfile tiled/castle_room_24.tmx
+        incmapfile tiled/castle_room_25.tmx
+        incmapfile tiled/castle_room_1.tmx
+        incmapfile tiled/castle_room_2.tmx
+        incmapfile tiled/castle_room_3.tmx
+        incmapfile tiled/castle_room_4.tmx
+        incmapfile tiled/castle_room_5.tmx
+        const plot_castle_room_0_lo = #<.plot_castle_room_0
+        const plot_castle_room_0_hi = #>.plot_castle_room_0
+        const plot_castle_room_1_lo = #<.plot_castle_room_1
+        const plot_castle_room_1_hi = #>.plot_castle_room_1
+        const plot_castle_room_2_lo = #<.plot_castle_room_2
+        const plot_castle_room_2_hi = #>.plot_castle_room_2
+        const plot_castle_room_3_lo = #<.plot_castle_room_3
+        const plot_castle_room_3_hi = #>.plot_castle_room_3
+        const plot_castle_room_4_lo = #<.plot_castle_room_4
+        const plot_castle_room_4_hi = #>.plot_castle_room_4
+        const plot_castle_room_5_lo = #<.plot_castle_room_5
+        const plot_castle_room_5_hi = #>.plot_castle_room_5
+        const plot_castle_room_6_lo = #<.plot_castle_room_6
+        const plot_castle_room_6_hi = #>.plot_castle_room_6
+        const plot_castle_room_7_lo = #<.plot_castle_room_7
+        const plot_castle_room_7_hi = #>.plot_castle_room_7
+        const plot_castle_room_8_lo = #<.plot_castle_room_8
+        const plot_castle_room_8_hi = #>.plot_castle_room_8
+        const plot_castle_room_9_lo = #<.plot_castle_room_9
+        const plot_castle_room_9_hi = #>.plot_castle_room_9
+        const plot_castle_room_10_lo = #<.plot_castle_room_10
+        const plot_castle_room_10_hi = #>.plot_castle_room_10
+        const plot_castle_room_11_lo = #<.plot_castle_room_11
+        const plot_castle_room_11_hi = #>.plot_castle_room_11
+        const plot_castle_room_12_lo = #<.plot_castle_room_12
+        const plot_castle_room_12_hi = #>.plot_castle_room_12
+        const plot_castle_room_13_lo = #<.plot_castle_room_13
+        const plot_castle_room_13_hi = #>.plot_castle_room_13
+        const plot_castle_room_14_lo = #<.plot_castle_room_14
+        const plot_castle_room_14_hi = #>.plot_castle_room_14
+        const plot_castle_room_15_lo = #<.plot_castle_room_15
+        const plot_castle_room_15_hi = #>.plot_castle_room_15
+        const plot_castle_room_16_lo = #<.plot_castle_room_16
+        const plot_castle_room_16_hi = #>.plot_castle_room_16
+        const plot_castle_room_17_lo = #<.plot_castle_room_17
+        const plot_castle_room_17_hi = #>.plot_castle_room_17
+        const plot_castle_room_18_lo = #<.plot_castle_room_18
+        const plot_castle_room_18_hi = #>.plot_castle_room_18
+        const plot_castle_room_19_lo = #<.plot_castle_room_19
+        const plot_castle_room_19_hi = #>.plot_castle_room_19
+        const plot_castle_room_20_lo = #<.plot_castle_room_20
+        const plot_castle_room_20_hi = #>.plot_castle_room_20
+        const plot_castle_room_21_lo = #<.plot_castle_room_21
+        const plot_castle_room_21_hi = #>.plot_castle_room_21
+        const plot_castle_room_22_lo = #<.plot_castle_room_22
+        const plot_castle_room_22_hi = #>.plot_castle_room_22
+        const plot_castle_room_23_lo = #<.plot_castle_room_23
+        const plot_castle_room_23_hi = #>.plot_castle_room_23
+        const plot_castle_room_24_lo = #<.plot_castle_room_24
+        const plot_castle_room_24_hi = #>.plot_castle_room_24
+        const plot_castle_room_25_lo = #<.plot_castle_room_25
+        const plot_castle_room_25_hi = #>.plot_castle_room_25
+
+        data castle_map_lo
+        plot_castle_room_0_lo,
+        plot_castle_room_1_lo, plot_castle_room_2_lo, plot_castle_room_3_lo, plot_castle_room_4_lo, plot_castle_room_5_lo,
+end
+
+        data castle_map_hi
+        plot_castle_room_0_hi,
+        plot_castle_room_1_hi, plot_castle_room_2_hi, plot_castle_room_3_hi, plot_castle_room_4_hi, plot_castle_room_5_hi,
+end
+
+        data castle_obj_lo
+        castle_room_0_obj_lo,
+        castle_room_1_obj_lo, castle_room_2_obj_lo, castle_room_3_obj_lo, castle_room_4_obj_lo, castle_room_5_obj_lo,
+        castle_room_6_obj_lo, castle_room_7_obj_lo, castle_room_8_obj_lo, castle_room_9_obj_lo, castle_room_10_obj_lo,
+        castle_room_11_obj_lo, castle_room_12_obj_lo, castle_room_13_obj_lo, castle_room_14_obj_lo, castle_room_15_obj_lo,
+        castle_room_16_obj_lo, castle_room_17_obj_lo, castle_room_18_obj_lo, castle_room_19_obj_lo, castle_room_20_obj_lo,
+        castle_room_21_obj_lo, castle_room_22_obj_lo, castle_room_23_obj_lo, castle_room_24_obj_lo, castle_room_25_obj_lo
+end
+
+        data castle_obj_hi
+        castle_room_0_obj_hi,
+        castle_room_1_obj_hi, castle_room_2_obj_hi, castle_room_3_obj_hi, castle_room_4_obj_hi, castle_room_5_obj_hi,
+        castle_room_6_obj_hi, castle_room_7_obj_hi, castle_room_8_obj_hi, castle_room_9_obj_hi, castle_room_10_obj_hi,
+        castle_room_11_obj_hi, castle_room_12_obj_hi, castle_room_13_obj_hi, castle_room_14_obj_hi, castle_room_15_obj_hi,
+        castle_room_16_obj_hi, castle_room_17_obj_hi, castle_room_18_obj_hi, castle_room_19_obj_hi, castle_room_20_obj_hi,
+        castle_room_21_obj_hi, castle_room_22_obj_hi, castle_room_23_obj_hi, castle_room_24_obj_hi, castle_room_25_obj_hi
+end
+
+load_castle
+        if !first_load then castle_rooms
+        first_load = 0
+        if save_room_index = 1 then castle_save_1
+        if save_room_index = 2 then castle_save_2
+
+        room_index = 44
+        menu_map_Xpos = 70
+        menu_map_Ypos = 160
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_UP
+        goto castle_rooms
+
+castle_save_1
+        room_index = 18
+        menu_map_Xpos = 86
+        menu_map_Ypos = 96
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+        goto castle_rooms
+
+castle_save_2
+        room_index = 7
+        menu_map_Xpos = 54
+        menu_map_Ypos = 80
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+
+castle_rooms
+        characterset castle_stone
+        asm
+        lda #0
+        sta no_flash
+        sta alt_palette
+        ldx room_index
+        lda castle_rooms,x
+        tax
+        lda castle_obj_lo,x
+        sta pointer
+        lda castle_obj_hi,x
+        sta pointer_hi
+        lda room_index
+        asl
+        sta menu_map_index
+        clc
+        adc #1
+        sta menu_map_index_2
+        cpx #6
+        bcc .castle_room_bank_4
+end
+        gosub castle_room_bank_5 bank5
+        return thisbank         ; gosub/return needed to make bank switch
+castle_room_bank_4
+        asm
+        lda castle_map_lo,x
+        sta temp1               ; temp1 + 2 used for indirect jmp
+        lda castle_map_hi,x
+        sta temp2
+        jmp (temp1)
+end
+
+castle_pals
+        P4C1 = PAL_C_SKY    : P4C2 = PAL_C_DKWALL : P4C3 = PAL_C_LTWALL ; walls
+        P7C1 = PAL_C_BRCARP : P7C2 = PAL_C_DKCARP : P7C3 = PAL_C_LTCARP ; carpets
+        if alt_palette=1 then P5C1 = PAL_C_DKCARP : goto castle_maroon_pal   ; chapel
+        P6C1 = PAL_C_BRTILE : P6C2 = PAL_C_LTTILE : P6C3 = PAL_C_DKTILE ; tiled floors
+        if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
+        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
+        goto castle_shared_pals
+
+castle_lightning
+        if no_flash then goto castle_pals
+        P4C1 = PAL_C_LIGHTN : P4C2 = PAL_C_MDWALL : P4C3 = PAL_C_BRWALL ; walls
+        P7C1 = PAL_C_LIGHTN : P7C2 = PAL_C_LTCARP : P7C3 = PAL_C_BRCARP ; carpets
+        if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal   ; chapel
+        P6C1 = PAL_C_LIGHTN : P6C2 = PAL_C_BRTILE : P6C3 = PAL_C_LTTILE ; blue-green tiles    
+        if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
+        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
+        lightning_delay = LIGHTNING_DELAY
+
+castle_shared_pals
+        bg_color = PAL_BLACK
+        incbasic shared_pals.78b
+        goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
+castle_maroon_pal
+        ; override tile colors with maroons for carpeted stairs
+        P6C2 = PAL_C_LTCARP : P6C3 = PAL_C_DKCARP
+
+castle_gold_pal
+        ; override skeleton colors with golds
+        P5C2 = PAL_C_DKGOLD : P5C3 = PAL_C_LTGOLD
+        if !lightning_delay then lightning_delay = LIGHTNING_DELAY
+        goto castle_shared_pals
+
+plot_castle_room_0
+plot_castle_room_1
+        menu_map_room[menu_map_index] = 2
+        menu_map_room[menu_map_index_2] = 3
+        memcpy current_map castle_room_1 280
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
+plot_castle_bank5_return
+        return thisbank
+
+        data castle_room_0_obj
+        $00
+end
+
+        data castle_room_1_obj
+        TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
+        TYPE_SKELETON, $4A, $30,  $00
+end
+
+        data castle_room_2_obj
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $40, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $80, TYPE_TORCH, $38, $A0,
+        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $40, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $80, TYPE_TORCH, $60, $A0,
+        TYPE_SKELETON, $4C, $60,
+        $00
+end
+
+        data castle_room_3_obj
+        TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
+        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70,
+        $00
+end
+
+        data castle_room_4_obj
+        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0,
+        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
+        $00
+end
+
+        data castle_room_5_obj
+        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
+        $00
+end
+
+        dmahole 0
+
+        data castle_room_6_obj
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
+        TYPE_ITEM1, $7C, $30, TYPE_GHOST, $48, $40,
+        $00
+end
+        data castle_room_7_obj
+        TYPE_RSLIME, $58, $A0,
+        TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
+        TYPE_ARMOR2, $4C, $38, TYPE_GHOST, $70, $40, $00
+end
+
+plot_castle_room_2
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
+        memcpy current_map castle_room_2 280
+        return thisbank
+
+plot_castle_room_3
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        memcpy current_map castle_room_3 280
+        return thisbank
+
+plot_castle_room_4
+        menu_map_room[menu_map_index] = 8
+        menu_map_room[menu_map_index_2] = 15
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
+        memcpy current_map castle_room_4 280
+        return thisbank
+
+plot_castle_room_5
+        no_flash = 1
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
+        memcpy current_map castle_room_5 280
+        return thisbank
+
+
+        data castle_room_8_obj
+        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90, $00
+end
+
+
+        data castle_room_9_obj
+        TYPE_SKELETON, $48, $90, TYPE_SKELETON, $58, $70,
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $60, $20,
+        TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0, $00
+end
+
+        data castle_room_10_obj
+        TYPE_SKELETON, $40, $80, TYPE_PRIEST, $58, $80,
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
+        $00
+end
+
+        data castle_room_11_obj
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,
+        TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $50, $00
+end
+
+        data castle_room_12_obj
+        TYPE_PRIEST, $58, $20,  $00
+end
+
+        data castle_room_13_obj
+        TYPE_TORCH, $10, $20,
+        TYPE_TORCH, $88, $20,
+        TYPE_TORCH, $38, $40,
+        TYPE_TORCH, $60, $40,
+        TYPE_PRIEST, $50, $26,
+        $00
+end
+
+        data castle_room_14_obj
+        $00
+end
+
+        data castle_room_15_obj
+        TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $A0,
+        TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
+        $00
+end
+
+        data castle_room_16_obj
+        $00
+end
+
+        data castle_room_17_obj
+        TYPE_FOOD, $44, $30, TYPE_PRIEST, $6C, $30
+        TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70, $00
+end
+
+        data castle_room_18_obj
+        TYPE_PRIEST, $18, $50, TYPE_PRIEST, $80, $50,
+        TYPE_TORCH, $08, $40, TYPE_TORCH, $90, $40, 
+        TYPE_SHIELD1, $4C, $B0, $00
+end
+
+        data castle_room_19_obj
+        TYPE_SKELETON, $30, $80, TYPE_SKELETON, $68, $90,
+        TYPE_BLOOD, $50, $30,
+        $00
+end
+
+        data castle_room_20_obj
+        $00
+end
+
+        data castle_room_21_obj
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $40, TYPE_TORCH, $38, $80, TYPE_TORCH, $38, $A0,
+        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $40, TYPE_TORCH, $60, $80, TYPE_TORCH, $60, $A0,
+        TYPE_PRIEST, $4C, $60,
+        $00
+end
+
+        data castle_room_22_obj
+        $00
+end
+
+        data castle_room_23_obj
+        TYPE_TORCH, $38, $A0, TYPE_TORCH, $60, $A0,
+        TYPE_BLOOD, $58, $28, TYPE_BLOOD, $60, $B0, $00
+end
+
+        data castle_room_24_obj
+        $00
+end
+
+        data castle_room_25_obj
+        TYPE_PRIEST, $4C, $50, $00
+end
+
+        data castle_rooms
+        00, 00, 00, 00, 00, 00, 00,
+        24, 25, 00, 00, 00, 00, 00,
+        23, 00, 16, 00, 14, 00, 00,
+        19, 18, 13, 17, 11, 00, 00,
+        21, 22, 12, 00, 06,  7,  8,
+        02, 00, 02, 00, 05, 00,  9,
+        15, 03, 01, 03, 04, 00, 10
+end
+
+test_walkable_castle
+        asm
+        ldx #0
+twc_loop lda castle_walkable_tiles,x
+        cmp move_tile_1
+        bne twctile2
+        pha
+        lda #1
+        sta walkable_1
+        pla
+twctile2 cmp move_tile_2
+        bne twc_next
+        lda #1
+        sta walkable_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda walkable_1
+        bne twc_walkable
+twc_next inx
+        cpx #castle_walkable_tiles_length
+        bne twc_loop
+        lda walkable_1
+        beq twc_done
+        lda walkable_2
+        beq twc_done
+twc_walkable
+        sta walkable
+        jmp .walkable_return
+twc_done
+tfc_flags
+        lda flags
+        and #%00010000
+        bne tfc_done
+
+test_floatable_castle
+        ldx #0
+tfc_loop lda castle_floatable_tiles,x
+        cmp move_tile_1
+        bne tfctile2
+        pha
+        lda #1
+        sta floatable_1
+        pla
+tfctile2 cmp move_tile_2
+        bne tfc_next
+        lda #1
+        sta floatable_2
+        lda floatable_1
+        bne tfc_floatable
+tfc_next inx
+        cpx #castle_floatable_tiles_length
+        bne tfc_loop
+        lda floatable_1
+        beq tfc_done
+        lda floatable_2
+        beq tfc_done
+tfc_floatable
+        sta floatable
+tfc_done jmp .walkable_return
+end
+
+        data castle_walkable_tiles
+        $10, $16, $18, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A,
+        $3C, $3E, $40, $42, $44, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56, $58
+end
+
+        data castle_floatable_tiles
+        $5A, $5C, $5E, $60, $62, $64, $66
+end
+
+torch_tile_block_castle
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 castle_floatable_tiles
+        return thisbank
+
+torch_tile_unblock_castle
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 castle_walkable_tiles
+        return thisbank
+
+;==============================================================================
+; PRIEST & SKELETON AI
+;------------------------------------------------------------------------------
+; Walks slowly until aligned with player, then casts dark spark or sword attack
+;==============================================================================
+priest_ai
+        if flags{6} then goto priest_cast_2
+priest_dir
+        if timer then goto priest_walk
+        timer = 20
+        temp1 = rand
+        if temp1 > 128 then priest_vert
+
+priest_horiz
+        if Xposition >= player_Xpos then priest_left
+
+priest_right
+        object_facing[index] = DIR_RIGHT
+        Xdirection = DIR_RIGHT
+        Ydirection = 0
+        goto priest_walk
+
+priest_left
+        object_facing[index] = DIR_LEFT
+        Xdirection = DIR_LEFT
+        Ydirection = 0
+        goto priest_walk
+
+priest_vert
+        if Yposition < player_Ypos then priest_down
+
+priest_up
+        object_facing[index] = DIR_UP
+        Xdirection = 0
+        Ydirection = DIR_UP
+        goto priest_walk
+
+priest_down
+        object_facing[index] = DIR_DOWN
+        Xdirection = 0
+        Ydirection = DIR_DOWN
+
+priest_walk
+        timer = timer - 1
+        if Xdirection = DIR_LEFT then priest_walk_x
+        if Xdirection = DIR_RIGHT then priest_walk_x
+        if Ydirection = DIR_UP then priest_walk_y
+        if Ydirection = DIR_DOWN then priest_walk_y
+        
+priest_walk_x
+        if object_type[index] <> TYPE_PRIEST then skel_melee_x
+priest_test_horz
+        gosub priest_box
+        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
+priest_walk_x_2
+        Xvelocity = Xvelocity + move_speed : Yvelocity = 0
+        goto priest_walk_anim
+
+priest_walk_y
+        if object_type[index] <> TYPE_PRIEST then skel_melee_y
+priest_test_vert
+        gosub priest_box
+        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
+priest_walk_y_2
+        Yvelocity = Yvelocity + move_speed : Xvelocity = 0
+
+priest_walk_anim
+        if Ydirection = DIR_DOWN then frame = 0
+        if Ydirection = DIR_UP then frame = 2
+        if Xdirection = DIR_LEFT then frame = 4
+        if Xdirection = DIR_RIGHT then frame = 6
+        if animation_frame then frame = frame + 1
+        return thisbank
+
+skel_melee_x
+        gosub test_melee
+        if !temp6 then goto priest_walk_x_2
+
+priest_cast_horiz
+        object_facing[index] = DIR_LEFT
+        if Xposition < player_Xpos then object_facing[index] = DIR_RIGHT
+        goto priest_cast
+
+skel_melee_y
+        gosub test_melee
+        if !temp6 then goto priest_walk_y_2
+
+priest_cast_vert
+        object_facing[index] = DIR_UP
+        if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
+
+        ; prep the priest/skeleton object for spawning their attacks
+priest_cast
+        gosub find_new_object
+        if no_empty_slot then return thisbank
+        ; set the spawned object slot's parent to the index of this object
+        object_parent[spawn_index] = index
+        flags{6} = 1
+        frame_index = object_facing[index]
+        frame = priest_cast_frames[frame_index]
+        asm
+        lda #0
+        sta Xvelocity_hi
+        sta Xvelocity_lo
+        sta Yvelocity_hi
+        sta Yvelocity_lo
+end
+        timer = PRIEST_CAST_FRAMES
+
+priest_cast_2
+        if object_type[index] = TYPE_SKELETON then goto skel_sword
+        timer = timer - 1
+        if timer then return thisbank
+
+        ; todo: roll off into its own spawn projectile subroutine
+        playsfx sfx_nonobounce
+
+load_darkspark
+        asm
+        ldx spawn_index
+        ldy index
+        lda #TYPE_DARKSPARK
+        sta object_type,x
+        lda #DARKSPARK_SPEED_HI
+        sta object_vel_cap_hi,x
+        sta object_speed_hi,x
+        lda #DARKSPARK_SPEED_LO
+        sta object_vel_cap_lo,x
+        sta object_speed_lo,x
+        lda #DARKSPARK_DAMAGE
+        sta object_damage,x
+        jsr set_cast_direction
+end
+        flags{6} = 0
+        return thisbank
+
+
+priest_box
+        temp1 = Xposition - 2
+        temp2 = Xposition + 14
+        temp3 = player_Xpos + 12
+        temp4 = Yposition - 4
+        temp5 = Yposition + 20
+        temp6 = player_Ypos + 16
+        return
+
+        data priest_cast_frames
+        0, 9, 8, 10, 11
+end
+
+
+skel_sword
+        if flags{7} then return thisbank
+        asm
+        jsr .position_sword
+        ldx spawn_index
+        ldy index
+        lda #TYPE_SKELSWORD
+        sta object_type,x
+        lda #0
+        sta object_flags,x
+        sta object_vel_cap_hi,x
+        sta object_speed_hi,x
+        sta object_vel_cap_lo,x
+        sta object_speed_lo,x
+        lda #SKELSWORD_DAMAGE
+        sta object_damage,x
+        sta object_hp,x ; dummy stat but needed for damage code
+        lda temp1
+        sta object_Xpos,x
+        lda temp2
+        sta object_Ypos,x
+        lda temp5
+        sta object_frame,x
+        lda object_facing,y
+        sta object_facing,x
+        lda #1
+        sta object_timer,x
+end
+        flags{7} = 1
+        return thisbank
+
+;==============================================================================
+; SKELSWORD AI
+;------------------------------------------------------------------------------
+; Exists for ATTACK_FRAMES duration, then kills itself
+;==============================================================================
+skelsword_ai
+        temp1 = object_parent[index]
+        ; if Skeleton has died, remove sword instantly
+        if !object_type[temp1] then ss_kill
+        timer = timer - 1
+        if flags{7} then ss_retract_2
+        if timer then return
+        if flags{6} then ss_retract
+        timer = ATTACK_FRAMES
+        flags{6} = 1
+        return
+
+ss_retract
+        timer = RETRACT_FRAMES
+        flags{7} = 1
+
+ss_retract_2
+        if !timer then ss_kill
+        return  ; bypass retract code until object priority handling is added
+        if object_facing[index] = DIR_DOWN  then Yposition = Yposition - 4 : return
+        if object_facing[index] = DIR_UP    then Yposition = Yposition + 4 : return
+        if object_facing[index] = DIR_LEFT  then Xposition = Xposition + 2 : return
+        Xposition = Xposition - 2 : return
+
+ss_kill
+        asm
+        lda #0
+        ldx temp1
+        ldy index
+        ; unset flags 6 and 7 on parent skeleton
+        sta object_flags,x
+        sta object_type,y
+        rts
+end
+
+obj_priest_stats
+        object_hp[obj_index] = 5
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+obj_skel_stats
+        object_hp[obj_index] = 5
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
+; GHOST AI
+;------------------------------------------------------------------------------
+; Floats through walls to attack player
+;==============================================================================
+ghost_ai
+        flags{2} = 1
+        if timer then goto ghost_follow
+        timer = 4
+        if !object_pal[index] then object_pal[index] = 2 : goto ghost_follow
+        object_pal[index] = 0
+ghost_follow
+        timer = timer - 1
+        gosub followplayer
+        return thisbank
+
+obj_ghost_stats
+        object_hp[obj_index] = 5
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 2
+        object_mdef[obj_index] = 0
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
+; RED SLIME AI
+;------------------------------------------------------------------------------
+; A Red Slime draws near!
+; Command?
+;==============================================================================
+redslime_ai
+        ; slimes have no physical defense on their squished frame
+        if !animation_frame then temp1 = RSLIME_DEF : goto rslime_chase
+        ; this will allow them to split into mini-slimes
+        temp1 = 0
+rslime_chase
+        object_def[index] = temp1
+        gosub followplayer
+        return
+
+obj_redslime_stats
+        object_hp[obj_index] = RSLIME_HP
+        object_vel_cap_hi[obj_index] = RSLIME_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = RSLIME_VEL_CAP_LO
+        object_damage[obj_index] = RSLIME_DAMAGE
+        object_def[obj_index] = RSLIME_DEF
+        object_mdef[obj_index] = RSLIME_MDEF
+        object_friction_hi[obj_index] = RSLIME_FRICTION_HI
+        object_friction_lo[obj_index] = RSLIME_FRICTION_LO
+        object_speed_hi[obj_index] = RSLIME_SPEED_HI
+        object_speed_lo[obj_index] = RSLIME_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+split_rslime
+        ; replace slime mobj with mini slime
+        object_type[index] = TYPE_MRSLIME
+        object_hp[index] = MRSLIME_HP
+        object_def[index] = MRSLIME_DEF
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
+        ; initialize the new mini slime object
+        object_type[spawn_index] = TYPE_MRSLIME
+        object_hp[spawn_index] = MRSLIME_HP
+        object_vel_cap_hi[spawn_index] = RSLIME_VEL_CAP_HI
+        object_vel_cap_lo[spawn_index] = RSLIME_VEL_CAP_LO
+        object_damage[spawn_index] = RSLIME_DAMAGE
+        object_def[spawn_index] = MRSLIME_DEF
+        object_mdef[spawn_index] = MRSLIME_MDEF
+        object_friction_hi[spawn_index] = RSLIME_FRICTION_HI
+        object_friction_lo[spawn_index] = RSLIME_FRICTION_LO
+        object_speed_hi[spawn_index] = RSLIME_SPEED_HI
+        object_speed_lo[spawn_index] = RSLIME_SPEED_LO
+        ; mini slime spawns to the right of the parent slime's pos
+        object_Xpos[spawn_index] = temp1 + 9
+        object_Ypos[spawn_index] = temp2
+        goto cc_next
+
+plot_priest
+        plotsprite priest0 1 Xposition Yposition frame
+        goto plot_next
+
+plot_darkspark
+        plotsprite darkspark0 0 Xposition Yposition frame
+        goto plot_next
+
+plot_skeleton
+        plotsprite skeleton0 5 Xposition Yposition frame
+        goto plot_next
+
+plot_skelsword
+        plotsprite sword0 0 Xposition Yposition frame
+        goto plot_next
+
+plot_rslime
+        plotsprite c_slime0 7 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_mrslime
+        plotsprite c_minislime0 7 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_blood
+        plotsprite blood 2 Xposition Yposition 0
+        goto plot_next
+
+plot_ghost
+        plotsprite ghost0 sprite_pal Xposition Yposition animation_frame
+        goto plot_next

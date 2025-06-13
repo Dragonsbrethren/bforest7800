@@ -1,0 +1,30 @@
+;==============================================================================
+; BANK 7
+;------------------------------------------------------------------------------
+; Reserved for additional river data
+;==============================================================================
+        bank 7
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
+        incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
+        incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
+        incgraphic gfx/sprites/joswim3.png  160B 0 4 5 6 3   ; FRAME_UP_2
+        incgraphic gfx/sprites/joswim4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
+        incgraphic gfx/sprites/joswim5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
+        incgraphic gfx/sprites/joswim6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
+        incgraphic gfx/sprites/joswim7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
+        incgraphic gfx/sprites/joswim8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
+        incgraphic gfx/sprites/joswim9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
+        incgraphic gfx/sprites/joswim10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
+        incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
+        incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
+        incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+        incgraphic gfx/sprites/octopus0.png 160A
+        incgraphic gfx/sprites/octopus1.png 160A
+        incgraphic gfx/sprites/octopus2.png 160A
+
+        incmapfile tiled/river_room_0.tmx
+        incmapfile tiled/river_room_1.tmx

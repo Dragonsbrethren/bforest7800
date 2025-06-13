@@ -1,0 +1,14 @@
+;==============================================================================
+; BANK 8
+;------------------------------------------------------------------------------
+; Hills tileset and data
+;==============================================================================
+        bank 8
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+
+hills_pals
+        bg_color = PAL_F_GRND   ; ground color shared with forest
+        incbasic shared_pals.78b

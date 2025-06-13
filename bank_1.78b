@@ -1,0 +1,936 @@
+;==============================================================================
+; BANK 1
+;------------------------------------------------------------------------------
+; 7800basic initialization, title sequence code and graphics
+;==============================================================================
+        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
+        
+        incbasic title.78b
+
+kill_player
+        player_frame = FRAME_DEATH
+        if !fade_count then fade_count = 60
+        goto cc_next
+
+death_fade
+        ; TODO: Slowly fade the palette to black here
+        fade_count = fade_count - 1
+        if !fade_count then password_display
+        goto player_handler_done
+
+save_room_handler
+        gosub encode_password
+password_display
+        menu = MENU_GAMEOVER
+        menu_debounce = 1
+        pause_debounce = 1
+        action_debounce = 1
+        goto menu_init bank3
+
+encode_password
+        asm
+        lda tileset
+        sta pw_tileset
+        lda save_room_index
+        sta pw_saveroom
+        lda player_sword
+        sta pw_sword
+        lda player_shield
+        sta pw_shield
+        lda player_armor
+        sta pw_armor
+        lda player_charm
+        sta pw_charm
+        lda m_item_bits_1
+        sta pw_inventory_1
+        lda m_item_bits_2
+        sta pw_inventory_2
+        lda #0
+        sta pw_spells_1
+        sta pw_spells_2
+        lda m_sword_bits_1
+        sta pw_swords_1
+        lda m_sword_bits_2
+        sta pw_swords_2
+        lda m_shield_bits_1
+        sta pw_shields_1
+        lda m_shield_bits_2
+        sta pw_shields_2
+        lda m_armor_bits_1
+        sta pw_armor_1
+        lda m_armor_bits_2
+        sta pw_armor_2
+        lda m_charm_bits_1
+        sta pw_charms_1
+        lda m_charm_bits_2
+        sta pw_charms_2
+        lda #0
+        sta pw_relics_1
+        sta pw_relics_2
+        sta pw_index20
+        sta pw_index21
+        sta pw_index22
+        jsr .calculate_pw_checksum
+        sta pw_checksum
+
+encode_font_offset
+        lda pw_index0,x
+        clc
+        adc #PW_0
+        sta pw_index0,x
+        inx
+        cpx #24
+        bne encode_font_offset
+        lda #24
+        sta pw_index
+end
+        savememory pw_index0-pw_index
+        return
+
+decode_password
+        asm
+        ldx #0
+decode_font_offset
+        lda pw_index0,x
+        sec
+        sbc #PW_0
+        sta pw_index0,x
+        inx
+        cpx #24
+        bne decode_font_offset
+
+        jsr .calculate_pw_checksum
+        cmp pw_checksum
+        beq write_to_gamestate
+        jsr encode_font_offset         ; reencode the font for display if the password fails
+        lda #$E0
+        sta pw_error
+        rts
+
+write_to_gamestate
+        lda pw_tileset
+        sta tileset
+        lda pw_saveroom
+        sta save_room_index
+        ; TODO: handle determining map screen to start on from save room index
+        lda pw_sword
+        sta player_sword
+        lda pw_shield
+        sta player_shield
+        lda pw_armor
+        sta player_armor
+        lda pw_charm
+        sta player_charm
+        lda pw_inventory_1
+        sta m_item_bits_1
+        lda pw_inventory_2
+        sta m_item_bits_2
+        lda pw_swords_1
+        sta m_sword_bits_1
+        lda pw_swords_2
+        sta m_sword_bits_2
+        lda pw_shields_1
+        sta m_shield_bits_1
+        lda pw_shields_2
+        sta m_shield_bits_2
+        lda pw_armor_1
+        sta m_armor_bits_1
+        lda pw_armor_2
+        sta m_armor_bits_2
+        lda pw_charms_1
+        sta m_charm_bits_1
+        lda pw_charms_2
+        sta m_charm_bits_2
+        lda #1
+        sta pw_success
+        rts
+end
+
+calculate_pw_checksum
+        asm
+        lda pw_tileset
+        clc
+        adc pw_saveroom
+        adc pw_sword
+        adc pw_shield
+        adc pw_armor
+        adc pw_charm
+        adc pw_inventory_1
+        adc pw_inventory_2
+        adc pw_spells_1
+        adc pw_spells_2
+        adc pw_swords_1
+        adc pw_swords_2
+        adc pw_shields_1
+        adc pw_shields_2
+        adc pw_armor_1
+        adc pw_armor_2
+        adc pw_charms_1
+        adc pw_charms_2
+        adc pw_relics_1
+        adc pw_relics_2
+        adc pw_index20
+        adc pw_index21
+        adc pw_index22
+        and #$1F
+        rts
+end
+
+password_to_buffer
+        asm
+        ldx #24
+pw_buffer_loop
+        lda pw_index0,x
+        sta pw_buffer,x
+        dex
+        bne pw_buffer_loop
+        lda pw_index0
+        sta pw_buffer
+        rts
+end
+
+buffer_to_password
+        asm
+        ldx #24
+buffer_pw_loop
+        lda pw_buffer,x
+        sta pw_index0,x
+        dex
+        bne buffer_pw_loop
+        lda pw_buffer
+        sta pw_index0
+        rts
+end
+
+plot_gameover
+        menu = MENU_GAMEOVER
+        if !menu_change then goto gameover_updater
+        clearscreen
+        gosub disable_double_wide_mode
+        gosub plot_menu_border
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 1
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
+        plotchars 'GAME  OVER' 0 60 2 singlewide
+gameover_options
+        plotchars 'Continue' 0 60 9 singlewide
+        plotchars 'Quit' 0 60 10 singlewide
+        savescreen
+
+gameover_updater
+        restorescreen
+        gosub plot_password
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+
+gameover_controls
+        if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
+        if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
+
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+        if menu_selection > 1 then menu_selection = 0
+        menu_cursor_X = 56
+        if !menu_selection then menu_cursor_Y = 144 : goto main
+        menu_cursor_Y = 160
+        goto main
+
+gameover_input
+        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
+        gosub decode_password
+        in_save_room = 0
+        goto title_continue
+
+plot_relics_menu
+plot_password_menu
+        ; turn on Kangaroo mode so "Password Error prints over saved screen"
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_PASSWORD
+        if !menu_change then goto password_menu_updater
+        clearscreen
+        gosub disable_double_wide_mode
+        gosub calc_inv_array
+        ; gosub encode_password
+        gosub password_to_buffer
+        gosub plot_menu_border
+        menu_change = 0
+        menu_selection = 0
+        menu_max = 40
+        menu_columns = 13
+        plotchars 'Enter Password' 0 52 2 singlewide
+        plotchars '0 1 2 3 4 5 6 7 8 9 Erase' 0 28 9 singlewide
+        plotchars 'A B C D E F G H I J K L M' 0 28 10 singlewide
+        plotchars 'N O P Q R S T U V W X Y Z' 0 28 11 singlewide
+        plotchars 'Confirm  Exit'             0 84 12 singlewide
+        savescreen
+
+password_menu_updater
+        restorescreen
+        gosub plot_password
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        ; $E0 is a checksum error code set by the decode subroutine
+        if !pw_error then goto password_menu_controls
+        plotchars 'Password Error' 0 52 2 singlewide
+        ; used to detect if cursor is moved after displaying error
+        prev_menu_selection = menu_selection
+
+password_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
+        if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then gosub buffer_to_password : goto close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
+        if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
+        gosub menu_dirs
+
+password_menu_dirs_done
+        ; set by decode password subroutine
+        if pw_success = 1 then goto init_field
+        ; clear the Password Error message if the cursor was moved
+        if menu_selection <> prev_menu_selection then pw_error = 0
+        ; Handles the Erase option spanning multiple columns
+        if menu_selection > 39 then menu_selection = 40
+        if menu_selection = 11 then menu_selection = 10
+        if menu_selection = 12 then menu_selection = 10
+        if menu_selection < 13 then menu_cursor_X = 24 + (menu_selection * 8) : goto password_menu_cursor_Y
+        if menu_selection < 26 then menu_cursor_X = 24 + ((menu_selection - 13) * 8) : goto password_menu_cursor_Y
+        menu_cursor_X = 24 + ((menu_selection - 26) * 8)
+password_menu_cursor_Y
+        menu_cursor_Y = 144
+        if menu_selection > 12 then menu_cursor_Y = 160
+        if menu_selection > 25 then menu_cursor_Y = 176
+        if menu_selection = 39 then menu_cursor_X = 80 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 40 then menu_cursor_X = 116 : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        goto main
+
+encode_sel_to_pw
+        pw_error = 0
+        action_debounce = 1
+        temp1 = PW_0
+        if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
+        if menu_selection = 10 then pw_backspace                        ; Erase
+        if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
+        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init                             ; Exit
+        pw_index0[pw_index] = menu_selection + temp1
+        pw_index = pw_index + 1
+        if pw_index > 24 then pw_index = 24
+        goto password_menu_dirs_done
+
+pw_backspace
+        pw_error = 0
+        menu_debounce = 1
+        if pw_index > 24 then pw_index = 24
+        pw_index = pw_index - 1
+        pw_index0[pw_index] = 81
+        if pw_index > 23 then pw_index = 0
+        goto main
+
+plot_password
+        plotchars pw_index0 0 52 3 6 singlewide
+        plotchars pw_index6 0 84 3 6 singlewide
+        plotchars pw_index12 0 52 4 6 singlewide
+        plotchars pw_index18 0 84 4 6 singlewide
+        return
+
+        data inv_bits
+        %00000001, %00000010, %00000100, %00001000, %00010000
+end
+
+prep_inv_bits
+        if temp1 > 5 then prep_bits_2
+        temp1 = inv_bits[temp1]
+        temp2 = 0
+        return
+prep_bits_2
+        temp1 = temp1 - 5
+        temp2 = inv_bits[temp1]
+        temp1 = 0
+        return
+
+pickup_item
+        temp1 = temp1 - TYPE_ITEM1
+        gosub prep_inv_bits
+add_item
+        m_item_bits_1 = m_item_bits_1 | temp1
+        m_item_bits_2 = m_item_bits_2 | temp2
+        goto kill_object
+
+pickup_sword
+        temp1 = temp1 - TYPE_SWORD1
+        gosub prep_inv_bits
+add_sword
+        m_sword_bits_1 = m_sword_bits_1 | temp1
+        m_sword_bits_2 = m_sword_bits_2 | temp2
+        goto kill_object
+
+pickup_shield
+        temp1 = temp1 - TYPE_SHIELD1
+        gosub prep_inv_bits
+add_shield
+        m_shield_bits_1 = m_shield_bits_1 | temp1
+        m_shield_bits_2 = m_shield_bits_2 | temp2
+        goto kill_object
+
+pickup_armor
+        temp1 = temp1 - TYPE_ARMOR1
+        gosub prep_inv_bits
+add_armor
+        m_armor_bits_1 = m_armor_bits_1 | temp1
+        m_armor_bits_2 = m_armor_bits_2 | temp2
+        goto kill_object
+
+pickup_charm
+        temp1 = temp1 - TYPE_CHARM1
+        gosub prep_inv_bits
+add_charm
+        m_charm_bits_1 = m_charm_bits_1 | temp1
+        m_charm_bits_2 = m_charm_bits_2 | temp2
+        goto kill_object
+
+check_item_bits
+        if object_type[index] = TYPE_ITEM1 && m_item_bits_1{0} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM2 && m_item_bits_1{1} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM3 && m_item_bits_1{2} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM4 && m_item_bits_1{3} then object_type[index] = TYPE_PRISM
+        if object_type[index] = TYPE_ITEM5 && m_item_bits_1{4} then object_type[index] = TYPE_PRISM
+        if object_type[index] = TYPE_ITEM6 && m_item_bits_2{0} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM7 && m_item_bits_2{1} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM8 && m_item_bits_2{2} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM9 && m_item_bits_2{3} then object_type[index] = TYPE_FOOD
+        if object_type[index] = TYPE_ITEM10 && m_item_bits_2{4} then object_type[index] = TYPE_FOOD
+
+check_sword_bits
+        if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD6 && m_sword_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD7 && m_sword_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD8 && m_sword_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD9 && m_sword_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD10 && m_sword_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_shield_bits
+        if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD9 && m_shield_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD10 && m_shield_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_armor_bits
+        if object_type[index] = TYPE_ARMOR1 && m_armor_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR2 && m_armor_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR3 && m_armor_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+check_charm_bits
+        if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
+        goto object_done
+
+magic_collision
+        inline magic_collision.asm
+
+cast_fireball
+        playsfx sfx_bubbleup
+        asm
+        lda #FIREBALL_MP_COST
+        sta mp_change
+        jsr .test_spell_cost
+        bne .load_fireball_index
+        jmp .test_joy_done ; allow player to try a different input
+.load_fireball_index
+        ldx #14
+        ldy #0  ; player index
+load_fireball_data
+        lda #TYPE_FIREBALL
+        sta object_type,x
+        lda #FIREBALL_SPEED_HI
+        sta object_vel_cap_hi,x
+        sta object_speed_hi,x
+        lda #FIREBALL_SPEED_LO
+        sta object_vel_cap_lo,x
+        sta object_speed_lo,x
+        lda #FIREBALL_DAMAGE
+        sta object_damage,x
+        lda #%00010000
+        sta object_flags,x
+set_cast_direction
+        lda player_facing,y
+        cmp #DIR_UP
+        beq cast_fireball_up
+        cmp #DIR_DOWN
+        beq cast_fireball_down
+        cmp #DIR_LEFT
+        bne cast_fireball_right
+        jmp cast_fireball_left
+cast_fireball_right
+        sta object_facing,x
+        sta object_Xdir,x
+        lda player_Xpos,y
+        clc
+        adc #14
+        sta object_Xpos,x
+        lda player_Ypos,y
+        sta object_Ypos,x
+        lda object_speed_hi,x
+        sta object_Xvel_hi,x
+        lda object_speed_lo,x
+        sta object_Xvel_lo,x
+        lda #0
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        rts
+cast_fireball_up
+        sta object_facing,x
+        sta object_Ydir,x
+        lda player_Xpos,y
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos,y
+        sec
+        sbc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        lda object_speed_lo,x
+        sta object_Yvel_lo,x
+        lda object_speed_hi,x
+        sta object_Yvel_hi,x
+        rts
+cast_fireball_down
+        sta object_facing,x
+        sta object_Ydir,x
+        lda player_Xpos,y
+        clc
+        adc #2
+        sta object_Xpos,x
+        lda player_Ypos,y
+        clc
+        adc #10
+        sta object_Ypos,x
+        lda #0
+        sta object_Xvel_hi,x
+        sta object_Xvel_lo,x
+        lda object_speed_lo,x
+        sta object_Yvel_lo,x
+        lda object_speed_hi,x
+        sta object_Yvel_hi,x
+        rts
+cast_fireball_left
+        sta object_facing,x
+        sta object_Xdir,x
+        lda player_Xpos,y
+        sec
+        sbc #8
+        sta object_Xpos,x
+        lda player_Ypos,y
+        sta object_Ypos,x
+        lda object_speed_hi,x
+        sta object_Xvel_hi,x
+        lda object_speed_lo,x
+        sta object_Xvel_lo,x
+        lda #0
+        sta object_Yvel_hi,x
+        sta object_Yvel_lo,x
+        rts
+end
+
+main
+        drawscreen
+        if switchreset then reboot
+        if !switchselect then select_debounce = 0
+        if !switchpause then pause_debounce = 0
+        if !joy0fire0 && action_button = 0 then action_debounce = 0
+        if !joy0fire0 && action_button = 1 then menu_debounce = 0
+        if !joy0fire1 && action_button = 1 then action_debounce = 0
+        if !joy0fire1 && action_button = 0 then menu_debounce = 0
+        if !joy0left then left_debounce = 0
+        if !joy0right then right_debounce = 0
+        if !joy0up then up_debounce = 0
+        if !joy0down then down_debounce = 0
+        ; menu code prevents these from overflowing
+        if joy0left then left_debounce = left_debounce + 1
+        if joy0right then right_debounce = right_debounce + 1 
+        if joy0up then up_debounce = up_debounce + 1
+        if joy0down then down_debounce = down_debounce + 1
+        if select_debounce then goto main_animation_timer
+        if switchselect then gosub swap_action_button
+main_animation_timer
+        animation_timer = animation_timer + 1
+        if animation_timer > ANIM_TIME then animation_timer = 0
+        ; Currently only two frames of animation supported. Needs to be changed if more than 2
+        animation_frame = 0
+        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+
+main_lightning
+        asm
+        lda lightning_timer
+        beq lightning_flash
+        dec lightning_timer
+        bne .main_state_handler
+lightning_flash
+        dec lightning_delay
+        lda lightning_delay
+        bne .main_state_handler
+        jsr randomize
+        bmi .main_state_handler
+        lda #LIGHTNING_FRAMES
+        sta lightning_timer
+end
+
+main_state_handler
+        if game_state = STATE_TITLE then title_handler
+        if game_state = STATE_FIELD then field_handler
+        if game_state = STATE_MENU  then menu_handler
+        goto main
+
+swap_action_button
+        select_debounce = 1
+        ; if the player is actively using the action button, don't swap
+        ; (shouldn't happen often since it's a console switch)
+        if player_state >= STATE_ATTACK then return
+        if action_button then action_button = 0 : return
+        action_button = 1 : return
+
+topscreenroutine
+        WSYNC=1
+        if game_state = STATE_MENU then set_menu_top_pal
+        WSYNC=1
+        if tileset = T_FOREST then BACKGRND=bg_color
+        if game_state = STATE_TITLE then set_title_top_pal
+        return
+
+bottomscreenroutine
+        if game_state = STATE_MENU then BACKGRND = $10 : return
+        BACKGRND=$00
+        if game_state = STATE_TITLE then set_title_bottom_pal
+        flash_color = $00
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
+        BACKGRND = flash_color
+        if tileset = T_CASTLE then hair_flash   ; Cathedral tileset uses black as BG, not C1
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        P7C1     = flash_color
+hair_flash
+        ; Johanna's hair
+        if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
+        return
+
+clear_palettes
+        BACKGRND = $00
+        P0C1 = $00 : P0C2 = $00 : P0C3 = $00
+        P1C1 = $00 : P1C2 = $00 : P1C3 = $00
+        P2C1 = $00 : P2C2 = $00 : P2C3 = $00
+        P3C1 = $00 : P3C2 = $00 : P3C3 = $00
+        P4C1 = $00 : P4C2 = $00 : P4C3 = $00
+        P5C1 = $00 : P5C2 = $00 : P5C3 = $00
+        P6C1 = $00 : P6C2 = $00 : P6C3 = $00
+        P7C1 = $00 : P7C2 = $00 : P7C3 = $00
+        return
+
+        data f_item_pals
+        3, 3, 3, 0, 0, 0, 2, 1, 2, 2
+end
+
+        data f_sword_pals
+        0, 2, 0, 1, 0, 2, 2, 2, 2, 2, 2
+end
+
+        data f_shield_pals
+        0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data f_armor_pals
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data f_charm_pals
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data sfx_poof2
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0a,$08,$04 ; first chunk of freq,channel,volume
+        $12,$08,$06
+        $09,$08,$08
+        $11,$08,$08
+        $08,$08,$0a
+        $10,$08,$0a
+        $07,$08,$0a
+        $0F,$08,$0a
+        $06,$08,$08
+        $0E,$08,$06
+        $05,$08,$04
+        $0D,$08,$02
+        $00,$00,$00
+end
+
+        data sfx_strum
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0c,$0c,$09 ; first chunk of freq,channel,volume
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $0c,$0c,$0f
+        $1e,$04,$0f
+        $1e,$04,$0e
+        $07,$0c,$0f
+        $07,$0c,$0f
+        $07,$0c,$0b
+        $1e,$04,$0b
+        $07,$0c,$0c
+        $0c,$0c,$09
+        $07,$0c,$07
+        $07,$0c,$06
+        $07,$0c,$05
+        $07,$0c,$04
+        $07,$0c,$04
+        $07,$0c,$03
+        $07,$0c,$03
+        $07,$0c,$02
+        $07,$0c,$02
+        $07,$0c,$01
+        $07,$0c,$01
+        $00,$00,$00
+end
+
+        data sfx_bump
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0b,$0f,$00 ; first chunk of freq,channel,volume
+        $0c,$06,$0b
+        $0a,$06,$0f
+        $0b,$06,$0f
+        $0a,$06,$0e
+        $15,$0f,$0d
+        $0e,$06,$0c
+        $0d,$06,$0b
+        $19,$0f,$0a
+        $16,$0f,$09
+        $19,$0f,$08
+        $10,$06,$07
+        $0d,$0c,$06
+        $19,$0c,$05
+        $1c,$0c,$04
+        $1e,$0c,$03
+        $06,$06,$02
+        $06,$06,$01
+        $00,$00,$00
+end
+
+        data sfx_nonobounce
+        $10,$10,$01 ; version, priority, frames per chunk
+        $0f,$0c,$04
+        $00,$0e,$08
+        $10,$0c,$08
+        $02,$06,$06
+        $10,$0c,$06
+        $02,$06,$06
+        $00,$0e,$08
+        $10,$0c,$08
+        $02,$06,$08
+        $0f,$0c,$06
+        $10,$0c,$06
+        $02,$06,$06
+        $10,$0c,$06
+        $0f,$0c,$04
+        $10,$0c,$04
+        $0f,$0c,$04
+        $00,$0e,$04
+        $10,$0c,$04
+        $10,$0c,$02
+        0,0,0
+end
+
+        data sfx_gotthecoin
+        $10,$10,$00 ; version, priority, frames per chunk
+        $04,$0c,$0f ; first chunk of freq,channel,volume
+        $04,$0c,$0f
+        $0a,$04,$0e
+        $0a,$04,$0f
+        $0a,$04,$0f
+        $0a,$04,$0d
+        $0a,$04,$09
+        $0a,$04,$09
+        $0a,$04,$08
+        $0a,$04,$07
+        $0a,$04,$06
+        $0a,$04,$05
+        $0a,$04,$03
+        $0a,$04,$07
+        $0a,$04,$09
+        $0a,$04,$03
+        $0a,$04,$01
+        $0a,$04,$01
+        $0a,$04,$01
+        $0a,$04,$00
+        $0a,$04,$01
+        $0a,$04,$01
+        $0a,$04,$01
+        $00,$00,$00
+end
+
+        data sfx_bubbleup
+        $10,$10,$00 ; version, priority, frames per chunk
+        $1e,$04,$0f ; first chunk of freq,channel,volume
+        $1e,$04,$0f
+        $12,$0c,$0e
+        $19,$04,$06
+        $10,$0c,$0f
+        $10,$0c,$0d
+        $1c,$04,$0f
+        $1c,$04,$0e
+        $10,$0c,$0f
+        $10,$0c,$0f
+        $10,$0c,$0f
+        $1b,$04,$0a
+        $1b,$04,$0e
+        $1b,$04,$0b
+        $0e,$0c,$0f
+        $0e,$0c,$0e
+        $10,$0c,$07
+        $19,$04,$0c
+        $19,$04,$08
+        $0d,$0c,$07
+        $0e,$0c,$07
+        $0d,$0c,$0d
+        $0d,$0c,$08
+        $18,$04,$06
+        $07,$0c,$04
+        $0d,$0c,$07
+        $0d,$0c,$0b
+        $13,$04,$01
+        $16,$04,$04
+        $16,$04,$06
+        $16,$04,$03
+        $0c,$0c,$04
+        $0c,$0c,$06
+        $0c,$0c,$04
+        $15,$04,$03
+        $15,$04,$03
+        $06,$0c,$01
+        $0b,$0c,$02
+        $0b,$0c,$04
+        $0b,$0c,$02
+        $00,$00,$00
+end
+
+        inline pokeysound.asm
+        inline hiscore.asm
+
+ledge_hop
+        asm
+        lda Xdirection
+        cmp #DIR_LEFT
+        beq hop_left
+        cmp #DIR_RIGHT
+        beq hop_right
+        ; must be down
+hop_down
+        lda timer
+        bne hop_down_up
+        lda #16
+        sta timer
+        lda Yposition
+        clc
+        adc #16
+        sta hop_dest
+hop_down_up
+        cmp #8
+        bcc hop_down_down
+        dec Yposition
+        dec timer
+        rts
+hop_down_down
+        inc Yposition
+        lda hop_dest
+        cmp Yposition
+        beq hop_done
+        rts
+
+hop_left
+        lda timer
+        bne hop_left_up
+        lda #12
+        sta timer
+        lda Xposition
+        sec
+        sbc #12
+        sta hop_dest
+hop_left_up
+        cmp #6
+        bcc hop_left_down
+        dec Yposition
+        dec Xposition
+        dec timer
+        rts
+hop_left_down
+        inc Yposition
+        dec Xposition
+        lda hop_dest
+        cmp Xposition
+        beq hop_done
+        rts
+
+hop_right
+        lda timer
+        bne hop_right_up
+        lda #12
+        sta timer
+        lda Xposition
+        clc
+        adc #12
+        sta hop_dest
+hop_right_up
+        cmp #6
+        bcc hop_right_down
+        dec Yposition
+        inc Xposition
+        dec timer
+        rts
+hop_right_down
+        inc Yposition
+        inc Xposition
+        lda hop_dest
+        cmp Xposition
+        beq hop_done
+        rts
+
+hop_done
+        lda #0
+        sta flags
+        sta timer
+        sta hop_dest
+        rts
+end

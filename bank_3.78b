@@ -1,0 +1,1054 @@
+;==============================================================================
+; BANK 3
+;------------------------------------------------------------------------------
+; Menu graphics and code
+;==============================================================================
+        bank 3
+
+        incgraphic gfx/menu/menu_map.png 320A
+        incgraphic gfx/menu/menu_font.png 320A 1 0
+        incgraphic gfx/menu/menu_arrows.png 320A 1 0
+        incgraphic gfx/menu/menu_bar0.png 320B 0 2
+        incgraphic gfx/menu/menu_bar1.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar2.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar3.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar4.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar5.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar6.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar7.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar8.png 320B 0 3 2
+        incgraphic gfx/menu/menu_bar9.png 320B 0 2
+        incgraphic gfx/menu/menu_pin.png 320B 0 3 2
+        incgraphic gfx/menu/menu_s.png 320A
+        incgraphic gfx/menu/menu_sword0.png 320B 2 0 3 1
+        incgraphic gfx/menu/menu_sword1.png 320B 2 0 3 1
+        incgraphic gfx/menu/menu_sword2.png 320B 2 0 3 1
+        incgraphic gfx/menu/menu_sword3.png 320B 2 0 3 1
+        incgraphic gfx/menu/menu_sword4.png 320B 2 0 3 1
+        incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_shield4.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm3.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_charm4.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion0.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion1.png 320B 0 2 1 3
+        incgraphic gfx/menu/menu_potion2.png 320B 0 2 1 3
+
+menu_init
+        ; For some reason, removing this causes compilation to fail...
+        temp1 = 0
+        game_state = STATE_MENU
+        clearscreen
+        displaymode 320B
+        adjustvisible 0 14
+        drawwait
+        P0C2 = $10
+        P4C2 = $10
+        menu_change = 1
+
+menu_handler
+        if menu = MENU_GAMEOVER then goto plot_gameover
+        if menu = MENU_ITEMS then goto plot_items_menu
+        if menu = MENU_MAGIC then goto plot_magic_menu
+        if menu = MENU_EQUIP then goto plot_equip_menu
+        if menu = MENU_RELICS then goto plot_relics_menu
+        if menu = MENU_PASSWORD then goto plot_password_menu
+
+plot_main_menu
+        P0C3 = PAL_LTPURP
+        P4C3 = PAL_LTRED
+        if !menu_change then goto main_menu_updater
+        gosub disable_double_wide_mode
+        clearscreen
+        gosub plot_menu_border
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        gosub plot_menu_hud
+
+        plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
+        gosub gen_forest_map
+        savescreen
+        menu_cursor_X = MENU_MAIN_ITEMS_X
+        menu_cursor_Y = MENU_MAIN_ITEMS_Y
+        menu_change = 0
+        menu_columns = 0        ; prevent up/down from doing anything
+        menu_max = 3
+
+main_menu_updater
+        restorescreen
+        gosub plot_menu_bars
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
+
+main_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then close_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then close_menu
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then open_submenu
+        if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
+        gosub menu_dirs
+menu_main_dirs_done
+        if menu_selection = 0 then menu_cursor_X = MENU_MAIN_ITEMS_X
+        if menu_selection = 1 then menu_cursor_X = MENU_MAIN_MAGIC_X
+        if menu_selection = 2 then menu_cursor_X = MENU_MAIN_EQUIP_X
+        if menu_selection = 3 then menu_cursor_X = MENU_MAIN_RELICS_X
+        goto main
+
+open_submenu
+        action_debounce = 1
+        menu_change = 1
+        if menu_selection = 0 then goto plot_items_menu
+        if menu_selection = 1 then goto plot_magic_menu
+        if menu_selection = 2 then goto plot_equip_menu
+        ; if menu_selection = 3 then goto plot_relics_menu
+        goto main
+
+plot_items_menu
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_ITEMS
+        if !menu_change then goto items_menu_updater
+        clearscreen
+        gosub plot_menu_border
+        menu_change = 0
+        menu_columns = 2
+        menu_max = 9    ; bit of a hack for the exit option
+        gosub plot_menu_hud
+        plotchars '------------------------------------' 0 8 3 singlewide
+        plotchars 'Exit' 0 128 12 singlewide
+        savescreen
+
+items_menu_updater
+        restorescreen
+        gosub calc_inv_array
+        gosub plot_menu_bars
+
+items_palettes
+        ; reuses palette variables from equip menu
+        temp1 = m_item_inv[0]
+        m_inv0_pal1 = pal_items1[temp1]
+        m_inv0_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[1]
+        m_sword_pal1 = pal_items1[temp1]
+        m_sword_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[2]
+        m_inv1_pal1 = pal_items1[temp1]
+        m_inv1_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[3]
+        m_shield_pal1 = pal_items1[temp1]
+        m_shield_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[4]
+        m_inv2_pal1 = pal_items1[temp1]
+        m_inv2_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[5]
+        m_armor_pal1 = pal_items1[temp1]
+        m_armor_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[6]
+        m_inv3_pal1 = pal_items1[temp1]
+        m_inv3_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[7]
+        m_charm_pal1 = pal_items1[temp1]
+        m_charm_pal2 = pal_items2[temp1]
+        
+        ; plot the inventory
+        m_spriteX = 16
+        m_spriteY = 80
+        m_textX = 24
+        m_textY = 5
+        m_palette = 4
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = 0 to 7
+        item_name = m_item_inv[obj_index]
+        if !item_name then items_left
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
+items_left
+        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
+        m_palette = 4
+        m_spriteX = 16 : m_textX = 24
+        m_spriteY = m_spriteY + 32
+        m_textY = m_textY + 2
+items_right
+        next
+
+        ; bypass item description if on Exit
+        if menu_selection >= 8 then item_cursor_Y
+        temp1 = m_item_inv[menu_selection]
+        m_desc = m_desc_set[temp1]
+        plotmap item_desc 0 28 12 18 1 0 m_desc 18
+
+item_cursor_Y
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 80 : goto item_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 80 + 32 : goto item_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 80 + 64 : goto item_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 80 + 96 : goto item_cursor_X
+        menu_cursor_Y = MENU_EQUIP_EXIT_Y
+
+item_cursor_X
+        ; kludge - makes up from the exit option go into right column instead of left
+        if menu_selection = 8 then menu_selection = 9
+        if menu_selection = 9 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
+        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
+        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto item_cursor_set
+        menu_cursor_X = 12
+
+item_cursor_set
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+
+
+items_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then use_item
+        if !action_debounce && joy0fire1 && action_button = 1 then use_item
+        if using_item then use_item
+        gosub menu_dirs
+        goto main
+
+use_item
+        action_debounce = 1
+        if menu_selection = 9 then open_main_menu
+        using_item = m_item_inv[menu_selection]
+        ; TODO: Prevent item use if full HP/MP or normal status
+        if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = HP_CHANGE_POTION : goto use_potion
+        if using_item = 2 then m_item_bits_1{1} = 0 : hp_change = HP_CHANGE_HIPOTION : goto use_potion
+        if using_item = 3 then m_item_bits_1{2} = 0 : hp_change = HP_CHANGE_XPOTION : goto use_potion
+        if using_item = 4 then m_item_bits_1{3} = 0 : mp_change = MP_CHANGE_ETHER : goto use_ether
+        if using_item = 5 then m_item_bits_1{4} = 0 : mp_change = MP_CHANGE_XETHER : goto use_ether
+        if using_item = 6 then m_item_bits_2{0} = 0 : hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
+        if using_item = 7 then m_item_bits_2{1} = 0 : goto use_antidote
+        if using_item = 8 then m_item_bits_2{2} = 0 : goto use_uncurse
+
+use_potion
+        gosub increase_player_hp
+        goto use_item_done
+
+use_elixir
+        gosub increase_player_hp
+
+use_ether
+        gosub increase_player_mp
+        goto use_item_done
+
+use_antidote
+use_uncurse
+
+use_item_done
+        using_item = 0
+        goto main
+
+plot_magic_menu
+        menu = MENU_MAGIC
+        if !menu_change then goto magic_menu_updater
+        clearscreen
+;        gosub disable_double_wide_mode
+        gosub plot_menu_border
+        plotchars 'Spells Tome' 0 60 1 singlewide
+        plotchars 'Fireball' 0 16 2 singlewide
+        plotchars 'Forward' 0 24 11 singlewide
+        plotchars 'Backward' 0 80 11 singlewide
+        plotchars 'Clockwise' 0 24 12 singlewide
+        plotchars 'Counterclockwise' 0 80 12 singlewide
+        ; TODO: Show different directions on different frames?
+        characterset menu_arrows
+        alphachars '7894 6123'
+        ; Fireball
+        plotchars '646' 0 24 3 singlewide
+        ; Legend
+        plotchars '6' 0 16 11 singlewide
+        plotchars '4' 0 72 11 singlewide
+        plotchars '2' 0 16 12 singlewide
+        plotchars '8' 0 72 12 singlewide
+        savescreen
+        menu_change = 0
+
+magic_menu_updater
+        restorescreen
+
+magic_menu_controls
+        ; Either joystick button can go back to the main menu
+        ; Maybe have an Exit "button" always highlighted to signify this?
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 then open_main_menu
+        if !action_debounce && joy0fire1 then open_main_menu
+        goto main
+
+plot_equip_menu
+        ; turn on Kangaroo mode so palette color 1 is more manageable
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_EQUIP
+        gosub calc_inv_array
+        if !menu_change then goto equip_menu_updater
+        clearscreen
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 1        ; technically 2 but code handles each menu pane separately
+        menu_max = 4
+        gosub plot_menu_border
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        plotchars 'Attack     Defense     Wisdom' 0 16 1 singlewide
+        plotchars '------------------------------------' 0 8 2 singlewide
+        plotchars 'Inventory' 0 24 3 singlewide
+        plotchars 'Equipped'  0 96 3 singlewide
+        plotchars 'Weapon'    0 80 4 singlewide
+        plotchars 'Shield'    0 80 6 singlewide
+        plotchars 'Body'     0 80 8 singlewide
+        plotchars 'Talisman'  0 80 10 singlewide
+        plotchars 'Exit'      0 128 12 singlewide
+        savescreen
+        goto update_player_stats
+
+equip_menu_updater
+        restorescreen
+
+equip_menu_controls
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if equip_inv_col then equip_menu_inv_controls
+        equip_inv_sel = 0
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then equip_menu_change_to_inv
+        if !action_debounce && joy0fire1 && action_button = 1 then equip_menu_change_to_inv
+        gosub menu_dirs
+        if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = MENU_EQUIP_MAX_OPTIONS : goto equip_menu_dirs_done
+        if menu_selection > MENU_EQUIP_MAX_OPTIONS then menu_selection = 0
+        goto equip_menu_dirs_done
+
+equip_menu_return_from_inv
+        menu_debounce = 1
+        equip_inv_col = 0
+        equip_inv_sel = 0
+        m_inv_scroll = 0
+        goto equip_menu_dirs_done
+
+equip_menu_inv_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then equip_menu_return_from_inv
+        if !menu_debounce && joy0fire1 && action_button = 0 then equip_menu_return_from_inv
+        if !action_debounce && joy0fire0 && action_button = 0 then equip_item
+        if !action_debounce && joy0fire1 && action_button = 1 then equip_item
+        if up_debounce >= MENU_TAP_FRAMES then gosub equip_inv_sel_up
+        if !up_debounce && joy0up then gosub equip_inv_sel_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub equip_inv_sel_down
+        if !down_debounce && joy0down then gosub equip_inv_sel_down
+
+equip_menu_dirs_done
+        menu_cursor_X = MENU_EQUIP_EQUIPPED_X
+        if menu_selection = 0 then menu_cursor_Y = MENU_EQUIP_SWORD_Y : goto equip_menu_sword_inv
+        if menu_selection = 1 then menu_cursor_Y = MENU_EQUIP_SHIELD_Y : goto equip_menu_shield_inv
+        if menu_selection = 2 then menu_cursor_Y = MENU_EQUIP_ARMOR_Y : goto equip_menu_armor_inv
+        if menu_selection = 3 then menu_cursor_Y = MENU_EQUIP_CHARM_Y : goto equip_menu_charm_inv
+        if menu_selection = 4 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        ; continue showing the inventory of the previously selected option
+        if prev_menu_selection = 3 then goto equip_menu_charm_inv
+
+equip_menu_sword_inv
+        m_inv_index = m_inv_scroll
+        for m_inv_slot = 0 to 3
+        temp1 = m_sword_inv[m_inv_index]
+        m_inv_item_0[m_inv_slot] = temp1
+        m_inv0_pal1[m_inv_slot] = pal_swords1[temp1]
+        m_inv0_pal2[m_inv_slot] = pal_swords2[temp1]
+        m_inv_index = m_inv_index + 1
+menu_sword_next 
+        next
+
+        ; TODO: LUT for item icons
+plot_inv_sword_0
+        if !m_inv_item_0 then plot_inv_sword_1
+        plotsprite menu_sword0 4 16 80 m_inv_item_0
+        plotmap sword_names 0 24 5 13 1 0 m_inv_item_0 13
+plot_inv_sword_1
+        if !m_inv_item_1 then plot_inv_sword_2
+        plotsprite menu_sword0 4 16 112 m_inv_item_1
+        plotmap sword_names 0 24 7 13 1 0 m_inv_item_1 13
+plot_inv_sword_2
+        if !m_inv_item_2 then plot_inv_sword_3
+        plotsprite menu_sword0 4 16 144 m_inv_item_2
+        plotmap sword_names 0 24 9 13 1 0 m_inv_item_2 13
+plot_inv_sword_3
+        if !m_inv_item_3 then plot_inv_sword_done
+        plotsprite menu_sword0 4 16 176 1 0 m_inv_item_3
+        plotmap sword_names 0 24 11 13 1 0 m_inv_item_3 13
+plot_inv_sword_done
+        goto equip_menu_draw_sprites
+
+equip_menu_shield_inv
+        m_inv_index = m_inv_scroll
+        for m_inv_slot = 0 to 3
+        temp1 = m_shield_inv[m_inv_index]
+        m_inv_item_0[m_inv_slot] = temp1
+        m_inv0_pal1[m_inv_slot] = pal_shields1[temp1]
+        m_inv0_pal2[m_inv_slot] = pal_shields2[temp1]
+        m_inv_index = m_inv_index + 1
+menu_shield_next 
+        next
+
+plot_inv_shield_0
+        if !m_inv_item_0 then plot_inv_shield_1
+        plotsprite menu_shield0 4 16 80 m_inv_item_0
+        plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
+plot_inv_shield_1
+        if !m_inv_item_1 then plot_inv_shield_2
+        plotsprite menu_shield0 4 16 112 m_inv_item_1
+        plotmap shield_names 0 24 7 13 1 0 m_inv_item_1 13
+plot_inv_shield_2
+        if !m_inv_item_2 then plot_inv_shield_3
+        plotsprite menu_shield0 4 16 144 m_inv_item_2
+        plotmap shield_names 0 24 9 13 1 0 m_inv_item_2 13
+plot_inv_shield_3
+        if !m_inv_item_3 then plot_inv_shield_done
+        plotsprite menu_shield0 4 16 176 1 0 m_inv_item_3
+        plotmap shield_names 0 24 11 13 1 0 m_inv_item_3 13
+plot_inv_shield_done
+        goto equip_menu_draw_sprites
+
+equip_menu_armor_inv
+        m_inv_index = m_inv_scroll
+        for m_inv_slot = 0 to 3
+        temp1 = m_armor_inv[m_inv_index]
+        m_inv_item_0[m_inv_slot] = temp1
+        m_inv0_pal1[m_inv_slot] = pal_armor1[temp1]
+        m_inv0_pal2[m_inv_slot] = pal_armor2[temp1]
+        m_inv_index = m_inv_index + 1
+menu_armor_next 
+        next
+
+plot_inv_armor_0
+        plotsprite menu_armor0 4 16 80  m_inv_item_0
+        plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
+plot_inv_armor_1
+        plotsprite menu_armor0 4 16 112  m_inv_item_1
+        plotmap armor_names 0 24 7 13 1 0  m_inv_item_1 13
+plot_inv_armor_2
+        plotsprite menu_armor0 4 16 144  m_inv_item_2
+        plotmap armor_names 0 24 9 13 1 0  m_inv_item_2 13
+plot_inv_armor_3
+        plotsprite menu_armor0 4 16 176 1 0  m_inv_item_3
+        plotmap armor_names 0 24 11 13 1 0  m_inv_item_3 13
+plot_inv_armor_done
+        goto equip_menu_draw_sprites
+
+equip_menu_charm_inv
+        m_inv_index = m_inv_scroll
+        for m_inv_slot = 0 to 3
+        temp1 = m_charm_inv[m_inv_index]
+        m_inv_item_0[m_inv_slot] = temp1
+        m_inv0_pal1[m_inv_slot] = pal_charms1[temp1]
+        m_inv0_pal2[m_inv_slot] = pal_charms2[temp1]
+        m_inv_index = m_inv_index + 1
+menu_charm_next 
+        next
+
+        plotsprite menu_charm0 4 16 80  m_inv_item_0
+        plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
+        plotsprite menu_charm0 4 16 112  m_inv_item_1
+        plotmap charm_names 0 24 7 13 1 0  m_inv_item_1 13
+        plotsprite menu_charm0 4 16 144  m_inv_item_2
+        plotmap charm_names 0 24 9 13 1 0  m_inv_item_2 13
+        plotsprite menu_charm0 4 16 176 1 0  m_inv_item_3
+        plotmap charm_names 0 24 11 13 1 0  m_inv_item_3 13
+        goto equip_menu_draw_sprites
+
+equip_menu_draw_sprites
+        ; This block of code has gotten pretty messy!
+        ; It tests each equipment slot to see if it is a non-zero value,
+        ; then plots a sprite and a character map for that value.
+        ; If it IS zero, no name is drawn, except in the case of weapon
+        if player_sword then goto equip_menu_draw_sword
+        plotmap unarmed_name 0 92 5 13 1 0 0
+        goto equip_menu_test_shield
+equip_menu_draw_sword
+        plotsprite menu_sword0 0 84 80 player_sword
+        plotmap sword_names 0 92 5 13 1 0 player_sword 13
+equip_menu_test_shield
+        if player_shield then goto equip_menu_draw_shield
+        goto equip_menu_test_armor
+equip_menu_draw_shield
+        plotsprite menu_shield0 0 84 112 player_shield
+        plotmap shield_names 0 92 7 13 1 0 player_shield 13
+equip_menu_test_armor
+        if player_armor then goto equip_menu_draw_armor
+        goto equip_menu_test_charm
+equip_menu_draw_armor
+        plotsprite menu_armor0 0 84 144 player_armor
+        plotmap armor_names 0 92 9 13 1 0 player_armor 13
+equip_menu_test_charm
+        if player_charm then goto equip_menu_draw_charm
+        goto equip_menu_draw_atk
+equip_menu_draw_charm
+        plotsprite menu_charm0 0 84 176 1 0 player_charm
+        plotmap charm_names 0 92 11 13 1 0 player_charm 13
+equip_menu_draw_atk
+        ; plotvalue menu_font 0 player_atk 2 88 1
+        asm
+        lda	#44
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_atk
+        sta	value_ptr_lo
+        lda	#>player_atk
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+        ; plotvalue menu_font 0 player_def 2 136 1
+        lda	#92
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_def
+        sta	value_ptr_lo
+        lda	#>player_def
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+        ; Wisdom
+        lda	#136
+        sta	valueX
+        lda	#1
+        sta	valueY
+        lda	#<player_wisdom
+        sta	value_ptr_lo
+        lda	#>player_wisdom
+        sta	value_ptr_hi
+        jsr	plotvaluesw
+end
+        if equip_inv_col then equip_menu_inv_cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        goto main
+
+equip_menu_inv_cursor
+        ; blink the equipped column cursor
+        if animation_frame then plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        plotsprite menu_cursor0 0 equip_inv_X equip_inv_Y
+        goto main
+
+equip_menu_change_to_inv
+        action_debounce = 1
+        if menu_selection = MENU_EQUIP_MAX_OPTIONS then open_main_menu
+        equip_inv_col = 1
+        equip_inv_X = MENU_EQUIP_INV_X
+        equip_inv_Y = MENU_EQUIP_INV0_Y
+        goto equip_menu_dirs_done
+
+equip_item
+        action_debounce = 1
+        equip_inv_col = 0
+        m_inv_scroll = 0
+        if menu_selection = 0 then equip_sword
+        if menu_selection = 1 then equip_shield
+        if menu_selection = 2 then equip_armor
+equip_charm
+        player_charm = m_charm_inv[equip_inv_sel]
+        goto update_player_stats
+
+equip_sword
+        player_sword = m_sword_inv[equip_inv_sel]
+        sword_pal = f_sword_pals[player_sword]
+        goto update_player_stats
+
+equip_shield
+        player_shield = m_shield_inv[equip_inv_sel]
+        shield_pal = f_shield_pals[player_shield]
+        goto update_player_stats
+
+equip_armor
+        player_armor = m_armor_inv[equip_inv_sel]
+
+update_player_stats
+        ; good place to throw in the equipment palette update
+update_equipment_pals
+        asm
+        ldx player_sword
+        lda pal_swords1,x
+        sta m_sword_pal1
+        lda pal_swords2,x
+        sta m_sword_pal2
+        ldx player_shield
+        lda pal_shields1,x
+        sta m_shield_pal1
+        lda pal_shields2,x
+        sta m_shield_pal2
+        ldx player_armor
+        lda pal_armor1,x
+        sta m_armor_pal1
+        lda pal_armor2,x
+        sta m_armor_pal2
+        ldx player_charm
+        lda pal_charms1,x
+        sta m_charm_pal1
+        lda pal_charms2,x
+        sta m_charm_pal2
+end
+        ; currently this just reads from an array for each type of equipment,
+        ; swords only do attack, shields/armor only defense, and charms both
+        dec player_atk = sword_atk[player_sword]
+        dec player_atk = player_atk + player_str
+        dec player_def = shield_def[player_shield]
+        dec temp1 = player_def 
+        dec player_def = armor_def[player_armor] + temp1
+        temp1 = player_charm * 2
+        dec player_atk = player_atk + charm_stats[temp1]
+        temp1 = (player_charm + 1) * 2
+        dec player_def = player_def + charm_stats[temp1]
+        goto equip_menu_dirs_done
+
+equip_menu_colors
+        P0C3 = PAL_LTPURP
+        P4C3 = PAL_LTRED
+        for index = 0 to 64
+        WSYNC = 1
+        next 
+        P0C1 = m_sword_pal1
+        P0C3 = m_sword_pal2
+        P4C1 = m_inv0_pal1
+        P4C3 = m_inv0_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 1 and shield
+        P0C1 = m_shield_pal1
+        P0C3 = m_shield_pal2
+        P4C1 = m_inv1_pal1
+        P4C3 = m_inv1_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 2 and armor
+        P0C1 = m_armor_pal1
+        P0C3 = m_armor_pal2
+        P4C1 = m_inv2_pal1
+        P4C3 = m_inv2_pal2
+        for index = 0 to 32
+        WSYNC = 1
+        next
+        ; palettes used for inv 3 and charm
+        P0C1 = m_charm_pal1
+        P0C3 = m_charm_pal2
+        P4C1 = m_inv3_pal1
+        P4C3 = m_inv3_pal2
+        return
+
+menu_dirs
+        if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
+        if !right_debounce && joy0right then gosub menu_selection_right
+        if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
+        if !left_debounce && joy0left then gosub menu_selection_left
+        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if !up_debounce && joy0up then gosub menu_selection_up
+        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if !down_debounce && joy0down then gosub menu_selection_down
+        return
+
+menu_selection_right
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection + 1 : right_debounce = 1
+        ; wrap menu selection back to zero
+        if menu_selection > menu_max then menu_selection = 0
+        return
+
+menu_selection_left
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection - 1 : left_debounce  = 1
+        ; selection underflow, wrap to last option
+        if menu_selection > menu_max then menu_selection = menu_max
+        return
+
+menu_selection_down
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection + menu_columns : down_debounce = 1
+        ; wrap menu selection back to zero
+        if menu_selection > menu_max then menu_selection = 0
+        return
+
+menu_selection_up
+        prev_menu_selection = menu_selection
+        menu_selection = menu_selection - menu_columns : up_debounce = 1
+        ; selection underflow, wrap to last option
+        if menu_selection > menu_max then menu_selection = menu_max
+        return
+
+        dmahole 0
+equip_inv_sel_down
+        ; TODO: Inventory management and variable that sets the cap to the current number of items
+        if equip_inv_sel > 10 then equip_inv_sel = 10 : return
+        equip_inv_sel = equip_inv_sel + 1 : down_debounce = 1
+        if equip_inv_Y = MENU_EQUIP_INV3_Y then equip_inv_down_no_Y
+        equip_inv_Y = equip_inv_Y + 32
+        return
+equip_inv_down_no_Y
+        m_inv_scroll = m_inv_scroll + 1
+        return
+
+equip_inv_sel_up
+        if equip_inv_sel = 0 then up_debounce = 1 : return
+        equip_inv_sel = equip_inv_sel - 1 : up_debounce = 1
+        if equip_inv_Y = MENU_EQUIP_INV0_Y then equip_inv_up_no_Y
+        equip_inv_Y = equip_inv_Y - 32
+        return
+equip_inv_up_no_Y
+        m_inv_scroll = m_inv_scroll - 1
+        return
+
+open_main_menu
+        ; turn off Kangaroo mode for position pin sprite
+        sCTRL{2} = 0 : CTRL = sCTRL
+        action_debounce = 1
+        menu_debounce = 1
+        menu_change = 1
+        menu = MENU_MAIN
+        menu_selection = 0
+        goto main
+
+close_menu
+        gosub enable_double_wide_mode
+        gosub clear_palettes
+        game_state = STATE_FIELD
+        asm
+        lda #1
+        sta reload_map
+        sta save_objects
+        sta menu_debounce
+        sta pause_debounce
+        sta torch_reblock
+end
+        goto main ; shared palettes are now included in each tileset
+
+gen_forest_map
+        ; TODO: Test which rooms have been entered
+        alphachars '0123456789ABCDEF'
+        characterset menu_map
+        plotmap menu_map_room 0 52 4 14 7
+        characterset menu_font
+        if tileset = T_FOREST then gen_forest_s
+        if tileset = T_CASTLE then gen_castle_s
+
+gen_forest_s
+        if entered_save_room{0} then plotsprite menu_s 0 94 80
+        return
+
+gen_castle_s
+        if entered_save_room{0} then plotsprite menu_s 0 86 96
+        if entered_save_room{1} then plotsprite menu_s 0 54 80
+        return
+
+calc_inv_array
+        ; zero the inventory arrays to prevent duplication
+        for index = 0 to 55
+        m_item_inv[index] = 0
+        next
+        ; populate arrays based on equipment bits
+        ; TODO: Optimize for ROM space, this is quick and dirty...
+        if m_item_bits_1{0} then m_item_inv[1] = 1
+        if m_item_bits_1{1} then m_item_inv[2] = 2
+        if m_item_bits_1{2} then m_item_inv[3] = 3
+        if m_item_bits_1{3} then m_item_inv[4] = 4
+        if m_item_bits_1{4} then m_item_inv[5] = 5
+        if m_item_bits_2{0} then m_item_inv[6] = 6
+        if m_item_bits_2{1} then m_item_inv[7] = 7
+        if m_item_bits_2{2} then m_item_inv[8] = 8
+        if m_item_bits_2{3} then m_item_inv[9] = 9
+        if m_item_bits_2{4} then m_item_inv[10] = 10
+        if m_sword_bits_1{0} then m_sword_inv[1] = 1
+        if m_sword_bits_1{1} then m_sword_inv[2] = 2
+        if m_sword_bits_1{2} then m_sword_inv[3] = 3
+        if m_sword_bits_1{3} then m_sword_inv[4] = 4
+        if m_sword_bits_1{4} then m_sword_inv[5] = 5
+        if m_sword_bits_2{0} then m_sword_inv[6] = 6
+        if m_sword_bits_2{1} then m_sword_inv[7] = 7
+        if m_sword_bits_2{2} then m_sword_inv[8] = 8
+        if m_sword_bits_2{3} then m_sword_inv[9] = 9
+        if m_sword_bits_2{4} then m_sword_inv[10] = 10
+        if m_shield_bits_1{0} then m_shield_inv[1] = 1
+        if m_shield_bits_1{1} then m_shield_inv[2] = 2
+        if m_shield_bits_1{2} then m_shield_inv[3] = 3
+        if m_shield_bits_1{3} then m_shield_inv[4] = 4
+        if m_shield_bits_1{4} then m_shield_inv[5] = 5
+        if m_shield_bits_2{0} then m_shield_inv[6] = 6
+        if m_shield_bits_2{1} then m_shield_inv[7] = 7
+        if m_shield_bits_2{2} then m_shield_inv[8] = 8
+        if m_shield_bits_2{3} then m_shield_inv[9] = 9
+        if m_shield_bits_2{4} then m_shield_inv[10] = 10
+        if m_armor_bits_1{0} then m_armor_inv[1] = 1
+        if m_armor_bits_1{1} then m_armor_inv[2] = 2
+        if m_armor_bits_1{2} then m_armor_inv[3] = 3
+        if m_armor_bits_1{3} then m_armor_inv[4] = 4
+        if m_armor_bits_1{4} then m_armor_inv[5] = 5
+        if m_armor_bits_2{0} then m_armor_inv[6] = 6
+        if m_armor_bits_2{1} then m_armor_inv[7] = 7
+        if m_armor_bits_2{2} then m_armor_inv[8] = 8
+        if m_armor_bits_2{3} then m_armor_inv[9] = 9
+        if m_armor_bits_2{4} then m_armor_inv[10] = 10
+        if m_charm_bits_1{0} then m_charm_inv[1] = 1
+        if m_charm_bits_1{1} then m_charm_inv[2] = 2
+        if m_charm_bits_1{2} then m_charm_inv[3] = 3
+        if m_charm_bits_1{3} then m_charm_inv[4] = 4
+        if m_charm_bits_1{4} then m_charm_inv[5] = 5
+        if m_charm_bits_2{0} then m_charm_inv[6] = 6
+        if m_charm_bits_2{1} then m_charm_inv[7] = 7
+        if m_charm_bits_2{2} then m_charm_inv[8] = 8
+        if m_charm_bits_2{3} then m_charm_inv[9] = 9
+        if m_charm_bits_2{4} then m_charm_inv[10] = 10
+
+        ; inventory-by-inventory, remove zeros
+        pointer = m_item_inv_lo
+        pointer_hi = m_item_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_sword_inv_lo
+        pointer_hi = m_sword_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_shield_inv_lo
+        pointer_hi = m_shield_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_armor_inv_lo
+        pointer_hi = m_armor_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_charm_inv_lo
+        pointer_hi = m_charm_inv_hi
+        ; riz_return pulls double duty as the return for calc_inv_array
+
+remove_inv_zeros
+        ; reads thru the inv array and removes any empty slots
+        temp1 = 0
+        for index = 1 to 10
+        if !pointer[[index]] then riz_next
+        pointer[[temp1]] = pointer[[index]]
+        temp1 = temp1 + 1
+riz_next
+        next
+        ; pad remaining inventory slots with zero
+        for index = temp1 to 10
+        pointer[[index]] = 0
+        next
+riz_return
+        return
+
+plot_menu_hud
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        plotchars 'Johanna' 0 20 1 singlewide
+        plotchars 'HP' 0 72 1 singlewide
+        plotchars 'MP' 0 72 2 singlewide
+        return
+
+plot_menu_bars
+        gosub update_hp_bar
+        gosub update_mp_bar
+        plotsprite menu_bar9 4  80 16
+        plotsprite menu_bar0 4  88 16 hp_seg_1
+        plotsprite menu_bar0 4  96 16 hp_seg_2
+        plotsprite menu_bar0 4 104 16 hp_seg_3
+        plotsprite menu_bar0 4 112 16 hp_seg_4
+        plotsprite menu_bar0 4 120 16 hp_seg_5
+        plotsprite menu_bar0 4 128 16 hp_seg_6
+        plotsprite menu_bar9 0  80 32
+        plotsprite menu_bar0 0  88 32 mp_seg_1
+        plotsprite menu_bar0 0  96 32 mp_seg_2
+        plotsprite menu_bar0 0 104 32 mp_seg_3
+        plotsprite menu_bar0 0 112 32 mp_seg_4
+        plotsprite menu_bar0 0 120 32 mp_seg_5
+        plotsprite menu_bar0 0 128 32 mp_seg_6
+        return
+
+plot_menu_border
+        ; TODO: Automate this drawing?
+        characterset menu_font
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
+        plotchars '&{' 0   0 1 singlewide
+        plotchars '}&' 0 152 1 singlewide
+        plotchars '&{' 0   0 2 singlewide
+        plotchars '}&' 0 152 2 singlewide
+        plotchars '&{' 0   0 3 singlewide
+        plotchars '}&' 0 152 3 singlewide
+        plotchars '&{' 0   0 4 singlewide
+        plotchars '}&' 0 152 4 singlewide
+        plotchars '&{' 0   0 5 singlewide
+        plotchars '}&' 0 152 5 singlewide
+        plotchars '&{' 0   0 6 singlewide
+        plotchars '}&' 0 152 6 singlewide
+        plotchars '&{' 0   0 7 singlewide
+        plotchars '}&' 0 152 7 singlewide
+        plotchars '&{' 0   0 8 singlewide
+        plotchars '}&' 0 152 8 singlewide
+        plotchars '&{' 0   0 9 singlewide
+        plotchars '}&' 0 152 9 singlewide
+        plotchars '&{' 0   0 10 singlewide
+        plotchars '}&' 0 152 10 singlewide
+        plotchars '&{' 0   0 11 singlewide
+        plotchars '}&' 0 152 11 singlewide
+        plotchars '&{' 0   0 12 singlewide
+        plotchars '}&' 0 152 12 singlewide
+        plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
+        return
+
+        alphadata item_names menu_font singlewide
+        '           '
+        'Potion     '
+        'High Potion'
+        'Max Potion '
+        'Ether      '
+        'High Ether '
+        'Elixir     '
+        'Antidote   '
+        'Uncurse    '
+        'Soft       '
+        'Life Apple '
+end
+
+        ; Item description assigments
+        data m_desc_set
+        0, 1, 1, 1, 2, 2, 3, 4, 5, 6, 7
+end
+
+        alphadata item_desc menu_font singlewide
+        '                  '
+        'Restores HP       '
+        'Restores MP       '
+        'Restores HP and MP'
+        'Cures Poison      '
+        'Cures Curse       '
+        'Cures Stone       '
+        'Familiar Revives  '
+end
+
+        alphadata sword_names menu_font singlewide
+        '             '
+        'Rapier       '
+        'Bone Scimitar'
+        'Broadsword   '
+        'Estoc        '
+        'Firebrand    '
+        'Sword Num 6  '
+        'Sword Num 7  '
+        'Sword Num 8  '
+        'Sword Num 9  '
+        'Sword Num 10 '
+end
+
+        alphadata shield_names menu_font singlewide
+        '             '
+        'Buckler      '
+        'Skull Shield '
+        'Kite Shield  '
+        'Mirror Shield'
+        'Shield Num 5 '
+        'Shield Num 6 '
+        'Shield Num 7 '
+        'Shield Num 8 '
+        'Shield Num 9 '
+        'Shield Num 10'
+end
+
+        alphadata armor_names menu_font singlewide
+        '             '
+        'Leather Armor'
+        'Bronze Plate '
+        'Steel Plate  '
+        'Silver Plate '
+        'Maiden Armor '
+        'Armor Num 6  '
+        'Armor Num 7  '
+        'Armor Num 8  '
+        'Armor Num 9  '
+        'Armor Num 10 '
+end
+
+        alphadata charm_names menu_font singlewide
+        '             '
+        'Pendant      '
+        'Dark Rosary  '
+        'Locket       '
+        'Coral Ring   '
+        'Charm Num 5  '
+        'Charm Num 6  '
+        'Charm Num 7  '
+        'Charm Num 8  '
+        'Charm Num 9  '
+        'Charm Num 10 '
+end
+
+        ; used when attacking without a weapon
+        alphadata unarmed_name menu_font singlewide
+        'Unarmed      '
+end
+
+        data pal_items1
+        $00, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $34
+end
+
+        data pal_items2
+        $00, $83, $84, $85, $74, $75, $97, $45, $06, $1C, $27
+end
+
+        data pal_swords1
+        $00, $44, $74, $02, $02, $34
+end
+        data pal_swords2
+        $00, $FE, $0F, $05, $51, $36
+end
+
+        data pal_shields1
+        $00, $44, $0C
+end
+        data pal_shields2
+        $00, $FE, $0F
+end
+
+        data pal_armor1
+        $00, $12, $F2
+end
+        data pal_armor2
+        $00, $24, $F4
+end
+
+        data pal_charms1
+        $00, $44
+end
+        data pal_charms2
+        $00, $FE
+end
+
+        data sword_atk
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data shield_def
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data armor_def
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+end
+
+        data charm_stats
+        0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16
+end
+
+enable_double_wide_mode
+        sCTRL{4} = 1 : CTRL = sCTRL
+        return
+
+disable_double_wide_mode
+        sCTRL{4} = 0 : CTRL = sCTRL
+        return
+
+        inline plotvaluesw.asm
+
+set_menu_top_pal
+        WSYNC = 1 : BACKGRND = $2D
+        if menu = MENU_ITEMS || menu = MENU_EQUIP then equip_menu_colors
+        return

@@ -1,0 +1,631 @@
+;==============================================================================
+; BANK 2
+;------------------------------------------------------------------------------
+; Contains forest tileset graphics, maps, and enemy AI
+;==============================================================================
+        bank 2
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/tiles/forest_map.png 160A 0 2 1 3
+        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
+
+        incmapfile tiled/forest.tmx
+        incmapfile tiled/forest_room_1.tmx
+        incmapfile tiled/forest_room_2.tmx
+        incmapfile tiled/forest_room_3.tmx
+        incmapfile tiled/forest_room_4.tmx
+        incmapfile tiled/forest_room_5.tmx
+        incmapfile tiled/forest_room_6.tmx
+        incmapfile tiled/forest_room_7.tmx
+        incmapfile tiled/forest_room_8.tmx
+        incmapfile tiled/forest_room_9.tmx
+        incmapfile tiled/forest_room_10.tmx
+        incmapfile tiled/forest_room_11.tmx
+        incmapfile tiled/forest_room_12.tmx
+
+load_forest
+        if !first_load then forest_pals
+        first_load = 0
+        if save_room_index = 1 then forest_save_1
+
+; Initial player location on game start
+        room_index = 17
+        menu_map_Xpos = 78
+        menu_map_Ypos = 96
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+        goto forest_pals
+
+forest_save_1
+        room_index = 12
+        menu_map_Xpos = 94
+        menu_map_Ypos = 80
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_DOWN
+
+forest_pals
+        bg_color = PAL_F_GRND                          ; brown
+        incbasic shared_pals.78b
+        P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
+        P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
+        P7C1 = PAL_BLACK  : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
+
+        characterset forest_trees
+        room = forest_rooms[room_index]
+        if room = 1 then pointer = forest_room_1_obj_lo : pointer_hi = forest_room_1_obj_hi : goto plot_forest_room_1
+        if room = 2 then pointer = forest_room_2_obj_lo : pointer_hi = forest_room_2_obj_hi : goto plot_forest_room_2
+        if room = 3 then pointer = forest_room_3_obj_lo : pointer_hi = forest_room_3_obj_hi : goto plot_forest_room_3
+        if room = 4 then pointer = forest_room_4_obj_lo : pointer_hi = forest_room_4_obj_hi : goto plot_forest_room_4
+        if room = 5 then pointer = forest_room_5_obj_lo : pointer_hi = forest_room_5_obj_hi : goto plot_forest_room_5
+        if room = 6 then pointer = forest_room_6_obj_lo : pointer_hi = forest_room_6_obj_hi : goto plot_forest_room_6
+        if room = 7 then pointer = forest_room_7_obj_lo : pointer_hi = forest_room_7_obj_hi : goto plot_forest_room_7
+        if room = 8 then pointer = forest_room_8_obj_lo : pointer_hi = forest_room_8_obj_hi : goto plot_forest_room_8
+        if room = 9 then pointer = forest_room_9_obj_lo : pointer_hi = forest_room_9_obj_hi : goto plot_forest_room_9
+        if room = 10 then pointer = forest_room_10_obj_lo : pointer_hi = forest_room_10_obj_hi : goto plot_forest_room_10
+        if room = 11 then pointer = forest_room_11_obj_lo : pointer_hi = forest_room_11_obj_hi : goto plot_forest_room_11
+        if room = 12 then pointer = forest_room_12_obj_lo : pointer_hi = forest_room_12_obj_hi : goto plot_forest_room_12
+
+; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
+plot_forest_room_1
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/forest_room_1.tmx forest_room_1 0 0 20 14
+        memcpy current_map forest_room_1 280
+        return
+
+        data forest_room_1_obj
+        $00
+end
+
+
+plot_forest_room_2
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $08
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $09
+        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
+        memcpy current_map forest_room_2 280
+        return
+
+        data forest_room_2_obj
+        TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  TYPE_SLIME, $51, $58,
+        $00
+end
+
+plot_forest_room_3
+        pw_success = 0
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0E
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $09
+        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
+        memcpy current_map forest_room_3 280
+        return
+
+        data forest_room_3_obj
+        TYPE_ITEM1, $4E, $3D,  $00
+end
+
+plot_forest_room_4
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
+        memcpy current_map forest_room_4 280
+        return
+
+        data forest_room_4_obj
+        TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00
+end
+
+plot_forest_room_5
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0B
+        plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
+        memcpy current_map forest_room_5 280
+        return
+
+        data forest_room_5_obj
+        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00
+end
+
+plot_forest_room_6
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
+        plotmapfile tiled/forest_room_6.tmx forest_room_6 0 0 20 14
+        memcpy current_map forest_room_6 280
+        return
+
+        data forest_room_6_obj
+        TYPE_WOLF, $30, $30,
+        $00, $69, $20,
+        $00, $39, $20,
+        TYPE_TORCH, $5E, $AF,
+        TYPE_TORCH, $42, $AF,
+        TYPE_WOLF, $6B, $51,
+        TYPE_SLIME, $40, $67,
+        TYPE_SLIME, $80, $90,
+        $00, $90, $88,
+        $00, $40, $70,
+        $00, $30, $20,
+        $00, $80, $40,
+        $00, $b0, $c0,
+        $00, $77, $55,
+        $00, $44, $22,
+        $00, $33, $66,
+end
+
+plot_forest_room_7
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 6
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 7
+        plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
+        memcpy current_map forest_room_7 280
+        return
+
+        data forest_room_7_obj
+        TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
+end
+
+plot_forest_room_8
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $10
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
+        plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
+        memcpy current_map forest_room_8 280
+        return
+
+        data forest_room_8_obj
+        TYPE_RAVEN, $26, $28,  TYPE_RAVEN, $1E, $90,  $00
+end
+
+plot_forest_room_9
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 4
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 5
+        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
+        memcpy current_map forest_room_9 280
+        return
+
+        data forest_room_9_obj
+        $00
+end
+
+plot_forest_room_10
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = 2
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = 3
+        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
+        memcpy current_map forest_room_10 280
+        return
+
+        data forest_room_10_obj
+        $00
+end
+
+plot_forest_room_11
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 1
+        entered_save_room{0} = 1
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $0C
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0D
+        plotmapfile tiled/forest_room_11.tmx forest_room_11 0 0 20 14
+        memcpy current_map forest_room_11 280
+        return
+
+        data forest_room_11_obj
+        $00
+end
+
+plot_forest_room_12
+        menu_map_index = room_index * 2
+        menu_map_room[menu_map_index] = $08
+        menu_map_index = menu_map_index + 1
+        menu_map_room[menu_map_index] = $0F
+        plotmapfile tiled/forest_room_12.tmx forest_room_12 0 0 20 14
+        memcpy current_map forest_room_12 280
+        return
+
+        data forest_room_12_obj
+        $00
+end
+
+        data forest_rooms
+        00, 00,  8, 07, 06, 00, 00,
+        00, 10,  9, 04, 05, 11, 00,
+        00, 00, 00, 03, 02, 12, 00,
+        00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00
+end
+
+        dmahole 0
+test_walkable_forest
+        asm
+        ldx #0
+tw_loop lda forest_walkable_tiles,x
+        cmp move_tile_1
+        bne twtile2
+        pha
+        lda #1
+        sta walkable_1
+        pla
+twtile2 cmp move_tile_2
+        bne tw_next
+        lda #1
+        sta walkable_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda walkable_1
+        bne tw_walkable
+tw_next inx
+        cpx #forest_walkable_tiles_length
+        bne tw_loop
+        lda walkable_1
+        beq tw_done
+        lda walkable_2
+        beq tw_done
+tw_walkable
+        sta walkable
+        jmp .walkable_return
+tw_done
+        lda ledge_dir   ; if ledge_dir isn't set, bypass ledge check
+        beq tf_flags
+test_ledge_forest
+        ldy #0
+        cmp #DIR_LEFT
+        bne tlright
+        lda #<forest_ledge_tiles_left
+        sta pointer
+        lda #>forest_ledge_tiles_left
+        sta pointer_hi
+        jmp tl_loop
+tlright cmp #DIR_RIGHT
+        bne tldown
+        lda #<forest_ledge_tiles_right
+        sta pointer
+        lda #>forest_ledge_tiles_right
+        sta pointer_hi
+        jmp tl_loop
+tldown  cmp #DIR_DOWN
+        bne tl_done
+        lda #<forest_ledge_tiles_down
+        sta pointer
+        lda #>forest_ledge_tiles_down
+        sta pointer_hi
+tl_loop lda (pointer),y
+        cmp move_tile_1
+        bne tltile2
+        pha
+        lda #1
+        sta ledge_1
+        pla
+tltile2 cmp move_tile_2
+        bne tl_next
+        lda #1
+        sta ledge_2
+        ; optimization: bypass the rest of the array if both tiles walkable
+        ;   further optimization possible by sorting arrays by tile frequency
+        lda ledge_1
+        bne tl_ledge
+tl_next iny
+        cpy #forest_ledge_tiles_down_length     ; HACK - all ledge arrays currently same length...
+        bne tl_loop
+        lda ledge_1
+        beq tl_done
+        lda ledge_2
+        beq tl_done
+tl_ledge
+        sta ledge
+        lda #0
+tl_done sta ledge_dir   ; A = 0 if branched from tl_next
+tf_flags
+        lda flags
+        and #%00010000
+        bne tf_done
+        ; ledges are always floatable tiles
+        lda ledge
+        bne tf_floatable
+
+test_floatable_forest
+        ldx #0
+tf_loop lda forest_floatable_tiles,x
+        cmp move_tile_1
+        bne tftile2
+        pha
+        lda #1
+        sta floatable_1
+        pla
+tftile2 cmp move_tile_2
+        bne tf_next
+        lda #1
+        sta floatable_2
+        lda floatable_1
+        bne tf_floatable
+tf_next inx
+        cpx #forest_floatable_tiles_length
+        bne tf_loop
+        lda floatable_1
+        beq tf_done
+        lda floatable_2
+        beq tf_done
+tf_floatable
+        sta floatable
+tf_done jmp .walkable_return
+end
+;        for walk_index = 0 to forest_walkable_tiles_length
+;        walk_test = forest_walkable_tiles[walk_index]
+;        if walk_test = move_tile_1 then walkable_1 = 1
+;        if walk_test = move_tile_2 then walkable_2 = 1
+;        next
+;        if !walkable_1 then walkable_return
+;        if !walkable_2 then walkable_return
+;        walkable = 1
+;        goto walkable_return
+
+        data forest_walkable_tiles
+        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
+end
+
+        data forest_ledge_tiles_down
+        $22, $24, $26
+end
+
+        data forest_ledge_tiles_left
+        $32, $34, $36
+end
+
+        data forest_ledge_tiles_right
+        $2C, $2E, $30
+end
+
+        data forest_floatable_tiles
+        $2A, $24, $26, $22, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
+end
+
+torch_tile_block_forest
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 forest_floatable_tiles
+        return
+
+torch_tile_unblock_forest
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 forest_walkable_tiles
+        return
+
+;==============================================================================
+; WOLF AI
+;------------------------------------------------------------------------------
+; Wolves wait for the player to get close (WOLF_CHASE_DIST), then give chase
+;==============================================================================
+wolf_ai
+        ; Once wolves start chasing, they don't stop
+        if flags{7} then wolf_chase
+
+        ; Test player distance to wolf
+        temp1 = Xposition - player_Xpos
+        if temp1 < WOLF_CHASE_DIST then wolf_chase
+        temp1 = Yposition - player_Ypos
+        if temp1 < (WOLF_CHASE_DIST * 2) then wolf_chase
+
+wolf_anim
+        ; Wolves flip left or right facing depending on player position
+        frame = 0
+        if Xposition <= player_Xpos then frame = frame + 2
+        if animation_frame then frame = frame + 1
+        return
+
+wolf_chase
+        flags{7} = 1
+        gosub get_player_pos
+        gosub go_to_destination
+        goto wolf_anim
+
+obj_wolf_stats
+; TODO: Make this implementation suck less
+        object_hp[obj_index] = WOLF_HP
+        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
+        object_damage[obj_index] = WOLF_DAMAGE
+        object_def[obj_index] = WOLF_DEF
+        object_mdef[obj_index] = WOLF_MDEF
+        object_friction_hi[obj_index] = WOLF_FRICTION_HI
+        object_friction_lo[obj_index] = WOLF_FRICTION_LO
+        object_speed_hi[obj_index] = WOLF_SPEED_HI
+        object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+;==============================================================================
+; SLIME AI
+;------------------------------------------------------------------------------
+; A Slime draws near!
+; Command?
+;==============================================================================
+slime_ai
+        ; slimes have no physical defense on their squished frame
+        if !animation_frame then temp1 = SLIME_DEF : goto slime_chase
+        ; this will allow them to split into mini-slimes
+        temp1 = 0
+slime_chase
+        object_def[index] = temp1
+        gosub get_player_pos
+        gosub go_to_destination
+        return
+
+obj_slime_stats
+        object_hp[obj_index] = SLIME_HP
+        object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
+        object_damage[obj_index] = SLIME_DAMAGE
+        object_def[obj_index] = SLIME_DEF
+        object_mdef[obj_index] = SLIME_MDEF
+        object_friction_hi[obj_index] = SLIME_FRICTION_HI
+        object_friction_lo[obj_index] = SLIME_FRICTION_LO
+        object_speed_hi[obj_index] = SLIME_SPEED_HI
+        object_speed_lo[obj_index] = SLIME_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+split_slime
+        ; replace slime mobj with mini slime
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        object_def[index] = MSLIME_DEF
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        gosub find_new_object
+        index = spawn_index
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
+        ; initialize the new mini slime object
+        object_type[index] = TYPE_MSLIME
+        object_hp[index] = MSLIME_HP
+        object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
+        object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
+        object_damage[index] = SLIME_DAMAGE
+        object_def[index] = MSLIME_DEF
+        object_mdef[index] = MSLIME_MDEF
+        object_friction_hi[index] = SLIME_FRICTION_HI
+        object_friction_lo[index] = SLIME_FRICTION_LO
+        object_speed_hi[index] = SLIME_SPEED_HI
+        object_speed_lo[index] = SLIME_SPEED_LO
+        ; mini slime spawns to the right of the parent slime's pos
+        object_Xpos[index] = temp1 + 9
+        object_Ypos[index] = temp2
+        goto cc_next
+
+;==============================================================================
+; RAVEN AI
+;------------------------------------------------------------------------------
+; Flies without testing walkability and perches on trees
+;==============================================================================
+raven_ai
+        if debug_time = 1 then BACKGRND = $A0
+        flags{2} = 1
+        temp1 = 0
+        temp2 = 0
+        ; flags{7} = not perched
+        if flags{7} then goto raven_change_pos
+        frame = 0
+        Xvelocity = 0.0
+        Yvelocity = 0.0
+
+test_dist_to_player
+        if Xposition > player_Xpos then wake_raven_right
+        if Xposition < player_Xpos then wake_raven_left
+        if Yposition > player_Ypos then wake_raven_down
+        if Yposition < player_Ypos then wake_raven_up
+        ; raven and player occupy same space, handle this
+
+wake_raven_right
+        temp1 = Xposition - player_Xpos
+        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_left
+        temp1 = Xposition + player_Xpos
+        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_up
+        temp2 = Yposition + player_Ypos
+        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+wake_raven_down
+        temp2 = Yposition - player_Ypos
+        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
+        goto raven_return
+
+
+raven_change_pos
+        flags{7} = 1
+        frame = 1
+        if animation_frame then frame = frame + 2
+        if !object_timer[index] then object_timer[index] = RAVEN_FLIGHT_TIME
+        if flags{3} then raven_move
+        if rand > 128 then gosub swoop_Y : raven_move
+        gosub swoop_X
+raven_move
+        gosub go_to_destination
+
+raven_perch
+        temp1 = object_timer[index]
+        object_timer[index] = object_timer[index] - 1
+        if temp1 < object_timer[index] then object_timer[index] = 0
+        if object_timer[index] > 0 then raven_return
+        gosub test_walkable
+        if !walkable then flags{7} = 0
+
+raven_return
+        if Xposition >= player_Xpos then frame = frame + 1
+        if debug_time = 1 then BACKGRND = bg_color
+        return
+
+obj_raven_stats
+        object_hp[obj_index] = RAVEN_HP
+        object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
+        object_damage[obj_index] = RAVEN_DAMAGE
+        object_def[obj_index] = RAVEN_DEF
+        object_mdef[obj_index] = RAVEN_MDEF
+        object_friction_hi[obj_index] = RAVEN_FRICTION_HI
+        object_friction_lo[obj_index] = RAVEN_FRICTION_LO
+        object_speed_hi[obj_index] = RAVEN_SPEED_HI
+        object_speed_lo[obj_index] = RAVEN_SPEED_LO
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+plot_wolf
+        PLOTSPRITE wolf0 5 Xposition Yposition frame
+        goto plot_next
+
+plot_slime
+        PLOTSPRITE slime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_minislime
+        PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
+        goto plot_next
+
+plot_raven
+        PLOTSPRITE raven0 5 Xposition Yposition frame
+        goto plot_next
