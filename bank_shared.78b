@@ -471,48 +471,60 @@ torch_tile_block_get_pos
 
 spawn_object
         ; index is still set by object_handler
-        temp1 = object_flags[index]
-        if temp1 = TYPE_TORCH then spawns_torch
+        drop_index = object_flags[index]
+        if drop_index = TYPE_TORCH then spawns_torch
 
         ; exclude projectiles and collectible objects
-        if temp1 >=TYPE_SPAWNER then spawn_nothing
+        if drop_index >=TYPE_SPAWNER then spawn_nothing
 
-        if rand >= RARE_DROP_RATE then spawn_rare
-        if rand >= COMMON_DROP_RATE then spawn_common
+        temp1 = rand
+
+        if temp1 >= RARE_DROP_RATE then spawn_rare
+        if temp1 >= COMMON_DROP_RATE then spawn_common
 
 spawn_nothing
         object_type[index] = 0
         goto object_done
 
 spawn_rare
-        object_type[index] = rare_drops[temp1]
+        object_type[index] = rare_drops[drop_index]
         goto object_done
 
 spawn_common
-        object_type[index] = common_drops[temp1]
+        object_type[index] = common_drops[drop_index]
         goto object_done
 
         data rare_drops
-        TYPE_FOOD,      ; wolf
-        TYPE_HIETHER,   ; slime
-        TYPE_HIETHER,   ; mini-slime
-        TYPE_FOOD,      ; raven
-        TYPE_CHARM2,    ; priest
-        TYPE_SWORD2,    ; skeleton
-        TYPE_HIETHER,   ; red slime
-        TYPE_HIETHER,   ; mini red slime
+        0               ; player
+        0               ; torch (handled separately)
+        TYPE_FOOD       ; wolf
+        TYPE_COIN       ; null
+        TYPE_COIN       ; null
+        TYPE_COIN       ; null
+        TYPE_HIETHER    ; slime
+        TYPE_HIETHER    ; mini-slime
+        TYPE_FOOD       ; raven
+        TYPE_CHARM2     ; priest
+        TYPE_SWORD2     ; skeleton
+        TYPE_HIETHER    ; red slime
+        TYPE_HIETHER    ; mini red slime
         TYPE_ETHER      ; ghost
 end
 
         data common_drops
-        TYPE_FOOD,      ; wolf
-        TYPE_ANTIDOTE,  ; slime
-        TYPE_ANTIDOTE,  ; mini-slime
-        TYPE_FOOD,      ; raven
-        TYPE_ETHER,     ; priest
-        TYPE_SHIELD2,   ; skeleton
-        TYPE_ANTIDOTE,  ; red slime
-        TYPE_ANTIDOTE,  ; mini red slime
+        0               ; player
+        0               ; torch (handled separately)
+        TYPE_FOOD       ; wolf
+        TYPE_COIN       ; null
+        TYPE_COIN       ; null
+        TYPE_COIN       ; null
+        TYPE_ANTIDOTE   ; slime
+        TYPE_ANTIDOTE   ; mini-slime
+        TYPE_FOOD       ; raven
+        TYPE_ETHER      ; priest
+        TYPE_SHIELD2    ; skeleton
+        TYPE_ANTIDOTE   ; red slime
+        TYPE_ANTIDOTE   ; mini red slime
         TYPE_UNCURSE    ; ghost
 end
 

@@ -44,8 +44,6 @@
         incgraphic gfx/menu/menu_potion2.png 320B 0 2 1 3
 
 menu_init
-        ; For some reason, removing this causes compilation to fail...
-        temp1 = 0
         game_state = STATE_MENU
         clearscreen
         displaymode 320B

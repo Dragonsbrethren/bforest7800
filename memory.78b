@@ -162,7 +162,7 @@
         autodim byte frame
         autodim byte flags
         autodim byte obj_index
-        autodim byte drop_rate
+        autodim byte drop_index
         autodim byte no_empty_slot
         autodim byte torch_reblock
         autodim byte spawn_index
