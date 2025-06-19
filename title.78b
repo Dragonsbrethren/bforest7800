@@ -3,6 +3,7 @@
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
         incgraphic gfx/title/moon.png  320B 0 3 2 2 4
         incmapfile tiled/title_blackforest.tmx
+
 title_init
         game_state = STATE_TITLE
         gosub clear_palettes

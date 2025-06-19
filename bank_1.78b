@@ -1,11 +1,62 @@
 ;==============================================================================
 ; BANK 1
 ;------------------------------------------------------------------------------
-; 7800basic initialization, title sequence code and graphics
+; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
         incgraphic gfx/menu/menu_cursor0.png 320A 0 1
-        
-        incbasic title.78b
+
+init
+        goto title_init bank10
+
+main
+        drawscreen
+        if switchreset then reboot
+        if !switchselect then select_debounce = 0
+        if !switchpause then pause_debounce = 0
+        if !joy0fire0 && action_button = 0 then action_debounce = 0
+        if !joy0fire0 && action_button = 1 then menu_debounce = 0
+        if !joy0fire1 && action_button = 1 then action_debounce = 0
+        if !joy0fire1 && action_button = 0 then menu_debounce = 0
+        if !joy0left then left_debounce = 0
+        if !joy0right then right_debounce = 0
+        if !joy0up then up_debounce = 0
+        if !joy0down then down_debounce = 0
+        ; menu code prevents these from overflowing
+        if joy0left then left_debounce = left_debounce + 1
+        if joy0right then right_debounce = right_debounce + 1 
+        if joy0up then up_debounce = up_debounce + 1
+        if joy0down then down_debounce = down_debounce + 1
+        if select_debounce then goto main_animation_timer
+        if switchselect then gosub swap_action_button
+main_animation_timer
+        animation_timer = animation_timer + 1
+        if animation_timer > ANIM_TIME then animation_timer = 0
+        ; Currently only two frames of animation supported. Needs to be changed if more than 2
+        animation_frame = 0
+        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+
+main_lightning
+    asm
+        lda lightning_timer
+        beq lightning_flash
+        dec lightning_timer
+        bne lightning_done
+lightning_flash
+        dec lightning_delay
+        lda lightning_delay
+        bne lightning_done
+        jsr randomize
+        bmi lightning_done
+        lda #LIGHTNING_FRAMES
+        sta lightning_timer
+lightning_done
+end
+
+main_state_handler
+        if game_state = STATE_TITLE then title_handler
+        if game_state = STATE_FIELD then field_handler
+        if game_state = STATE_MENU  then menu_handler
+        goto main
 
 kill_player
         player_frame = FRAME_DEATH
@@ -240,14 +291,14 @@ gameover_controls
         goto main
 
 gameover_input
-        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init
+        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init bank10
         gosub decode_password
         in_save_room = 0
-        goto title_continue
+        goto title_continue bank10
 
 plot_relics_menu
 plot_password_menu
-        ; turn on Kangaroo mode so "Password Error prints over saved screen"
+        ; turn on Kangaroo mode so "Password Error" prints over saved screen
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_PASSWORD
         if !menu_change then goto password_menu_updater
@@ -289,7 +340,7 @@ password_menu_controls
 
 password_menu_dirs_done
         ; set by decode password subroutine
-        if pw_success = 1 then goto init_field
+        if pw_success = 1 then goto init_field bank10
         ; clear the Password Error message if the cursor was moved
         if menu_selection <> prev_menu_selection then pw_error = 0
         ; Handles the Erase option spanning multiple columns
@@ -314,7 +365,7 @@ encode_sel_to_pw
         if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
         if menu_selection = 10 then pw_backspace                        ; Erase
         if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
-        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init                             ; Exit
+        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init bank10 ; Exit
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         if pw_index > 24 then pw_index = 24
@@ -566,55 +617,6 @@ cast_fireball_left
         rts
 end
 
-main
-        drawscreen
-        if switchreset then reboot
-        if !switchselect then select_debounce = 0
-        if !switchpause then pause_debounce = 0
-        if !joy0fire0 && action_button = 0 then action_debounce = 0
-        if !joy0fire0 && action_button = 1 then menu_debounce = 0
-        if !joy0fire1 && action_button = 1 then action_debounce = 0
-        if !joy0fire1 && action_button = 0 then menu_debounce = 0
-        if !joy0left then left_debounce = 0
-        if !joy0right then right_debounce = 0
-        if !joy0up then up_debounce = 0
-        if !joy0down then down_debounce = 0
-        ; menu code prevents these from overflowing
-        if joy0left then left_debounce = left_debounce + 1
-        if joy0right then right_debounce = right_debounce + 1 
-        if joy0up then up_debounce = up_debounce + 1
-        if joy0down then down_debounce = down_debounce + 1
-        if select_debounce then goto main_animation_timer
-        if switchselect then gosub swap_action_button
-main_animation_timer
-        animation_timer = animation_timer + 1
-        if animation_timer > ANIM_TIME then animation_timer = 0
-        ; Currently only two frames of animation supported. Needs to be changed if more than 2
-        animation_frame = 0
-        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
-
-main_lightning
-        asm
-        lda lightning_timer
-        beq lightning_flash
-        dec lightning_timer
-        bne lightning_done
-lightning_flash
-        dec lightning_delay
-        lda lightning_delay
-        bne lightning_done
-        jsr randomize
-        bmi .main_state_handler
-        lda #LIGHTNING_FRAMES
-        sta lightning_timer
-lightning_done
-end
-
-main_state_handler
-        if game_state = STATE_TITLE then title_handler
-        if game_state = STATE_FIELD then field_handler
-        if game_state = STATE_MENU  then menu_handler
-        goto main
 
 swap_action_button
         select_debounce = 1

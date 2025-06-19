@@ -24,7 +24,7 @@
         incbasic constants.78b
         incbasic memory.78b
 
-        ; main game loop and shared code, title
+        ; main game loop and shared code
         incbasic bank_1.78b
         ; forest tileset
         incbasic bank_2.78b
@@ -38,5 +38,8 @@
         incbasic bank_7.78b
         ; hills tileset
         incbasic bank_8.78b
+
+        ; title graphics
+        incbasic bank_10.78b
         ; shared graphics and code
         incbasic bank_shared.78b
