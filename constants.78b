@@ -126,8 +126,8 @@
         const MENU_EQUIP_EXIT_Y     = 192
 
         ; offsets added to menu selection to get proper font characters on password screen
-        const PW_0 = 18
-        const PW_A = 15
+        const PW_0 = 19
+        const PW_A = 16
 
         ; item healing values
         const HP_CHANGE_POTION = $20

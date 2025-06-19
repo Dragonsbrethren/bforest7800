@@ -3,8 +3,6 @@
 ;------------------------------------------------------------------------------
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
-        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
-
 init
         goto title_init bank10
 

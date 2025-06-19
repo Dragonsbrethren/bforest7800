@@ -1,3 +1,5 @@
+        incgraphic gfx/menu/menu_map.png 320A           ; not used by title, here so cursor is in same spot as menu bank
+        incgraphic gfx/menu/menu_cursor0.png 320A 0 1
         incgraphic gfx/title/font.png  320B 2 0 1 0 0
         incgraphic gfx/title/logo.png  320B 1 2 3 1 4
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
