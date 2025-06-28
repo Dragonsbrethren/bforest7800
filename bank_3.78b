@@ -428,15 +428,19 @@ menu_armor_next
         next
 
 plot_inv_armor_0
+        if !m_inv_item_0 then plot_inv_armor_1
         plotsprite menu_armor0 4 16 80  m_inv_item_0
         plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
 plot_inv_armor_1
+        if !m_inv_item_1 then plot_inv_armor_2
         plotsprite menu_armor0 4 16 112  m_inv_item_1
         plotmap armor_names 0 24 7 13 1 0  m_inv_item_1 13
 plot_inv_armor_2
+        if !m_inv_item_2 then plot_inv_armor_3
         plotsprite menu_armor0 4 16 144  m_inv_item_2
         plotmap armor_names 0 24 9 13 1 0  m_inv_item_2 13
 plot_inv_armor_3
+        if !m_inv_item_3 then plot_inv_armor_done
         plotsprite menu_armor0 4 16 176 1 0  m_inv_item_3
         plotmap armor_names 0 24 11 13 1 0  m_inv_item_3 13
 plot_inv_armor_done
@@ -453,14 +457,23 @@ equip_menu_charm_inv
 menu_charm_next 
         next
 
+plot_inv_charm_0
+        if !m_inv_item_0 then plot_inv_charm_1
         plotsprite menu_charm0 4 16 80  m_inv_item_0
         plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
+plot_inv_charm_1
+        if !m_inv_item_1 then plot_inv_charm_2
         plotsprite menu_charm0 4 16 112  m_inv_item_1
         plotmap charm_names 0 24 7 13 1 0  m_inv_item_1 13
+plot_inv_charm_2
+        if !m_inv_item_2 then plot_inv_charm_3
         plotsprite menu_charm0 4 16 144  m_inv_item_2
         plotmap charm_names 0 24 9 13 1 0  m_inv_item_2 13
+plot_inv_charm_3
+        if !m_inv_item_3 then plot_inv_charm_done
         plotsprite menu_charm0 4 16 176 1 0  m_inv_item_3
         plotmap charm_names 0 24 11 13 1 0  m_inv_item_3 13
+plot_inv_charm_done
         goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites

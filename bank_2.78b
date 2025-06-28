@@ -120,7 +120,7 @@ plot_forest_room_3
         menu_map_room[menu_map_index] = $0E
         menu_map_index = menu_map_index + 1
         menu_map_room[menu_map_index] = $09
-        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
+        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 13
         memcpy current_map forest_room_3 280
         return
 

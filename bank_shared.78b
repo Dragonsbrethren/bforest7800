@@ -88,9 +88,17 @@ obj_torch_stats
 load_map
         clearscreen
         displaymode 160A
-        adjustvisible 0 14
+        adjustvisible 0 13
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
+draw_pickup_hud
+        Xposition = 28
+        for index = 0 to 16
+        Xposition = Xposition + 6                  
+        
+        PLOTSPRITE font_spr 0 Xposition 208 0
+        next
+map_loaded
         savescreen
         if !save_objects then gosub load_objects
         asm
@@ -99,7 +107,7 @@ load_map
         sta save_objects
 end
         if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
-        if exit_dir = EXIT_NORTH then player_Ypos = 204 : player_Ydir = DIR_UP
+        if exit_dir = EXIT_NORTH then player_Ypos = 192 : player_Ydir = DIR_UP
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
         if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
         exit_dir = EXIT_NONE
@@ -120,37 +128,46 @@ no_lightning
         if tileset = T_CASTLE then goto castle_pals
 
 lightning_done
-plot_objects
+
+set_pickup_string
+        for index = 0 to 16
+        pickup_string[index] = test_name[index]
+        next
+
         restorescreen
+        gosub update_pickup_objs
+
+plot_objects
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determines which sprites need to be plotted by type
         for index = 1 to 15
-        if !object_type[index] then goto plot_next
-        if object_type[index] = TYPE_SPAWNER then plot_next
+        plot_index = object_type[index]
+        if !plot_index then goto plot_next
+        if plot_index  = TYPE_SPAWNER then plot_next
         Xposition = object_Xpos[index] : Yposition = object_Ypos[index] : frame = object_frame[index]
         sprite_pal = object_pal[index]
-        if object_type[index] = TYPE_WOLF then plot_wolf
-        if object_type[index] = TYPE_TORCH then plot_torch
-        if object_type[index] = TYPE_COIN then plot_coin
-        if object_type[index] = TYPE_PRISM then plot_prism
-        if object_type[index] = TYPE_SLIME then plot_slime
-        if object_type[index] = TYPE_MSLIME then plot_minislime
-        if object_type[index] = TYPE_RSLIME then plot_rslime
-        if object_type[index] = TYPE_MRSLIME then plot_mrslime
-        if object_type[index] = TYPE_RAVEN then plot_raven
-        if object_type[index] = TYPE_PRIEST then plot_priest
-        if object_type[index] = TYPE_SKELETON then plot_skeleton
-        if object_type[index] = TYPE_FIREBALL then plot_fireball
-        if object_type[index] = TYPE_DARKSPARK then plot_darkspark
-        if object_type[index] = TYPE_SKELSWORD then plot_skelsword
-        if object_type[index] = TYPE_BLOOD then plot_blood
-        if object_type[index] = TYPE_GHOST then plot_ghost
-        if object_type[index] = TYPE_FOOD then plot_food
-        if object_type[index] >= TYPE_CHARM1 then plot_charms
-        if object_type[index] >= TYPE_ARMOR1 then plot_armor
-        if object_type[index] >= TYPE_SHIELD1 then plot_shields
-        if object_type[index] >= TYPE_SWORD1 then plot_swords
-        if object_type[index] >= TYPE_ITEM1 then plot_items
+        if plot_index >= TYPE_CHARM1 then plot_charms
+        if plot_index >= TYPE_ARMOR1 then plot_armor
+        if plot_index >= TYPE_SHIELD1 then plot_shields
+        if plot_index >= TYPE_SWORD1 then plot_swords
+        if plot_index >= TYPE_ITEM1 then plot_items
+        if plot_index = TYPE_WOLF then plot_wolf
+        if plot_index = TYPE_TORCH then plot_torch
+        if plot_index = TYPE_COIN then plot_coin
+        if plot_index = TYPE_PRISM then plot_prism
+        if plot_index = TYPE_SLIME then plot_slime
+        if plot_index = TYPE_MSLIME then plot_minislime
+        if plot_index = TYPE_RSLIME then plot_rslime
+        if plot_index = TYPE_MRSLIME then plot_mrslime
+        if plot_index = TYPE_RAVEN then plot_raven
+        if plot_index = TYPE_PRIEST then plot_priest
+        if plot_index = TYPE_SKELETON then plot_skeleton
+        if plot_index = TYPE_FIREBALL then plot_fireball
+        if plot_index = TYPE_DARKSPARK then plot_darkspark
+        if plot_index = TYPE_SKELSWORD then plot_skelsword
+        if plot_index = TYPE_BLOOD then plot_blood
+        if plot_index = TYPE_GHOST then plot_ghost
+        if plot_index = TYPE_FOOD then plot_food
 plot_next
         next
         ; Plot the player, their shield, and sword if attacking
@@ -1116,7 +1133,7 @@ cc_return
         return
 
 cc_pickup
-        if Xposition > player_Xpos && Xposition < (player_Xpos + 12) && Yposition > player_Ypos && Yposition < (player_Ypos + 16) then pickup_object
+        if Xposition >= player_Xpos && Xposition < (player_Xpos + 12) && Yposition >= player_Ypos && Yposition < (player_Ypos + 16) then pickup_object
         goto cc_next
 
 pickup_object
@@ -1124,10 +1141,10 @@ pickup_object
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
         if object_type[index] >= TYPE_ITEM1 then temp1 = object_type[index]
-        if temp1 > TYPE_ARMOR10 then pickup_charm
-        if temp1 > TYPE_SHIELD10 then pickup_armor
-        if temp1 > TYPE_SWORD10 then pickup_shield
-        if temp1 > TYPE_ITEM10 then pickup_sword
+        if temp1 >= TYPE_CHARM1 then pickup_charm
+        if temp1 >= TYPE_ARMOR1 then pickup_armor
+        if temp1 >= TYPE_SHIELD1 then pickup_shield
+        if temp1 >= TYPE_SWORD1 then pickup_sword
         if temp1 >= TYPE_ITEM1 then pickup_item
 
 kill_object

@@ -1,0 +1,49 @@
+;        data enemy_names_lo
+;        name_wolf_lo, name_warg_lo, name_merman_lo, name_octopus_lo,
+;        name_slime_lo, name_mslime_lo, name_raven_lo, name_priest_lo,
+;        name_skeleton_lo, name_rslime_lo, name_mrslime_lo, name_ghost_lo
+;end
+
+;        data enemy_names_hi
+;        name_wolf_hi, name_warg_hi, name_merman_hi, name_octopus_hi,
+;        name_slime_hi, name_mslime_hi, name_raven_hi, name_priest_hi,
+;        name_skeleton_hi, name_rslime_hi, name_mrslime_hi, name_ghost_hi
+;end
+
+        alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+        alphadata name_wolf font_spr
+        'Wolf*'
+end
+        alphadata name_warg font_spr
+        'Warg*'
+end
+        alphadata name_merman font_spr
+        'Merman*'
+end
+        alphadata name_octopus font_spr
+        'Octokraken*'
+end
+        alphadata name_slime font_spr
+        'Slime*'
+end
+        alphadata name_mslime font_spr
+        'Slime*'
+end
+        alphadata name_raven font_spr
+        'Raven*'
+end
+        alphadata name_priest font_spr
+        'Dark Priest*'
+end
+        alphadata name_skeleton font_spr
+        'Skeletal Knight*'
+end
+        alphadata name_rslime font_spr
+        'Red Slime*'
+end
+        alphadata name_mrslime font_spr
+        'Red Slime*'
+end
+        alphadata name_ghost font_spr
+        'Ghost*'
+end

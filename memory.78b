@@ -147,8 +147,10 @@
         autodim byte object_dest 16
         autodim byte object_hop_dir 16
 
-        autodim init $2400 $24FF
+        autodim init $2400 $25FF
         autodim byte object_pal 16
+        autodim byte object_spr_ptr_lo 16
+        autodim byte object_spr_ptr_hi 16
         autodim byte sprite_pal
         autodim byte reload_map
         autodim byte save_objects
@@ -167,6 +169,7 @@
         autodim byte torch_reblock
         autodim byte spawn_index
         autodim byte frame_index
+        autodim byte plot_index
 
         ; MENUS
         autodim byte action_debounce
@@ -240,13 +243,15 @@
         autodim byte in_save_room
         autodim byte entered_save_room
         autodim byte ledge_dir
-        autodim byte window_zone        ; depreciated
         autodim byte lightning_timer
         autodim byte lightning_delay
-        autodim byte no_flash
-        autodim byte alt_palette
+        autodim byte no_flash           ; non-zero disables lightning flashes
+        autodim byte alt_palette        ; use alternate palettes
+        autodim byte music_playing      ; prevents music from restarting after leaving menu/game over
+        autodim byte zone1_objects      ; reserved for HUD changes
+        autodim byte zone2_objects      ; ''
+        autodim byte zone14_objects     ; used by pickup string
 
-        autodim init $2500 $25FF
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
         autodim byte input_buffer 8
         autodim byte input_buffer_index
@@ -283,6 +288,12 @@
         autodim byte menu_map_index_2
         autodim byte menu_map_Xpos
         autodim byte menu_map_Ypos
+
+        ; PICKUP HUD
+        autodim byte pickup_string 16
+        autodim byte pickup_index
+        autodim byte pickup_char
+        autodim byte pickup_offset
 
         ; PASSWORD ARRAY
         dim pw_index0  = pw_tileset

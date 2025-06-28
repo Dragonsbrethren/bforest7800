@@ -253,7 +253,7 @@ plot_castle_room_1
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 3
         memcpy current_map castle_room_1 280
-        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 13
 plot_castle_bank5_return
         return thisbank
 

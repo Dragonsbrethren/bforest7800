@@ -3,6 +3,7 @@
 ;------------------------------------------------------------------------------
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
+        incgraphic gfx/sprites/font_spr.png 160A 3 0 1
 init
         goto title_init bank10
 
@@ -232,9 +233,7 @@ pw_buffer_loop
         lda pw_index0,x
         sta pw_buffer,x
         dex
-        bne pw_buffer_loop
-        lda pw_index0
-        sta pw_buffer
+        bpl pw_buffer_loop
         rts
 end
 
@@ -245,9 +244,7 @@ buffer_pw_loop
         lda pw_buffer,x
         sta pw_index0,x
         dex
-        bne buffer_pw_loop
-        lda pw_buffer
-        sta pw_index0
+        bpl buffer_pw_loop
         rts
 end
 
@@ -292,6 +289,7 @@ gameover_input
         if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init bank10
         gosub decode_password
         in_save_room = 0
+        menu = MENU_MAIN
         goto title_continue bank10
 
 plot_relics_menu
@@ -383,7 +381,7 @@ plot_password
         plotchars pw_index6 0 84 3 6 singlewide
         plotchars pw_index12 0 52 4 6 singlewide
         plotchars pw_index18 0 84 4 6 singlewide
-        return
+        return thisbank
 
         data inv_bits
         %00000001, %00000010, %00000100, %00001000, %00010000
@@ -683,8 +681,11 @@ end
 end
 
         incbasic sounds.78b
+        incbasic music.78b
         inline hiscore.asm
+        inline updateobjects.asm
 
+        dmahole 0
 ledge_hop
         asm
         lda Xdirection
@@ -770,3 +771,64 @@ hop_done
         sta hop_dest
         rts
 end
+
+update_pickup_objs
+        ; unrolled for speed
+        asm
+        ldx zone14_objects
+        ldy #13
+        SetObjectImageLo pickup_string
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+1
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+2
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+3
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+4
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+5
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+6
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+7
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+8
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+9
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+10
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+11
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+12
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+13
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+14
+        inx
+        ldy #13
+        SetObjectImageLo pickup_string+15
+        rts
+end
+
+        alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+        alphadata test_name font_spr
+        'Skeletal Knight '
+end
+
+        incbasic fairy_scroll.78b
