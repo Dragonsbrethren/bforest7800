@@ -301,6 +301,7 @@
         autodim byte pickup_offset
         autodim byte pickup_timer
         autodim byte new_pickup
+        autodim byte item_pickup
 
         ; PASSWORD ARRAY
         dim pw_index0  = pw_tileset
