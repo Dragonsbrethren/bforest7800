@@ -782,6 +782,16 @@ hop_done
         rts
 end
 
+set_enemy_name
+        if object_type[index] >= TYPE_SPAWNER then set_enemy_name_return
+        temp1 = object_type[index]
+        pickup_ptr_lo = enemy_names_lo[temp1]
+        pickup_ptr_hi = enemy_names_hi[temp1]
+        new_pickup = 1
+        pickup_timer = PICKUP_TIME
+set_enemy_name_return
+        return thisbank
+
 update_pickup_objs
         ; unrolled for speed
         asm

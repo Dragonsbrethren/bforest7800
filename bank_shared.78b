@@ -1186,12 +1186,12 @@ change_to_spawner
         goto cc_next
 
 sword_collision
-        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
         if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
         if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
 sword_damage
         ; TODO: Much better damage calculations
-        if object_def[index] = 255 then return
+        if object_def[index] = 255 then return thisbank
         temp_hp = object_hp[index]
         temp1 = temp_hp
         hp_change = player_atk - object_def[index]
@@ -1199,13 +1199,13 @@ sword_damage
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
-        return
+        gosub set_enemy_name
 
 kill_torch
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_unblock_forest
         if tileset = T_CASTLE then gosub torch_tile_unblock_castle
-        return
+        return thisbank
 
 player_knockback
         if player_flags{0} then return  ; player is invulnerable, bypass collision check to save cycles

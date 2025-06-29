@@ -1,49 +1,67 @@
-;        data enemy_names_lo
-;        name_wolf_lo, name_warg_lo, name_merman_lo, name_octopus_lo,
-;        name_slime_lo, name_mslime_lo, name_raven_lo, name_priest_lo,
-;        name_skeleton_lo, name_rslime_lo, name_mrslime_lo, name_ghost_lo
-;end
+        data enemy_names_lo
+        0, 0,
+        name_wolf_lo, name_warg_lo, name_merman_lo, name_octopus_lo,
+        name_slime_lo, name_slime_lo, name_raven_lo, name_priest_lo,
+        name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo
+end
 
-;        data enemy_names_hi
-;        name_wolf_hi, name_warg_hi, name_merman_hi, name_octopus_hi,
-;        name_slime_hi, name_mslime_hi, name_raven_hi, name_priest_hi,
-;        name_skeleton_hi, name_rslime_hi, name_mrslime_hi, name_ghost_hi
-;end
+        data enemy_names_hi
+        0, 0,
+        name_wolf_hi, name_warg_hi, name_merman_hi, name_octopus_hi,
+        name_slime_hi, name_slime_hi, name_raven_hi, name_priest_hi,
+        name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi
+end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+
+        const name_wolf_lo = #<name_wolf
+        const name_wolf_hi = #>name_wolf
         alphadata name_wolf font_spr
         'Wolf*'
 end
+
+        const name_warg_lo = #<name_warg
+        const name_warg_hi = #>name_warg
         alphadata name_warg font_spr
         'Warg*'
 end
+        const name_merman_lo = #<name_merman
+        const name_merman_hi = #>name_merman
         alphadata name_merman font_spr
         'Merman*'
 end
+        const name_octopus_lo = #<name_octopus
+        const name_octopus_hi = #>name_octopus
         alphadata name_octopus font_spr
         'Octokraken*'
 end
+        const name_slime_lo = #<name_slime
+        const name_slime_hi = #>name_slime
         alphadata name_slime font_spr
         'Slime*'
 end
-        alphadata name_mslime font_spr
-        'Slime*'
-end
+        const name_raven_lo = #<name_raven
+        const name_raven_hi = #>name_raven
         alphadata name_raven font_spr
         'Raven*'
 end
+        const name_priest_lo = #<name_priest
+        const name_priest_hi = #>name_priest
         alphadata name_priest font_spr
         'Dark Priest*'
 end
+        const name_skeleton_lo = #<name_skeleton
+        const name_skeleton_hi = #>name_skeleton
         alphadata name_skeleton font_spr
         'Skull Knight*'
 end
+        const name_rslime_lo = #<name_rslime
+        const name_rslime_hi = #>name_rslime
         alphadata name_rslime font_spr
         'Red Slime*'
 end
-        alphadata name_mrslime font_spr
-        'Red Slime*'
-end
+        const name_ghost_lo = #<name_ghost
+        const name_ghost_hi = #>name_ghost
         alphadata name_ghost font_spr
         'Ghost*'
 end
