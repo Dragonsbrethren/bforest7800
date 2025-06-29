@@ -93,7 +93,7 @@ load_map
         if tileset = T_CASTLE then gosub load_castle bank4
 draw_pickup_hud
         Xposition = 36
-        for index = 0 to 12
+        for index = 0 to 13
         Xposition = Xposition + 6                  
         
         PLOTSPRITE font_spr 0 Xposition 208 0
@@ -107,7 +107,7 @@ map_loaded
         sta save_objects
 end
         if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
-        if exit_dir = EXIT_NORTH then player_Ypos = 192 : player_Ydir = DIR_UP
+        if exit_dir = EXIT_NORTH then player_Ypos = 176 : player_Ydir = DIR_UP
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
         if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
         exit_dir = EXIT_NONE
@@ -133,7 +133,7 @@ set_pickup_string
         if pickup_timer then get_pickup_string
 
 pickup_clear
-        for index = 0 to 12
+        for index = 0 to 13
         pickup_string[index] = 0
         next
         item_pickup = 0
@@ -143,7 +143,7 @@ get_pickup_string
         pickup_timer = pickup_timer - 1
         if !new_pickup then pickup_done
         ; set pickup string based on pickup pointer
-        for index = 0 to 12
+        for index = 0 to 13
         pickup_string[index] = pickup_ptr[[index]]
         if !pickup_string[index] then pickup_pad
         next
@@ -151,8 +151,8 @@ get_pickup_string
 pickup_pad
         ; now pad with blanks to 16 chars
         temp1 = index
-        if temp1 = 12 then pickup_done
-        for index = temp1 to 12
+        if temp1 = 13 then pickup_done
+        for index = temp1 to 13
         pickup_string[index] = 0
         next
 
@@ -677,7 +677,7 @@ check_room_boundary
         if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
         if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
         if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
-        if player_Ypos > 204 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
+        if player_Ypos > 188 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1
         goto player_handler_done
 
