@@ -93,6 +93,7 @@ plot_forest_room_1
         menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_1.tmx forest_room_1 0 0 20 14
         memcpy current_map forest_room_1 280
+        zone14_objects = 1
         return
 
         data forest_room_1_obj
@@ -107,6 +108,7 @@ plot_forest_room_2
         menu_map_room[menu_map_index] = $09
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
         memcpy current_map forest_room_2 280
+        zone14_objects = 1
         return
 
         data forest_room_2_obj
@@ -120,8 +122,9 @@ plot_forest_room_3
         menu_map_room[menu_map_index] = $0E
         menu_map_index = menu_map_index + 1
         menu_map_room[menu_map_index] = $09
-        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 13
+        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 0 20 14
         memcpy current_map forest_room_3 280
+        zone14_objects = 1
         return
 
         data forest_room_3_obj
@@ -135,6 +138,7 @@ plot_forest_room_4
         menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
         memcpy current_map forest_room_4 280
+        zone14_objects = 1
         return
 
         data forest_room_4_obj
@@ -148,6 +152,7 @@ plot_forest_room_5
         menu_map_room[menu_map_index] = $0B
         plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
         memcpy current_map forest_room_5 280
+        zone14_objects = 1
         return
 
         data forest_room_5_obj
@@ -161,6 +166,7 @@ plot_forest_room_6
         menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_6.tmx forest_room_6 0 0 20 14
         memcpy current_map forest_room_6 280
+        zone14_objects = 2
         return
 
         data forest_room_6_obj
@@ -189,6 +195,7 @@ plot_forest_room_7
         menu_map_room[menu_map_index] = 7
         plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
         memcpy current_map forest_room_7 280
+        zone14_objects = 1
         return
 
         data forest_room_7_obj
@@ -202,6 +209,7 @@ plot_forest_room_8
         menu_map_room[menu_map_index] = 5
         plotmapfile tiled/forest_room_8.tmx forest_room_8 0 0 20 14
         memcpy current_map forest_room_8 280
+        zone14_objects = 1
         return
 
         data forest_room_8_obj
@@ -215,6 +223,7 @@ plot_forest_room_9
         menu_map_room[menu_map_index] = 5
         plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
         memcpy current_map forest_room_9 280
+        zone14_objects = 1
         return
 
         data forest_room_9_obj
@@ -228,6 +237,7 @@ plot_forest_room_10
         menu_map_room[menu_map_index] = 3
         plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
         memcpy current_map forest_room_10 280
+        zone14_objects = 1
         return
 
         data forest_room_10_obj
@@ -245,6 +255,7 @@ plot_forest_room_11
         menu_map_room[menu_map_index] = $0D
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 0 20 14
         memcpy current_map forest_room_11 280
+        zone14_objects = 1
         return
 
         data forest_room_11_obj
@@ -258,6 +269,7 @@ plot_forest_room_12
         menu_map_room[menu_map_index] = $0F
         plotmapfile tiled/forest_room_12.tmx forest_room_12 0 0 20 14
         memcpy current_map forest_room_12 280
+        zone14_objects = 1
         return
 
         data forest_room_12_obj

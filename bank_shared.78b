@@ -88,12 +88,12 @@ obj_torch_stats
 load_map
         clearscreen
         displaymode 160A
-        adjustvisible 0 13
+        adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
 draw_pickup_hud
-        Xposition = 28
-        for index = 0 to 16
+        Xposition = 36
+        for index = 0 to 12
         Xposition = Xposition + 6                  
         
         PLOTSPRITE font_spr 0 Xposition 208 0
@@ -133,7 +133,7 @@ set_pickup_string
         if pickup_timer then get_pickup_string
 
 pickup_clear
-        for index = 0 to 16
+        for index = 0 to 12
         pickup_string[index] = 0
         next
         goto pickup_done
@@ -142,7 +142,7 @@ get_pickup_string
         pickup_timer = pickup_timer - 1
         if !new_pickup then pickup_done
         ; set pickup string based on pickup pointer
-        for index = 0 to 16
+        for index = 0 to 12
         pickup_string[index] = pickup_ptr[[index]]
         if !pickup_string[index] then pickup_pad
         next
@@ -150,8 +150,8 @@ get_pickup_string
 pickup_pad
         ; now pad with blanks to 16 chars
         temp1 = index
-        if temp1 = 16 then pickup_done
-        for index = temp1 to 16
+        if temp1 = 12 then pickup_done
+        for index = temp1 to 12
         pickup_string[index] = 0
         next
 

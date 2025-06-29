@@ -36,7 +36,7 @@ end
         'Dark Priest*'
 end
         alphadata name_skeleton font_spr
-        'Skeletal Knight*'
+        'Skull Knight*'
 end
         alphadata name_rslime font_spr
         'Red Slime*'
