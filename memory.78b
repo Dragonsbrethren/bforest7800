@@ -11,7 +11,8 @@
         autodim init a z
         autodim byte index
         autodim byte game_state
-        autodim byte pointer
+        dim pointer = pointer_lo
+        autodim byte pointer_lo
         autodim byte pointer_hi
         autodim byte Xposition
         autodim byte Yposition
@@ -23,7 +24,9 @@
         autodim 8.8  Yvelocity
         autodim 8.8  move_speed
         autodim 8.8  vel_cap
-        autodim 8.8  friction
+        dim pickup_ptr = pickup_ptr_lo
+        autodim byte pickup_ptr_lo
+        autodim byte pickup_ptr_hi
         autodim byte temp_hp
         autodim byte hp_change
         autodim byte bg_color
@@ -117,6 +120,7 @@
         autodim byte hop_dest
         autodim byte timer
         autodim byte hop_dir
+        autodim 8.8  friction
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -151,6 +155,7 @@
         autodim byte object_pal 16
         autodim byte object_spr_ptr_lo 16
         autodim byte object_spr_ptr_hi 16
+        autodim byte object_invuln 16
         autodim byte sprite_pal
         autodim byte reload_map
         autodim byte save_objects
@@ -294,6 +299,8 @@
         autodim byte pickup_index
         autodim byte pickup_char
         autodim byte pickup_offset
+        autodim byte pickup_timer
+        autodim byte new_pickup
 
         ; PASSWORD ARRAY
         dim pw_index0  = pw_tileset

@@ -400,6 +400,8 @@ prep_bits_2
 
 pickup_item
         temp1 = temp1 - TYPE_ITEM1
+        pickup_ptr_lo = pickup_items_lo[temp1]
+        pickup_ptr_hi = pickup_items_hi[temp1]
         gosub prep_inv_bits
 add_item
         m_item_bits_1 = m_item_bits_1 | temp1
@@ -408,6 +410,8 @@ add_item
 
 pickup_sword
         temp1 = temp1 - TYPE_SWORD1
+        pickup_ptr_lo = pickup_swords_lo[temp1]
+        pickup_ptr_hi = pickup_swords_hi[temp1]
         gosub prep_inv_bits
 add_sword
         m_sword_bits_1 = m_sword_bits_1 | temp1
@@ -416,6 +420,8 @@ add_sword
 
 pickup_shield
         temp1 = temp1 - TYPE_SHIELD1
+        pickup_ptr_lo = pickup_shields_lo[temp1]
+        pickup_ptr_hi = pickup_shields_hi[temp1]
         gosub prep_inv_bits
 add_shield
         m_shield_bits_1 = m_shield_bits_1 | temp1
@@ -424,6 +430,8 @@ add_shield
 
 pickup_armor
         temp1 = temp1 - TYPE_ARMOR1
+        pickup_ptr_lo = pickup_armor_lo[temp1]
+        pickup_ptr_hi = pickup_armor_hi[temp1]
         gosub prep_inv_bits
 add_armor
         m_armor_bits_1 = m_armor_bits_1 | temp1
@@ -432,6 +440,8 @@ add_armor
 
 pickup_charm
         temp1 = temp1 - TYPE_CHARM1
+        pickup_ptr_lo = pickup_charms_lo[temp1]
+        pickup_ptr_hi = pickup_charms_hi[temp1]
         gosub prep_inv_bits
 add_charm
         m_charm_bits_1 = m_charm_bits_1 | temp1
@@ -826,9 +836,5 @@ update_pickup_objs
         rts
 end
 
-        alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
-        alphadata test_name font_spr
-        'Skeletal Knight '
-end
-
         incbasic fairy_scroll.78b
+        incbasic item_names.78b

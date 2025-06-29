@@ -130,9 +130,34 @@ no_lightning
 lightning_done
 
 set_pickup_string
+        if pickup_timer then get_pickup_string
+
+pickup_clear
         for index = 0 to 16
-        pickup_string[index] = test_name[index]
+        pickup_string[index] = 0
         next
+        goto pickup_done
+
+get_pickup_string
+        pickup_timer = pickup_timer - 1
+        if !new_pickup then pickup_done
+        ; set pickup string based on pickup pointer
+        for index = 0 to 16
+        pickup_string[index] = pickup_ptr[[index]]
+        if !pickup_string[index] then pickup_pad
+        next
+
+pickup_pad
+        ; now pad with blanks to 16 chars
+        temp1 = index
+        if temp1 = 16 then pickup_done
+        for index = temp1 to 16
+        pickup_string[index] = 0
+        next
+
+pickup_center
+
+pickup_done
 
         restorescreen
         gosub update_pickup_objs
@@ -1140,7 +1165,7 @@ pickup_object
         playsfx sfx_strum
         if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp
         if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
-        if object_type[index] >= TYPE_ITEM1 then temp1 = object_type[index]
+        if object_type[index] >= TYPE_ITEM1 then temp1 = object_type[index] : pickup_timer = PICKUP_TIME : new_pickup = 1
         if temp1 >= TYPE_CHARM1 then pickup_charm
         if temp1 >= TYPE_ARMOR1 then pickup_armor
         if temp1 >= TYPE_SHIELD1 then pickup_shield

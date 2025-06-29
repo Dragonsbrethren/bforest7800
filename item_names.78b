@@ -1,0 +1,299 @@
+        const pickup_item1_lo = #<pickup_item1
+        const pickup_item1_hi = #>pickup_item1
+        const pickup_item2_lo = #<pickup_item2
+        const pickup_item2_hi = #>pickup_item2
+        const pickup_item3_lo = #<pickup_item3
+        const pickup_item3_hi = #>pickup_item3
+        const pickup_item4_lo = #<pickup_item4
+        const pickup_item4_hi = #>pickup_item4
+        const pickup_item5_lo = #<pickup_item5
+        const pickup_item5_hi = #>pickup_item5
+        const pickup_item6_lo = #<pickup_item6
+        const pickup_item6_hi = #>pickup_item6
+        const pickup_item7_lo = #<pickup_item7
+        const pickup_item7_hi = #>pickup_item7
+        const pickup_item8_lo = #<pickup_item8
+        const pickup_item8_hi = #>pickup_item8
+        const pickup_item9_lo = #<pickup_item9
+        const pickup_item9_hi = #>pickup_item9
+        const pickup_item10_lo = #<pickup_item10
+        const pickup_item10_hi = #>pickup_item10
+        const pickup_sword1_lo = #<pickup_sword1
+        const pickup_sword1_hi = #>pickup_sword1
+        const pickup_sword2_lo = #<pickup_sword2
+        const pickup_sword2_hi = #>pickup_sword2
+        const pickup_sword3_lo = #<pickup_sword3
+        const pickup_sword3_hi = #>pickup_sword3
+        const pickup_sword4_lo = #<pickup_sword4
+        const pickup_sword4_hi = #>pickup_sword4
+        const pickup_sword5_lo = #<pickup_sword5
+        const pickup_sword5_hi = #>pickup_sword5
+        const pickup_sword6_lo = #<pickup_sword6
+        const pickup_sword6_hi = #>pickup_sword6
+        const pickup_sword7_lo = #<pickup_sword7
+        const pickup_sword7_hi = #>pickup_sword7
+        const pickup_sword8_lo = #<pickup_sword8
+        const pickup_sword8_hi = #>pickup_sword8
+        const pickup_sword9_lo = #<pickup_sword9
+        const pickup_sword9_hi = #>pickup_sword9
+        const pickup_sword10_lo = #<pickup_sword10
+        const pickup_sword10_hi = #>pickup_sword10
+        const pickup_shield1_lo = #<pickup_shield1
+        const pickup_shield1_hi = #>pickup_shield1
+        const pickup_shield2_lo = #<pickup_shield2
+        const pickup_shield2_hi = #>pickup_shield2
+        const pickup_shield3_lo = #<pickup_shield3
+        const pickup_shield3_hi = #>pickup_shield3
+        const pickup_shield4_lo = #<pickup_shield4
+        const pickup_shield4_hi = #>pickup_shield4
+        const pickup_shield5_lo = #<pickup_shield5
+        const pickup_shield5_hi = #>pickup_shield5
+        const pickup_shield6_lo = #<pickup_shield6
+        const pickup_shield6_hi = #>pickup_shield6
+        const pickup_shield7_lo = #<pickup_shield7
+        const pickup_shield7_hi = #>pickup_shield7
+        const pickup_shield8_lo = #<pickup_shield8
+        const pickup_shield8_hi = #>pickup_shield8
+        const pickup_shield9_lo = #<pickup_shield9
+        const pickup_shield9_hi = #>pickup_shield9
+        const pickup_shield10_lo = #<pickup_shield10
+        const pickup_shield10_hi = #>pickup_shield10
+        const pickup_armor1_lo = #<pickup_armor1
+        const pickup_armor1_hi = #>pickup_armor1
+        const pickup_armor2_lo = #<pickup_armor2
+        const pickup_armor2_hi = #>pickup_armor2
+        const pickup_armor3_lo = #<pickup_armor3
+        const pickup_armor3_hi = #>pickup_armor3
+        const pickup_armor4_lo = #<pickup_armor4
+        const pickup_armor4_hi = #>pickup_armor4
+        const pickup_armor5_lo = #<pickup_armor5
+        const pickup_armor5_hi = #>pickup_armor5
+        const pickup_armor6_lo = #<pickup_armor6
+        const pickup_armor6_hi = #>pickup_armor6
+        const pickup_armor7_lo = #<pickup_armor7
+        const pickup_armor7_hi = #>pickup_armor7
+        const pickup_armor8_lo = #<pickup_armor8
+        const pickup_armor8_hi = #>pickup_armor8
+        const pickup_armor9_lo = #<pickup_armor9
+        const pickup_armor9_hi = #>pickup_armor9
+        const pickup_armor10_lo = #<pickup_armor10
+        const pickup_armor10_hi = #>pickup_armor10
+        const pickup_charm1_lo = #<pickup_charm1
+        const pickup_charm1_hi = #>pickup_charm1
+        const pickup_charm2_lo = #<pickup_charm2
+        const pickup_charm2_hi = #>pickup_charm2
+        const pickup_charm3_lo = #<pickup_charm3
+        const pickup_charm3_hi = #>pickup_charm3
+        const pickup_charm4_lo = #<pickup_charm4
+        const pickup_charm4_hi = #>pickup_charm4
+        const pickup_charm5_lo = #<pickup_charm5
+        const pickup_charm5_hi = #>pickup_charm5
+        const pickup_charm6_lo = #<pickup_charm6
+        const pickup_charm6_hi = #>pickup_charm6
+        const pickup_charm7_lo = #<pickup_charm7
+        const pickup_charm7_hi = #>pickup_charm7
+        const pickup_charm8_lo = #<pickup_charm8
+        const pickup_charm8_hi = #>pickup_charm8
+        const pickup_charm9_lo = #<pickup_charm9
+        const pickup_charm9_hi = #>pickup_charm9
+        const pickup_charm10_lo = #<pickup_charm10
+        const pickup_charm10_hi = #>pickup_charm10
+
+        data pickup_items_lo
+        pickup_item1_lo, pickup_item2_lo, pickup_item3_lo, pickup_item4_lo, pickup_item5_lo,
+        pickup_item6_lo, pickup_item7_lo, pickup_item8_lo, pickup_item9_lo, pickup_item10_lo
+end
+
+        data pickup_items_hi
+        pickup_item1_hi, pickup_item2_hi, pickup_item3_hi, pickup_item4_hi, pickup_item5_hi,
+        pickup_item6_hi, pickup_item7_hi, pickup_item8_hi, pickup_item9_hi, pickup_item10_hi
+end
+
+        data pickup_swords_lo
+        pickup_sword1_lo, pickup_sword2_lo, pickup_sword3_lo, pickup_sword4_lo, pickup_sword5_lo,
+        pickup_sword6_lo, pickup_sword7_lo, pickup_sword8_lo, pickup_sword9_lo, pickup_sword10_lo 
+end
+
+        data pickup_swords_hi
+        pickup_sword1_hi, pickup_sword2_hi, pickup_sword3_hi, pickup_sword4_hi, pickup_sword5_hi,
+        pickup_sword6_hi, pickup_sword7_hi, pickup_sword8_hi, pickup_sword9_hi, pickup_sword10_hi 
+end
+
+        data pickup_shields_lo
+        pickup_shield1_lo, pickup_shield2_lo, pickup_shield3_lo, pickup_shield4_lo, pickup_shield5_lo,
+        pickup_shield6_lo, pickup_shield7_lo, pickup_shield8_lo, pickup_shield9_lo, pickup_shield10_lo 
+end
+
+        data pickup_shields_hi
+        pickup_shield1_hi, pickup_shield2_hi, pickup_shield3_hi, pickup_shield4_hi, pickup_shield5_hi,
+        pickup_shield6_hi, pickup_shield7_hi, pickup_shield8_hi, pickup_shield9_hi, pickup_shield10_hi 
+end
+
+        data pickup_armor_lo
+        pickup_armor1_lo, pickup_armor2_lo, pickup_armor3_lo, pickup_armor4_lo, pickup_armor5_lo,
+        pickup_armor6_lo, pickup_armor7_lo, pickup_armor8_lo, pickup_armor9_lo, pickup_armor10_lo 
+end
+
+        data pickup_armor_hi
+        pickup_armor1_hi, pickup_armor2_hi, pickup_armor3_hi, pickup_armor4_hi, pickup_armor5_hi,
+        pickup_armor6_hi, pickup_armor7_hi, pickup_armor8_hi, pickup_armor9_hi, pickup_armor10_hi 
+end
+
+        data pickup_charms_lo
+        pickup_charm1_lo, pickup_charm2_lo, pickup_charm3_lo, pickup_charm4_lo, pickup_charm5_lo,
+        pickup_charm6_lo, pickup_charm7_lo, pickup_charm8_lo, pickup_charm9_lo, pickup_charm10_lo 
+end
+
+        data pickup_charms_hi
+        pickup_charm1_hi, pickup_charm2_hi, pickup_charm3_hi, pickup_charm4_hi, pickup_charm5_hi,
+        pickup_charm6_hi, pickup_charm7_hi, pickup_charm8_hi, pickup_charm9_hi, pickup_charm10_hi 
+end
+
+        alphadata pickup_item1 font_spr
+        'Potion*'
+end
+        alphadata pickup_item2 font_spr
+        'High Potion*'
+end
+        alphadata pickup_item3 font_spr
+        'Max Potion*'
+end
+        alphadata pickup_item4 font_spr
+        'Ether*'
+end
+        alphadata pickup_item5 font_spr
+        'High Ether*'
+end
+        alphadata pickup_item6 font_spr
+        'Elixir*'
+end
+        alphadata pickup_item7 font_spr
+        'Antidote*'
+end
+        alphadata pickup_item8 font_spr
+        'Uncurse*'
+end
+        alphadata pickup_item9 font_spr
+        'Soft*'
+end
+        alphadata pickup_item10 font_spr
+        'Life Apple*'
+end
+        alphadata pickup_sword1 font_spr
+end
+        alphadata pickup_sword2 font_spr
+        ' Bone Scimitar*'
+end
+        alphadata pickup_sword3 font_spr
+        'Sword 3*'
+end
+        alphadata pickup_sword4 font_spr
+        'Sword 4*'
+end
+        alphadata pickup_sword5 font_spr
+        'Sword 5*'
+end
+        alphadata pickup_sword6 font_spr
+        'Sword 6*'
+end
+        alphadata pickup_sword7 font_spr
+        'Sword 7*'
+end
+        alphadata pickup_sword8 font_spr
+        'Sword 8*'
+end
+        alphadata pickup_sword9 font_spr
+        'Sword 9*'
+end
+        alphadata pickup_sword10 font_spr
+        'Sword 10*'
+end
+        alphadata pickup_shield1 font_spr
+        'Buckler*'
+end
+        alphadata pickup_shield2 font_spr
+        'Skull Shield*'
+end
+        alphadata pickup_shield3 font_spr
+        'Shield 3*'
+end
+        alphadata pickup_shield4 font_spr
+        'Shield 4*'
+end
+        alphadata pickup_shield5 font_spr
+        'Shield 5*'
+end
+        alphadata pickup_shield6 font_spr
+        'Shield 6*'
+end
+        alphadata pickup_shield7 font_spr
+        'Shield 7*'
+end
+        alphadata pickup_shield8 font_spr
+        'Shield 8*'
+end
+        alphadata pickup_shield9 font_spr
+        'Shield 9*'
+end
+        alphadata pickup_shield10 font_spr
+        'Shield 10*'
+end
+        alphadata pickup_armor1 font_spr
+end
+        alphadata pickup_armor2 font_spr
+        'Bronze Plate*'
+end
+        alphadata pickup_armor3 font_spr
+        'Armor 3*'
+end
+        alphadata pickup_armor4 font_spr
+        'Armor 4*'
+end
+        alphadata pickup_armor5 font_spr
+        'Armor 5*'
+end
+        alphadata pickup_armor6 font_spr
+        'Armor 6*'
+end
+        alphadata pickup_armor7 font_spr
+        'Armor 7*'
+end
+        alphadata pickup_armor8 font_spr
+        'Armor 8*'
+end
+        alphadata pickup_armor9 font_spr
+        'Armor 9*'
+end
+        alphadata pickup_armor10 font_spr
+        'Armor 10*'
+end
+        alphadata pickup_charm1 font_spr
+        'Pendant*'
+end
+        alphadata pickup_charm2 font_spr
+        'Dark Rosary*'
+end
+        alphadata pickup_charm3 font_spr
+        'Charm 3*'
+end
+        alphadata pickup_charm4 font_spr
+        'Charm 4*'
+end
+        alphadata pickup_charm5 font_spr
+        'Charm 5*'
+end
+        alphadata pickup_charm6 font_spr
+        'Charm 6'
+end
+        alphadata pickup_charm7 font_spr
+        'Charm 7*'
+end
+        alphadata pickup_charm8 font_spr
+        'Charm 8*'
+end
+        alphadata pickup_charm9 font_spr
+        'Charm 9*'
+end
+        alphadata pickup_charm10 font_spr
+        'Charm 10*'
+end
