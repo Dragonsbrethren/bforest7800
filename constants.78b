@@ -130,9 +130,11 @@
         const PW_A = 16
 
         ; item healing values
+        const HP_CHANGE_FOOD = $10
         const HP_CHANGE_POTION = $20
         const HP_CHANGE_HIPOTION = $30
         const HP_CHANGE_XPOTION = $48
+        const MP_CHANGE_PRISM = $05
         const MP_CHANGE_ETHER = $10
         const MP_CHANGE_XETHER = $48
 

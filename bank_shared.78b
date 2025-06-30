@@ -541,34 +541,34 @@ spawn_common
         data rare_drops
         0               ; player
         0               ; torch (handled separately)
-        TYPE_FOOD       ; wolf
-        TYPE_COIN       ; null
-        TYPE_COIN       ; null
-        TYPE_COIN       ; null
+        TYPE_POTION     ; wolf
+        TYPE_HIPOTION   ; warg
+        TYPE_HIPOTION   ; merman
+        TYPE_HIPOTION   ; octopus
         TYPE_HIETHER    ; slime
         TYPE_HIETHER    ; mini-slime
-        TYPE_FOOD       ; raven
+        TYPE_POTION     ; raven
         TYPE_CHARM2     ; priest
         TYPE_SWORD2     ; skeleton
         TYPE_HIETHER    ; red slime
-        TYPE_HIETHER    ; mini red slime
-        TYPE_ETHER      ; ghost
+        0               ; mini red slime
+        TYPE_HIETHER    ; ghost
 end
 
         data common_drops
         0               ; player
         0               ; torch (handled separately)
         TYPE_FOOD       ; wolf
-        TYPE_COIN       ; null
-        TYPE_COIN       ; null
-        TYPE_COIN       ; null
+        TYPE_FOOD       ; warg
+        TYPE_FOOD       ; merman
+        TYPE_FOOD       ; octopus
         TYPE_ANTIDOTE   ; slime
         TYPE_ANTIDOTE   ; mini-slime
         TYPE_FOOD       ; raven
         TYPE_ETHER      ; priest
         TYPE_SHIELD2    ; skeleton
         TYPE_ANTIDOTE   ; red slime
-        TYPE_ANTIDOTE   ; mini red slime
+        0               ; mini red slime
         TYPE_UNCURSE    ; ghost
 end
 
@@ -1165,14 +1165,43 @@ cc_pickup
 
 pickup_object
         playsfx sfx_strum
-        if object_type[index] = TYPE_FOOD then hp_change = $10 : gosub increase_player_hp
-        if object_type[index] = TYPE_PRISM then mp_change = $10 : gosub increase_player_mp
-        if object_type[index] >= TYPE_ITEM1 then temp1 = object_type[index] : pickup_timer = PICKUP_TIME : new_pickup = 1 : item_pickup = 1
-        if temp1 >= TYPE_CHARM1 then pickup_charm
-        if temp1 >= TYPE_ARMOR1 then pickup_armor
-        if temp1 >= TYPE_SHIELD1 then pickup_shield
-        if temp1 >= TYPE_SWORD1 then pickup_sword
-        if temp1 >= TYPE_ITEM1 then pickup_item
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_ITEM1
+          bcc puconsum
+          sta temp1
+          ldy #PICKUP_TIME
+          sty pickup_timer
+          ldy #1
+          sty new_pickup
+          sty item_pickup
+          cmp #TYPE_CHARM1
+          bcc puarmor
+          jmp .pickup_charm
+puarmor   cmp #TYPE_ARMOR1
+          bcc pushield
+          jmp .pickup_armor
+pushield  cmp #TYPE_SHIELD1
+          bcc pusword
+          jmp .pickup_shield
+pusword   cmp #TYPE_SWORD1
+          bcc puitem
+          jmp .pickup_sword
+puitem    jmp .pickup_item
+puconsum  cmp #TYPE_FOOD
+          bne puprism
+          lda #HP_CHANGE_FOOD
+          sta hp_change
+          jsr .increase_player_hp
+          bne .kill_object
+puprism   cmp #TYPE_PRISM
+          bne pucoin
+          lda #MP_CHANGE_PRISM
+          sta mp_change
+          jsr .increase_player_mp
+pucoin
+end
 
 kill_object
         ; TODO: Death animation
