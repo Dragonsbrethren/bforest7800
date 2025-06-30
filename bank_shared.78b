@@ -459,7 +459,7 @@ object_handler
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
         if object_type[index] >= TYPE_ITEM1 then check_item_bits
-        if object_type[index] >= TYPE_BLOOD then object_done      ;  coins, prisms are static
+        if object_type[index] >= TYPE_STATIC then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
         gosub copy_object_props 

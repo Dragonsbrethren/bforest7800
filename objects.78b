@@ -13,6 +13,7 @@
         const TYPE_SKELSWORD = 129
         const TYPE_DARKSPARK = 140
         const TYPE_FIREBALL = 150
+        const TYPE_STATIC = TYPE_BLOOD
         const TYPE_BLOOD    = 196
         const TYPE_COIN     = 197
         const TYPE_PRISM    = 198
