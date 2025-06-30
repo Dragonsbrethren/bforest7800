@@ -121,6 +121,7 @@ player_handler_done
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
         gosub check_collisions
+        gosub remove_duplicates
 
         if !lightning_timer then no_lightning
         if tileset = T_CASTLE then goto castle_lightning
@@ -452,11 +453,6 @@ pos_swd_left
 object_handler
         for index = 1 to 15
         if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] >= TYPE_CHARM1 then check_charm_bits
-        if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
-        if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
-        if object_type[index] >= TYPE_SWORD1 then check_sword_bits
-        if object_type[index] >= TYPE_ITEM1 then check_item_bits
         if object_type[index] >= TYPE_STATIC then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
