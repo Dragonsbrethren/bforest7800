@@ -211,9 +211,7 @@ plot_hud
         goto main
 
 plot_torch
-        temp1 = animation_frame
-        if tileset = T_CASTLE then temp1 = temp1 + 2
-        PLOTSPRITE torch0 0 Xposition Yposition temp1
+        PLOTSPRITE torch0 0 Xposition Yposition frame
         goto plot_next
 
 plot_coin
@@ -505,6 +503,9 @@ torch_tile_block
         ; flags are used to track if the tile has already been blocked
         ; however, this fails when the map reloads after the menu is opened
         if torch_reblock then goto torch_tile_block_get_pos
+        temp1 = animation_frame
+        if tileset = T_CASTLE then temp1 = temp1 + 2
+        object_frame[index] = temp1
         if object_flags[index] then object_done
 torch_tile_block_get_pos
         gosub get_torch_pos
