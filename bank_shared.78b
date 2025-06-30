@@ -1204,17 +1204,35 @@ pucoin
 end
 
 kill_object
-        ; TODO: Death animation
-        if object_type[index] <> TYPE_TORCH then change_to_spawner
-        ; torches make their tile walkable
-        gosub kill_torch
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_TORCH
+          bne change_to_spawner
+          ; torches make their tile walkable
+          jsr .kill_torch
+          ldx index
+          bne spawner_flag
 change_to_spawner
-        if object_type[index] = TYPE_SLIME && animation_frame then goto split_slime
-        if object_type[index] = TYPE_RSLIME && animation_frame then goto split_rslime
-        ; switch the object's flags to its old type and its type to a spwaner
-        object_flags[index] = object_type[index]
-        object_type[index] = TYPE_SPAWNER
-        goto cc_next
+          cmp #TYPE_SLIME
+          bne spawner_rslime
+          ldy animation_frame
+          beq spawner_rslime
+          jmp .split_slime
+spawner_rslime
+          cmp #TYPE_RSLIME
+          bne spawner_flag
+          ldy animation_frame
+          beq spawner_flag
+          jmp .split_rslime
+spawner_flag
+          lda object_type,x
+          sta object_flags,x
+          lda #TYPE_SPAWNER
+          sta object_type,x
+spawner_done
+          jmp .cc_next
+end
 
 sword_collision
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
