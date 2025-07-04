@@ -179,7 +179,17 @@ plot_loop
           jmp .plot_next
 tp_spawn  cmp #TYPE_SPAWNER
           bne plot_stats
-          jmp .plot_next
+end
+
+plot_next
+        asm
+        ; restore X, decrease, and back up
+          ldx index
+          dex
+          stx index
+          bne plot_loop
+          jmp plot_done
+
 plot_stats
         ; now copy object stats to zeropage
           lda object_Xpos,x
@@ -256,19 +266,8 @@ tp_blood  cmp #TYPE_BLOOD
 tp_ghost  cmp #TYPE_GHOST
           bne tp_food
           jmp .plot_ghost
-tp_food   cmp #TYPE_FOOD
-          bne .plot_next
-          jmp .plot_food
-end
+tp_food   jmp .plot_food
 
-plot_next
-        asm
-        ; restore X, decrease, and back up
-          ldx index
-          dex
-          beq plot_done
-          stx index
-          jmp plot_loop
 plot_done
 end
 
