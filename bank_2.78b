@@ -481,6 +481,13 @@ obj_wolf_stats
         object_speed_hi[obj_index] = WOLF_SPEED_HI
         object_speed_lo[obj_index] = WOLF_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_wolf
+          sta object_spr_ptr_lo,x
+          lda #>.plot_wolf
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 ;==============================================================================
@@ -512,6 +519,13 @@ obj_slime_stats
         object_speed_hi[obj_index] = SLIME_SPEED_HI
         object_speed_lo[obj_index] = SLIME_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_slime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_slime
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 split_slime
@@ -523,6 +537,13 @@ split_slime
         temp2 = object_Ypos[index]
         ; mini slime is moved to the left of the parent slime's pos
         object_Xpos[index] = object_Xpos[index] - 1
+        asm
+          ldx index
+          lda #<.plot_minislime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_minislime
+          sta object_spr_ptr_hi,x
+end
         gosub find_new_object
         index = spawn_index
         ; if no slots, the slime just becomes a single mini slime
@@ -542,6 +563,13 @@ split_slime
         ; mini slime spawns to the right of the parent slime's pos
         object_Xpos[index] = temp1 + 9
         object_Ypos[index] = temp2
+        asm
+          ldx index
+          lda #<.plot_minislime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_minislime
+          sta object_spr_ptr_hi,x
+end
         goto cc_next
 
 ;==============================================================================
@@ -624,6 +652,13 @@ obj_raven_stats
         object_speed_hi[obj_index] = RAVEN_SPEED_HI
         object_speed_lo[obj_index] = RAVEN_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_raven
+          sta object_spr_ptr_lo,x
+          lda #>.plot_raven
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 plot_wolf

@@ -51,6 +51,11 @@ clear_obj_loop
         dex
         bne clear_obj_loop
         sta temp1
+        ; failsafe for objects without sprite pointer
+        lda #<.plot_next
+        sta object_spr_ptr_lo,x
+        lda #>.plot_next
+        sta object_spr_ptr_hi,x
 end
         for obj_index = 1 to MAX_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
@@ -83,6 +88,13 @@ obj_next_stats
 
 obj_torch_stats
         object_hp[obj_index] = 1
+        asm
+          ldx obj_index
+          lda #<.plot_torch
+          sta object_spr_ptr_lo,x
+          lda #>.plot_torch
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 load_map
@@ -192,6 +204,10 @@ plot_next
 
 plot_stats
         ; now copy object stats to zeropage
+          lda object_spr_ptr_lo,x
+          sta pointer
+          lda object_spr_ptr_hi,x
+          sta pointer_hi
           lda object_Xpos,x
           sta Xposition
           lda object_Ypos,x
@@ -200,9 +216,14 @@ plot_stats
           sta frame
           lda object_pal,x
           sta sprite_pal
-        ; restore the object type and do this big nasty comparison code
-        ; TODO: Replace with jump tables
+        ; restore the object type and do this comparison code
           lda plot_index
+          cmp #TYPE_STATIC
+          ; TODO: set spr_ptr for all object types, not just ones with stats
+          bcs plot_items
+          jmp (pointer)
+
+plot_items
 tp_charm  cmp #TYPE_CHARM1
           bcc tp_armor
           jmp .plot_charms
@@ -216,56 +237,17 @@ tp_sword  cmp #TYPE_SWORD1
           bcc tp_item
           jmp .plot_swords
 tp_item   cmp #TYPE_ITEM1
-          bcc tp_torch
+          bcc tp_coin
           jmp .plot_items
-tp_torch  cmp #TYPE_TORCH
-          bne tp_wolf
-          jmp .plot_torch
-tp_wolf   cmp #TYPE_WOLF
-          bne tp_coin
-          jmp .plot_wolf
 tp_coin   cmp #TYPE_COIN
           bne tp_prism
           jmp .plot_coin
 tp_prism  cmp #TYPE_PRISM
-          bne tp_slime
-          jmp .plot_prism
-tp_slime  cmp #TYPE_SLIME
-          bne tp_mslime
-          jmp .plot_slime
-tp_mslime cmp #TYPE_MSLIME
-          bne tp_rslime
-          jmp .plot_minislime
-tp_rslime cmp #TYPE_RSLIME
-          bne tp_mrslim
-          jmp .plot_rslime
-tp_mrslim cmp #TYPE_MRSLIME
-          bne tp_raven
-          jmp .plot_mrslime
-tp_raven  cmp #TYPE_RAVEN
-          bne tp_priest
-          jmp .plot_raven
-tp_priest cmp #TYPE_PRIEST
-          bne tp_skel
-          jmp .plot_priest
-tp_skel   cmp #TYPE_SKELETON
-          bne tp_fireba
-          jmp .plot_skeleton
-tp_fireba cmp #TYPE_FIREBALL
-          bne tp_darksp
-          jmp .plot_fireball
-tp_darksp cmp #TYPE_DARKSPARK
-          bne tp_skelsw
-          jmp .plot_darkspark
-tp_skelsw cmp #TYPE_SKELSWORD
           bne tp_blood
-          jmp .plot_skelsword
+          jmp .plot_prism
 tp_blood  cmp #TYPE_BLOOD
-          bne tp_ghost
-          jmp .plot_blood
-tp_ghost  cmp #TYPE_GHOST
           bne tp_food
-          jmp .plot_ghost
+          jmp .plot_blood
 tp_food   jmp .plot_food
 
 plot_done

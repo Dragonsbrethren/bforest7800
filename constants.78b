@@ -153,13 +153,13 @@
         const PICKUP_TIME = 120
 
         ; pointers to sprite plotting routines
-        const plot_torch_lo     = #<plot_torch
-        const plot_torch_hi     = #>plot_torch
-        const plot_wolf_lo      = #<plot_wolf
-        const plot_wolf_hi      = #>plot_wolf
-        const plot_priest_lo    = #<plot_priest
-        const plot_priest_hi    = #>plot_priest
-        const plot_skeleton_lo  = #<plot_skeleton
-        const plot_skeleton_hi  = #>plot_skeleton
-        const plot_skelsword_lo = #<plot_skelsword
-        const plot_skelsword_hi = #>plot_skelsword
+        const plot_torch_lo     = #<.plot_torch
+        const plot_torch_hi     = #>.plot_torch
+        const plot_wolf_lo      = #<.plot_wolf
+        const plot_wolf_hi      = #>.plot_wolf
+        const plot_priest_lo    = #<.plot_priest
+        const plot_priest_hi    = #>.plot_priest
+        const plot_skeleton_lo  = #<.plot_skeleton
+        const plot_skeleton_hi  = #>.plot_skeleton
+        const plot_skelsword_lo = #<.plot_skelsword
+        const plot_skelsword_hi = #>.plot_skelsword

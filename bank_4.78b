@@ -655,6 +655,10 @@ load_darkspark
         sta object_speed_lo,x
         lda #DARKSPARK_DAMAGE
         sta object_damage,x
+        lda #<.plot_darkspark
+        sta object_spr_ptr_lo,x
+        lda #>.plot_darkspark
+        sta object_spr_ptr_hi,x
         jsr set_cast_direction
 end
         flags{6} = 0
@@ -702,6 +706,10 @@ skel_sword
         sta object_facing,x
         lda #1
         sta object_timer,x
+        lda #<.plot_skelsword
+        sta object_spr_ptr_lo,x
+        lda #>.plot_skelsword
+        sta object_spr_ptr_hi,x
 end
         flags{7} = 1
         return thisbank
@@ -747,6 +755,13 @@ ss_kill
 end
 
 obj_priest_stats
+        asm
+          ldx obj_index
+          lda #<.plot_priest
+          sta object_spr_ptr_lo,x
+          lda #>.plot_priest
+          sta object_spr_ptr_hi,x
+end
         object_hp[obj_index] = 5
         object_vel_cap_hi[obj_index] = 1
         object_vel_cap_lo[obj_index] = 0
@@ -772,6 +787,8 @@ obj_skel_stats
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 20
         object_flags[obj_index] = 0
+        object_spr_ptr_lo[obj_index] = plot_skeleton_lo
+        object_spr_ptr_hi[obj_index] = plot_skeleton_hi
         goto obj_next_stats
 
 ;==============================================================================
@@ -802,6 +819,13 @@ obj_ghost_stats
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 20
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_ghost
+          sta object_spr_ptr_lo,x
+          lda #>.plot_ghost
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 ;==============================================================================
@@ -832,6 +856,13 @@ obj_redslime_stats
         object_speed_hi[obj_index] = RSLIME_SPEED_HI
         object_speed_lo[obj_index] = RSLIME_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_rslime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_rslime
+          sta object_spr_ptr_hi,x
+end
         goto obj_next_stats
 
 split_rslime
@@ -843,6 +874,13 @@ split_rslime
         temp2 = object_Ypos[index]
         ; mini slime is moved to the left of the parent slime's pos
         object_Xpos[index] = object_Xpos[index] - 1
+        asm
+          ldx index
+          lda #<.plot_mrslime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_mrslime
+          sta object_spr_ptr_hi,x
+end
         gosub find_new_object
         ; if no slots, the slime just becomes a single mini slime
         if no_empty_slot then object_Xpos[index] = temp1 : cc_next
@@ -861,6 +899,13 @@ split_rslime
         ; mini slime spawns to the right of the parent slime's pos
         object_Xpos[spawn_index] = temp1 + 9
         object_Ypos[spawn_index] = temp2
+        asm
+          ldx spawn_index
+          lda #<.plot_mrslime
+          sta object_spr_ptr_lo,x
+          lda #>.plot_mrslime
+          sta object_spr_ptr_hi,x
+end
         goto cc_next
 
 plot_priest
@@ -871,6 +916,8 @@ plot_darkspark
         plotsprite darkspark0 0 Xposition Yposition frame
         goto plot_next
 
+        const plot_skeleton_lo = #<.plot_skeleton
+        const plot_skeleton_hi = #>.plot_skeleton
 plot_skeleton
         plotsprite skeleton0 5 Xposition Yposition frame
         goto plot_next
