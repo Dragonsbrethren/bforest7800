@@ -181,7 +181,8 @@ plot_objects
         if debug_time then BACKGRND = $06
         ; Iterates through all objects and determines which sprites need to be plotted by type
         asm
-          ldx MAX_OBJECTS
+          ldx #MAX_OBJECTS
+          stx index
 plot_loop
           lda object_type,x
           sta plot_index
