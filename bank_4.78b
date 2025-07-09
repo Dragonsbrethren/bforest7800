@@ -254,7 +254,9 @@ plot_castle_room_1
         menu_map_room[menu_map_index_2] = 3
         memcpy current_map castle_room_1 280
         plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
-        zone14_objects = 3
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
 plot_castle_bank5_return
         return thisbank
 
@@ -310,6 +312,8 @@ plot_castle_room_2
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
         memcpy current_map castle_room_2 280
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         return thisbank
 
@@ -318,6 +322,8 @@ plot_castle_room_3
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
         memcpy current_map castle_room_3 280
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 1
         return thisbank
 
@@ -326,6 +332,8 @@ plot_castle_room_4
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
         memcpy current_map castle_room_4 280
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 1
         return thisbank
 
@@ -335,6 +343,8 @@ plot_castle_room_5
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
         memcpy current_map castle_room_5 280
+        zone1_objects  = 6
+        zone2_objects  = 6
         zone14_objects = 5
         return thisbank
 
@@ -725,11 +735,11 @@ skelsword_ai
         if !object_type[temp1] then ss_kill
         timer = timer - 1
         if flags{7} then ss_retract_2
-        if timer then return
+        if timer then return thisbank
         if flags{6} then ss_retract
         timer = ATTACK_FRAMES
         flags{6} = 1
-        return
+        return thisbank
 
 ss_retract
         timer = RETRACT_FRAMES
@@ -737,7 +747,7 @@ ss_retract
 
 ss_retract_2
         if !timer then ss_kill
-        return  ; bypass retract code until object priority handling is added
+        return thisbank ; bypass retract code until object priority handling is added
         if object_facing[index] = DIR_DOWN  then Yposition = Yposition - 4 : return
         if object_facing[index] = DIR_UP    then Yposition = Yposition + 4 : return
         if object_facing[index] = DIR_LEFT  then Xposition = Xposition + 2 : return

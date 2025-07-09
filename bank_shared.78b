@@ -103,6 +103,8 @@ load_map
         adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
+
+        gosub draw_hud
 draw_pickup_hud
         Xposition = 36
         for index = 0 to 13
@@ -112,6 +114,8 @@ draw_pickup_hud
         next
 map_loaded
         savescreen
+        gosub update_hp_bar
+        gosub update_mp_bar
         if !save_objects then gosub load_objects
         asm
         lda #0
@@ -266,7 +270,44 @@ end
         if player_shield then plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
         if debug_time then BACKGRND = bg_color
 plot_hud
-        gosub draw_hud
+        asm
+          ldx zone1_objects
+          ldy #0
+          SetObjectImageLo hp_bar_1
+          inx
+          ldy #0
+          SetObjectImageLo hp_bar_2
+          inx
+          ldy #0
+          SetObjectImageLo hp_bar_3
+          inx
+          ldy #0
+          SetObjectImageLo hp_bar_4
+          inx
+          ldy #0
+          SetObjectImageLo hp_bar_5
+          inx
+          ldy #0
+          SetObjectImageLo hp_bar_6
+          ldx zone2_objects
+          ldy #1
+          SetObjectImageLo mp_bar_1
+          inx
+          ldy #1
+          SetObjectImageLo mp_bar_2
+          inx
+          ldy #1
+          SetObjectImageLo mp_bar_3
+          inx
+          ldy #1
+          SetObjectImageLo mp_bar_4
+          inx
+          ldy #1
+          SetObjectImageLo mp_bar_5
+          inx
+          ldy #1
+          SetObjectImageLo mp_bar_6
+end
         if debug_hud then gosub plot_debug_hud
         goto main
 
@@ -333,32 +374,31 @@ plot_fireball
 ;==============================================================================
 draw_hud
         plotsprite  hp   0  8  0       ; HP is 160B
-        plotsprite  bar0 2 24  0 hp_seg_1
         ; prep plot_par to draw the rest of the HP segments
-        Xposition = 32
+        Xposition = 24
         asm
         lda #0
         sta Yposition
         sta temp1
 end
-        temp2 = 4
+        temp2 = 5
         temp3 = (2 * 32)
         gosub plot_bar
         plotsprite  mp   0  8 16        ; Need to use plotsprite here to avoid rendering error on MP bar
         ; prep plot_bar for MP bar
         Xposition = 24
         Yposition = 16
-        temp1 = 5
-        temp2 = 10
+        temp1 = 6
+        temp2 = 11
         temp3 = 0
         ; code runs directly into 
 plot_bar
         for index = temp1 to temp2
-        frame = hp_seg_2[index]
-        PLOTSPRITE4 bar0 temp3 Xposition Yposition frame
+        frame = hp_seg_1[index]
+        PLOTSPRITE bar0 temp3 Xposition Yposition frame
         Xposition = Xposition + 8
         next
-        return
+        return thisbank
 
 plot_debug_hud
         if tileset = T_CASTLE then plot_hud_castle
@@ -1364,6 +1404,13 @@ update_hp_bar
         if hp_seg_3 > 8 then hp_seg_3 = 8
         if hp_seg_2 > 8 then hp_seg_2 = 8
         if hp_seg_1 > 8 then hp_seg_1 = 8
+        hp_bar_1 = hp_seg_1 * 2
+        hp_bar_2 = hp_seg_2 * 2
+        hp_bar_3 = hp_seg_3 * 2
+        hp_bar_4 = hp_seg_4 * 2
+        hp_bar_5 = hp_seg_5 * 2
+        hp_bar_6 = hp_seg_6 * 2
+
 
         if player_hp = 0 then player_state = STATE_DEATH
         return
@@ -1422,7 +1469,14 @@ update_mp_bar
         if mp_seg_3 > 8 then mp_seg_3 = 8
         if mp_seg_2 > 8 then mp_seg_2 = 8
         if mp_seg_1 > 8 then mp_seg_1 = 8
-        return
+
+        mp_bar_1 = mp_seg_1 * 2
+        mp_bar_2 = mp_seg_2 * 2
+        mp_bar_3 = mp_seg_3 * 2
+        mp_bar_4 = mp_seg_4 * 2
+        mp_bar_5 = mp_seg_5 * 2
+        mp_bar_6 = mp_seg_6 * 2
+        return thisbank
 
 test_spell_cost
         if mp_change < player_mp then return
