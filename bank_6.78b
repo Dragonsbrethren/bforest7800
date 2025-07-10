@@ -28,7 +28,150 @@
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
+        incmapfile tiled/river_room_2.tmx
+        incmapfile tiled/river_room_3.tmx
+
+load_river
+        if !first_load then river_set_room
+        first_load = 0
+
+        room_index = 44
+        menu_map_Xpos = 70
+        menu_map_Ypos = 160
+        player_Xpos = 24
+        player_Ypos = 60
+        player_facing = DIR_UP
+        goto river_set_room
+
+river_set_room
+        characterset forest_trees
+        asm
+          lda $0
+          sta no_flash
+          sta alt_palette
+          ldx room_index
+          lda river_rooms,x
+          tax
+          lda river_obj_lo,x
+          sta pointer
+          lda river_obj_hi,x
+          sta pointer_hi
+          lda room_index
+          asl
+          sta menu_map_index
+          clc
+          adc #1
+          sta menu_map_index_2
+end
 
 river_pals
+        P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
+        P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
+        P7C1 = PAL_BLACK  : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
+
+river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
         incbasic shared_pals.78b
+
+plot_river_room_0
+plot_river_room_1
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_1 280
+        plotmapfile tiled/river_room_1.tmx river_room_1 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
+        data river_room_0_obj
+        $00
+end
+        data river_room_1_obj
+        $00
+end
+
+plot_river_room_2
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_2 280
+        plotmapfile tiled/river_room_2.tmx river_room_2 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
+        data river_room_2_obj
+        $00
+end
+
+plot_river_room_3
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_3 280
+        plotmapfile tiled/river_room_3.tmx river_room_3 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
+        data river_room_3_obj
+        $00
+end
+
+        data river_rooms
+        00, 00, 00, 00, 00, 00, 00,
+        24, 25, 00, 00, 00, 00, 00,
+        23, 00, 16, 00, 14, 00, 00,
+        19, 18, 13, 17, 11, 00, 00,
+        21, 22, 12, 00, 06,  7,  8,
+        02, 00, 02, 00, 05, 00,  9,
+        15, 03, 01, 03, 04, 00, 10
+end
+
+;        for walk_index = 0 to forest_walkable_tiles_length
+;        walk_test = forest_walkable_tiles[walk_index]
+;        if walk_test = move_tile_1 then walkable_1 = 1
+;        if walk_test = move_tile_2 then walkable_2 = 1
+;        next
+;        if !walkable_1 then walkable_return
+;        if !walkable_2 then walkable_return
+;        walkable = 1
+;        goto walkable_return
+
+        data river_walkable_tiles
+        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
+end
+
+        data river_ledge_tiles_down
+        $22, $24, $26
+end
+
+        data river_ledge_tiles_left
+        $32, $34, $36
+end
+
+        data river_ledge_tiles_right
+        $2C, $2E, $30
+end
+
+        data river_floatable_tiles
+        $2A, $24, $26, $22, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
+end
+
+torch_tile_block_river
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 river_floatable_tiles
+        return
+
+torch_tile_unblock_river
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 river_walkable_tiles
+        return
+
+        data river_obj_lo
+end
+
+        data river_obj_hi
+end

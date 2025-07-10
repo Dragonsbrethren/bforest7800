@@ -57,6 +57,26 @@ main_state_handler
         if game_state = STATE_MENU  then menu_handler
         goto main
 
+float_sprites
+        goto main
+        asm
+          floatsprite 0,ZONE0ADDRESS,1
+          floatsprite 0,ZONE0ADDRESS,2
+          floatsprite 0,ZONE0ADDRESS,3
+          floatsprite 0,ZONE0ADDRESS,4
+          floatsprite 0,ZONE0ADDRESS,5
+          floatsprite 0,ZONE0ADDRESS,6
+          floatsprite 0,ZONE0ADDRESS,7
+          floatsprite 1,ZONE1ADDRESS,1
+          floatsprite 1,ZONE1ADDRESS,2
+          floatsprite 1,ZONE1ADDRESS,3
+          floatsprite 1,ZONE1ADDRESS,4
+          floatsprite 1,ZONE1ADDRESS,5
+          floatsprite 1,ZONE1ADDRESS,6
+          floatsprite 1,ZONE1ADDRESS,7
+end
+        goto main
+
 kill_player
         player_frame = FRAME_DEATH
         if !fade_count then fade_count = 60
@@ -652,7 +672,7 @@ topscreenroutine
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
-        if tileset = T_FOREST then BACKGRND=bg_color
+        BACKGRND=bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         return thisbank
 
@@ -710,6 +730,7 @@ end
         incbasic music.78b
         inline hiscore.asm
         inline updateobjects.asm
+        inline floatsprite.asm
 
         dmahole 0
 ledge_hop

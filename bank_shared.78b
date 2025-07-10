@@ -103,6 +103,7 @@ load_map
         adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
+        if tileset = T_RIVER  then gosub load_river bank6
 
         gosub draw_hud
 draw_pickup_hud
@@ -309,7 +310,7 @@ plot_hud
           SetObjectImageLo mp_bar_6
 end
         if debug_hud then gosub plot_debug_hud
-        goto main
+        goto float_sprites
 
 plot_torch
         PLOTSPRITE torch0 0 Xposition Yposition frame
