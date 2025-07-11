@@ -8,20 +8,6 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
-        incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
-        incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
-        incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
-        incgraphic gfx/sprites/joswim3.png  160B 0 4 5 6 3   ; FRAME_UP_2
-        incgraphic gfx/sprites/joswim4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
-        incgraphic gfx/sprites/joswim5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
-        incgraphic gfx/sprites/joswim6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
-        incgraphic gfx/sprites/joswim7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
-        incgraphic gfx/sprites/joswim8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
-        incgraphic gfx/sprites/joswim9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
-        incgraphic gfx/sprites/joswim10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
-        incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
-        incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
-        incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
@@ -31,15 +17,40 @@
         incmapfile tiled/river_room_2.tmx
         incmapfile tiled/river_room_3.tmx
 
+        const plot_river_room_0_lo = #<.plot_river_room_0
+        const plot_river_room_0_hi = #>.plot_river_room_0
+        const plot_river_room_1_lo = #<.plot_river_room_1
+        const plot_river_room_1_hi = #>.plot_river_room_1
+        const plot_river_room_2_lo = #<.plot_river_room_2
+        const plot_river_room_2_hi = #>.plot_river_room_2
+        const plot_river_room_3_lo = #<.plot_river_room_3
+        const plot_river_room_3_hi = #>.plot_river_room_3
+
+        data river_map_lo
+        plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_hi
+end
+
+        data river_map_hi
+        plot_river_room_0_hi, plot_river_room_1_hi, plot_river_room_2_hi, plot_river_room_3_hi
+end
+
+        data river_obj_lo
+        river_room_0_obj_lo, river_room_1_obj_lo, river_room_2_obj_lo, river_room_3_obj_hi,
+end
+
+        data river_obj_hi
+        river_room_0_obj_hi, river_room_1_obj_hi, river_room_2_obj_hi, river_room_3_obj_hi
+end
+
 load_river
         if !first_load then river_set_room
         first_load = 0
 
-        room_index = 44
+        room_index = 0
         menu_map_Xpos = 70
         menu_map_Ypos = 160
-        player_Xpos = 24
-        player_Ypos = 60
+        player_Xpos = 50
+        player_Ypos = 80
         player_facing = DIR_UP
         goto river_set_room
 
@@ -63,7 +74,6 @@ river_set_room
           adc #1
           sta menu_map_index_2
 end
-
 river_pals
         P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
@@ -73,8 +83,29 @@ river_pals
 river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
         incbasic shared_pals.78b
+river_room_bank_6
+        asm
+          lda river_map_lo,x
+          sta temp1               ; temp1 + 2 used for indirect jmp
+          lda river_map_hi,x
+          sta temp2
+          jmp (temp1)
+end
 
 plot_river_room_0
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_0 280
+        plotmapfile tiled/river_room_0.tmx river_room_0 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
+        data river_room_0_obj
+        $00
+end
+
 plot_river_room_1
         menu_map_room[menu_map_index] = 0
         menu_map_room[menu_map_index_2] = 0
@@ -85,9 +116,6 @@ plot_river_room_1
         zone14_objects = 1
         return thisbank
 
-        data river_room_0_obj
-        $00
-end
         data river_room_1_obj
         $00
 end
@@ -97,9 +125,9 @@ plot_river_room_2
         menu_map_room[menu_map_index_2] = 0
         memcpy current_map river_room_2 280
         plotmapfile tiled/river_room_2.tmx river_room_2 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 3
         return thisbank
 
         data river_room_2_obj
@@ -121,39 +149,117 @@ plot_river_room_3
 end
 
         data river_rooms
+        00, 03, 00, 00, 00, 00, 00,
+        01, 02, 00, 00, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
-        24, 25, 00, 00, 00, 00, 00,
-        23, 00, 16, 00, 14, 00, 00,
-        19, 18, 13, 17, 11, 00, 00,
-        21, 22, 12, 00, 06,  7,  8,
-        02, 00, 02, 00, 05, 00,  9,
-        15, 03, 01, 03, 04, 00, 10
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
+        00, 00, 00, 00, 00, 00, 00,
 end
 
-;        for walk_index = 0 to forest_walkable_tiles_length
-;        walk_test = forest_walkable_tiles[walk_index]
-;        if walk_test = move_tile_1 then walkable_1 = 1
-;        if walk_test = move_tile_2 then walkable_2 = 1
-;        next
-;        if !walkable_1 then walkable_return
-;        if !walkable_2 then walkable_return
-;        walkable = 1
-;        goto walkable_return
+test_walkable_river
+        asm
+; test water tiles first
+test_water_river
+twar_loop lda river_water_tiles,x
+          cmp move_tile_1
+          bne twartile2
+          pha
+          lda #1
+          sta water_1
+          pla
+twartile2 cmp move_tile_2
+          bne twar_next
+          lda #1
+          sta water_2
+          ; optimization: bypass the rest of the array if both tiles walkable
+          ;   further optimization possible by sorting arrays by tile frequency
+          lda water_1
+          bne twar_water
+twar_next inx
+          cpx #river_water_tiles_length
+          bne twar_loop
+          lda water_1
+          beq twar_done
+          lda water_2
+          beq twar_done
+twar_water
+          sta in_water
+          ; water tiles always walkable and floatable
+          sta floatable
+          sta walkable
+          jmp .walkable_return
+twar_done
+          ldx #0
+twr_loop  lda river_walkable_tiles,x
+          cmp move_tile_1
+          bne twrtile2
+          pha
+          lda #1
+          sta walkable_1
+          pla
+twrtile2  cmp move_tile_2
+          bne twr_next
+          lda #1
+          sta walkable_2
+          ; optimization: bypass the rest of the array if both tiles walkable
+          ;   further optimization possible by sorting arrays by tile frequency
+          lda walkable_1
+          bne twr_walkable
+twr_next  inx
+          cpx #river_walkable_tiles_length
+          bne twr_loop
+          lda walkable_1
+          beq twr_done
+          lda walkable_2
+          beq twr_done
+twr_walkable
+          sta walkable
+          jmp .walkable_return
+twr_done
+
+tfr_flags
+          lda flags
+          and #%00010000
+          bne tfr_done
+          ; water is always floatable
+          lda in_water
+          bne tfr_floatable
+
+test_floatable_river
+          ldx #0
+tfr_loop  lda river_floatable_tiles,x
+          cmp move_tile_1
+          bne tfrtile2
+          pha
+          lda #1
+          sta floatable_1
+          pla
+tfrtile2  cmp move_tile_2
+          bne tfr_next
+          lda #1
+          sta floatable_2
+          lda floatable_1
+          bne tfr_floatable
+tfr_next  inx
+          cpx #river_floatable_tiles_length
+          bne tfr_loop
+          lda floatable_1
+          beq tfr_done
+          lda floatable_2
+          beq tfr_done
+tfr_floatable
+          sta floatable
+tfr_done  jmp .walkable_return
+end
 
         data river_walkable_tiles
         $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
-        data river_ledge_tiles_down
-        $22, $24, $26
-end
-
-        data river_ledge_tiles_left
-        $32, $34, $36
-end
-
-        data river_ledge_tiles_right
-        $2C, $2E, $30
+        data river_water_tiles
+        $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
 end
 
         data river_floatable_tiles
@@ -169,9 +275,3 @@ torch_tile_unblock_river
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 river_walkable_tiles
         return
-
-        data river_obj_lo
-end
-
-        data river_obj_hi
-end

@@ -247,12 +247,15 @@
         autodim byte walkable
         autodim byte ledge
         autodim byte floatable
+        autodim byte in_water
         autodim byte walkable_1
         autodim byte ledge_1
         autodim byte floatable_1
+        autodim byte water_1
         autodim byte walkable_2
         autodim byte ledge_2
         autodim byte floatable_2
+        autodim byte water_2
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index
