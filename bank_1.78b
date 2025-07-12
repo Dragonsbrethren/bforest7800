@@ -4,20 +4,19 @@
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
         incgraphic gfx/sprites/font_spr.png 160A 3 0 1
-        incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
-        incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
-        incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
-        incgraphic gfx/sprites/joswim3.png  160B 0 4 5 6 3   ; FRAME_UP_2
-        incgraphic gfx/sprites/joswim4.png  160B 0 4 5 6 3 1 ; FRAME_LEFT
-        incgraphic gfx/sprites/joswim5.png  160B 0 4 5 6 3 1 ; FRAME_LEFT_2
-        incgraphic gfx/sprites/joswim6.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT
-        incgraphic gfx/sprites/joswim7.png  160B 0 4 5 3 6 1 ; FRAME_RIGHT_2
-        incgraphic gfx/sprites/joswim8.png  160B 0 4 5 3 6 1 ; FRAME_ATK_D
-        incgraphic gfx/sprites/joswim9.png  160B 0 4 6 5 3   ; FRAME_ATK_U
-        incgraphic gfx/sprites/joswim10.png 160B 0 4 5 6 3 1 ; FRAME_ATK_L
-        incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
-        incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
-        incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
+        incgraphic gfx/sprites/mp.png 160A 0 3 1
+        incgraphic gfx/sprites/coin.png 160A 0 3 2
+        incgraphic gfx/sprites/prism.png 160A 0 3 2 1
+        incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
+        incgraphic gfx/sprites/fireball0.png 160A
+        incgraphic gfx/sprites/fireball1.png 160A
+        incgraphic gfx/sprites/fireball2.png 160A
+        incgraphic gfx/sprites/fireball3.png 160A
+        incgraphic gfx/sprites/fireball4.png 160A
+        incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/armor0.png 160A 0 2 1
+        incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
 
 init
         goto title_init bank10
