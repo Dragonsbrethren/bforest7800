@@ -76,9 +76,9 @@ plot_player
         if in_water then plotsprite joswim0 0 player_Xpos player_Ypos player_frame : goto plot_player_shield
         plotsprite heroine0 0 player_Xpos player_Ypos player_frame
 plot_player_shield
-        if player_state = STATE_DEATH || STATE_CHANT then goto plot_hud
+        if player_state = STATE_DEATH || player_state = STATE_CHANT then goto plot_hud
         ; TODO: Multiple shield frames depending on direction/state
-        if player_shield then plotsprite shield shield_pal shield_Xpos shield_Ypos shield_frame
+        if player_shield then plotsprite shield0 shield_pal shield_Xpos shield_Ypos shield_frame
         if debug_time then BACKGRND = bg_color
 plot_hud
         asm

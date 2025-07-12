@@ -291,7 +291,7 @@ plot_swords
 plot_shields
         temp1 = object_type[index] - (TYPE_SHIELD1 - 1)
         sprite_pal = f_shield_pals[temp1]
-        plotsprite shield sprite_pal Xposition Yposition 0
+        plotsprite shield0 sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_armor

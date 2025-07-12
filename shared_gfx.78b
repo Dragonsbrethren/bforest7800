@@ -28,7 +28,9 @@
         incgraphic gfx/sprites/sword1.png 160A 0 3 1
         incgraphic gfx/sprites/sword2.png 160A 0 1 3
         incgraphic gfx/sprites/sword3.png 160A 0 1 3
-        incgraphic gfx/sprites/shield.png 160A 0 2 1
+        incgraphic gfx/sprites/shield0.png 160A 0 2 1
+        incgraphic gfx/sprites/shield1.png 160A 0 2 1
+        incgraphic gfx/sprites/shield2.png 160A 0 2 1
         incgraphic gfx/sprites/fireball0.png 160A
         incgraphic gfx/sprites/fireball1.png 160A
         incgraphic gfx/sprites/fireball2.png 160A

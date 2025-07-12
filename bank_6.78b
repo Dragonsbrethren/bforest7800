@@ -8,6 +8,9 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
+        incgraphic gfx/tiles/river_waterf.png 160A 1 0 2 4 7
+        incgraphic gfx/tiles/river_veg.png 160A 1 0 2 4 5
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
