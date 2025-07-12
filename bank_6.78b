@@ -10,7 +10,7 @@
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
         incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 1 0 2 4 7
-        incgraphic gfx/tiles/river_veg.png 160A 1 0 2 4 5
+        incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 5
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
@@ -30,7 +30,7 @@
         const plot_river_room_3_hi = #>.plot_river_room_3
 
         data river_map_lo
-        plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_hi
+        plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_lo
 end
 
         data river_map_hi
@@ -38,7 +38,7 @@ end
 end
 
         data river_obj_lo
-        river_room_0_obj_lo, river_room_1_obj_lo, river_room_2_obj_lo, river_room_3_obj_hi,
+        river_room_0_obj_lo, river_room_1_obj_lo, river_room_2_obj_lo, river_room_3_obj_lo
 end
 
         data river_obj_hi
@@ -78,10 +78,10 @@ river_set_room
           sta menu_map_index_2
 end
 river_pals
-        P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
-        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
-        P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
-        P7C1 = PAL_BLACK  : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
+        P4C1 = PAL_BLACK : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+        P5C1 = PAL_BLACK : P5C2 = PAL_F_WATER : P5C3 = PAL_F_DKGRN    ; water vegetation
+        P6C1 = PAL_BLACK : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
+        P7C1 = PAL_BLACK : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
 
 river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
@@ -129,8 +129,8 @@ plot_river_room_2
         memcpy current_map river_room_2 280
         plotmapfile tiled/river_room_2.tmx river_room_2 0 0 20 14
         zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 3
+        zone2_objects  = 6
+        zone14_objects = 4
         return thisbank
 
         data river_room_2_obj
@@ -142,9 +142,9 @@ plot_river_room_3
         menu_map_room[menu_map_index_2] = 0
         memcpy current_map river_room_3 280
         plotmapfile tiled/river_room_3.tmx river_room_3 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
         return thisbank
 
         data river_room_3_obj
