@@ -1312,7 +1312,7 @@ sword_damage
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
-        gosub set_enemy_name
+        goto set_enemy_name
 
 kill_torch
         gosub get_torch_pos

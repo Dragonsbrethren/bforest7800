@@ -9,11 +9,10 @@
         incgraphic gfx/sprites/coin.png 160A 0 3 2
         incgraphic gfx/sprites/prism.png 160A 0 3 2 1
         incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
-        incgraphic gfx/sprites/fireball0.png 160A
-        incgraphic gfx/sprites/fireball1.png 160A
-        incgraphic gfx/sprites/fireball2.png 160A
-        incgraphic gfx/sprites/fireball3.png 160A
-        incgraphic gfx/sprites/fireball4.png 160A
+        incgraphic gfx/sprites/torch0.png 160B 0 1 2 3 6 5 4
+        incgraphic gfx/sprites/torch1.png 160B 0 1 2 3 5 6 4
+        incgraphic gfx/sprites/torch2.png 160B 0 1 2 3 6 4 5
+        incgraphic gfx/sprites/torch3.png 160B 0 1 2 6 4 5
         incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
         incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
@@ -785,7 +784,7 @@ end
 end
 
         data f_armor_pals
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data f_charm_pals

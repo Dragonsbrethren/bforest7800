@@ -304,7 +304,7 @@ end
         data castle_room_7_obj
         TYPE_RSLIME, $58, $A0,
         TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
-        TYPE_ARMOR2, $4C, $38, TYPE_GHOST, $70, $40, $00
+        TYPE_ARMOR2, $4C, $40, TYPE_GHOST, $70, $40, $00
 end
 
 plot_castle_room_2

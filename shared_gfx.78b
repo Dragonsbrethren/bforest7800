@@ -29,10 +29,11 @@
         incgraphic gfx/sprites/sword2.png 160A 0 1 3
         incgraphic gfx/sprites/sword3.png 160A 0 1 3
         incgraphic gfx/sprites/shield.png 160A 0 2 1
-        incgraphic gfx/sprites/torch0.png 160B 0 1 2 3 6 5 4
-        incgraphic gfx/sprites/torch1.png 160B 0 1 2 3 5 6 4
-        incgraphic gfx/sprites/torch2.png 160B 0 1 2 3 6 4 5
-        incgraphic gfx/sprites/torch3.png 160B 0 1 2 6 4 5
+        incgraphic gfx/sprites/fireball0.png 160A
+        incgraphic gfx/sprites/fireball1.png 160A
+        incgraphic gfx/sprites/fireball2.png 160A
+        incgraphic gfx/sprites/fireball3.png 160A
+        incgraphic gfx/sprites/fireball4.png 160A
         incgraphic gfx/sprites/joswim0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/joswim1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/joswim2.png  160B 0 4 5 6 3   ; FRAME_UP
