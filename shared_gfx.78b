@@ -50,3 +50,5 @@
         incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
         incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
         incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
+        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
+        incgraphic gfx/sprites/mp.png 160A 0 3 1

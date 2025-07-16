@@ -14,9 +14,9 @@ OBJECTTODO SET ({3} * 5)
     inx
 
     lda ZONEADDR+OBJECTTODO+2
-    and #~(WZONEHEIGHT*2)
+    ora #(WZONEHEIGHT)
     sta ZONEADDR+OBJECTTODO+2
-    ora #(WZONEHEIGHT*2)
+    eor #(WZONEHEIGHT)
     sta ZONEADDR,x
     inx
 

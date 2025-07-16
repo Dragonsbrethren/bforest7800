@@ -4,8 +4,6 @@
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
         incgraphic gfx/sprites/font_spr.png 160A 3 0 1
-        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
-        incgraphic gfx/sprites/mp.png 160A 0 3 1
         incgraphic gfx/sprites/coin.png 160A 0 3 2
         incgraphic gfx/sprites/prism.png 160A 0 3 2 1
         incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
