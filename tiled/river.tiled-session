@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "river_room_2.tmx",
+    "activeFile": "river_room_9.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -657,12 +657,58 @@
         "river_room_1.tmx#forest_water": {
             "scaleInDock": 2
         },
+        "river_room_10.tmx": {
+            "scale": 3.643080357142857,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 42.13467312051958,
+                "y": 250.337601862631
+            }
+        },
+        "river_room_10.tmx#forest_ledges": {
+            "scaleInDock": 4
+        },
+        "river_room_10.tmx#forest_rocks": {
+            "scaleInDock": 1
+        },
+        "river_room_10.tmx#forest_trees": {
+            "scaleInDock": 4
+        },
+        "river_room_10.tmx#forest_water": {
+            "scaleInDock": 4
+        },
+        "river_room_10.tmx#river_veg": {
+            "scaleInDock": 4
+        },
+        "river_room_11.tmx": {
+            "scale": 3.643080357142857,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 19.62624839164266,
+                "y": 199.2819067459102
+            }
+        },
+        "river_room_11.tmx#forest_ledges": {
+            "scaleInDock": 4
+        },
+        "river_room_11.tmx#forest_rocks": {
+            "scaleInDock": 1
+        },
+        "river_room_11.tmx#forest_trees": {
+            "scaleInDock": 4
+        },
+        "river_room_11.tmx#forest_water": {
+            "scaleInDock": 4
+        },
+        "river_room_11.tmx#river_veg": {
+            "scaleInDock": 4
+        },
         "river_room_2.tmx": {
             "scale": 3.6558035714285713,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 151.12956404933448,
-                "y": -188.19391867138845
+                "x": 80.00976920258886,
+                "y": 111.87690804738064
             }
         },
         "river_room_2.tmx#forest_ledges": {
@@ -687,8 +733,8 @@
             "scale": 3.643080357142857,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 66.83904172538448,
-                "y": 60.937442558666746
+                "x": 231.53483242448382,
+                "y": 130.10967465228848
             }
         },
         "river_room_3.tmx#forest_ledges": {
@@ -710,8 +756,8 @@
             "scale": 3.643080357142857,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 80.01470498131243,
-                "y": 77.4070216285767
+                "x": 153.30433184241164,
+                "y": 130.10967465228848
             }
         },
         "river_room_4.tmx#forest_ledges": {
@@ -733,8 +779,8 @@
             "scale": 3.643080357142857,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -16.33233257766068,
-                "y": 266.8071809325409
+                "x": 80.01470498131243,
+                "y": 111.99313767538756
             }
         },
         "river_room_5.tmx#forest_ledges": {
@@ -756,8 +802,8 @@
             "scale": 3.643080357142857,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 96.75877703572087,
-                "y": -26.351326511855902
+                "x": 80.01470498131243,
+                "y": 111.99313767538756
             }
         },
         "river_room_6.tmx#forest_ledges": {
@@ -779,8 +825,8 @@
             "scale": 3.643080357142857,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 96.75877703572087,
-                "y": 197.6349488389192
+                "x": 80.01470498131243,
+                "y": 111.99313767538756
             }
         },
         "river_room_7.tmx#forest_ledges": {
@@ -796,6 +842,52 @@
             "scaleInDock": 3
         },
         "river_room_7.tmx#river_veg": {
+            "scaleInDock": 3
+        },
+        "river_room_8.tmx": {
+            "scale": 3.643080357142857,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.01470498131243,
+                "y": 111.99313767538756
+            }
+        },
+        "river_room_8.tmx#forest_ledges": {
+            "scaleInDock": 3
+        },
+        "river_room_8.tmx#forest_rocks": {
+            "scaleInDock": 3
+        },
+        "river_room_8.tmx#forest_trees": {
+            "scaleInDock": 3
+        },
+        "river_room_8.tmx#forest_water": {
+            "scaleInDock": 3
+        },
+        "river_room_8.tmx#river_veg": {
+            "scaleInDock": 3
+        },
+        "river_room_9.tmx": {
+            "scale": 3.643080357142857,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 70.13295753936646,
+                "y": 146.57925372219842
+            }
+        },
+        "river_room_9.tmx#forest_ledges": {
+            "scaleInDock": 3
+        },
+        "river_room_9.tmx#forest_rocks": {
+            "scaleInDock": 1
+        },
+        "river_room_9.tmx#forest_trees": {
+            "scaleInDock": 3
+        },
+        "river_room_9.tmx#forest_water": {
+            "scaleInDock": 3
+        },
+        "river_room_9.tmx#river_veg": {
             "scaleInDock": 3
         }
     },
@@ -848,7 +940,13 @@
         "castle_room_0.tmx",
         "castle_room_25.tmx",
         "river_room_2.tmx",
-        "river_room_3.tmx"
+        "river_room_3.tmx",
+        "river_room_4.tmx",
+        "river_room_5.tmx",
+        "river_room_6.tmx",
+        "river_room_7.tmx",
+        "river_room_8.tmx",
+        "river_room_9.tmx"
     ],
     "project": "river.tiled-project",
     "recentFiles": [
