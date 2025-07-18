@@ -272,7 +272,7 @@
         autodim byte zone1_objects      ; reserved for HUD changes
         autodim byte zone2_objects      ; ''
         autodim byte zone14_objects     ; used by pickup string
-        autodim byte sP7C1
+        autodim byte sP7C1              ; hold color values for palette animation
         autodim byte sP7C2
         autodim byte sP7C3
 
