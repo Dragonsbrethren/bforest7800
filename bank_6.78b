@@ -58,29 +58,37 @@
         const plot_river_room_12_hi = #>.plot_river_room_12
         const plot_river_room_13_lo = #<.plot_river_room_13
         const plot_river_room_13_hi = #>.plot_river_room_13
+        const plot_river_room_14_lo = #<.plot_river_room_14
+        const plot_river_room_14_hi = #>.plot_river_room_14
+        const plot_river_room_15_lo = #<.plot_river_room_15
+        const plot_river_room_15_hi = #>.plot_river_room_15
 
         data river_map_lo
         plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_lo, plot_river_room_4_lo,
         plot_river_room_5_lo, plot_river_room_6_lo, plot_river_room_7_lo, plot_river_room_8_lo, plot_river_room_9_lo,
-        plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo
+        plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo, plot_river_room_14_lo
+        plot_river_room_15_lo
 end
 
         data river_map_hi
         plot_river_room_0_hi, plot_river_room_1_hi, plot_river_room_2_hi, plot_river_room_3_hi, plot_river_room_4_hi,
         plot_river_room_5_hi, plot_river_room_6_hi, plot_river_room_7_hi, plot_river_room_8_hi, plot_river_room_9_hi,
-        plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi
+        plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi, plot_river_room_14_hi
+        plot_river_room_15_hi
 end
 
         data river_obj_lo
         river_room_0_obj_lo, river_room_1_obj_lo, river_room_2_obj_lo, river_room_3_obj_lo, river_room_4_obj_lo,
         river_room_5_obj_lo, river_room_6_obj_lo, river_room_7_obj_lo, river_room_8_obj_lo, river_room_9_obj_lo,
-        river_room_10_obj_lo, river_room_11_obj_lo, river_room_12_obj_lo, river_room_13_obj_lo
+        river_room_10_obj_lo, river_room_11_obj_lo, river_room_12_obj_lo, river_room_13_obj_lo, river_room_14_obj_lo,
+        river_room_15_obj_lo
 end
 
         data river_obj_hi
         river_room_0_obj_hi, river_room_1_obj_hi, river_room_2_obj_hi, river_room_3_obj_hi, river_room_4_obj_hi,
         river_room_5_obj_hi, river_room_6_obj_hi, river_room_7_obj_hi, river_room_8_obj_hi, river_room_9_obj_hi,
-        river_room_10_obj_hi, river_room_11_obj_hi, river_room_12_obj_hi, river_room_13_obj_hi
+        river_room_10_obj_hi, river_room_11_obj_hi, river_room_12_obj_hi, river_room_13_obj_hi, river_room_14_obj_hi,
+        river_room_15_obj_hi
 end
 
 load_river
@@ -339,10 +347,38 @@ plot_river_room_13
         $00
 end
 
+plot_river_room_14
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_14 280
+        plotmapfile tiled/river_room_14.tmx river_room_14 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return thisbank
+
+        data river_room_14_obj
+        $00
+end
+
+plot_river_room_15
+        menu_map_room[menu_map_index] = 0
+        menu_map_room[menu_map_index_2] = 0
+        memcpy current_map river_room_15 280
+        plotmapfile tiled/river_room_15.tmx river_room_15 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return thisbank
+
+        data river_room_15_obj
+        $00
+end
+
         data river_rooms
         00, 00, 13, 00, 00, 00, 00,
-        00, 07,  8,  9, 00, 00, 00,
-        00, 06, 05, 10, 00, 00, 00,
+        00, 07,  8,  9, 15, 00, 00,
+        00, 06, 05, 10, 14, 00, 00,
         00, 03, 04, 11, 00, 00, 00,
         01, 02, 00, 12, 00, 00, 00,
         00, 00, 00, 00, 00, 00, 00,
@@ -466,3 +502,6 @@ torch_tile_unblock_river
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 river_walkable_tiles
         return
+
+        incmapfile tiled/river_room_14.tmx
+        incmapfile tiled/river_room_15.tmx
