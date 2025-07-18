@@ -62,6 +62,19 @@ lightning_flash
 lightning_done
 end
 
+main_pal_animation
+        if !pal_animation then main_pal_done
+        if !animation_frame then main_pal_done
+        ; cycle the 8th palette every animation frame
+        temp7 = sP7C3
+        sP7C3  = sP7C2
+        sP7C2  = sP7C1
+        sP7C1  = temp7
+        P7C1 = sP7C1
+        P7C2 = sP7C2
+        P7C3 = sP7C3
+main_pal_done
+
 main_state_handler
         if game_state = STATE_TITLE then title_handler
         if game_state = STATE_FIELD then field_handler
@@ -750,6 +763,8 @@ bottomscreenroutine
         P4C1     = flash_color
         P5C1     = flash_color
         P6C1     = flash_color
+        ; can't flash the animated palette
+        if pal_animation then hair_flash
         P7C1     = flash_color
 hair_flash
         ; Johanna's hair

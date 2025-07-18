@@ -53,3 +53,10 @@
         const PAL_C_SKELWH = $0F        ; skeleton white
         const PAL_C_DKGOLD = $23
         const PAL_C_LTGOLD = $27
+
+;------------------------------------------------------------------------------
+; RIVER
+;------------------------------------------------------------------------------
+        const PAL_WFALL1 = $A1
+        const PAL_WFALL2 = $A3
+        const PAL_WFALL3 = $0F

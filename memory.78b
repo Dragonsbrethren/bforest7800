@@ -267,10 +267,14 @@
         autodim byte lightning_delay
         autodim byte no_flash           ; non-zero disables lightning flashes
         autodim byte alt_palette        ; use alternate palettes
+        autodim byte pal_animation      ; 8th palette is cycled
         autodim byte music_playing      ; prevents music from restarting after leaving menu/game over
         autodim byte zone1_objects      ; reserved for HUD changes
         autodim byte zone2_objects      ; ''
         autodim byte zone14_objects     ; used by pickup string
+        autodim byte sP7C1
+        autodim byte sP7C2
+        autodim byte sP7C3
 
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
         autodim byte input_buffer 8
