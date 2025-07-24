@@ -99,7 +99,7 @@ load_river
         if !first_load then river_set_room
         first_load = 0
 
-        room_index = 21
+        room_index    = F_RIVER_START_I ; 21
         menu_map_Xpos = M_RIVER_START_X ; 54
         menu_map_Ypos = M_RIVER_START_Y ; 112
         player_Xpos   = F_RIVER_START_X ; 50
