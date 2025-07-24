@@ -100,11 +100,11 @@ load_river
         first_load = 0
 
         room_index = 21
-        menu_map_Xpos = 54
-        menu_map_Ypos = 112
-        player_Xpos = 50
-        player_Ypos = 80
-        player_facing = DIR_UP
+        menu_map_Xpos = M_RIVER_START_X ; 54
+        menu_map_Ypos = M_RIVER_START_Y ; 112
+        player_Xpos   = F_RIVER_START_X ; 50
+        player_Ypos   = F_RIVER_START_Y ; 80
+        player_facing = F_RIVER_START_D ; DIR_UP
         goto river_set_room
 
 river_set_room

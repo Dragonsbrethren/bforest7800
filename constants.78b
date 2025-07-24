@@ -86,8 +86,9 @@
         const LIGHTNING_FRAMES = 8
         const LIGHTNING_DELAY = 120
 
+        ; menu map room exit values
         const ROOML_B   = 0
-        const ROOMR_B   = 1
+        const ROOMR_B   = 1     ; redundant
         const ROOML_UDL = 2
         const ROOMR_UDR = 3
         const ROOML_L   = 4
@@ -104,6 +105,17 @@
         const ROOMR_U   = 15
         const ROOML_N   = 16
         const ROOMR_N   = 17
+
+;------------------------------------------------------------------------------
+; RIVER TILESET
+;------------------------------------------------------------------------------
+        ; map positions
+        const M_RIVER_START_X = 54
+        const M_RIVER_START_Y = 112
+        ; field positions
+        const F_RIVER_START_X = 50
+        const F_RIVER_START_Y = 80
+        const F_RIVER_START_D = DIR_DOWN
 
 ;------------------------------------------------------------------------------
 ; MENU DATA
