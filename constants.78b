@@ -86,6 +86,25 @@
         const LIGHTNING_FRAMES = 8
         const LIGHTNING_DELAY = 120
 
+        const ROOML_B   = 0
+        const ROOMR_B   = 1
+        const ROOML_UDL = 2
+        const ROOMR_UDR = 3
+        const ROOML_L   = 4
+        const ROOMR_R   = 5
+        const ROOML_DL  = 6
+        const ROOMR_DR  = 7
+        const ROOML_UL  = 8
+        const ROOMR_UR  = 9
+        const ROOML_UD  = 10
+        const ROOMR_UD  = 11
+        const ROOML_D   = 12
+        const ROOMR_D   = 13
+        const ROOML_U   = 14
+        const ROOMR_U   = 15
+        const ROOML_N   = 16
+        const ROOMR_N   = 17
+
 ;------------------------------------------------------------------------------
 ; MENU DATA
 ;------------------------------------------------------------------------------
