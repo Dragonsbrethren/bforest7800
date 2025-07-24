@@ -110,10 +110,10 @@
 ; RIVER TILESET
 ;------------------------------------------------------------------------------
         ; map positions
-        const M_RIVER_START_X = 54
+        const M_RIVER_START_X = 62
         const M_RIVER_START_Y = 112
         ; field positions
-        const F_RIVER_START_I = 21      ; starting room index
+        const F_RIVER_START_I = 22      ; starting room index
         const F_RIVER_START_X = 50
         const F_RIVER_START_Y = 80
         const F_RIVER_START_D = DIR_DOWN
