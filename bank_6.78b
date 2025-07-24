@@ -29,6 +29,14 @@
         incmapfile tiled/river_room_11.tmx
         incmapfile tiled/river_room_12.tmx
         incmapfile tiled/river_room_13.tmx
+        incmapfile tiled/river_room_14.tmx
+        incmapfile tiled/river_room_15.tmx
+        incmapfile tiled/river_room_16.tmx
+        incmapfile tiled/river_room_17.tmx
+        incmapfile tiled/river_room_18.tmx
+        incmapfile tiled/river_room_19.tmx
+        incmapfile tiled/river_room_20.tmx
+        incmapfile tiled/river_room_21.tmx
 
         const plot_river_room_0_lo = #<.plot_river_room_0
         const plot_river_room_0_hi = #>.plot_river_room_0
@@ -66,33 +74,45 @@
         const plot_river_room_16_hi = #>.plot_river_room_16
         const plot_river_room_17_lo = #<.plot_river_room_17
         const plot_river_room_17_hi = #>.plot_river_room_17
+        const plot_river_room_18_lo = #<.plot_river_room_18
+        const plot_river_room_18_hi = #>.plot_river_room_18
+        const plot_river_room_19_lo = #<.plot_river_room_19
+        const plot_river_room_19_hi = #>.plot_river_room_19
+        const plot_river_room_20_lo = #<.plot_river_room_20
+        const plot_river_room_20_hi = #>.plot_river_room_20
+        const plot_river_room_21_lo = #<.plot_river_room_21
+        const plot_river_room_21_hi = #>.plot_river_room_21
 
         data river_map_lo
         plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_lo, plot_river_room_4_lo,
         plot_river_room_5_lo, plot_river_room_6_lo, plot_river_room_7_lo, plot_river_room_8_lo, plot_river_room_9_lo,
-        plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo, plot_river_room_14_lo
-        plot_river_room_15_lo, plot_river_room_16_lo, plot_river_room_17_lo
+        plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo, plot_river_room_14_lo,
+        plot_river_room_15_lo, plot_river_room_16_lo, plot_river_room_17_lo, plot_river_room_18_lo, plot_river_room_19_lo,
+        plot_river_room_20_lo, plot_river_room_21_lo
 end
 
         data river_map_hi
         plot_river_room_0_hi, plot_river_room_1_hi, plot_river_room_2_hi, plot_river_room_3_hi, plot_river_room_4_hi,
         plot_river_room_5_hi, plot_river_room_6_hi, plot_river_room_7_hi, plot_river_room_8_hi, plot_river_room_9_hi,
-        plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi, plot_river_room_14_hi
-        plot_river_room_15_hi, plot_river_room_16_hi, plot_river_room_17_hi
+        plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi, plot_river_room_14_hi,
+        plot_river_room_15_hi, plot_river_room_16_hi, plot_river_room_17_hi, plot_river_room_18_hi, plot_river_room_19_hi,
+        plot_river_room_20_hi, plot_river_room_21_hi
 end
 
         data river_obj_lo
         river_room_0_obj_lo, river_room_1_obj_lo, river_room_2_obj_lo, river_room_3_obj_lo, river_room_4_obj_lo,
         river_room_5_obj_lo, river_room_6_obj_lo, river_room_7_obj_lo, river_room_8_obj_lo, river_room_9_obj_lo,
         river_room_10_obj_lo, river_room_11_obj_lo, river_room_12_obj_lo, river_room_13_obj_lo, river_room_14_obj_lo,
-        river_room_15_obj_lo, river_room_16_obj_lo, river_room_17_obj_lo
+        river_room_15_obj_lo, river_room_16_obj_lo, river_room_17_obj_lo, river_room_18_obj_lo, river_room_19_obj_lo,
+        river_room_20_obj_lo, river_room_21_obj_lo
 end
 
         data river_obj_hi
         river_room_0_obj_hi, river_room_1_obj_hi, river_room_2_obj_hi, river_room_3_obj_hi, river_room_4_obj_hi,
         river_room_5_obj_hi, river_room_6_obj_hi, river_room_7_obj_hi, river_room_8_obj_hi, river_room_9_obj_hi,
         river_room_10_obj_hi, river_room_11_obj_hi, river_room_12_obj_hi, river_room_13_obj_hi, river_room_14_obj_hi,
-        river_room_15_obj_hi, river_room_16_obj_hi, river_room_17_obj_hi
+        river_room_15_obj_hi, river_room_16_obj_hi, river_room_17_obj_hi, river_room_18_obj_hi, river_room_19_obj_hi,
+        river_room_20_obj_hi, river_room_21_obj_hi
 end
 
 load_river
@@ -114,6 +134,7 @@ river_set_room
           sta no_flash
           sta alt_palette
           sta pal_animation
+          jsr .river_pals        ; temp to get palette
           ldx room_index
           lda river_rooms,x
           tax
@@ -127,7 +148,21 @@ river_set_room
           clc
           adc #1
           sta menu_map_index_2
+          cpx #17
+          bcc .river_room_bank_6
 end
+        gosub river_room_bank_7 bank7
+        return thisbank
+
+river_room_bank_6
+        asm
+          lda river_map_lo,x
+          sta temp1               ; temp1 + 2 used for indirect jmp
+          lda river_map_hi,x
+          sta temp2
+          jmp (temp1)
+end
+
 river_pals
         P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN     ; greens used by trees and slimes
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_WATER : P5C3 = PAL_F_DKGRN     ; water vegetation
@@ -139,15 +174,7 @@ river_pals
 river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
         incbasic shared_pals.78b
-
-river_room_bank_6
-        asm
-          lda river_map_lo,x
-          sta temp1               ; temp1 + 2 used for indirect jmp
-          lda river_map_hi,x
-          sta temp2
-          jmp (temp1)
-end
+        return thisbank
 
 plot_river_room_0
         menu_map_room[menu_map_index] = ROOML_UD
@@ -219,6 +246,7 @@ plot_river_room_4
         $00
 end
 
+        dmahole 0
 plot_river_room_5
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_D
@@ -317,8 +345,6 @@ plot_river_room_11
         $00
 end
 
-        dmahole 0
-
 plot_river_room_12
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_U
@@ -393,16 +419,6 @@ plot_river_room_16
         $00
 end
 
-plot_river_room_17
-        menu_map_room[menu_map_index] = ROOML_U
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        memcpy current_map river_room_17 280
-        plotmapfile tiled/river_room_17.tmx river_room_17 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
-        return thisbank
-
         data river_room_17_obj
         $00
 end
@@ -413,8 +429,8 @@ end
         00, 00, 06, 05, 10, 14, 00
         00, 00, 03, 04, 11, 00, 00
         00, 01, 02, 00, 12, 00, 00
-        00, 00, 18, 00, 00, 00, 00
-        00, 00, 00, 00, 00, 00, 00
+        00, 20, 18, 00, 00, 00, 00
+        00, 21, 19, 00, 00, 00, 00
 end
 
 test_walkable_river
@@ -535,7 +551,18 @@ torch_tile_unblock_river
         pokechar current_map peekX peekY 20 14 river_walkable_tiles
         return
 
-        incmapfile tiled/river_room_14.tmx
-        incmapfile tiled/river_room_15.tmx
-        incmapfile tiled/river_room_16.tmx
-        incmapfile tiled/river_room_17.tmx
+        data river_room_18_obj
+        $00
+end
+
+        data river_room_19_obj
+        $00
+end
+
+        data river_room_20_obj
+        $00
+end
+
+        data river_room_21_obj
+        $00
+end
