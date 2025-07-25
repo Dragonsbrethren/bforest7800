@@ -80,6 +80,7 @@ object_stats
         if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
         if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
         if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
+        if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
 
 
 obj_next_stats
@@ -381,7 +382,7 @@ followplayer
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
         if Yposition > player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
         if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
-        return
+        return thisbank
 
 get_player_pos
         Xdestination = player_Xpos : Ydestination = player_Ypos

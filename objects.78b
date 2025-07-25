@@ -1,6 +1,9 @@
         ; TYPE DEFINITIONS
         const TYPE_TORCH    =   1
         const TYPE_WOLF     =   2
+        const TYPE_WARG     =   3
+        const TYPE_MERMAN   =   4
+        const TYPE_OCTOPUS  =   5
         const TYPE_SLIME    =   6
         const TYPE_MSLIME   =   7
         const TYPE_RAVEN    =   8

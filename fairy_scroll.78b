@@ -28,7 +28,7 @@ end
         const name_merman_lo = #<name_merman
         const name_merman_hi = #>name_merman
         alphadata name_merman font_spr
-        'Merman*'
+        'Nix*'
 end
         const name_octopus_lo = #<name_octopus
         const name_octopus_hi = #>name_octopus

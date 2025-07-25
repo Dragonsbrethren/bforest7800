@@ -18,6 +18,7 @@
         incgraphic gfx/sprites/nix1.png 160A
         incgraphic gfx/sprites/nix2.png 160A
         incgraphic gfx/sprites/nix3.png 160A
+        incgraphic gfx/sprites/nix4.png 160A
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -152,7 +153,7 @@ river_set_room
           clc
           adc #1
           sta menu_map_index_2
-          cpx #17
+          cpx #16
           bcc .river_room_bank_6
 end
         gosub river_room_bank_7 bank7
@@ -219,7 +220,7 @@ plot_river_room_2
         return thisbank
 
         data river_room_2_obj
-        TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50, $00
+        TYPE_MERMAN, $28, $60, TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50, $00
 end
 
 plot_river_room_3
@@ -409,16 +410,6 @@ plot_river_room_15
         $00
 end
 
-plot_river_room_16
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy current_map river_room_16 280
-        plotmapfile tiled/river_room_16.tmx river_room_16 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
-        return thisbank
-
         data river_room_16_obj
         $00
 end
@@ -570,3 +561,17 @@ end
         data river_room_21_obj
         $00
 end
+
+obj_nix_stats
+        asm
+          ldx obj_index
+          lda #<.plot_nix
+          sta object_spr_ptr_lo,x
+          lda #>.plot_nix
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
+plot_nix
+        plotsprite nix0 4 Xposition Yposition frame
+        goto plot_next
