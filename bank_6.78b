@@ -562,6 +562,12 @@ end
         $00
 end
 
+nix_ai
+        ; start invulnerable
+        flags = %00000001
+        object_hp[index] = 1
+        return thisbank
+
 obj_nix_stats
         asm
           ldx obj_index
