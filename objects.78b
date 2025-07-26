@@ -157,6 +157,23 @@
         const RSLIME_SPEED_HI = 0
         const RSLIME_SPEED_LO = 5
 
+        ; Nix (Merman) frames
+        const F_NIX_EMERGE = 0
+        const F_NIX_ATTACK = 1
+        const F_NIX_TAIL   = 2
+        const F_NIX_TAIL2  = 3
+        const F_NIX_SHADOW = 4
+        const F_NIX_BLANK  = 5
+
+        const NIX_WIDTH   = 12
+        const NIX_HEIGHT  = 16
+        const NIX_RANGE_X = 53
+        const NIX_RANGE_Y = 74
+
+        const NIX_ATK_TIME  = 20
+        const NIX_ATK2_TIME = 20
+        const NIX_TAIL_TIME = 20
+
         const FIREBALL_SPEED_HI = 2
         const FIREBALL_SPEED_LO = 0
         const FIREBALL_DAMAGE = 2

@@ -16,9 +16,10 @@
         incgraphic gfx/sprites/octopus2.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A
-        incgraphic gfx/sprites/nix2.png 160A
-        incgraphic gfx/sprites/nix3.png 160A
+        incgraphic gfx/sprites/nix2.png 160A 0 3 2 1
+        incgraphic gfx/sprites/nix3.png 160A 0 3 2 1
         incgraphic gfx/sprites/nix4.png 160A
+        incgraphic gfx/sprites/nix5.png 160A
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -220,7 +221,7 @@ plot_river_room_2
         return thisbank
 
         data river_room_2_obj
-        TYPE_MERMAN, $28, $60, TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50, $00
+        TYPE_MERMAN, $38, $60, TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50, $00
 end
 
 plot_river_room_3
@@ -562,21 +563,88 @@ end
         $00
 end
 
+;==============================================================================
+; SUBROUTINE: NIX AI
+;------------------------------------------------------------------------------
+; Nix (Formerly Merman) is an underwater enemy which starts invisible
+; When the player gets within their territory, they switch to a shadow
+; The shadow approaches the player, then emerges from the water to attack!
+; After attacking, a tail splash frame is shown and they move to a random
+; coordinate in water, then go invisible again, to start the process over
+;==============================================================================
 nix_ai
-        ; start invulnerable
+        if flags{6} then nix_attack
+        if flags{7} then nix_stalk
+        if flags{1} then nix_range
+
+nix_init
+        ; start invulnerable and invisible
         flags = %00000001
+        frame = F_NIX_BLANK
         object_hp[index] = 1
+
+nix_range
+        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, NIX_RANGE_X, NIX_RANGE_Y) then goto nix_shadow
+        ; just return here if player not in range
         return thisbank
+
+nix_shadow
+        frame = F_NIX_SHADOW
+        flags{7} = 1
+
+nix_stalk
+        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, NIX_WIDTH, NIX_HEIGHT) then goto nix_emerge
+        ; TODO: need a flag in move_object to prevent moving out of water
+        ; followplayer handles the return for this frame
+        goto followplayer
+
+nix_emerge
+        if timer then goto nix_attack
+        ; start a timer for the attack animation
+        timer = NIX_ATK_TIME
+        frame = F_NIX_EMERGE
+        flags{1} = 0
+        flags{6} = 1
+
+nix_attack
+        timer = timer - 1
+        if timer then return thisbank
+        ; some trickery to limit number of flags here
+        ; if 7 is set, first phase of attack
+        ; if 7 unset, then countdown is to submerge
+        if !flags{7} then nix_submerge
+        frame = F_NIX_ATTACK
+        flags{7} = 0
+        timer = NIX_ATK2_TIME
+        return thisbank
+
+nix_submerge
+        timer = NIX_TAIL_TIME
+nix_tail_anim
+        if animation_frame then frame = F_NIX_TAIL2 : goto nix_tail_timer
+        frame = F_NIX_TAIL
+nix_tail_timer
+        timer = timer - 1
+        if timer then return thisbank
+        frame = F_NIX_SHADOW
+        flags{1} = 1
+        ; TODO: write logic to find another water tile
+        return thisbank
+
 
 obj_nix_stats
         asm
           ldx obj_index
+          lda #1
+          sta object_speed_hi,x
+          sta object_speed_lo,x
           lda #<.plot_nix
           sta object_spr_ptr_lo,x
           lda #>.plot_nix
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
+
 
 plot_nix
         plotsprite nix0 4 Xposition Yposition frame

@@ -16,9 +16,10 @@
         incgraphic gfx/sprites/octopus2.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A
-        incgraphic gfx/sprites/nix2.png 160A
-        incgraphic gfx/sprites/nix3.png 160A
+        incgraphic gfx/sprites/nix2.png 160A 0 3 2 1
+        incgraphic gfx/sprites/nix3.png 160A 0 3 2 1
         incgraphic gfx/sprites/nix4.png 160A
+        incgraphic gfx/sprites/nix5.png 160A
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
