@@ -1322,6 +1322,7 @@ kill_torch
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_unblock_forest
         if tileset = T_CASTLE then gosub torch_tile_unblock_castle
+        if tileset = T_RIVER  then gosub torch_tile_unblock_river
         return thisbank
 
 player_knockback
