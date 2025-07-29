@@ -8,6 +8,8 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
         incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 5
@@ -154,7 +156,7 @@ river_set_room
           clc
           adc #1
           sta menu_map_index_2
-          cpx #16
+          cpx #15
           bcc .river_room_bank_6
 end
         gosub river_room_bank_7 bank7
@@ -251,6 +253,17 @@ plot_river_room_4
         data river_room_4_obj
         $00
 end
+
+        data river_rooms
+        00, 00, 00, 13, 17, 16, 00
+        00, 00, 07,  8,  9, 15, 00
+        00, 00, 06, 05, 10, 14, 00
+        00, 00, 03, 04, 11, 00, 00
+        00, 01, 02, 00, 12, 00, 00
+        00, 20, 18, 00, 00, 00, 00
+        00, 21, 19, 00, 00, 00, 00
+end
+
 
         dmahole 0
 plot_river_room_5
@@ -397,16 +410,6 @@ plot_river_room_14
         $00
 end
 
-plot_river_room_15
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map river_room_15 280
-        plotmapfile tiled/river_room_15.tmx river_room_15 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
-        return thisbank
-
         data river_room_15_obj
         $00
 end
@@ -417,16 +420,6 @@ end
 
         data river_room_17_obj
         $00
-end
-
-        data river_rooms
-        00, 00, 00, 13, 17, 16, 00
-        00, 00, 07,  8,  9, 15, 00
-        00, 00, 06, 05, 10, 14, 00
-        00, 00, 03, 04, 11, 00, 00
-        00, 01, 02, 00, 12, 00, 00
-        00, 20, 18, 00, 00, 00, 00
-        00, 21, 19, 00, 00, 00, 00
 end
 
 test_walkable_river
@@ -526,11 +519,11 @@ tfr_done  jmp .walkable_return
 end
 
         data river_walkable_tiles
-        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
+        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48, $4A, $B4, $B6, $B8, $BA
 end
 
         data river_water_tiles
-        $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
+        $38, $3A, $3C, $3E, $40, $42, $44, $46, $48, $4A, $B4, $B6, $B8, $BA
 end
 
         data river_floatable_tiles
@@ -605,6 +598,10 @@ nix_emerge
         frame = F_NIX_EMERGE
         flags{1} = 0
         flags{6} = 1
+        Xvelocity_hi = 0
+        Xvelocity_lo = 0
+        Yvelocity_hi = 0
+        Yvelocity_lo = 0
 
 nix_attack
         timer = timer - 1
@@ -633,11 +630,19 @@ nix_tail_timer
 
 
 obj_nix_stats
+        object_hp[obj_index] = WOLF_HP
+        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
+        object_damage[obj_index] = WOLF_DAMAGE
+        object_def[obj_index] = WOLF_DEF
+        object_mdef[obj_index] = WOLF_MDEF
+        object_friction_hi[obj_index] = WOLF_FRICTION_HI
+        object_friction_lo[obj_index] = WOLF_FRICTION_LO
+        object_speed_hi[obj_index] = WOLF_SPEED_HI
+        object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #1
-          sta object_speed_hi,x
-          sta object_speed_lo,x
           lda #<.plot_nix
           sta object_spr_ptr_lo,x
           lda #>.plot_nix

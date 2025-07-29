@@ -8,6 +8,8 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
         incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 1 0 2 4 7
         incgraphic gfx/tiles/river_veg.png 160A 1 0 2 4 5
@@ -69,6 +71,16 @@ river_room_bank_7
         jmp (temp1)
 end
 
+plot_river_room_15
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map river_room_15 280
+        plotmapfile tiled/river_room_15.tmx river_room_15 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
+
 plot_river_room_16
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_D
@@ -77,7 +89,7 @@ plot_river_room_16
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 5
-        return thisbank
+        return otherbank
 
 plot_river_room_17
         menu_map_room[menu_map_index] = ROOML_U

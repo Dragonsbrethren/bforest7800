@@ -8,7 +8,6 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
-        incgraphic gfx/tiles/forest_map.png 160A 0 2 1 3
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
         incgraphic gfx/forest/hud2.png 160A 0 3 1 2
         incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1

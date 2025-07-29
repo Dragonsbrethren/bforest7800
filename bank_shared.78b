@@ -355,7 +355,7 @@ plot_debug_hud
         ; plotvalue hud 0 player_hp 2 72 0
         ; plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
-        plotvalue hud2 0 move_tile_1 4 32 13
+        plotvalue hud2 0 move_tile_1 4 32 11
         ; plotvalue hud 0 room_index 2 32 13
         ; plotvalue hud 0 room 2 48 13
         plotvalue hud 0 input_buffer 16 16 13
