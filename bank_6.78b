@@ -423,37 +423,22 @@ end
 end
 
 test_walkable_river
-        asm
-; test water tiles first
+; water is tested differently than other properties, it tests the tile directly under the object
+; this helps eliminate graphical issues when approaching a non-water tile in water
 test_water_river
+        gosub get_torch_pos
+        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
+        asm
+          ldx #0
 twar_loop lda river_water_tiles,x
-          cmp move_tile_1
-          bne twartile2
-          pha
-          lda #1
-          sta water_1
-          pla
-twartile2 cmp move_tile_2
+          cmp temp1
           bne twar_next
           lda #1
-          sta water_2
-          ; optimization: bypass the rest of the array if both tiles walkable
-          ;   further optimization possible by sorting arrays by tile frequency
-          lda water_1
-          bne twar_water
+          sta in_water
+          jmp twar_done
 twar_next inx
           cpx #river_water_tiles_length
           bne twar_loop
-          lda water_1
-          beq twar_done
-          lda water_2
-          beq twar_done
-twar_water
-          sta in_water
-          ; water tiles always walkable and floatable
-          sta floatable
-          sta walkable
-          jmp .walkable_return
 twar_done
           ldx #0
 twr_loop  lda river_walkable_tiles,x
