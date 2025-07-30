@@ -433,12 +433,16 @@ test_water_river
 twar_loop lda river_water_tiles,x
           cmp temp1
           bne twar_next
-          lda #1
-          sta in_water
+          lda flags
+          ora #%10000000
+          sta flags
           jmp twar_done
 twar_next inx
           cpx #river_water_tiles_length
           bne twar_loop
+          lda flags
+          and #%01111111
+          sta flags
 twar_done
           ldx #0
 twr_loop  lda river_walkable_tiles,x
@@ -472,10 +476,6 @@ tfr_flags
           lda flags
           and #%00010000
           bne tfr_done
-          ; water is always floatable
-          lda in_water
-          bne tfr_floatable
-
 test_floatable_river
           ldx #0
 tfr_loop  lda river_floatable_tiles,x
