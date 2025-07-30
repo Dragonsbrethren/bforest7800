@@ -1302,7 +1302,14 @@ spawner_done
 end
 
 sword_collision
-        if object_flags[index] = 1 then return thisbank
+        asm
+          ldx index
+          lda object_flags,x
+          ; tests object invunerablility flag
+          lsr
+          bcc test_sword_box
+test_sword_box
+end
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
         if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
         if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
@@ -1327,7 +1334,14 @@ kill_torch
 
 player_knockback
         if player_flags{0}         then return thisbank ; player is invulnerable, bypass collision check to save cycles
-        if object_flags[index] = 1 then return thisbank       ; object is invulnerable
+        asm
+          ldx index
+          lda object_flags,x
+          ; tests object invunerablility flag
+          lsr
+          bcc test_player_box
+test_player_box
+end
         if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
 ;        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
 ;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
