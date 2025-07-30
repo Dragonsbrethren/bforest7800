@@ -1192,8 +1192,8 @@ test_walkable
         sta ledge_1
         sta ledge_2
         sta in_water
-        sta water_1
-        sta water_2
+;        sta water_1
+;        sta water_2
 end
         if tileset = T_FOREST then goto test_walkable_forest
         if tileset = T_CASTLE then goto test_walkable_castle
