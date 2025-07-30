@@ -1,8 +1,8 @@
 %00000001 = invulnerable
-%00000010 = flying (no collisions)
-%00000100 = at destination
-%00001000 = floating
-%00010000 = ledge hopping
-%00100000 = used by AI
+%00000010 = in water
+%00000100 = flying (no collisions)
+%00001000 = at destination
+%00010000 = floating
+%00100000 = ledge hopping
 %01000000 = used by AI
-%10000000 = in water
+%10000000 = used by AI

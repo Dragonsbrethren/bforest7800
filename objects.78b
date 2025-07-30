@@ -169,6 +169,8 @@
         const NIX_HEIGHT  = 16
         const NIX_RANGE_X = 53
         const NIX_RANGE_Y = 74
+        const NIX_OFFSET_X = NIX_RANGE_X / 2
+        const NIX_OFFSET_Y = NIX_RANGE_Y / 2
 
         const NIX_ATK_TIME  = 20
         const NIX_ATK2_TIME = 20

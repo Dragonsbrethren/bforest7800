@@ -434,14 +434,14 @@ twar_loop lda river_water_tiles,x
           cmp temp1
           bne twar_next
           lda flags
-          ora #%10000000
+          ora #%00000010
           sta flags
           jmp twar_done
 twar_next inx
           cpx #river_water_tiles_length
           bne twar_loop
           lda flags
-          and #%01111111
+          and #%11111101
           sta flags
 twar_done
           ldx #0
@@ -551,18 +551,23 @@ end
 ; coordinate in water, then go invisible again, to start the process over
 ;==============================================================================
 nix_ai
+        if !flags{1} then nix_repos
         if flags{6} then nix_attack
         if flags{7} then nix_stalk
-        if flags{1} then nix_range
+        if flags{3} then nix_range
 
 nix_init
         ; start invulnerable and invisible
         flags = %00000001
         frame = F_NIX_BLANK
-        object_hp[index] = 1
 
 nix_range
-        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, NIX_RANGE_X, NIX_RANGE_Y) then goto nix_shadow
+        ; set upper left corner of Nix range, zero if underflow
+        temp1 = Xposition - NIX_OFFSET_X
+        if temp1 > Xposition then temp1 = 0
+        temp2 = Yposition - NIX_OFFSET_Y
+        if temp2 > Yposition then temp2 = 0
+        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, temp1, temp2, NIX_RANGE_X, NIX_RANGE_Y) then goto nix_shadow
         ; just return here if player not in range
         return thisbank
 
@@ -581,7 +586,7 @@ nix_emerge
         ; start a timer for the attack animation
         timer = NIX_ATK_TIME
         frame = F_NIX_EMERGE
-        flags{1} = 0
+        flags{3} = 0
         flags{6} = 1
         Xvelocity_hi = 0
         Xvelocity_lo = 0
@@ -609,9 +614,12 @@ nix_tail_timer
         timer = timer - 1
         if timer then return thisbank
         frame = F_NIX_SHADOW
-        flags{1} = 1
+        flags{3} = 1
         ; TODO: write logic to find another water tile
         return thisbank
+
+nix_repos
+        goto nix_init
 
 
 obj_nix_stats
