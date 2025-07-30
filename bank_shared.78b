@@ -1482,6 +1482,7 @@ decrease_hp
 
 ; takes a torch's X & Y position and determines the map tile under it, stores in peekX & Y
 get_torch_pos
+get_object_pos
         asm
         ldx index
         lda object_Xpos,x

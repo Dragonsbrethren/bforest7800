@@ -426,7 +426,7 @@ test_walkable_river
 ; water is tested differently than other properties, it tests the tile directly under the object
 ; this helps eliminate graphical issues when approaching a non-water tile in water
 test_water_river
-        gosub get_torch_pos
+        gosub get_object_pos
         temp1 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
           ldx #0
