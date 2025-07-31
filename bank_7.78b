@@ -96,6 +96,7 @@ plot_river_room_17
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_17 280
         plotmapfile tiled/river_room_17.tmx river_room_17 0 0 20 14
+        alt_palette = 1
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 5
