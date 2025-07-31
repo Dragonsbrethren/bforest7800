@@ -573,13 +573,13 @@ nix_shadow
 
 nix_stalk
         ; due to the Nix attack animation, always emerge above or on the player
-        temp2 = player_Ypos - 16
+        temp2 = player_Ypos - 8
         if boxcollision(player_Xpos, temp2, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, NIX_WIDTH, NIX_HEIGHT) then goto nix_emerge
-        ; TODO: need a flag in move_object to prevent moving out of water
         ; followplayer handles the return for this frame
         goto followplayer
 
 nix_emerge
+        flags{0} = 0
         ; start a timer for the attack animation
         timer = NIX_ATK_TIME
         frame = F_NIX_EMERGE

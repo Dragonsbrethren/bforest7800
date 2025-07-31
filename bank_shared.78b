@@ -1308,6 +1308,7 @@ sword_collision
           ; tests object invunerablility flag
           lsr
           bcc test_sword_box
+          rts
 test_sword_box
 end
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
@@ -1340,6 +1341,7 @@ player_knockback
           ; tests object invunerablility flag
           lsr
           bcc test_player_box
+          rts
 test_player_box
 end
         if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
