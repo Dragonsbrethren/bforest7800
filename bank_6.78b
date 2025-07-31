@@ -142,7 +142,6 @@ river_set_room
           sta no_flash
           sta alt_palette
           sta pal_animation
-          jsr .river_pals        ; temp to get palette
           ldx room_index
           lda river_rooms,x
           tax
@@ -173,7 +172,9 @@ end
 
 river_pals
         P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN     ; greens used by trees and slimes
+        if alt_palette then river_pals_cliffs
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_WATER : P5C3 = PAL_F_DKGRN     ; water vegetation
+river_pals_rocks
         P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR     ; blue and gray used by water
         P7C1 = PAL_WFALL1 : P7C2 = PAL_WFALL2  : P7C3 = PAL_WFALL3      ; blues, waterfalls
         ; palette registers are read-only, need soft versions of their data
@@ -183,6 +184,11 @@ river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
         incbasic shared_pals.78b
         return thisbank
+
+river_pals_cliffs
+        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKBRN : P5C3 = PAL_F_LTBRN
+        goto river_pals_rocks
+
 
 plot_river_room_0
         menu_map_room[menu_map_index] = ROOML_UD
@@ -342,7 +348,7 @@ plot_river_room_10
         memcpy current_map river_room_10 280
         plotmapfile tiled/river_room_10.tmx river_room_10 0 0 20 14
         zone1_objects  = 4
-        zone2_objects  = 4
+        zone2_objects  = 7
         zone14_objects = 5
         return thisbank
 
@@ -387,9 +393,9 @@ plot_river_room_13
         plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
         alt_palette = 1
         pal_animation = 1
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 5
+        zone2_objects  = 5
+        zone14_objects = 3
         return thisbank
 
         data river_room_13_obj

@@ -145,6 +145,7 @@ player_handler_done
         if tileset = T_CASTLE then goto castle_lightning
 no_lightning
         if tileset = T_CASTLE then goto castle_pals
+        if tileset = T_RIVER then gosub river_pals
 
 lightning_done
 
