@@ -105,6 +105,7 @@ load_map
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
+        if tileset = T_RIVER then gosub river_pals
 
         gosub draw_hud
 draw_pickup_hud
@@ -145,7 +146,6 @@ player_handler_done
         if tileset = T_CASTLE then goto castle_lightning
 no_lightning
         if tileset = T_CASTLE then goto castle_pals
-        if tileset = T_RIVER then gosub river_pals
 
 lightning_done
 
