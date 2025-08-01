@@ -16,6 +16,7 @@
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
+        incgraphic gfx/sprites/octoink.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A
         incgraphic gfx/sprites/nix2.png 160A 0 3 2 1
@@ -71,6 +72,29 @@ river_room_bank_7
         jmp (temp1)
 end
 
+plot_river_room_13
+        menu_map_room[menu_map_index] = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_D
+        memcpy current_map river_room_13 280
+        plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
+        alt_palette = 1
+        pal_animation = 1
+        zone1_objects  = 5
+        zone2_objects  = 5
+        zone14_objects = 3
+        return otherbank
+
+plot_river_room_14
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_U
+        memcpy current_map river_room_14 280
+        plotmapfile tiled/river_room_14.tmx river_room_14 0 0 20 14
+        alt_palette = 1
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
+
 plot_river_room_15
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
@@ -91,6 +115,7 @@ plot_river_room_16
         zone14_objects = 5
         return otherbank
 
+        dmahole 0
 plot_river_room_17
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_UR

@@ -16,6 +16,7 @@
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
+        incgraphic gfx/sprites/octoink.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A
         incgraphic gfx/sprites/nix2.png 160A 0 3 2 1
@@ -155,7 +156,7 @@ river_set_room
           clc
           adc #1
           sta menu_map_index_2
-          cpx #15
+          cpx #13
           bcc .river_room_bank_6
 end
         gosub river_room_bank_7 bank7
@@ -243,6 +244,7 @@ plot_river_room_3
         return thisbank
 
         data river_room_3_obj
+        TYPE_OCTOPUS, $38, $60,
         $00
 end
 
@@ -386,32 +388,9 @@ plot_river_room_12
         $00
 end
 
-plot_river_room_13
-        menu_map_room[menu_map_index] = ROOML_D
-        menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy current_map river_room_13 280
-        plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
-        alt_palette = 1
-        pal_animation = 1
-        zone1_objects  = 5
-        zone2_objects  = 5
-        zone14_objects = 3
-        return thisbank
-
         data river_room_13_obj
         $00
 end
-
-plot_river_room_14
-        menu_map_room[menu_map_index] = ROOML_UL
-        menu_map_room[menu_map_index_2] = ROOMR_U
-        memcpy current_map river_room_14 280
-        plotmapfile tiled/river_room_14.tmx river_room_14 0 0 20 14
-        alt_palette = 1
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
-        return thisbank
 
         data river_room_14_obj
         $00
@@ -666,4 +645,155 @@ end
 
 plot_nix
         plotsprite nix0 4 Xposition Yposition frame
+        goto plot_next
+
+;==============================================================================
+; OCTOKRAKEN
+;------------------------------------------------------------------------------
+; It's an octorock from Zelda but instead of walking, it dives under water
+;==============================================================================
+
+; This is essentally the same as the Priest/Skeleton AI from Cathedral
+; Maybe be able to generalize and move to shared bank?
+octopus_ai
+        object_pal[index] = 2
+        if flags{6} then goto octo_shoot_2
+octo_dir
+        if timer then goto octo_swim
+        timer = OCTOPUS_SWIM_TIMER
+        temp1 = rand
+        if temp1 >= 128 then octo_vert
+
+octo_horiz
+        if Xposition >= player_Xpos then octo_right
+
+octo_right
+        object_facing[index] = DIR_RIGHT
+        Xdirection = DIR_RIGHT
+        Ydirection = 0
+        goto octo_swim
+
+octo_left
+        object_facing[index] = DIR_LEFT
+        Xdirection = DIR_LEFT
+        Ydirection = 0
+        goto octo_swim
+
+octo_vert
+        if Yposition < player_Ypos then octo_down
+
+octo_up
+        object_facing[index] = DIR_UP
+        Xdirection = 0
+        Ydirection = DIR_UP
+        goto octo_swim
+
+octo_down
+        object_facing[index] = DIR_DOWN
+        Xdirection = 0
+        Ydirection = DIR_DOWN
+
+octo_swim
+        timer = timer - 1
+        if Xdirection then octo_swim_x
+
+octo_swim_y
+octo_test_y
+        ; vertical range check
+        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, 0, 12, 224) then goto octo_shoot_y
+        goto octo_submerge
+
+octo_swim_x
+octo_test_x
+        ; horizontal range check
+        if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, 0, Yposition, 160, 16) then goto octo_shoot_x
+
+octo_submerge
+        object_pal[index] = 4
+        frame = 0
+        ; followplayer used for return this frame
+        goto followplayer
+
+octo_shoot_y
+        object_facing[index] = DIR_UP
+        if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
+
+octo_shoot_x
+        object_facing[index] = DIR_LEFT
+        if Xposition < player_Xpos then object_facing[index] = DIR_RIGHT
+
+octo_shoot
+        gosub find_new_object
+        if no_empty_slot then return thisbank
+        object_parent[spawn_index] = index
+        flags{6} = 1
+        frame_index = object_facing[index]
+        frame = octo_shoot_frames[frame_index]
+        asm
+          lda #0
+          sta Xvelocity_hi
+          sta Xvelocity_lo
+          sta Yvelocity_hi
+          sta Yvelocity_lo
+end
+        timer = OCTOPUS_SHOOT_FRAMES
+
+octo_shoot_2
+        timer = timer - 1
+        if timer then return thisbank
+
+load_octoink
+        asm
+          ldx spawn_index
+          ldy index
+          lda #TYPE_OCTOINK
+          sta object_type,x
+          lda #OCTOINK_SPEED_HI
+          sta object_vel_cap_hi,x
+          sta object_speed_hi,x
+          lda #OCTOINK_SPEED_LO
+          sta object_vel_cap_lo,x
+          sta object_speed_lo,x
+          lda #OCTOINK_DAMAGE
+          sta object_damage,x
+          lda #<.plot_octoink
+          sta object_spr_ptr_lo,x
+          lda #>.plot_octoink
+          sta object_spr_ptr_hi,x
+          jsr set_cast_direction
+end
+        flags{6} = 0
+        return thisbank
+
+        data octo_shoot_frames
+        0, 2, 2, 2, 2
+end
+
+obj_octo_stats
+        asm
+          ldx obj_index
+          lda #<.plot_octopus
+          sta object_spr_ptr_lo,x
+          lda #>.plot_octopus
+          sta object_spr_ptr_hi,x
+end
+        object_hp[obj_index] = OCTOPUS_HP
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
+plot_octopus
+        plotsprite octopus0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_octoink
+        plotsprite octoink 6 Xposition Yposition 0
         goto plot_next

@@ -81,7 +81,7 @@ object_stats
         if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
         if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
         if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
-
+        if object_type[obj_index] = TYPE_OCTOPUS then obj_octo_stats
 
 obj_next_stats
         next
@@ -104,8 +104,7 @@ load_map
         adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
-        if tileset = T_RIVER  then gosub load_river bank6
-        if tileset = T_RIVER then gosub river_pals
+        if tileset = T_RIVER  then gosub load_river bank6 : gosub river_pals
 
         gosub draw_hud
 draw_pickup_hud
@@ -520,8 +519,10 @@ object_handler
         if object_type[index] = TYPE_SKELETON then gosub priest_ai
         if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
         if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
+        if object_type[index] = TYPE_OCTOINK then gosub fireball_ai
         if object_type[index] = TYPE_GHOST then gosub ghost_ai
         if object_type[index] = TYPE_MERMAN then gosub nix_ai
+        if object_type[index] = TYPE_OCTOPUS then gosub octopus_ai
         gosub move_object
 object_restore
         gosub restore_object_props
