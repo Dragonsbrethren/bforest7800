@@ -654,7 +654,7 @@ plot_nix
 ;==============================================================================
 
 ; This is essentally the same as the Priest/Skeleton AI from Cathedral
-; Maybe be able to generalize and move to shared bank?
+; Might be able to generalize and move to shared bank?
 octopus_ai
         object_pal[index] = 2
         if flags{6} then goto octo_shoot_2
@@ -717,6 +717,7 @@ octo_submerge
 octo_shoot_y
         object_facing[index] = DIR_UP
         if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
+        goto octo_shoot
 
 octo_shoot_x
         object_facing[index] = DIR_LEFT
