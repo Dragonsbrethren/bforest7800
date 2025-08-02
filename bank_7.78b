@@ -16,6 +16,10 @@
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
+        incgraphic gfx/sprites/octopus3.png 160A
+        incgraphic gfx/sprites/octopus4.png 160A
+        incgraphic gfx/sprites/octopus5.png 160A
+        incgraphic gfx/sprites/octopus6.png 160A
         incgraphic gfx/sprites/octoink.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A

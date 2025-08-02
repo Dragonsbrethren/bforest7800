@@ -179,8 +179,20 @@
         const NIX_TAIL_TIME = 20
 
         const OCTOPUS_HP = 4
+        const OCTOPUS_POP_TIMER  = 60
         const OCTOPUS_SWIM_TIMER = 20
-        const OCTOPUS_SHOOT_FRAMES = 20
+        const OCTOPUS_SHOOT_FRAMES = 30
+
+        const OCTO_PAL        = 2
+        const OCTO_SHADOW_PAL = 4
+
+        const F_OCTO_SHADOW  = 0
+        const F_OCTO_POP     = 1
+        const F_OCTO_POP_2   = 2
+        const F_OCTO_SHOOT_D = 3
+        const F_OCTO_SHOOT_U = 4
+        const F_OCTO_SHOOT_L = 6
+        const F_OCTO_SHOOT_R = 5
 
         const OCTOINK_SPEED_HI = 2
         const OCTOINK_SPEED_LO = 0

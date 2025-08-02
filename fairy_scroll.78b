@@ -33,7 +33,7 @@ end
         const name_octopus_lo = #<name_octopus
         const name_octopus_hi = #>name_octopus
         alphadata name_octopus font_spr
-        'Octokraken*'
+        'River Beast*'
 end
         const name_slime_lo = #<name_slime
         const name_slime_hi = #>name_slime

@@ -16,6 +16,10 @@
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
+        incgraphic gfx/sprites/octopus3.png 160A
+        incgraphic gfx/sprites/octopus4.png 160A
+        incgraphic gfx/sprites/octopus5.png 160A
+        incgraphic gfx/sprites/octopus6.png 160A
         incgraphic gfx/sprites/octoink.png 160A
         incgraphic gfx/sprites/nix0.png 160A
         incgraphic gfx/sprites/nix1.png 160A
@@ -240,7 +244,7 @@ plot_river_room_3
         plotmapfile tiled/river_room_3.tmx river_room_3 0 0 20 14
         zone1_objects  = 4
         zone2_objects  = 4
-        zone14_objects = 5
+        zone14_objects = 3
         return thisbank
 
         data river_room_3_obj
@@ -271,7 +275,6 @@ end
         00, 20, 18, 00, 00, 00, 00
         00, 21, 19, 00, 00, 00, 00
 end
-
 
         dmahole 0
 plot_river_room_5
@@ -648,71 +651,57 @@ plot_nix
         goto plot_next
 
 ;==============================================================================
-; OCTOKRAKEN
+; RIVER BEAST
 ;------------------------------------------------------------------------------
 ; It's an octorock from Zelda but instead of walking, it dives under water
 ;==============================================================================
-
-; This is essentally the same as the Priest/Skeleton AI from Cathedral
-; Might be able to generalize and move to shared bank?
 octopus_ai
-        object_pal[index] = 2
         if flags{6} then goto octo_shoot_2
-octo_dir
-        if timer then goto octo_swim
+        if flags{0} then goto octo_swim
+        if timer then goto octo_pop_2
+        ; hacky land kill needs water flag on before any movement
+        flags{1} = 1
+        ; set up a timer to make the octopus appear out of water before diving
+octo_pop
+        timer = OCTOPUS_POP_TIMER
+        flags{0} = 0
+octo_pop_2
+        timer = timer - 1
+        if !timer then goto octo_submerge
+        frame = F_OCTO_POP
+        object_pal[index] = OCTO_PAL
+;        if animation_frame then frame = F_OCTO_POP_2
+        ; octo_test_shoot handles return for this frame
+        goto octo_test_shoot
+
+octo_submerge
         timer = OCTOPUS_SWIM_TIMER
-        temp1 = rand
-        if temp1 >= 128 then octo_vert
-
-octo_horiz
-        if Xposition >= player_Xpos then octo_right
-
-octo_right
-        object_facing[index] = DIR_RIGHT
-        Xdirection = DIR_RIGHT
-        Ydirection = 0
-        goto octo_swim
-
-octo_left
-        object_facing[index] = DIR_LEFT
-        Xdirection = DIR_LEFT
-        Ydirection = 0
-        goto octo_swim
-
-octo_vert
-        if Yposition < player_Ypos then octo_down
-
-octo_up
-        object_facing[index] = DIR_UP
-        Xdirection = 0
-        Ydirection = DIR_UP
-        goto octo_swim
-
-octo_down
-        object_facing[index] = DIR_DOWN
-        Xdirection = 0
-        Ydirection = DIR_DOWN
+        flags{0} = 1
+        object_pal[index] = OCTO_SHADOW_PAL
+        frame = F_OCTO_SHADOW
 
 octo_swim
+        ; this is a horrible stopgap: if the octopus gets on land, it kills itself
+        if !flags{1} then object_type[index] = 0
         timer = timer - 1
-        if Xdirection then octo_swim_x
+        if !timer then goto octo_pop
+;        gosub octo_test_shoot
+        ; followplayer used for return this frame
+        goto followplayer
 
-octo_swim_y
+
+octo_test_shoot
 octo_test_y
         ; vertical range check
         if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, 0, 12, 224) then goto octo_shoot_y
-        goto octo_submerge
 
-octo_swim_x
 octo_test_x
         ; horizontal range check
         if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, 0, Yposition, 160, 16) then goto octo_shoot_x
 
-octo_submerge
-        object_pal[index] = 4
-        frame = 0
-        ; followplayer used for return this frame
-        goto followplayer
+octo_test_return
+        ; horiz and vert tests both failed
+        return thisbank
 
 octo_shoot_y
         object_facing[index] = DIR_UP
@@ -728,6 +717,8 @@ octo_shoot
         if no_empty_slot then return thisbank
         object_parent[spawn_index] = index
         flags{6} = 1
+        flags{0} = 0
+        object_pal[index] = OCTO_PAL
         frame_index = object_facing[index]
         frame = octo_shoot_frames[frame_index]
         asm
@@ -767,7 +758,7 @@ end
         return thisbank
 
         data octo_shoot_frames
-        0, 2, 2, 2, 2
+        0, F_OCTO_SHOOT_U, F_OCTO_SHOOT_D, F_OCTO_SHOOT_L, F_OCTO_SHOOT_R
 end
 
 obj_octo_stats
@@ -787,7 +778,7 @@ end
         object_friction_hi[obj_index] = 1
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 20
+        object_speed_lo[obj_index] = 10
         object_flags[obj_index] = 0
         goto obj_next_stats
 
