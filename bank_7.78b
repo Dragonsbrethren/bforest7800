@@ -11,8 +11,10 @@
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
         incgraphic gfx/forest/hud2.png 160A 0 3 1 2
         incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
-        incgraphic gfx/tiles/river_waterf.png 160A 1 0 2 4 7
-        incgraphic gfx/tiles/river_veg.png 160A 1 0 2 4 5
+        incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
+        incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 5
+        incgraphic gfx/sprites/rghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/rghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
@@ -75,6 +77,18 @@ river_room_bank_7
         sta temp2
         jmp (temp1)
 end
+
+plot_river_room_12
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_U
+        memcpy current_map river_room_12 280
+        plotmapfile tiled/river_room_12.tmx river_room_12 0 0 20 14
+        alt_palette = 1
+        pal_animation = 1
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
 
 plot_river_room_13
         menu_map_room[menu_map_index] = ROOML_D

@@ -13,6 +13,7 @@
         const TYPE_RSLIME   =  11
         const TYPE_MRSLIME  =  12       ; Mr. Slime lol
         const TYPE_GHOST    =  13
+        const TYPE_RGHOST   =  14
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_DARKSPARK = 140

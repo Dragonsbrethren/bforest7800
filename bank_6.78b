@@ -13,6 +13,8 @@
         incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 5
+        incgraphic gfx/sprites/rghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/rghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/octopus0.png 160A
         incgraphic gfx/sprites/octopus1.png 160A
         incgraphic gfx/sprites/octopus2.png 160A
@@ -160,7 +162,7 @@ river_set_room
           clc
           adc #1
           sta menu_map_index_2
-          cpx #13
+          cpx #12
           bcc .river_room_bank_6
 end
         gosub river_room_bank_7 bank7
@@ -248,7 +250,8 @@ plot_river_room_3
         return thisbank
 
         data river_room_3_obj
-        TYPE_OCTOPUS, $38, $60,
+        TYPE_OCTOPUS, $48, $60, TYPE_MERMAN, $48, $70, TYPE_RGHOST, $20, $50
+        TYPE_TORCH, $80, $20, TYPE_TORCH, $30, $50, TYPE_TORCH, $80, $B0,
         $00
 end
 
@@ -374,18 +377,6 @@ plot_river_room_11
         data river_room_11_obj
         $00
 end
-
-plot_river_room_12
-        menu_map_room[menu_map_index] = ROOML_U
-        menu_map_room[menu_map_index_2] = ROOMR_U
-        memcpy current_map river_room_12 280
-        plotmapfile tiled/river_room_12.tmx river_room_12 0 0 20 14
-        alt_palette = 1
-        pal_animation = 1
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
-        return thisbank
 
         data river_room_12_obj
         $00
@@ -755,6 +746,7 @@ load_octoink
           jsr set_cast_direction
 end
         flags{6} = 0
+        timer = OCTOPUS_POP_TIMER
         return thisbank
 
         data octo_shoot_frames
@@ -782,10 +774,51 @@ end
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+;==============================================================================
+; RIVER GHOST AI
+;------------------------------------------------------------------------------
+; Floats through walls to attack player
+;==============================================================================
+rghost_ai
+        flags{2} = 1
+        if timer then goto rghost_follow
+        timer = 4
+        if !object_pal[index] then object_pal[index] = 2 : goto rghost_follow
+        object_pal[index] = 0
+rghost_follow
+        timer = timer - 1
+        gosub followplayer
+        return thisbank
+
+obj_rghost_stats
+        object_hp[obj_index] = 5
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 2
+        object_mdef[obj_index] = 0
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 20
+        object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_rghost
+          sta object_spr_ptr_lo,x
+          lda #>.plot_rghost
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
 plot_octopus
         plotsprite octopus0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_octoink
         plotsprite octoink 6 Xposition Yposition 0
+        goto plot_next
+
+plot_rghost
+        plotsprite rghost0 sprite_pal Xposition Yposition animation_frame
         goto plot_next

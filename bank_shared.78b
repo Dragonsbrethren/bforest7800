@@ -80,6 +80,7 @@ object_stats
         if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
         if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
         if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
+        if object_type[obj_index] = TYPE_RGHOST then obj_rghost_stats
         if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
         if object_type[obj_index] = TYPE_OCTOPUS then obj_octo_stats
 
@@ -521,6 +522,7 @@ object_handler
         if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
         if object_type[index] = TYPE_OCTOINK then gosub fireball_ai
         if object_type[index] = TYPE_GHOST then gosub ghost_ai
+        if object_type[index] = TYPE_RGHOST then gosub rghost_ai
         if object_type[index] = TYPE_MERMAN then gosub nix_ai
         if object_type[index] = TYPE_OCTOPUS then gosub octopus_ai
         gosub move_object
@@ -639,6 +641,7 @@ _spawn_coin
         TYPE_HIETHER    ; red slime
         0               ; mini red slime
         TYPE_HIETHER    ; ghost
+        TYPE_HIETHER    ; river ghost
 end
 
         data common_drops
@@ -656,6 +659,7 @@ end
         TYPE_ANTIDOTE   ; red slime
         0               ; mini red slime
         TYPE_UNCURSE    ; ghost
+        TYPE_UNCURSE    ; river ghost
 end
 
 player_handler

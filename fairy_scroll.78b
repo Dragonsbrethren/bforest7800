@@ -2,14 +2,16 @@
         0, 0,
         name_wolf_lo, name_warg_lo, name_merman_lo, name_octopus_lo,
         name_slime_lo, name_slime_lo, name_raven_lo, name_priest_lo,
-        name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo
+        name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo,
+        name_ghost_lo
 end
 
         data enemy_names_hi
         0, 0,
         name_wolf_hi, name_warg_hi, name_merman_hi, name_octopus_hi,
         name_slime_hi, name_slime_hi, name_raven_hi, name_priest_hi,
-        name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi
+        name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi,
+        name_ghost_hi
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
