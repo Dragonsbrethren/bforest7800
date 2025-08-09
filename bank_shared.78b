@@ -1358,6 +1358,13 @@ end
 sword_damage
         ; TODO: Much better damage calculations
         if object_def[index] = 255 then return thisbank
+        temp4 = object_invuln[index]
+        if !temp4 then damage_object
+        temp4 = temp4 - 1
+        object_invuln[index] = temp4
+        return thisbank
+
+damage_object
         temp_hp = object_hp[index]
         temp1 = temp_hp
         hp_change = player_atk - object_def[index]
@@ -1365,6 +1372,7 @@ sword_damage
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
+        object_invuln[index] = INVULN_FRAMES
         goto set_enemy_name
 
 kill_torch
