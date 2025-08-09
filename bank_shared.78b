@@ -500,6 +500,55 @@ pos_swd_left
         temp5 = 3
         return
 
+        data object_ai_lo
+        0, 0, wolf_ai_lo, wolf_ai_lo, nix_ai_lo, octopus_ai_lo, slime_ai_lo, mslime_ai_lo, 
+        raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
+        ghost_ai_lo, rghost_ai_lo
+end
+
+        data object_ai_hi
+        0, 0, wolf_ai_hi, wolf_ai_hi, nix_ai_hi, octopus_ai_hi, slime_ai_hi, mslime_ai_hi, 
+        raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
+        ghost_ai_hi, rghost_ai_hi
+end
+
+        data projectile_ai_lo
+        skelsword_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        darkspark_ai_lo, octoink_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0,
+        fireball_ai_lo
+end
+
+        data projectile_ai_hi
+        skelsword_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        darkspark_ai_hi, octoink_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0,
+        fireball_ai_hi
+end
+
+load_ai_pointer
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_PROJECTILE
+          bcc load_object_ai
+          ; need to offset X for projectile arrays
+          sec
+          sbc #TYPE_PROJECTILE
+          tax
+          lda projectile_ai_lo,x
+          sta pointer
+          lda projectile_ai_hi,x
+          sta pointer_hi
+          jmp (pointer)
+
+load_object_ai
+          tax
+          lda object_ai_lo,x
+          sta pointer
+          lda object_ai_hi,x
+          sta pointer_hi
+          jmp (pointer)
+end
+
 object_handler
         for index = 1 to 15
         if !object_type[index] then object_done    ; 0 = no object
@@ -509,22 +558,8 @@ object_handler
         gosub copy_object_props 
         if flags{5} then gosub ledge_hop : goto object_restore
         gosub decelerate_object
-        if object_type[index] = TYPE_SKELSWORD then gosub skelsword_ai
-        if object_type[index] = TYPE_WOLF then gosub wolf_ai
-        if object_type[index] = TYPE_SLIME then gosub slime_ai
-        if object_type[index] = TYPE_MSLIME then gosub slime_ai
-        if object_type[index] = TYPE_RSLIME then gosub redslime_ai
-        if object_type[index] = TYPE_MRSLIME then gosub redslime_ai
-        if object_type[index] = TYPE_RAVEN then gosub raven_ai
-        if object_type[index] = TYPE_PRIEST then gosub priest_ai
-        if object_type[index] = TYPE_SKELETON then gosub priest_ai
-        if object_type[index] = TYPE_FIREBALL then gosub fireball_ai
-        if object_type[index] = TYPE_DARKSPARK then gosub fireball_ai
-        if object_type[index] = TYPE_OCTOINK then gosub fireball_ai
-        if object_type[index] = TYPE_GHOST then gosub ghost_ai
-        if object_type[index] = TYPE_RGHOST then gosub rghost_ai
-        if object_type[index] = TYPE_MERMAN then gosub nix_ai
-        if object_type[index] = TYPE_OCTOPUS then gosub octopus_ai
+        gosub load_ai_pointer
+object_ai_loaded
         gosub move_object
 object_restore
         gosub restore_object_props
