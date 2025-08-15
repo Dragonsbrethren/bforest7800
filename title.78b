@@ -103,6 +103,8 @@ init_field
         reload_map = 1
         first_load = 1
         player_state = STATE_STAND
+        player_status = 0
+        player_flags = 0
         player_speed = 1.0
         player_friction = player_speed
         player_vel_cap = 5.0

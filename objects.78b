@@ -38,11 +38,11 @@
         ; Nicer names for items
         const TYPE_POTION   = TYPE_ITEM1
         const TYPE_HIPOTION = TYPE_ITEM2
-        const TYPE_XPOTION  = TYPE_ITEM3
-        const TYPE_ETHER    = TYPE_ITEM4
-        const TYPE_HIETHER  = TYPE_ITEM5
-        const TYPE_ELIXIR   = TYPE_ITEM6
-        const TYPE_ANTIDOTE = TYPE_ITEM7
+        const TYPE_ETHER    = TYPE_ITEM3
+        const TYPE_HIETHER  = TYPE_ITEM4
+        const TYPE_ELIXIR   = TYPE_ITEM5
+        const TYPE_ANTIDOTE = TYPE_ITEM6
+        const TYPE_EYEDROP  = TYPE_ITEM7
         const TYPE_UNCURSE  = TYPE_ITEM8
         const TYPE_SOFT     = TYPE_ITEM9
         const TYPE_LIFEAPPLE = TYPE_ITEM10

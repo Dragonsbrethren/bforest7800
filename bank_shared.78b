@@ -684,8 +684,8 @@ end
         0               ; torch (handled separately)
         TYPE_FOOD       ; wolf
         TYPE_FOOD       ; warg
-        TYPE_FOOD       ; merman
-        TYPE_FOOD       ; octopus
+        TYPE_POTION     ; merman
+        TYPE_EYEDROP    ; octopus
         TYPE_ANTIDOTE   ; slime
         TYPE_ANTIDOTE   ; mini-slime
         TYPE_FOOD       ; raven
@@ -1383,16 +1383,18 @@ kill_torch
         return thisbank
 
 player_knockback
+        ; projectiles should always test box so they are destroyed even by invulnerable player
+        if object_type[index] >= TYPE_DARKSPARK then test_player_box
         if player_flags{0}         then return thisbank ; player is invulnerable, bypass collision check to save cycles
         asm
           ldx index
           lda object_flags,x
           ; tests object invunerablility flag
           lsr
-          bcc test_player_box
+          bcc .test_player_box
           rts
-test_player_box
 end
+test_player_box
         if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
 ;        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
 ;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
@@ -1401,8 +1403,11 @@ end
 
         ;  check player's shield and destroy projectile
         if object_type[index] >= TYPE_DARKSPARK then shield_check
+        ; TODO: reorder objects to add ranges for inflicting status effects
+        if object_type[index] = TYPE_GHOST || object_type[index] = TYPE_RGHOST then temp1 = BITS_CURSE : gosub set_status
 
 pc_damage
+        if player_flags{0} then return thisbank
         player_flags{0} = 1
         player_state = STATE_KNOCKBACK
         player_timer = INVULN_FRAMES
@@ -1455,6 +1460,8 @@ update_hp_bar
         return
 
 shield_check
+        ; hardcode Octoink to set dark status for now
+        if object_type[index] = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
         ; projectiles are destroyed on contact
         object_type[index] = 0
         ; TODO: different shield properties
@@ -1464,6 +1471,14 @@ shield_check
         if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then return thisbank
         if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then return thisbank
         goto pc_damage
+
+set_status
+        asm
+          lda player_status
+          ora temp1
+          sta player_status
+          rts
+end
 
 increase_player_hp
         dec player_hp = player_hp + hp_change

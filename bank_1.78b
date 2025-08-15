@@ -785,7 +785,7 @@ clear_palettes
         return
 
         data f_item_pals
-        0, 3, 3, 3, 0, 0, 0, 2, 1, 2, 2
+        0, 3, 3, 0, 0, 0, 2, 0, 1, 2, 2
 end
 
         data f_sword_pals
@@ -809,6 +809,7 @@ end
         inline hiscore.asm
         inline updateobjects.asm
         inline floatsprite.asm
+        inline fourbitfade.asm
 
         dmahole 0
 ledge_hop

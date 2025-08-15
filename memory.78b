@@ -83,6 +83,7 @@
         autodim byte player_armor
         autodim byte player_charm
         autodim byte player_status
+        autodim byte status_name
         autodim byte sword_pal
         autodim byte sword_Xpos
         autodim byte sword_Ypos

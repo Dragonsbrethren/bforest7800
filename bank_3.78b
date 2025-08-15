@@ -85,6 +85,7 @@ plot_main_menu
 main_menu_updater
         restorescreen
         gosub plot_menu_bars
+        gosub set_status_name
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
 
@@ -129,6 +130,7 @@ items_menu_updater
         restorescreen
         gosub calc_inv_array
         gosub plot_menu_bars
+        gosub set_status_name
 
 items_palettes
         ; reuses palette variables from equip menu
@@ -216,17 +218,20 @@ items_menu_controls
 
 use_item
         action_debounce = 1
+        ; zero these to prevent bug where no item can restore HP
+        hp_change = 0
+        mp_change = 0
         if menu_selection = 9 then open_main_menu
         using_item = m_item_inv[menu_selection]
         ; TODO: Prevent item use if full HP/MP or normal status
         if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = HP_CHANGE_POTION : goto use_potion
         if using_item = 2 then m_item_bits_1{1} = 0 : hp_change = HP_CHANGE_HIPOTION : goto use_potion
-        if using_item = 3 then m_item_bits_1{2} = 0 : hp_change = HP_CHANGE_XPOTION : goto use_potion
-        if using_item = 4 then m_item_bits_1{3} = 0 : mp_change = MP_CHANGE_ETHER : goto use_ether
-        if using_item = 5 then m_item_bits_1{4} = 0 : mp_change = MP_CHANGE_XETHER : goto use_ether
-        if using_item = 6 then m_item_bits_2{0} = 0 : hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
-        if using_item = 7 then m_item_bits_2{1} = 0 : goto use_antidote
-        if using_item = 8 then m_item_bits_2{2} = 0 : goto use_uncurse
+        if using_item = 3 then m_item_bits_1{2} = 0 : mp_change = MP_CHANGE_ETHER : goto use_ether
+        if using_item = 4 then m_item_bits_1{3} = 0 : mp_change = MP_CHANGE_XETHER : goto use_ether
+        if using_item = 5 then m_item_bits_1{4} = 0 : hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
+        if using_item = 6 then m_item_bits_2{0} = 0 : temp1 = MASK_POISON : goto use_heal
+        if using_item = 7 then m_item_bits_2{1} = 0 : temp1 = MASK_DARK   : goto use_heal
+        if using_item = 8 then m_item_bits_2{2} = 0 : temp1 = MASK_CURSE  : goto use_heal
 
 use_potion
         gosub increase_player_hp
@@ -239,8 +244,12 @@ use_ether
         gosub increase_player_mp
         goto use_item_done
 
-use_antidote
-use_uncurse
+use_heal
+        asm
+          lda player_status
+          and temp1
+          sta player_status
+end
 
 use_item_done
         using_item = 0
@@ -693,7 +702,6 @@ menu_selection_up
         if menu_selection > menu_max then menu_selection = menu_max
         return
 
-        dmahole 0
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
         if equip_inv_sel > 10 then equip_inv_sel = 10 : return
@@ -714,6 +722,8 @@ equip_inv_sel_up
 equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return
+
+        dmahole 0
 
 open_main_menu
         ; turn off Kangaroo mode for position pin sprite
@@ -848,6 +858,16 @@ riz_next
 riz_return
         return
 
+set_status_name
+        ; Only show the most severe status effect name
+        if player_status{3} then status_name = STATUS_STONE
+        if player_status{2} then status_name = STATUS_CURSE
+        if player_status{1} then status_name = STATUS_DARK
+        if player_status{0} then status_name = STATUS_POISON
+        if !player_status then status_name   = STATUS_NONE
+        plotmap status_names 0 24 2 8 1 0 status_name 8
+        return thisbank
+
 plot_menu_hud
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
@@ -906,16 +926,24 @@ plot_menu_border
         plotchars '}&' 0 152 12 singlewide
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
+        
+        alphadata status_names menu_font singlewide
+        '        '
+        'Poison  '
+        'Darkness'
+        'Curse   '
+        'Stone   '
+end
 
         alphadata item_names menu_font singlewide
         '           '
         'Potion     '
         'High Potion'
-        'Max Potion '
         'Ether      '
         'High Ether '
         'Elixir     '
         'Antidote   '
+        'Eye Cleanse'
         'Uncurse    '
         'Soft       '
         'Life Apple '
@@ -923,7 +951,7 @@ end
 
         ; Item description assigments
         data m_desc_set
-        0, 1, 1, 1, 2, 2, 3, 4, 5, 6, 7
+        0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8
 end
 
         alphadata item_desc menu_font singlewide
@@ -932,6 +960,7 @@ end
         'Restores MP       '
         'Restores HP and MP'
         'Cures Poison      '
+        'Curse Darkness    '
         'Cures Curse       '
         'Cures Stone       '
         'Familiar Revives  '
@@ -1003,7 +1032,7 @@ end
 end
 
         data pal_items2
-        $00, $83, $84, $85, $74, $75, $97, $45, $06, $1C, $27
+        $00, $83, $84, $74, $75, $97, $45, $76, $06, $1C, $27
 end
 
         data pal_swords1

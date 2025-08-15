@@ -68,6 +68,24 @@
         const INVULN_FRAMES = 4
 
 ;------------------------------------------------------------------------------
+; STATUSES
+;------------------------------------------------------------------------------
+        const BITS_POISON = %00000001
+        const BITS_DARK   = %00000010
+        const BITS_CURSE  = %00000100
+        const BITS_STONE  = %00001000
+
+        const MASK_POISON = %11111110
+        const MASK_DARK   = %11111101
+        const MASK_CURSE  = %11111011
+        const MASK_STONE  = %11110111
+
+        const STATUS_NONE   = 0
+        const STATUS_POISON = 1
+        const STATUS_DARK   = 2
+        const STATUS_CURSE  = 3
+        const STATUS_STONE  = 4
+;------------------------------------------------------------------------------
 ; MAP DATA
 ;------------------------------------------------------------------------------
         const TILE_HEIGHT = 16
