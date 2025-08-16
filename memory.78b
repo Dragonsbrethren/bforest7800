@@ -123,6 +123,12 @@
         autodim byte flash_color
         autodim byte player_exiting_chant
         autodim byte sword_hit
+        autodim byte poison_timer
+        autodim byte poison_duration 2
+        autodim byte darkness_duration 2
+        autodim byte curse_duration
+        autodim byte stone_duration 2
+        autodim byte fury_duration 2
 
 ;------------------------------------------------------------------------------
 ; MISC movement vars

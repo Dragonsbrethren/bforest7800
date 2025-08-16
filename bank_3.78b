@@ -85,7 +85,6 @@ plot_main_menu
 main_menu_updater
         restorescreen
         gosub plot_menu_bars
-        gosub set_status_name
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
 
@@ -130,7 +129,6 @@ items_menu_updater
         restorescreen
         gosub calc_inv_array
         gosub plot_menu_bars
-        gosub set_status_name
 
 items_palettes
         ; reuses palette variables from equip menu
@@ -723,8 +721,6 @@ equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return
 
-        dmahole 0
-
 open_main_menu
         ; turn off Kangaroo mode for position pin sprite
         sCTRL{2} = 0 : CTRL = sCTRL
@@ -749,6 +745,7 @@ close_menu
 end
         goto main ; shared palettes are now included in each tileset
 
+        dmahole 0
 gen_forest_map
         ; TODO: Test which rooms have been entered
         alphachars '0123456789ABCDEF'
@@ -860,6 +857,8 @@ riz_return
 
 set_status_name
         ; Only show the most severe status effect name
+        if player_status{5} then status_name = STATUS_REGEN
+        if player_status{4} then status_name = STATUS_FURY
         if player_status{3} then status_name = STATUS_STONE
         if player_status{2} then status_name = STATUS_CURSE
         if player_status{1} then status_name = STATUS_DARK
@@ -874,7 +873,7 @@ plot_menu_hud
         plotchars 'Johanna' 0 20 1 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
-        return
+        return thisbank
 
 plot_menu_bars
         gosub update_hp_bar
@@ -893,7 +892,7 @@ plot_menu_bars
         plotsprite menu_bar0 0 112 32 mp_seg_4
         plotsprite menu_bar0 0 120 32 mp_seg_5
         plotsprite menu_bar0 0 128 32 mp_seg_6
-        return
+        goto set_status_name
 
 plot_menu_border
         ; TODO: Automate this drawing?
@@ -933,6 +932,8 @@ plot_menu_border
         'Darkness'
         'Curse   '
         'Stone   '
+        'Fury    '
+        'Regen   '
 end
 
         alphadata item_names menu_font singlewide

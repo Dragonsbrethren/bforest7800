@@ -697,10 +697,21 @@ end
         TYPE_UNCURSE    ; river ghost
 end
 
+        ; handles poison and regen
+poison_damage
+        poison_timer = poison_timer + 1
+        if poison_timer < POISON_FRAMES then return thisbank
+        poison_timer = 0
+        hp_change = POISON_DMG
+        if player_status{5} then goto increase_player_hp
+        if player_status{0} then goto damage_player_hp
+
 player_handler
         ; TODO: saving cutscene
         if in_save_room then goto save_room_handler
         if player_state = STATE_DEATH then goto death_fade
+        
+        if player_status{0} || player_status{5} then gosub poison_damage
 ;        gosub copy_player_props
         index = 0 : gosub decelerate_player
 ;        gosub restore_player_props
@@ -1369,6 +1380,11 @@ damage_object
         temp1 = temp_hp
         hp_change = player_atk - object_def[index]
         if hp_change > player_atk then hp_change = 1
+        ; cursed players deal half damage
+        if player_status{2} then hp_change = hp_change / 2
+        ; players under fury deal quad damage
+        if player_status{4} then hp_change = hp_change * 4
+        if hp_change < 1 then hp_change = 1
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
@@ -1404,7 +1420,10 @@ test_player_box
         ;  check player's shield and destroy projectile
         if object_type[index] >= TYPE_DARKSPARK then shield_check
         ; TODO: reorder objects to add ranges for inflicting status effects
-        if object_type[index] = TYPE_GHOST || object_type[index] = TYPE_RGHOST then temp1 = BITS_CURSE : gosub set_status
+        if object_type[index] = TYPE_SLIME  || object_type[index] = TYPE_MSLIME  then temp1 = BITS_POISON : gosub set_status
+        if object_type[index] = TYPE_RSLIME || object_type[index] = TYPE_MRSLIME then temp1 = BITS_POISON : gosub set_status
+        if object_type[index] = TYPE_GHOST  || object_type[index] = TYPE_RGHOST  then temp1 = BITS_CURSE : gosub set_status
+        if object_type[index] = TYPE_NIX then temp1 = BITS_FURY : gosub set_status
 
 pc_damage
         if player_flags{0} then return thisbank
@@ -1417,7 +1436,10 @@ damage_player_hp
         ; TODO: This currently can't scale, only works with max HP 48...
         dec temp1 = player_hp        ; temp1 used to detect underflow
         dec temp2 = hp_change
-        dec hp_change = hp_change - player_def
+        dec temp3 = player_def
+        ; players under fury take double damage
+        if player_status{4} then temp3 = temp3 / 2
+        dec hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
         if hp_change > temp2 then hp_change = 1
         dec player_hp = player_hp - hp_change
