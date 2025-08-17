@@ -496,6 +496,11 @@ prep_bits_2
 
 pickup_item
         temp1 = temp1 - TYPE_ITEM1
+        ; quanities start at 1, not 0, to simplify menu code
+        temp2 = temp1 + 1
+        ; cap at 9 so we don't need to deal with BCD and so qty can be stored in a nibble
+        if temp2 >= 9 then temp2 = 9
+        m_item_qty[temp2] = m_item_qty[temp2] + 1
         pickup_ptr_lo = pickup_items_lo[temp1]
         pickup_ptr_hi = pickup_items_hi[temp1]
         gosub prep_inv_bits

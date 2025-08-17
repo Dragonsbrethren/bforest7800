@@ -166,9 +166,23 @@ items_palettes
         ; reuse obj_index here because index is used by menu coloring code and breaks item list
         for obj_index = 0 to 7
         item_name = m_item_inv[obj_index]
+        item_qty  = m_item_qty[item_name]
         if !item_name then items_left
         plotsprite menu_potion0 m_palette m_spriteX m_spriteY
         plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
+        asm
+          lda m_textX
+          clc
+          adc #ITEM_NAME_LENGTH
+          sta valueX
+          lda m_textY
+          sta valueY
+          lda #<item_qty
+          sta value_ptr_lo
+          lda #>item_qty
+          sta value_ptr_hi
+          jsr plotvaluesw
+end
 items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
         m_palette = 4
@@ -222,14 +236,15 @@ use_item
         if menu_selection = 9 then open_main_menu
         using_item = m_item_inv[menu_selection]
         ; TODO: Prevent item use if full HP/MP or normal status
-        if using_item = 1 then m_item_bits_1{0} = 0 : hp_change = HP_CHANGE_POTION : goto use_potion
-        if using_item = 2 then m_item_bits_1{1} = 0 : hp_change = HP_CHANGE_HIPOTION : goto use_potion
-        if using_item = 3 then m_item_bits_1{2} = 0 : mp_change = MP_CHANGE_ETHER : goto use_ether
-        if using_item = 4 then m_item_bits_1{3} = 0 : mp_change = MP_CHANGE_XETHER : goto use_ether
-        if using_item = 5 then m_item_bits_1{4} = 0 : hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
-        if using_item = 6 then m_item_bits_2{0} = 0 : temp1 = MASK_POISON : goto use_heal
-        if using_item = 7 then m_item_bits_2{1} = 0 : temp1 = MASK_DARK   : goto use_heal
-        if using_item = 8 then m_item_bits_2{2} = 0 : temp1 = MASK_CURSE  : goto use_heal
+        m_item_qty[using_item] = m_item_qty[using_item] - 1
+        if using_item = 1 then hp_change = HP_CHANGE_POTION : goto use_potion
+        if using_item = 2 then hp_change = HP_CHANGE_HIPOTION : goto use_potion
+        if using_item = 3 then mp_change = MP_CHANGE_ETHER : goto use_ether
+        if using_item = 4 then mp_change = MP_CHANGE_XETHER : goto use_ether
+        if using_item = 5 then hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
+        if using_item = 6 then temp1 = MASK_POISON : goto use_heal
+        if using_item = 7 then temp1 = MASK_DARK   : goto use_heal
+        if using_item = 8 then temp1 = MASK_CURSE  : goto use_heal
 
 use_potion
         gosub increase_player_hp
@@ -251,6 +266,14 @@ end
 
 use_item_done
         using_item = 0
+        if !m_item_qty[1] then m_item_bits_1[0] = 0
+        if !m_item_qty[2] then m_item_bits_1[1] = 0
+        if !m_item_qty[3] then m_item_bits_1[2] = 0
+        if !m_item_qty[4] then m_item_bits_1[3] = 0
+        if !m_item_qty[5] then m_item_bits_1[4] = 0
+        if !m_item_qty[6] then m_item_bits_2[0] = 0
+        if !m_item_qty[7] then m_item_bits_2[1] = 0
+        if !m_item_qty[8] then m_item_bits_2[2] = 0
         goto main
 
 plot_magic_menu

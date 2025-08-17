@@ -242,6 +242,7 @@
         autodim byte equip_inv_X
         autodim byte equip_inv_Y
         autodim byte item_name
+        autodim byte item_qty
         autodim byte using_item
         autodim byte m_desc
 
@@ -302,6 +303,7 @@
         autodim byte m_armor_bits_2
         autodim byte m_charm_bits_1
         autodim byte m_charm_bits_2
+        autodim byte m_item_qty   11
         autodim byte m_item_inv   11
         autodim byte m_sword_inv  11
         autodim byte m_shield_inv 11

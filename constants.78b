@@ -169,6 +169,7 @@
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32
+        const ITEM_NAME_LENGTH = (8/2) * 11
 
         const MENU_EQUIP_MAX_OPTIONS = 4
         const MENU_EQUIP_EQUIPPED_X = 76
@@ -200,6 +201,8 @@
         ; pointers used in equip menu
         const m_item_inv_lo = #<m_item_inv
         const m_item_inv_hi = #>m_item_inv
+        const m_item_qty_lo = #<m_item_qty
+        const m_item_qty_hi = #>m_item_qty
         const m_sword_inv_lo = #<m_sword_inv
         const m_sword_inv_hi = #>m_sword_inv
         const m_shield_inv_lo = #<m_shield_inv
