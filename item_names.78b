@@ -156,19 +156,19 @@ end
         'High Potion*'
 end
         alphadata pickup_item3 font_spr
-        'Max Potion*'
-end
-        alphadata pickup_item4 font_spr
         'Ether*'
 end
-        alphadata pickup_item5 font_spr
+        alphadata pickup_item4 font_spr
         'High Ether*'
 end
-        alphadata pickup_item6 font_spr
+        alphadata pickup_item5 font_spr
         'Elixir*'
 end
-        alphadata pickup_item7 font_spr
+        alphadata pickup_item6 font_spr
         'Antidote*'
+end
+        alphadata pickup_item7 font_spr
+        'Eye Cleanse*'
 end
         alphadata pickup_item8 font_spr
         'Uncurse*'

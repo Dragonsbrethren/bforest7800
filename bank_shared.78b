@@ -1382,8 +1382,9 @@ damage_object
         if hp_change > player_atk then hp_change = 1
         ; cursed players deal half damage
         if player_status{2} then hp_change = hp_change / 2
-        ; players under fury deal quad damage
-        if player_status{4} then hp_change = hp_change * 4
+
+        ; players under fury deal double damage
+        if player_status{4} then hp_change = hp_change * 2
         if hp_change < 1 then hp_change = 1
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
@@ -1437,8 +1438,8 @@ damage_player_hp
         dec temp1 = player_hp        ; temp1 used to detect underflow
         dec temp2 = hp_change
         dec temp3 = player_def
-        ; players under fury take double damage
-        if player_status{4} then temp3 = temp3 / 2
+        ; players under fury have quarter defense
+        if player_status{4} then temp3 = temp3 / 4
         dec hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
         if hp_change > temp2 then hp_change = 1
