@@ -266,14 +266,14 @@ end
 
 use_item_done
         using_item = 0
-        if !m_item_qty[1] then m_item_bits_1[0] = 0
-        if !m_item_qty[2] then m_item_bits_1[1] = 0
-        if !m_item_qty[3] then m_item_bits_1[2] = 0
-        if !m_item_qty[4] then m_item_bits_1[3] = 0
-        if !m_item_qty[5] then m_item_bits_1[4] = 0
-        if !m_item_qty[6] then m_item_bits_2[0] = 0
-        if !m_item_qty[7] then m_item_bits_2[1] = 0
-        if !m_item_qty[8] then m_item_bits_2[2] = 0
+        if !m_item_qty[1] then m_item_bits_1{0} = 0
+        if !m_item_qty[2] then m_item_bits_1{1} = 0
+        if !m_item_qty[3] then m_item_bits_1{2} = 0
+        if !m_item_qty[4] then m_item_bits_1{3} = 0
+        if !m_item_qty[5] then m_item_bits_1{4} = 0
+        if !m_item_qty[6] then m_item_bits_2{0} = 0
+        if !m_item_qty[7] then m_item_bits_2{1} = 0
+        if !m_item_qty[8] then m_item_bits_2{2} = 0
         goto main
 
 plot_magic_menu
@@ -886,7 +886,7 @@ set_status_name
         if player_status{2} then status_name = STATUS_CURSE
         if player_status{1} then status_name = STATUS_DARK
         if player_status{0} then status_name = STATUS_POISON
-        if !player_status then status_name   = STATUS_NONE
+        if !player_status   then status_name = STATUS_NONE
         plotmap status_names 0 24 2 8 1 0 status_name 8
         return thisbank
 
@@ -984,7 +984,7 @@ end
         'Restores MP       '
         'Restores HP and MP'
         'Cures Poison      '
-        'Curse Darkness    '
+        'Cures Darkness    '
         'Cures Curse       '
         'Cures Stone       '
         'Familiar Revives  '
