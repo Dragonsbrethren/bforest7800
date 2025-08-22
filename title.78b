@@ -126,6 +126,16 @@ init_field
         dec mp_seg_6 = 8
         sword_pal = 2
         shield_pal = 2
+        if m_item_bits_1{0} then m_item_qty[1] = 1
+        if m_item_bits_1{1} then m_item_qty[2] = 1
+        if m_item_bits_1{2} then m_item_qty[3] = 1
+        if m_item_bits_1{3} then m_item_qty[4] = 1
+        if m_item_bits_1{4} then m_item_qty[5] = 1
+        if m_item_bits_2{0} then m_item_qty[6] = 1
+        if m_item_bits_2{1} then m_item_qty[7] = 1
+        if m_item_bits_2{2} then m_item_qty[8] = 1
+        if m_item_bits_2{3} then m_item_qty[9] = 1
+        if m_item_bits_2{4} then m_item_qty[10] = 1
         gosub encode_password
         gosub update_player_stats bank3
         goto main
