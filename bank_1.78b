@@ -738,7 +738,8 @@ topscreenroutine
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
-        BACKGRND=bg_color
+        setfade fade
+        BACKGRND=getfade(bg_color, black)
         if game_state = STATE_TITLE then set_title_top_pal
         return thisbank
 
@@ -758,8 +759,10 @@ bottomscreenroutine
         P7C1     = flash_color
 hair_flash
         ; Johanna's hair
-        if game_state = STATE_FIELD then P1C1 = HAIR_COLOR
+        if game_state = STATE_FIELD then P1C1 = getfade(HAIR_COLOR, black)
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
+        white_value = getfade(PAL_WHITE)
+        if !white_value then white_value = WHITE_DARKNESS
         return thisbank
 
 clear_palettes

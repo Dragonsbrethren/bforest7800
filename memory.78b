@@ -361,10 +361,12 @@
         autodim byte pw_index22
         autodim byte pw_checksum
         autodim byte pw_index
-        autodim byte pw_buffer 24
+        autodim byte pw_buffer 32
         autodim byte pw_error
         autodim byte pw_success
         autodim byte fade_count
+        autodim byte fade
+        autodim byte white_value
 
 
         dim current_map = $2600

@@ -94,6 +94,10 @@
 
         const POISON_DMG = 1
         const POISON_FRAMES = 120
+
+        const FADE_DARKNESS = 0
+        const FADE_NORMAL   = 15
+        const WHITE_DARKNESS = $50
 ;------------------------------------------------------------------------------
 ; MAP DATA
 ;------------------------------------------------------------------------------

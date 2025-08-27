@@ -1,4 +1,4 @@
-        P0C1 = PAL_DKPURP : P0C2 = PAL_LTPURP : P0C3 = PAL_WHITE   ; magic HUD, torches
-        P1C1 = PAL_DKBRWN : P1C2 = PAL_LTBRWN : P1C3 = PAL_SKIN    ; Johanna
-        P2C1 = PAL_DKRED  : P2C2 = PAL_LTRED  : P2C3 = PAL_GOLD    ; HP HUD, red equipment
-        P3C1 = PAL_DKBLUE : P3C2 = PAL_LTBLUE : P3C3 = PAL_COPPER  ; blue/green equipment
+        P0C1 = getfade(PAL_DKPURP, black) : P0C2 = getfade(PAL_LTPURP) : P0C3 = white_value   ; magic HUD, torches
+        P1C1 = getfade(PAL_DKBRWN, black) : P1C2 = getfade(PAL_LTBRWN) : P1C3 = getfade(PAL_SKIN)    ; Johanna
+        P2C1 = getfade(PAL_DKRED, black)  : P2C2 = getfade(PAL_LTRED)  : P2C3 = getfade(PAL_GOLD)    ; HP HUD, red equipment
+        P3C1 = getfade(PAL_DKBLUE, black) : P3C2 = getfade(PAL_LTBLUE) : P3C3 = getfade(PAL_COPPER)  ; blue/green equipment

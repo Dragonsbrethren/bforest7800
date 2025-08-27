@@ -236,8 +236,8 @@ castle_lightning
 castle_shared_pals
         bg_color = PAL_BLACK
         incbasic shared_pals.78b
-        goto lightning_done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-
+        goto lightning_done
+        
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
         P6C2 = PAL_C_LTCARP : P6C3 = PAL_C_DKCARP

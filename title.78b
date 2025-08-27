@@ -79,6 +79,7 @@ end
 
 title_new_game
         tileset = T_RIVER
+        fade = $0F
         player_sword = 1
         player_shield = 0
         player_armor = 1

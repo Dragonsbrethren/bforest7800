@@ -105,7 +105,7 @@ load_map
         adjustvisible 0 14
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
-        if tileset = T_RIVER  then gosub load_river bank6 : gosub river_pals
+        if tileset = T_RIVER  then gosub load_river bank6
 
         gosub draw_hud
 draw_pickup_hud
@@ -140,14 +140,7 @@ player_handler_done
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
         gosub check_collisions
-        gosub remove_duplicates
-
-        if !lightning_timer then no_lightning
-        if tileset = T_CASTLE then goto castle_lightning
-no_lightning
-        if tileset = T_CASTLE then goto castle_pals
-
-lightning_done
+;        gosub remove_duplicates
 
 set_pickup_string
         if pickup_timer then get_pickup_string
@@ -181,7 +174,18 @@ pickup_center
 pickup_done
         new_pickup = 0
 
+check_darkness
+        if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
+
         restorescreen
+        if !lightning_timer then no_lightning
+        if tileset = T_CASTLE then goto castle_lightning
+no_lightning
+;        if tileset = T_FOREST then goto forest_pals
+        if tileset = T_CASTLE then goto castle_pals
+        if tileset = T_RIVER then goto river_pals
+
+lightning_done
         gosub update_pickup_objs
 
 plot_objects
