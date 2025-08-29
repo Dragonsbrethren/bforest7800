@@ -215,15 +215,16 @@ castle_room_bank_4
 end
 
 castle_pals
-        P4C1 = PAL_C_SKY    : P4C2 = PAL_C_DKWALL : P4C3 = PAL_C_LTWALL ; walls
-        P7C1 = PAL_C_BRCARP : P7C2 = PAL_C_DKCARP : P7C3 = PAL_C_LTCARP ; carpets
-        if alt_palette=1 then P5C1 = PAL_C_DKCARP : goto castle_maroon_pal   ; chapel
-        P6C1 = PAL_C_BRTILE : P6C2 = PAL_C_LTTILE : P6C3 = PAL_C_DKTILE ; tiled floors
+        P4C1 = PAL_C_SKY    : P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
+        P7C1 = PAL_C_BRCARP : P7C2 = getfade(PAL_C_DKCARP, black) : P7C3 = getfade(PAL_C_LTCARP) ; carpets
+        if alt_palette=1 then P5C1 = getfade(PAL_C_DKCARP, black) : goto castle_maroon_pal   ; chapel
+        P6C1 = PAL_C_BRTILE : P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
         if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
-        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
+        P5C1 = PAL_C_SKELBL : P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
         goto castle_shared_pals
 
 castle_lightning
+        ; TODO: lightning can be partially handled by palette fade
         if no_flash then goto castle_pals
         P4C1 = PAL_C_LIGHTN : P4C2 = PAL_C_MDWALL : P4C3 = PAL_C_BRWALL ; walls
         P7C1 = PAL_C_LIGHTN : P7C2 = PAL_C_LTCARP : P7C3 = PAL_C_BRCARP ; carpets
@@ -234,17 +235,17 @@ castle_lightning
         lightning_delay = LIGHTNING_DELAY
 
 castle_shared_pals
-        bg_color = PAL_BLACK
+        bg_color = flash_color
         incbasic shared_pals.78b
-        goto lightning_done
+        goto palette_done
         
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
-        P6C2 = PAL_C_LTCARP : P6C3 = PAL_C_DKCARP
+        P6C2 = getfade(PAL_C_LTCARP) : P6C3 = getfade(PAL_C_DKCARP, black)
 
 castle_gold_pal
         ; override skeleton colors with golds
-        P5C2 = PAL_C_DKGOLD : P5C3 = PAL_C_LTGOLD
+        P5C2 = getfade(PAL_C_DKGOLD, black) : P5C3 = getfade(PAL_C_LTGOLD)
         if !lightning_delay then lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
 
@@ -289,12 +290,11 @@ end
         $00
 end
 
+        dmahole 0
         data castle_room_5_obj
         TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
         $00
 end
-
-        dmahole 0
 
         data castle_room_6_obj
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,

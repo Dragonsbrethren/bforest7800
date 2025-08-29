@@ -175,7 +175,12 @@ pickup_done
         new_pickup = 0
 
 check_darkness
+        ; bypass the darkness check for dead player
+        if player_state = STATE_DEATH then darkness_done
+        ; TODO: save the normal fade value in a variable?
         if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
+
+darkness_done
 
         restorescreen
         if !lightning_timer then no_lightning
@@ -185,7 +190,7 @@ no_lightning
         if tileset = T_CASTLE then goto castle_pals
         if tileset = T_RIVER then goto river_pals
 
-lightning_done
+palette_done
         gosub update_pickup_objs
 
 plot_objects

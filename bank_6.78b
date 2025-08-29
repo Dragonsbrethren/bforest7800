@@ -178,11 +178,11 @@ river_room_bank_6
 end
 
 river_pals
-        P4C1 = PAL_BLACK  : P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade (PAL_F_LTGRN)     ; greens used by trees and slimes
+        P4C1 = flash_color : P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade (PAL_F_LTGRN)     ; greens used by trees and slimes
         if alt_palette then river_pals_cliffs
-        P5C1 = PAL_BLACK  : P5C2 = getfade(PAL_F_WATER, black) : P5C3 = getfade(PAL_F_DKGRN, black)     ; water vegetation
+        P5C1 = flash_color : P5C2 = getfade(PAL_F_WATER, black) : P5C3 = getfade(PAL_F_DKGRN, black)     ; water vegetation
 river_pals_rocks
-        P6C1 = PAL_BLACK  : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_LTWTR)     ; blue and gray used by water
+        P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_LTWTR)     ; blue and gray used by water
         P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2)  : P7C3 = getfade(PAL_WFALL3)      ; blues, waterfalls
         ; palette registers are read-only, need soft versions of their data
         sP7C1 = getfade(PAL_WFALL1) : sP7C2 = getfade(PAL_WFALL2) : sP7C3 = getfade(PAL_WFALL3)
@@ -190,10 +190,10 @@ river_pals_rocks
 river_shared_pals
         bg_color = PAL_F_GRND   ; ground color shared with forest
         incbasic shared_pals.78b
-        goto lightning_done
+        goto palette_done
 
 river_pals_cliffs
-        P5C1 = PAL_BLACK  : P5C2 = getfade(PAL_F_DKBRN,black) : P5C3 = getfade(PAL_F_LTBRN)
+        P5C1 = flash_color : P5C2 = getfade(PAL_F_DKBRN,black) : P5C3 = getfade(PAL_F_LTBRN)
         goto river_pals_rocks
 
 
