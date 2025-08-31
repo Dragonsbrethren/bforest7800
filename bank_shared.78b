@@ -1356,7 +1356,6 @@ test_player_box
         if object_type[index] = TYPE_SLIME  || object_type[index] = TYPE_MSLIME  then temp1 = BITS_POISON : gosub set_status
         if object_type[index] = TYPE_RSLIME || object_type[index] = TYPE_MRSLIME then temp1 = BITS_POISON : gosub set_status
         if object_type[index] = TYPE_GHOST  || object_type[index] = TYPE_RGHOST  then temp1 = BITS_CURSE : gosub set_status
-        if object_type[index] = TYPE_NIX then temp1 = BITS_FURY : gosub set_status
 
 pc_damage
         if player_flags{0} then return thisbank
