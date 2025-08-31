@@ -67,6 +67,13 @@
         const CHANT_START_TIME = 12
         const INVULN_FRAMES = 4
 
+        const PLAYER_HP_MAX = 48
+        const PLAYER_HP_HALF = PLAYER_HP_MAX / 2
+        const PLAYER_HP_QUARTER = PLAYER_HP_MAX / 4
+        const PLAYER_MP_MAX = 48
+        const PLAYER_MP_HALF = PLAYER_MP_MAX / 2
+        const PLAYER_MP_QUARTER = PLAYER_MP_MAX / 4
+
 ;------------------------------------------------------------------------------
 ; STATUSES
 ;------------------------------------------------------------------------------

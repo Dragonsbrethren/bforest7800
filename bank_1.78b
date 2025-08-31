@@ -821,6 +821,70 @@ cast_fireball_left
         rts
 end
 
+;==============================================================================
+; FAIRY FAMILIAR
+;------------------------------------------------------------------------------
+; The Fairy doesn't engage in combat but can use healing items on Johanna
+;==============================================================================
+fairy_ai
+        ; prioritize curing status effects
+        if player_status{0} && m_item_qty[6] then temp1 = MASK_POISON : temp2 = 6 : goto fairy_use_heal
+        if player_status{1} && m_item_qty[7] then temp1 = MASK_DARK   : temp2 = 7 : goto fairy_use_heal
+        if player_status{2} && m_item_qty[8] then temp1 = MASK_CURSE  : temp2 = 8 : goto fairy_use_heal
+        if player_status{3} && m_item_qty[9] then temp1 = MASK_STONE  : temp2 = 9 : goto fairy_use_heal
+        if player_state = STATE_DEATH && m_item_qty[10] then temp2 = 10 : goto  fairy_revive
+        if player_hp < PLAYER_HP_QUARTER && m_item_bits_1{1} then temp2 = 2 : goto fairy_use_hipotion
+        if player_hp < PLAYER_HP_HALF && m_item_bits_1{0} then temp2 = 1 : goto fairy_use_potion
+        ; workaround for no item, decrease quantity 0, which isn't used
+        temp2 = 0
+
+fairy_items_done
+        asm
+          ldx temp2
+          dec m_item_qty,x
+end
+        gosub check_item_qtys
+        return
+
+fairy_revive
+        ; undo the actions taken by the death handler
+        player_state = STATE_STAND
+        hp_change = PLAYER_HP_MAX
+        gosub increase_player_hp
+        fade_count = 0
+        goto fairy_items_done
+
+fairy_use_heal
+        asm
+          lda player_status
+          and temp1
+          sta player_status
+end
+        goto fairy_items_done
+
+fairy_use_hipotion
+        hp_change = HP_CHANGE_HIPOTION
+        gosub increase_player_hp
+        goto fairy_items_done
+
+fairy_use_potion
+        hp_change = HP_CHANGE_POTION
+        gosub increase_player_hp
+        goto fairy_items_done
+
+check_item_qtys
+        if !m_item_qty[1] then m_item_bits_1{0} = 0
+        if !m_item_qty[2] then m_item_bits_1{1} = 0
+        if !m_item_qty[3] then m_item_bits_1{2} = 0
+        if !m_item_qty[4] then m_item_bits_1{3} = 0
+        if !m_item_qty[5] then m_item_bits_1{4} = 0
+        if !m_item_qty[6] then m_item_bits_2{0} = 0
+        if !m_item_qty[7] then m_item_bits_2{1} = 0
+        if !m_item_qty[8] then m_item_bits_2{2} = 0
+        if !m_item_qty[9] then m_item_bits_2{3} = 0
+        if !m_item_qty[10] then m_item_bits_2{4} = 0
+        return thisbank
+
 
 swap_action_button
         select_debounce = 1
@@ -893,6 +957,7 @@ end
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
+        dmahole 0
         incbasic sounds.78b
         incbasic music.78b
         inline hiscore.asm
@@ -900,7 +965,6 @@ end
         inline floatsprite.asm
         inline fourbitfade.asm
 
-        dmahole 0
 ledge_hop
         asm
         lda Xdirection

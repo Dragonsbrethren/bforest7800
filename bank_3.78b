@@ -266,14 +266,7 @@ end
 
 use_item_done
         using_item = 0
-        if !m_item_qty[1] then m_item_bits_1{0} = 0
-        if !m_item_qty[2] then m_item_bits_1{1} = 0
-        if !m_item_qty[3] then m_item_bits_1{2} = 0
-        if !m_item_qty[4] then m_item_bits_1{3} = 0
-        if !m_item_qty[5] then m_item_bits_1{4} = 0
-        if !m_item_qty[6] then m_item_bits_2{0} = 0
-        if !m_item_qty[7] then m_item_bits_2{1} = 0
-        if !m_item_qty[8] then m_item_bits_2{2} = 0
+        gosub check_item_qtys
         goto main
 
 plot_magic_menu

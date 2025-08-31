@@ -44,6 +44,8 @@ field_handler
         goto player_handler
 player_handler_done
         gosub object_handler
+        ; stick this here until fairy coded
+        gosub fairy_ai
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
         gosub check_collisions
