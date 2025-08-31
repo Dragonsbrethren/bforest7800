@@ -6,99 +6,6 @@
         bank 17
         incbasic shared_gfx.78b
 
-;==============================================================================
-; LOAD OBJECTS
-;------------------------------------------------------------------------------
-; Fills all 16 object slots with type and position data from ROM,
-; then interates through each type to set object properties
-; Utilizes pointers so multiple maps can reuse the same object data if desired
-;==============================================================================
-load_objects
-        asm
-        ldx #MAX_OBJECTS
-        lda #0
-clear_obj_loop
-        sta object_type,x
-        sta object_Xpos,x
-        sta object_Ypos,x
-        sta object_Xvel_lo,x
-        sta object_Xvel_hi,x
-        sta object_Yvel_lo,x
-        sta object_Yvel_hi,x
-        sta object_Xdir,x
-        sta object_Ydir,x
-        sta object_facing,x
-        sta object_frame,x
-        sta object_state,x
-        sta object_speed_lo,x
-        sta object_speed_hi,x
-        sta object_vel_cap_lo,x
-        sta object_vel_cap_hi,x
-        sta object_friction_lo,x
-        sta object_friction_hi,x
-        sta object_hp,x
-        sta object_damage,x
-        sta object_elem_atk,x
-        sta object_def,x
-        sta object_mdef,x
-        sta object_elem_def,x
-        sta object_parent,x
-        sta object_flags,x
-        sta object_timer,x
-        sta object_dest,x
-        sta object_hop_dir,x
-        sta object_pal,x
-        dex
-        bne clear_obj_loop
-        sta temp1
-        ; failsafe for objects without sprite pointer
-        lda #<.plot_next
-        sta object_spr_ptr_lo,x
-        lda #>.plot_next
-        sta object_spr_ptr_hi,x
-end
-        for obj_index = 1 to MAX_OBJECTS
-        object_type[obj_index] = pointer[[temp1]]
-        if !object_type[obj_index] then object_stats
-        temp1 = temp1 + 1
-        object_Xpos[obj_index] = pointer[[temp1]]
-        temp1 = temp1 + 1
-        object_Ypos[obj_index] = pointer[[temp1]]
-        temp1 = temp1 + 1
-        next
-        ; TODO: pointer table for stats as well
-object_stats
-        for obj_index = 1 to MAX_MAP_OBJECTS
-        if !object_type[obj_index] then next_obj_stats
-        if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
-        if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
-        if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
-        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
-        if object_type[obj_index] = TYPE_RSLIME then obj_redslime_stats
-        if object_type[obj_index] = TYPE_MRSLIME then obj_redslime_stats : object_hp[obj_index] = MRSLIME_HP : object_def[obj_index] = MRSLIME_DEF
-        if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
-        if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
-        if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
-        if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
-        if object_type[obj_index] = TYPE_RGHOST then obj_rghost_stats
-        if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
-        if object_type[obj_index] = TYPE_OCTOPUS then obj_octo_stats
-
-obj_next_stats
-        next
-        return
-
-obj_torch_stats
-        object_hp[obj_index] = 1
-        asm
-          ldx obj_index
-          lda #<.plot_torch
-          sta object_spr_ptr_lo,x
-          lda #>.plot_torch
-          sta object_spr_ptr_hi,x
-end
-        goto obj_next_stats
-
 load_map
         clearscreen
         displaymode 160A
@@ -140,13 +47,14 @@ player_handler_done
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
         gosub check_collisions
-;        gosub remove_duplicates
+        gosub remove_duplicates
 
 set_pickup_string
         if pickup_timer then get_pickup_string
 
 pickup_clear
-        for index = 0 to 13
+        ; when the pickup timer expires, zero the string
+        for index = 0 to PICKUP_STRING_LENGTH
         pickup_string[index] = 0
         next
         item_pickup = 0
@@ -154,22 +62,37 @@ pickup_clear
 
 get_pickup_string
         pickup_timer = pickup_timer - 1
+        ; only run this code once per string
         if !new_pickup then pickup_done
         ; set pickup string based on pickup pointer
-        for index = 0 to 13
+        for index = 0 to PICKUP_STRING_LENGTH
         pickup_string[index] = pickup_ptr[[index]]
         if !pickup_string[index] then pickup_pad
         next
 
 pickup_pad
-        ; now pad with blanks to 16 chars
+        ; now pad with blanks to maximum length
         temp1 = index
-        if temp1 = 13 then pickup_done
-        for index = temp1 to 13
+        if temp1 = PICKUP_STRING_LENGTH then pickup_done
+        for index = temp1 to PICKUP_STRING_LENGTH
         pickup_string[index] = 0
         next
 
 pickup_center
+        ; do some math to center the string
+        temp2 = (PICKUP_STRING_LENGTH - temp1) / 2
+        temp3 = temp2 + temp1
+        ; use a negative step when copying so
+        ; the same string buffer can be used
+        for index = temp1 to 0 step -1
+        pickup_string[temp3] = pickup_string[index]
+        temp3 = temp3 - 1
+        next
+        ; lastly blank the left part of the string
+        temp2 = temp2 - 1
+        for index = 0 to temp2
+        pickup_string[index] = 0
+        next
 
 pickup_done
         new_pickup = 0

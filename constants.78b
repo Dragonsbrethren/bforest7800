@@ -217,6 +217,7 @@
         const m_charm_inv_hi = #>m_charm_inv
 
         const PICKUP_TIME = 120
+        const PICKUP_STRING_LENGTH = 13
 
         ; pointers to sprite plotting routines
         const plot_torch_lo     = #<.plot_torch
