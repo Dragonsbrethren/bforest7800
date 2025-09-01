@@ -209,6 +209,9 @@
         const MP_CHANGE_ETHER = $10
         const MP_CHANGE_XETHER = $48
 
+        ; fairy familiar item use frames
+        const FAIRY_ITEM_TIME = 120
+
         ; pointers used in equip menu
         const m_item_inv_lo = #<m_item_inv
         const m_item_inv_hi = #>m_item_inv

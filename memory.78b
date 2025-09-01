@@ -303,6 +303,8 @@
         autodim byte m_armor_bits_2
         autodim byte m_charm_bits_1
         autodim byte m_charm_bits_2
+        autodim byte m_relic_bits_1
+        autodim byte m_relic_bits_2
         autodim byte m_item_qty   11
         autodim byte m_item_inv   11
         autodim byte m_sword_inv  11

@@ -665,18 +665,22 @@ clear_obj_loop
         lda #>.plot_next
         sta object_spr_ptr_hi,x
 end
-        for obj_index = 1 to MAX_OBJECTS
+        for obj_index = 1 to MAX_MAP_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
-        if !object_type[obj_index] then object_stats
+        if !object_type[obj_index] then object_familiars
         temp1 = temp1 + 1
         object_Xpos[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         object_Ypos[obj_index] = pointer[[temp1]]
         temp1 = temp1 + 1
         next
+
+object_familiars
+        ; if m_relic_bits_1 then
+        object_type[13] = TYPE_F_FAIRY
         ; TODO: pointer table for stats as well
 object_stats
-        for obj_index = 1 to MAX_MAP_OBJECTS
+        for obj_index = 1 to MAX_OBJECTS
         if !object_type[obj_index] then next_obj_stats
         if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
         if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
@@ -691,6 +695,7 @@ object_stats
         if object_type[obj_index] = TYPE_RGHOST then obj_rghost_stats
         if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
         if object_type[obj_index] = TYPE_OCTOPUS then obj_octo_stats
+        if object_type[obj_index] = TYPE_F_FAIRY then obj_fairy_stats
 
 obj_next_stats
         next
@@ -827,23 +832,48 @@ end
 ; The Fairy doesn't engage in combat but can use healing items on Johanna
 ;==============================================================================
 fairy_ai
+        timer = timer + 1
+        if timer < FAIRY_ITEM_TIME then fairy_move
+        timer = 0
+
+fairy_pick_item
         ; prioritize curing status effects
+        if player_state = STATE_DEATH && m_item_qty[10] then temp2 = 10 : goto  fairy_revive
+        if player_status{3} && m_item_qty[9] then temp1 = MASK_STONE  : temp2 = 9 : goto fairy_use_heal
         if player_status{0} && m_item_qty[6] then temp1 = MASK_POISON : temp2 = 6 : goto fairy_use_heal
         if player_status{1} && m_item_qty[7] then temp1 = MASK_DARK   : temp2 = 7 : goto fairy_use_heal
         if player_status{2} && m_item_qty[8] then temp1 = MASK_CURSE  : temp2 = 8 : goto fairy_use_heal
-        if player_status{3} && m_item_qty[9] then temp1 = MASK_STONE  : temp2 = 9 : goto fairy_use_heal
-        if player_state = STATE_DEATH && m_item_qty[10] then temp2 = 10 : goto  fairy_revive
-        if player_hp < PLAYER_HP_QUARTER && m_item_bits_1{1} then temp2 = 2 : goto fairy_use_hipotion
-        if player_hp < PLAYER_HP_HALF && m_item_bits_1{0} then temp2 = 1 : goto fairy_use_potion
-        ; workaround for no item, decrease quantity 0, which isn't used
-        temp2 = 0
+        if player_hp < PLAYER_HP_QUARTER && m_item_qty[2] then temp2 = 2 : goto fairy_use_hipotion
+        if player_hp < PLAYER_HP_HALF && m_item_qty[1] then temp2 = 1 : goto fairy_use_potion
+        if player_mp < PLAYER_MP_QUARTER && m_item_qty[4] then temp2 = 4 : goto fairy_use_hiether
+        if player_mp < PLAYER_MP_HALF && m_item_qty[3] then temp2 = 3 : goto fairy_use_ether
+        ; TODO: should the fairy use Elixirs?
+        goto fairy_item_done
 
-fairy_items_done
+fairy_item_used
+        ; temp2 holds the number of the item used
         asm
           ldx temp2
           dec m_item_qty,x
 end
+        ; remove any zero quantity items from inventory
         gosub check_item_qtys
+        playsfx sfx_bubbleup
+
+fairy_item_done
+
+fairy_move
+        if !boxcollision(Xposition, Yposition, PLAYER_WIDTH, PLAYER_HEIGHT, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then followplayer
+        ; make the fairy float around the player a bit
+        temp1 = rand
+        if temp1 >= 192 then Xdirection = DIR_UP : goto fairy_vel
+        if temp1 >= 128 then Xdirection = DIR_DOWN : goto fairy_vel
+        if temp1 >= 64 then Ydirection = DIR_LEFT : goto fairy_vel
+        Ydirection = DIR_RIGHT
+fairy_vel
+        Xvelocity = Xvelocity + move_speed
+        Yvelocity = Yvelocity + move_speed
+fairy_done
         return
 
 fairy_revive
@@ -852,7 +882,7 @@ fairy_revive
         hp_change = PLAYER_HP_MAX
         gosub increase_player_hp
         fade_count = 0
-        goto fairy_items_done
+        goto fairy_item_used
 
 fairy_use_heal
         asm
@@ -860,17 +890,43 @@ fairy_use_heal
           and temp1
           sta player_status
 end
-        goto fairy_items_done
+        goto fairy_item_used
 
 fairy_use_hipotion
         hp_change = HP_CHANGE_HIPOTION
         gosub increase_player_hp
-        goto fairy_items_done
+        goto fairy_item_used
 
 fairy_use_potion
         hp_change = HP_CHANGE_POTION
         gosub increase_player_hp
-        goto fairy_items_done
+        goto fairy_item_used
+
+fairy_use_hiether
+        mp_change = MP_CHANGE_XETHER
+        gosub increase_player_mp
+        goto fairy_item_used
+
+fairy_use_ether
+        mp_change = MP_CHANGE_ETHER
+        gosub increase_player_mp
+        goto fairy_item_used
+
+obj_fairy_stats
+        object_hp[obj_index] = 1
+        object_speed_hi[obj_index] = 1
+        object_speed_lo[obj_index] = 128
+        object_Xpos[obj_index] = player_Xpos
+        object_Ypos[obj_index] = player_Ypos - 8
+        object_flags[obj_index] = %00000100
+        asm
+          ldx obj_index
+          lda #<.plot_torch
+          sta object_spr_ptr_lo,x
+          lda #>.plot_torch
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
 
 check_item_qtys
         if !m_item_qty[1] then m_item_bits_1{0} = 0
