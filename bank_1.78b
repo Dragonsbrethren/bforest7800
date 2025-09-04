@@ -857,13 +857,19 @@ fairy_item_used
           dec m_item_qty,x
 end
         ; remove any zero quantity items from inventory
+;        if animation_frame then frame = F_FAIRY_ITEM2 else frame = F_FAIRY_ITEM1
         gosub check_item_qtys
         playsfx sfx_bubbleup
 
 fairy_item_done
 
 fairy_move
-        if !boxcollision(Xposition, Yposition, PLAYER_WIDTH, PLAYER_HEIGHT, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then followplayer
+;        if animation_frame then frame = F_FAIRY_WING2 else frame = F_FAIRY_WING1
+        temp1 = Xposition - 24
+        if temp1 > Xposition then temp1 = 0
+        temp2 = Yposition - 32
+        if temp2 > Yposition then temp2 = 0
+        if !boxcollision(temp1, temp2, 48, 64, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then followplayer
         ; make the fairy float around the player a bit
         temp1 = rand
         if temp1 >= 192 then Xdirection = DIR_UP : goto fairy_vel
@@ -913,20 +919,32 @@ fairy_use_ether
         goto fairy_item_used
 
 obj_fairy_stats
-        object_hp[obj_index] = 1
-        object_speed_hi[obj_index] = 1
-        object_speed_lo[obj_index] = 128
+        object_hp[obj_index] = FAIRY_HP
+        object_vel_cap_hi[obj_index] = FAIRY_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = FAIRY_VEL_CAP_LO
+        object_damage[obj_index] = FAIRY_DAMAGE
+        object_def[obj_index] = FAIRY_DEF
+        object_mdef[obj_index] = FAIRY_MDEF
+        object_friction_hi[obj_index] = FAIRY_FRICTION_HI
+        object_friction_lo[obj_index] = FAIRY_FRICTION_LO
+        object_speed_hi[obj_index] = FAIRY_SPEED_HI
+        object_speed_lo[obj_index] = FAIRY_SPEED_LO
+        object_flags[obj_index] = 0
         object_Xpos[obj_index] = player_Xpos
         object_Ypos[obj_index] = player_Ypos - 8
         object_flags[obj_index] = %00000100
         asm
           ldx obj_index
-          lda #<.plot_torch
+          lda #<.plot_fairy
           sta object_spr_ptr_lo,x
-          lda #>.plot_torch
+          lda #>.plot_fairy
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
+
+plot_fairy
+        plotsprite fairy0 0 Xposition Yposition frame
+        goto plot_next
 
 check_item_qtys
         if !m_item_qty[1] then m_item_bits_1{0} = 0

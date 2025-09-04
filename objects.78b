@@ -201,6 +201,24 @@
         const OCTOINK_SPEED_LO = 0
         const OCTOINK_DAMAGE   = 6
 
+
+        ; FAMILIARS
+        const FAIRY_SPEED_HI = 1
+        const FAIRY_SPEED_LO = 0
+        const FAIRY_HP = 255
+        const FAIRY_VEL_CAP_HI = 1
+        const FAIRY_VEL_CAP_LO = 128
+        const FAIRY_FRICTION_HI = 0
+        const FAIRY_FRICTION_LO = 128
+        const FAIRY_DAMAGE = 0
+        const FAIRY_DEF = 255
+        const FAIRY_MDEF = 255
+
+        const F_FAIRY_WING1 = 0
+        const F_FAIRY_WING2 = 1
+        const F_FAIRY_ITEM1 = 2
+        const F_FAIRY_ITEM2 = 3
+
         const FIREBALL_SPEED_HI = 2
         const FIREBALL_SPEED_LO = 0
         const FIREBALL_DAMAGE = 2
