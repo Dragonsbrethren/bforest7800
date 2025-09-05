@@ -882,18 +882,7 @@ fairy_move
         if temp1 > Xposition then temp1 = 0
         temp2 = Yposition - 32
         if temp2 > Yposition then temp2 = 0
-        if !boxcollision(temp1, temp2, 48, 64, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then followplayer
-        ; make the fairy float around the player a bit
-        temp1 = rand
-        if temp1 >= 192 then Xdirection = DIR_UP : goto fairy_vel
-        if temp1 >= 128 then Xdirection = DIR_DOWN : goto fairy_vel
-        if temp1 >= 64 then Ydirection = DIR_LEFT : goto fairy_vel
-        Ydirection = DIR_RIGHT
-fairy_vel
-        Xvelocity = Xvelocity + move_speed
-        Yvelocity = Yvelocity + move_speed
-fairy_done
-        return
+        goto followplayer
 
 fairy_revive
         ; undo the actions taken by the death handler
