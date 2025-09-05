@@ -4,6 +4,17 @@
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
         incgraphic gfx/sprites/font_spr.png 160A 3 0 1
+        incgraphic gfx/sprites/bar0.png 160A 0 1
+        incgraphic gfx/sprites/bar1.png 160A 0 2 1
+        incgraphic gfx/sprites/bar2.png 160A 0 2 1
+        incgraphic gfx/sprites/bar3.png 160A 0 2 1
+        incgraphic gfx/sprites/bar4.png 160A 0 2 1
+        incgraphic gfx/sprites/bar5.png 160A 0 2 1
+        incgraphic gfx/sprites/bar6.png 160A 0 2 1
+        incgraphic gfx/sprites/bar7.png 160A 0 2 1
+        incgraphic gfx/sprites/bar8.png 160A 0 2 1
+        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
+        incgraphic gfx/sprites/mp.png 160A 0 3 1
         incgraphic gfx/sprites/coin.png 160A 0 3 2
         incgraphic gfx/sprites/prism.png 160A 0 3 2 1
         incgraphic gfx/sprites/chimkin.png 160A 0 3 1 2
@@ -133,25 +144,27 @@ end
         if debug_hud then gosub plot_debug_hud
 
 
+; Currently disabled due to needing more space in shared graphics block,
+; floatsprite relies on DMA holes and HUD graphics are now stored below $8000
 float_sprites
         goto main
-        asm
-          floatsprite 0,ZONE0ADDRESS,1
-          floatsprite 0,ZONE0ADDRESS,2
-          floatsprite 0,ZONE0ADDRESS,3
-          floatsprite 0,ZONE0ADDRESS,4
-          floatsprite 0,ZONE0ADDRESS,5
-          floatsprite 0,ZONE0ADDRESS,6
-          floatsprite 0,ZONE0ADDRESS,7
-          floatsprite 1,ZONE1ADDRESS,1
-          floatsprite 1,ZONE1ADDRESS,2
-          floatsprite 1,ZONE1ADDRESS,3
-          floatsprite 1,ZONE1ADDRESS,4
-          floatsprite 1,ZONE1ADDRESS,5
-          floatsprite 1,ZONE1ADDRESS,6
-          floatsprite 1,ZONE1ADDRESS,7
-end
-        goto main
+;        asm
+;          floatsprite 0,ZONE0ADDRESS,1
+;          floatsprite 0,ZONE0ADDRESS,2
+;          floatsprite 0,ZONE0ADDRESS,3
+;          floatsprite 0,ZONE0ADDRESS,4
+;          floatsprite 0,ZONE0ADDRESS,5
+;          floatsprite 0,ZONE0ADDRESS,6
+;          floatsprite 0,ZONE0ADDRESS,7
+;          floatsprite 1,ZONE1ADDRESS,1
+;          floatsprite 1,ZONE1ADDRESS,2
+;          floatsprite 1,ZONE1ADDRESS,3
+;          floatsprite 1,ZONE1ADDRESS,4
+;          floatsprite 1,ZONE1ADDRESS,5
+;          floatsprite 1,ZONE1ADDRESS,6
+;          floatsprite 1,ZONE1ADDRESS,7
+;end
+;        goto main
 
 kill_player
         player_frame = FRAME_DEATH
@@ -857,14 +870,14 @@ fairy_item_used
           dec m_item_qty,x
 end
         ; remove any zero quantity items from inventory
-;        if animation_frame then frame = F_FAIRY_ITEM2 else frame = F_FAIRY_ITEM1
+        if animation_frame then frame = F_FAIRY_ITEM2 else frame = F_FAIRY_ITEM1
         gosub check_item_qtys
         playsfx sfx_bubbleup
 
 fairy_item_done
 
 fairy_move
-;        if animation_frame then frame = F_FAIRY_WING2 else frame = F_FAIRY_WING1
+        if animation_frame then frame = F_FAIRY_WING2 else frame = F_FAIRY_WING1
         temp1 = Xposition - 24
         if temp1 > Xposition then temp1 = 0
         temp2 = Yposition - 32
@@ -1036,7 +1049,7 @@ end
         incbasic music.78b
         inline hiscore.asm
         inline updateobjects.asm
-        inline floatsprite.asm
+;        inline floatsprite.asm
         inline fourbitfade.asm
 
 ledge_hop

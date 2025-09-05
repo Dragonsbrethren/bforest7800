@@ -1,15 +1,6 @@
 ;==============================================================================
 ; SHARED GRAPHICS - included into last bank of ROM
 ;==============================================================================
-        incgraphic gfx/sprites/bar0.png 160A 0 1
-        incgraphic gfx/sprites/bar1.png 160A 0 2 1
-        incgraphic gfx/sprites/bar2.png 160A 0 2 1
-        incgraphic gfx/sprites/bar3.png 160A 0 2 1
-        incgraphic gfx/sprites/bar4.png 160A 0 2 1
-        incgraphic gfx/sprites/bar5.png 160A 0 2 1
-        incgraphic gfx/sprites/bar6.png 160A 0 2 1
-        incgraphic gfx/sprites/bar7.png 160A 0 2 1
-        incgraphic gfx/sprites/bar8.png 160A 0 2 1
         incgraphic gfx/sprites/heroine0.png  160B 0 4 5 3 6 1 ; FRAME_DOWN
         incgraphic gfx/sprites/heroine1.png  160B 0 4 5 3 6 1 ; FRAME_DOWN_2
         incgraphic gfx/sprites/heroine2.png  160B 0 4 5 6 3   ; FRAME_UP
@@ -50,9 +41,7 @@
         incgraphic gfx/sprites/joswim11.png 160B 0 4 5 3 6 1 ; FRAME_ATK_R
         incgraphic gfx/sprites/joswim12.png 160B 0 4 5 6 3 1 ; FRAME_CHANT
         incgraphic gfx/sprites/joswim13.png 160B 0 4 5 3 6
-        incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
-        incgraphic gfx/sprites/mp.png 160A 0 3 1
         incgraphic gfx/sprites/fairy0.png 160B 0 12 8 3 6 5 10 11
-;        incgraphic gfx/sprites/fairy1.png 160B 0 12 3 8 6 5 10 11
-;        incgraphic gfx/sprites/fairy2.png 160B0 12 8 1 6 5 10 11
-;        incgraphic gfx/sprites/fairy3.png 160B0 12 3 8 6 5 10 11
+        incgraphic gfx/sprites/fairy1.png 160B 0 12 3 8 6 5 10 11
+        incgraphic gfx/sprites/fairy2.png 160B0 12 8 1 6 5 10 11
+        incgraphic gfx/sprites/fairy3.png 160B0 12 3 8 6 5 10 11

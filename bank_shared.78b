@@ -1402,12 +1402,12 @@ update_hp_bar
         if hp_seg_3 > 8 then hp_seg_3 = 8
         if hp_seg_2 > 8 then hp_seg_2 = 8
         if hp_seg_1 > 8 then hp_seg_1 = 8
-        hp_bar_1 = hp_seg_1 * 2
-        hp_bar_2 = hp_seg_2 * 2
-        hp_bar_3 = hp_seg_3 * 2
-        hp_bar_4 = hp_seg_4 * 2
-        hp_bar_5 = hp_seg_5 * 2
-        hp_bar_6 = hp_seg_6 * 2
+        hp_bar_1 = (hp_seg_1 * 2) + 128
+        hp_bar_2 = (hp_seg_2 * 2) + 128
+        hp_bar_3 = (hp_seg_3 * 2) + 128
+        hp_bar_4 = (hp_seg_4 * 2) + 128
+        hp_bar_5 = (hp_seg_5 * 2) + 128
+        hp_bar_6 = (hp_seg_6 * 2) + 128
 
 
         if player_hp = 0 then player_state = STATE_DEATH
@@ -1478,12 +1478,12 @@ update_mp_bar
         if mp_seg_2 > 8 then mp_seg_2 = 8
         if mp_seg_1 > 8 then mp_seg_1 = 8
 
-        mp_bar_1 = mp_seg_1 * 2
-        mp_bar_2 = mp_seg_2 * 2
-        mp_bar_3 = mp_seg_3 * 2
-        mp_bar_4 = mp_seg_4 * 2
-        mp_bar_5 = mp_seg_5 * 2
-        mp_bar_6 = mp_seg_6 * 2
+        mp_bar_1 = (mp_seg_1 * 2) + 128
+        mp_bar_2 = (mp_seg_2 * 2) + 128
+        mp_bar_3 = (mp_seg_3 * 2) + 128
+        mp_bar_4 = (mp_seg_4 * 2) + 128
+        mp_bar_5 = (mp_seg_5 * 2) + 128
+        mp_bar_6 = (mp_seg_6 * 2) + 128
         return thisbank
 
 test_spell_cost
