@@ -98,6 +98,26 @@
         const pickup_charm9_hi = #>pickup_charm9
         const pickup_charm10_lo = #<pickup_charm10
         const pickup_charm10_hi = #>pickup_charm10
+        const pickup_relic1_lo = #<pickup_relic1
+        const pickup_relic1_hi = #>pickup_relic1
+        const pickup_relic2_lo = #<pickup_relic2
+        const pickup_relic2_hi = #>pickup_relic2
+        const pickup_relic3_lo = #<pickup_relic3
+        const pickup_relic3_hi = #>pickup_relic3
+        const pickup_relic4_lo = #<pickup_relic4
+        const pickup_relic4_hi = #>pickup_relic4
+        const pickup_relic5_lo = #<pickup_relic5
+        const pickup_relic5_hi = #>pickup_relic5
+        const pickup_relic6_lo = #<pickup_relic6
+        const pickup_relic6_hi = #>pickup_relic6
+        const pickup_relic7_lo = #<pickup_relic7
+        const pickup_relic7_hi = #>pickup_relic7
+        const pickup_relic8_lo = #<pickup_relic8
+        const pickup_relic8_hi = #>pickup_relic8
+        const pickup_relic9_lo = #<pickup_relic9
+        const pickup_relic9_hi = #>pickup_relic9
+        const pickup_relic10_lo = #<pickup_relic10
+        const pickup_relic10_hi = #>pickup_relic10
 
         data pickup_items_lo
         pickup_item1_lo, pickup_item2_lo, pickup_item3_lo, pickup_item4_lo, pickup_item5_lo,
@@ -147,6 +167,16 @@ end
         data pickup_charms_hi
         pickup_charm1_hi, pickup_charm2_hi, pickup_charm3_hi, pickup_charm4_hi, pickup_charm5_hi,
         pickup_charm6_hi, pickup_charm7_hi, pickup_charm8_hi, pickup_charm9_hi, pickup_charm10_hi 
+end
+
+        data pickup_relics_lo
+        pickup_relic1_lo, pickup_relic2_lo, pickup_relic3_lo, pickup_relic4_lo, pickup_relic5_lo,
+        pickup_relic6_lo, pickup_relic7_lo, pickup_relic8_lo, pickup_relic9_lo, pickup_relic10_lo 
+end
+
+        data pickup_relics_hi
+        pickup_relic1_hi, pickup_relic2_hi, pickup_relic3_hi, pickup_relic4_hi, pickup_relic5_hi,
+        pickup_relic6_hi, pickup_relic7_hi, pickup_relic8_hi, pickup_relic9_hi, pickup_relic10_hi 
 end
 
         alphadata pickup_item1 font_spr
@@ -296,4 +326,44 @@ end
 end
         alphadata pickup_charm10 font_spr
         'Charm 10*'
+end
+
+        alphadata pickup_relic1 font_spr
+        'Fairy Card*'
+end
+
+        alphadata pickup_relic2 font_spr
+        'Feline Card*'
+end
+
+        alphadata pickup_relic3 font_spr
+        'Ghost Card*'
+end
+
+        alphadata pickup_relic4 font_spr
+        'Owl Card*'
+end
+
+        alphadata pickup_relic5 font_spr
+        'Nix` Charm*'
+end
+
+        alphadata pickup_relic6 font_spr
+        'Relic 6*'
+end
+
+        alphadata pickup_relic7 font_spr
+        'Relic 7*'
+end
+
+        alphadata pickup_relic8 font_spr
+        'Relic 8*'
+end
+
+        alphadata pickup_relic9 font_spr
+        'Relic 9*'
+end
+
+        alphadata pickup_relic10 font_spr
+        'Relic 10*'
 end

@@ -14,7 +14,7 @@ end
         name_ghost_hi
 end
 
-        alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+        alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
 
         const name_wolf_lo = #<name_wolf
         const name_wolf_hi = #>name_wolf
