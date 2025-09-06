@@ -404,7 +404,6 @@ gameover_input
         menu = MENU_MAIN
         goto title_continue bank10
 
-plot_relics_menu
 plot_password_menu
         ; turn on Kangaroo mode so "Password Error" prints over saved screen
         sCTRL{2} = 1 : CTRL = sCTRL

@@ -85,7 +85,7 @@ plot_main_menu
 main_menu_updater
         restorescreen
         gosub plot_menu_bars
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        gosub plot_menu_cursor
         plotsprite menu_pin 0 menu_map_Xpos menu_map_Ypos
 
 main_menu_controls
@@ -108,7 +108,7 @@ open_submenu
         if menu_selection = 0 then goto plot_items_menu
         if menu_selection = 1 then goto plot_magic_menu
         if menu_selection = 2 then goto plot_equip_menu
-        ; if menu_selection = 3 then goto plot_relics_menu
+        if menu_selection = 3 then goto plot_relics_menu
         goto main
 
 plot_items_menu
@@ -122,7 +122,7 @@ plot_items_menu
         menu_max = 9    ; bit of a hack for the exit option
         gosub plot_menu_hud
         plotchars '------------------------------------' 0 8 3 singlewide
-        plotchars 'Exit' 0 128 12 singlewide
+        gosub plot_exit_string
         savescreen
 
 items_menu_updater
@@ -214,7 +214,7 @@ item_cursor_X
         menu_cursor_X = 12
 
 item_cursor_set
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        gosub plot_menu_cursor
 
 
 items_menu_controls
@@ -330,7 +330,7 @@ plot_equip_menu
         plotchars 'Shield'    0 80 6 singlewide
         plotchars 'Body'     0 80 8 singlewide
         plotchars 'Talisman'  0 80 10 singlewide
-        plotchars 'Exit'      0 128 12 singlewide
+        gosub plot_exit_string
         savescreen
         goto update_player_stats
 
@@ -562,12 +562,12 @@ equip_menu_draw_atk
         jsr	plotvaluesw
 end
         if equip_inv_col then equip_menu_inv_cursor
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        gosub plot_menu_cursor
         goto main
 
 equip_menu_inv_cursor
         ; blink the equipped column cursor
-        if animation_frame then plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        if animation_frame then gosub plot_menu_cursor
         plotsprite menu_cursor0 0 equip_inv_X equip_inv_Y
         goto main
 
@@ -737,6 +737,33 @@ equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return
 
+plot_relics_menu
+        ; turn on Kangaroo mode so palette color 1 is more manageable
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_RELICS
+        if !menu_change then goto relic_menu_updater
+        clearscreen
+        menu_change = 0
+        menu_selection = 0
+        menu_columns = 2
+        menu_max = 10
+        gosub plot_menu_border
+        plotchars 'Enchanted Relics' 0 50 1 singlewide
+        gosub plot_exit_string
+        savescreen
+relic_menu_updater
+        restorescreen
+
+relic_menu_controls
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then open_main_menu
+        if !action_debounce && joy0fire1 && action_button = 1 then open_main_menu
+        gosub menu_dirs
+        goto main
+
 open_main_menu
         ; turn off Kangaroo mode for position pin sprite
         sCTRL{2} = 0 : CTRL = sCTRL
@@ -760,6 +787,15 @@ close_menu
         sta torch_reblock
 end
         goto main ; shared palettes are now included in each tileset
+
+plot_exit_string
+        characterset menu_font
+        plotchars 'Exit' 0 128 12 singlewide
+        return thisbank
+
+plot_menu_cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        return thisbank
 
         dmahole 0
 gen_forest_map
