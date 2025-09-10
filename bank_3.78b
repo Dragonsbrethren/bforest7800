@@ -167,23 +167,7 @@ items_palettes
         pointer_hi = m_item_inv_hi
         gosub plot_item_inv
 
-item_cursor_Y
-        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 80 : goto item_cursor_X
-        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 80 + 32 : goto item_cursor_X
-        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 80 + 64 : goto item_cursor_X
-        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 80 + 96 : goto item_cursor_X
-        menu_cursor_Y = MENU_EQUIP_EXIT_Y
-
-item_cursor_X
-        ; kludge - makes up from the exit option go into right column instead of left
-        if menu_selection = 8 then menu_selection = 9
-        if menu_selection = 9 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
-        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
-        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto item_cursor_set
-        menu_cursor_X = 12
-
-item_cursor_set
-        gosub plot_menu_cursor
+        gosub update_item_cursor
 
 
 items_menu_controls
@@ -731,25 +715,7 @@ plot_relics_menu
         savescreen
 relic_menu_updater
         restorescreen
-relic_cursor_Y
-        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 48 : goto relic_cursor_X
-        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 48 + 32 : goto relic_cursor_X
-        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 48 + 64 : goto relic_cursor_X
-        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 48 + 96 : goto relic_cursor_X
-        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = 48 + 128 : goto relic_cursor_X
-        menu_cursor_Y = MENU_EQUIP_EXIT_Y
-
-relic_cursor_X
-        ; kludge - makes up from the exit option go into right column instead of left
-        if menu_selection = 10 then menu_selection = 11
-        if menu_selection = 11 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto relic_cursor_set
-        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto relic_cursor_set
-        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto relic_cursor_set
-        if menu_selection = 9 then menu_cursor_X = 80 : goto relic_cursor_set
-        menu_cursor_X = 12
-
-relic_cursor_set
-        gosub plot_menu_cursor
+        gosub update_item_cursor
 
 relic_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
@@ -838,6 +804,34 @@ plot_exit_string
         characterset menu_font
         plotchars 'Exit' 0 128 12 singlewide
         return thisbank
+
+update_item_cursor
+        ; relics menu plotted higher than items
+        if menu_max >= 10 then temp4 = 48 else temp4 = 80
+item_cursor_Y
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = temp4 : goto item_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = temp4 + 32 : goto item_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = temp4 + 64 : goto item_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = temp4 + 96 : goto item_cursor_X
+        if menu_max < 10 then item_cursor_exit_y
+        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = temp4 + 128 : goto item_cursor_X
+item_cursor_exit_y
+        menu_cursor_Y = MENU_EQUIP_EXIT_Y
+
+item_cursor_X
+        ; kludge - makes up from the exit option go into right column instead of left
+        if menu_selection = 10 && menu_max >= 10 then menu_selection = 11
+        if menu_selection = 8 && menu_max < 10 then menu_selection = 9
+        if menu_selection = 11 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
+        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
+        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto item_cursor_set
+        if menu_selection = 9 && menu_max < 10 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
+        if menu_selection = 9 then menu_cursor_X = 80 : goto item_cursor_set
+        menu_cursor_X = 12
+
+item_cursor_set
+; let this run into plot menu cursor
+;        goto plot_menu_cursor
 
 plot_menu_cursor
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
