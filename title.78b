@@ -94,6 +94,8 @@ title_new_game
         m_armor_bits_2 = 0
         m_charm_bits_1 = 0
         m_charm_bits_2 = 0
+        m_relic_bits_1 = %00011111
+        m_relic_bits_2 = %00011111
         for index = 0 to 97
         menu_map_room[index] = 0
         next

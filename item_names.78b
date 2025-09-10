@@ -345,11 +345,11 @@ end
 end
 
         alphadata pickup_relic5 font_spr
-        'Nix` Charm*'
+        'Bestiary*'
 end
 
         alphadata pickup_relic6 font_spr
-        'Relic 6*'
+        'Nix` Locket*'
 end
 
         alphadata pickup_relic7 font_spr

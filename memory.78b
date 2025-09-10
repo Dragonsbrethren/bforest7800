@@ -311,6 +311,7 @@
         autodim byte m_shield_inv 11
         autodim byte m_armor_inv  11
         autodim byte m_charm_inv  11
+        autodim byte m_relic_inv  11
         autodim byte m_inv_item_0
         autodim byte m_inv_item_1
         autodim byte m_inv_item_2

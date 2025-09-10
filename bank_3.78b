@@ -749,10 +749,51 @@ plot_relics_menu
         menu_max = 10
         gosub plot_menu_border
         plotchars 'Enchanted Relics' 0 50 1 singlewide
+        gosub calc_inv_array
+        m_spriteX = 16
+        m_spriteY = 48
+        m_textX = 24
+        m_textY = 3
+        m_palette = 4
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = 0 to 9
+        item_name = m_relic_inv[obj_index]
+        if !item_name then relics_left
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap relic_names m_palette m_textX m_textY 13 1 0 item_name 13
+
+relics_left
+        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto relics_right
+        m_palette = 4
+        m_spriteX = 16 : m_textX = 24
+        m_spriteY = m_spriteY + 32
+        m_textY = m_textY + 2
+relics_right
+        next
+
         gosub plot_exit_string
         savescreen
 relic_menu_updater
         restorescreen
+relic_cursor_Y
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 48 : goto relic_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 48 + 32 : goto relic_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 48 + 64 : goto relic_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 48 + 96 : goto relic_cursor_X
+        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = 48 + 112 : goto relic_cursor_X
+        menu_cursor_Y = MENU_EQUIP_EXIT_Y
+
+relic_cursor_X
+        ; kludge - makes up from the exit option go into right column instead of left
+        if menu_selection = 10 then menu_selection = 11
+        if menu_selection = 11 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto relic_cursor_set
+        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto relic_cursor_set
+        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto relic_cursor_set
+        if menu_selection = 9 then menu_cursor_X = 80 : goto relic_cursor_set
+        menu_cursor_X = 12
+
+relic_cursor_set
+        gosub plot_menu_cursor
 
 relic_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
@@ -797,7 +838,20 @@ plot_menu_cursor
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         return thisbank
 
-        dmahole 0
+        alphadata relic_names menu_font singlewide
+        '             '
+        'Fairy Card   '
+        'Feline Card  '
+        'Ghost Card   '
+        'Owl Card     '
+        'Bestiary     '
+        'Nix Locket   '
+        'Relic Num 7  '
+        'Relic Num 8  '
+        'Relic Num 9  '
+        'Relic Num 10 '
+end
+
 gen_forest_map
         ; TODO: Test which rooms have been entered
         alphachars '0123456789ABCDEF'
@@ -808,13 +862,14 @@ gen_forest_map
         if tileset = T_CASTLE then gen_castle_s
 
 gen_forest_s
+        dmahole 0
         if entered_save_room{0} then plotsprite menu_s 0 94 80
-        return
+        return thisbank
 
 gen_castle_s
         if entered_save_room{0} then plotsprite menu_s 0 86 96
         if entered_save_room{1} then plotsprite menu_s 0 54 80
-        return
+        return thisbank
 
 calc_inv_array
         ; zero the inventory arrays to prevent duplication
@@ -873,6 +928,16 @@ calc_inv_array
         if m_charm_bits_2{2} then m_charm_inv[8] = 8
         if m_charm_bits_2{3} then m_charm_inv[9] = 9
         if m_charm_bits_2{4} then m_charm_inv[10] = 10
+        if m_relic_bits_1{0} then m_relic_inv[1] = 1
+        if m_relic_bits_1{1} then m_relic_inv[2] = 2
+        if m_relic_bits_1{2} then m_relic_inv[3] = 3
+        if m_relic_bits_1{3} then m_relic_inv[4] = 4
+        if m_relic_bits_1{4} then m_relic_inv[5] = 5
+        if m_relic_bits_2{0} then m_relic_inv[6] = 6
+        if m_relic_bits_2{1} then m_relic_inv[7] = 7
+        if m_relic_bits_2{2} then m_relic_inv[8] = 8
+        if m_relic_bits_2{3} then m_relic_inv[9] = 9
+        if m_relic_bits_2{4} then m_relic_inv[10] = 10
 
         ; inventory-by-inventory, remove zeros
         pointer = m_item_inv_lo
