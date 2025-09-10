@@ -3,6 +3,7 @@
 ;==============================================================================
         incbasic objects.78b
         incbasic palettes.78b
+        incbasic pointers.78b
 ;------------------------------------------------------------------------------
 ; GAME STATES
 ;------------------------------------------------------------------------------
@@ -212,20 +213,6 @@
         ; fairy familiar item use frames
         const FAIRY_ITEM_TIME = 120
 
-        ; pointers used in equip menu
-        const m_item_inv_lo = #<m_item_inv
-        const m_item_inv_hi = #>m_item_inv
-        const m_item_qty_lo = #<m_item_qty
-        const m_item_qty_hi = #>m_item_qty
-        const m_sword_inv_lo = #<m_sword_inv
-        const m_sword_inv_hi = #>m_sword_inv
-        const m_shield_inv_lo = #<m_shield_inv
-        const m_shield_inv_hi = #>m_shield_inv
-        const m_armor_inv_lo = #<m_armor_inv
-        const m_armor_inv_hi = #>m_armor_inv
-        const m_charm_inv_lo = #<m_charm_inv
-        const m_charm_inv_hi = #>m_charm_inv
-
         const PICKUP_TIME = 120
         const PICKUP_STRING_LENGTH = 13
 
@@ -237,14 +224,3 @@
         ; offset to apply to bar drawing to get correct sprites
         const BAR_OFFSET = FONT_SPR_CHARS * 2
 
-        ; pointers to sprite plotting routines
-        const plot_torch_lo     = #<.plot_torch
-        const plot_torch_hi     = #>.plot_torch
-        const plot_wolf_lo      = #<.plot_wolf
-        const plot_wolf_hi      = #>.plot_wolf
-        const plot_priest_lo    = #<.plot_priest
-        const plot_priest_hi    = #>.plot_priest
-        const plot_skeleton_lo  = #<.plot_skeleton
-        const plot_skeleton_hi  = #>.plot_skeleton
-        const plot_skelsword_lo = #<.plot_skelsword
-        const plot_skelsword_hi = #>.plot_skelsword

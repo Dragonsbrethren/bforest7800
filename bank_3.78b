@@ -163,40 +163,9 @@ items_palettes
         m_textX = 24
         m_textY = 5
         m_palette = 4
-        ; reuse obj_index here because index is used by menu coloring code and breaks item list
-        for obj_index = 0 to 7
-        item_name = m_item_inv[obj_index]
-        item_qty  = m_item_qty[item_name]
-        if !item_name then items_left
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
-        plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
-        asm
-          lda m_textX
-          clc
-          adc #ITEM_NAME_LENGTH
-          sta valueX
-          lda m_textY
-          sta valueY
-          lda #<item_qty
-          sta value_ptr_lo
-          lda #>item_qty
-          sta value_ptr_hi
-          jsr plotvaluesw
-end
-items_left
-        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
-        m_palette = 4
-        m_spriteX = 16 : m_textX = 24
-        m_spriteY = m_spriteY + 32
-        m_textY = m_textY + 2
-items_right
-        next
-
-        ; bypass item description if on Exit
-        if menu_selection >= 8 then item_cursor_Y
-        temp1 = m_item_inv[menu_selection]
-        m_desc = m_desc_set[temp1]
-        plotmap item_desc 0 28 12 18 1 0 m_desc 18
+        pointer = m_item_inv_lo
+        pointer_hi = m_item_inv_hi
+        gosub plot_item_inv
 
 item_cursor_Y
         if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = 80 : goto item_cursor_X
@@ -755,22 +724,9 @@ plot_relics_menu
         m_textX = 24
         m_textY = 3
         m_palette = 4
-        ; reuse obj_index here because index is used by menu coloring code and breaks item list
-        for obj_index = 0 to 9
-        item_name = m_relic_inv[obj_index]
-        if !item_name then relics_left
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
-        plotmap relic_names m_palette m_textX m_textY 13 1 0 item_name 13
-
-relics_left
-        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto relics_right
-        m_palette = 4
-        m_spriteX = 16 : m_textX = 24
-        m_spriteY = m_spriteY + 32
-        m_textY = m_textY + 2
-relics_right
-        next
-
+        pointer = m_relic_inv_lo
+        pointer_hi = m_relic_inv_hi
+        gosub plot_item_inv
         gosub plot_exit_string
         savescreen
 relic_menu_updater
@@ -780,7 +736,7 @@ relic_cursor_Y
         if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = 48 + 32 : goto relic_cursor_X
         if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = 48 + 64 : goto relic_cursor_X
         if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = 48 + 96 : goto relic_cursor_X
-        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = 48 + 112 : goto relic_cursor_X
+        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = 48 + 128 : goto relic_cursor_X
         menu_cursor_Y = MENU_EQUIP_EXIT_Y
 
 relic_cursor_X
@@ -828,6 +784,55 @@ close_menu
         sta torch_reblock
 end
         goto main ; shared palettes are now included in each tileset
+
+; draws the two column inventory used by items and relics menu
+plot_item_inv
+        temp3 = menu_max - 2
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = 0 to temp3
+        item_name = pointer[[obj_index]]
+        if menu = MENU_ITEMS then item_qty = m_item_qty[item_name] else item_qty = 0
+        if !item_name then items_left
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        if menu = MENU_RELICS then plot_relic_names
+plot_item_names
+        plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
+        asm
+          lda m_textX
+          clc
+          adc #ITEM_NAME_LENGTH
+          sta valueX
+          lda m_textY
+          sta valueY
+          lda #<item_qty
+          sta value_ptr_lo
+          lda #>item_qty
+          sta value_ptr_hi
+          jsr plotvaluesw
+end
+        goto items_left
+
+plot_relic_names
+        plotmap relic_names m_palette m_textX m_textY 13 1 0 item_name 13
+
+; TODO: Plot on/off toggles
+
+items_left
+        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
+        m_palette = 4
+        m_spriteX = 16 : m_textX = 24
+        m_spriteY = m_spriteY + 32
+        m_textY = m_textY + 2
+items_right
+        next
+
+        ; bypass item description if on Exit
+        if menu_selection >= 8 then item_inv_done
+        temp1 = pointer[[menu_selection]]
+        m_desc = m_desc_set[temp1]
+        if menu = MENU_ITEMS then plotmap item_desc 0 28 12 18 1 0 m_desc 18
+item_inv_done        
+        return thisbank
 
 plot_exit_string
         characterset menu_font
@@ -954,6 +959,9 @@ calc_inv_array
         gosub remove_inv_zeros
         pointer = m_charm_inv_lo
         pointer_hi = m_charm_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_relic_inv_lo
+        pointer_hi = m_relic_inv_hi
         ; riz_return pulls double duty as the return for calc_inv_array
 
 remove_inv_zeros
