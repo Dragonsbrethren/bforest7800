@@ -84,8 +84,8 @@ title_new_game
         player_shield = 0
         player_armor = 1
         player_charm = 0
-        m_item_bits_1 = %00000000
-        m_item_bits_2 = %00010000
+        m_item_bits_1 = %00011111
+        m_item_bits_2 = %00011111
         m_sword_bits_1 = %00000001
         m_sword_bits_2 = %00000000
         m_shield_bits_1 = %00000000
@@ -140,6 +140,13 @@ init_field
         if m_item_bits_2{2} then m_item_qty[8] = 1
         if m_item_bits_2{3} then m_item_qty[9] = 1
         if m_item_bits_2{4} then m_item_qty[10] = 1
+        ; toggle on relics that are owned, excluding familiar cards
+        if m_relic_bits_1{4} then m_relic_toggle_1{4} = 1
+        if m_relic_bits_2{0} then m_relic_toggle_2{0} = 1
+        if m_relic_bits_2{1} then m_relic_toggle_2{1} = 1
+        if m_relic_bits_2{2} then m_relic_toggle_2{2} = 1
+        if m_relic_bits_2{3} then m_relic_toggle_2{3} = 1
+        if m_relic_bits_2{4} then m_relic_toggle_2{4} = 1
         ; zero out the pickup string so it doesn't persist after death
         for index =  0 to PICKUP_STRING_LENGTH
         pickup_string[index] = 0

@@ -209,6 +209,7 @@
         autodim byte menu_selection
         autodim byte prev_menu_selection
         autodim byte menu_max
+        autodim byte menu_items
         autodim byte menu_columns
         autodim byte menu_rows
         autodim byte menu_cursor_X
@@ -221,6 +222,10 @@
         autodim byte m_inv_index
         autodim byte m_inv_scroll
         autodim byte m_inv_slot
+        autodim byte m_relic_pal1
+        autodim byte m_relic_pal2
+        autodim byte m_relic2_pal1
+        autodim byte m_relic2_pal2
         autodim byte m_sword_pal1
         autodim byte m_sword_pal2
         autodim byte m_shield_pal1
@@ -312,6 +317,8 @@
         autodim byte m_armor_inv  11
         autodim byte m_charm_inv  11
         autodim byte m_relic_inv  11
+        autodim byte m_relic_toggle_1
+        autodim byte m_relic_toggle_2
         autodim byte m_inv_item_0
         autodim byte m_inv_item_1
         autodim byte m_inv_item_2

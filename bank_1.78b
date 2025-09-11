@@ -1037,7 +1037,7 @@ end
         incbasic music.78b
         inline hiscore.asm
         inline updateobjects.asm
-;        inline floatsprite.asm
+        inline floatsprite.asm
         inline fourbitfade.asm
 
 ledge_hop
@@ -1194,3 +1194,18 @@ end
 
         incbasic fairy_scroll.78b
         incbasic item_names.78b
+
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphadata relic_desc menu_font singlewide
+        '                 '
+        'Call Forth Fairy '
+        'Call Witch s Cat '
+        'Call Forth Ghost '
+        'Call Forth Owl   '
+        'See Monster Names'
+        'Traverse Water   '
+        'Climb Waterfalls '
+        'Description 8    '
+        'Description 9    '
+        'Description 10   '
+end

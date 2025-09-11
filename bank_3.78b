@@ -124,6 +124,7 @@ plot_items_menu
         plotchars '------------------------------------' 0 8 3 singlewide
         gosub plot_exit_string
         savescreen
+        goto main
 
 items_menu_updater
         restorescreen
@@ -597,14 +598,21 @@ end
 equip_menu_colors
         P0C3 = PAL_LTPURP
         P4C3 = PAL_LTRED
-        for index = 0 to 64
+        for index = 0 to 46
+        WSYNC = 1
+        next 
+        P0C1 = m_relic_pal1
+        P0C3 = m_relic_pal2
+        P4C1 = m_relic2_pal1
+        P4C3 = m_relic2_pal2
+        for index = 0 to 30
         WSYNC = 1
         next 
         P0C1 = m_sword_pal1
         P0C3 = m_sword_pal2
         P4C1 = m_inv0_pal1
         P4C3 = m_inv0_pal2
-        for index = 0 to 32
+        for index = 0 to 30
         WSYNC = 1
         next
         ; palettes used for inv 1 and shield
@@ -612,7 +620,7 @@ equip_menu_colors
         P0C3 = m_shield_pal2
         P4C1 = m_inv1_pal1
         P4C3 = m_inv1_pal2
-        for index = 0 to 32
+        for index = 0 to 30
         WSYNC = 1
         next
         ; palettes used for inv 2 and armor
@@ -620,7 +628,7 @@ equip_menu_colors
         P0C3 = m_armor_pal2
         P4C1 = m_inv2_pal1
         P4C3 = m_inv2_pal2
-        for index = 0 to 32
+        for index = 0 to 30
         WSYNC = 1
         next
         ; palettes used for inv 3 and charm
@@ -699,10 +707,15 @@ plot_relics_menu
         menu_change = 0
         menu_selection = 0
         menu_columns = 2
-        menu_max = 10
+        menu_max = 11
         gosub plot_menu_border
         plotchars 'Enchanted Relics' 0 50 1 singlewide
         gosub calc_inv_array
+
+        savescreen
+        goto main
+relic_menu_updater
+        restorescreen
         m_spriteX = 16
         m_spriteY = 48
         m_textX = 24
@@ -712,9 +725,6 @@ plot_relics_menu
         pointer_hi = m_relic_inv_hi
         gosub plot_item_inv
         gosub plot_exit_string
-        savescreen
-relic_menu_updater
-        restorescreen
         gosub update_item_cursor
 
 relic_menu_controls
@@ -753,15 +763,15 @@ end
 
 ; draws the two column inventory used by items and relics menu
 plot_item_inv
-        temp3 = menu_max - 2
+        if menu = MENU_ITEMS then menu_items = 7 else menu_items = 9
         ; reuse obj_index here because index is used by menu coloring code and breaks item list
-        for obj_index = 0 to temp3
+        for obj_index = 0 to menu_items
         item_name = pointer[[obj_index]]
-        if menu = MENU_ITEMS then item_qty = m_item_qty[item_name] else item_qty = 0
         if !item_name then items_left
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
         if menu = MENU_RELICS then plot_relic_names
+        item_qty = m_item_qty[item_name]
 plot_item_names
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
         plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
         asm
           lda m_textX
@@ -779,7 +789,8 @@ end
         goto items_left
 
 plot_relic_names
-        plotmap relic_names m_palette m_textX m_textY 13 1 0 item_name 13
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
 
 ; TODO: Plot on/off toggles
 
@@ -791,14 +802,26 @@ items_left
         m_textY = m_textY + 2
 items_right
         next
-
-        ; bypass item description if on Exit
-        if menu_selection >= 8 then item_inv_done
+        
         temp1 = pointer[[menu_selection]]
+        if menu_max = 11 then relic_descriptions
+item_descriptions
+        ; bypass item description if on Exit
+        if menu_selection >= 8 then return thisbank
+        ; items have an array of assignments since some are shared
         m_desc = m_desc_set[temp1]
-        if menu = MENU_ITEMS then plotmap item_desc 0 28 12 18 1 0 m_desc 18
+        plotmap item_desc 0 28 12 18 1 0 m_desc 18
 item_inv_done        
         return thisbank
+
+relic_descriptions
+        ; bypass item description if on Exit
+        if menu_selection >= 11 then return thisbank
+        ; relics all have unique descriptions
+        m_desc = temp1
+        plotmap relic_desc 0 28 12 17 1 0 m_desc 17
+        return thisbank
+
 
 plot_exit_string
         characterset menu_font
@@ -820,7 +843,7 @@ item_cursor_exit_y
 
 item_cursor_X
         ; kludge - makes up from the exit option go into right column instead of left
-        if menu_selection = 10 && menu_max >= 10 then menu_selection = 11
+        if menu_selection = 10 then menu_selection = 11
         if menu_selection = 8 && menu_max < 10 then menu_selection = 9
         if menu_selection = 11 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
         if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
@@ -838,17 +861,17 @@ plot_menu_cursor
         return thisbank
 
         alphadata relic_names menu_font singlewide
-        '             '
-        'Fairy Card   '
-        'Feline Card  '
-        'Ghost Card   '
-        'Owl Card     '
-        'Bestiary     '
-        'Nix Locket   '
-        'Relic Num 7  '
-        'Relic Num 8  '
-        'Relic Num 9  '
-        'Relic Num 10 '
+        '            '
+        'Fairy Card  '
+        'Feline Card '
+        'Ghost Card  '
+        'Owl Card    '
+        'Bestiary    '
+        'Nix Locket  '
+        'Miracle Gem '
+        'Relic Num 8 '
+        'Relic Num 9 '
+        'Relic Num 10'
 end
 
 gen_forest_map
@@ -1211,5 +1234,5 @@ disable_double_wide_mode
 
 set_menu_top_pal
         WSYNC = 1 : BACKGRND = $2D
-        if menu = MENU_ITEMS || menu = MENU_EQUIP then equip_menu_colors
-        return
+        if menu = MENU_MAIN then return thisbank
+        goto equip_menu_colors
