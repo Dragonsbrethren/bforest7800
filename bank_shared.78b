@@ -37,6 +37,7 @@ end
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
         if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
         exit_dir = EXIT_NONE
+        goto main
 
 field_handler
         if reload_map = 1 then goto load_map
