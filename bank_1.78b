@@ -564,15 +564,39 @@ add_charm
         m_charm_bits_2 = m_charm_bits_2 | temp2
         goto kill_object
 
+pickup_relic
+        temp1 = temp1 - TYPE_RELIC1
+        pickup_ptr_lo = pickup_relics_lo[temp1]
+        pickup_ptr_hi = pickup_relics_hi[temp1]
+        gosub prep_inv_bits
+add_relic
+        m_relic_bits_1 = m_relic_bits_1 | temp1
+        m_relic_bits_2 = m_relic_bits_2 | temp2
+        goto kill_object
+
 remove_duplicates
         for index = 1 to MAX_OBJECTS
         if object_type[index] >= TYPE_CHARM1 then check_charm_bits
         if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
+        if object_type[index] >= TYPE_RELIC1 then check_relic_bits
 remove_duplicates_next
         next
         return thisbank
+
+check_relic_bits
+        if object_type[index] = TYPE_RELIC1 && m_relic_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_RELIC2 && m_relic_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_RELIC3 && m_relic_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC4 && m_relic_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC5 && m_relic_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC6 && m_relic_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC7 && m_relic_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC9 && m_relic_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC10 && m_relic_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
 
 check_sword_bits
         if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
@@ -1127,6 +1151,8 @@ hop_done
 end
 
 set_enemy_name
+        ; can't see enemy names without the fairy scroll
+        if !m_relic_toggle_1{4} then return thisbank
         ; if an item was collected, don't overwrite its string
         if item_pickup then return thisbank
         ; include only monsters
@@ -1195,17 +1221,17 @@ end
         incbasic fairy_scroll.78b
         incbasic item_names.78b
 
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         alphadata relic_desc menu_font singlewide
-        '                 '
-        'Call Forth Fairy '
-        'Call Witch s Cat '
-        'Call Forth Ghost '
-        'Call Forth Owl   '
-        'See Monster Names'
-        'Traverse Water   '
-        'Climb Waterfalls '
-        'Description 8    '
-        'Description 9    '
-        'Description 10   '
+        '                   '
+        'Call Forth a Fairy '
+        'Call a Witch` Cat  '
+        'Call Forth a Ghost '
+        'Call Forth an Owl  '
+        'Learn Monster Names'
+        'Traverse Water     '
+        'Climb Waterfalls   '
+        'Description 8      '
+        'Description 9      '
+        'Description 10     '
 end

@@ -70,7 +70,7 @@ plot_main_menu
         clearscreen
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         gosub plot_menu_hud
 
         plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
@@ -278,7 +278,7 @@ plot_equip_menu
         menu_max = 4
         gosub plot_menu_border
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         plotchars 'Attack     Defense     Wisdom' 0 16 1 singlewide
         Yposition = 2
         gosub plot_line
@@ -822,7 +822,7 @@ item_inv_done
 relic_descriptions
         ; relics all have unique descriptions
         m_desc = temp1
-        plotmap relic_desc 0 28 12 17 1 0 m_desc 17
+        plotmap relic_desc 0 28 12 19 1 0 m_desc 19
         return thisbank
 
 plot_exit_string
@@ -870,11 +870,11 @@ plot_menu_cursor
         alphadata relic_names menu_font singlewide
         '            '
         'Fairy Card  '
-        'Feline Card '
+        'Katze Card  '
         'Ghost Card  '
         'Owl Card    '
-        'Bestiary    '
-        'Nix Locket  '
+        'Fae Bestiary'
+        'Nix` Locket '
         'Miracle Gem '
         'Relic Num 8 '
         'Relic Num 9 '
@@ -1018,7 +1018,7 @@ set_status_name
 
 plot_menu_hud
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         plotchars 'Johanna' 0 20 1 singlewide
         plotchars 'HP' 0 72 1 singlewide
         plotchars 'MP' 0 72 2 singlewide
@@ -1046,7 +1046,7 @@ plot_menu_bars
 plot_menu_border
         ; TODO: Automate this drawing?
         characterset menu_font
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         plotchars '&[$#$$$#$#$$#$$$#$$#$#$$$#$#$$$$#$$#$$]&' 0 0 0 singlewide
         plotchars '&{' 0   0 1 singlewide
         plotchars '}&' 0 152 1 singlewide

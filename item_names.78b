@@ -333,7 +333,7 @@ end
 end
 
         alphadata pickup_relic2 font_spr
-        'Feline Card*'
+        'Katze Card*'
 end
 
         alphadata pickup_relic3 font_spr
@@ -345,7 +345,7 @@ end
 end
 
         alphadata pickup_relic5 font_spr
-        'Bestiary*'
+        'Fae Bestiary*'
 end
 
         alphadata pickup_relic6 font_spr
