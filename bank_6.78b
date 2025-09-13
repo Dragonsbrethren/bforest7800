@@ -223,7 +223,7 @@ plot_river_room_1
         return thisbank
 
         data river_room_1_obj
-        $00
+        TYPE_BESTIARY, $38, $60, TYPE_NIXTAIL, $60, $60, $00
 end
 
 plot_river_room_2

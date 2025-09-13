@@ -84,8 +84,8 @@ title_new_game
         player_shield = 0
         player_armor = 1
         player_charm = 0
-        m_item_bits_1 = %00011111
-        m_item_bits_2 = %00011111
+        m_item_bits_1 = %00000000
+        m_item_bits_2 = %00000000
         m_sword_bits_1 = %00000001
         m_sword_bits_2 = %00000000
         m_shield_bits_1 = %00000000
@@ -94,8 +94,8 @@ title_new_game
         m_armor_bits_2 = 0
         m_charm_bits_1 = 0
         m_charm_bits_2 = 0
-        m_relic_bits_1 = %00011111
-        m_relic_bits_2 = %00011111
+        m_relic_bits_1 = %00000000
+        m_relic_bits_2 = %00000000
         for index = 0 to 97
         menu_map_room[index] = 0
         next
@@ -127,8 +127,6 @@ init_field
         dec mp_seg_4 = 8
         dec mp_seg_5 = 8
         dec mp_seg_6 = 8
-        sword_pal = 2
-        shield_pal = 2
         ; make sure all toggled items have a quantity
         if m_item_bits_1{0} then m_item_qty[1] = 1
         if m_item_bits_1{1} then m_item_qty[2] = 1

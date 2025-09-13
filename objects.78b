@@ -57,6 +57,14 @@
         const TYPE_RELIC8   = 207
         const TYPE_RELIC9   = 208
         const TYPE_RELIC10  = 209
+        ; Nicer names for relics
+        const TYPE_FAIRYCARD = TYPE_RELIC1
+        const TYPE_CATCARD   = TYPE_RELIC2
+        const TYPE_GHOSTCARD = TYPE_RELIC3
+        const TYPE_OWLCARD   = TYPE_RELIC4
+        const TYPE_BESTIARY  = TYPE_RELIC5
+        const TYPE_NIXTAIL   = TYPE_RELIC6
+        const TYPE_WATERFALL = TYPE_RELIC7
         const TYPE_SWORD1   = 210
         const TYPE_SWORD2   = 211
         const TYPE_SWORD3   = 212

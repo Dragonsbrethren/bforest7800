@@ -349,7 +349,7 @@ end
 end
 
         alphadata pickup_relic6 font_spr
-        'Nix` Locket*'
+        'Nix` Tail*'
 end
 
         alphadata pickup_relic7 font_spr

@@ -175,8 +175,11 @@ tp_shield cmp #TYPE_SHIELD1
           bcc tp_sword
           jmp .plot_shields
 tp_sword  cmp #TYPE_SWORD1
-          bcc tp_item
+          bcc tp_relic
           jmp .plot_swords
+tp_relic  cmp #TYPE_RELIC1
+          bcc tp_item
+          jmp .plot_relics
 tp_item   cmp #TYPE_ITEM1
           bcc tp_coin
           jmp .plot_items
@@ -215,6 +218,13 @@ plot_items
         temp1 = object_type[index] - (TYPE_ITEM1 - 1)
         sprite_pal = f_item_pals[temp1]
         plotsprite potion0 sprite_pal Xposition Yposition 0
+        goto plot_next
+
+plot_relics
+        temp1 = object_type[index] - (TYPE_RELIC1 - 1)
+        sprite_pal = f_relic_pals[temp1]
+        frame = f_relic_frames[temp1]
+        plotsprite relic0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_swords
@@ -1238,8 +1248,11 @@ pushield  cmp #TYPE_SHIELD1
           bcc pusword
           jmp .pickup_shield
 pusword   cmp #TYPE_SWORD1
-          bcc puitem
+          bcc purelic
           jmp .pickup_sword
+purelic   cmp #TYPE_RELIC1
+          bcc puitem
+          jmp .pickup_relic
 puitem    jmp .pickup_item
 puconsum  cmp #TYPE_FOOD
           bne puprism
