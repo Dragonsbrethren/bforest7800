@@ -452,6 +452,38 @@ twr_walkable
           sta walkable
           jmp .walkable_return
 twr_done
+        ; test if the Nix's Locket is enabled
+          lda m_relic_toggle_2
+          lsr
+          bcc twwr_done
+          ; TODO: River monsters need a bit to determine if they should run this test 
+          ldx #0
+twwr_loop  lda river_water_tiles,x
+          cmp move_tile_1
+          bne twwrtile2
+          pha
+          lda #1
+          sta walkable_1
+          pla
+twwrtile2  cmp move_tile_2
+          bne twwr_next
+          lda #1
+          sta walkable_2
+          ; optimization: bypass the rest of the array if both tiles walkable
+          ;   further optimization possible by sorting arrays by tile frequency
+          lda walkable_1
+          bne twwr_walkable
+twwr_next  inx
+          cpx #river_water_tiles_length
+          bne twwr_loop
+          lda walkable_1
+          beq twwr_done
+          lda walkable_2
+          beq twwr_done
+twwr_walkable
+          sta walkable
+          jmp .walkable_return
+twwr_done
 
 tfr_flags
           lda flags
@@ -485,7 +517,7 @@ tfr_done  jmp .walkable_return
 end
 
         data river_walkable_tiles
-        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20, $38, $3A, $3C, $40, $42, $44, $46, $48, $4A, $B4, $B6, $B8, $BA
+        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
 end
 
         data river_water_tiles
