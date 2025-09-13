@@ -453,7 +453,7 @@ twr_walkable
           jmp .walkable_return
 twr_done
         ; test if the Nix's Locket is enabled
-          lda m_relic_toggle_2
+          lda m_relic_bits_2
           lsr
           bcc twwr_done
           ; TODO: River monsters need a bit to determine if they should run this test 

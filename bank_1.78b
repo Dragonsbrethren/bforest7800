@@ -508,7 +508,7 @@ plot_password
 end
 
 prep_inv_bits
-        if temp1 > 5 then prep_bits_2
+        if temp1 >= 5 then prep_bits_2
         temp1 = inv_bits[temp1]
         temp2 = 0
         return
@@ -721,8 +721,7 @@ end
         next
 
 object_familiars
-        ; if m_relic_bits_1 then
-        object_type[13] = TYPE_F_FAIRY
+        if m_relic_bits_1{0} then object_type[13] = TYPE_F_FAIRY
         ; TODO: pointer table for stats as well
 object_stats
         for obj_index = 1 to MAX_OBJECTS
