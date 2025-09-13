@@ -118,10 +118,12 @@ plot_items_menu
         clearscreen
         gosub plot_menu_border
         menu_change = 0
+        m_inv_scroll = 0
         menu_columns = 2
-        menu_max = 9    ; bit of a hack for the exit option
+        menu_max = 11
         gosub plot_menu_hud
-        plotchars '------------------------------------' 0 8 3 singlewide
+        Yposition = 3
+        gosub plot_line
         gosub plot_exit_string
         savescreen
         goto main
@@ -133,28 +135,28 @@ items_menu_updater
 
 items_palettes
         ; reuses palette variables from equip menu
-        temp1 = m_item_inv[0]
+        temp1 = m_item_inv[0] + m_inv_scroll
         m_inv0_pal1 = pal_items1[temp1]
         m_inv0_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[1]
+        temp1 = m_item_inv[1] + m_inv_scroll
         m_sword_pal1 = pal_items1[temp1]
         m_sword_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[2]
+        temp1 = m_item_inv[2] + m_inv_scroll
         m_inv1_pal1 = pal_items1[temp1]
         m_inv1_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[3]
+        temp1 = m_item_inv[3] + m_inv_scroll
         m_shield_pal1 = pal_items1[temp1]
         m_shield_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[4]
+        temp1 = m_item_inv[4] + m_inv_scroll
         m_inv2_pal1 = pal_items1[temp1]
         m_inv2_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[5]
+        temp1 = m_item_inv[5] + m_inv_scroll
         m_armor_pal1 = pal_items1[temp1]
         m_armor_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[6]
+        temp1 = m_item_inv[6] + m_inv_scroll
         m_inv3_pal1 = pal_items1[temp1]
         m_inv3_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[7]
+        temp1 = m_item_inv[7] + m_inv_scroll
         m_charm_pal1 = pal_items1[temp1]
         m_charm_pal2 = pal_items2[temp1]
         
@@ -187,7 +189,7 @@ use_item
         ; zero these to prevent bug where no item can restore HP
         hp_change = 0
         mp_change = 0
-        if menu_selection = 9 then open_main_menu
+        if menu_selection = 11 then open_main_menu
         using_item = m_item_inv[menu_selection]
         ; TODO: Prevent item use if full HP/MP or normal status
         m_item_qty[using_item] = m_item_qty[using_item] - 1
@@ -199,6 +201,7 @@ use_item
         if using_item = 6 then temp1 = MASK_POISON : goto use_heal
         if using_item = 7 then temp1 = MASK_DARK   : goto use_heal
         if using_item = 8 then temp1 = MASK_CURSE  : goto use_heal
+        if using_item = 9 then temp1 = MASK_STONE  : goto use_heal
 
 use_potion
         gosub increase_player_hp
@@ -277,7 +280,8 @@ plot_equip_menu
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         plotchars 'Attack     Defense     Wisdom' 0 16 1 singlewide
-        plotchars '------------------------------------' 0 8 2 singlewide
+        Yposition = 2
+        gosub plot_line
         plotchars 'Inventory' 0 24 3 singlewide
         plotchars 'Equipped'  0 96 3 singlewide
         plotchars 'Weapon'    0 80 4 singlewide
@@ -706,6 +710,7 @@ plot_relics_menu
         clearscreen
         menu_change = 0
         menu_selection = 0
+        m_inv_scroll = 0
         menu_columns = 2
         menu_max = 11
         gosub plot_menu_border
@@ -763,9 +768,9 @@ end
 
 ; draws the two column inventory used by items and relics menu
 plot_item_inv
-        if menu = MENU_ITEMS then menu_items = 7 else menu_items = 9
+        if menu = MENU_ITEMS && !m_inv_scroll then menu_items = 7 else menu_items = 9
         ; reuse obj_index here because index is used by menu coloring code and breaks item list
-        for obj_index = 0 to menu_items
+        for obj_index = m_inv_scroll to menu_items
         item_name = pointer[[obj_index]]
         if !item_name then items_left
         if menu = MENU_RELICS then plot_relic_names
@@ -803,11 +808,11 @@ items_left
 items_right
         next
         
-        temp1 = pointer[[menu_selection]]
-        if menu_max = 11 then relic_descriptions
-item_descriptions
         ; bypass item description if on Exit
-        if menu_selection >= 8 then return thisbank
+        if menu_selection >= 11 then return thisbank
+        temp1 = pointer[[menu_selection]]
+        if menu = MENU_RELICS then relic_descriptions
+item_descriptions
         ; items have an array of assignments since some are shared
         m_desc = m_desc_set[temp1]
         plotmap item_desc 0 28 12 18 1 0 m_desc 18
@@ -815,40 +820,42 @@ item_inv_done
         return thisbank
 
 relic_descriptions
-        ; bypass item description if on Exit
-        if menu_selection >= 11 then return thisbank
         ; relics all have unique descriptions
         m_desc = temp1
         plotmap relic_desc 0 28 12 17 1 0 m_desc 17
         return thisbank
-
 
 plot_exit_string
         characterset menu_font
         plotchars 'Exit' 0 128 12 singlewide
         return thisbank
 
+plot_line
+        plotchars '------------------------------------' 0 8 Yposition singlewide
+        return thisbank
+
 update_item_cursor
         ; relics menu plotted higher than items
-        if menu_max >= 10 then temp4 = 48 else temp4 = 80
+        if menu = MENU_RELICS then temp4 = 48 else temp4 = 80
+        ; this is needed for scrolling the item menu, does nothing for relics
+        if m_inv_scroll then temp5 = 32 else temp5 = 0
 item_cursor_Y
-        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = temp4 : goto item_cursor_X
-        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = temp4 + 32 : goto item_cursor_X
-        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = temp4 + 64 : goto item_cursor_X
-        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = temp4 + 96 : goto item_cursor_X
-        if menu_max < 10 then item_cursor_exit_y
-        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = temp4 + 128 : goto item_cursor_X
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = temp4 : m_inv_scroll = 0 : goto item_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = temp4 + (32 - temp5) : goto item_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = temp4 + (64 - temp5) : goto item_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = temp4 + (96 - temp5) : goto item_cursor_X
+        ; toggle on the scroll values for items here
+        if menu = MENU_ITEMS then m_inv_scroll = 2 : temp5 = 32
+        if menu_selection = 8 || menu_selection = 9 then menu_cursor_Y = temp4 + (128 - temp5) : goto item_cursor_X
 item_cursor_exit_y
         menu_cursor_Y = MENU_EQUIP_EXIT_Y
 
 item_cursor_X
         ; kludge - makes up from the exit option go into right column instead of left
         if menu_selection = 10 then menu_selection = 11
-        if menu_selection = 8 && menu_max < 10 then menu_selection = 9
         if menu_selection = 11 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
         if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto item_cursor_set
         if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto item_cursor_set
-        if menu_selection = 9 && menu_max < 10 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto item_cursor_set
         if menu_selection = 9 then menu_cursor_X = 80 : goto item_cursor_set
         menu_cursor_X = 12
 
