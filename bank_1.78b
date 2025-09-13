@@ -492,7 +492,8 @@ pw_backspace
         menu_debounce = 1
         if pw_index > 24 then pw_index = 24
         pw_index = pw_index - 1
-        pw_index0[pw_index] = 81
+        ; replace with dash character
+        pw_index0[pw_index] = 82
         if pw_index > 23 then pw_index = 0
         goto main
 

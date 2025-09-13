@@ -1241,5 +1241,5 @@ disable_double_wide_mode
 
 set_menu_top_pal
         WSYNC = 1 : BACKGRND = $2D
-        if menu = MENU_MAIN then return thisbank
+        if menu = MENU_MAIN || menu = MENU_PASSWORD then return thisbank
         goto equip_menu_colors
