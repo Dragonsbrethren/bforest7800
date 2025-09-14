@@ -686,6 +686,7 @@ plot_nix
 ; It's an octorock from Zelda but instead of walking, it dives under water
 ;==============================================================================
 octopus_ai
+        if debug_time then BACKGRND = $78
         if flags{6} then goto octo_shoot_2
         if flags{0} then goto octo_swim
         if timer then goto octo_pop_2
@@ -717,10 +718,12 @@ octo_swim
         if !timer then goto octo_pop
 ;        gosub octo_test_shoot
         ; followplayer used for return this frame
+        object_parent[index] = 0
         goto followplayer
 
 
 octo_test_shoot
+        if object_parent[index] then octo_done
 octo_test_y
         ; vertical range check
         if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, 0, 12, 224) then goto octo_shoot_y
@@ -731,7 +734,7 @@ octo_test_x
 
 octo_test_return
         ; horiz and vert tests both failed
-        return thisbank
+        goto octo_done
 
 octo_shoot_y
         object_facing[index] = DIR_UP
@@ -744,7 +747,7 @@ octo_shoot_x
 
 octo_shoot
         gosub find_new_object
-        if no_empty_slot then return thisbank
+        if no_empty_slot then goto octo_done
         object_parent[spawn_index] = index
         flags{6} = 1
         flags{0} = 0
@@ -762,7 +765,7 @@ end
 
 octo_shoot_2
         timer = timer - 1
-        if timer then return thisbank
+        if timer then goto octo_done
 
 load_octoink
         asm
@@ -782,10 +785,16 @@ load_octoink
           sta object_spr_ptr_lo,x
           lda #>.plot_octoink
           sta object_spr_ptr_hi,x
+          tya
+          sta object_parent,x
+          txa
+          sta object_parent,y
           jsr set_cast_direction
 end
         flags{6} = 0
         timer = OCTOPUS_POP_TIMER
+octo_done
+        if debug_time then BACKGRND = bg_color
         return thisbank
 
         data octo_shoot_frames
