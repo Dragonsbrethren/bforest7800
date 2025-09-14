@@ -209,6 +209,8 @@ plot_river_room_0
         return thisbank
 
         data river_room_0_obj
+        TYPE_TORCH, $20, $50, TYPE_TORCH, $38, $50, TYPE_TORCH, $60, $50, TYPE_TORCH, $78, $50
+        TYPE_BESTIARY, $48, $90,
         $00
 end
 
@@ -223,7 +225,9 @@ plot_river_room_1
         return thisbank
 
         data river_room_1_obj
-        TYPE_BESTIARY, $38, $60, TYPE_NIXTAIL, $60, $60, $00
+        TYPE_RGHOST, $48, $80, TYPE_RGHOST, $56, $80, TYPE_RGHOST, $60, $70,
+        TYPE_TORCH, $20, $50, TYPE_TORCH, $80, $50,
+        $00
 end
 
 plot_river_room_2
@@ -237,7 +241,9 @@ plot_river_room_2
         return thisbank
 
         data river_room_2_obj
-        TYPE_MERMAN, $38, $60, TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50, $00
+        TYPE_MERMAN, $38, $60, TYPE_TORCH, $88, $10,
+        TYPE_NIXTAIL, $0C, $50,
+        $00
 end
 
 plot_river_room_3
@@ -251,7 +257,7 @@ plot_river_room_3
         return thisbank
 
         data river_room_3_obj
-        TYPE_OCTOPUS, $48, $60, TYPE_MERMAN, $48, $70, TYPE_RGHOST, $20, $50
+        TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $48, $70,
         TYPE_TORCH, $80, $20, TYPE_TORCH, $30, $50, TYPE_TORCH, $80, $B0,
         $00
 end
