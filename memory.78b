@@ -194,6 +194,7 @@
         autodim byte spawn_index
         autodim byte frame_index
         autodim byte plot_index
+        autodim byte item_spawned
 
         ; MENUS
         autodim byte action_debounce

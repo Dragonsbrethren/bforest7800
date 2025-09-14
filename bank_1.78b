@@ -584,7 +584,14 @@ add_relic
         m_relic_bits_2 = m_relic_bits_2 | temp2
         goto kill_object
 
+;==============================================================================
+; REMOVE DUPLICATES
+;------------------------------------------------------------------------------
+; Goes through bit-by-bit and removes or substitutes
+; items the player already has in their inventory
+;==============================================================================
 remove_duplicates
+        item_spawned = 0
         for index = 1 to MAX_OBJECTS
         if object_type[index] >= TYPE_CHARM1 then check_charm_bits
         if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
@@ -610,7 +617,7 @@ check_relic_bits
 
 check_sword_bits
         if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Bone Scimitar
         if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
         if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
         if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
@@ -623,7 +630,7 @@ check_sword_bits
 
 check_shield_bits
         if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = TYPE_POTION ; Skull Shield
         if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
@@ -649,7 +656,7 @@ check_armor_bits
 
 check_charm_bits
         if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Dark Talisman
         if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
         if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
         if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 

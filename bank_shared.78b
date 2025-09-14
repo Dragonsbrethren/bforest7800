@@ -19,10 +19,11 @@ draw_pickup_hud
         Xposition = 36
         for index = 0 to 13
         Xposition = Xposition + 6                  
-        
         PLOTSPRITE font_spr 0 Xposition 208 0
         next
 map_loaded
+        ; so remove duplicates runs on a fresh map load
+        item_spawned = 1
         savescreen
         gosub update_hp_bar
         gosub update_mp_bar
@@ -48,7 +49,8 @@ player_handler_done
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
         gosub check_collisions
-        gosub remove_duplicates
+        ; check if spawned items are duplicates, remove/sub them
+        if item_spawned then gosub remove_duplicates
 
 set_pickup_string
         if pickup_timer then get_pickup_string
@@ -561,6 +563,8 @@ spawn_object
           and #$F0
           sta object_Ypos,x
           jsr randomize
+          ; for remove duplicates logic
+          stx item_spawned
           cmp #RARE_DROP_RATE
           bcs spawn_rare
           cmp #COMMON_DROP_RATE
@@ -626,7 +630,7 @@ end
         0               ; player
         0               ; torch (handled separately)
         TYPE_FOOD       ; wolf
-        TYPE_FOOD       ; warg
+        TYPE_EYEDROP    ; warg
         TYPE_POTION     ; merman
         TYPE_EYEDROP    ; octopus
         TYPE_ANTIDOTE   ; slime
