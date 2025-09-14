@@ -21,7 +21,7 @@
         set tallsprite spritesheet
 
         const debug_hud = 0
-        const debug_time = 1
+        const debug_time = 0
 
         incbasic constants.78b
         incbasic memory.78b

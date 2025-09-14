@@ -631,7 +631,7 @@ end
         0               ; torch (handled separately)
         TYPE_FOOD       ; wolf
         TYPE_EYEDROP    ; warg
-        TYPE_POTION     ; merman
+        TYPE_EYEDROP    ; merman
         TYPE_EYEDROP    ; octopus
         TYPE_ANTIDOTE   ; slime
         TYPE_ANTIDOTE   ; mini-slime

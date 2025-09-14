@@ -257,7 +257,7 @@ plot_river_room_3
         return thisbank
 
         data river_room_3_obj
-        TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $48, $70,
+        TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $70, $70,
         TYPE_TORCH, $80, $20, TYPE_TORCH, $30, $50, TYPE_TORCH, $80, $B0,
         $00
 end
@@ -273,6 +273,8 @@ plot_river_room_4
         return thisbank
 
         data river_room_4_obj
+        TYPE_NIX, $68, $70, TYPE_NIX, $30, $80,
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,
         $00
 end
 
