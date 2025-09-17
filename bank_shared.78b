@@ -13,17 +13,15 @@ load_map
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
-
+        gosub remove_duplicates
         gosub draw_hud
 draw_pickup_hud
         Xposition = 36
         for index = 0 to 13
-        Xposition = Xposition + 6                  
+        Xposition = Xposition + 6              
         PLOTSPRITE font_spr 0 Xposition 208 0
         next
 map_loaded
-        ; so remove duplicates runs on a fresh map load
-        item_spawned = 1
         savescreen
         gosub update_hp_bar
         gosub update_mp_bar

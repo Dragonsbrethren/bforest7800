@@ -79,6 +79,68 @@ river_room_bank_7
         jmp (temp1)
 end
 
+plot_river_room_6
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map river_room_6 280
+        plotmapfile tiled/river_room_6.tmx river_room_6 0 0 20 14
+        zone1_objects  = 3
+        zone2_objects  = 5
+        zone14_objects = 5
+        return otherbank
+
+
+plot_river_room_7
+        menu_map_room[menu_map_index] = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy current_map river_room_7 280
+        plotmapfile tiled/river_room_7.tmx river_room_7 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
+
+plot_river_room_8
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        memcpy current_map river_room_8 280
+        plotmapfile tiled/river_room_8.tmx river_room_8 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 3
+        return otherbank
+
+plot_river_room_9
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy current_map river_room_9 280
+        plotmapfile tiled/river_room_9.tmx river_room_9 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
+
+plot_river_room_10
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map river_room_10 280
+        plotmapfile tiled/river_room_10.tmx river_room_10 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 7
+        zone14_objects = 5
+        return otherbank
+
+        dmahole 0
+plot_river_room_11
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map river_room_11 280
+        plotmapfile tiled/river_room_11.tmx river_room_11 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 5
+        return otherbank
+
 plot_river_room_12
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_U
@@ -134,7 +196,6 @@ plot_river_room_16
         zone14_objects = 5
         return otherbank
 
-        dmahole 0
 plot_river_room_17
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_UR
