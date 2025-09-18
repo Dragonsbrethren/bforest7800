@@ -84,7 +84,7 @@ plot_river_room_6
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy current_map river_room_6 280
         plotmapfile tiled/river_room_6.tmx river_room_6 0 0 20 14
-        zone1_objects  = 3
+        zone1_objects  = 4
         zone2_objects  = 5
         zone14_objects = 5
         return otherbank
@@ -95,9 +95,9 @@ plot_river_room_7
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map river_room_7 280
         plotmapfile tiled/river_room_7.tmx river_room_7 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_8
@@ -105,9 +105,9 @@ plot_river_room_8
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_8 280
         plotmapfile tiled/river_room_8.tmx river_room_8 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 3
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_9
@@ -115,9 +115,9 @@ plot_river_room_9
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map river_room_9 280
         plotmapfile tiled/river_room_9.tmx river_room_9 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_10
@@ -126,8 +126,8 @@ plot_river_room_10
         memcpy current_map river_room_10 280
         plotmapfile tiled/river_room_10.tmx river_room_10 0 0 20 14
         zone1_objects  = 4
-        zone2_objects  = 7
-        zone14_objects = 5
+        zone2_objects  = 6
+        zone14_objects = 3
         return otherbank
 
         dmahole 0
@@ -136,9 +136,9 @@ plot_river_room_11
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy current_map river_room_11 280
         plotmapfile tiled/river_room_11.tmx river_room_11 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 8
+        zone2_objects  = 6
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_12
@@ -150,7 +150,7 @@ plot_river_room_12
         pal_animation = 1
         zone1_objects  = 4
         zone2_objects  = 4
-        zone14_objects = 5
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_13
@@ -160,8 +160,8 @@ plot_river_room_13
         plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
         alt_palette = 1
         pal_animation = 1
-        zone1_objects  = 5
-        zone2_objects  = 5
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         return otherbank
 
@@ -171,9 +171,9 @@ plot_river_room_14
         memcpy current_map river_room_14 280
         plotmapfile tiled/river_room_14.tmx river_room_14 0 0 20 14
         alt_palette = 1
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_15
@@ -183,7 +183,7 @@ plot_river_room_15
         plotmapfile tiled/river_room_15.tmx river_room_15 0 0 20 14
         zone1_objects  = 4
         zone2_objects  = 4
-        zone14_objects = 5
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_16
@@ -191,9 +191,9 @@ plot_river_room_16
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy current_map river_room_16 280
         plotmapfile tiled/river_room_16.tmx river_room_16 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_17
@@ -203,8 +203,8 @@ plot_river_room_17
         plotmapfile tiled/river_room_17.tmx river_room_17 0 0 20 14
         alt_palette = 1
         zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone2_objects  = 6
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_18
@@ -223,9 +223,9 @@ plot_river_room_19
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy current_map river_room_19 280
         plotmapfile tiled/river_room_19.tmx river_room_19 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 6
+        zone2_objects  = 6
+        zone14_objects = 1
         return otherbank
 
 plot_river_room_20
@@ -233,9 +233,9 @@ plot_river_room_20
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map river_room_20 280
         plotmapfile tiled/river_room_20.tmx river_room_20 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 6
         return otherbank
 
 plot_river_room_21
@@ -243,7 +243,7 @@ plot_river_room_21
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_21 280
         plotmapfile tiled/river_room_21.tmx river_room_21 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 5
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
         return otherbank

@@ -309,16 +309,22 @@ end
 
 
         data river_room_6_obj
+        TYPE_NIX, $30, $40, TYPE_NIX, $78, $80
+        TYPE_TORCH, $78, $30, TYPE_TORCH, $10, $80,
         $00
 end
 
         data river_room_7_obj
+        TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $68, $90,
+        TYPE_TORCH, $58, $30, TYPE_TORCH, $88, $A0, TYPE_TORCH, $20, $90
         $00
 end
 
 
 
         data river_room_8_obj
+        TYPE_OCTOPUS, $38, $40, TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $58, $40,
+        TYPE_TORCH, $20, $30, TYPE_TORCH, $70, $30,
         $00
 end
 
