@@ -372,6 +372,24 @@ end
         $00
 end
 
+        data river_room_18_obj
+        $00
+end
+
+        data river_room_19_obj
+        TYPE_NIX, $68, $60, TYPE_NIX, $60, $A0, TYPE_NIX, $18, $40,
+        TYPE_FAIRYCARD, $4C, $20,
+        $00
+end
+
+        data river_room_20_obj
+        $00
+end
+
+        data river_room_21_obj
+        $00
+end
+
 test_walkable_river
 ; water is tested differently than other properties, it tests the tile directly under the object
 ; this helps eliminate graphical issues when approaching a non-water tile in water
@@ -506,24 +524,6 @@ torch_tile_unblock_river
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 river_walkable_tiles
         return
-
-        data river_room_18_obj
-        $00
-end
-
-        data river_room_19_obj
-        TYPE_NIX, $68, $60, TYPE_NIX, $60, $A0, TYPE_NIX, $18, $40,
-        TYPE_CATCARD, $4C, $20,
-        $00
-end
-
-        data river_room_20_obj
-        $00
-end
-
-        data river_room_21_obj
-        $00
-end
 
 ;==============================================================================
 ; SUBROUTINE: NIX AI

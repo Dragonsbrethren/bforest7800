@@ -794,7 +794,7 @@ end
         goto items_left
 
 plot_relic_names
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        ; plotsprite menu_potion0 m_palette m_spriteX m_spriteY
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
 
 ; TODO: Plot on/off toggles

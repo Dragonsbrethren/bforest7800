@@ -25,7 +25,7 @@
         incgraphic gfx/sprites/potion0.png 160A 0 2 3 1
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
         incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
-        incgraphic gfx/sprites/relic0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/relic0.png 160A 0 2 3 1
         incgraphic gfx/sprites/relic1.png 160A 0 1 2 3
         incgraphic gfx/sprites/relic2.png 160A 0 3 2 1
 
