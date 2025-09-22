@@ -44,13 +44,13 @@
         const SHIELD_OFFSET_X_LEFT  = 6
         const SHIELD_OFFSET_X_RIGHT = 4
         const SHIELD_OFFSET_X_DOWN  = 8
-        const SHIELD_OFFSET_X_UP    = 0
+        const SHIELD_OFFSET_X_UP    = -3
         const SHIELD_OFFSET_X_LEFT_STAND  = -2
         const SHIELD_OFFSET_X_RIGHT_STAND =  7
         const SHIELD_OFFSET_X_DOWN_STAND  =  8
         const SHIELD_OFFSET_X_UP_STAND    =  0
         const SHIELD_OFFSET_Y          = 7
-        const SHIELD_OFFSET_Y_UP       = 3
+        const SHIELD_OFFSET_Y_UP       = 6
         const SHIELD_OFFSET_Y_RIGHT    = 3
         const SHIELD_OFFSET_Y_UP_STAND = 6
 
