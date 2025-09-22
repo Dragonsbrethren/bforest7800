@@ -708,10 +708,10 @@ end
         player_frame = FRAME_RIGHT
 
 frames_done
-        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_frame = FRAME_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_frame = FRAME_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_frame = FRAME_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
         if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu

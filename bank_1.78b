@@ -50,8 +50,7 @@ main
         if joy0right then right_debounce = right_debounce + 1 
         if joy0up then up_debounce = up_debounce + 1
         if joy0down then down_debounce = down_debounce + 1
-        if select_debounce then goto main_animation_timer
-        if switchselect then gosub swap_action_button
+        if switchselect && !select_debounce then gosub swap_action_button
 main_animation_timer
         animation_timer = animation_timer + 1
         if animation_timer > ANIM_TIME then animation_timer = 0
@@ -1026,6 +1025,7 @@ bottomscreenroutine
         if game_state = STATE_TITLE then set_title_bottom_pal
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
+        ; flash the screen border
         BACKGRND = flash_color
         if tileset = T_CASTLE then hair_flash   ; Cathedral tileset uses black as BG, not C1
         P4C1     = flash_color
