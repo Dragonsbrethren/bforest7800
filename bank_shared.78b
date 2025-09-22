@@ -1461,7 +1461,7 @@ shield_check
 
 projectile_status
         ; hardcode Octoink to set dark status for now
-        if object_flags[index] = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
+        if flags = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
         goto pc_damage
 
 set_status
