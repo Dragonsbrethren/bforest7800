@@ -224,7 +224,7 @@
         const FAIRY_ITEM_TIME = 120
 
         const PICKUP_TIME = 120
-        const PICKUP_STRING_LENGTH = 13
+        const PICKUP_STRING_LENGTH = 12
 
 ;------------------------------------------------------------------------------
 ; FIELD

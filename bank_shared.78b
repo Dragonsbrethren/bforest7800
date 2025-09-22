@@ -80,7 +80,7 @@ pickup_pad
 
 pickup_center
         ; do some math to center the string
-        temp2 = (PICKUP_STRING_LENGTH - temp1) / 2
+        temp2 = (PICKUP_STRING_LENGTH+1 - temp1) / 2
         temp3 = temp2 + temp1
         ; use a negative step when copying so
         ; the same string buffer can be used
