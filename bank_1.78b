@@ -1011,6 +1011,7 @@ swap_action_button
         action_button = 1 : return thisbank
 
 topscreenroutine
+        ; without this extra wsync, there's a line of wrong color drawn at the top of the screen
         WSYNC=1
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
