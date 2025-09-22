@@ -13,7 +13,6 @@ load_map
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
-        gosub remove_duplicates
         gosub draw_hud
 draw_pickup_hud
         Xposition = 36
@@ -26,6 +25,7 @@ map_loaded
         gosub update_hp_bar
         gosub update_mp_bar
         if !save_objects then gosub load_objects
+        gosub remove_duplicates
         asm
         lda #0
         sta reload_map
