@@ -745,15 +745,11 @@ player_attack
         ; player exiting chant tracks if the player cast magic to exit chant with button held
         if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
-        if player_facing = DIR_DOWN then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
-        if player_facing = DIR_UP   then sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
-        if player_facing = DIR_LEFT then sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
-        sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
+        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
+        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
+        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
 sword_done
-        if player_facing = DIR_LEFT  then player_frame = FRAME_ATK_L : goto player_attack_return
-        if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : goto player_attack_return
-        if player_facing = DIR_UP    then player_frame = FRAME_ATK_U : goto player_attack_return
-        if player_facing = DIR_DOWN  then player_frame = FRAME_ATK_D
 
 player_attack_return
         player_state = STATE_ATTACK
@@ -1430,16 +1426,21 @@ update_hp_bar
         return
 
 shield_check
-        ; hardcode Octoink to set dark status for now
-        if object_type[index] = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
-        ; projectiles are destroyed on contact
+        ; copy the projectile's type to its flags for status effects
+        flags = object_type[index]
+        ; TODO: projectile properties, maybe some shouldn't be destroyed on contact?
         object_type[index] = 0
+        ; if the player doesn't have a shield or they aren't standing still, damage the player
+        if !player_shield || player_state <> STATE_STAND then goto projectile_status
         ; TODO: different shield properties
-        if !player_shield then goto pc_damage
         if player_facing = DIR_UP && object_facing[index]    = DIR_DOWN  then return thisbank
         if player_facing = DIR_DOWN && object_facing[index]  = DIR_UP    then return thisbank
         if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then return thisbank
         if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then return thisbank
+
+projectile_status
+        ; hardcode Octoink to set dark status for now
+        if object_flags[index] = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
         goto pc_damage
 
 set_status
