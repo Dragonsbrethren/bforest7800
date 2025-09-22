@@ -25,7 +25,6 @@ map_loaded
         gosub update_hp_bar
         gosub update_mp_bar
         if !save_objects then gosub load_objects
-        gosub remove_duplicates
         asm
         lda #0
         sta reload_map

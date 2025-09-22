@@ -591,90 +591,7 @@ add_relic
         goto kill_object
 
 ;==============================================================================
-; REMOVE DUPLICATES
-;------------------------------------------------------------------------------
-; Goes through bit-by-bit and removes or substitutes
-; items the player already has in their inventory
-;==============================================================================
-remove_duplicates
-        item_spawned = 0
-        for index = 1 to MAX_OBJECTS
-        if object_type[index] >= TYPE_CHARM1 then check_charm_bits
-        if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
-        if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
-        if object_type[index] >= TYPE_SWORD1 then check_sword_bits
-        if object_type[index] >= TYPE_RELIC1 then check_relic_bits
-remove_duplicates_next
-        next
-        return thisbank
-
-check_relic_bits
-        if object_type[index] = TYPE_RELIC1 && m_relic_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_RELIC2 && m_relic_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_RELIC3 && m_relic_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC4 && m_relic_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC5 && m_relic_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC6 && m_relic_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC7 && m_relic_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC9 && m_relic_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC10 && m_relic_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
-
-check_sword_bits
-        if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Bone Scimitar
-        if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD6 && m_sword_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD7 && m_sword_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD8 && m_sword_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD9 && m_sword_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD10 && m_sword_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
-
-check_shield_bits
-        if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = TYPE_POTION ; Skull Shield
-        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD9 && m_shield_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD10 && m_shield_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
-
-check_armor_bits
-        if object_type[index] = TYPE_ARMOR1 && m_armor_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_ARMOR2 && m_armor_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_ARMOR3 && m_armor_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
-
-check_charm_bits
-        if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Dark Talisman
-        if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
-
-;==============================================================================
-; LOAD OBJECTS
+; SUBROUTINE: LOAD OBJECTS
 ;------------------------------------------------------------------------------
 ; Fills all 16 object slots with type and position data from ROM,
 ; then interates through each type to set object properties
@@ -758,7 +675,90 @@ object_stats
 
 obj_next_stats
         next
-        return
+        ; load_objects runs directly into remove_duplicates to remove any objects placed on map by default
+
+;==============================================================================
+; SUBROUTINE: REMOVE DUPLICATES
+;------------------------------------------------------------------------------
+; Goes through bit-by-bit and removes or substitutes
+; items the player already has in their inventory
+;==============================================================================
+remove_duplicates
+        item_spawned = 0
+        for index = 1 to MAX_OBJECTS
+        if object_type[index] >= TYPE_CHARM1 then check_charm_bits
+        if object_type[index] >= TYPE_ARMOR1 then check_armor_bits
+        if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
+        if object_type[index] >= TYPE_SWORD1 then check_sword_bits
+        if object_type[index] >= TYPE_RELIC1 then check_relic_bits
+remove_duplicates_next
+        next
+        return thisbank
+
+check_relic_bits
+        if object_type[index] = TYPE_RELIC1 && m_relic_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_RELIC2 && m_relic_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_RELIC3 && m_relic_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC4 && m_relic_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC5 && m_relic_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC6 && m_relic_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC7 && m_relic_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC9 && m_relic_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC10 && m_relic_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
+
+check_sword_bits
+        if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Bone Scimitar
+        if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD6 && m_sword_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD7 && m_sword_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD8 && m_sword_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD9 && m_sword_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SWORD10 && m_sword_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
+
+check_shield_bits
+        if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = TYPE_POTION ; Skull Shield
+        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD9 && m_shield_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD10 && m_shield_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
+
+check_armor_bits
+        if object_type[index] = TYPE_ARMOR1 && m_armor_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR2 && m_armor_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_ARMOR3 && m_armor_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
+
+check_charm_bits
+        if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Dark Talisman
+        if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
 
 obj_torch_stats
         object_hp[obj_index] = 1
