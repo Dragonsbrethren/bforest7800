@@ -126,6 +126,10 @@
         const WOLF_MDEF = 2
         const WOLF_DROP_RATE = 64       ; depreciated
         const WOLF_CHASE_DIST = 32
+        const WOLF_CHASE_DIST_X = 48
+        const WOLF_CHASE_DIST_Y = 64
+        const WOLF_CHASE_OFFSET_X = WOLF_CHASE_DIST_X / 2
+        const WOLF_CHASE_OFFSET_Y = WOLF_CHASE_DIST_Y / 2
 
         const SLIME_DROP_RATE = 128     ; depreciated
         const SLIME_HP = 4
@@ -248,8 +252,8 @@
         const torch_ai_hi     = #>.torch_tile_block
         const wolf_ai_lo      = #<.wolf_ai
         const wolf_ai_hi      = #>.wolf_ai
-;        const warg_ai_lo      = #<.warg_ai
-;        const warg_ai_hi      = #>.warg_ai
+        const warg_ai_lo      = #<.warg_ai
+        const warg_ai_hi      = #>.warg_ai
         const nix_ai_lo       = #<.nix_ai
         const nix_ai_hi       = #>.nix_ai
         const octopus_ai_lo   = #<.octopus_ai

@@ -30,6 +30,10 @@
         incgraphic gfx/sprites/nix3.png 160A 0 3 2 1
         incgraphic gfx/sprites/nix4.png 160A
         incgraphic gfx/sprites/nix5.png 160A
+        incgraphic gfx/sprites/warg0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -225,7 +229,7 @@ plot_river_room_1
         return thisbank
 
         data river_room_1_obj
-        TYPE_RGHOST, $48, $80, TYPE_RGHOST, $56, $80, TYPE_RGHOST, $60, $70,
+        TYPE_WARG, $48, $80, TYPE_WARG, $56, $80, TYPE_WARG, $60, $70,
         TYPE_TORCH, $20, $50, TYPE_TORCH, $80, $50,
         $00
 end
@@ -508,6 +512,8 @@ torch_tile_unblock_river
 end
 
         data river_room_19_obj
+        TYPE_NIX, $68, $60, TYPE_NIX, $60, $A0, TYPE_NIX, $18, $40,
+        TYPE_CATCARD, $4C, $20,
         $00
 end
 
@@ -818,6 +824,56 @@ obj_rghost_stats
 end
         goto obj_next_stats
 
+;==============================================================================
+; WARG AI
+;------------------------------------------------------------------------------
+; Wolves wait for the player to get close (WOLF_CHASE_DIST), then give chase
+;==============================================================================
+warg_ai
+        ; Once wolves start chasing, they don't stop
+        if flags{7} then warg_chase
+
+        ; Test player distance to wolf
+        temp1 = Xposition - WOLF_CHASE_OFFSET_X
+        if temp1 > Xposition then temp1 = 0
+        temp2 = Yposition - WOLF_CHASE_OFFSET_Y
+        if temp2 > Yposition then temp2 = 0
+        if !boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, temp1, temp2, WOLF_CHASE_DIST_X, WOLF_CHASE_DIST_Y) then goto  warg_anim
+        flags{7} = 1
+
+warg_chase
+        gosub followplayer
+
+warg_anim
+        ; Wolves flip left or right facing depending on player position
+        frame = 0
+        temp3 = Xposition + 4
+        if temp3 < player_Xpos then frame = frame + 2
+        if animation_frame then frame = frame + 1
+        return thisbank
+
+obj_warg_stats
+; TODO: Make this implementation suck less
+        object_hp[obj_index] = WOLF_HP
+        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
+        object_damage[obj_index] = WOLF_DAMAGE
+        object_def[obj_index] = WOLF_DEF
+        object_mdef[obj_index] = WOLF_MDEF
+        object_friction_hi[obj_index] = WOLF_FRICTION_HI
+        object_friction_lo[obj_index] = WOLF_FRICTION_LO
+        object_speed_hi[obj_index] = WOLF_SPEED_HI
+        object_speed_lo[obj_index] = WOLF_SPEED_LO
+        object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_warg
+          sta object_spr_ptr_lo,x
+          lda #>.plot_warg
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
 plot_octopus
         plotsprite octopus0 sprite_pal Xposition Yposition frame
         goto plot_next
@@ -828,4 +884,8 @@ plot_octoink
 
 plot_rghost
         plotsprite rghost0 sprite_pal Xposition Yposition animation_frame
+        goto plot_next
+
+plot_warg
+        plotsprite warg0 5 Xposition Yposition frame
         goto plot_next

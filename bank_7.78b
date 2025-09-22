@@ -30,6 +30,11 @@
         incgraphic gfx/sprites/nix3.png 160A 0 3 2 1
         incgraphic gfx/sprites/nix4.png 160A
         incgraphic gfx/sprites/nix5.png 160A
+        incgraphic gfx/sprites/warg0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
+        incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
+
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -85,7 +90,7 @@ plot_river_room_6
         memcpy current_map river_room_6 280
         plotmapfile tiled/river_room_6.tmx river_room_6 0 0 20 14
         zone1_objects  = 4
-        zone2_objects  = 5
+        zone2_objects  = 6
         zone14_objects = 5
         return otherbank
 
