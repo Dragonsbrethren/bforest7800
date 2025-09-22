@@ -725,8 +725,29 @@ test_joy_done
 
 player_move_done
 
-        shield_Xpos = player_Xpos + SHIELD_OFFSET_X
-        shield_Ypos = player_Ypos + SHIELD_OFFSET_Y
+position_shield
+        temp2 = SHIELD_OFFSET_Y
+        ; the shield changes frames based on the player's direction and state
+        if player_state = STATE_STAND then position_shield_stand
+        ; TODO: Table of frames for different shield graphics
+        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 2 else shield_frame = 0
+        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT
+        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT : temp2 =  SHIELD_OFFSET_Y_RIGHT ; hide behind player
+        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN
+        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP : temp2 = SHIELD_OFFSET_Y_UP 
+        goto position_shield_done
+
+position_shield_stand
+        ; TODO: Table of frames for different shield graphics
+        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 0 else shield_frame = 2
+        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT_STAND
+        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT_STAND
+        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN_STAND
+        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP_STAND : temp2 = SHIELD_OFFSET_Y_UP_STAND ; raise shield slightly for up frame
+
+position_shield_done
+        shield_Xpos = player_Xpos + temp1
+        shield_Ypos = player_Ypos + temp2
 
 input_frame_done
         if !player_Xvel && !player_Yvel && player_state <> STATE_ATTACK && player_state <> STATE_CHANT then player_state = STATE_STAND

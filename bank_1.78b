@@ -97,12 +97,13 @@ main_state_handler
 plot_player
         ; Plot the player, their shield, and sword if attacking
         if player_state = STATE_ATTACK then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
-        if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame : goto plot_player_shield
-        plotsprite heroine0 0 player_Xpos player_Ypos player_frame
-plot_player_shield
-        if player_state = STATE_DEATH || player_state = STATE_CHANT then goto plot_hud
-        ; TODO: Multiple shield frames depending on direction/state
-        if player_shield then plotsprite shield0 shield_pal shield_Xpos shield_Ypos shield_frame
+
+        ; plot shield behind player if facing up/right
+        if player_facing = DIR_UP || player_facing = DIR_RIGHT then gosub plot_player_shield
+plot_johanna
+        if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
+        if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
+
         if debug_time then BACKGRND = bg_color
 plot_hud
         asm
@@ -167,6 +168,12 @@ float_sprites
 ;          floatsprite 1,ZONE1ADDRESS,7
 ;end
 ;        goto main
+
+plot_player_shield
+        if player_state = STATE_DEATH || player_state = STATE_CHANT then return thisbank
+
+        if player_shield then plotsprite shield0 shield_pal shield_Xpos shield_Ypos shield_frame
+        return thisbank
 
 kill_player
         player_frame = FRAME_DEATH
