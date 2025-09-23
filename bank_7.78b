@@ -220,6 +220,7 @@ plot_river_room_18
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 5
+        pal_animation = 1
         return otherbank
 
 
@@ -231,6 +232,7 @@ plot_river_room_19
         zone1_objects  = 6
         zone2_objects  = 6
         zone14_objects = 1
+        pal_animation = 1
         return otherbank
 
 plot_river_room_20
@@ -248,7 +250,7 @@ plot_river_room_21
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_21 280
         plotmapfile tiled/river_room_21.tmx river_room_21 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 1
         return otherbank

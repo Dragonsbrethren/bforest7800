@@ -188,6 +188,8 @@ river_pals
         P5C1 = flash_color : P5C2 = getfade(PAL_F_WATER, black) : P5C3 = getfade(PAL_F_DKGRN, black)     ; water vegetation
 river_pals_rocks
         P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_LTWTR)     ; blue and gray used by water
+        ; bypass setting these colors if animated palette
+        if pal_animation then river_shared_pals
         P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2)  : P7C3 = getfade(PAL_WFALL3)      ; blues, waterfalls
         ; palette registers are read-only, need soft versions of their data
         sP7C1 = getfade(PAL_WFALL1) : sP7C2 = getfade(PAL_WFALL2) : sP7C3 = getfade(PAL_WFALL3)
