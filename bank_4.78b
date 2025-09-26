@@ -455,83 +455,33 @@ end
 end
 
 test_walkable_castle
-        asm
-        ldx #0
-twc_loop lda castle_walkable_tiles,x
-        cmp move_tile_1
-        bne twctile2
-        pha
-        lda #1
-        sta walkable_1
-        pla
-twctile2 cmp move_tile_2
-        bne twc_next
-        lda #1
-        sta walkable_2
-        ; optimization: bypass the rest of the array if both tiles walkable
-        ;   further optimization possible by sorting arrays by tile frequency
-        lda walkable_1
-        bne twc_walkable
-twc_next inx
-        cpx #castle_walkable_tiles_length
-        bne twc_loop
-        lda walkable_1
-        beq twc_done
-        lda walkable_2
-        beq twc_done
-twc_walkable
-        sta walkable
-        jmp .walkable_return
-twc_done
-tfc_flags
-        lda flags
-        and #%00010000
-        bne tfc_done
+        move_tile_1 = move_tile_1 / 2
+        move_tile_2 = move_tile_2 / 2
+        tile_properties_1 = castle_tile_properties[move_tile_1]
+        tile_properties_2 = castle_tile_properties[move_tile_2]
+        ; no water to test against in the Cathedral
+        tile_properties = tile_properties_1 & tile_properties_2
+        return thisbank
 
-test_floatable_castle
-        ldx #0
-tfc_loop lda castle_floatable_tiles,x
-        cmp move_tile_1
-        bne tfctile2
-        pha
-        lda #1
-        sta floatable_1
-        pla
-tfctile2 cmp move_tile_2
-        bne tfc_next
-        lda #1
-        sta floatable_2
-        lda floatable_1
-        bne tfc_floatable
-tfc_next inx
-        cpx #castle_floatable_tiles_length
-        bne tfc_loop
-        lda floatable_1
-        beq tfc_done
-        lda floatable_2
-        beq tfc_done
-tfc_floatable
-        sta floatable
-tfc_done jmp .walkable_return
-end
-
-        data castle_walkable_tiles
-        $10, $16, $18, $26, $28, $2A, $2C, $2E, $30, $32, $34, $36, $38, $3A,
-        $3C, $3E, $40, $42, $44, $46, $48, $4A, $4C, $4E, $50, $52, $54, $56, $58
-end
-
-        data castle_floatable_tiles
-        $5A, $5C, $5E, $60, $62, $64, $66
+        data castle_tile_properties
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000011, %00000000, %00000000, %00000001, %00000001, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000000, %00000000, %00000000, %00000010, %00000000, %00000000, %00000000, %00000010,
+        %00000010, %00000000, %00000000, %00000000, %00000000, %00000010
 end
 
 torch_tile_block_castle
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 castle_floatable_tiles
+        pokechar current_map peekX peekY 20 14 $70
         return thisbank
 
 torch_tile_unblock_castle
         ; the poked tile doesn't affect visuals since those are plotted from ROM
-        pokechar current_map peekX peekY 20 14 castle_walkable_tiles
+        pokechar current_map peekX peekY 20 14 $26
         return thisbank
 
 ;==============================================================================

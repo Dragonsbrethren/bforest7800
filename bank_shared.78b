@@ -310,6 +310,7 @@ plot_debug_hud
 
 plot_hud_castle
         plotvalue castle_hud 0 player_Xpos 2 32 12
+        plotvalue castle_hud 0 move_tile_1 4 32 11
 ;        plotvalue castle_hud 0 player_Ypos 2 48 12
 ;        plotvalue castle_hud 0 move_tile_1 4 32 13
         return
@@ -1211,7 +1212,7 @@ test_walkable
 ;        sta water_2
 end
         if tileset = T_FOREST then goto test_walkable_forest
-        if tileset = T_CASTLE then goto test_walkable_castle
+        if tileset = T_CASTLE then gosub test_walkable_castle
         if tileset = T_RIVER  then gosub test_walkable_river
 
 walkable_return
