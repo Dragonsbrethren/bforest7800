@@ -243,7 +243,7 @@ plot_river_room_2
         plotmapfile tiled/river_room_2.tmx river_room_2 0 0 20 14
         zone1_objects  = 4
         zone2_objects  = 6
-        zone14_objects = 4
+        zone14_objects = 3
         return thisbank
 
         data river_room_2_obj
@@ -397,31 +397,32 @@ test_walkable_river
         move_tile_2 = move_tile_2 / 2
         tile_properties_1 = river_tile_properties[move_tile_1]
         tile_properties_2 = river_tile_properties[move_tile_2]
-                if !tile_properties_1 || !tile_properties_2 then walkable_return
-        ; TODO: Movement routines just test against tile properties bits
-        if tile_properties_1{0} && tile_properties_2{0} then walkable = 1 : floatable = 1 : goto test_water_river
-        if tile_properties_1{2} && tile_properties_2{2} then walkable = 1 : goto test_water_river
-        if tile_properties_1{0} && tile_properties_2{2} then walkable = 1 : goto test_water_river
-        if tile_properties_1{2} && tile_properties_2{0} then walkable = 1 : goto test_water_river
-        if tile_properties_1{4} && tile_properties_2{4} then ledge = DIR_DOWN : goto test_water_river
-        if tile_properties_1{5} && tile_properties_2{5} then ledge = DIR_LEFT : goto test_water_river
-        if tile_properties_1{6} && tile_properties_2{6} then ledge = DIR_RIGHT : goto test_water_river
-        if tile_properties_1{1} && tile_properties_2{1} then floatable = 1 : goto test_water_river
+        ; if Johanna has the Nix's Tail relic, make shorelines walkable
+        if !index && m_relic_bits_2{0} then gosub walkable_water_river
+        tile_properties = tile_properties_1 & tile_properties_2
 
-; water is tested differently than other properties, it tests the tile directly under the object
-; this helps eliminate graphical issues when approaching a non-water tile in water
 test_water_river
+        ; TODO: write logic for handling water-only creatures here
+        if index then return thisbank
+        ; water is tested differently than other properties, it tests the tile directly under the object
+        ; this helps eliminate graphical issues when approaching a non-water tile in water
         gosub get_object_pos
         temp1 = peekchar (current_map, peekX, peekY, 20, 14)
         temp1 = temp1 / 2
         temp1 = river_tile_properties[temp1]
         if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
+
+        return thisbank
+
+walkable_water_river
+        if tile_properties_1{2} then tile_properties_1{0} = 1
+        if tile_properties_2{2} then tile_properties_2{0} = 1
         return thisbank
 
         ; %00000001 = walkable
         ; %00000010 = floatable
         ; %00000100 = water
-        ; %00001000 = shore
+        ; %00001000 = unused (shore)
         ; %00010000 = ledge - hop down
         ; %00100000 = ledge - hop right
         ; %01000000 = ledge - hop left
@@ -430,14 +431,14 @@ test_water_river
         %00000001, %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00010010, %00010010, %00010010, %00000000, %00000010, %00100010, %00100010,
-        %00100010, %01000010, %01000010, %01000010, %00001110, %00000110, %00001110, %00000000,
-        %00001110, %00001110, %00001110, %00001110, %00001110, %00001110, %00000000, %00000000,
+        %00100010, %01000010, %01000010, %01000010, %00000110, %00000111, %00000110, %00000000,
+        %00000110, %00000110, %00000110, %00000110, %00000110, %00000110, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %10000000, %00001110, %00001110, %10001110, %00001110, %00000001, %00000001, %00000000,
+        %10000000, %00000110, %00000110, %10000110, %00000110, %00000001, %00000001, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
 end
 

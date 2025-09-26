@@ -258,7 +258,8 @@
         autodim byte tileset
         autodim byte exit_dir
         autodim byte music
-        autodim byte walkable
+        autodim byte tile_properties
+        dim walkable = tile_properties
         autodim byte ledge
         autodim byte floatable
         autodim byte in_water

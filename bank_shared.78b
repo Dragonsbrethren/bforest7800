@@ -1035,9 +1035,9 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if !flags{4} then test_walkable_up
-        if floatable then move_up
+        if tile_properties{1} then move_up
 test_walkable_up
-        if !walkable then Yvelocity = 0 : return
+        if !tile_properties{0} then Yvelocity = 0 : return
 move_up
         Yposition = Yposition - Yvelocity_hi
         if Yposition > 224 then object_type[index] = 0
@@ -1080,10 +1080,11 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if !flags{4} then test_walkable_down
-        if floatable then move_down
+        if tile_properties{1} then move_down
 test_walkable_down
-        if ledge = DIR_DOWN then Xdirection = 0 : flags{5} = 1
-        if !walkable then Yvelocity = 0 : return
+        ; test for downward ledge, set hopping flag
+        if tile_properties{4} then Xdirection = 0 : flags{5} = 1
+        if !tile_properties{0} then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
         if Yposition > 224 then object_type[index] = 0
@@ -1128,10 +1129,12 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if !flags{4} then test_walkable_left
-        if floatable then move_left
+        ; floating objects bypass walk test
+        if tile_properties{1} then move_left
 test_walkable_left
-        if ledge = DIR_LEFT then Xdirection = DIR_LEFT : flags{5} = 1
-        if !walkable then Xvelocity = 0 : return
+        ; test for leftward ledge, set hopping flag
+        if tile_properties{6} then Xdirection = DIR_LEFT : flags{5} = 1
+        if !tile_properties{0} then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
         if Xposition > 160 then object_type[index] = 0
@@ -1176,10 +1179,10 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
         if !flags{4} then test_walkable_right
-        if floatable then move_right
+        if tile_properties{1} then move_right
 test_walkable_right
-        if ledge = DIR_RIGHT then Xdirection = DIR_RIGHT : flags{5} = 1
-        if !walkable then Xvelocity = 0 : return
+        if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
+        if !tile_properties{0} then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
         if Xposition > 160 then object_type[index] = 0
