@@ -1561,7 +1561,7 @@ get_object_pos
         lsr
         sta peekY
 end
-        return
+        return thisbank
 
 
 copy_player_props

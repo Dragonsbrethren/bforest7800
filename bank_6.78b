@@ -400,10 +400,10 @@ test_walkable_river
         ; if Johanna has the Nix's Tail relic, make shorelines walkable
         if !index && m_relic_bits_2{0} then gosub walkable_water_river
         tile_properties = tile_properties_1 & tile_properties_2
+        ; bypass the water check if non-player object
+        if index then return thisbank
 
 test_water_river
-        ; TODO: write logic for handling water-only creatures here
-        if index then return thisbank
         ; water is tested differently than other properties, it tests the tile directly under the object
         ; this helps eliminate graphical issues when approaching a non-water tile in water
         gosub get_object_pos
@@ -462,11 +462,12 @@ torch_tile_unblock_river
 ; coordinate in water, then go invisible again, to start the process over
 ;==============================================================================
 nix_ai
-        if !flags{4} then nix_init
+        if !object_state[index] then nix_init
         if !flags{1} then nix_repos
         if flags{3} then nix_tail_anim
         if flags{6} then nix_attack
         if flags{7} then nix_stalk
+
 
 nix_range
         ; set upper left corner of Nix range, zero if underflow
@@ -536,12 +537,14 @@ reposX
 reposY
         Yposition = rand
         if Yposition > 224 then reposY
-        return thisbank
+        ; make sure the new position is in water, also handles return
+        goto test_water_river
 
 nix_init
         ; start in water invulnerable and invisible
-        ; floating flag is repurposed to tell AI Nix has been initiated
-        flags = %00010011
+        flags = %00000011
+        ; ran out of flags, repurposed to tell AI Nix has been initiated
+        object_state[index] = 1
         frame = F_NIX_BLANK
         goto nix_range
 
@@ -582,8 +585,6 @@ octopus_ai
         if flags{6} then goto octo_shoot_2
         if flags{0} then goto octo_swim
         if timer then goto octo_pop_2
-        ; hacky land kill needs water flag on before any movement
-        flags{1} = 1
         ; set up a timer to make the octopus appear out of water before diving
 octo_pop
         timer = OCTOPUS_POP_TIMER
@@ -604,8 +605,6 @@ octo_submerge
         frame = F_OCTO_SHADOW
 
 octo_swim
-        ; this is a horrible stopgap: if the octopus gets on land, it kills itself
-        if !flags{1} then object_type[index] = 0
         timer = timer - 1
         if !timer then goto octo_pop
 ;        gosub octo_test_shoot
