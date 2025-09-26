@@ -1078,12 +1078,11 @@ end
         sta peekX
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        ledge_dir = DIR_DOWN
         gosub test_walkable
         if !flags{4} then test_walkable_down
         if floatable then move_down
 test_walkable_down
-        if ledge then Xdirection = 0 : flags{5} = 1
+        if ledge = DIR_DOWN then Xdirection = 0 : flags{5} = 1
         if !walkable then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -1127,12 +1126,11 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        ledge_dir = DIR_LEFT
         gosub test_walkable
         if !flags{4} then test_walkable_left
         if floatable then move_left
 test_walkable_left
-        if ledge then Xdirection = DIR_LEFT : flags{5} = 1
+        if ledge = DIR_LEFT then Xdirection = DIR_LEFT : flags{5} = 1
         if !walkable then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -1176,12 +1174,11 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        ledge_dir = DIR_RIGHT
         gosub test_walkable
         if !flags{4} then test_walkable_right
         if floatable then move_right
 test_walkable_right
-        if ledge then Xdirection = DIR_RIGHT : flags{5} = 1
+        if ledge = DIR_RIGHT then Xdirection = DIR_RIGHT : flags{5} = 1
         if !walkable then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
@@ -1218,9 +1215,9 @@ end
         if tile_properties_1{0} && tile_properties_2{0} then walkable = 1 : floatable = 1
         if tile_properties_1{1} && tile_properties_2{1} then floatable = 1
         if tile_properties_1{2} && tile_properties_2{2} then walkable = 1
-        if tile_properties_1{4} && tile_properties_2{4} then ledge = 1
-        if tile_properties_1{5} && tile_properties_2{5} then ledge = 1
-        if tile_properties_1{6} && tile_properties_2{6} then ledge = 1
+        if tile_properties_1{4} && tile_properties_2{4} then ledge = DIR_DOWN
+        if tile_properties_1{5} && tile_properties_2{5} then ledge = DIR_LEFT
+        if tile_properties_1{6} && tile_properties_2{6} then ledge = DIR_RIGHT
 
 walkable_return
         if debug_time then BACKGRND = bg_color
