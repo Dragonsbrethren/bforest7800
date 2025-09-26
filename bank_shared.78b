@@ -299,17 +299,19 @@ plot_debug_hud
         ; plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
         plotvalue hud2 0 move_tile_1 4 32 11
+        plotvalue hud 0 tile_properties_1 2 64 12
+        plotvalue hud 0 tile_properties_2 2 80 12
         ; plotvalue hud 0 room_index 2 32 13
         ; plotvalue hud 0 room 2 48 13
-        plotvalue hud 0 input_buffer 16 16 13
+;        plotvalue hud 0 input_buffer 16 16 13
         ; plotvalue hud 0 chant_input 2 8 13
         ; plotvalue hud 0 retract_counter 2 64 13
         return
 
 plot_hud_castle
         plotvalue castle_hud 0 player_Xpos 2 32 12
-        plotvalue castle_hud 0 player_Ypos 2 48 12
-        plotvalue castle_hud 0 move_tile_1 4 32 13
+;        plotvalue castle_hud 0 player_Ypos 2 48 12
+;        plotvalue castle_hud 0 move_tile_1 4 32 13
         return
 
 open_menu
@@ -1210,10 +1212,19 @@ test_walkable
 end
         if tileset = T_FOREST then goto test_walkable_forest
         if tileset = T_CASTLE then goto test_walkable_castle
-        if tileset = T_RIVER  then goto test_walkable_river
+        if tileset = T_RIVER  then gosub test_walkable_river
+        if !tile_properties_1 || !tile_properties_2 then walkable_return
+        ; TODO: Movement routines just test against tile properties bits
+        if tile_properties_1{0} && tile_properties_2{0} then walkable = 1 : floatable = 1
+        if tile_properties_1{1} && tile_properties_2{1} then floatable = 1
+        if tile_properties_1{2} && tile_properties_2{2} then walkable = 1
+        if tile_properties_1{4} && tile_properties_2{4} then ledge = 1
+        if tile_properties_1{5} && tile_properties_2{5} then ledge = 1
+        if tile_properties_1{6} && tile_properties_2{6} then ledge = 1
+
 walkable_return
         if debug_time then BACKGRND = bg_color
-        return
+        return thisbank
 
 check_collisions
         if debug_time = 1 then BACKGRND = $95

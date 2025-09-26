@@ -393,138 +393,52 @@ end
 end
 
 test_walkable_river
+        move_tile_1 = move_tile_1 / 2
+        move_tile_2 = move_tile_2 / 2
+        tile_properties_1 = river_tile_properties[move_tile_1]
+        tile_properties_2 = river_tile_properties[move_tile_2]
+        return thisbank
+
 ; water is tested differently than other properties, it tests the tile directly under the object
 ; this helps eliminate graphical issues when approaching a non-water tile in water
 test_water_river
         gosub get_object_pos
         temp1 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
-          ldx #0
-twar_loop lda river_water_tiles,x
-          cmp temp1
-          bne twar_next
-          lda flags
-          ora #%00000010
-          sta flags
-          jmp twar_done
-twar_next inx
-          cpx #river_water_tiles_length
-          bne twar_loop
-          lda flags
-          and #%11111101
-          sta flags
-twar_done
-          ldx #0
-twr_loop  lda river_walkable_tiles,x
-          cmp move_tile_1
-          bne twrtile2
-          pha
-          lda #1
-          sta walkable_1
-          pla
-twrtile2  cmp move_tile_2
-          bne twr_next
-          lda #1
-          sta walkable_2
-          ; optimization: bypass the rest of the array if both tiles walkable
-          ;   further optimization possible by sorting arrays by tile frequency
-          lda walkable_1
-          bne twr_walkable
-twr_next  inx
-          cpx #river_walkable_tiles_length
-          bne twr_loop
-          lda walkable_1
-          beq twr_done
-          lda walkable_2
-          beq twr_done
-twr_walkable
-          sta walkable
-          jmp .walkable_return
-twr_done
-        ; test if the Nix's Locket is enabled
-          lda m_relic_bits_2
-          lsr
-          bcc twwr_done
-          ; TODO: River monsters need a bit to determine if they should run this test 
-          ldx #0
-twwr_loop  lda river_water_tiles,x
-          cmp move_tile_1
-          bne twwrtile2
-          pha
-          lda #1
-          sta walkable_1
-          pla
-twwrtile2  cmp move_tile_2
-          bne twwr_next
-          lda #1
-          sta walkable_2
-          ; optimization: bypass the rest of the array if both tiles walkable
-          ;   further optimization possible by sorting arrays by tile frequency
-          lda walkable_1
-          bne twwr_walkable
-twwr_next  inx
-          cpx #river_water_tiles_length
-          bne twwr_loop
-          lda walkable_1
-          beq twwr_done
-          lda walkable_2
-          beq twwr_done
-twwr_walkable
-          sta walkable
-          jmp .walkable_return
-twwr_done
-
-tfr_flags
-          lda flags
-          and #%00010000
-          bne tfr_done
-test_floatable_river
-          ldx #0
-tfr_loop  lda river_floatable_tiles,x
-          cmp move_tile_1
-          bne tfrtile2
-          pha
-          lda #1
-          sta floatable_1
-          pla
-tfrtile2  cmp move_tile_2
-          bne tfr_next
-          lda #1
-          sta floatable_2
-          lda floatable_1
-          bne tfr_floatable
-tfr_next  inx
-          cpx #river_floatable_tiles_length
-          bne tfr_loop
-          lda floatable_1
-          beq tfr_done
-          lda floatable_2
-          beq tfr_done
-tfr_floatable
-          sta floatable
-tfr_done  jmp .walkable_return
+          rts
 end
 
-        data river_walkable_tiles
-        $00, $02, $04, $0E, $12, $14, $16, $18, $1A, $1C, $1E, $20
-end
-
-        data river_water_tiles
-        $38, $3A, $3C, $40, $42, $44, $46, $48, $4A, $A2, $A4, $A6, $A8
-end
-
-        data river_floatable_tiles
-        $2A, $24, $26, $22, $2C, $2E, $30, $32, $34, $36, $38, $3A, $3C, $3E, $40, $42, $44, $46, $48
+        ; %00000001 = walkable
+        ; %00000010 = floatable
+        ; %00000100 = water
+        ; %00001000 = shore
+        ; %00010000 = ledge - hop down
+        ; %00100000 = ledge - hop right
+        ; %01000000 = ledge - hop left
+        ; %10000000 = waterfall
+        data river_tile_properties
+        %00000001, %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000001,
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000001, %00010010, %00010010, %00010010, %00000000, %00000010, %00100010, %00100010,
+        %00100010, %01000010, %01000010, %01000010, %00001110, %00000110, %00001110, %00000000,
+        %00001110, %00001110, %00001110, %00001110, %00001110, %00001110, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %10000000, %00001110, %00001110, %10001110, %00001110, %00000001, %00000001, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
 end
 
 torch_tile_block_river
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 river_floatable_tiles
+        pokechar current_map peekX peekY 20 14 $2A
         return
 
 torch_tile_unblock_river
         ; the poked tile doesn't affect visuals since those are plotted from ROM
-        pokechar current_map peekX peekY 20 14 river_walkable_tiles
+        pokechar current_map peekX peekY 20 14 0
         return
 
 ;==============================================================================
