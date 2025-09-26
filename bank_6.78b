@@ -486,7 +486,9 @@ nix_shadow
 nix_stalk
         ; due to the Nix attack animation, always emerge above or on the player
         temp2 = player_Ypos - 8
-        if boxcollision(player_Xpos, temp2, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, NIX_WIDTH, NIX_HEIGHT) then goto nix_emerge
+        temp3 = Xposition - 8
+        temp4 = Yposition - 16
+        if boxcollision(player_Xpos, temp2, PLAYER_WIDTH, PLAYER_HEIGHT, temp3, temp4, NIX_WIDTH, NIX_HEIGHT) then goto nix_emerge
         ; followplayer handles the return for this frame
         goto followplayer
 

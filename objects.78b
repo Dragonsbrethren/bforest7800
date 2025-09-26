@@ -192,8 +192,8 @@
         const F_NIX_SHADOW = 4
         const F_NIX_BLANK  = 5
 
-        const NIX_WIDTH   = 12
-        const NIX_HEIGHT  = 16
+        const NIX_WIDTH   = 28
+        const NIX_HEIGHT  = 40
         const NIX_RANGE_X = 53
         const NIX_RANGE_Y = 74
         const NIX_OFFSET_X = NIX_RANGE_X / 2
