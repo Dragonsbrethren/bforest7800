@@ -393,16 +393,18 @@ end
 end
 
 test_walkable_river
-        move_tile_1 = move_tile_1 / 2
-        move_tile_2 = move_tile_2 / 2
         tile_properties_1 = river_tile_properties[move_tile_1]
         tile_properties_2 = river_tile_properties[move_tile_2]
         ; if Johanna has the Nix's Tail relic, make shorelines walkable
         if !index && m_relic_bits_2{0} then gosub walkable_water_river
-        tile_properties = tile_properties_1 & tile_properties_2
-        ; bypass the water check if non-player object
-        if index then return thisbank
+        goto walkable_return
 
+walkable_water_river
+        ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
+        if tile_properties_1{2} then tile_properties_1{0} = 1
+        if tile_properties_2{2} then tile_properties_2{0} = 1
+        
+        ; objects can call this part of the subroutine to test if they are in water
 test_water_river
         ; water is tested differently than other properties, it tests the tile directly under the object
         ; this helps eliminate graphical issues when approaching a non-water tile in water
@@ -411,12 +413,6 @@ test_water_river
         temp1 = temp1 / 2
         temp1 = river_tile_properties[temp1]
         if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
-
-        return thisbank
-
-walkable_water_river
-        if tile_properties_1{2} then tile_properties_1{0} = 1
-        if tile_properties_2{2} then tile_properties_2{0} = 1
         return thisbank
 
         ; %00000001 = walkable

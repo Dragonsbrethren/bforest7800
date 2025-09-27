@@ -1196,27 +1196,14 @@ move_return
 
 test_walkable
         if debug_time then BACKGRND = $1A
-        ; start by assuming the tile isn't walkable (fewer tests)
-        asm
-        lda #0
-        sta walkable
-        sta walkable_1
-        sta walkable_2
-        sta floatable
-        sta floatable_1
-        sta floatable_2
-        sta ledge
-        sta ledge_1
-        sta ledge_2
-        sta in_water
-;        sta water_1
-;        sta water_2
-end
+        move_tile_1 = move_tile_1 / 2
+        move_tile_2 = move_tile_2 / 2
+        ; TODO: jump table
         if tileset = T_FOREST then goto test_walkable_forest
-        if tileset = T_CASTLE then gosub test_walkable_castle
-        if tileset = T_RIVER  then gosub test_walkable_river
-
+        if tileset = T_CASTLE then goto test_walkable_castle
+        if tileset = T_RIVER  then goto test_walkable_river
 walkable_return
+        tile_properties = tile_properties_1 & tile_properties_2
         if debug_time then BACKGRND = bg_color
         return thisbank
 

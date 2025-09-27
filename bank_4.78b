@@ -455,14 +455,11 @@ end
 end
 
 test_walkable_castle
-        move_tile_1 = move_tile_1 / 2
-        move_tile_2 = move_tile_2 / 2
         tile_properties_1 = castle_tile_properties[move_tile_1]
         tile_properties_2 = castle_tile_properties[move_tile_2]
         ; no water to test against in the Cathedral
-        tile_properties = tile_properties_1 & tile_properties_2
-        return thisbank
-
+        goto walkable_return
+        
         data castle_tile_properties
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000011, %00000000, %00000000, %00000001, %00000001, %00000000, %00000000, %00000000,
