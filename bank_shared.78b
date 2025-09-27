@@ -768,10 +768,11 @@ player_attack
         ; player exiting chant tracks if the player cast magic to exit chant with button held
         if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
-        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = 16 : sword_frame = 0 : goto sword_done
-        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = 16 : sword_frame = 1 : goto sword_done
-        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 :sword_frame = 3 : goto sword_done
-        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = 12 : sword_height = 4 : sword_frame = 2
+        if player_sword then temp1 = PLAYER_WIDTH : temp2 = PLAYER_HEIGHT else temp1 = 4 : temp2 = 4 
+        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = temp2 : sword_frame = 0 : goto sword_done
+        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = temp2 : sword_frame = 1 : goto sword_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = temp1 : sword_height = 4 :sword_frame = 3 : goto sword_done
+        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = temp1 : sword_height = 4 : sword_frame = 2
 sword_done
 
 player_attack_return
