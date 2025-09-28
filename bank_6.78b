@@ -278,13 +278,13 @@ plot_river_room_4
         zone14_objects = 1
         return thisbank
 
+        dmahole 0
         data river_room_4_obj
         TYPE_NIX, $68, $70, TYPE_NIX, $30, $80,
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,
         $00
 end
 
-        dmahole 0
         data river_rooms
         00, 00, 00, 13, 17, 16, 00
         00, 00, 07,  8,  9, 15, 00
@@ -375,7 +375,8 @@ end
 end
 
         data river_room_18_obj
-        $00
+        TYPE_NIX, $48, $70, TYPE_NIX, $78, $50,
+        TYPE_TORCH, $80, $30, $00
 end
 
         data river_room_19_obj
@@ -385,11 +386,13 @@ end
 end
 
         data river_room_20_obj
-        $00
+        TYPE_WARG, $40, $70, TYPE_WARG, $50, $80, TYPE_WARG, $58, $60,
+        TYPE_TORCH, $38, $60, $00
 end
 
         data river_room_21_obj
-        $00
+        TYPE_WARG, $38, $90, TYPE_WARG, $40, $80, TYPE_WARG, $50, $70,
+        TYPE_TORCH, $40, $10, TYPE_TORCH, $60, $10, $00
 end
 
 test_walkable_river

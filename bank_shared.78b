@@ -613,7 +613,7 @@ _spawn_coin
         0               ; torch (handled separately)
         TYPE_POTION     ; wolf
         TYPE_HIPOTION   ; warg
-        TYPE_HIPOTION   ; merman
+        TYPE_LIFEAPPLE  ; merman
         TYPE_HIPOTION   ; octopus
         TYPE_HIETHER    ; slime
         TYPE_HIETHER    ; mini-slime
