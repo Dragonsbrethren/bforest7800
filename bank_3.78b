@@ -233,7 +233,7 @@ plot_magic_menu
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
         plotchars 'Spells Tome' 0 60 1 singlewide
-        plotchars 'Fireball' 0 16 2 singlewide
+        if m_spell_bits_1{0} then plotchars 'Fireball' 0 16 2 singlewide
         plotchars 'Forward' 0 24 11 singlewide
         plotchars 'Backward' 0 80 11 singlewide
         plotchars 'Clockwise' 0 24 12 singlewide
@@ -242,7 +242,7 @@ plot_magic_menu
         characterset menu_arrows
         alphachars '7894 6123'
         ; Fireball
-        plotchars '646' 0 24 3 singlewide
+        if m_spell_bits_1{0} then plotchars '646' 0 24 3 singlewide
         ; Legend
         plotchars '6' 0 16 11 singlewide
         plotchars '4' 0 72 11 singlewide

@@ -552,7 +552,7 @@ raven_perch
         if temp1 < object_timer[index] then object_timer[index] = 0
         if object_timer[index] > 0 then raven_return
         gosub test_walkable
-        if !walkable then flags{7} = 0
+        if !tile_properties{0} then flags{7} = 0
 
 raven_return
         if Xposition >= player_Xpos then frame = frame + 1

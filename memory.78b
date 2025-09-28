@@ -259,20 +259,8 @@
         autodim byte exit_dir
         autodim byte music
         autodim byte tile_properties
-        dim walkable = tile_properties
-        autodim byte ledge
-        autodim byte floatable
-        autodim byte in_water
         autodim byte tile_properties_1
-        dim walkable_1 = tile_properties_1
-        autodim byte ledge_1
-        autodim byte floatable_1
-        autodim byte water_1
         autodim byte tile_properties_2
-        dim walkable_2 = tile_properties_2
-        autodim byte ledge_2
-        autodim byte floatable_2
-        autodim byte water_2
         autodim byte walk_test
         autodim byte walk_index
         autodim byte room_index

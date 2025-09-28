@@ -775,6 +775,7 @@ magic_collision
         inline magic_collision.asm
 
 cast_fireball
+        m_spell_bits_1{0} = 1
         playsfx sfx_bubbleup
         asm
         lda #FIREBALL_MP_COST
