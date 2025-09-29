@@ -81,6 +81,8 @@ plot_main_menu
         menu_change = 0
         menu_columns = 0        ; prevent up/down from doing anything
         menu_max = 3
+        ; stop password from displaying when closing menu in save room
+        pw_success = 1
 
 main_menu_updater
         restorescreen
@@ -562,6 +564,12 @@ equip_armor
         player_armor = m_armor_inv[equip_inv_sel]
 
 update_player_stats
+        ; make this into a subroutine so title/password code can call it too
+        gosub sub_update_player_stats
+        goto equip_menu_dirs_done
+
+
+sub_update_player_stats
         ; good place to throw in the equipment palette update
 update_equipment_pals
         asm
@@ -597,7 +605,8 @@ end
         dec player_atk = player_atk + charm_stats[temp1]
         temp1 = (player_charm + 1) * 2
         dec player_def = player_def + charm_stats[temp1]
-        goto equip_menu_dirs_done
+        ; this must stay a normal return command so title code can use
+        return
 
 equip_menu_colors
         P0C3 = PAL_LTPURP

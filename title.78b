@@ -149,7 +149,7 @@ init_field
         for index =  0 to PICKUP_STRING_LENGTH
         pickup_string[index] = 0
         gosub encode_password
-        gosub update_player_stats bank3
+        gosub sub_update_player_stats bank3
         goto main
 
 set_title_top_pal

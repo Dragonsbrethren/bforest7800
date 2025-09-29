@@ -286,7 +286,6 @@ write_to_gamestate
         sta tileset
         lda pw_saveroom
         sta save_room_index
-        ; TODO: handle determining map screen to start on from save room index
         lda pw_sword
         sta player_sword
         lda pw_shield
