@@ -216,8 +216,9 @@ encode_password
         sta pw_inventory_1
         lda m_item_bits_2
         sta pw_inventory_2
-        lda #0
+        lda m_spell_bits_1
         sta pw_spells_1
+        lda m_spell_bits_2
         sta pw_spells_2
         lda m_sword_bits_1
         sta pw_swords_1
@@ -258,7 +259,7 @@ encode_font_offset
         sta pw_index
 end
         savememory pw_index0-pw_index
-        return
+        return thisbank
 
 decode_password
         asm
@@ -298,6 +299,10 @@ write_to_gamestate
         sta m_item_bits_1
         lda pw_inventory_2
         sta m_item_bits_2
+        lda pw_spells_1
+        sta m_spell_bits_1
+        lda pw_spells_2
+        sta m_spell_bits_2
         lda pw_swords_1
         sta m_sword_bits_1
         lda pw_swords_2

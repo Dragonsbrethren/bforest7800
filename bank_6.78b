@@ -138,6 +138,8 @@ end
 load_river
         if !first_load then river_set_room
         first_load = 0
+        if save_room_index = 1 then river_save_1
+        if save_room_index = 2 then river_save_2
 
         room_index    = F_RIVER_START_I ; 21
         menu_map_Xpos = M_RIVER_START_X ; 54
@@ -146,6 +148,23 @@ load_river
         player_Ypos   = F_RIVER_START_Y ; 80
         player_facing = F_RIVER_START_D ; DIR_UP
         goto river_set_room
+
+river_save_1
+        room_index    = F_RIVER_SAVE1_I
+        menu_map_Xpos = M_RIVER_SAVE1_X
+        menu_map_Ypos = M_RIVER_SAVE1_Y
+        player_Xpos   = F_RIVER_SAVE1_X
+        player_Ypos   = F_RIVER_SAVE1_Y
+        player_facing = F_RIVER_SAVE1_D
+        goto river_set_room
+
+river_save_2
+        room_index    = F_RIVER_SAVE2_I
+        menu_map_Xpos = M_RIVER_SAVE2_X
+        menu_map_Ypos = M_RIVER_SAVE2_Y
+        player_Xpos   = F_RIVER_SAVE2_X
+        player_Ypos   = F_RIVER_SAVE2_Y
+        player_facing = F_RIVER_SAVE2_D
 
 river_set_room
         characterset forest_trees
@@ -268,6 +287,7 @@ plot_river_room_3
         $00
 end
 
+        dmahole 0
 plot_river_room_4
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR
@@ -278,7 +298,6 @@ plot_river_room_4
         zone14_objects = 1
         return thisbank
 
-        dmahole 0
         data river_room_4_obj
         TYPE_NIX, $68, $70, TYPE_NIX, $30, $80,
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,

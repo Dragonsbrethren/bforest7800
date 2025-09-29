@@ -202,6 +202,10 @@ plot_river_room_16
         return otherbank
 
 plot_river_room_17
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 2
+        entered_save_room{1} = 1
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_17 280
