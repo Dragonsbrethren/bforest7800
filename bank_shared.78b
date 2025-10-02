@@ -34,11 +34,11 @@ end
         if exit_dir = EXIT_NORTH then player_Ypos = 176 : player_Ydir = DIR_UP
         if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
         if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
-        exit_dir = EXIT_NONE
         goto main
 
 field_handler
         if reload_map = 1 then goto load_map
+        exit_dir = EXIT_NONE
 
         goto player_handler
 player_handler_done
@@ -734,7 +734,7 @@ position_shield
         ; TODO: Table of frames for different shield graphics
         if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 2 else shield_frame = 0
         if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT
-        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT : temp2 =  SHIELD_OFFSET_Y_RIGHT ; hide behind player
+        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT
         if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN
         if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP : temp2 = SHIELD_OFFSET_Y_UP 
         goto position_shield_done
