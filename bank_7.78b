@@ -246,7 +246,7 @@ plot_river_room_20
         plotmapfile tiled/river_room_20.tmx river_room_20 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 6
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_21
