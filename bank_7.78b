@@ -12,8 +12,8 @@
         incgraphic gfx/forest/hud2.png 160A 0 3 1 2
 ;        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
-        incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 5
-        incgraphic gfx/tiles/river_walls.png 160A 1 1 3 2 5
+        incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 6
+        incgraphic gfx/tiles/river_walls.png 160A 1 1 2 3 5
         incgraphic gfx/sprites/rghost0.png 160A 0 1 2 3
         incgraphic gfx/sprites/rghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/octopus0.png 160A
@@ -151,7 +151,6 @@ plot_river_room_12
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy current_map river_room_12 280
         plotmapfile tiled/river_room_12.tmx river_room_12 0 0 20 14
-        alt_palette = 1
         pal_animation = 1
         zone1_objects  = 4
         zone2_objects  = 4
@@ -163,7 +162,6 @@ plot_river_room_13
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy current_map river_room_13 280
         plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
-        alt_palette = 1
         pal_animation = 1
         zone1_objects  = 4
         zone2_objects  = 4
@@ -175,7 +173,6 @@ plot_river_room_14
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy current_map river_room_14 280
         plotmapfile tiled/river_room_14.tmx river_room_14 0 0 20 14
-        alt_palette = 1
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
@@ -198,7 +195,7 @@ plot_river_room_16
         plotmapfile tiled/river_room_16.tmx river_room_16 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 1
+        zone14_objects = 3
         return otherbank
 
 plot_river_room_17
@@ -210,7 +207,6 @@ plot_river_room_17
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map river_room_17 280
         plotmapfile tiled/river_room_17.tmx river_room_17 0 0 20 14
-        alt_palette = 1
         zone1_objects  = 4
         zone2_objects  = 6
         zone14_objects = 1
@@ -237,6 +233,7 @@ plot_river_room_19
         zone2_objects  = 6
         zone14_objects = 1
         pal_animation = 1
+        alt_palette = 1
         return otherbank
 
 plot_river_room_20
@@ -257,4 +254,5 @@ plot_river_room_21
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 1
+        alt_palette = 1
         return otherbank
