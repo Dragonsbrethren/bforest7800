@@ -215,7 +215,7 @@ end
         'Bone Scimitar*'
 end
         alphadata pickup_sword3 font_spr
-        'Sword 3*'
+        'Thunderblitz*'
 end
         alphadata pickup_sword4 font_spr
         'Sword 4*'

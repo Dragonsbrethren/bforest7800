@@ -311,7 +311,7 @@ end
 
         data castle_room_6_obj
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_ITEM1, $7C, $30, TYPE_GHOST, $48, $40,
+        TYPE_CHARM1, $7C, $30, TYPE_GHOST, $48, $40,
         $00
 end
         data castle_room_7_obj
@@ -413,7 +413,7 @@ end
 end
 
         data castle_room_17_obj
-        TYPE_FOOD, $44, $30, TYPE_PRIEST, $6C, $30
+        TYPE_BESTIARY, $2C, $30, TYPE_PRIEST, $6C, $30
         TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70, $00
 end
 
@@ -454,7 +454,8 @@ end
 end
 
         data castle_room_25_obj
-        TYPE_PRIEST, $4C, $50, $00
+        TYPE_PRIEST, $4C, $50,
+        TYPE_NIXTAIL, $4C, $50, $00
 end
 
         data castle_rooms

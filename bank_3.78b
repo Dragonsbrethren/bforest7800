@@ -1128,7 +1128,7 @@ end
         '             '
         'Rapier       '
         'Bone Scimitar'
-        'Broadsword   '
+        'Thunderblitz '
         'Estoc        '
         'Firebrand    '
         'Sword Num 6  '
@@ -1194,10 +1194,10 @@ end
 end
 
         data pal_swords1
-        $00, $44, $74, $02, $02, $34
+        $00, $44, $74, $C2, $02, $34
 end
         data pal_swords2
-        $00, $FE, $0F, $05, $51, $36
+        $00, $FE, $0F, $AD, $51, $36
 end
 
         data pal_shields1

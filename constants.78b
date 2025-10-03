@@ -179,8 +179,8 @@
         const M_RIVER_SAVE2_X = 86
         const M_RIVER_SAVE2_Y = 64
         ; field positions
-        const F_RIVER_SAVE2_I = 4      ; save room 2 index
-        const F_RIVER_SAVE2_X = 50
+        const F_RIVER_SAVE2_I = 5      ; save room 2 index
+        const F_RIVER_SAVE2_X = 58
         const F_RIVER_SAVE2_Y = 90
         const F_RIVER_SAVE2_D = DIR_DOWN
 
