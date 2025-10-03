@@ -891,7 +891,6 @@ plot_menu_cursor
 end
 
 gen_forest_map
-        ; TODO: Test which rooms have been entered
         alphachars '0123456789ABCDEF'
         characterset menu_map
         plotmap menu_map_room 0 52 4 14 7

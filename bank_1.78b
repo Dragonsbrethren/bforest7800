@@ -32,11 +32,25 @@
 init
         goto title_init bank10
 
+tileset_transition
+        tileset = exit_tileset
+        first_load = 1
+        exit_tileset = 0
+        ; clear the menu map TODO: map reveal pickups
+        asm
+          ldx #98
+          lda #0
+tranloop  sta menu_map_room,x
+          dex
+          bpl tranloop
+          rts
+end
+
 load_map
         clearscreen
         displaymode 160A
         adjustvisible 0 14
-        if exit_tileset then tileset = exit_tileset : first_load = 1 : exit_tileset = 0
+        if exit_tileset then gosub tileset_transition
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
