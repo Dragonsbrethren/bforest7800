@@ -36,7 +36,8 @@ tileset_transition
         tileset = exit_tileset
         first_load = 1
         exit_tileset = 0
-        ; clear the menu map TODO: map reveal pickups
+clear_menu_map
+        ; TODO: map reveal pickups
         asm
           ldx #98
           lda #0
