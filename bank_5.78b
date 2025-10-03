@@ -144,6 +144,10 @@ plot_castle_room_10
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        exit_Xpos = 72
+        exit_Ypos = 200
+        exit_tileset = T_RIVER
+        exit_room_index = F_RIVER_START_I
         return otherbank
 
 plot_castle_room_11

@@ -155,12 +155,23 @@ load_castle
         first_load = 0
         if save_room_index = 1 then castle_save_1
         if save_room_index = 2 then castle_save_2
+        if exit_room_index = 48 then castle_entrance_2
 
+castle_entrance_1
         room_index = 44
         menu_map_Xpos = 70
         menu_map_Ypos = 160
         player_Xpos = 24
         player_Ypos = 60
+        player_facing = DIR_UP
+        goto castle_rooms
+
+castle_entrance_2
+        room_index = 48
+        menu_map_Xpos = 102
+        menu_map_Ypos = 160
+        player_Xpos = 76
+        player_Ypos = $B0
         player_facing = DIR_UP
         goto castle_rooms
 
@@ -187,6 +198,7 @@ castle_rooms
         lda #0
         sta no_flash
         sta alt_palette
+        sta exit_room_index
         ldx room_index
         lda castle_rooms,x
         tax
@@ -277,6 +289,7 @@ end
         $00
 end
 
+        dmahole 0
         data castle_room_3_obj
         TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
@@ -290,7 +303,7 @@ end
         $00
 end
 
-        dmahole 0
+
         data castle_room_5_obj
         TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_BLOOD, $80, $20, $00, TYPE_RSLIME, $78, $50, 
         $00

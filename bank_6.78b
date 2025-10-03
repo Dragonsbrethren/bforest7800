@@ -235,6 +235,10 @@ plot_river_room_0
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        exit_tileset = T_CASTLE
+        exit_Xpos = 72
+        exit_Ypos = 64
+        exit_room_index = 48
         return thisbank
 
         data river_room_0_obj

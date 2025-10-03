@@ -32,6 +32,36 @@
 init
         goto title_init bank10
 
+load_map
+        clearscreen
+        displaymode 160A
+        adjustvisible 0 14
+        if exit_tileset then tileset = exit_tileset : first_load = 1 : exit_tileset = 0
+        if tileset = T_FOREST then gosub load_forest bank2
+        if tileset = T_CASTLE then gosub load_castle bank4
+        if tileset = T_RIVER  then gosub load_river bank6
+        gosub draw_hud
+draw_pickup_hud
+        Xposition = 36
+        for index = 0 to 13
+        Xposition = Xposition + 6              
+        PLOTSPRITE font_spr 0 Xposition 208 0
+        next
+map_loaded
+        savescreen
+        gosub update_hp_bar
+        gosub update_mp_bar
+        if !save_objects then gosub load_objects
+        asm
+        lda #0
+        sta reload_map
+        sta save_objects
+end
+        if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
+        if exit_dir = EXIT_NORTH then player_Ypos = 176 : player_Ydir = DIR_UP
+        if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
+        if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
+
 main
         drawscreen
         if switchreset then reboot

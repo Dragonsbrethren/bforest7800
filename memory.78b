@@ -280,6 +280,10 @@
         autodim byte sP7C1              ; hold color values for palette animation
         autodim byte sP7C2
         autodim byte sP7C3
+        autodim byte exit_Xpos
+        autodim byte exit_Ypos
+        autodim byte exit_tileset
+        autodim byte exit_room_index
 
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
         autodim byte input_buffer 8
