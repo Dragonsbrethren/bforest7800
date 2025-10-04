@@ -28,6 +28,7 @@
         incgraphic gfx/sprites/relic0.png 160A 0 2 3 1
         incgraphic gfx/sprites/relic1.png 160A 0 1 2 3
         incgraphic gfx/sprites/relic2.png 160A 0 3 2 1
+        incgraphic gfx/sprites/map0.png 160A 0 3 2 1
 
 init
         goto title_init bank10
@@ -286,9 +287,11 @@ encode_password
         sta pw_relics_1
         lda m_relic_bits_2
         sta pw_relics_2
-        lda #0
+        lda m_map_bits
         sta pw_index20
+        lda m_key_bits
         sta pw_index21
+        lda #0
         sta pw_index22
         jsr .calculate_pw_checksum
         sta pw_checksum
@@ -368,6 +371,10 @@ write_to_gamestate
         sta m_relic_bits_1
         lda pw_relics_2
         sta m_relic_bits_2
+        lda pw_index20
+        sta m_map_bits
+        lda pw_index21
+        sta m_key_bits
         lda #1
         sta pw_success
         rts
@@ -574,6 +581,34 @@ prep_bits_2
         temp2 = inv_bits[temp1]
         temp1 = 0
         return
+
+pickup_map
+        temp1 = temp1 - TYPE_MAP1
+        pickup_ptr_lo = pickup_maps_lo[temp1]
+        pickup_ptr_hi = pickup_maps_hi[temp1]
+        gosub prep_inv_bits
+add_map
+        m_map_bits = m_map_bits | temp1
+        goto kill_object
+
+pickup_key
+        temp1 = temp1 - TYPE_KEY1
+        pickup_ptr_lo = pickup_keys_lo[temp1]
+        pickup_ptr_hi = pickup_keys_hi[temp1]
+        gosub prep_inv_bits
+add_key
+        m_key_bits = m_key_bits | temp1
+        goto kill_object
+
+pickup_spell
+        temp1 = temp1 - TYPE_SPELL1
+        pickup_ptr_lo = pickup_spells_lo[temp1]
+        pickup_ptr_hi = pickup_spells_hi[temp1]
+        gosub prep_inv_bits
+add_spell
+        m_spell_bits_1 = m_spell_bits_1 | temp1
+        m_spell_bits_2 = m_spell_bits_2 | temp2
+        goto kill_object
 
 pickup_item
         temp1 = temp1 - TYPE_ITEM1
@@ -1112,6 +1147,14 @@ clear_palettes
         P7C1 = $00 : P7C2 = $00 : P7C3 = $00
         return
 
+        data f_key_pals
+        0, 0, 0, 0, 0, 0
+end
+
+        data f_spell_pals
+        0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
         data f_item_pals
         0, 3, 3, 0, 0, 0, 2, 0, 1, 2, 2
 end
@@ -1140,9 +1183,9 @@ end
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
-        dmahole 0
         incbasic sounds.78b
         incbasic music.78b
+        dmahole 0
         inline hiscore.asm
         inline updateobjects.asm
         inline floatsprite.asm

@@ -234,7 +234,7 @@ plot_magic_menu
         clearscreen
 ;        gosub disable_double_wide_mode
         gosub plot_menu_border
-        plotchars 'Spells Tome' 0 60 1 singlewide
+        plotchars 'Spell Tomes' 0 60 1 singlewide
         if m_spell_bits_1{0} then plotchars 'Fireball' 0 16 2 singlewide
         plotchars 'Forward' 0 24 11 singlewide
         plotchars 'Backward' 0 80 11 singlewide

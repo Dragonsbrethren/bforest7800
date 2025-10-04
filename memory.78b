@@ -292,6 +292,9 @@
         autodim byte chant_input
         ; possible to start a chant on index 0 so need another variable        
         autodim byte chant_new_input
+
+        autodim byte m_map_bits
+        autodim byte m_key_bits
         autodim byte m_item_bits_1
         autodim byte m_item_bits_2
         autodim byte m_spell_bits_1

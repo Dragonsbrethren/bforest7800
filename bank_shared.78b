@@ -150,8 +150,19 @@ tp_relic  cmp #TYPE_RELIC1
           bcc tp_item
           jmp .plot_relics
 tp_item   cmp #TYPE_ITEM1
-          bcc tp_coin
+          bcc tp_spell
           jmp .plot_items
+tp_spell  cmp #TYPE_SPELL1
+          bcc tp_key
+          jmp .plot_spells
+tp_key
+          cmp #TYPE_KEY1
+          bcc tp_map
+          jmp .plot_keys
+tp_map
+          cmp #TYPE_MAP1
+          bcc tp_coin
+          jmp .plot_maps
 tp_coin   cmp #TYPE_COIN
           bne tp_prism
           jmp .plot_coin
@@ -195,6 +206,25 @@ plot_relics
         frame = f_relic_frames[temp1]
         plotsprite relic0 sprite_pal Xposition Yposition frame
         goto plot_next
+
+plot_spells
+        temp1 = object_type[index] - (TYPE_SPELL1 - 1)
+        sprite_pal = f_spell_pals[temp1]
+        plotsprite relic0 sprite_pal Xposition Yposition 1
+        goto plot_next
+
+plot_keys
+        temp1 = object_type[index] - (TYPE_KEY1 - 1)
+        sprite_pal = f_key_pals[temp1]
+        plotsprite potion0 sprite_pal Xposition Yposition 0
+        goto plot_next
+
+plot_maps
+        temp1 = object_type[index] - (TYPE_MAP1 - 1)
+        sprite_pal = f_item_pals[temp1]
+        plotsprite map0 1 Xposition Yposition
+        goto plot_next
+
 
 plot_swords
         temp1 = object_type[index] - (TYPE_SWORD1 - 1)
@@ -1229,7 +1259,7 @@ pickup_object
         asm
           ldx index
           lda object_type,x
-          cmp #TYPE_ITEM1
+          cmp #TYPE_MAP1
           bcc puconsum
           sta temp1
           ldy #PICKUP_TIME
@@ -1252,7 +1282,16 @@ pusword   cmp #TYPE_SWORD1
 purelic   cmp #TYPE_RELIC1
           bcc puitem
           jmp .pickup_relic
-puitem    jmp .pickup_item
+puitem    cmp #TYPE_ITEM1
+          bcc puspell
+          jmp .pickup_item
+puspell   cmp #TYPE_SPELL1
+          bcc pukey
+          jmp .pickup_spell
+pukey     cmp #TYPE_KEY1
+          bcc pumap
+          jmp .pickup_key
+pumap     jmp .pickup_map
 puconsum  cmp #TYPE_FOOD
           bne puprism
           lda #HP_CHANGE_FOOD

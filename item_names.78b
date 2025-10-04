@@ -1,3 +1,24 @@
+
+        const pickup_map1_lo = #<pickup_map1
+        const pickup_map1_hi = #>pickup_map1
+        const pickup_map2_lo = #<pickup_map2
+        const pickup_map2_hi = #>pickup_map2
+        const pickup_map3_lo = #<pickup_map3
+        const pickup_map3_hi = #>pickup_map3
+        const pickup_map4_lo = #<pickup_map4
+        const pickup_map4_hi = #>pickup_map4
+        const pickup_map5_lo = #<pickup_map5
+        const pickup_map5_hi = #>pickup_map5
+        const pickup_key1_lo = #<pickup_key1
+        const pickup_key1_hi = #>pickup_key1
+        const pickup_key2_lo = #<pickup_key2
+        const pickup_key2_hi = #>pickup_key2
+        const pickup_key3_lo = #<pickup_key3
+        const pickup_key3_hi = #>pickup_key3
+        const pickup_key4_lo = #<pickup_key4
+        const pickup_key4_hi = #>pickup_key4
+        const pickup_key5_lo = #<pickup_key5
+        const pickup_key5_hi = #>pickup_key5
         const pickup_item1_lo = #<pickup_item1
         const pickup_item1_hi = #>pickup_item1
         const pickup_item2_lo = #<pickup_item2
@@ -18,6 +39,26 @@
         const pickup_item9_hi = #>pickup_item9
         const pickup_item10_lo = #<pickup_item10
         const pickup_item10_hi = #>pickup_item10
+        const pickup_spell1_lo = #<pickup_spell1
+        const pickup_spell1_hi = #>pickup_spell1
+        const pickup_spell2_lo = #<pickup_spell2
+        const pickup_spell2_hi = #>pickup_spell2
+        const pickup_spell3_lo = #<pickup_spell3
+        const pickup_spell3_hi = #>pickup_spell3
+        const pickup_spell4_lo = #<pickup_spell4
+        const pickup_spell4_hi = #>pickup_spell4
+        const pickup_spell5_lo = #<pickup_spell5
+        const pickup_spell5_hi = #>pickup_spell5
+        const pickup_spell6_lo = #<pickup_spell6
+        const pickup_spell6_hi = #>pickup_spell6
+        const pickup_spell7_lo = #<pickup_spell7
+        const pickup_spell7_hi = #>pickup_spell7
+        const pickup_spell8_lo = #<pickup_spell8
+        const pickup_spell8_hi = #>pickup_spell8
+        const pickup_spell9_lo = #<pickup_spell9
+        const pickup_spell9_hi = #>pickup_spell9
+        const pickup_spell10_lo = #<pickup_spell10
+        const pickup_spell10_hi = #>pickup_spell10
         const pickup_sword1_lo = #<pickup_sword1
         const pickup_sword1_hi = #>pickup_sword1
         const pickup_sword2_lo = #<pickup_sword2
@@ -119,6 +160,32 @@
         const pickup_relic10_lo = #<pickup_relic10
         const pickup_relic10_hi = #>pickup_relic10
 
+        data pickup_spells_lo
+        pickup_spell1_lo, pickup_spell2_lo, pickup_spell3_lo, pickup_spell4_lo, pickup_spell5_lo,
+        pickup_spell6_lo, pickup_spell7_lo, pickup_spell8_lo, pickup_spell9_lo, pickup_spell10_lo
+end
+
+        data pickup_spells_hi
+        pickup_spell1_hi, pickup_spell2_hi, pickup_spell3_hi, pickup_spell4_hi, pickup_spell5_hi,
+        pickup_spell6_hi, pickup_spell7_hi, pickup_spell8_hi, pickup_spell9_hi, pickup_spell10_hi
+end
+
+        data pickup_maps_lo
+        pickup_map1_lo, pickup_map2_lo, pickup_map3_lo, pickup_map4_lo, pickup_map5_lo,
+end
+
+        data pickup_maps_hi
+        pickup_map1_hi, pickup_map2_hi, pickup_map3_hi, pickup_map4_hi, pickup_map5_hi,
+end
+
+        data pickup_keys_lo
+        pickup_key1_lo, pickup_key2_lo, pickup_key3_lo, pickup_key4_lo, pickup_key5_lo,
+end
+
+        data pickup_keys_hi
+        pickup_key1_hi, pickup_key2_hi, pickup_key3_hi, pickup_key4_hi, pickup_key5_hi,
+end
+
         data pickup_items_lo
         pickup_item1_lo, pickup_item2_lo, pickup_item3_lo, pickup_item4_lo, pickup_item5_lo,
         pickup_item6_lo, pickup_item7_lo, pickup_item8_lo, pickup_item9_lo, pickup_item10_lo
@@ -179,6 +246,37 @@ end
         pickup_relic6_hi, pickup_relic7_hi, pickup_relic8_hi, pickup_relic9_hi, pickup_relic10_hi 
 end
 
+        alphadata pickup_map1 font_spr
+        'Forest Map*'
+end
+        alphadata pickup_map2 font_spr
+        'Cathedral Map*'
+end
+        alphadata pickup_map3 font_spr
+        'River Map*'
+end
+        alphadata pickup_map4 font_spr
+        'Hills Map*'
+end
+        alphadata pickup_map5 font_spr
+        'Map5         *'
+end
+        alphadata pickup_key1 font_spr
+        'Priest` Key*'
+end
+        alphadata pickup_key2 font_spr
+        'Key2         *'
+end
+        alphadata pickup_key3 font_spr
+        'Key3         *'
+end
+        alphadata pickup_key4 font_spr
+        'Key4         *'
+end
+        alphadata pickup_key5 font_spr
+        'Key5         *'
+end
+
         alphadata pickup_item1 font_spr
         'Potion*'
 end
@@ -209,6 +307,38 @@ end
         alphadata pickup_item10 font_spr
         'Life Apple*'
 end
+
+        alphadata pickup_spell1 font_spr
+        'Fireball*'
+end
+        alphadata pickup_spell2 font_spr
+        'Windslash*'
+end
+        alphadata pickup_spell3 font_spr
+        'Spell 3      *'
+end
+        alphadata pickup_spell4 font_spr
+        'Spell 4      *'
+end
+        alphadata pickup_spell5 font_spr
+        'Spell 5      *'
+end
+        alphadata pickup_spell6 font_spr
+        'Spell 6      *'
+end
+        alphadata pickup_spell7 font_spr
+        'Spell 7      *'
+end
+        alphadata pickup_spell8 font_spr
+        'Spell 8      *'
+end
+        alphadata pickup_spell9 font_spr
+        'Spell 9      *'
+end
+        alphadata pickup_spell10 font_spr
+        'Spell 10     *'
+end
+
         alphadata pickup_sword1 font_spr
 end
         alphadata pickup_sword2 font_spr
@@ -218,25 +348,25 @@ end
         'Thunderblitz*'
 end
         alphadata pickup_sword4 font_spr
-        'Sword 4*'
+        'Sword 4      *'
 end
         alphadata pickup_sword5 font_spr
-        'Sword 5*'
+        'Sword 5      *'
 end
         alphadata pickup_sword6 font_spr
-        'Sword 6*'
+        'Sword 6      *'
 end
         alphadata pickup_sword7 font_spr
-        'Sword 7*'
+        'Sword 7      *'
 end
         alphadata pickup_sword8 font_spr
-        'Sword 8*'
+        'Sword 8      *'
 end
         alphadata pickup_sword9 font_spr
-        'Sword 9*'
+        'Sword 9      *'
 end
         alphadata pickup_sword10 font_spr
-        'Sword 10*'
+        'Sword 10     *'
 end
         alphadata pickup_shield1 font_spr
         'Buckler*'
@@ -245,28 +375,28 @@ end
         'Skull Shield*'
 end
         alphadata pickup_shield3 font_spr
-        'Shield 3*'
+        'Shield 3     *'
 end
         alphadata pickup_shield4 font_spr
-        'Shield 4*'
+        'Shield 4     *'
 end
         alphadata pickup_shield5 font_spr
-        'Shield 5*'
+        'Shield 5     *'
 end
         alphadata pickup_shield6 font_spr
-        'Shield 6*'
+        'Shield 6     *'
 end
         alphadata pickup_shield7 font_spr
-        'Shield 7*'
+        'Shield 7     *'
 end
         alphadata pickup_shield8 font_spr
-        'Shield 8*'
+        'Shield 8     *'
 end
         alphadata pickup_shield9 font_spr
-        'Shield 9*'
+        'Shield 9     *'
 end
         alphadata pickup_shield10 font_spr
-        'Shield 10*'
+        'Shield 10    *'
 end
         alphadata pickup_armor1 font_spr
 end
@@ -274,28 +404,28 @@ end
         'Bronze Plate*'
 end
         alphadata pickup_armor3 font_spr
-        'Armor 3*'
+        'Armor 3      *'
 end
         alphadata pickup_armor4 font_spr
-        'Armor 4*'
+        'Armor 4      *'
 end
         alphadata pickup_armor5 font_spr
-        'Armor 5*'
+        'Armor 5      *'
 end
         alphadata pickup_armor6 font_spr
-        'Armor 6*'
+        'Armor 6      *'
 end
         alphadata pickup_armor7 font_spr
-        'Armor 7*'
+        'Armor 7      *'
 end
         alphadata pickup_armor8 font_spr
-        'Armor 8*'
+        'Armor 8      *'
 end
         alphadata pickup_armor9 font_spr
-        'Armor 9*'
+        'Armor 9      *'
 end
         alphadata pickup_armor10 font_spr
-        'Armor 10*'
+        'Armor 10     *'
 end
         alphadata pickup_charm1 font_spr
         'Pendant*'
@@ -304,28 +434,28 @@ end
         'Dark Rosary*'
 end
         alphadata pickup_charm3 font_spr
-        'Charm 3*'
+        'Charm 3      *'
 end
         alphadata pickup_charm4 font_spr
-        'Charm 4*'
+        'Charm 4      *'
 end
         alphadata pickup_charm5 font_spr
-        'Charm 5*'
+        'Charm 5      *'
 end
         alphadata pickup_charm6 font_spr
-        'Charm 6'
+        'Charm 6      '
 end
         alphadata pickup_charm7 font_spr
-        'Charm 7*'
+        'Charm 7      *'
 end
         alphadata pickup_charm8 font_spr
-        'Charm 8*'
+        'Charm 8      *'
 end
         alphadata pickup_charm9 font_spr
-        'Charm 9*'
+        'Charm 9      *'
 end
         alphadata pickup_charm10 font_spr
-        'Charm 10*'
+        'Charm 10     *'
 end
 
         alphadata pickup_relic1 font_spr
@@ -353,17 +483,17 @@ end
 end
 
         alphadata pickup_relic7 font_spr
-        'Relic 7*'
+        'Relic 7      *'
 end
 
         alphadata pickup_relic8 font_spr
-        'Relic 8*'
+        'Relic 8      *'
 end
 
         alphadata pickup_relic9 font_spr
-        'Relic 9*'
+        'Relic 9      *'
 end
 
         alphadata pickup_relic10 font_spr
-        'Relic 10*'
+        'Relic 10     *'
 end
