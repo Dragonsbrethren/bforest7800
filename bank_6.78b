@@ -173,6 +173,8 @@ river_set_room
           sta no_flash
           sta alt_palette
           sta pal_animation
+          sta exit_room_index
+          sta save_room_index
           ldx room_index
           lda river_rooms,x
           tax

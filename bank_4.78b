@@ -161,8 +161,8 @@ castle_entrance_1
         room_index = 44
         menu_map_Xpos = 70
         menu_map_Ypos = 160
-        player_Xpos = 24
-        player_Ypos = 60
+        player_Xpos = $4C
+        player_Ypos = $B0
         player_facing = DIR_UP
         goto castle_rooms
 
@@ -179,8 +179,8 @@ castle_save_1
         room_index = 18
         menu_map_Xpos = 86
         menu_map_Ypos = 96
-        player_Xpos = 24
-        player_Ypos = 60
+        player_Xpos = $48
+        player_Ypos = $80
         player_facing = DIR_DOWN
         goto castle_rooms
 
@@ -188,8 +188,8 @@ castle_save_2
         room_index = 7
         menu_map_Xpos = 54
         menu_map_Ypos = 80
-        player_Xpos = 24
-        player_Ypos = 60
+        player_Xpos = $48
+        player_Ypos = $60
         player_facing = DIR_DOWN
 
 castle_rooms
@@ -199,6 +199,7 @@ castle_rooms
         sta no_flash
         sta alt_palette
         sta exit_room_index
+        sta save_room_index
         ldx room_index
         lda castle_rooms,x
         tax

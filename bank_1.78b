@@ -49,6 +49,7 @@ end
 
 load_map
         clearscreen
+        gosub clear_palettes
         displaymode 160A
         adjustvisible 0 14
         if exit_tileset then gosub tileset_transition
@@ -72,10 +73,10 @@ map_loaded
         sta reload_map
         sta save_objects
 end
-        if exit_dir = EXIT_SOUTH then player_Ypos = 16  : player_Ydir = DIR_DOWN
-        if exit_dir = EXIT_NORTH then player_Ypos = 176 : player_Ydir = DIR_UP
-        if exit_dir = EXIT_EAST  then player_Xpos = 148 : player_Xdir = DIR_LEFT
-        if exit_dir = EXIT_WEST  then player_Xpos = 8  : player_Xdir = DIR_RIGHT
+        if exit_dir = EXIT_SOUTH then player_Ypos = 15  : player_Ydir = DIR_DOWN
+        if exit_dir = EXIT_NORTH then player_Ypos = 175 : player_Ydir = DIR_UP
+        if exit_dir = EXIT_EAST  then player_Xpos = 147 : player_Xdir = DIR_LEFT
+        if exit_dir = EXIT_WEST  then player_Xpos = 7  : player_Xdir = DIR_RIGHT
 
 main
         drawscreen
