@@ -39,10 +39,14 @@
         ; river tileset
         incbasic bank_6.78b
         incbasic bank_7.78b
-        ; hills tilesetx
+        ; hills tileset
         incbasic bank_8.78b
 
         ; title graphics
         incbasic bank_10.78b
+
+        ; menu overflow
+        incbasic bank_11.78b
+        
         ; shared graphics and code
         incbasic bank_shared.78b

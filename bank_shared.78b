@@ -75,8 +75,6 @@ check_darkness
 
 darkness_done
 
-        if tileset = T_RIVER && m_map_bits{2} then memcpy menu_map_room river_menu_map 98
-
         restorescreen
         if !lightning_timer then no_lightning
         if tileset = T_CASTLE then goto castle_lightning

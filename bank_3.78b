@@ -66,6 +66,7 @@ plot_main_menu
         P0C3 = PAL_LTPURP
         P4C3 = PAL_LTRED
         if !menu_change then goto main_menu_updater
+        gosub copy_menu_map bank11
         gosub disable_double_wide_mode
         clearscreen
         gosub plot_menu_border

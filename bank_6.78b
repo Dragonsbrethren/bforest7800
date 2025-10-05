@@ -323,16 +323,6 @@ end
         00, 21, 19, 00, 00, 00, 00
 end
 
-        data river_menu_map
-        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_N  , ROOMR_R  , ROOML_DL , ROOMR_D  , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_DR , ROOML_UL , ROOMR_UR , ROOML_DL , ROOMR_DR , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_D  , ROOMR_D  , ROOML_UD , ROOMR_UDR, ROOML_UL ,  ROOMR_U , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_UD , ROOMR_UDR, ROOML_UL , ROOMR_UR , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_U  , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
-        ROOML_B  , ROOMR_B  , ROOML_U  , ROOMR_UR , ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B 
-end
-
 plot_river_room_5
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_D
