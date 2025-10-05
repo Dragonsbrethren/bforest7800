@@ -36,13 +36,11 @@ init
 tileset_transition
         tileset = exit_tileset
         first_load = 1
-        exit_tileset = 0
 clear_menu_map
-        ; TODO: map reveal pickups
         asm
-          ldx #98
+          ldx #100       ; menu_map_room array + 2 to clear menu_map_revealed and exit_tileset as well
           lda #0
-tranloop  sta menu_map_room,x
+tranloop  sta exit_tileset,x
           dex
           bpl tranloop
           rts
@@ -776,9 +774,37 @@ remove_duplicates
         if object_type[index] >= TYPE_SHIELD1 then check_shield_bits
         if object_type[index] >= TYPE_SWORD1 then check_sword_bits
         if object_type[index] >= TYPE_RELIC1 then check_relic_bits
+        if object_type[index] >= TYPE_SPELL1 then check_spell_bits
+        if object_type[index] >= TYPE_MAP1 then check_map_bits
 remove_duplicates_next
         next
         return thisbank
+
+check_map_bits
+        if object_type[index] = TYPE_KEY1 && m_key_bits{0} then object_type[index] = 0
+        if object_type[index] = TYPE_KEY2 && m_key_bits{1} then object_type[index] = 0
+        if object_type[index] = TYPE_KEY3 && m_key_bits{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_KEY4 && m_key_bits{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_KEY5 && m_key_bits{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_MAP1 && m_map_bits{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_MAP2 && m_map_bits{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_MAP3 && m_map_bits{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_MAP4 && m_map_bits{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_MAP5 && m_map_bits{4} then object_type[index] = 0 
+        goto remove_duplicates_next
+
+check_spell_bits
+        if object_type[index] = TYPE_SPELL1 && m_spell_bits_1{0} then object_type[index] = 0
+        if object_type[index] = TYPE_SPELL2 && m_spell_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SPELL3 && m_spell_bits_1{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL4 && m_spell_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL5 && m_spell_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL6 && m_spell_bits_2{0} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL7 && m_spell_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL8 && m_spell_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL9 && m_spell_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SPELL10 && m_spell_bits_2{4} then object_type[index] = 0 
+        goto remove_duplicates_next
 
 check_relic_bits
         if object_type[index] = TYPE_RELIC1 && m_relic_bits_1{0} then object_type[index] = 0
@@ -1184,8 +1210,9 @@ end
 end
 
         incbasic sounds.78b
-        incbasic music.78b
+
         dmahole 0
+        incbasic music.78b
         inline hiscore.asm
         inline updateobjects.asm
         inline floatsprite.asm

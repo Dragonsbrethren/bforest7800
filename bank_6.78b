@@ -249,8 +249,8 @@ plot_river_room_0
 end
 
 plot_river_room_1
-        menu_map_room[menu_map_index] = ROOML_U
-        menu_map_room[menu_map_index_2] = ROOMR_UR
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map river_room_1 280
         plotmapfile tiled/river_room_1.tmx river_room_1 0 0 20 14
         zone1_objects  = 2

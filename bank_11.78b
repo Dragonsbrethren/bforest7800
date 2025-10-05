@@ -45,9 +45,16 @@
         incgraphic gfx/menu/menu_potion2.png 320B 0 2 1 3
 
 copy_menu_map
-        if tileset = T_FOREST && m_map_bits{0} then memcpy menu_map_room forest_menu_map 98
-        if tileset = T_CASTLE && m_map_bits{1}  then memcpy menu_map_room castle_menu_map 98
-        if tileset = T_RIVER  && m_map_bits{2} then memcpy menu_map_room river_menu_map 98
+        ; only reveal the map once, so that secret rooms persist when opening the menu as long as tileset doesn't change
+        if menu_map_revealed{0} then copy_castle_map
+        if tileset = T_FOREST && m_map_bits{0} then memcpy menu_map_room forest_menu_map 98 : menu_map_revealed{0} = 1
+copy_castle_map
+        if menu_map_revealed{1} then copy_river_map
+        if tileset = T_CASTLE && m_map_bits{1} then memcpy menu_map_room castle_menu_map 98 : menu_map_revealed{1} = 1
+copy_river_map
+        if menu_map_revealed{2} then copy_menu_map_done
+        if tileset = T_RIVER  && m_map_bits{2} then memcpy menu_map_room river_menu_map 98  : menu_map_revealed{2} = 1
+copy_menu_map_done
         return
 
         data forest_menu_map
@@ -63,8 +70,8 @@ end
         data castle_menu_map
         ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
         ROOML_D  , ROOMR_DR , ROOML_L  , ROOMR_N  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
-        ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
-        ROOML_UD , ROOMR_UDR, ROOML_L  , ROOMR_R  , ROOML_DL , ROOMR_DR , ROOML_L  , ROOMR_R  , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_UD , ROOMR_UDR, ROOML_DL , ROOMR_DR , ROOML_DL , ROOMR_DR , ROOML_L  , ROOMR_R  , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
         ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_L  , ROOMR_R  , ROOML_DL , ROOMR_D
         ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD
         ROOML_U  , ROOMR_UR , ROOML_L  , ROOMR_R  , ROOML_UL , ROOMR_UR , ROOML_L  , ROOMR_R  , ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD

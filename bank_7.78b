@@ -237,8 +237,8 @@ plot_river_room_19
         return otherbank
 
 plot_river_room_20
-        menu_map_room[menu_map_index] = ROOML_D
-        menu_map_room[menu_map_index_2] = ROOMR_DR
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map river_room_20 280
         plotmapfile tiled/river_room_20.tmx river_room_20 0 0 20 14
         zone1_objects  = 2

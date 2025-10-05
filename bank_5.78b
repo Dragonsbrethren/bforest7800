@@ -231,13 +231,14 @@ plot_castle_room_17
         return otherbank
 
 plot_castle_room_18
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/castle_room_18.tmx castle_room_18 0 0 20 14
         memcpy current_map castle_room_18 280
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        alt_palette = 1
         return otherbank
 
 plot_castle_room_19
