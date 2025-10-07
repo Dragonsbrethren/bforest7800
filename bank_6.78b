@@ -245,7 +245,7 @@ plot_river_room_0
 
         data river_room_0_obj
         TYPE_TORCH, $20, $50, TYPE_TORCH, $38, $50, TYPE_TORCH, $60, $50, TYPE_TORCH, $78, $50
-        TYPE_MAP3, $48, $90, $00
+        TYPE_MAP3, $48, $90,  TYPE_DOOR, $48, $40, $00
 end
 
 plot_river_room_1
@@ -261,7 +261,7 @@ plot_river_room_1
 
         data river_room_1_obj
         TYPE_WARG, $48, $80, TYPE_WARG, $56, $80, TYPE_WARG, $60, $70,
-        TYPE_TORCH, $20, $50, TYPE_TORCH, $80, $50,
+        TYPE_TORCH, $20, $50, TYPE_TORCH, $80, $50
         $00
 end
 

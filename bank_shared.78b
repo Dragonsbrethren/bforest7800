@@ -170,13 +170,20 @@ tp_prism  cmp #TYPE_PRISM
           bne tp_blood
           jmp .plot_prism
 tp_blood  cmp #TYPE_BLOOD
-          bne tp_food
+          bne tp_door
           jmp .plot_blood
+tp_door   cmp #TYPE_DOOR
+          bne tp_food
+          jmp .plot_door
 tp_food   jmp .plot_food
 
 plot_done
 end
         goto plot_player
+
+plot_door
+        plotsprite door0 1 Xposition Yposition 0
+        goto plot_next
 
 plot_torch
         PLOTSPRITE torch0 0 Xposition Yposition frame
@@ -1251,11 +1258,12 @@ cc_return
         return
 
 cc_pickup
+        ; also used by doors
         if Xposition >= player_Xpos && Xposition < (player_Xpos + 12) && Yposition >= player_Ypos && Yposition < (player_Ypos + 16) then pickup_object
         goto cc_next
 
 pickup_object
-        playsfx sfx_strum
+        if object_type[index] >=TYPE_COIN then playsfx sfx_strum
         asm
           ldx index
           lda object_type,x
@@ -1292,7 +1300,12 @@ pukey     cmp #TYPE_KEY1
           bcc pumap
           jmp .pickup_key
 pumap     jmp .pickup_map
-puconsum  cmp #TYPE_FOOD
+puconsum  cmp #TYPE_DOOR
+          bne pufood
+          lda TYPE_DOOR_OPEN
+          sta object_type,x
+          jmp .cc_next
+pufood    cmp #TYPE_FOOD
           bne puprism
           lda #HP_CHANGE_FOOD
           sta hp_change

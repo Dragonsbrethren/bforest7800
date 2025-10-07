@@ -376,7 +376,7 @@ end
 
         data castle_room_10_obj
         TYPE_SKELETON, $40, $80, TYPE_PRIEST, $58, $80,
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_DOOR, $48, $10
         $00
 end
 

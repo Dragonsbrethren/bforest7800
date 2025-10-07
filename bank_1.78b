@@ -29,6 +29,8 @@
         incgraphic gfx/sprites/relic1.png 160A 0 1 2 3
         incgraphic gfx/sprites/relic2.png 160A 0 3 2 1
         incgraphic gfx/sprites/map0.png 160A 0 3 2 1
+        incgraphic gfx/sprites/door0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/door1.png 160A 0 2 1 3
 
 init
         goto title_init bank10
