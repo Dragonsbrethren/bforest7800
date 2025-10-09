@@ -204,6 +204,9 @@ tp_blood  cmp #TYPE_BLOOD
           bne tp_door
           jmp .plot_blood
 tp_door   cmp #TYPE_DOOR
+          bne tp_doorl
+          jmp .plot_door
+tp_doorl  cmp #TYPE_DOOR_LOCK
           bne tp_food
           jmp .plot_door
 tp_food   jmp .plot_food
@@ -500,13 +503,13 @@ end
         data projectile_ai_lo
         skelsword_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0,
-        fireball_ai_lo, fairy_ai_lo
+        fireball_ai_lo, fairy_ai_lo, 0, 0, 0, 0
 end
 
         data projectile_ai_hi
         skelsword_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0,
-        fireball_ai_hi, fairy_ai_hi
+        fireball_ai_hi, fairy_ai_hi, 0, 0, 0, 0
 end
 
 load_ai_pointer
@@ -540,6 +543,7 @@ object_handler
         if object_type[index] >= TYPE_STATIC then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
+        if object_type[index] = TYPE_DOOR_LOCK then torch_tile_block
         gosub copy_object_props 
         if flags{5} then gosub ledge_hop : goto object_restore
         gosub decelerate_object
@@ -573,10 +577,10 @@ torch_tile_block
         ; flags are used to track if the tile has already been blocked
         ; however, this fails when the map reloads after the menu is opened
         if torch_reblock then goto torch_tile_block_get_pos
-        temp1 = animation_frame
-        if tileset = T_CASTLE then temp1 = temp1 + 2
-        object_frame[index] = temp1
+        if object_type[index] = TYPE_TORCH then torch_animation
+torch_flag_check
         if object_flags[index] then object_done
+        if object_type[index] = TYPE_DOOR_LOCK then locked_door_block
 torch_tile_block_get_pos
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_block_forest
@@ -584,6 +588,24 @@ torch_tile_block_get_pos
         if tileset = T_RIVER then gosub torch_tile_block_river
         object_flags[index] = %10000000
         goto object_done
+
+torch_animation
+        temp1 = animation_frame
+        if tileset = T_CASTLE then temp1 = temp1 + 2
+        object_frame[index] = temp1
+        goto torch_flag_check
+
+locked_door_block
+        ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
+;        if tileset = T_CASTLE && m_key_bits = %00000010 then goto door_unlock
+        goto torch_tile_block_get_pos
+
+door_unlock
+        ; code just replaces locked door object with unlocked
+        ; can't have key on same screen as a locked door unless this is expanded
+        object_type[index] = TYPE_DOOR
+        goto object_done
+
 
 spawn_object
         asm
@@ -1261,6 +1283,8 @@ test_walkable
         if tileset = T_RIVER  then goto test_walkable_river
 walkable_return
         tile_properties = tile_properties_1 & tile_properties_2
+        ; obscure flag is treated as a wall for non-player objects
+        if index && tile_properties{3} then tile_properties = tile_properties & %11111100
         if debug_time then BACKGRND = bg_color
         return thisbank
 

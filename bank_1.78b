@@ -143,6 +143,7 @@ main_state_handler
 
 plot_player
         ; Plot the player, their shield, and sword if attacking
+        if player_obscure then plot_hud
         if player_state = STATE_ATTACK && player_sword then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
 
         ; plot shield behind player if facing up/right

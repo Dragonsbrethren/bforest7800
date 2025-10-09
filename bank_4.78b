@@ -376,7 +376,7 @@ end
 
         data castle_room_10_obj
         TYPE_SKELETON, $40, $80, TYPE_PRIEST, $58, $80,
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_DOOR, $48, $10
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_DOOR_LOCK, $48, $10
         $00
 end
 
@@ -472,12 +472,23 @@ end
 test_walkable_castle
         tile_properties_1 = castle_tile_properties[move_tile_1]
         tile_properties_2 = castle_tile_properties[move_tile_2]
+        if !index then gosub test_obscure_castle
         ; no water to test against in the Cathedral
         goto walkable_return
+
+test_obscure_castle
+        ; water is tested differently than other properties, it tests the tile directly under the object
+        ; this helps eliminate graphical issues when approaching a non-water tile in water
+        gosub get_object_pos
+        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
+        temp1 = temp1 / 2
+        temp1 = castle_tile_properties[temp1]
+        if temp1{3} then player_obscure = 1 else player_obscure = 0
+        return thisbank
         
         data castle_tile_properties
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000011, %00000000, %00000000, %00000001, %00000001, %00000000, %00000000, %00000000,
+        %00001001, %00000000, %00000000, %00000001, %00000001, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,

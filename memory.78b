@@ -129,6 +129,7 @@
         autodim byte curse_duration
         autodim byte stone_duration 2
         autodim byte fury_duration 2
+        autodim byte player_obscure
 
 ;------------------------------------------------------------------------------
 ; MISC movement vars
