@@ -183,13 +183,14 @@
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
 
+        const PRIEST_WALK_TIMER  = 20
         const PRIEST_CAST_FRAMES = 20
 
         const DARKSPARK_SPEED_HI = 2
         const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_DAMAGE = 6
 
-        const SKELSWORD_DAMAGE = 10
+        const SKELSWORD_DAMAGE = 6
         const RETRACT_FRAMES = 4
 
         const RSLIME_DROP_RATE = 128

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" name="logo" tilewidth="8" tileheight="16" tilecount="22" columns="22">
   <image source="../gfx/title/logo.png" width="176" height="16"/>
  </tileset>
@@ -140,9 +140,9 @@
    <tile gid="24"/>
    <tile gid="23"/>
    <tile gid="23"/>
-   <tile gid="29"/>
-   <tile gid="29"/>
+   <tile gid="24"/>
    <tile gid="23"/>
+   <tile gid="24"/>
    <tile gid="23"/>
    <tile gid="24"/>
    <tile gid="25"/>
@@ -180,8 +180,8 @@
    <tile gid="32"/>
    <tile gid="33"/>
    <tile gid="38"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
+   <tile gid="38"/>
+   <tile gid="38"/>
    <tile gid="38"/>
    <tile gid="32"/>
    <tile gid="33"/>

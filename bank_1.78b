@@ -54,6 +54,11 @@ load_map
         displaymode 160A
         adjustvisible 0 14
         if exit_tileset then gosub tileset_transition
+        asm
+          lda #0
+          sta entered_save_room
+          sta in_save_room
+end
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
@@ -73,6 +78,8 @@ map_loaded
         lda #0
         sta reload_map
         sta save_objects
+        sta player_obscure
+        sta pw_success
 end
         if exit_dir = EXIT_SOUTH then player_Ypos = 15  : player_Ydir = DIR_DOWN
         if exit_dir = EXIT_NORTH then player_Ypos = 175 : player_Ydir = DIR_UP

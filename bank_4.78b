@@ -357,8 +357,8 @@ plot_castle_room_5
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
         memcpy current_map castle_room_5 280
-        zone1_objects  = 6
-        zone2_objects  = 6
+        zone1_objects  = 5
+        zone2_objects  = 5
         zone14_objects = 5
         return thisbank
 
@@ -390,11 +390,11 @@ end
 end
 
         data castle_room_13_obj
-        TYPE_TORCH, $10, $20,
-        TYPE_TORCH, $88, $20,
-        TYPE_TORCH, $38, $40,
-        TYPE_TORCH, $60, $40,
-        TYPE_PRIEST, $50, $26,
+        TYPE_TORCH, $10, $30,
+        TYPE_TORCH, $88, $30,
+        TYPE_TORCH, $38, $50,
+        TYPE_TORCH, $60, $50,
+        TYPE_PRIEST, $50, $36,
         $00
 end
 
@@ -477,8 +477,8 @@ test_walkable_castle
         goto walkable_return
 
 test_obscure_castle
-        ; water is tested differently than other properties, it tests the tile directly under the object
-        ; this helps eliminate graphical issues when approaching a non-water tile in water
+        ; works the same was as water in river tileset, test the tile directly
+        ; below the player and set the obscure flag if bit 3 is set on tile
         gosub get_object_pos
         temp1 = peekchar (current_map, peekX, peekY, 20, 14)
         temp1 = temp1 / 2
@@ -489,12 +489,12 @@ test_obscure_castle
         data castle_tile_properties
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00001001, %00000000, %00000000, %00000001, %00000001, %00000000, %00000000, %00000000,
-        %00000000, %00000000, %00000000, %00000001, %00000001, %00000001, %00000001, %00000001,
+        %00000000, %00000000, %00000000, %00001001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
-        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
-        %00000000, %00000000, %00000000, %00000010, %00000000, %00000000, %00000000, %00000010,
-        %00000010, %00000000, %00000000, %00000000, %00000000, %00000010
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
 end
 
 torch_tile_block_castle
@@ -504,7 +504,7 @@ torch_tile_block_castle
 
 torch_tile_unblock_castle
         ; the poked tile doesn't affect visuals since those are plotted from ROM
-        pokechar current_map peekX peekY 20 14 $26
+        pokechar current_map peekX peekY 20 14 $28
         return thisbank
 
 ;==============================================================================
@@ -516,45 +516,44 @@ priest_ai
         if flags{6} then goto priest_cast_2
 priest_dir
         if timer then goto priest_walk
-        timer = 20
-        temp1 = rand
-        if temp1 > 128 then priest_vert
+        timer = PRIEST_WALK_TIMER
+        asm
+          jsr randomize
+          bpl .priest_vert
+end
 
 priest_horiz
+        Ydirection = 0
         if Xposition >= player_Xpos then priest_left
 
 priest_right
         object_facing[index] = DIR_RIGHT
         Xdirection = DIR_RIGHT
-        Ydirection = 0
         goto priest_walk
 
 priest_left
         object_facing[index] = DIR_LEFT
         Xdirection = DIR_LEFT
-        Ydirection = 0
         goto priest_walk
 
 priest_vert
+        Xdirection = 0
         if Yposition < player_Ypos then priest_down
 
 priest_up
         object_facing[index] = DIR_UP
-        Xdirection = 0
         Ydirection = DIR_UP
         goto priest_walk
 
 priest_down
         object_facing[index] = DIR_DOWN
-        Xdirection = 0
         Ydirection = DIR_DOWN
 
 priest_walk
-        timer = timer - 1
-        if Xdirection = DIR_LEFT then priest_walk_x
-        if Xdirection = DIR_RIGHT then priest_walk_x
-        if Ydirection = DIR_UP then priest_walk_y
-        if Ydirection = DIR_DOWN then priest_walk_y
+        asm
+          dec timer
+end
+        if Ydirection then priest_walk_y
         
 priest_walk_x
         if object_type[index] <> TYPE_PRIEST then skel_melee_x
@@ -679,6 +678,8 @@ skel_sword
         lda #SKELSWORD_DAMAGE
         sta object_damage,x
         sta object_hp,x ; dummy stat but needed for damage code
+        lda #255
+        sta object_def
         lda temp1
         sta object_Xpos,x
         lda temp2
