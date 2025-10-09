@@ -20,52 +20,83 @@ player_handler_done
         if item_spawned then gosub remove_duplicates
 
 set_pickup_string
+
         if pickup_timer then get_pickup_string
 
 pickup_clear
         ; when the pickup timer expires, zero the string
-        for index = 0 to PICKUP_STRING_LENGTH
-        pickup_string[index] = 0
-        next
-        item_pickup = 0
-        goto pickup_done
+        asm
+          ldx #PICKUP_STRING_LENGTH
+          lda #0
+          ; clear item_pickup here so an enemy name string can be shown
+          sta item_pickup
+pickup_clear_loop
+          sta pickup_string,x
+          dex
+          bpl pickup_clear_loop
+          jmp .pickup_done
+end
+
 
 get_pickup_string
-        pickup_timer = pickup_timer - 1
+        asm
+          dec pickup_timer
         ; only run this code once per string
-        if !new_pickup then pickup_done
+          lda new_pickup
+          beq .pickup_done
         ; set pickup string based on pickup pointer
-        for index = 0 to PICKUP_STRING_LENGTH
-        pickup_string[index] = pickup_ptr[[index]]
-        if !pickup_string[index] then pickup_pad
-        next
-
+          ; start at index 0 because string is null terminated
+          ldy #0
+pickup_string_loop
+          lda (pickup_ptr),y
+          beq pickup_pad
+          sta pickup_string,y
+          iny
+          cpy #PICKUP_STRING_LENGTH+1
+          bne pickup_string_loop
+          beq .pickup_done
 pickup_pad
-        ; now pad with blanks to maximum length
-        temp1 = index
-        if temp1 = PICKUP_STRING_LENGTH then pickup_done
-        for index = temp1 to PICKUP_STRING_LENGTH
-        pickup_string[index] = 0
-        next
+          ; back up the value of Y for centering later
+          sty temp1
+          lda #0
+pickup_pad_loop
+          sta pickup_string,y
+          iny
+          cpy #PICKUP_STRING_LENGTH+1
+          bne pickup_pad_loop
 
 pickup_center
-        ; do some math to center the string
-        temp2 = (PICKUP_STRING_LENGTH+1 - temp1) / 2
-        temp3 = temp2 + temp1
-        ; use a negative step when copying so
-        ; the same string buffer can be used
-        for index = temp1 to 0 step -1
-        pickup_string[temp3] = pickup_string[index]
-        temp3 = temp3 - 1
-        next
+        ; subtract however many chars were copied from max length
+        lda #PICKUP_STRING_LENGTH
+        sec
+        sbc temp1
+        ; divide by 2 and add result to previous string length
+        lsr
+        pha     ; backup divided value
+        clc
+        adc temp1
+        tay
+        ldx temp1
+pickup_center_loop
+        ; advance the string on the buffer to its centered position
+        lda pickup_string,x
+        sta pickup_string,y
+        dey
+        dex
+        bpl pickup_center_loop
         ; lastly blank the left part of the string
-        temp2 = temp2 - 1
-        for index = 0 to temp2
-        pickup_string[index] = 0
-        next
+        pla
+        beq .pickup_done
+        tax
+        lda #0
+pickup_left_loop
+        dex
+        sta pickup_string,x
+        bne pickup_left_loop
+end
+
 
 pickup_done
-        new_pickup = 0
 
 check_darkness
         ; bypass the darkness check for dead player
@@ -182,7 +213,7 @@ end
         goto plot_player
 
 plot_door
-        plotsprite door0 1 Xposition Yposition 0
+        plotsprite door0 1 Xposition Yposition frame
         goto plot_next
 
 plot_torch
@@ -1239,7 +1270,7 @@ check_collisions
         if !object_type[index] then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
-        if object_type[index] >= TYPE_COIN then cc_pickup
+        if object_type[index] >= TYPE_DOOR then cc_pickup
         if object_type[index] >= TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision

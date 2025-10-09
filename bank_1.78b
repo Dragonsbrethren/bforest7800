@@ -1312,13 +1312,24 @@ set_enemy_name
         ; can't see enemy names without the fairy scroll
         if !m_relic_bits_1{4} then return thisbank
         ; include only monsters
-        if object_type[index] >= TYPE_SPAWNER then return thisbank
-        temp1 = object_type[index]
-        pickup_ptr_lo = enemy_names_lo[temp1]
-        pickup_ptr_hi = enemy_names_hi[temp1]
-        new_pickup = 1
-        pickup_timer = PICKUP_TIME
-        return thisbank
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_SPAWNER
+          bcc set_name_ptr
+          rts
+set_name_ptr
+          lda object_type,x
+          tax
+          lda enemy_names_lo,x
+          sta pickup_ptr_lo
+          lda enemy_names_hi,x
+          sta pickup_ptr_hi
+          lda #PICKUP_TIME
+          sta new_pickup
+          sta pickup_timer
+          rts
+end
 
 update_pickup_objs
         ; unrolled for speed
