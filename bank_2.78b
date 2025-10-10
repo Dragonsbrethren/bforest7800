@@ -352,7 +352,11 @@ end
 torch_tile_block_forest
         ; block with a floatable tile so projectiles can hit torch
         pokechar current_map peekX peekY 20 14 20
-        return
+        if object_type[index] <> TYPE_DOOR_LOCK then return thisbank
+        ; doors need to block a second tile to the right of the first
+        peekX = peekX + 1
+        pokechar current_map peekX peekY 20 14 20
+        return thisbank
 
 torch_tile_unblock_forest
         ; the poked tile doesn't affect visuals since those are plotted from ROM

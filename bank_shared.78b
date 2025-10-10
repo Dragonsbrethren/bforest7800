@@ -118,7 +118,6 @@ palette_done
         gosub update_pickup_objs
 
 plot_objects
-        if debug_time then BACKGRND = $06
         ; Iterates through all objects and determines which sprites need to be plotted by type
         asm
           ldx #MAX_OBJECTS
@@ -891,7 +890,6 @@ set_state_chant
         player_frame = FRAME_CHANT
 
 chant_handler
-        if debug_time = 1 then BACKGRND = $B9
 
         if !joy0fire0 && action_button = 0 then chant_done_no_hold
         if !joy0fire1 && action_button = 1 then chant_done_no_hold
@@ -1069,7 +1067,6 @@ end
 ; player collisions with map tiles at the expense of other sprite proportions
 ;==============================================================================
 move_object
-        if debug_time then BACKGRND = $96
 
         ; Cap the object's velocity TODO: separate X/Y cap?
         if Xvelocity > vel_cap then Xvelocity = vel_cap
@@ -1276,11 +1273,9 @@ move_right
         return
         
 move_return
-        if debug_time then BACKGRND = bg_color
         return
 
 test_walkable
-        if debug_time then BACKGRND = $1A
         move_tile_1 = move_tile_1 / 2
         move_tile_2 = move_tile_2 / 2
         ; TODO: jump table
@@ -1291,16 +1286,14 @@ walkable_return
         tile_properties = tile_properties_1 & tile_properties_2
         ; obscure flag is treated as a wall for non-player objects
         if index && tile_properties{3} then tile_properties = tile_properties & %11111100
-        if debug_time then BACKGRND = bg_color
         return thisbank
 
 check_collisions
-        if debug_time = 1 then BACKGRND = $95
         for index = 0 to 15
         if !object_type[index] then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
-        if object_type[index] >= TYPE_DOOR then cc_door
+        if object_type[index] >= TYPE_STATIC then cc_door
         if object_type[index] >= TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
@@ -1313,12 +1306,13 @@ cc_player_contact
         gosub player_knockback
         if player_state = STATE_DEATH then goto kill_player
 cc_next
-        if debug_time = 1 then BACKGRND = bg_color
         next
 cc_return
         return
 
 cc_door
+        ; exclude static decorations so they don't get killed on collision
+        if object_type[index] < TYPE_DOOR then cc_next
         if object_type[index] >=TYPE_COIN then cc_pickup
         temp1 = Xposition - 4
         if temp1 < player_Xpos && (temp1 + 16) >= player_Xpos && Yposition < player_Ypos && (Yposition + 16) >= player_Ypos then pickup_object

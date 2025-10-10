@@ -579,11 +579,15 @@ update_equipment_pals
         sta m_sword_pal1
         lda pal_swords2,x
         sta m_sword_pal2
+        lda f_sword_pals,x
+        sta sword_pal
         ldx player_shield
         lda pal_shields1,x
         sta m_shield_pal1
         lda pal_shields2,x
         sta m_shield_pal2
+        lda f_shield_pals,x
+        sta shield_pal
         ldx player_armor
         lda pal_armor1,x
         sta m_armor_pal1

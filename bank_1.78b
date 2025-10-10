@@ -31,7 +31,7 @@
         incgraphic gfx/sprites/map0.png 160A 0 3 2 1
         incgraphic gfx/sprites/door0.png 160A 0 1 2 3
         incgraphic gfx/sprites/door1.png 160A 0 1 2 3
-        incgraphic gfx/sprites/key0.png 160A 0 2 1
+        incgraphic gfx/sprites/key0.png 160A 0 3 1
 
 init
         goto title_init bank10
@@ -160,7 +160,6 @@ plot_johanna
         if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
         if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
 
-        if debug_time then BACKGRND = bg_color
 plot_hud
         asm
           ldx zone1_objects
@@ -1190,7 +1189,7 @@ clear_palettes
         return
 
         data f_key_pals
-        0, 0, 0, 0, 0, 0
+        0, 3, 0, 0, 0, 0
 end
 
         data f_spell_pals
@@ -1202,7 +1201,7 @@ end
 end
 
         data f_relic_pals
-        0, 0, 0, 0, 0, 1, 4, 2, 2, 2, 2
+        0, 0, 0, 0, 0, 1, 3, 2, 2, 2, 2
 end
 
         data f_relic_frames
