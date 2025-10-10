@@ -198,7 +198,7 @@
         const MRSLIME_HP = RSLIME_HP / 2
         const RSLIME_VEL_CAP_HI = 1
         const RSLIME_VEL_CAP_LO = 0
-        const RSLIME_DAMAGE = 8
+        const RSLIME_DAMAGE = 2
         const RSLIME_DEF = 255
         const RSLIME_MDEF = 0
         const MRSLIME_DEF = 0

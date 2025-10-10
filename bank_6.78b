@@ -403,7 +403,7 @@ end
 
         data river_room_15_obj
         TYPE_WARG, $80, $90, TYPE_RGHOST, $20, $50, TYPE_RGHOST, $58, $80
-        TYPE_TORCH, $20, $40, TYPE_TORCH, $78, $30, TYPE_TORCH, $88, $A0
+        TYPE_TORCH, $20, $40, TYPE_TORCH, $78, $30, TYPE_TORCH, $80, $A0
         $00
 end
 

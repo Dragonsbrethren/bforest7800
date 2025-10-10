@@ -143,7 +143,7 @@ plot_castle_room_10
         memcpy current_map castle_room_10 280
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 1
+        zone14_objects = 3
         exit_Xpos = 72
         exit_Ypos = 200
         exit_tileset = T_RIVER
