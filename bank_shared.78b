@@ -257,7 +257,7 @@ plot_spells
 plot_keys
         temp1 = object_type[index] - (TYPE_KEY1 - 1)
         sprite_pal = f_key_pals[temp1]
-        plotsprite potion0 sprite_pal Xposition Yposition 0
+        plotsprite key0 sprite_pal Xposition Yposition 0
         goto plot_next
 
 plot_maps
@@ -580,12 +580,13 @@ torch_tile_block
         if object_type[index] = TYPE_TORCH then torch_animation
 torch_flag_check
         if object_flags[index] then object_done
-        if object_type[index] = TYPE_DOOR_LOCK then locked_door_block
+        if object_type[index] = TYPE_DOOR_LOCK then goto locked_door_block
 torch_tile_block_get_pos
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_block_forest
         if tileset = T_CASTLE then gosub torch_tile_block_castle
         if tileset = T_RIVER then gosub torch_tile_block_river
+        if object_type[index] = TYPE_DOOR_LOCK && !object_flags[index] then object_flags[index] = %01000000 : goto torch_tile_block_get_pos
         object_flags[index] = %10000000
         goto object_done
 
@@ -596,16 +597,11 @@ torch_animation
         goto torch_flag_check
 
 locked_door_block
-        ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
-;        if tileset = T_CASTLE && m_key_bits = %00000010 then goto door_unlock
-        goto torch_tile_block_get_pos
-
-door_unlock
-        ; code just replaces locked door object with unlocked
-        ; can't have key on same screen as a locked door unless this is expanded
         object_type[index] = TYPE_DOOR
-        goto object_done
-
+        ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
+        ;     - side effect of this is key shouldn't be in the same room as a locked door
+        if tileset = T_CASTLE && m_key_bits = %00000001 then goto object_done
+        goto torch_tile_block_get_pos
 
 spawn_object
         asm
@@ -683,7 +679,7 @@ _spawn_coin
         TYPE_CHARM2     ; priest
         TYPE_SWORD2     ; skeleton
         TYPE_HIETHER    ; red slime
-        0               ; mini red slime
+        TYPE_ANTIDOTE   ; mini red slime
         TYPE_HIETHER    ; ghost
         TYPE_HIETHER    ; river ghost
 end
@@ -701,7 +697,7 @@ end
         TYPE_ETHER      ; priest
         TYPE_SHIELD2    ; skeleton
         TYPE_ANTIDOTE   ; red slime
-        0               ; mini red slime
+        TYPE_ANTIDOTE   ; mini red slime
         TYPE_UNCURSE    ; ghost
         TYPE_UNCURSE    ; river ghost
 end

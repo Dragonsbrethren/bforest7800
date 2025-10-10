@@ -279,8 +279,10 @@ plot_castle_bank5_return
 end
 
         data castle_room_1_obj
+        TYPE_SKELETON, $4A, $30
+        TYPE_DOOR_LOCK, $48, $10, TYPE_KEY1, $48, $40
         TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
-        TYPE_SKELETON, $4A, $30,  $00
+        $00
 end
 
         data castle_room_2_obj
@@ -311,14 +313,15 @@ end
 end
 
         data castle_room_6_obj
+        TYPE_GHOST, $48, $40
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_CHARM1, $7C, $30, TYPE_GHOST, $48, $40,
+        TYPE_MAP2, $7C, $30, TYPE_DOOR, $48, $10
         $00
 end
         data castle_room_7_obj
         TYPE_RSLIME, $58, $A0,
         TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
-        TYPE_MAP2, $4C, $40, TYPE_GHOST, $70, $40, $00
+        TYPE_NIXTAIL, $4C, $40, TYPE_GHOST, $70, $40, $00
 end
 
 plot_castle_room_2
@@ -460,7 +463,7 @@ end
 
         data castle_room_25_obj
         TYPE_PRIEST, $4C, $50,
-        TYPE_NIXTAIL, $4C, $50, $00
+        TYPE_KEY2, $4C, $50, $00
 end
 
         data castle_rooms
@@ -503,6 +506,10 @@ end
 
 torch_tile_block_castle
         ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 $70
+        if object_type[index] <> TYPE_DOOR then return thisbank
+        ; doors need to block a second tile to the right of the first
+        peekX = peekX + 1
         pokechar current_map peekX peekY 20 14 $70
         return thisbank
 
