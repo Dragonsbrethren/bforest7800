@@ -935,8 +935,6 @@ chant_spells_up
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] = DIR_DOWN then parse_fireball_up
-        ; windslash "feels" better skipping its second input
-        goto parse_windslash_up
 
 chant_spells_down
         chant_index = chant_index - 1
@@ -990,14 +988,6 @@ parse_fireball_right
         player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
         gosub cast_fireball
         goto chant_done ; because I know I'll cause a bug adding code later...
-
-parse_windslash_up
-        chant_index = chant_index - 1
-        if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] = DIR_UP || input_buffer[chant_index] = DIR_DOWN then chant_test_dirs
-        player_facing = DIR_UP : player_frame = FRAME_UP
-        gosub cast_fireball
-        goto chant_done
 
 chant_done
         player_exiting_chant = 1

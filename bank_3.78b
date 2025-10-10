@@ -600,16 +600,13 @@ update_equipment_pals
         sta m_charm_pal2
 end
         ; currently this just reads from an array for each type of equipment,
-        ; swords only do attack, shields/armor only defense, and charms both
+        ; swords only do attack, shields/armor only defense, and charms wisdom
         dec player_atk = sword_atk[player_sword]
         dec player_atk = player_atk + player_str
         dec player_def = shield_def[player_shield]
         dec temp1 = player_def 
         dec player_def = armor_def[player_armor] + temp1
-        temp1 = player_charm * 2
-        dec player_atk = player_atk + charm_stats[temp1]
-        temp1 = (player_charm + 1) * 2
-        dec player_def = player_def + charm_stats[temp1]
+        dec player_wisdom = charm_wis[player_charm]
         ; this must stay a normal return command so title code can use
         return
 
@@ -1244,8 +1241,8 @@ end
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 end
 
-        data charm_stats
-        0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16
+        data charm_wis
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 end
 
 enable_double_wide_mode

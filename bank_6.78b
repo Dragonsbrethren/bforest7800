@@ -464,7 +464,7 @@ test_water_river
         ; %00000001 = walkable
         ; %00000010 = floatable
         ; %00000100 = water
-        ; %00001000 = unused (shore)
+        ; %00001000 = obscure
         ; %00010000 = ledge - hop down
         ; %00100000 = ledge - hop right
         ; %01000000 = ledge - hop left
@@ -581,10 +581,10 @@ nix_repos
         flags{6} = 0
 reposX
         Xposition = rand
-        if Xposition > 160 then reposX
+        if Xposition >= 160 then reposX
 reposY
         Yposition = rand
-        if Yposition > 224 then reposY
+        if Yposition >= 224 then reposY
         ; make sure the new position is in water, also handles return
         goto test_water_river
 

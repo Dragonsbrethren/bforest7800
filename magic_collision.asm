@@ -5,7 +5,7 @@
 ; tests if the magic object collided
 ; Uses Y for indexing to preserve X
 ;--------------------------------------
-        ldy #0
+        ldy #15
         ldx index       ; TODO: remove when object handler is all asm
 .magic_cc_loop
         lda object_type,y
@@ -25,16 +25,24 @@
         rol
         eor #1
         ror
-        bcc .magic_cc_next
-        jmp .magic_damage
+        bcs .magic_damage
 
 .magic_cc_next
-        iny
-        cpy #15
+        dey
         bne .magic_cc_loop
         rts
 
 .magic_damage
+        ; back up index before running fae bestiary code
+        txa
+        pha
+        sty index
+        jsr .set_enemy_name
+        ; restore index
+        pla
+        tax
+        ldy index
+        sta index
         ; if object has max defense, bypass hp calc altogether
         lda object_mdef,y
         cmp #255
