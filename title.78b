@@ -95,7 +95,7 @@ title_new_game
         m_armor_bits_2 = 0
         m_charm_bits_1 = %00000000
         m_charm_bits_2 = 0
-        m_relic_bits_1 = %00010000
+        m_relic_bits_1 = %00000000
         m_relic_bits_2 = %00000000
 
 init_field
