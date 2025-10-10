@@ -262,7 +262,7 @@ end
         'Map5         *'
 end
         alphadata pickup_key1 font_spr
-        'Priest` Key*'
+        'Crypt Key*'
 end
         alphadata pickup_key2 font_spr
         'Key2         *'

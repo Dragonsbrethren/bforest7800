@@ -201,8 +201,13 @@ tp_prism  cmp #TYPE_PRISM
           bne tp_blood
           jmp .plot_prism
 tp_blood  cmp #TYPE_BLOOD
-          bne tp_door
+          bne tp_dooro
           jmp .plot_blood
+tp_dooro  cmp #TYPE_DOOR_OPEN
+          bne tp_door
+          lda #1
+          sta frame
+          jmp .plot_door
 tp_door   cmp #TYPE_DOOR
           bne tp_doorl
           jmp .plot_door
@@ -540,10 +545,10 @@ end
 object_handler
         for index = 1 to 15
         if !object_type[index] then object_done    ; 0 = no object
+        if object_type[index] = TYPE_DOOR_LOCK then torch_tile_block
         if object_type[index] >= TYPE_STATIC then object_done      ;  coins, prisms are static
         if object_type[index] = TYPE_SPAWNER then spawn_object
         if object_type[index] = TYPE_TORCH then torch_tile_block
-        if object_type[index] = TYPE_DOOR_LOCK then torch_tile_block
         gosub copy_object_props 
         if flags{5} then gosub ledge_hop : goto object_restore
         gosub decelerate_object
@@ -580,14 +585,24 @@ torch_tile_block
         if object_type[index] = TYPE_TORCH then torch_animation
 torch_flag_check
         if object_flags[index] then object_done
-        if object_type[index] = TYPE_DOOR_LOCK then goto locked_door_block
+        if object_type[index] = TYPE_TORCH then goto torch_tile_block_get_pos
+
+locked_door_block
+        ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
+        ;     - side effect of this is key shouldn't be in the same room as a locked door
+        if tileset = T_CASTLE && m_key_bits = %00000001 then goto unlock_door
+
 torch_tile_block_get_pos
         gosub get_torch_pos
         if tileset = T_FOREST then gosub torch_tile_block_forest
         if tileset = T_CASTLE then gosub torch_tile_block_castle
         if tileset = T_RIVER then gosub torch_tile_block_river
-        if object_type[index] = TYPE_DOOR_LOCK && !object_flags[index] then object_flags[index] = %01000000 : goto torch_tile_block_get_pos
         object_flags[index] = %10000000
+        goto object_done
+
+unlock_door
+        ; needed for door animation handling and disabling locked string
+        object_type[index] = TYPE_DOOR
         goto object_done
 
 torch_animation
@@ -595,13 +610,6 @@ torch_animation
         if tileset = T_CASTLE then temp1 = temp1 + 2
         object_frame[index] = temp1
         goto torch_flag_check
-
-locked_door_block
-        object_type[index] = TYPE_DOOR
-        ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
-        ;     - side effect of this is key shouldn't be in the same room as a locked door
-        if tileset = T_CASTLE && m_key_bits = %00000001 then goto object_done
-        goto torch_tile_block_get_pos
 
 spawn_object
         asm
@@ -830,6 +838,8 @@ check_room_exit
         goto player_handler_done
 
 player_attack
+        ; workaround for wierdness of attacking while obscurred - TODO: detect if sword is on obscurred tile & hide?
+        if player_obscure then goto player_handler_done
         sword_hit = 0
         ; player exiting chant tracks if the player cast magic to exit chant with button held
         if player_exiting_chant then test_joy_done
@@ -1290,7 +1300,7 @@ check_collisions
         if !object_type[index] then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
-        if object_type[index] >= TYPE_DOOR then cc_pickup
+        if object_type[index] >= TYPE_DOOR then cc_door
         if object_type[index] >= TYPE_FIREBALL then magic_collision
         if player_state <> STATE_ATTACK then cc_player_contact
         gosub sword_collision
@@ -1308,8 +1318,13 @@ cc_next
 cc_return
         return
 
+cc_door
+        if object_type[index] >=TYPE_COIN then cc_pickup
+        temp1 = Xposition - 4
+        if temp1 < player_Xpos && (temp1 + 16) >= player_Xpos && Yposition < player_Ypos && (Yposition + 16) >= player_Ypos then pickup_object
+        goto cc_next
+
 cc_pickup
-        ; also used by doors
         if Xposition >= player_Xpos && Xposition < (player_Xpos + 12) && Yposition >= player_Ypos && Yposition < (player_Ypos + 16) then pickup_object
         goto cc_next
 
@@ -1318,10 +1333,12 @@ pickup_object
         asm
           ldx index
           lda object_type,x
+          cmp #TYPE_DOOR_LOCK
+          beq pustring
           cmp #TYPE_MAP1
-          bcc puconsum
+          bcc pudoor
           sta temp1
-          ldy #PICKUP_TIME
+pustring  ldy #PICKUP_TIME
           sty pickup_timer
           ldy #1
           sty new_pickup
@@ -1350,11 +1367,14 @@ puspell   cmp #TYPE_SPELL1
 pukey     cmp #TYPE_KEY1
           bcc pumap
           jmp .pickup_key
-pumap     jmp .pickup_map
-puconsum  cmp #TYPE_DOOR
+pumap     cmp #TYPE_MAP1
+          bcc pudoorl
+          jmp .pickup_map
+pudoorl   jmp .set_locked_string
+pudoor    cmp #TYPE_DOOR
           bne pufood
-          lda TYPE_DOOR_OPEN
-          sta object_type,x
+          lda #1
+          sta object_frame,x
           jmp .cc_next
 pufood    cmp #TYPE_FOOD
           bne puprism
@@ -1416,12 +1436,18 @@ end
         if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
 sword_damage
         ; TODO: Much better damage calculations
-        if object_def[index] = 255 then return thisbank
-        temp4 = object_invuln[index]
-        if !temp4 then damage_object
-        temp4 = temp4 - 1
-        object_invuln[index] = temp4
-        return thisbank
+        asm
+          ldx index
+          lda object_def,x
+          cmp #255
+          beq sword_damage_dec_invuln
+sword_damage_dec_invuln
+          lda object_invuln,x
+          ; if invuln is zero, damage object, otherwise dec invuln frames
+          beq .damage_object
+          dec object_invuln,x
+          rts
+end
 
 damage_object
         temp_hp = object_hp[index]

@@ -266,8 +266,8 @@ plot_castle_room_21
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 0 20 14
         memcpy current_map castle_room_21 280
-        zone1_objects  = 2
-        zone2_objects  = 2
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         ; secret passage!
         pokechar current_map 13 6 20 14 $10

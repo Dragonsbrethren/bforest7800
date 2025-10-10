@@ -16,6 +16,12 @@ end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
 
+        const door_locked_lo = #<door_locked
+        const door_locked_hi = #>door_locked
+        alphadata door_locked font_spr
+        'Locked*'
+end
+
         const name_wolf_lo = #<name_wolf
         const name_wolf_hi = #>name_wolf
         alphadata name_wolf font_spr

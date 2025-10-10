@@ -54,10 +54,11 @@ title_selection
         goto title_new_game
 
 title_flash
+        plotchars 'PRGE DEMO' 0 60 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
-        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 10 17
+        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
         goto main
 
 title_continue
