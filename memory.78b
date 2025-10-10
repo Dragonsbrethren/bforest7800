@@ -257,6 +257,7 @@
         autodim byte first_load
         autodim byte room
         autodim byte tileset
+        autodim byte old_tileset
         autodim byte exit_dir
         autodim byte music
         autodim byte tile_properties

@@ -902,9 +902,9 @@ gen_forest_map
         characterset menu_font
         if tileset = T_FOREST then gen_forest_s
         if tileset = T_CASTLE then gen_castle_s
+        if tileset = T_RIVER  then gen_river_s
 
 gen_forest_s
-        dmahole 0
         if entered_save_room{0} then plotsprite menu_s 0 94 80
         return thisbank
 
@@ -913,6 +913,12 @@ gen_castle_s
         if entered_save_room{1} then plotsprite menu_s 0 54 80
         return thisbank
 
+gen_river_s
+        if entered_save_room{0} then plotsprite menu_s 0 78 96
+        if entered_save_room{1} then plotsprite menu_s 0 94 64
+        return thisbank
+
+        dmahole 0
 calc_inv_array
         ; zero the inventory arrays to prevent duplication
         for index = 0 to 66

@@ -720,7 +720,7 @@ poison_damage
 
 player_handler
         ; TODO: saving cutscene
-        if in_save_room then goto save_room_handler
+        if in_save_room then old_tileset = tileset : goto save_room_handler
         if player_state = STATE_DEATH then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
