@@ -171,8 +171,8 @@
         const M_RIVER_SAVE1_Y = 96
         ; field positions
         const F_RIVER_SAVE1_I = 17      ; save room 1 index
-        const F_RIVER_SAVE1_X = 50
-        const F_RIVER_SAVE1_Y = 70
+        const F_RIVER_SAVE1_X = $50
+        const F_RIVER_SAVE1_Y = $70
         const F_RIVER_SAVE1_D = DIR_DOWN
 
         ; map positions
@@ -180,8 +180,8 @@
         const M_RIVER_SAVE2_Y = 64
         ; field positions
         const F_RIVER_SAVE2_I = 5      ; save room 2 index
-        const F_RIVER_SAVE2_X = 72
-        const F_RIVER_SAVE2_Y = 80
+        const F_RIVER_SAVE2_X = $72
+        const F_RIVER_SAVE2_Y = $80
         const F_RIVER_SAVE2_D = DIR_DOWN
 
 

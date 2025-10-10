@@ -47,13 +47,13 @@
 copy_menu_map
         ; only reveal the map once, so that secret rooms persist when opening the menu as long as tileset doesn't change
         if menu_map_revealed{0} then copy_castle_map
-        if tileset = T_FOREST && m_map_bits{0} then memcpy menu_map_room forest_menu_map 98 : menu_map_revealed{0} = 1
+        if tileset = T_FOREST && m_map_bits{0} then memcpy menu_map_room forest_menu_map 98 : menu_map_revealed{0} = 1 : entered_save_room = %11111111
 copy_castle_map
         if menu_map_revealed{1} then copy_river_map
-        if tileset = T_CASTLE && m_map_bits{1} then memcpy menu_map_room castle_menu_map 98 : menu_map_revealed{1} = 1
+        if tileset = T_CASTLE && m_map_bits{1} then memcpy menu_map_room castle_menu_map 98 : menu_map_revealed{1} = 1 : entered_save_room = %11111111
 copy_river_map
         if menu_map_revealed{2} then copy_menu_map_done
-        if tileset = T_RIVER  && m_map_bits{2} then memcpy menu_map_room river_menu_map 98  : menu_map_revealed{2} = 1
+        if tileset = T_RIVER  && m_map_bits{2} then memcpy menu_map_room river_menu_map 98  : menu_map_revealed{2} = 1 : entered_save_room = %11111111
 copy_menu_map_done
         return
 

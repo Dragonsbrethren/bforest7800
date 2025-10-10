@@ -365,20 +365,28 @@ end
 
 
         data river_room_9_obj
+        TYPE_OCTOPUS, $38, $70, TYPE_OCTOPUS, $68, $A0
+        TYPE_TORCH, $58, $40
         $00
 end
 
 
         data river_room_10_obj
+        TYPE_WARG, $78, $50, TYPE_RGHOST, $38, $40, TYPE_RGHOST, $60, $90
+        TYPE_TORCH, $88, $50, TYPE_TORCH, $88, $80, TYPE_TORCH, $20, $40
         $00
 end
 
 
         data river_room_11_obj
+        TYPE_NIX, $30, $50, TYPE_NIX, $58, $40
+        TYPE_TORCH, $78, $10, TYPE_TORCH, $68, $B0
         $00
 end
 
         data river_room_12_obj
+        TYPE_WARG, $28, $A0, TYPE_NIX, $38, $70, TYPE_NIX, $68, $70
+        TYPE_SWORD3, $78, $A0
         $00
 end
 
@@ -387,10 +395,15 @@ end
 end
 
         data river_room_14_obj
+        TYPE_WARG, $48, $60, TYPE_WARG, $38, $70, TYPE_WARG, $58, $50
+        TYPE_TORCH, $38, $30, TYPE_TORCH, $60, $30, TYPE_TORCH, $20, $50
+        TYPE_MAP3, $78, $80
         $00
 end
 
         data river_room_15_obj
+        TYPE_WARG, $80, $90, TYPE_RGHOST, $20, $50, TYPE_RGHOST, $58, $80
+        TYPE_TORCH, $20, $40, TYPE_TORCH, $78, $30, TYPE_TORCH, $88, $A0
         $00
 end
 
@@ -399,6 +412,8 @@ end
 end
 
         data river_room_17_obj
+        TYPE_WARG, $30, $30, TYPE_WARG, $20, $60, TYPE_WARG, $40, $80
+        TYPE_TORCH, $28, $80
         $00
 end
 
