@@ -245,7 +245,7 @@ plot_river_room_0
 
         data river_room_0_obj
         TYPE_TORCH, $20, $50, TYPE_TORCH, $38, $50, TYPE_TORCH, $60, $50, TYPE_TORCH, $78, $50
-        TYPE_NIXTAIL, $48, $90,  TYPE_DOOR, $48, $40, $00
+        TYPE_DOOR, $48, $40, $00
 end
 
 plot_river_room_1
@@ -276,7 +276,7 @@ plot_river_room_2
         return thisbank
 
         data river_room_2_obj
-        TYPE_MERMAN, $38, $60, TYPE_TORCH, $88, $10,
+        TYPE_MERMAN, $38, $60, TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50
         $00
 end
 
