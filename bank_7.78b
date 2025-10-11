@@ -215,6 +215,7 @@ plot_river_room_17
         zone1_objects  = 4
         zone2_objects  = 6
         zone14_objects = 1
+        demo_end = 1
         return otherbank
 
 plot_river_room_18

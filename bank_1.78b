@@ -443,6 +443,7 @@ buffer_pw_loop
 end
 
 plot_gameover
+        sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_GAMEOVER
         if !menu_change then goto gameover_updater
         clearscreen
@@ -455,20 +456,23 @@ plot_gameover
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)'
         if in_save_room then plotchars 'Password' 0 64 2 singlewide : goto gameover_options
         plotchars 'GAME  OVER' 0 60 2 singlewide
+        if demo_end then demo_end_text
 gameover_options
         plotchars 'Continue' 0 60 9 singlewide
         plotchars 'Quit' 0 60 10 singlewide
         savescreen
+        goto main
 
 gameover_updater
         restorescreen
+        if demo_end then menu_selection = 1 : goto gameover_controls
         gosub plot_password
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
 
 gameover_controls
         if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
         if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
-
+        if demo_end then goto main
         if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
         if !up_debounce && joy0up then gosub menu_selection_up
         if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
@@ -480,11 +484,21 @@ gameover_controls
         goto main
 
 gameover_input
-        if menu_selection then menu_selection = 0 : menu_change = 1 : goto title_init bank10
+        if menu_selection then menu_selection = 0 : demo_end = 0 : menu_change = 1 : goto title_init bank10
         gosub decode_password
         in_save_room = 0
         menu = MENU_MAIN
         goto title_continue bank10
+
+demo_end_text
+        plotchars 'DEMO' 0 60 2 singlewide
+
+        plotchars 'Thank you for playing!' 0 36 6 singlewide
+        plotchars 'Please submit your feedback' 0 28 7 singlewide
+        plotchars 'on the AtariAge Forums' 0 36 8 singlewide
+        plotchars 'Push button to reset' 0 40 10 singlewide
+        savescreen
+        goto main
 
 plot_password_menu
         ; turn on Kangaroo mode so "Password Error" prints over saved screen

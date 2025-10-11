@@ -9,7 +9,8 @@
 field_handler
         if reload_map = 1 then goto load_map
         exit_dir = EXIT_NONE
-
+        ; essentially trigger a game over at end of demo
+        if demo_end then goto password_display
         goto player_handler
 player_handler_done
         gosub object_handler
