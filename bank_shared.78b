@@ -1316,6 +1316,7 @@ cc_pickup
 
 pickup_object
         if object_type[index] >=TYPE_COIN then playsfx sfx_strum
+        if object_type[index] = TYPE_DOOR then playsfx sfx_advbite
         asm
           ldx index
           lda object_type,x
@@ -1359,8 +1360,8 @@ pumap     cmp #TYPE_MAP1
 pudoorl   jmp .set_locked_string
 pudoor    cmp #TYPE_DOOR
           bne pufood
-          lda #1
-          sta object_frame,x
+          lda #TYPE_DOOR_OPEN
+          sta object_type,x
           jmp .cc_next
 pufood    cmp #TYPE_FOOD
           bne puprism
@@ -1549,15 +1550,19 @@ shield_check
         ; if the player doesn't have a shield or they aren't standing still, damage the player
         if !player_shield || player_state <> STATE_STAND then goto projectile_status
         ; TODO: different shield properties
-        if player_facing = DIR_UP && object_facing[index]    = DIR_DOWN  then return thisbank
-        if player_facing = DIR_DOWN && object_facing[index]  = DIR_UP    then return thisbank
-        if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then return thisbank
-        if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then return thisbank
+        if player_facing = DIR_UP && object_facing[index]    = DIR_DOWN  then deflect_projectile
+        if player_facing = DIR_DOWN && object_facing[index]  = DIR_UP    then deflect_projectile
+        if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then deflect_projectile
+        if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then deflect_projectile
 
 projectile_status
         ; hardcode Octoink to set dark status for now
         if flags = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
         goto pc_damage
+
+deflect_projectile
+        playsfx sfx_gotthecoin
+        return thisbank
 
 set_status
         asm

@@ -164,4 +164,24 @@ end
         $00,$00,$00
 end
 
+        data sfx_advbite
+        $10,$10,$02 ; version, priority, frames per chunk
+        $1F,$03,$0F ; first chunk of freq,channel,volume data 
+        $1F,$08,$0E 
+        $1F,$03,$0D 
+        $1F,$08,$0C 
+        $1F,$03,$0B 
+        $1F,$08,$0A 
+        $1F,$03,$09 
+        $1F,$08,$08 
+        $1F,$03,$07 
+        $1F,$08,$06 
+        $1F,$03,$05 
+        $1F,$08,$04 
+        $1F,$03,$03 
+        $1F,$08,$02 
+        $1F,$03,$01 
+        $00,$00,$00 
+end
+
         inline pokeysound.asm

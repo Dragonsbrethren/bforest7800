@@ -1239,15 +1239,6 @@ end
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
-        incbasic sounds.78b
-
-        dmahole 0
-        incbasic music.78b
-        inline hiscore.asm
-        inline updateobjects.asm
-        inline floatsprite.asm
-        inline fourbitfade.asm
-
 ledge_hop
         asm
         lda Xdirection
@@ -1358,6 +1349,14 @@ set_name_ptr
           sta pickup_timer
           rts
 end
+
+        dmahole 0
+        incbasic sounds.78b
+        incbasic music.78b
+        inline hiscore.asm
+        inline updateobjects.asm
+        inline floatsprite.asm
+        inline fourbitfade.asm
 
 update_pickup_objs
         ; unrolled for speed
