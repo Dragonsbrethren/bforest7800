@@ -83,10 +83,11 @@ map_loaded
         sta player_obscure
         sta pw_success
 end
-        if exit_dir = EXIT_SOUTH then player_Ypos = 15  : player_Ydir = DIR_DOWN
-        if exit_dir = EXIT_NORTH then player_Ypos = 175 : player_Ydir = DIR_UP
-        if exit_dir = EXIT_EAST  then player_Xpos = 147 : player_Xdir = DIR_LEFT
-        if exit_dir = EXIT_WEST  then player_Xpos = 7  : player_Xdir = DIR_RIGHT
+        ; object 13 = familiars
+        if exit_dir = EXIT_SOUTH then player_Ypos = 15  : player_Ydir = DIR_DOWN : object_Ypos[13] = 8
+        if exit_dir = EXIT_NORTH then player_Ypos = 175 : player_Ydir = DIR_UP   : object_Ypos[13] = 183
+        if exit_dir = EXIT_EAST  then player_Xpos = 147 : player_Xdir = DIR_LEFT : object_Xpos[13] = 153
+        if exit_dir = EXIT_WEST  then player_Xpos = 7  : player_Xdir = DIR_RIGHT : object_Xpos[13] = 0
 
 main
         drawscreen
@@ -1053,12 +1054,11 @@ end
 fairy_item_done
 
 fairy_move
-        if animation_frame then frame = F_FAIRY_WING2 else frame = F_FAIRY_WING1
-        temp1 = Xposition - 24
-        if temp1 > Xposition then temp1 = 0
-        temp2 = Yposition - 32
-        if temp2 > Yposition then temp2 = 0
-        goto followplayer
+        if animation_frame then frame = F_FAIRY_WING1 : return thisbank
+        frame = F_FAIRY_WING2 
+
+        ; works as return for move frames
+        goto test_follow_box
 
 fairy_revive
         ; undo the actions taken by the death handler
@@ -1108,8 +1108,6 @@ obj_fairy_stats
         object_speed_hi[obj_index] = FAIRY_SPEED_HI
         object_speed_lo[obj_index] = FAIRY_SPEED_LO
         object_flags[obj_index] = 0
-        object_Xpos[obj_index] = player_Xpos
-        object_Ypos[obj_index] = player_Ypos - 8
         object_flags[obj_index] = %00000100
         asm
           ldx obj_index

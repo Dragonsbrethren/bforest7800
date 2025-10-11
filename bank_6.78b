@@ -774,8 +774,7 @@ rghost_ai
         object_pal[index] = 0
 rghost_follow
         timer = timer - 1
-        gosub followplayer
-        return thisbank
+        goto test_follow_box
 
 obj_rghost_stats
         object_hp[obj_index] = 5

@@ -265,6 +265,9 @@
         const F_FAIRY_ITEM1 = 2
         const F_FAIRY_ITEM2 = 3
 
+        const FAIRY_CHASE_X = 40
+        const FAIRY_CHASE_Y = 54
+
         const FIREBALL_SPEED_HI = 2
         const FIREBALL_SPEED_LO = 0
         const FIREBALL_DAMAGE = 2

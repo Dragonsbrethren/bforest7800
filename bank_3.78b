@@ -383,19 +383,23 @@ menu_shield_next
 
 plot_inv_shield_0
         if !m_inv_item_0 then plot_inv_shield_1
-        plotsprite menu_shield0 4 16 80
+        temp1 = m_shield_frames[m_inv_item_0]
+        plotsprite menu_shield0 4 16 80 temp1
         plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
 plot_inv_shield_1
         if !m_inv_item_1 then plot_inv_shield_2
-        plotsprite menu_shield0 4 16 112
+        temp1 = m_shield_frames[m_inv_item_1]
+        plotsprite menu_shield0 4 16 112 temp1
         plotmap shield_names 0 24 7 13 1 0 m_inv_item_1 13
 plot_inv_shield_2
         if !m_inv_item_2 then plot_inv_shield_3
-        plotsprite menu_shield0 4 16 144
+        temp1 = m_shield_frames[m_inv_item_0]
+        plotsprite menu_shield0 4 16 144 temp1
         plotmap shield_names 0 24 9 13 1 0 m_inv_item_2 13
 plot_inv_shield_3
         if !m_inv_item_3 then plot_inv_shield_done
-        plotsprite menu_shield0 4 16 176
+        temp1 = m_shield_frames[m_inv_item_0]
+        plotsprite menu_shield0 4 16 176 temp1
         plotmap shield_names 0 24 11 13 1 0 m_inv_item_3 13
 plot_inv_shield_done
         goto equip_menu_draw_sprites
@@ -475,7 +479,8 @@ equip_menu_test_shield
         if player_shield then goto equip_menu_draw_shield
         goto equip_menu_test_armor
 equip_menu_draw_shield
-        plotsprite menu_shield0 0 84 112
+        temp1 = m_shield_frames[player_shield]
+        plotsprite menu_shield0 0 84 112 temp1
         plotmap shield_names 0 92 7 13 1 0 player_shield 13
 equip_menu_test_armor
         if player_armor then goto equip_menu_draw_armor
@@ -1209,10 +1214,14 @@ end
 end
 
         data pal_shields1
-        $00, $44, $0C
+        $00, $24, $0C
 end
         data pal_shields2
-        $00, $FE, $0F
+        $00, $44, $0F
+end
+
+        data m_shield_frames
+        0, 1, 0
 end
 
         data pal_armor1
@@ -1223,10 +1232,10 @@ end
 end
 
         data pal_charms1
-        $00, $44
+        $00, $98, $60 
 end
         data pal_charms2
-        $00, $FE
+        $00, $0F, $62
 end
 
         data sword_atk

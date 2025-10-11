@@ -417,7 +417,7 @@ end
         TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $A0,
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
-        TYPE_DOOR_OPEN, $48, $10, TYPE_SHIELD1, $20, $60
+        TYPE_DOOR_OPEN, $48, $10, TYPE_SHIELD1, $20, $70
         $00
 end
 
@@ -814,8 +814,7 @@ ghost_ai
         object_pal[index] = 0
 ghost_follow
         timer = timer - 1
-        gosub followplayer
-        return thisbank
+        goto test_follow_box
 
 obj_ghost_stats
         object_hp[obj_index] = 5
@@ -851,8 +850,7 @@ redslime_ai
         temp1 = 0
 rslime_chase
         object_def[index] = temp1
-        gosub followplayer
-        return
+        goto followplayer
 
 obj_redslime_stats
         object_hp[obj_index] = RSLIME_HP

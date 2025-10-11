@@ -370,11 +370,25 @@ open_menu
         pause_debounce = 1
         goto menu_init bank3
 
+test_follow_box
+        ; check a box around the object and determine if object should follow
+        ; prevents following objects from getting stuck on top of player
+        temp1 = player_Xpos - (FAIRY_CHASE_X / 2)
+        if temp1 >=161 then temp1 = 0
+        temp2 = player_Ypos - (FAIRY_CHASE_Y / 2)
+        if temp2 >=225 then temp2 = 0
+        if boxcollision(Xposition, Yposition, 12, 16, temp1, temp2, FAIRY_CHASE_X, FAIRY_CHASE_Y) then return thisbank
+
 followplayer
+        ; add a little randomness to stop a constant movement pattern from happening
+        if rand >= 240 then follow_player_Y
         if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
+follow_player_Y
+        if rand >= 240 then follow_player_done
         if Yposition > player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
         if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
+follow_player_done
         return thisbank
 
 get_player_pos
@@ -1280,7 +1294,9 @@ walkable_return
 
 check_collisions
         for index = 0 to 15
+        ; bypass collision checks for blank objects and fairy familar
         if !object_type[index] then cc_next
+        if object_type[index] = TYPE_F_FAIRY then cc_next
         Xposition = object_Xpos[index]
         Yposition = object_Ypos[index]
         if object_type[index] >= TYPE_STATIC then cc_door
