@@ -190,7 +190,7 @@
         const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_DAMAGE = 6
 
-        const SKELSWORD_DAMAGE = 6
+        const SKELSWORD_DAMAGE = 3
         const RETRACT_FRAMES = 4
 
         const RSLIME_DROP_RATE = 128
