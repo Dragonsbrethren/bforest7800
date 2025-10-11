@@ -419,12 +419,6 @@ swoop_Y
 ; TEST MELEE
 ;------------------------------------------------------------------------------
 ; Can object hit player with melee attack?
-; ** temp1: object X to left of player
-; ** temp2: object X to right of player
-; ** temp3: incremented on each successful melee range check
-; ** temp4: object Y above player
-; ** temp5: object Y below player
-; ** temp6: if set, player within melee range
 ;==============================================================================
 test_melee
         temp6 = 0
@@ -432,36 +426,27 @@ test_melee
         if object_facing[index] = DIR_DOWN then melee_down
         if object_facing[index] = DIR_LEFT then melee_left
 melee_right
-        temp1 = Xposition
-        temp2 = Xposition + 16
-        temp4 = Yposition - 8
-        temp5 = Yposition + 16
+        temp1 = Xposition + 12
+        temp2 = Yposition - 8
         goto melee_range
 
 melee_up
-        temp1 = Xposition - 4
-        temp2 = Xposition + 8
-        temp4 = Yposition
-        temp5 = Yposition - 24
+        temp1 = Xposition
+        temp2 = Yposition - 16
+        if temp2 >= 225 then temp2 = 0
         goto melee_range
 
 melee_down
-        temp1 = Xposition - 4
-        temp2 = Xposition + 8
-        temp4 = Yposition + 24
-        temp5 = Yposition
+        temp1 = Xposition
+        temp2 = Yposition
         goto melee_range
 
 melee_left
-        temp1 = Xposition - 16
-        temp2 = Xposition
-        temp4 = Yposition - 8
-        temp5 = Yposition + 16
+        temp1 = Xposition
+        temp2 = Yposition - 8
 
 melee_range
-        if player_Xpos >= temp1 && player_Xpos < temp2 then temp3 = 1
-        if player_Ypos >= temp4 && player_Ypos < temp5 then temp3 = temp3 + 1
-        if temp3 > 1 then temp6 = 1
+        if boxcollision(temp1, temp2, 12, 32, player_Xpos, player_Ypos, 16, 12) then temp6 = 1
         return thisbank
 
 ;==============================================================================
