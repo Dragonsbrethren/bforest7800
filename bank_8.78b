@@ -95,21 +95,18 @@ hills_pals
           lda #1        ; very dark gray
           sta P4C3
           sta P5C3
-          lda #2        ; make elevation change visible, still dark
-          sta P5C2
 
 hills_grays
         ; normal gray shades
           lda #PAL_H_DKGRY
           sta P4C3
           sta P5C3
-          lda #PAL_H_LTGRY
-          sta P5C2
 end
 hills_colors
         ; the remaining colors not covered by darkness exceptions
         bg_color = PAL_H_GRND
         P4C2 = getfade(PAL_H_DIRT, black)
+        P5C2 = getfade(PAL_H_LTGRY, black)
         P6C2 = getfade(PAL_H_WATER, black), P6C3 = getfade(PAL_H_DIRT, black)
         ; TODO: Animated alt palette
         P7C2 = getfade(PAL_H_DIRT, black) : P7C3 = getfade(PAL_H_VEG, black)
