@@ -4,11 +4,171 @@
 ; Hills tileset and data
 ;==============================================================================
         bank 8
-        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4    ; Reuse gfx
-        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5    ; from
-        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6    ; Forest
-        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/tiles/hills_ledges.png 160A 1 2 0 3 4
+        incgraphic gfx/tiles/hills_high.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/hills_water.png 160A 1 0 2 3 6
+        incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
+        incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
+
+        incmapfile tiled/hills_room_0.tmx
+        incmapfile tiled/hills_room_1.tmx
+        incmapfile tiled/hills_room_2.tmx
+
+        const plot_hills_room_0_lo = #<.plot_hills_room_0
+        const plot_hills_room_0_hi = #>.plot_hills_room_0
+        const plot_hills_room_1_lo = #<.plot_hills_room_1
+        const plot_hills_room_1_hi = #>.plot_hills_room_1
+        const plot_hills_room_2_lo = #<.plot_hills_room_2
+        const plot_hills_room_2_hi = #>.plot_hills_room_2
+
+        data hills_map_lo
+        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo
+end
+
+        data hills_map_hi
+        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi
+end
+
+        data hills_obj_lo
+        hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo
+end
+
+        data hills_obj_hi
+        hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi
+end
+
+load_hills
+        if !first_load then hills_set_room
+        first_load = 0
+        if save_room_index = 1 then hills_save_1
+        if save_room_index = 2 then hills_save_2
+
+hills_save_1
+hills_save_2
+        room_index    = F_HILLS_START_I
+        menu_map_Xpos = M_HILLS_START_X
+        menu_map_Ypos = M_HILLS_START_Y
+        player_Xpos   = F_HILLS_START_X
+        player_Ypos   = F_HILLS_START_Y
+        player_facing = F_HILLS_START_D ; DIR_UP
+        goto hills_set_room
+
+hills_set_room
+        characterset hills_ledges
+        asm
+        lda #0
+        sta no_flash
+        sta alt_palette
+        sta pal_animation
+        sta exit_room_index
+        sta save_room_index
+        ldx room_index
+        lda hills_rooms,x
+        tax
+        lda hills_obj_lo,x
+        sta pointer
+        lda hills_obj_hi,x
+        sta pointer_hi
+        lda room_index
+        asl
+        sta menu_map_index
+        clc
+        adc #1
+        sta menu_map_index_2
+        lda hills_map_lo,x
+        sta temp1
+        lda hills_map_hi,x
+        sta temp2
+        jmp (temp1)
+end
 
 hills_pals
-        bg_color = PAL_F_GRND   ; ground color shared with forest
+        asm
+          ; set these all at once to save cycles
+          lda flash_color
+          sta P4C1
+          sta P5C1
+          sta P6C1
+          lda fade
+          bne hills_grays
+          ; gray shades under darkness
+          lda #1        ; very dark gray
+          sta P4C3
+          sta P5C3
+          lda #2        ; make elevation change visible, still dark
+          sta P5C2
+
+hills_grays
+        ; normal gray shades
+          lda #PAL_H_DKGRY
+          sta P4C3
+          sta P5C3
+          lda #PAL_H_LTGRY
+          sta P5C2
+end
+hills_colors
+        ; the remaining colors not covered by darkness exceptions
+        bg_color = PAL_H_GRND
+        P4C2 = getfade(PAL_H_DIRT, black)
+        P6C2 = getfade(PAL_H_WATER, black), P6C3 = getfade(PAL_H_DIRT, black)
+        ; TODO: Animated alt palette
+        P7C2 = getfade(PAL_H_DIRT, black) : P7C3 = getfade(PAL_H_VEG, black)
+
         incbasic shared_pals.78b
+        goto palette_done
+
+        data hills_rooms
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        02, 00, 00, 00, 00, 00, 00
+        01, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 02, 00, 00, 00, 00
+        00, 00, 01, 00, 00, 00, 00
+end
+        
+plot_hills_room_0
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy current_map hills_room_0 280
+        plotmapfile tiled/hills_room_0.tmx hills_room_0 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 3
+        zone14_objects = 1
+        exit_tileset = T_RIVER
+        exit_Xpos = 72
+        exit_Ypos = 64
+        exit_room_index = 48
+        return thisbank
+
+plot_hills_room_1
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map hills_room_1 280
+        plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 3
+        zone14_objects = 1
+        return thisbank
+
+plot_hills_room_2
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy current_map hills_room_2 280
+        plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 3
+        zone14_objects = 1
+        return thisbank
+
+        data hills_room_0_obj
+        $00
+end
+
+        data hills_room_1_obj
+        $00
+end
+
+        data hills_room_2_obj
+        $00
+end

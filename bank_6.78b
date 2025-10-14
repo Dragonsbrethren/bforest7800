@@ -169,7 +169,7 @@ river_save_2
 river_set_room
         characterset forest_trees
         asm
-          lda $0
+          lda #0
           sta no_flash
           sta alt_palette
           sta pal_animation

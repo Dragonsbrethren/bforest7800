@@ -64,6 +64,7 @@ end
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
+        if tileset = T_HILLS  then gosub load_hills bank8
         gosub draw_hud
 draw_pickup_hud
         Xposition = 36

@@ -184,6 +184,35 @@
         const F_RIVER_SAVE2_Y = $80
         const F_RIVER_SAVE2_D = DIR_DOWN
 
+;------------------------------------------------------------------------------
+; HILLS TILESET
+;------------------------------------------------------------------------------
+        ; map positions
+        const M_HILLS_START_X = 62
+        const M_HILLS_START_Y = 112
+        ; field positions
+        const F_HILLS_START_I = 22      ; starting room index
+        const F_HILLS_START_X = $64
+        const F_HILLS_START_Y = $A0
+        const F_HILLS_START_D = DIR_UP
+
+        ; map positions
+        const M_HILLS_SAVE1_X = 78
+        const M_HILLS_SAVE1_Y = 96
+        ; field positions
+        const F_HILLS_SAVE1_I = 17      ; save room 1 index
+        const F_HILLS_SAVE1_X = $50
+        const F_HILLS_SAVE1_Y = $70
+        const F_HILLS_SAVE1_D = DIR_DOWN
+
+        ; map positions
+        const M_HILLS_SAVE2_X = 94
+        const M_HILLS_SAVE2_Y = 64
+        ; field positions
+        const F_HILLS_SAVE2_I = 5      ; save room 2 index
+        const F_HILLS_SAVE2_X = $72
+        const F_HILLS_SAVE2_Y = $80
+        const F_HILLS_SAVE2_D = DIR_DOWN
 
 ;------------------------------------------------------------------------------
 ; MENU DATA

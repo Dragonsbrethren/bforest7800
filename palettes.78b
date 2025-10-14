@@ -60,3 +60,13 @@
         const PAL_WFALL1 = $A1
         const PAL_WFALL2 = $A3
         const PAL_WFALL3 = $0F
+
+;------------------------------------------------------------------------------
+; HILLS
+;------------------------------------------------------------------------------
+        const PAL_H_GRND  = $06         ; medium gray
+        const PAL_H_DKGRY = $03
+        const PAL_H_LTGRY = $08
+        const PAL_H_DIRT  = $11         ; brown
+        const PAL_H_VEG   = $C0         ; dark green
+        const PAL_H_WATER = $A1         ; murky blue
