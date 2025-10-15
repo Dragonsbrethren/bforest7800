@@ -206,10 +206,10 @@ walkable_water_hills
 test_water_hills
         ; water is tested differently than other properties, it tests the tile directly under the object
         ; this helps eliminate graphical issues when approaching a non-water tile in water
-        gosub get_object_pos
-        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
-        temp1 = temp1 / 2
-        temp1 = hills_tile_properties[temp1]
+;        gosub get_object_pos
+;        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
+;        temp1 = temp1 / 2
+;        temp1 = hills_tile_properties[temp1]
         if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
         return thisbank
 

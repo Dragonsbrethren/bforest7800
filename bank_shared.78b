@@ -1103,14 +1103,15 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_up
         if tile_properties{1} then move_up
 test_walkable_up
         if !tile_properties{0} then Yvelocity = 0 : return
 move_up
         Yposition = Yposition - Yvelocity_hi
-        if Yposition > 224 then object_type[index] = 0
-        return
+        if Yposition >= 224 then Yposition = 0
+        return thisbank
 
 move_test_down
         if flags{2} then move_down
@@ -1148,6 +1149,7 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_down
         if tile_properties{1} then move_down
 test_walkable_down
@@ -1156,8 +1158,9 @@ test_walkable_down
         if !tile_properties{0} then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
-        if Yposition > 224 then object_type[index] = 0
-        return
+        ; keep objects out of bottom zone
+        if Yposition >= 208 then Yposition = 208
+        return thisbank
 
 move_test_left
         if flags{2} then move_left
@@ -1197,6 +1200,7 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_left
         ; floating objects bypass walk test
         if tile_properties{1} then move_left
@@ -1206,8 +1210,8 @@ test_walkable_left
         if !tile_properties{0} then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
-        if Xposition > 160 then object_type[index] = 0
-        return
+        if Xposition >= 160 then Xposition = 0
+        return thisbank
 
 move_test_right
         if flags{2} then move_right
@@ -1247,6 +1251,7 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
+        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_right
         if tile_properties{1} then move_right
 test_walkable_right
@@ -1254,25 +1259,37 @@ test_walkable_right
         if !tile_properties{0} then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
-        if Xposition > 160 then object_type[index] = 0
-        return
+        if Xposition >= 160 then Xposition = 160
+        return thisbank
         
 move_return
-        return
+        return thisbank
 
 test_walkable
         move_tile_1 = move_tile_1 / 2
         move_tile_2 = move_tile_2 / 2
-        ; TODO: jump table
-        if tileset = T_FOREST then goto test_walkable_forest
-        if tileset = T_CASTLE then goto test_walkable_castle
-        if tileset = T_RIVER  then goto test_walkable_river
-        if tileset = T_HILLS  then goto test_walkable_hills
+        asm
+          ldx tileset
+          lda walkable_jump_lo,x
+          sta pointer
+          lda walkable_jump_hi,x
+          sta pointer_hi
+          jmp (pointer)
+end
 walkable_return
         tile_properties = tile_properties_1 & tile_properties_2
         ; obscure flag is treated as a wall for non-player objects
         if index && tile_properties{3} then tile_properties = tile_properties & %11111100
         return thisbank
+
+
+        data walkable_jump_lo
+        walkable_return_lo, test_walkable_forest_lo, test_walkable_castle_lo, test_walkable_river_lo, test_walkable_hills_lo
+end
+
+        data walkable_jump_hi
+        walkable_return_hi, test_walkable_forest_hi, test_walkable_castle_hi, test_walkable_river_hi, test_walkable_hills_hi
+end
 
 check_collisions
         for index = 0 to 15

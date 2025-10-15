@@ -1,4 +1,27 @@
 {
+    "maps": [
+        {
+            "fileName": "hills_room_0.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "hills_room_1.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": 0
+        },
+        {
+            "fileName": "hills_room_2.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": -224
+        }
+    ],
     "onlyShowAdjacentMaps": false,
     "type": "world"
 }

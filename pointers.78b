@@ -25,3 +25,15 @@
         const plot_skeleton_hi  = #>.plot_skeleton
         const plot_skelsword_lo = #<.plot_skelsword
         const plot_skelsword_hi = #>.plot_skelsword
+
+        ; jump table for walkability tests
+        const walkable_return_lo      = #<.walkable_return
+        const walkable_return_hi      = #>.walkable_return
+        const test_walkable_forest_lo = #<.test_walkable_forest
+        const test_walkable_forest_hi = #>.test_walkable_forest
+        const test_walkable_castle_lo = #<.test_walkable_castle
+        const test_walkable_castle_hi = #>.test_walkable_castle
+        const test_walkable_river_lo  = #<.test_walkable_river
+        const test_walkable_river_hi  = #>.test_walkable_river
+        const test_walkable_hills_lo  = #<.test_walkable_hills
+        const test_walkable_hills_hi  = #>.test_walkable_hills
