@@ -185,6 +185,8 @@
         autodim byte peekY
         autodim byte move_tile_1
         autodim byte move_tile_2
+        autodim byte move_tile_1_old
+        autodim byte move_tile_2_old
         autodim byte animation_frame
         autodim byte frame
         autodim byte flags

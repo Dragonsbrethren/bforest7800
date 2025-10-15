@@ -1103,7 +1103,6 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_up
         if tile_properties{1} then move_up
 test_walkable_up
@@ -1149,7 +1148,6 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_down
         if tile_properties{1} then move_down
 test_walkable_down
@@ -1200,7 +1198,6 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_left
         ; floating objects bypass walk test
         if tile_properties{1} then move_left
@@ -1251,7 +1248,6 @@ end
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         gosub test_walkable
-        if !index && tile_properties{3} then player_obscure = 1
         if !flags{4} then test_walkable_right
         if tile_properties{1} then move_right
 test_walkable_right
@@ -1278,8 +1274,43 @@ test_walkable
 end
 walkable_return
         tile_properties = tile_properties_1 & tile_properties_2
+        ; obscure player moving onto obscuring tile
+        if !index && tile_properties{3} then player_obscure = 1
         ; obscure flag is treated as a wall for non-player objects
         if index && tile_properties{3} then tile_properties = tile_properties & %11111100
+        asm
+          lda tile_properties
+          ; if all ledge bits toggled, tile is a ramp
+          cmp #%01110001
+          bne .walkable_return_no_elev
+          ; compare against the previous frame's move tiles so elevation only toggles once
+          lda move_tile_1_old
+          cmp move_tile_1
+          bne walkable_change_elev
+          lda move_tile_2_old
+          cmp move_tile_2
+          bne .walkable_return_no_elev
+walkable_change_elev
+          ; set the tile to walkable
+          lda #1
+          sta tile_properties
+          ; back up the old move tile
+          lda move_tile_1
+          sta move_tile_1_old
+          lda move_tile_2
+          sta move_tile_2_old
+          ; set the object's elevation flag
+          ldx index
+          lda object_hop_dir,x
+          beq walkable_set_elev
+          lda #0
+          sta object_hop_dir,x
+          jmp .walkable_return_no_elev
+walkable_set_elev
+          lda #1
+          sta object_hop_dir,x
+end
+walkable_return_no_elev
         return thisbank
 
 
@@ -1713,8 +1744,6 @@ copy_object_props
         sta flags
         lda object_dest,x
         sta hop_dest
-        lda object_hop_dir,x
-        sta hop_dir
         lda object_timer,x
         sta timer
         rts
@@ -1746,8 +1775,6 @@ restore_object_props
         sta object_flags,x
         lda hop_dest
         sta object_dest,x
-        lda hop_dir
-        sta object_hop_dir,x
         lda timer
         sta object_timer,x
         lda #0
