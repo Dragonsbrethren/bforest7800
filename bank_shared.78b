@@ -1283,17 +1283,17 @@ walkable_return
           ; if all ledge bits toggled, tile is a ramp
           cmp #%01110001
           bne .walkable_return_no_elev
+          ; set the tile to walkable
+          lda #1
+          sta tile_properties
           ; compare against the previous frame's move tiles so elevation only toggles once
           lda move_tile_1_old
           cmp move_tile_1
           bne walkable_change_elev
           lda move_tile_2_old
           cmp move_tile_2
-          bne .walkable_return_no_elev
+          beq .walkable_return_no_elev
 walkable_change_elev
-          ; set the tile to walkable
-          lda #1
-          sta tile_properties
           ; back up the old move tile
           lda move_tile_1
           sta move_tile_1_old
