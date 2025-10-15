@@ -6,9 +6,12 @@
         bank 8
         incgraphic gfx/tiles/hills_ledges.png 160A 1 2 0 3 4
         incgraphic gfx/tiles/hills_high.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/hills_water.png 160A 1 0 2 3 6
+        incgraphic gfx/tiles/hills_water.png 160A 1 2 3 0 6
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
+        incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
+        incgraphic gfx/sprites/harpy0.png 160B 0 6 5 3 4 1
+        incgraphic gfx/sprites/harpy1.png 160B 0 6 3 5 4 1
 
         incmapfile tiled/hills_room_0.tmx
         incmapfile tiled/hills_room_1.tmx
@@ -107,10 +110,14 @@ hills_colors
         bg_color = PAL_H_GRND
         P4C2 = getfade(PAL_H_DIRT, black)
         P5C2 = getfade(PAL_H_LTGRY, black)
-        P6C2 = getfade(PAL_H_WATER, black), P6C3 = getfade(PAL_H_DIRT, black)
-        ; TODO: Animated alt palette
+        P6C2 = getfade(PAL_H_WATER, black) : P6C3 = getfade(PAL_H_DIRT, black)
+        ; bypass resetting animated waterfall colors
+        if pal_animation then hills_shared_pals
         P7C2 = getfade(PAL_H_DIRT, black) : P7C3 = getfade(PAL_H_VEG, black)
+        ; waterfall soft palette registers
+        sP7C1 = getfade(PAL_WFALL1) : sP7C2 = getfade(PAL_WFALL2) : sP7C3 = getfade(PAL_WFALL3)
 
+hills_shared_pals
         incbasic shared_pals.78b
         goto palette_done
 
@@ -143,9 +150,11 @@ plot_hills_room_1
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map hills_room_1 280
         plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 3
-        zone14_objects = 1
+        zone1_objects  = 5
+        zone2_objects  = 4
+        zone14_objects = 3
+        alt_palette = 1
+        pal_animation = 1
         return thisbank
 
 plot_hills_room_2
@@ -169,3 +178,90 @@ end
         data hills_room_2_obj
         $00
 end
+
+test_walkable_hills
+        tile_properties_1 = hills_tile_properties[move_tile_1]
+        tile_properties_2 = hills_tile_properties[move_tile_2]
+        ; if Johanna has the Nix's Tail relic, make shorelines walkable
+        if !index then gosub test_obscure_hills
+        goto walkable_return
+
+test_obscure_hills 
+        ; works the same was as water in river tileset, test the tile directly
+        ; below the player and set the obscure flag if bit 3 is set on tile
+        gosub get_object_pos
+        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
+        temp1 = temp1 / 2
+        temp1 = hills_tile_properties[temp1]
+        if temp1{3} then player_obscure = 1 else player_obscure = 0
+        if m_relic_bits_2{0} then goto walkable_water_hills
+        return thisbank
+
+walkable_water_hills
+        ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
+        if tile_properties_1{2} then tile_properties_1{0} = 1
+        if tile_properties_2{2} then tile_properties_2{0} = 1
+        
+        ; objects can call this part of the subroutine to test if they are in water
+test_water_hills
+        ; water is tested differently than other properties, it tests the tile directly under the object
+        ; this helps eliminate graphical issues when approaching a non-water tile in water
+        gosub get_object_pos
+        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
+        temp1 = temp1 / 2
+        temp1 = hills_tile_properties[temp1]
+        if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
+        return thisbank
+
+        ; %00000001 = walkable
+        ; %00000010 = floatable
+        ; %00000100 = water
+        ; %00001000 = obscure
+        ; %00010000 = ledge - hop down
+        ; %00100000 = ledge - hop right
+        ; %01000000 = ledge - hop left
+        ; %10000000 = waterfall
+        data hills_tile_properties
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000000
+        %00000000, %00010000, %00010000, %00010000, %00100000, %00100000, %00100000, %01000000
+        %01000000, %01000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00001000, %00001001, %00000001, %00000000
+        %00000000, %00000001
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000
+        %00000100, %00000101, %00000100, %00000000, %00000100, %00000100, %00000100, %00000100
+        %00000100, %00000100
+        %10000100
+        %00000001, %00000001, %00000001, %00000001
+end
+
+        data hills_tile_properties_2
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000001, %00000001, %00000010, %00000010
+        %00000010
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000000, %00000000, %00010000
+        %00010000, %00010000, %00100000, %00100000, %00100000, %01000000, %01000000, %01000000
+        %00000000, %00000000, %00000000, %00000001, %00000001, %00000000, %00000001, %00000000
+        %00000001, %00000001, %00000001, %00000001, %00000001, %00000000, %00000000, %00000000
+        %00000000
+        %00000100, %00000101, %00000100, %00000000, %00000100, %00000100, %00000100, %00000100
+        %00000100, %00000100
+        %10000100
+        %00000010, %00000010, %00000010, %00000010
+end
+
+plot_hud_hills
+        plotvalue hills_hud 0 player_Xpos 2 32 11
+        plotvalue hills_hud 0 move_tile_1 4 32 12
+        return
+
+plot_harpy
+        PLOTSPRITE harpy0 0 Xposition Yposition frame
+        goto plot_next

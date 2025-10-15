@@ -342,25 +342,19 @@ plot_bar
 
 plot_debug_hud
         if tileset = T_CASTLE then plot_hud_castle
+        if tileset = T_HILLS then plot_hud_hills
         ; plotvalue hud 0 player_hp 2 72 0
         ; plotvalue hud 0 player_mp 2 72 1
         plotvalue hud 0 player_Xpos 4 32 12
         plotvalue hud2 0 move_tile_1 4 32 11
-        plotvalue hud 0 tile_properties_1 2 64 12
-        plotvalue hud 0 tile_properties_2 2 80 12
+;        plotvalue hud 0 tile_properties_1 2 64 12
+;        plotvalue hud 0 tile_properties_2 2 80 12
         ; plotvalue hud 0 room_index 2 32 13
         ; plotvalue hud 0 room 2 48 13
 ;        plotvalue hud 0 input_buffer 16 16 13
         ; plotvalue hud 0 chant_input 2 8 13
         ; plotvalue hud 0 retract_counter 2 64 13
-        return
-
-plot_hud_castle
-        plotvalue castle_hud 0 player_Xpos 2 32 12
-        plotvalue castle_hud 0 move_tile_1 4 32 11
-;        plotvalue castle_hud 0 player_Ypos 2 48 12
-;        plotvalue castle_hud 0 move_tile_1 4 32 13
-        return
+        return thisbank
 
 open_menu
         gosub clear_palettes
@@ -1273,6 +1267,7 @@ test_walkable
         if tileset = T_FOREST then goto test_walkable_forest
         if tileset = T_CASTLE then goto test_walkable_castle
         if tileset = T_RIVER  then goto test_walkable_river
+        if tileset = T_HILLS  then goto test_walkable_hills
 walkable_return
         tile_properties = tile_properties_1 & tile_properties_2
         ; obscure flag is treated as a wall for non-player objects
