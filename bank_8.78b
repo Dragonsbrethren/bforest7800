@@ -16,6 +16,7 @@
         incmapfile tiled/hills_room_0.tmx
         incmapfile tiled/hills_room_1.tmx
         incmapfile tiled/hills_room_2.tmx
+        incmapfile tiled/hills_room_3.tmx
 
         const plot_hills_room_0_lo = #<.plot_hills_room_0
         const plot_hills_room_0_hi = #>.plot_hills_room_0
@@ -23,21 +24,23 @@
         const plot_hills_room_1_hi = #>.plot_hills_room_1
         const plot_hills_room_2_lo = #<.plot_hills_room_2
         const plot_hills_room_2_hi = #>.plot_hills_room_2
+        const plot_hills_room_3_lo = #<.plot_hills_room_3
+        const plot_hills_room_3_hi = #>.plot_hills_room_3
 
         data hills_map_lo
-        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo
+        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo
 end
 
         data hills_map_hi
-        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi
+        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi
 end
 
         data hills_obj_lo
-        hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo
+        hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo
 end
 
         data hills_obj_hi
-        hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi
+        hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi
 end
 
 load_hills
@@ -123,7 +126,7 @@ hills_shared_pals
 
         data hills_rooms
         00, 00, 00, 00, 00, 00, 00
-        00, 00, 00, 00, 00, 00, 00
+        03, 00, 00, 00, 00, 00, 00
         02, 00, 00, 00, 00, 00, 00
         01, 00, 00, 00, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
@@ -162,9 +165,21 @@ plot_hills_room_2
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map hills_room_2 280
         plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 3
-        zone14_objects = 1
+        zone1_objects  = 5
+        zone2_objects  = 5
+        zone14_objects = 4
+        return thisbank
+
+plot_hills_room_3
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map hills_room_3 280
+        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 4
+        alt_palette = 1
+        pal_animation = 1
         return thisbank
 
         data hills_room_0_obj
@@ -176,6 +191,10 @@ end
 end
 
         data hills_room_2_obj
+        $00
+end
+
+        data hills_room_3_obj
         $00
 end
 
@@ -255,8 +274,8 @@ end
         data hills_tile_properties_2
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %01110001, %01110001
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
-        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
-        %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000001, %00000001, %00000010
+        %00000001, %00000001, %00000010, %00000001, %00000001, %00000010, %00000010, %00000010
         %00000010, %00000010, %00000010, %00000010, %00000001, %00000001, %00000010, %00000010
         %00000010, %00000010, %00000010
         %00000001, %00000001, %00000001, %00000001, %00000001
