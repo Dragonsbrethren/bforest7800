@@ -37,3 +37,33 @@
         const test_walkable_river_hi  = #>.test_walkable_river
         const test_walkable_hills_lo  = #<.test_walkable_hills
         const test_walkable_hills_hi  = #>.test_walkable_hills
+
+        ; object stats
+        const obj_torch_stats_lo    = #<.obj_torch_stats
+        const obj_torch_stats_hi    = #>.obj_torch_stats
+        const obj_wolf_stats_lo     = #<.obj_wolf_stats
+        const obj_wolf_stats_hi     = #>.obj_wolf_stats
+        const obj_warg_stats_lo     = #<.obj_warg_stats
+        const obj_warg_stats_hi     = #>.obj_warg_stats
+        const obj_nix_stats_lo      = #<.obj_nix_stats
+        const obj_nix_stats_hi      = #>.obj_nix_stats
+        const obj_octo_stats_lo     = #<.obj_octo_stats
+        const obj_octo_stats_hi     = #>.obj_octo_stats
+        const obj_slime_stats_lo    = #<.obj_slime_stats
+        const obj_slime_stats_hi    = #>.obj_slime_stats
+        const obj_mslime_stats_lo   = #<.obj_slime_stats
+        const obj_mslime_stats_hi   = #>.obj_slime_stats
+        const obj_raven_stats_lo    = #<.obj_raven_stats
+        const obj_raven_stats_hi    = #>.obj_raven_stats
+        const obj_priest_stats_lo   = #<.obj_priest_stats
+        const obj_priest_stats_hi   = #>.obj_priest_stats
+        const obj_skel_stats_lo     = #<.obj_skel_stats
+        const obj_skel_stats_hi     = #>.obj_skel_stats
+        const obj_redslime_stats_lo = #<.obj_redslime_stats
+        const obj_redslime_stats_hi = #>.obj_redslime_stats
+        const obj_mredslime_stats_lo = #<.obj_redslime_stats
+        const obj_mredslime_stats_hi = #>.obj_redslime_stats
+        const obj_ghost_stats_lo    = #<.obj_ghost_stats
+        const obj_ghost_stats_hi    = #>.obj_ghost_stats
+        const obj_rghost_stats_lo   = #<.obj_rghost_stats
+        const obj_rghost_stats_hi   = #>.obj_rghost_stats

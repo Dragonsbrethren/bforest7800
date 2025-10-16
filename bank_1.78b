@@ -771,25 +771,18 @@ object_familiars
         ; TODO: pointer table for stats as well
 object_stats
         for obj_index = 1 to MAX_OBJECTS
-        if !object_type[obj_index] then next_obj_stats
-        if object_type[obj_index] = TYPE_WOLF then obj_wolf_stats
-        if object_type[obj_index] = TYPE_TORCH then obj_torch_stats
-        if object_type[obj_index] = TYPE_SLIME then obj_slime_stats
-        if object_type[obj_index] = TYPE_MSLIME then obj_slime_stats : object_hp[obj_index] = MSLIME_HP : object_def[obj_index] = MSLIME_DEF
-        if object_type[obj_index] = TYPE_RSLIME then obj_redslime_stats
-        if object_type[obj_index] = TYPE_MRSLIME then obj_redslime_stats : object_hp[obj_index] = MRSLIME_HP : object_def[obj_index] = MRSLIME_DEF
-        if object_type[obj_index] = TYPE_RAVEN then obj_raven_stats
-        if object_type[obj_index] = TYPE_PRIEST then obj_priest_stats
-        if object_type[obj_index] = TYPE_SKELETON then obj_skel_stats
-        if object_type[obj_index] = TYPE_GHOST then obj_ghost_stats
-        if object_type[obj_index] = TYPE_RGHOST then obj_rghost_stats
-        if object_type[obj_index] = TYPE_MERMAN then obj_nix_stats
-        if object_type[obj_index] = TYPE_OCTOPUS then obj_octo_stats
-        if object_type[obj_index] = TYPE_F_FAIRY then obj_fairy_stats
-        if object_type[obj_index] = TYPE_WARG then obj_warg_stats
+        index = object_type[obj_index]
+        if !index then obj_next_stats
+        if index >= 128 then obj_next_stats
+        pointer = object_stats_lo[index]
+        pointer_hi = object_stats_hi[index]
+        asm
+          jmp (pointer)
+end
 
 obj_next_stats
         next
+
         ; load_objects runs directly into remove_duplicates to remove any objects placed on map by default
 
 ;==============================================================================
@@ -811,6 +804,20 @@ remove_duplicates
 remove_duplicates_next
         next
         return thisbank
+
+        data object_stats_lo
+        0, obj_torch_stats_lo, obj_wolf_stats_lo, obj_warg_stats_lo, obj_nix_stats_lo
+        obj_octo_stats_lo, obj_slime_stats_lo, obj_slime_stats_lo, obj_raven_stats_lo
+        obj_priest_stats_lo, obj_skel_stats_lo, obj_redslime_stats_lo, obj_redslime_stats_lo
+        obj_ghost_stats_lo, obj_rghost_stats_lo
+end
+
+        data object_stats_hi
+        0, obj_torch_stats_hi, obj_wolf_stats_hi, obj_warg_stats_hi, obj_nix_stats_hi
+        obj_octo_stats_hi, obj_slime_stats_hi, obj_slime_stats_hi, obj_raven_stats_hi
+        obj_priest_stats_hi, obj_skel_stats_hi, obj_redslime_stats_hi, obj_redslime_stats_hi
+        obj_ghost_stats_hi, obj_rghost_stats_hi
+end
 
 check_map_bits
         if object_type[index] = TYPE_KEY1 && m_key_bits{0} then object_type[index] = 0
@@ -1351,9 +1358,9 @@ set_name_ptr
           rts
 end
 
+        incbasic music.78b
         dmahole 0
         incbasic sounds.78b
-        incbasic music.78b
         inline hiscore.asm
         inline updateobjects.asm
         inline floatsprite.asm
