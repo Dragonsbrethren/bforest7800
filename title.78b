@@ -67,7 +67,7 @@ title_continue
         for index = 0 to 23
         pw_index0[index] = 82
         next
-        loadmemory pw_index0-pw_index
+;        loadmemory pw_index0-pw_index
         game_state = STATE_MENU
         menu = MENU_PASSWORD
         asm

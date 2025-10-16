@@ -15,7 +15,7 @@
         set pauseroutine off
         set trackersupport rmt
         set rmtspeed ntsc
-        set hssupport $0355
+;        set hssupport $0355
 ;        set multibutton on
 ;        set multibuttonpause on
         set tallsprite spritesheet
