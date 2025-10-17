@@ -101,6 +101,7 @@ plot_castle_room_6
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 5
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_7
@@ -112,6 +113,7 @@ plot_castle_room_7
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        locked_zone = 6
         return otherbank
 
 plot_castle_room_8
@@ -131,9 +133,10 @@ plot_castle_room_9
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_9.tmx castle_room_9 0 0 20 14
         memcpy current_map castle_room_9 280
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_10
@@ -141,8 +144,8 @@ plot_castle_room_10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_10.tmx castle_room_10 0 0 20 14
         memcpy current_map castle_room_10 280
-        zone1_objects  = 2
-        zone2_objects  = 2
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         exit_Xpos = 72
         exit_Ypos = 200
@@ -159,6 +162,7 @@ plot_castle_room_11
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_12
@@ -207,6 +211,7 @@ plot_castle_room_15
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_16
@@ -228,6 +233,7 @@ plot_castle_room_17
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        locked_zone = 5
         return otherbank
 
 plot_castle_room_18
@@ -249,6 +255,7 @@ plot_castle_room_19
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_20
@@ -270,6 +277,7 @@ plot_castle_room_21
         zone2_objects  = 4
         zone14_objects = 3
         ; secret passage!
+        obscure_player = 1
         pokechar current_map 13 6 20 14 $10
         pokechar current_map 13 7 20 14 $10
         return otherbank
@@ -282,6 +290,7 @@ plot_castle_room_22
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_23
@@ -292,6 +301,7 @@ plot_castle_room_23
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_24

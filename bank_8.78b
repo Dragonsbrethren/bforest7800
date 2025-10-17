@@ -68,6 +68,8 @@ hills_set_room
         sta pal_animation
         sta exit_room_index
         sta save_room_index
+        lda #$FF
+        sta locked_zone
         ldx room_index
         lda hills_rooms,x
         tax
@@ -142,6 +144,7 @@ plot_hills_room_0
         zone1_objects  = 2
         zone2_objects  = 3
         zone14_objects = 1
+        locked_zone = 6
         exit_tileset = T_RIVER
         exit_Xpos = 72
         exit_Ypos = 64
@@ -201,7 +204,7 @@ end
 test_walkable_hills
         asm
           ldx index
-          lda object_hop_dir,x
+          lda object_elevation,x
           cmp #1
           beq .test_walkable_hills_2
 end
@@ -224,7 +227,7 @@ test_obscure_hills
         temp1 = peekchar (current_map, peekX, peekY, 20, 14)
         temp1 = temp1 / 2
         ; check the player's elevation
-        if object_hop_dir then temp1 = hills_tile_properties_2[temp1] else temp1 = hills_tile_properties[temp1]
+        if object_elevation then temp1 = hills_tile_properties_2[temp1] else temp1 = hills_tile_properties[temp1]
         if temp1{3} then player_obscure = 1 else player_obscure = 0
         if m_relic_bits_2{0} then goto walkable_water_hills
         return thisbank
@@ -290,7 +293,7 @@ end
 end
 
 plot_hud_hills
-        plotvalue hills_hud 0 object_hop_dir 2 32 11
+        plotvalue hills_hud 0 object_elevation 2 32 11
         plotvalue hills_hud 0 move_tile_1 4 32 12
         return
 

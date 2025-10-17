@@ -163,7 +163,7 @@
         ; field positions
         const F_RIVER_START_I = 22      ; starting room index
         const F_RIVER_START_X = 76
-        const F_RIVER_START_Y = $50
+        const F_RIVER_START_Y = $52
         const F_RIVER_START_D = DIR_DOWN
 
         ; map positions

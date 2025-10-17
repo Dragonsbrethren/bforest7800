@@ -155,7 +155,16 @@ main_state_handler
 plot_player
         ; Plot the player, their shield, and sword if attacking
 ;        if player_obscure then plot_hud
-        lockzone 6
+        asm
+          ldx locked_zone
+          bmi .plot_player_no_lock      ; default locked_zone is $FF so that zone 0 can be locked
+          ; don't lock zone if elevation > 0
+          lda object_elevation
+          bne .plot_player_no_lock
+          jsr lockzonex
+end
+plot_player_no_lock
+        if obscure_player && player_obscure then plot_player_unlock
         if player_state = STATE_ATTACK && player_sword then plotsprite sword0 sword_pal sword_Xpos sword_Ypos sword_frame
 
         ; plot shield behind player if facing up/right
@@ -163,6 +172,12 @@ plot_player
 plot_johanna
         if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
         if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
+plot_player_unlock        
+        asm
+          ldx locked_zone
+          bmi .plot_hud
+          jsr unlockzonex
+end
 
 plot_hud
         asm
@@ -746,7 +761,7 @@ clear_obj_loop
         sta object_flags,x
         sta object_timer,x
         sta object_dest,x
-        sta object_hop_dir,x
+        sta object_elevation,x
         sta object_pal,x
         dex
         bne clear_obj_loop

@@ -833,7 +833,7 @@ check_room_exit
 
 player_attack
         ; workaround for wierdness of attacking while obscurred - TODO: detect if sword is on obscurred tile & hide?
-        if player_obscure then goto player_handler_done
+        if obscure_player && player_obscure then goto player_handler_done
         sword_hit = 0
         ; player exiting chant tracks if the player cast magic to exit chant with button held
         if player_exiting_chant then test_joy_done
@@ -1301,14 +1301,14 @@ walkable_change_elev
           sta move_tile_2_old
           ; set the object's elevation flag
           ldx index
-          lda object_hop_dir,x
+          lda object_elevation,x
           beq walkable_set_elev
           lda #0
-          sta object_hop_dir,x
+          sta object_elevation,x
           jmp .walkable_return_no_elev
 walkable_set_elev
           lda #1
-          sta object_hop_dir,x
+          sta object_elevation,x
 end
 walkable_return_no_elev
         return thisbank

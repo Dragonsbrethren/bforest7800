@@ -62,7 +62,7 @@
         dim player_flags        = object_flags
         dim player_timer        = object_timer
         dim player_dest         = object_dest
-        dim player_hop_dir      = object_hop_dir
+        dim player_hop_dir      = object_elevation
         dim player_hp           = object_hp
 
         autodim byte player_max_hp
@@ -169,7 +169,7 @@
         autodim byte object_flags 16
         autodim byte object_timer 16
         autodim byte object_dest 16
-        autodim byte object_hop_dir 16
+        autodim byte object_elevation 16
 
         autodim init $2400 $25FF
         autodim byte object_pal 16
@@ -281,6 +281,8 @@
         autodim byte zone1_objects      ; reserved for HUD changes
         autodim byte zone2_objects      ; ''
         autodim byte zone14_objects     ; used by pickup string
+        autodim byte locked_zone        ; doors and bridges
+        autodim byte obscure_player     ; secret passages
         autodim byte sP7C1              ; hold color values for palette animation
         autodim byte sP7C2
         autodim byte sP7C3

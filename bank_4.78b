@@ -200,6 +200,9 @@ castle_rooms
         sta alt_palette
         sta exit_room_index
         sta save_room_index
+        sta obscure_player
+        lda #$FF
+        sta locked_zone
         ldx room_index
         lda castle_rooms,x
         tax
@@ -271,6 +274,7 @@ plot_castle_room_1
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        locked_zone = 0
 plot_castle_bank5_return
         return thisbank
 
@@ -324,7 +328,9 @@ end
         data castle_room_7_obj
         TYPE_RSLIME, $58, $A0,
         TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
-        TYPE_NIXTAIL, $4C, $40, TYPE_GHOST, $70, $40, $00
+        TYPE_NIXTAIL, $4C, $40, TYPE_GHOST, $70, $40
+        TYPE_DOOR, $48, $70
+        $00
 end
 
 plot_castle_room_2
@@ -352,8 +358,8 @@ plot_castle_room_4
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
         memcpy current_map castle_room_4 280
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 1
         return thisbank
 
@@ -363,9 +369,10 @@ plot_castle_room_5
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
         memcpy current_map castle_room_5 280
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 5
+        locked_zone = 0
         return thisbank
 
 
@@ -377,12 +384,14 @@ end
         data castle_room_9_obj
         TYPE_SKELETON, $48, $90, TYPE_SKELETON, $58, $70,
         TYPE_TORCH, $38, $20, TYPE_TORCH, $60, $20,
-        TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0, $00
+        TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
+        TYPE_DOOR_OPEN, $48, $10
+        $00
 end
 
         data castle_room_10_obj
         TYPE_SKELETON, $40, $80, TYPE_PRIEST, $58, $80,
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_DOOR_OPEN, $48, $10
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
         $00
 end
 

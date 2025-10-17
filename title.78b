@@ -7,6 +7,8 @@
         incmapfile tiled/title_blackforest.tmx
 
 title_init
+        lockzone 0
+        unlockzone 0
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
@@ -54,7 +56,7 @@ title_selection
         goto title_new_game
 
 title_flash
-        plotchars 'PRGE DEMO' 0 60 10
+        plotchars 'PRE ALPHA' 0 60 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -79,7 +81,7 @@ end
         goto menu_init bank3
 
 title_new_game
-        tileset = T_HILLS
+        tileset = T_CASTLE
         fade = $0F
         player_sword = 1
         player_shield = 0
