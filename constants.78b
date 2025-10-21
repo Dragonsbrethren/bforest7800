@@ -35,10 +35,14 @@
         const PLAYER_WIDTH  = 12
 
         const SWORD_FRAMES = 4
-        const SWORD_OFFSET_DOWN  = 15
-        const SWORD_OFFSET_UP    = -16
-        const SWORD_OFFSET_LEFT  = -12
-        const SWORD_OFFSET_RIGHT = 12
+        const SWORD_OFFSET_DOWN_X  =   5
+        const SWORD_OFFSET_DOWN_Y  =  15
+        const SWORD_OFFSET_UP_X    =   5
+        const SWORD_OFFSET_UP_Y    = -16
+        const SWORD_OFFSET_LEFT_X  = -12
+        const SWORD_OFFSET_LEFT_Y  =   8
+        const SWORD_OFFSET_RIGHT_X =  12
+        const SWORD_OFFSET_RIGHT_Y =   8
         
         const SHIELD_FRAMES = 4
         const SHIELD_OFFSET_X_LEFT  = 6
@@ -75,7 +79,7 @@
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
-        const INVULN_FRAMES = 4
+        const INVULN_FRAMES = 8
 
         const PLAYER_HP_MAX = 48
         const PLAYER_HP_HALF = PLAYER_HP_MAX / 2
@@ -234,7 +238,7 @@
         const MENU_MAIN_RELICS_X = 116
 
         ; once menu debounce >= this value, act as button was tapped
-        const MENU_TAP_FRAMES = 4
+        const MENU_TAP_FRAMES = 6
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32

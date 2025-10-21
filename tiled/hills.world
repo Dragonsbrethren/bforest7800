@@ -27,6 +27,20 @@
             "width": 160,
             "x": -160,
             "y": -448
+        },
+        {
+            "fileName": "hills_room_4.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 0,
+            "y": -448
+        },
+        {
+            "fileName": "hills_room_5.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 160,
+            "y": -448
         }
     ],
     "onlyShowAdjacentMaps": false,

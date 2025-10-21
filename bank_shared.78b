@@ -456,32 +456,32 @@ position_sword
         if object_facing[index] = DIR_LEFT then pos_swd_left
 
 pos_swd_right
-        temp1 = object_Xpos[index] + SWORD_OFFSET_RIGHT
-        temp2 = object_Ypos[index]
+        temp1 = object_Xpos[index] + SWORD_OFFSET_RIGHT_X
+        temp2 = object_Ypos[index] + SWORD_OFFSET_RIGHT_Y
         ;temp3 = 12
         ;temp4 = 4
         temp5 = 2
         return thisbank
 
 pos_swd_down
-        temp1 = object_Xpos[index]
-        temp2 = object_Ypos[index] + SWORD_OFFSET_DOWN
+        temp1 = object_Xpos[index] + SWORD_OFFSET_DOWN_X
+        temp2 = object_Ypos[index] + SWORD_OFFSET_DOWN_Y
         ;temp3 = 4
         ;temp4 = 16
         temp5 = 0
         return thisbank
 
 pos_swd_up
-        temp1 = object_Xpos[index]
-        temp2 = object_Ypos[index] + SWORD_OFFSET_UP
+        temp1 = object_Xpos[index] + SWORD_OFFSET_UP_X
+        temp2 = object_Ypos[index] + SWORD_OFFSET_UP_Y
         ;temp3 = 4
         ;temp4 = 16
         temp5 = 1
         return thisbank
 
 pos_swd_left
-        temp1 = object_Xpos[index] + SWORD_OFFSET_LEFT
-        temp2 = object_Ypos[index]
+        temp1 = object_Xpos[index] + SWORD_OFFSET_LEFT_X
+        temp2 = object_Ypos[index] + SWORD_OFFSET_LEFT_Y
         ;temp3 = 12
         ;temp4 = 4
         temp5 = 3
@@ -839,10 +839,10 @@ player_attack
         if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
         if player_sword then temp1 = PLAYER_WIDTH : temp2 = PLAYER_HEIGHT else temp1 = 4 : temp2 = 4 
-        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN : sword_width = 4 : sword_height = temp2 : sword_frame = 0 : goto sword_done
-        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos : sword_Ypos = player_Ypos + SWORD_OFFSET_UP   : sword_width = 4 : sword_height = temp2 : sword_frame = 1 : goto sword_done
-        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT : sword_Ypos = player_Ypos : sword_width = temp1 : sword_height = 4 :sword_frame = 3 : goto sword_done
-        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT : sword_Ypos = player_Ypos : sword_width = temp1 : sword_height = 4 : sword_frame = 2
+        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0 : goto sword_done
+        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos + SWORD_OFFSET_UP_X   : sword_Ypos = player_Ypos + SWORD_OFFSET_UP_Y   : sword_width = 3 : sword_height = temp2 : sword_frame = 1 : goto sword_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_LEFT_Y : sword_width = temp1 : sword_height = 3 :sword_frame = 3 : goto sword_done
+        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_RIGHT_Y : sword_width = temp1 : sword_height = 3 : sword_frame = 2
 sword_done
 
 player_attack_return
@@ -1504,6 +1504,30 @@ kill_torch
         if tileset = T_RIVER  then gosub torch_tile_unblock_river
         return thisbank
 
+enemy_sword_collision
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        asm
+          ldx index
+          lda object_facing,x
+          tay
+          dey
+          lda sword_widths,y
+          sta temp3
+          lda sword_heights,y
+          sta temp4
+end
+        if boxcollision(Xposition, Yposition, temp3, temp4, temp1, temp2, 9, 14) then pc_damage
+        return thisbank
+
+        data sword_widths
+        3, 3, 12, 12
+end
+
+        data sword_heights
+        16, 16, 3, 3
+end
+
 player_knockback
         ; projectiles should always test box so they are destroyed even by invulnerable player
         if object_type[index] >= TYPE_DARKSPARK then test_player_box
@@ -1517,7 +1541,12 @@ player_knockback
           rts
 end
 test_player_box
-        if !boxcollision (player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, 12, 16) then return
+        if object_type[index] = TYPE_SKELSWORD then goto enemy_sword_collision
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition + 3
+        temp4 = Yposition + 2
+        if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 7, 12) then return
 ;        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
 ;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
 ;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
@@ -1525,6 +1554,7 @@ test_player_box
 
         ;  check player's shield and destroy projectile
         if object_type[index] >= TYPE_DARKSPARK then shield_check
+player_knockback_status
         ; TODO: reorder objects to add ranges for inflicting status effects
         if object_type[index] = TYPE_SLIME  || object_type[index] = TYPE_MSLIME  then temp1 = BITS_POISON : gosub set_status
         if object_type[index] = TYPE_RSLIME || object_type[index] = TYPE_MRSLIME then temp1 = BITS_POISON : gosub set_status
