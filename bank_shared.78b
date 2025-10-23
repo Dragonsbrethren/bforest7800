@@ -1507,17 +1507,27 @@ kill_torch
 enemy_sword_collision
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
-        temp3 = Xposition + 1
-        temp4 = Yposition + 1
-        if object_facing[index] = DIR_UP || object_facing[index] = DIR_DOWN then enemy_sword_vert
-
-enemy_sword_horz
-        if boxcollision(temp1, temp2, 9, 14, Xposition, temp4, 12, 1) then goto pc_damage
+        asm
+          ldx index
+          lda object_facing,x
+          tay
+          dey
+          lda sword_widths,y
+          sta temp3
+          lda sword_heights,y
+          sta temp4
+end
+        if boxcollision(Xposition, Yposition, temp3, temp4, temp1, temp2, 9, 14) then goto pc_damage
         return thisbank
 
-enemy_sword_vert
-        if boxcollision(temp1, temp2, 9, 4, temp3, Yposition, 1, 16) then goto pc_damage
-        return thisbank
+        data sword_widths
+        3, 3, 12, 12
+end
+
+        data sword_heights
+        16, 16, 3, 3
+end
+
 
 player_knockback
         ; projectiles should always test box so they are destroyed even by invulnerable player
