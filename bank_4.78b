@@ -551,6 +551,7 @@ priest_ai
         if flags{6} then goto priest_cast_2
 priest_dir
         if timer then goto priest_walk
+        object_state[index] = 0
         timer = PRIEST_WALK_TIMER
         asm
           jsr randomize
@@ -617,7 +618,7 @@ priest_walk_anim
 
 skel_melee_x
         gosub test_melee
-        if !temp6 then goto priest_walk_x_2
+        if !temp6 || object_state[index] then goto priest_walk_x_2
 
 priest_cast_horiz
         object_facing[index] = DIR_LEFT
@@ -626,7 +627,7 @@ priest_cast_horiz
 
 skel_melee_y
         gosub test_melee
-        if !temp6 then goto priest_walk_y_2
+        if !temp6 || object_state[index] then goto priest_walk_y_2
 
 priest_cast_vert
         object_facing[index] = DIR_UP
@@ -770,6 +771,9 @@ ss_kill
         ; unset flags 6 and 7 on parent skeleton
         sta object_flags,x
         sta object_type,y
+        ; use state as an extra flag to force skeleton to walk after melee
+        lda #1
+        sta object_state,x
         rts
 end
 
