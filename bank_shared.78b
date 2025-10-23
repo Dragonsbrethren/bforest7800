@@ -518,7 +518,6 @@ load_ai_pointer
           cmp #TYPE_PROJECTILE
           bcc load_object_ai
           ; need to offset X for projectile arrays
-          sec
           sbc #TYPE_PROJECTILE
           tax
           lda projectile_ai_lo,x

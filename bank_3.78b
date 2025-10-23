@@ -74,14 +74,14 @@ plot_main_menu
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
         gosub plot_menu_hud
 
-        plotchars 'Items  Spells  Equipment  Relics' 0 16 12 singlewide
+        plotchars 'Items  Spells  Equip  Relics  Exit' 0 12 12 singlewide
         gosub gen_forest_map
         savescreen
         menu_cursor_X = MENU_MAIN_ITEMS_X
         menu_cursor_Y = MENU_MAIN_ITEMS_Y
         menu_change = 0
         menu_columns = 0        ; prevent up/down from doing anything
-        menu_max = 3
+        menu_max = 4
         ; stop password from displaying when closing menu in save room
         pw_success = 1
 
@@ -99,11 +99,16 @@ main_menu_controls
         if !action_debounce && joy0fire1 && action_button = 1 then open_submenu
         gosub menu_dirs
 menu_main_dirs_done
-        if menu_selection = 0 then menu_cursor_X = MENU_MAIN_ITEMS_X
-        if menu_selection = 1 then menu_cursor_X = MENU_MAIN_MAGIC_X
-        if menu_selection = 2 then menu_cursor_X = MENU_MAIN_EQUIP_X
-        if menu_selection = 3 then menu_cursor_X = MENU_MAIN_RELICS_X
-        goto main
+        asm
+          ldx menu_selection
+          lda menu_main_Xpos,x
+          sta menu_cursor_X
+          jmp .main
+end
+
+        data menu_main_Xpos
+        MENU_MAIN_ITEMS_X, MENU_MAIN_MAGIC_X, MENU_MAIN_EQUIP_X, MENU_MAIN_RELICS_X, MENU_MAIN_EXIT_X
+end
 
 open_submenu
         action_debounce = 1
@@ -112,6 +117,7 @@ open_submenu
         if menu_selection = 1 then goto plot_magic_menu
         if menu_selection = 2 then goto plot_equip_menu
         if menu_selection = 3 then goto plot_relics_menu
+        if menu_selection = 4 then goto close_menu
         goto main
 
 plot_items_menu

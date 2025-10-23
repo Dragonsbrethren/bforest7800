@@ -231,11 +231,12 @@
         const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
         const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
 
-        const MENU_MAIN_ITEMS_X = 12
-        const MENU_MAIN_ITEMS_Y = 192
-        const MENU_MAIN_MAGIC_X = 40
-        const MENU_MAIN_EQUIP_X = 72
-        const MENU_MAIN_RELICS_X = 116
+        const MENU_MAIN_ITEMS_X  =   8
+        const MENU_MAIN_ITEMS_Y  = 192
+        const MENU_MAIN_MAGIC_X  =  36
+        const MENU_MAIN_EQUIP_X  =  68
+        const MENU_MAIN_RELICS_X =  96
+        const MENU_MAIN_EXIT_X   = 128
 
         ; once menu debounce >= this value, act as button was tapped
         const MENU_TAP_FRAMES = 6
