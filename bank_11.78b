@@ -6,6 +6,13 @@
         bank 11
         incbasic menu_shared.78b
 
+        inline hiscore.asm
+        inline 7800vox.asm
+
+load_hsc
+        loadmemory pw_index0-pw_index
+        return otherbank
+
 encode_password
         asm
         lda tileset
@@ -67,10 +74,9 @@ encode_font_offset_loop
         inx
         cpx #24
         bne encode_font_offset_loop
-        lda #24
-        sta pw_index
+        stx pw_index
 end
-;        savememory pw_index0-pw_index
+        savememory pw_index0-pw_index
         return
 
 decode_password

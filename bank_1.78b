@@ -1042,7 +1042,6 @@ end
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
-;        inline hiscore.asm
         inline updateobjects.asm
         inline floatsprite.asm
         inline fourbitfade.asm
