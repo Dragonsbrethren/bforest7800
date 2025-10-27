@@ -1103,18 +1103,3 @@ end
 
         incbasic fairy_scroll.78b
         incbasic item_names.78b
-
-        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
-        alphadata relic_desc menu_font singlewide
-        '                   '
-        'Call Forth a Fairy '
-        'Call a Witch` Cat  '
-        'Call Forth a Ghost '
-        'Call Forth an Owl  '
-        'Learn Monster Names'
-        'Traverse Water     '
-        'Climb Waterfalls   '
-        'Description 8      '
-        'Description 9      '
-        'Description 10     '
-end

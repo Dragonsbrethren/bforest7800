@@ -21,7 +21,7 @@ menu_init
 menu_handler
         if menu = MENU_GAMEOVER then goto plot_gameover bank11
         if menu = MENU_ITEMS then goto plot_items_menu
-        if menu = MENU_MAGIC then goto plot_magic_menu
+        if menu = MENU_MAGIC then goto plot_magic_menu bank11
         if menu = MENU_EQUIP then goto plot_equip_menu
         if menu = MENU_RELICS then goto plot_relics_menu
         if menu = MENU_PASSWORD then goto plot_password_menu bank11
@@ -76,12 +76,14 @@ end
 open_submenu
         action_debounce = 1
         menu_change = 1
-        if menu_selection = 0 then goto plot_items_menu
-        if menu_selection = 1 then goto plot_magic_menu
-        if menu_selection = 2 then goto plot_equip_menu
-        if menu_selection = 3 then goto plot_relics_menu
-        if menu_selection = 4 then goto close_menu
+        ; handles the new Exit option for 1 button joysticks
+        if menu_selection >= MENU_MAIN_MAX_OPTIONS then goto close_menu
+        menu = submenus[menu_selection]
         goto main
+
+        data submenus
+        MENU_ITEMS, MENU_MAGIC, MENU_EQUIP, MENU_RELICS
+end
 
 plot_items_menu
         sCTRL{2} = 1 : CTRL = sCTRL
@@ -144,7 +146,6 @@ items_palettes
 
         gosub update_item_cursor
 
-
 items_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
@@ -196,45 +197,6 @@ end
 use_item_done
         using_item = 0
         gosub check_item_qtys
-        goto main
-
-plot_magic_menu
-        menu = MENU_MAGIC
-        if !menu_change then goto magic_menu_updater
-        clearscreen
-;        gosub disable_double_wide_mode
-        gosub plot_menu_border
-        plotchars 'Spell Tomes' 0 60 1 singlewide
-        if m_spell_bits_1{0} then plotchars 'Fireball' 0 16 2 singlewide
-        plotchars 'Forward' 0 24 11 singlewide
-        plotchars 'Backward' 0 80 11 singlewide
-        plotchars 'Clockwise' 0 24 12 singlewide
-        plotchars 'Counterclockwise' 0 80 12 singlewide
-        ; TODO: Show different directions on different frames?
-        characterset menu_arrows
-        alphachars '7894 6123'
-        ; Fireball
-        if m_spell_bits_1{0} then plotchars '646' 0 24 3 singlewide
-        ; Legend
-        plotchars '6' 0 16 11 singlewide
-        plotchars '4' 0 72 11 singlewide
-        plotchars '2' 0 16 12 singlewide
-        plotchars '8' 0 72 12 singlewide
-        savescreen
-        menu_change = 0
-
-magic_menu_updater
-        restorescreen
-
-magic_menu_controls
-        ; Either joystick button can go back to the main menu
-        ; Maybe have an Exit "button" always highlighted to signify this?
-        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
-        ; Pause is a quickie way of getting back to the action
-        if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 then open_main_menu
-        if !action_debounce && joy0fire1 then open_main_menu
         goto main
 
 plot_equip_menu
@@ -584,50 +546,6 @@ end
         ; this must stay a normal return command so title code can use
         return
 
-equip_menu_colors
-        P0C3 = PAL_LTPURP
-        P4C3 = PAL_LTRED
-        for index = 0 to 46
-        WSYNC = 1
-        next 
-        P0C1 = m_relic_pal1
-        P0C3 = m_relic_pal2
-        P4C1 = m_relic2_pal1
-        P4C3 = m_relic2_pal2
-        for index = 0 to 30
-        WSYNC = 1
-        next 
-        P0C1 = m_sword_pal1
-        P0C3 = m_sword_pal2
-        P4C1 = m_inv0_pal1
-        P4C3 = m_inv0_pal2
-        for index = 0 to 30
-        WSYNC = 1
-        next
-        ; palettes used for inv 1 and shield
-        P0C1 = m_shield_pal1
-        P0C3 = m_shield_pal2
-        P4C1 = m_inv1_pal1
-        P4C3 = m_inv1_pal2
-        for index = 0 to 30
-        WSYNC = 1
-        next
-        ; palettes used for inv 2 and armor
-        P0C1 = m_armor_pal1
-        P0C3 = m_armor_pal2
-        P4C1 = m_inv2_pal1
-        P4C3 = m_inv2_pal2
-        for index = 0 to 30
-        WSYNC = 1
-        next
-        ; palettes used for inv 3 and charm
-        P0C1 = m_charm_pal1
-        P0C3 = m_charm_pal2
-        P4C1 = m_inv3_pal1
-        P4C3 = m_inv3_pal2
-        return
-
-        dmahole 0
 equip_inv_sel_down
         ; TODO: Inventory management and variable that sets the cap to the current number of items
         if equip_inv_sel >= 9 then equip_inv_sel = 9 : return thisbank
@@ -650,6 +568,7 @@ equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return thisbank
 
+        dmahole 0
 plot_relics_menu
         ; turn on Kangaroo mode so palette color 1 is more manageable
         sCTRL{2} = 1 : CTRL = sCTRL
@@ -688,16 +607,6 @@ relic_menu_controls
         if !action_debounce && joy0fire0 && action_button = 0 then open_main_menu
         if !action_debounce && joy0fire1 && action_button = 1 then open_main_menu
         gosub menu_dirs
-        goto main
-
-open_main_menu
-        ; turn off Kangaroo mode for position pin sprite
-        sCTRL{2} = 0 : CTRL = sCTRL
-        action_debounce = 1
-        menu_debounce = 1
-        menu_change = 1
-        menu = MENU_MAIN
-        menu_selection = 0
         goto main
 
 ; draws the two column inventory used by items and relics menu
@@ -800,20 +709,6 @@ item_cursor_set
 plot_menu_cursor
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         return thisbank
-
-        alphadata relic_names menu_font singlewide
-        '            '
-        'Fairy Card  '
-        'Katze Card  '
-        'Ghost Card  '
-        'Owl Card    '
-        'Fae Bestiary'
-        'Nix` Tail   '
-        'Miracle Gem '
-        'Relic Num 8 '
-        'Relic Num 9 '
-        'Relic Num 10'
-end
 
 gen_forest_map
         alphachars '0123456789ABCDEF'
@@ -918,6 +813,11 @@ end
         'Familiar Revives  '
 end
 
+        ; used when attacking without a weapon
+        alphadata unarmed_name menu_font singlewide
+        'Unarmed      '
+end
+
         alphadata sword_names menu_font singlewide
         '             '
         'Rapier       '
@@ -974,9 +874,32 @@ end
         'Charm Num 10 '
 end
 
-        ; used when attacking without a weapon
-        alphadata unarmed_name menu_font singlewide
-        'Unarmed      '
+        alphadata relic_names menu_font singlewide
+        '            '
+        'Fairy Card  '
+        'Katze Card  '
+        'Ghost Card  '
+        'Owl Card    '
+        'Fae Bestiary'
+        'Nix` Tail   '
+        'Miracle Gem '
+        'Relic Num 8 '
+        'Relic Num 9 '
+        'Relic Num 10'
+end
+
+        alphadata relic_desc menu_font singlewide
+        '                   '
+        'Call Forth a Fairy '
+        'Call a Witch` Cat  '
+        'Call Forth a Ghost '
+        'Call Forth an Owl  '
+        'Learn Monster Names'
+        'Traverse Water     '
+        'Climb Waterfalls   '
+        'Description 8      '
+        'Description 9      '
+        'Description 10     '
 end
 
         data pal_items1

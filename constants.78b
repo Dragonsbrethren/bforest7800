@@ -228,7 +228,7 @@
         const MENU_RELICS = 4
         const MENU_PASSWORD = 5
         const MENU_GAMEOVER = 6
-        const MENU_MAIN_MAX_OPTIONS = 3 ; setup menu cut (for now)
+        const MENU_MAIN_MAX_OPTIONS = 4 ; setup menu cut (for now)
         const CHAR_SPACE = 62 ; used in plotvaluesw 0-9 + A-Z + a-z
 
         const MENU_MAIN_ITEMS_X  =   8

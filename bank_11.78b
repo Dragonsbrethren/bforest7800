@@ -337,6 +337,43 @@ plot_password
         plotchars pw_index18 0 84 4 6 singlewide
         return thisbank
 
+plot_magic_menu
+        if !menu_change then goto magic_menu_updater
+        clearscreen
+        gosub plot_menu_border
+        plotchars 'Spell Tomes' 0 60 1 singlewide
+        if m_spell_bits_1{0} then plotchars 'Fireball' 0 16 2 singlewide
+        plotchars 'Forward' 0 24 11 singlewide
+        plotchars 'Backward' 0 80 11 singlewide
+        plotchars 'Clockwise' 0 24 12 singlewide
+        plotchars 'Counterclockwise' 0 80 12 singlewide
+        ; TODO: Show different directions on different frames?
+        characterset menu_arrows
+        alphachars '7894 6123'
+        ; Fireball
+        if m_spell_bits_1{0} then plotchars '646' 0 24 3 singlewide
+        ; Legend
+        plotchars '6' 0 16 11 singlewide
+        plotchars '4' 0 72 11 singlewide
+        plotchars '2' 0 16 12 singlewide
+        plotchars '8' 0 72 12 singlewide
+        savescreen
+        menu_change = 0
+
+magic_menu_updater
+        restorescreen
+
+magic_menu_controls
+        ; Either joystick button can go back to the main menu
+        ; Maybe have an Exit "button" always highlighted to signify this?
+        if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
+        ; Pause is a quickie way of getting back to the action
+        if !pause_debounce && switchpause then close_menu
+        if !action_debounce && joy0fire0 then open_main_menu
+        if !action_debounce && joy0fire1 then open_main_menu
+        goto main
+
 copy_menu_map
         ; only reveal the map once, so that secret rooms persist when opening the menu as long as tileset doesn't change
         if menu_map_revealed{0} then copy_castle_map
