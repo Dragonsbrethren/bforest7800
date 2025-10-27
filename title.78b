@@ -64,13 +64,14 @@ title_flash
         goto main
 
 title_continue
+        if pw_index0 then pw_index = 24 : goto title_no_clear
         pw_index = 0
         ; password starts as all dashes
         for index = 0 to 23
         pw_index0[index] = 82
         next
 ;        loadmemory pw_index0-pw_index
-        game_state = STATE_MENU
+title_no_clear
         menu = MENU_PASSWORD
         asm
         lda #1
