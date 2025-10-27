@@ -1,7 +1,7 @@
 ;==============================================================================
 ; BANK 11
 ;------------------------------------------------------------------------------
-; Overflow menu data
+; Magic Menu, Game Over Screen, Password Menu, Main Menu Maps
 ;==============================================================================
         bank 11
         incbasic menu_shared.78b
@@ -58,13 +58,15 @@ encode_password
         sta pw_checksum
 
 encode_font_offset
+        ldx #0
+encode_font_offset_loop
         lda pw_index0,x
         clc
         adc #PW_0
         sta pw_index0,x
         inx
         cpx #24
-        bne encode_font_offset
+        bne encode_font_offset_loop
         lda #24
         sta pw_index
 end
@@ -173,7 +175,7 @@ end
 
 password_to_buffer
         asm
-        ldx #24
+        ldx #23
 pw_buffer_loop
         lda pw_index0,x
         sta pw_buffer,x
@@ -184,7 +186,7 @@ end
 
 buffer_to_password
         asm
-        ldx #24
+        ldx #23
 buffer_pw_loop
         lda pw_buffer,x
         sta pw_index0,x
@@ -315,9 +317,10 @@ encode_sel_to_pw
         if menu_selection = 10 then pw_backspace                        ; Erase
         if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
         if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init bank10 ; Exit
+        ; don't allow entering the 24th character since it corrupts pw_index
+        if pw_index >= 24 then goto password_menu_dirs_done
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
-        if pw_index > 24 then pw_index = 24
         goto password_menu_dirs_done
 
 pw_backspace
