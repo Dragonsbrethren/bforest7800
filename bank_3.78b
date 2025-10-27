@@ -40,10 +40,13 @@ plot_main_menu
         plotchars 'Items  Spells  Equip  Relics  Exit' 0 12 12 singlewide
         gosub gen_forest_map
         savescreen
-        menu_cursor_X = MENU_MAIN_ITEMS_X
         menu_cursor_Y = MENU_MAIN_ITEMS_Y
-        menu_change = 0
-        menu_columns = 0        ; prevent up/down from doing anything
+        asm
+          lda #0
+          sta menu_change
+          sta menu_columns      ; prevent up/down from doing anything
+          sta menu_selection
+end
         menu_max = 4
         ; stop password from displaying when closing menu in save room
         pw_success = 1
