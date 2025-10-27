@@ -149,7 +149,7 @@ init_field
         ; zero out the pickup string so it doesn't persist after death
         for index =  0 to PICKUP_STRING_LENGTH
         pickup_string[index] = 0
-        gosub encode_password
+        gosub encode_password bank11
         gosub sub_update_player_stats bank3
         ; retains the map in save rooms, continuing in same tileset
         if old_tileset = tileset then goto main
