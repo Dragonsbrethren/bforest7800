@@ -84,21 +84,21 @@ end
 title_new_game
         tileset = T_HILLS
         fade = $0F
-        player_sword = 1
-        player_shield = 0
-        player_armor = 1
-        player_charm = 0
-        m_item_bits_1 = %00000001
+        player_sword = 3
+        player_shield = 2
+        player_armor = 2
+        player_charm = 1
+        m_item_bits_1 = %00000111
         m_item_bits_2 = %00000000
-        m_sword_bits_1 = %00000001
+        m_sword_bits_1 = %00000111
         m_sword_bits_2 = %00000000
-        m_shield_bits_1 = %00000000
+        m_shield_bits_1 = %00000011
         m_shield_bits_2 = 0
-        m_armor_bits_1 = %00000001
+        m_armor_bits_1 = %00000011
         m_armor_bits_2 = 0
-        m_charm_bits_1 = %00000000
+        m_charm_bits_1 = %00000001
         m_charm_bits_2 = 0
-        m_relic_bits_1 = %00000000
+        m_relic_bits_1 = %00010000
         m_relic_bits_2 = %00000001
 
 init_field

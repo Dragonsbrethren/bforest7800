@@ -399,6 +399,7 @@ spider_stalk
 
 spider_horiz
         Ydirection = 0
+        Yvelocity = 0
         if Xposition >= player_Xpos then spider_left
 
 spider_right
@@ -412,11 +413,12 @@ spider_left
 
 spider_crawl_horz
         frame = F_SPIDER_CRAWL_H
-        if animation_frame then frame++
+        if animation_frame then frame = frame + 1
         return thisbank
 
 spider_vert
         Xdirection = 0
+        Xvelocity = 0
         if Yposition < player_Ypos then spider_down
 
 spider_up
@@ -430,7 +432,7 @@ spider_down
 
 spider_crawl_vert
         frame = F_SPIDER_CRAWL_V
-        if animation_frame then frame++
+        if animation_frame then frame = frame + 1
         return thisbank
 
 spider_walk
