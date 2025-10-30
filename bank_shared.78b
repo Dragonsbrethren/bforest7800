@@ -490,13 +490,13 @@ pos_swd_left
         data object_ai_lo
         0, 0, wolf_ai_lo, warg_ai_lo, nix_ai_lo, octopus_ai_lo, slime_ai_lo, mslime_ai_lo, 
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
-        ghost_ai_lo, rghost_ai_lo
+        ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo
 end
 
         data object_ai_hi
         0, 0, wolf_ai_hi, warg_ai_hi, nix_ai_hi, octopus_ai_hi, slime_ai_hi, mslime_ai_hi, 
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
-        ghost_ai_hi, rghost_ai_hi
+        ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi
 end
 
         data projectile_ai_lo
@@ -1281,7 +1281,7 @@ walkable_return
           lda tile_properties
           ; if all ledge bits toggled, tile is a ramp
           cmp #%01110001
-          bne .walkable_return_no_elev
+          bne walkable_return_no_elev
           ; set the tile to walkable
           lda #1
           sta tile_properties
@@ -1291,25 +1291,25 @@ walkable_return
           bne walkable_change_elev
           lda move_tile_2_old
           cmp move_tile_2
-          beq .walkable_return_no_elev
+          beq walkable_return_no_elev
 walkable_change_elev
-          ; back up the old move tile
-          lda move_tile_1
-          sta move_tile_1_old
-          lda move_tile_2
-          sta move_tile_2_old
           ; set the object's elevation flag
           ldx index
           lda object_elevation,x
           beq walkable_set_elev
           lda #0
           sta object_elevation,x
-          jmp .walkable_return_no_elev
+          jmp walkable_return_no_elev
 walkable_set_elev
           lda #1
           sta object_elevation,x
-end
 walkable_return_no_elev
+          ; back up the old move tile
+          lda move_tile_1
+          sta move_tile_1_old
+          lda move_tile_2
+          sta move_tile_2_old
+end
         return thisbank
 
 

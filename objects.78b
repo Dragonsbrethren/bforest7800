@@ -14,6 +14,9 @@
         const TYPE_MRSLIME  =  12       ; Mr. Slime lol
         const TYPE_GHOST    =  13
         const TYPE_RGHOST   =  14
+        const TYPE_HARPY    =  15
+        const TYPE_SPIDER   =  16
+        const TYPE_SPIDER_V =  17
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -247,6 +250,20 @@
         const OCTOINK_SPEED_LO = 0
         const OCTOINK_DAMAGE   = 6
 
+        ; SPIDER
+        const SPIDER_HP = 6
+        const SPIDER_SPEED_HI = 0
+        const SPIDER_SPEED_LO = 128
+        const SPIDER_VEL_CAP_HI = 2
+        const SPIDER_VEL_CAP_LO = 255
+        const SPIDER_FRICTION_HI = 0
+        const SPIDER_FRICTION_LO = 64
+        const SPIDER_DAMAGE = 3
+        const SPIDER_DEF = 0
+        const SPIDER_MDEF = 0
+        const F_SPIDER_CRAWL_H = 0
+        const F_SPIDER_CRAWL_V = 0
+
 
         ; FAMILIARS
         const FAIRY_SPEED_HI = 1
@@ -301,6 +318,10 @@
         const ghost_ai_hi     = #>.ghost_ai
         const rghost_ai_lo    = #<.rghost_ai
         const rghost_ai_hi    = #>.rghost_ai
+        const harpy_ai_lo     = #<.harpy_ai
+        const harpy_ai_hi     = #>.harpy_ai
+        const spider_ai_lo    = #<.spider_ai
+        const spider_ai_hi    = #>.spider_ai
 
         const fairy_ai_lo    = #<.fairy_ai
         const fairy_ai_hi    = #>.fairy_ai

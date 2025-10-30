@@ -12,6 +12,14 @@
         incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/harpy0.png 160B 0 6 5 3 4 1
         incgraphic gfx/sprites/harpy1.png 160B 0 6 3 5 4 1
+        incgraphic gfx/sprites/spider0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider1.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider2.png 160A 0 1 2
+        incgraphic gfx/sprites/spider3.png 160A 0 1 2
+        incgraphic gfx/sprites/spider4.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider5.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider6.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider7.png 160A 0 1 2 3
 
         incmapfile tiled/hills_room_0.tmx
         incmapfile tiled/hills_room_1.tmx
@@ -19,6 +27,8 @@
         incmapfile tiled/hills_room_3.tmx
         incmapfile tiled/hills_room_4.tmx
         incmapfile tiled/hills_room_5.tmx
+        incmapfile tiled/hills_room_6.tmx
+        incmapfile tiled/hills_room_7.tmx
 
         const plot_hills_room_0_lo = #<.plot_hills_room_0
         const plot_hills_room_0_hi = #>.plot_hills_room_0
@@ -32,21 +42,29 @@
         const plot_hills_room_4_hi = #>.plot_hills_room_4
         const plot_hills_room_5_lo = #<.plot_hills_room_5
         const plot_hills_room_5_hi = #>.plot_hills_room_5
+        const plot_hills_room_6_lo = #<.plot_hills_room_6
+        const plot_hills_room_6_hi = #>.plot_hills_room_6
+        const plot_hills_room_7_lo = #<.plot_hills_room_7
+        const plot_hills_room_7_hi = #>.plot_hills_room_7
 
         data hills_map_lo
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
+        plot_hills_room_6_lo, plot_hills_room_7_lo
 end
 
         data hills_map_hi
         plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
+        plot_hills_room_6_hi, plot_hills_room_7_hi
 end
 
         data hills_obj_lo
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
+        hills_room_6_obj_lo, hills_room_7_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
+        hills_room_6_obj_hi, hills_room_7_obj_hi
 end
 
 load_hills
@@ -136,7 +154,7 @@ hills_shared_pals
         00, 00, 00, 00, 00, 00, 00
         03, 04, 05, 00, 00, 00, 00
         02, 00, 06, 00, 00, 00, 00
-        01, 00, 00, 00, 00, 00, 00
+        01, 00, 07, 00, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
         00, 00, 02, 00, 00, 00, 00
         00, 00, 01, 00, 00, 00, 00
@@ -211,7 +229,28 @@ plot_hills_room_5
         zone14_objects = 1
         return thisbank
 
+plot_hills_room_6
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map hills_room_6 280
+        plotmapfile tiled/hills_room_6.tmx hills_room_6 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
+plot_hills_room_7
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        memcpy current_map hills_room_7 280
+        plotmapfile tiled/hills_room_7.tmx hills_room_6 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        return thisbank
+
         data hills_room_0_obj
+        TYPE_SPIDER, $10, $20
         $00
 end
 
@@ -235,6 +274,14 @@ end
         $00
 end
 
+        data hills_room_6_obj
+        $00
+end
+
+        data hills_room_7_obj
+        $00
+end
+
 test_walkable_hills
         asm
           ldx index
@@ -244,7 +291,6 @@ test_walkable_hills
 end
         tile_properties_1 = hills_tile_properties[move_tile_1]
         tile_properties_2 = hills_tile_properties[move_tile_2]
-        ; if Johanna has the Nix's Tail relic, make shorelines walkable
         if !index then gosub test_obscure_hills
         goto walkable_return
 
@@ -263,6 +309,7 @@ test_obscure_hills
         ; check the player's elevation
         if object_elevation then temp1 = hills_tile_properties_2[temp1] else temp1 = hills_tile_properties[temp1]
         if temp1{3} then player_obscure = 1 else player_obscure = 0
+        ; if Johanna has the Nix's Tail relic, make shorelines walkable
         if m_relic_bits_2{0} then goto walkable_water_hills
         return thisbank
 
@@ -326,11 +373,122 @@ end
         %00000010, %00000010, %00000010, %00000010
 end
 
+harpy_ai
+        return thisbank
+
+;=========================================================
+; SPIDER
+;---------------------------------------------------------
+; Crawls along ledges until lined up with player,
+; then decends and becomes a standard ground enemy
+;=========================================================
+
+spider_ai
+        object_pal[index] = (6 * 32)
+        if flags{4} then spider_stalk
+
+spider_init
+        ; TODO: Wall crawl flag?
+        ; Spiders "float" so they can walk on ledges
+        flags = %00100000
+        ; always start at elevation 1
+        object_elevation[index] = 1
+
+spider_stalk
+        if object_type[index] = TYPE_SPIDER_V then spider_vert
+
+spider_horiz
+        Ydirection = 0
+        if Xposition >= player_Xpos then spider_left
+
+spider_right
+        object_facing[index] = DIR_RIGHT
+        Xdirection = DIR_RIGHT
+        goto spider_crawl_horz
+
+spider_left
+        object_facing[index] = DIR_LEFT
+        Xdirection = DIR_LEFT
+
+spider_crawl_horz
+        frame = F_SPIDER_CRAWL_H
+        if animation_frame then frame++
+        return thisbank
+
+spider_vert
+        Xdirection = 0
+        if Yposition < player_Ypos then spider_down
+
+spider_up
+        object_facing[index] = DIR_UP
+        Ydirection = DIR_UP
+        goto spider_crawl_vert
+
+spider_down
+        object_facing[index] = DIR_DOWN
+        Ydirection = DIR_DOWN
+
+spider_crawl_vert
+        frame = F_SPIDER_CRAWL_V
+        if animation_frame then frame++
+        return thisbank
+
+spider_walk
+        asm
+          dec timer
+end
+        if Ydirection then spider_walk_y
+        
+spider_walk_x
+        Xvelocity = Xvelocity + move_speed
+        goto spider_walk_anim
+
+spider_walk_y
+        Yvelocity = Yvelocity + move_speed
+
+
+spider_walk_anim
+        if Ydirection = DIR_DOWN then frame = 0
+        if Ydirection = DIR_UP then frame = 2
+        if Xdirection = DIR_LEFT then frame = 4
+        if Xdirection = DIR_RIGHT then frame = 6
+        if animation_frame then frame = frame + 1
+
+spider_walk_return
+        return thisbank
+
+obj_harpy_stats
+        goto obj_next_stats
+obj_spider_stats
+        object_hp[obj_index] = SPIDER_HP
+        object_vel_cap_hi[obj_index] = SPIDER_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = SPIDER_VEL_CAP_LO
+        object_damage[obj_index] = SPIDER_DAMAGE
+        object_def[obj_index] = SPIDER_DEF
+        object_mdef[obj_index] = SPIDER_MDEF
+        object_friction_hi[obj_index] = SPIDER_FRICTION_HI
+        object_friction_lo[obj_index] = SPIDER_FRICTION_LO
+        object_speed_hi[obj_index] = SPIDER_SPEED_HI
+        object_speed_lo[obj_index] = SPIDER_SPEED_LO
+        object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #<.plot_hills_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160a
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
 plot_hud_hills
         plotvalue hills_hud 0 object_elevation 2 32 11
         plotvalue hills_hud 0 move_tile_1 4 32 12
         return
 
-plot_harpy
-        PLOTSPRITE harpy0 0 Xposition Yposition frame
+plot_hills_160a
+        PLOTSPRITE spider0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_hills_160b
+        PLOTSPRITE harpy0 sprite_pal Xposition Yposition frame
         goto plot_next

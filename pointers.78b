@@ -67,3 +67,7 @@
         const obj_ghost_stats_hi    = #>.obj_ghost_stats
         const obj_rghost_stats_lo   = #<.obj_rghost_stats
         const obj_rghost_stats_hi   = #>.obj_rghost_stats
+        const obj_harpy_stats_lo    = #<.obj_harpy_stats
+        const obj_harpy_stats_hi    = #>.obj_harpy_stats
+        const obj_spider_stats_lo   = #<.obj_spider_stats
+        const obj_spider_stats_hi   = #>.obj_spider_stats

@@ -3,7 +3,7 @@
         name_wolf_lo, name_warg_lo, name_merman_lo, name_octopus_lo,
         name_slime_lo, name_slime_lo, name_raven_lo, name_priest_lo,
         name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo,
-        name_ghost_lo
+        name_ghost_lo, name_harpy_lo, name_spider_lo, name_spider_lo
 end
 
         data enemy_names_hi
@@ -11,7 +11,7 @@ end
         name_wolf_hi, name_warg_hi, name_merman_hi, name_octopus_hi,
         name_slime_hi, name_slime_hi, name_raven_hi, name_priest_hi,
         name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi,
-        name_ghost_hi
+        name_ghost_hi, name_harpy_hi, name_spider_lo, name_spider_lo
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -72,4 +72,16 @@ end
         const name_ghost_hi = #>name_ghost
         alphadata name_ghost font_spr
         'Ghost*'
+end
+
+        const name_harpy_lo = #<name_harpy
+        const name_harpy_hi = #>name_harpy
+        alphadata name_harpy font_spr
+        'Harpy*'
+end
+
+        const name_spider_lo = #<name_spider
+        const name_spider_hi = #>name_spider
+        alphadata name_spider font_spr
+        'Cliff Spider*'
 end
