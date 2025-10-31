@@ -12,14 +12,14 @@
         incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/harpy0.png 160B 0 6 5 3 4 1
         incgraphic gfx/sprites/harpy1.png 160B 0 6 3 5 4 1
-        incgraphic gfx/sprites/spider0.png 160A 0 1 2 3
-        incgraphic gfx/sprites/spider1.png 160A 0 1 2 3
-        incgraphic gfx/sprites/spider2.png 160A 0 1 2
-        incgraphic gfx/sprites/spider3.png 160A 0 1 2
-        incgraphic gfx/sprites/spider4.png 160A 0 1 2 3
-        incgraphic gfx/sprites/spider5.png 160A 0 1 2 3
-        incgraphic gfx/sprites/spider6.png 160A 0 1 2 3
-        incgraphic gfx/sprites/spider7.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider2.png 160A 0 1 3
+        incgraphic gfx/sprites/spider3.png 160A 0 1 3
+        incgraphic gfx/sprites/spider4.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider5.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider6.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider7.png 160A 0 1 3 2
 
         incmapfile tiled/hills_room_0.tmx
         incmapfile tiled/hills_room_1.tmx
@@ -384,13 +384,15 @@ harpy_ai
 ;=========================================================
 
 spider_ai
-        object_pal[index] = (6 * 32)
+        if flags{7} then spider_walk
         if flags{4} then spider_stalk
 
 spider_init
+        ; water palette
+        object_pal[index] = (6 * 32)
         ; TODO: Wall crawl flag?
         ; Spiders "float" so they can walk on ledges
-        flags = %00100000
+        flags = %00010000
         ; always start at elevation 1
         object_elevation[index] = 1
 
@@ -399,7 +401,8 @@ spider_stalk
 
 spider_horiz
         Ydirection = 0
-        Yvelocity = 0
+        if Yposition >= player_Ypos then temp1 = (Yposition - 48) else temp1 = Yposition
+        if boxcollision(Xposition, temp1, 12, 48, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then goto spider_drop_horz
         if Xposition >= player_Xpos then spider_left
 
 spider_right
@@ -414,11 +417,11 @@ spider_left
 spider_crawl_horz
         frame = F_SPIDER_CRAWL_H
         if animation_frame then frame = frame + 1
+        Xvelocity = Xvelocity + move_speed
         return thisbank
 
 spider_vert
         Xdirection = 0
-        Xvelocity = 0
         if Yposition < player_Ypos then spider_down
 
 spider_up
@@ -433,7 +436,17 @@ spider_down
 spider_crawl_vert
         frame = F_SPIDER_CRAWL_V
         if animation_frame then frame = frame + 1
+        Yvelocity = Yvelocity + move_speed
         return thisbank
+
+spider_drop_horz
+        ; flag 7 bypass stalk phase
+        flags{7} = 1
+        ; turn off floating flag
+        flags{4} = 0
+        ; if the spider is above the player, drop to lower elevation
+        if Yposition < player_Ypos then object_elevation[index] = 0 : goto spider_down
+        goto spider_up
 
 spider_walk
         asm

@@ -254,7 +254,7 @@
         const SPIDER_HP = 6
         const SPIDER_SPEED_HI = 0
         const SPIDER_SPEED_LO = 128
-        const SPIDER_VEL_CAP_HI = 2
+        const SPIDER_VEL_CAP_HI = 1
         const SPIDER_VEL_CAP_LO = 255
         const SPIDER_FRICTION_HI = 0
         const SPIDER_FRICTION_LO = 64
