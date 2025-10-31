@@ -491,6 +491,7 @@ remove_duplicates_next
         obj_octo_stats_lo, obj_slime_stats_lo, obj_slime_stats_lo, obj_raven_stats_lo
         obj_priest_stats_lo, obj_skel_stats_lo, obj_redslime_stats_lo, obj_redslime_stats_lo
         obj_ghost_stats_lo, obj_rghost_stats_lo, obj_harpy_stats_lo, obj_spider_stats_lo, obj_spider_stats_lo
+        obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo
 end
 
         data object_stats_hi
@@ -498,6 +499,7 @@ end
         obj_octo_stats_hi, obj_slime_stats_hi, obj_slime_stats_hi, obj_raven_stats_hi
         obj_priest_stats_hi, obj_skel_stats_hi, obj_redslime_stats_hi, obj_redslime_stats_hi
         obj_ghost_stats_hi, obj_rghost_stats_hi, obj_harpy_stats_hi, obj_spider_stats_hi, obj_spider_stats_hi
+        obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi
 end
 
 check_map_bits

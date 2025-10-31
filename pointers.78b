@@ -71,3 +71,7 @@
         const obj_harpy_stats_hi    = #>.obj_harpy_stats
         const obj_spider_stats_lo   = #<.obj_spider_stats
         const obj_spider_stats_hi   = #>.obj_spider_stats
+        const obj_hslime_stats_lo   = #<.obj_hslime_stats
+        const obj_hslime_stats_hi   = #>.obj_hslime_stats
+        const obj_hghost_stats_lo   = #<.obj_hghost_stats
+        const obj_hghost_stats_hi   = #>.obj_hghost_stats

@@ -70,3 +70,6 @@
         const PAL_H_DIRT  = $11         ; brown
         const PAL_H_VEG   = $C0         ; dark green
         const PAL_H_WATER = $A1         ; murky blue
+
+        const PAL_H_SLIME_DK = $34
+        const PAL_H_SLIME_LT = $37

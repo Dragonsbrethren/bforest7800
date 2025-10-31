@@ -4,6 +4,7 @@
         name_slime_lo, name_slime_lo, name_raven_lo, name_priest_lo,
         name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo,
         name_ghost_lo, name_harpy_lo, name_spider_lo, name_spider_lo
+        name_hslime_lo, name_hslime_lo, name_hghost_lo
 end
 
         data enemy_names_hi
@@ -12,6 +13,7 @@ end
         name_slime_hi, name_slime_hi, name_raven_hi, name_priest_hi,
         name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi,
         name_ghost_hi, name_harpy_hi, name_spider_hi, name_spider_hi
+        name_hslime_hi, name_hslime_hi, name_hghost_hi
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -46,7 +48,7 @@ end
         const name_slime_lo = #<name_slime
         const name_slime_hi = #>name_slime
         alphadata name_slime font_spr
-        'Slime*'
+        'Green Slime*'
 end
         const name_raven_lo = #<name_raven
         const name_raven_hi = #>name_raven
@@ -71,7 +73,7 @@ end
         const name_ghost_lo = #<name_ghost
         const name_ghost_hi = #>name_ghost
         alphadata name_ghost font_spr
-        'Ghost*'
+        'Irrlicht*'
 end
 
         const name_harpy_lo = #<name_harpy
@@ -84,4 +86,16 @@ end
         const name_spider_hi = #>name_spider
         alphadata name_spider font_spr
         'Cliff Spider*'
+end
+
+        const name_hslime_lo = #<name_hslime
+        const name_hslime_hi = #>name_hslime
+        alphadata name_hslime font_spr
+        'Ochre Jelly*'
+end
+
+        const name_hghost_lo = #<name_hghost
+        const name_hghost_hi = #>name_hghost
+        alphadata name_hghost font_spr
+        'Feuermann*'
 end

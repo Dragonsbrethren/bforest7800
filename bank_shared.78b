@@ -490,13 +490,15 @@ pos_swd_left
         data object_ai_lo
         0, 0, wolf_ai_lo, warg_ai_lo, nix_ai_lo, octopus_ai_lo, slime_ai_lo, mslime_ai_lo, 
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
-        ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo
+        ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, hslime_ai_lo
+        hghost_ai_lo
 end
 
         data object_ai_hi
         0, 0, wolf_ai_hi, warg_ai_hi, nix_ai_hi, octopus_ai_hi, slime_ai_hi, mslime_ai_hi, 
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
-        ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi
+        ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, hslime_ai_hi
+        hghost_ai_hi
 end
 
         data projectile_ai_lo
@@ -683,6 +685,11 @@ _spawn_coin
         TYPE_ANTIDOTE   ; mini red slime
         TYPE_HIETHER    ; ghost
         TYPE_HIETHER    ; river ghost
+        TYPE_LIFEAPPLE  ; harpy
+        TYPE_LIFEAPPLE  ; spider
+        TYPE_LIFEAPPLE  ; vertical spider
+        TYPE_ELIXIR     ; ochre jelly
+        TYPE_ELIXIR     ; feuermann
 end
 
         data common_drops
@@ -701,6 +708,11 @@ end
         TYPE_ANTIDOTE   ; mini red slime
         TYPE_UNCURSE    ; ghost
         TYPE_UNCURSE    ; river ghost
+        TYPE_SHIELD3    ; harpy
+        TYPE_ANTIDOTE   ; spider
+        TYPE_ANTIDOTE   ; vertical spider
+        TYPE_ANTIDOTE   ; ochre jelly
+        TYPE_UNCURSE    ; feuermann
 end
 
         ; handles poison and regen

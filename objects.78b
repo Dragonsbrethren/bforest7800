@@ -17,6 +17,9 @@
         const TYPE_HARPY    =  15
         const TYPE_SPIDER   =  16
         const TYPE_SPIDER_V =  17
+        const TYPE_HSLIME   =  18
+        const TYPE_MHSLIME  =  19
+        const TYPE_HGHOST   =  20
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -263,6 +266,38 @@
         const SPIDER_MDEF = 0
         const F_SPIDER_CRAWL_H = 0
         const F_SPIDER_CRAWL_V = 0
+        const F_SPIDER_UP    = 2
+        const F_SPIDER_DOWN  = 0
+        const F_SPIDER_LEFT  = 4
+        const F_SPIDER_RIGHT = 6
+
+        ; HILL SLIME
+        const HSLIME_HP = 6
+        const HSLIME_SPEED_HI = 0
+        const HSLIME_SPEED_LO = 128
+        const HSLIME_VEL_CAP_HI = 1
+        const HSLIME_VEL_CAP_LO = 255
+        const HSLIME_FRICTION_HI = 0
+        const HSLIME_FRICTION_LO = 64
+        const HSLIME_DAMAGE = 3
+        const HSLIME_DEF = 255
+        const HSLIME_MDEF = 0
+        const F_HSLIME_1 = 8
+        const F_HSLIME_2 = 9
+
+        ; FEUERMANN
+        const HGHOST_HP = 6
+        const HGHOST_SPEED_HI = 0
+        const HGHOST_SPEED_LO = 128
+        const HGHOST_VEL_CAP_HI = 1
+        const HGHOST_VEL_CAP_LO = 255
+        const HGHOST_FRICTION_HI = 0
+        const HGHOST_FRICTION_LO = 64
+        const HGHOST_DAMAGE = 3
+        const HGHOST_DEF = 255
+        const HGHOST_MDEF = 0
+        const F_HGHOST_1 = 10
+        const F_HGHOST_2 = 11
 
 
         ; FAMILIARS
@@ -322,6 +357,10 @@
         const harpy_ai_hi     = #>.harpy_ai
         const spider_ai_lo    = #<.spider_ai
         const spider_ai_hi    = #>.spider_ai
+        const hslime_ai_lo    = #<.hslime_ai
+        const hslime_ai_hi    = #>.hslime_ai
+        const hghost_ai_lo    = #<.hghost_ai
+        const hghost_ai_hi    = #>.hghost_ai
 
         const fairy_ai_lo    = #<.fairy_ai
         const fairy_ai_hi    = #>.fairy_ai
