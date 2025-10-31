@@ -71,6 +71,12 @@ end
         hills_room_6_obj_hi, hills_room_7_obj_hi
 end
 
+hills_waterfall
+        ; prevent blacked out waterfalls when loading pal_animation rooms
+        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        pal_animation = 1
+        return
+
 load_hills
         if !first_load then hills_set_room
         first_load = 0
@@ -89,8 +95,6 @@ hills_save_2
 
 hills_set_room
         characterset hills_ledges
-        ; prevent blacked out waterfalls when loading animated_pal rooms
-        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
         asm
         lda #0
         sta no_flash
@@ -197,8 +201,7 @@ plot_hills_room_1
         zone1_objects  = 5
         zone2_objects  = 4
         zone14_objects = 3
-        pal_animation = 1
-        return thisbank
+        goto hills_waterfall
 
 plot_hills_room_2
         menu_map_room[menu_map_index] = ROOML_DL
@@ -218,8 +221,7 @@ plot_hills_room_3
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 4
-        pal_animation = 1
-        return thisbank
+        goto hills_waterfall
 
 plot_hills_room_4
         menu_map_room[menu_map_index] = ROOML_L
