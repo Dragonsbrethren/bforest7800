@@ -264,7 +264,7 @@ plot_hills_room_7
         return thisbank
 
         data hills_room_0_obj
-        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0
+        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_SPIDER, $58, $40
         $00
 end
 
@@ -387,7 +387,11 @@ harpy_ai
 hslime_ai
         object_pal[index] = (6 * 32)
         frame = F_HSLIME_1
-        if animation_frame then frame = frame + 1
+        if animation_frame then frame = frame + 1 : temp1 = 0 else temp1 = HSLIME_DEF
+hslime_chase
+        object_def[index] = temp1
+        goto followplayer
+
 hghost_ai
         return thisbank
 
@@ -399,7 +403,7 @@ hghost_ai
 ;=========================================================
 
 spider_ai
-        if flags{7} then spider_walk
+        if flags{7} then spider_elev
         if flags{4} then spider_stalk
 
 spider_init
@@ -415,8 +419,13 @@ spider_stalk
         if object_type[index] = TYPE_SPIDER_V then spider_vert
 
 spider_horiz
-        Ydirection = 0
         if Yposition >= player_Ypos then temp1 = (Yposition - 48) else temp1 = Yposition
+        temp2 = Xposition - 16
+        if temp2 >= Xposition then temp2 = 0
+        ; spider checks for player proximity before moving
+        if !boxcollision(temp2, temp1, 44, 48, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then return thisbank
+        Ydirection = 0
+        ; spider lined up with player decends/ascends from cliff face
         if boxcollision(Xposition, temp1, 12, 48, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then goto spider_drop_horz
         if Xposition >= player_Xpos then spider_left
 
@@ -457,18 +466,24 @@ spider_crawl_vert
 spider_drop_horz
         ; flag 7 bypass stalk phase
         flags{7} = 1
+        if Yposition < player_Ypos then spider_down
+        goto spider_up
+
+spider_elev
+        if !flags{4} then spider_walk
         ; turn off floating flag
         flags{4} = 0
-        ; if the spider is above the player, drop to lower elevation
-        if Yposition < player_Ypos then object_elevation[index] = 0 : goto spider_down
-        goto spider_up
+        gosub get_object_pos
+        temp1 = peekchar(current_map, peekX, peekY, 20, 14)
+        temp1 = hills_tile_properties_2[temp1]
+        if !temp1{0} then object_elevation[index] = 0
 
 spider_walk
         if !Xvelocity then spider_walk_vert
-        if Xposition < player_Xpos then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
+        if Xposition < (player_Xpos + 12) then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
         goto spider_walk_anim
 spider_walk_vert
-        if Yposition < player_Ypos then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
+        if Yposition < (player_Ypos + 8) then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
 spider_walk_anim
         if animation_frame then frame = frame + 1
         goto followplayer
