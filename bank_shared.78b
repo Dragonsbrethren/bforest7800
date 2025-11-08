@@ -1473,6 +1473,7 @@ sword_collision
           rts
 test_sword_box
 end
+        if object_elevation <> object_elevation[index] then return thisbank
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
         if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
         if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
@@ -1553,6 +1554,8 @@ player_knockback
           rts
 end
 test_player_box
+        ; enemies can only hit player when on same elevation unless flying
+        if object_elevation[index] <> object_elevation && !flags{2} then return
         if object_type[index] = TYPE_SKELSWORD then goto enemy_sword_collision
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
