@@ -112,6 +112,7 @@ init_field
         player_speed = 1.0
         player_friction = player_speed
         player_vel_cap = 5.0
+        object_elevation = 0
         dec player_max_hp = $48
         dec player_hp = $48
         dec player_mp = $48
