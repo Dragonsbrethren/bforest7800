@@ -175,6 +175,9 @@ river_set_room
           sta pal_animation
           sta exit_room_index
           sta save_room_index
+          sta obscure_player
+          lda #$FF
+          sta locked_zone
           ldx room_index
           lda river_rooms,x
           tax
