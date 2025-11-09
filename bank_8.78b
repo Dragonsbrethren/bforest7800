@@ -356,7 +356,7 @@ test_water_hills
         %00000000, %00010000, %00010000, %00010000, %00100000, %00100000, %00100000, %01000000
         %01000000, %01000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
-        %00000000, %00000000, %00000000, %00000000, %00001000, %00001001, %00000001, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000001, %00000000
         %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
@@ -385,7 +385,7 @@ end
 
 harpy_ai
 hslime_ai
-        object_pal[index] = (6 * 32)
+        object_pal[index] = 6
         frame = F_HSLIME_1
         if animation_frame then frame = frame + 1 : temp1 = 0 else temp1 = HSLIME_DEF
 hslime_chase
@@ -408,7 +408,7 @@ spider_ai
 
 spider_init
         ; water palette
-        object_pal[index] = (6 * 32)
+        object_pal[index] = 6
         ; TODO: Wall crawl flag?
         ; Spiders "float" so they can walk on ledges
         flags = %00010000
@@ -479,14 +479,14 @@ spider_elev
         if !temp1{0} then object_elevation[index] = 0
 
 spider_walk
-        if !Xvelocity then spider_walk_vert
-        if Xposition < (player_Xpos + 12) then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
+        if !Yvelocity then spider_walk_horz
+        if Yposition < player_Ypos then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
         goto spider_walk_anim
-spider_walk_vert
-        if Yposition < (player_Ypos + 8) then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
+spider_walk_horz
+        if Xposition < player_Xpos then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
 spider_walk_anim
         if animation_frame then frame = frame + 1
-        goto followplayer
+        goto test_follow_box
 
 spider_walk_return
         return thisbank
@@ -561,7 +561,23 @@ plot_hud_hills
         return
 
 plot_hills_160a
-        PLOTSPRITE spider0 sprite_pal Xposition Yposition frame
+        asm
+          ; don't lock zone if elevation > 0
+          ldx index
+          lda object_elevation,x
+          bne .plot_hills_160a_no_lock
+          ldx locked_zone
+          bmi .plot_hills_160a_no_lock  ; default locked_zone is $FF so that zone 0 can be locked
+          jsr lockzonex
+end
+plot_hills_160a_no_lock
+        plotsprite spider0 sprite_pal Xposition Yposition frame
+        asm
+          ldx locked_zone
+          bmi .plot_hills_160a_done
+          jsr unlockzonex
+end
+plot_hills_160a_done
         goto plot_next
 
 plot_hills_160b

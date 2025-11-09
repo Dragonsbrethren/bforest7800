@@ -378,11 +378,11 @@ test_follow_box
 followplayer
         ; add a little randomness to stop a constant movement pattern from happening
         if rand >= 240 then follow_player_Y
-        if Xposition > player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
+        if Xposition >= player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
 follow_player_Y
         if rand >= 240 then follow_player_done
-        if Yposition > player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
+        if Yposition >= player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
         if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
 follow_player_done
         return thisbank

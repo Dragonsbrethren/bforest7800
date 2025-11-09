@@ -634,6 +634,8 @@ load_fireball_data
         sta object_damage,x
         lda #%00010000
         sta object_flags,x
+        lda object_elevation,y
+        sta object_elevation,x
         lda #<.plot_fireball
         sta object_spr_ptr_lo,x
         lda #>.plot_fireball
