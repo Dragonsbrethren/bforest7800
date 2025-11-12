@@ -531,16 +531,16 @@ end
 torch_tile_block_castle
         ; block with a floatable tile so projectiles can hit torch
         pokechar current_map peekX peekY 20 14 $70
-        if object_type[index] <> TYPE_DOOR_LOCK then return thisbank
+        if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
         peekX = peekX + 1
         pokechar current_map peekX peekY 20 14 $70
-        return thisbank
+        goto torch_tile_block_set_flag
 
 torch_tile_unblock_castle
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 $28
-        return thisbank
+        goto kill_torch_done
 
 ;==============================================================================
 ; PRIEST & SKELETON AI

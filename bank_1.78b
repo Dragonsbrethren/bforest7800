@@ -1106,3 +1106,19 @@ end
 
         incbasic fairy_scroll.78b
         incbasic item_names.78b
+
+        data torch_tileset_lo
+        0, torch_tile_block_forest_lo, torch_tile_block_castle_lo, torch_tile_block_river_lo, torch_tile_block_hills_lo
+end
+
+        data torch_tileset_hi
+        0, torch_tile_block_forest_hi, torch_tile_block_castle_hi, torch_tile_block_river_hi, torch_tile_block_hills_hi
+end
+
+        data torch_unblock_tileset_lo
+        0, torch_tile_unblock_forest_lo, torch_tile_unblock_castle_lo, torch_tile_unblock_river_lo, torch_tile_unblock_hills_lo
+end
+
+        data torch_unblock_tileset_hi
+        0, torch_tile_unblock_forest_hi, torch_tile_unblock_castle_hi, torch_tile_unblock_river_hi, torch_tile_unblock_hills_hi
+end

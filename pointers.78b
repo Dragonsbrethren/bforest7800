@@ -75,3 +75,22 @@
         const obj_hslime_stats_hi   = #>.obj_hslime_stats
         const obj_hghost_stats_lo   = #<.obj_hghost_stats
         const obj_hghost_stats_hi   = #>.obj_hghost_stats
+
+; torch blocking and unblocking
+        const torch_tile_block_forest_lo = #<.torch_tile_block_forest
+        const torch_tile_block_forest_hi = #>.torch_tile_block_forest
+        const torch_tile_block_castle_lo = #<.torch_tile_block_castle
+        const torch_tile_block_castle_hi = #>.torch_tile_block_castle
+        const torch_tile_block_river_lo = #<.torch_tile_block_river
+        const torch_tile_block_river_hi = #>.torch_tile_block_river
+        const torch_tile_block_hills_lo = #<.torch_tile_block_hills
+        const torch_tile_block_hills_hi = #>.torch_tile_block_hills
+
+        const torch_tile_unblock_forest_lo = #<.torch_tile_unblock_forest
+        const torch_tile_unblock_forest_hi = #>.torch_tile_unblock_forest
+        const torch_tile_unblock_castle_lo = #<.torch_tile_unblock_castle
+        const torch_tile_unblock_castle_hi = #>.torch_tile_unblock_castle
+        const torch_tile_unblock_river_lo = #<.torch_tile_unblock_river
+        const torch_tile_unblock_river_hi = #>.torch_tile_unblock_river
+        const torch_tile_unblock_hills_lo = #<.torch_tile_unblock_hills
+        const torch_tile_unblock_hills_hi = #>.torch_tile_unblock_hills
