@@ -595,7 +595,8 @@ torch_tile_block_get_pos
           jmp (pointer)
 end
 torch_tile_block_set_flag
-        object_flags[index] = %10000000
+        ; this is a workaround, set the flying flag on torch so elevation doesn't matter
+        object_flags[index] = %10000100
         goto object_done
 
 unlock_door

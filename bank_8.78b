@@ -292,6 +292,7 @@ plot_hills_room_9
 
         data hills_room_0_obj
         TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HGHOST, $58, $40
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
         $00
 end
 
@@ -598,17 +599,17 @@ plot_hills_160b
         dmahole 0
 torch_tile_block_hills
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 $28
+        pokechar current_map peekX peekY 20 14 $50
         if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
         peekX = peekX + 1
-        pokechar current_map peekX peekY 20 14 $28
+        pokechar current_map peekX peekY 20 14 $50
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_hills
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         ; $27 is a special tile that is walkable at all elevations
-        pokechar current_map peekX peekY 20 14 $27
+        pokechar current_map peekX peekY 20 14 $4E
         goto kill_torch_done
 
         ; %00000001 = walkable
@@ -625,7 +626,7 @@ torch_tile_unblock_hills
         %01000000, %01000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000001, %00000001
-        %00000000,
+        %00000010,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
         %00000000, %00000000, %00000000, %00000000, %00000000
