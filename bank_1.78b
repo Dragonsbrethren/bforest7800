@@ -1122,3 +1122,12 @@ end
         data torch_unblock_tileset_hi
         0, torch_tile_unblock_forest_hi, torch_tile_unblock_castle_hi, torch_tile_unblock_river_hi, torch_tile_unblock_hills_hi
 end
+
+decelerate_object
+        temp1 = object_friction_hi[index]
+        temp2 = object_friction_lo[index]
+        Xvelocity = Xvelocity - temp1 : Xvelocity_lo = Xvelocity_lo - temp2
+        if Xvelocity >= vel_cap then Xvelocity = 0
+        Yvelocity = Yvelocity - temp1 : Yvelocity_lo = Yvelocity_lo - temp2
+        if Yvelocity >= vel_cap then Yvelocity = 0
+        return thisbank

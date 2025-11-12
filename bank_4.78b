@@ -791,24 +791,24 @@ end
         object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
+        object_friction_hi[obj_index] = 0
+        object_friction_lo[obj_index] = 64
         object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 20
+        object_speed_lo[obj_index] = 128
         object_flags[obj_index] = 0
         goto obj_next_stats
 
 obj_skel_stats
         object_hp[obj_index] = 5
         object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
+        object_vel_cap_lo[obj_index] = 128
         object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
+        object_friction_hi[obj_index] = 0
+        object_friction_lo[obj_index] = 64
         object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 20
+        object_speed_lo[obj_index] = 128
         object_flags[obj_index] = 0
         object_spr_ptr_lo[obj_index] = plot_skeleton_lo
         object_spr_ptr_hi[obj_index] = plot_skeleton_hi

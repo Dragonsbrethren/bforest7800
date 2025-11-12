@@ -290,9 +290,9 @@
         const HGHOST_SPEED_HI = 0
         const HGHOST_SPEED_LO = 128
         const HGHOST_VEL_CAP_HI = 1
-        const HGHOST_VEL_CAP_LO = 255
+        const HGHOST_VEL_CAP_LO = 128
         const HGHOST_FRICTION_HI = 0
-        const HGHOST_FRICTION_LO = 64
+        const HGHOST_FRICTION_LO = 0
         const HGHOST_DAMAGE = 3
         const HGHOST_DEF = 255
         const HGHOST_MDEF = 0

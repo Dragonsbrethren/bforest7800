@@ -1019,7 +1019,6 @@ end
         goto test_joy_done
 
 decelerate_player
-decelerate_object
         asm
         ldx index
         lda object_friction,x
