@@ -562,14 +562,15 @@ object_done
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
 fireball_ai
-        if Xvelocity then fireball_animate
-        if Yvelocity then fireball_animate
-        object_type[index] = 0
-        return thisbank
+        if !Xvelocity_hi && !Yvelocity_hi then fireball_poof
 fireball_animate
         frame = 0
-        if animation_frame then frame = 1
+        if animation_frame then frame++
 fireball_done
+        return thisbank
+
+fireball_poof
+        object_type[index] = 0
         return thisbank
 
 

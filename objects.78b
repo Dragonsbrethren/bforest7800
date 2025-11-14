@@ -192,8 +192,10 @@
         const PRIEST_WALK_TIMER  = 20
         const PRIEST_CAST_FRAMES = 20
 
-        const DARKSPARK_SPEED_HI = 2
-        const DARKSPARK_SPEED_LO = 0
+        const DARKSPARK_SPEED_HI = 0
+        const DARKSPARK_SPEED_LO = 128
+        const DARKSPARK_VEL_CAP_HI = 2
+        const DARKSPARK_VEL_CAP_LO = 255
         const DARKSPARK_DAMAGE = 6
 
         const SKELSWORD_DAMAGE = 3
@@ -274,11 +276,11 @@
         ; HILL SLIME
         const HSLIME_HP = 6
         const HSLIME_SPEED_HI = 0
-        const HSLIME_SPEED_LO = 128
+        const HSLIME_SPEED_LO = 64 
         const HSLIME_VEL_CAP_HI = 1
-        const HSLIME_VEL_CAP_LO = 255
+        const HSLIME_VEL_CAP_LO = 0
         const HSLIME_FRICTION_HI = 0
-        const HSLIME_FRICTION_LO = 64
+        const HSLIME_FRICTION_LO = 32
         const HSLIME_DAMAGE = 3
         const HSLIME_DEF = 255
         const HSLIME_MDEF = 0

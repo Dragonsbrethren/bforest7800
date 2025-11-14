@@ -1124,10 +1124,37 @@ end
 end
 
 decelerate_object
-        temp1 = object_friction_hi[index]
-        temp2 = object_friction_lo[index]
-        Xvelocity = Xvelocity - temp1 : Xvelocity_lo = Xvelocity_lo - temp2
-        if Xvelocity >= vel_cap then Xvelocity = 0
-        Yvelocity = Yvelocity - temp1 : Yvelocity_lo = Yvelocity_lo - temp2
-        if Yvelocity >= vel_cap then Yvelocity = 0
-        return thisbank
+        asm
+          ldx index
+          lda object_friction_hi,x
+          sta temp1
+          lda object_friction_lo,x
+          sta temp2
+          lda Xvelocity_lo
+          sec
+          sbc temp2
+          bcs do_st_xl
+          lda #0
+do_st_xl  sta Xvelocity_lo
+          lda Xvelocity_hi
+          sta temp3
+          sbc temp1
+          cmp temp3
+          bcs do_st_xh
+          lda #0
+do_st_xh  sta Xvelocity_hi
+          lda Yvelocity_lo
+          sec
+          sbc temp2
+          bcs do_st_yl
+          lda #0
+do_st_yl  sta Yvelocity_lo
+          lda Yvelocity_hi
+          sta temp5
+          sbc temp1
+          cmp temp5
+          bcs do_st_yh
+          lda #0
+do_st_yh  sta Yvelocity_hi
+          rts
+end

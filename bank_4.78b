@@ -665,14 +665,21 @@ load_darkspark
         ldy index
         lda #TYPE_DARKSPARK
         sta object_type,x
-        lda #DARKSPARK_SPEED_HI
+        sta object_hp,x
+        lda #DARKSPARK_VEL_CAP_HI
         sta object_vel_cap_hi,x
+        lda #DARKSPARK_SPEED_HI
         sta object_speed_hi,x
-        lda #DARKSPARK_SPEED_LO
+        lda #DARKSPARK_VEL_CAP_LO
         sta object_vel_cap_lo,x
+        lda #DARKSPARK_SPEED_LO
         sta object_speed_lo,x
         lda #DARKSPARK_DAMAGE
         sta object_damage,x
+        lda #0
+        sta object_frame,x
+        sta object_friction_hi,x
+        sta object_friction_lo,x
         lda #<.plot_darkspark
         sta object_spr_ptr_lo,x
         lda #>.plot_darkspark
