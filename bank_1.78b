@@ -1131,6 +1131,7 @@ decelerate_object
           lda object_friction_lo,x
           sta temp2
           lda Xvelocity_lo
+          beq do_st_xl
           sec
           sbc temp2
           bcs do_st_xl
@@ -1144,6 +1145,7 @@ do_st_xl  sta Xvelocity_lo
           lda #0
 do_st_xh  sta Xvelocity_hi
           lda Yvelocity_lo
+          beq do_st_yl
           sec
           sbc temp2
           bcs do_st_yl
