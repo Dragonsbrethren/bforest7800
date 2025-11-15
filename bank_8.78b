@@ -36,6 +36,7 @@
         incmapfile tiled/hills_room_7.tmx
         incmapfile tiled/hills_room_8.tmx
         incmapfile tiled/hills_room_9.tmx
+        incmapfile tiled/hills_room_10.tmx
 
         const plot_hills_room_0_lo = #<.plot_hills_room_0
         const plot_hills_room_0_hi = #>.plot_hills_room_0
@@ -57,25 +58,28 @@
         const plot_hills_room_8_hi = #>.plot_hills_room_8
         const plot_hills_room_9_lo = #<.plot_hills_room_9
         const plot_hills_room_9_hi = #>.plot_hills_room_9
+        const plot_hills_room_10_lo = #<.plot_hills_room_10
+        const plot_hills_room_10_hi = #>.plot_hills_room_10
+
 
         data hills_map_lo
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
-        plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo
+        plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo
 end
 
         data hills_map_hi
         plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
-        plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi
+        plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi
 end
 
         data hills_obj_lo
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
-        hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo
+        hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
-        hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi
+        hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi
 end
 
 hills_waterfall
@@ -173,16 +177,6 @@ hills_shared_pals
 hills_slime_pal
         P6C2 = getfade(PAL_H_SLIME_DK) : P6C3 = getfade(PAL_H_SLIME_LT)
         goto hills_veg_pal
-
-        data hills_rooms
-        00, 00, 00, 00, 00, 00, 00
-        03, 04, 05, 00, 00, 00, 00
-        02, 00, 06,  9, 00, 00, 00
-        01, 00, 07,  8, 00, 00, 00
-        00, 00, 00, 00, 00, 00, 00
-        00, 00, 02, 00, 00, 00, 00
-        00, 00, 01, 00, 00, 00, 00
-end
         
 plot_hills_room_0
         menu_map_room[menu_map_index] = ROOML_DL
@@ -290,6 +284,16 @@ plot_hills_room_9
         zone14_objects = 3
         return thisbank
 
+plot_hills_room_10
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map hills_room_10 280
+        plotmapfile tiled/hills_room_10.tmx hills_room_10 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 1
+        return thisbank
+
         data hills_room_0_obj
         TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HGHOST, $58, $40
         TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
@@ -329,6 +333,10 @@ end
 end
 
         data hills_room_9_obj
+        $00
+end
+
+        data hills_room_10_obj
         $00
 end
 
@@ -650,4 +658,14 @@ end
         %00000010, %00000010, %00000010
         %10000000
         %00000010, %00000010, %00000010, %00000010
+end
+
+        data hills_rooms
+        00, 00, 00, 00, 00, 00, 00
+        03, 04, 05, 00, 00, 00, 00
+        02, 10, 06,  9, 00, 00, 00
+        01, 00, 07,  8, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 02, 00, 00, 00, 00
+        00, 00, 01, 00, 00, 00, 00
 end
