@@ -562,7 +562,7 @@ object_done
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
 fireball_ai
-        if !Xvelocity_hi && !Yvelocity_hi then fireball_poof
+        if !Xvelocity_hi && !Yvelocity_hi && !Xvelocity_lo && !Yvelocity_lo then fireball_poof
 fireball_animate
         frame = 0
         if animation_frame then frame++

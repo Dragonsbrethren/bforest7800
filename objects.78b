@@ -189,18 +189,59 @@
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
 
+        ; DARK PRIEST
+        const PRIEST_HP          =  5
+        const PRIEST_VEL_CAP_HI  =  1
+        const PRIEST_VEL_CAP_LO  =  0
+        const PRIEST_DAMAGE      =  4
+        const PRIEST_DEF         =  0
+        const PRIEST_MDEF        =  2
+        const PRIEST_FRICTION_HI =  1
+        const PRIEST_FRICTION_LO =  0
+        const PRIEST_SPEED_HI    =  0
+        const PRIEST_SPEED_LO    = 128
         const PRIEST_WALK_TIMER  = 20
         const PRIEST_CAST_FRAMES = 20
+        const PRIEST_FLAGS       = %00000000
 
-        const DARKSPARK_SPEED_HI = 0
-        const DARKSPARK_SPEED_LO = 128
+        const DARKSPARK_SPEED_HI = 2
+        const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_VEL_CAP_HI = 2
-        const DARKSPARK_VEL_CAP_LO = 255
+        const DARKSPARK_VEL_CAP_LO = 0
         const DARKSPARK_DAMAGE = 6
+
+        ; SKELETAL KNIGHT
+        const SKEL_HP          =  5
+        const SKEL_VEL_CAP_HI  =  1
+        const SKEL_VEL_CAP_LO  =  0
+        const SKEL_DAMAGE      =  4
+        const SKEL_DEF         =  0
+        const SKEL_MDEF        =  2
+        const SKEL_FRICTION_HI =  1
+        const SKEL_FRICTION_LO =  0
+        const SKEL_SPEED_HI    =  0
+        const SKEL_SPEED_LO    = 128
+        const SKEL_WALK_TIMER  = 20
+        const SKEL_CAST_FRAMES = 20
+        const SKEL_FLAGS       = %00000000
 
         const SKELSWORD_DAMAGE = 3
         const RETRACT_FRAMES = 4
 
+        ; GHOST
+        const GHOST_HP = 5
+        const GHOST_VEL_CAP_HI = 1
+        const GHOST_VEL_CAP_LO = 0
+        const GHOST_DAMAGE = 4
+        const GHOST_DEF = 2
+        const GHOST_MDEF = 0
+        const GHOST_FRICTION_HI = 1
+        const GHOST_FRICTION_LO = 0
+        const GHOST_SPEED_HI = 0
+        const GHOST_SPEED_LO = 64
+        const GHOST_FLAGS = %00000000
+
+        ; RED SLIME
         const RSLIME_DROP_RATE = 128
         const RSLIME_HP = 4
         const MRSLIME_HP = RSLIME_HP / 2
@@ -260,9 +301,9 @@
         const SPIDER_SPEED_HI = 0
         const SPIDER_SPEED_LO = 128
         const SPIDER_VEL_CAP_HI = 1
-        const SPIDER_VEL_CAP_LO = 255
-        const SPIDER_FRICTION_HI = 0
-        const SPIDER_FRICTION_LO = 64
+        const SPIDER_VEL_CAP_LO = 0
+        const SPIDER_FRICTION_HI = 1
+        const SPIDER_FRICTION_LO = 0
         const SPIDER_DAMAGE = 3
         const SPIDER_DEF = 0
         const SPIDER_MDEF = 0
@@ -276,12 +317,12 @@
         ; HILL SLIME
         const HSLIME_HP = 6
         const HSLIME_SPEED_HI = 0
-        const HSLIME_SPEED_LO = 64 
+        const HSLIME_SPEED_LO = 64
         const HSLIME_VEL_CAP_HI = 1
         const HSLIME_VEL_CAP_LO = 0
-        const HSLIME_FRICTION_HI = 0
-        const HSLIME_FRICTION_LO = 32
-        const HSLIME_DAMAGE = 3
+        const HSLIME_FRICTION_HI = 1
+        const HSLIME_FRICTION_LO = 0
+        const HSLIME_DAMAGE = 8
         const HSLIME_DEF = 255
         const HSLIME_MDEF = 0
         const F_HSLIME_1 = 8
@@ -290,9 +331,9 @@
         ; FEUERMANN
         const HGHOST_HP = 6
         const HGHOST_SPEED_HI = 0
-        const HGHOST_SPEED_LO = 128
+        const HGHOST_SPEED_LO = 64
         const HGHOST_VEL_CAP_HI = 1
-        const HGHOST_VEL_CAP_LO = 128
+        const HGHOST_VEL_CAP_LO = 0
         const HGHOST_FRICTION_HI = 0
         const HGHOST_FRICTION_LO = 0
         const HGHOST_DAMAGE = 3

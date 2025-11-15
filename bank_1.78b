@@ -648,7 +648,7 @@ set_cast_direction
         beq cast_fireball_down
         cmp #DIR_LEFT
         bne cast_fireball_right
-        jmp cast_fireball_left
+        jmp cast_fireball_left  ; branch out of range
 cast_fireball_right
         sta object_facing,x
         sta object_Xdir,x
@@ -663,6 +663,7 @@ cast_fireball_right
         lda object_speed_lo,x
         sta object_Xvel_lo,x
         lda #0
+        sta object_Ydir,x
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
         rts
@@ -678,6 +679,7 @@ cast_fireball_up
         sbc #10
         sta object_Ypos,x
         lda #0
+        sta object_Xdir,x
         sta object_Xvel_hi,x
         sta object_Xvel_lo,x
         lda object_speed_lo,x
@@ -697,6 +699,7 @@ cast_fireball_down
         adc #10
         sta object_Ypos,x
         lda #0
+        sta object_Xdir,x
         sta object_Xvel_hi,x
         sta object_Xvel_lo,x
         lda object_speed_lo,x
@@ -718,6 +721,7 @@ cast_fireball_left
         lda object_speed_lo,x
         sta object_Xvel_lo,x
         lda #0
+        sta object_Ydir,x
         sta object_Yvel_hi,x
         sta object_Yvel_lo,x
         rts
@@ -1138,6 +1142,7 @@ decelerate_object
           lda #0
 do_st_xl  sta Xvelocity_lo
           lda Xvelocity_hi
+          beq do_st_xh
           sta temp3
           sbc temp1
           cmp temp3
@@ -1152,6 +1157,7 @@ do_st_xh  sta Xvelocity_hi
           lda #0
 do_st_yl  sta Yvelocity_lo
           lda Yvelocity_hi
+          beq do_st_yh
           sta temp5
           sbc temp1
           cmp temp5

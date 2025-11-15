@@ -792,31 +792,31 @@ obj_priest_stats
           lda #>.plot_priest
           sta object_spr_ptr_hi,x
 end
-        object_hp[obj_index] = 5
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 0
-        object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 0
-        object_friction_lo[obj_index] = 64
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 128
-        object_flags[obj_index] = 0
+        object_hp[obj_index] = PRIEST_HP
+        object_vel_cap_hi[obj_index] = PRIEST_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = PRIEST_VEL_CAP_LO
+        object_damage[obj_index] = PRIEST_DAMAGE
+        object_def[obj_index] = PRIEST_DEF
+        object_mdef[obj_index] = PRIEST_MDEF
+        object_friction_hi[obj_index] = PRIEST_FRICTION_HI
+        object_friction_lo[obj_index] = PRIEST_FRICTION_LO
+        object_speed_hi[obj_index] = PRIEST_SPEED_HI
+        object_speed_lo[obj_index] = PRIEST_SPEED_LO
+        object_flags[obj_index] = PRIEST_FLAGS
         goto obj_next_stats
 
 obj_skel_stats
-        object_hp[obj_index] = 5
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 128
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 0
-        object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 0
-        object_friction_lo[obj_index] = 64
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 128
-        object_flags[obj_index] = 0
+        object_hp[obj_index] = SKEL_HP
+        object_vel_cap_hi[obj_index] = SKEL_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = SKEL_VEL_CAP_LO
+        object_damage[obj_index] = SKEL_DAMAGE
+        object_def[obj_index] = SKEL_DEF
+        object_mdef[obj_index] = SKEL_MDEF
+        object_friction_hi[obj_index] = SKEL_FRICTION_HI
+        object_friction_lo[obj_index] = SKEL_FRICTION_LO
+        object_speed_hi[obj_index] = SKEL_SPEED_HI
+        object_speed_lo[obj_index] = SKEL_SPEED_LO
+        object_flags[obj_index] = SKEL_FLAGS
         object_spr_ptr_lo[obj_index] = plot_skeleton_lo
         object_spr_ptr_hi[obj_index] = plot_skeleton_hi
         goto obj_next_stats
@@ -837,17 +837,17 @@ ghost_follow
         goto test_follow_box
 
 obj_ghost_stats
-        object_hp[obj_index] = 5
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 2
-        object_mdef[obj_index] = 0
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 20
-        object_flags[obj_index] = 0
+        object_hp[obj_index] = GHOST_HP
+        object_vel_cap_hi[obj_index] = GHOST_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = GHOST_VEL_CAP_LO
+        object_damage[obj_index] = GHOST_DAMAGE
+        object_def[obj_index] = GHOST_DEF
+        object_mdef[obj_index] = GHOST_MDEF
+        object_friction_hi[obj_index] = GHOST_FRICTION_HI
+        object_friction_lo[obj_index] = GHOST_FRICTION_LO
+        object_speed_hi[obj_index] = GHOST_SPEED_HI
+        object_speed_lo[obj_index] = GHOST_SPEED_LO
+        object_flags[obj_index] = GHOST_FLAGS
         asm
           ldx obj_index
           lda #<.plot_ghost
