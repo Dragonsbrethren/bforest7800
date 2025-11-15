@@ -212,6 +212,7 @@ plot_hills_room_2
         zone1_objects  = 5
         zone2_objects  = 5
         zone14_objects = 4
+        locked_zone = 7
         return thisbank
 
 plot_hills_room_3
@@ -232,6 +233,7 @@ plot_hills_room_4
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        alt_palette = 1
         return thisbank
 
 plot_hills_room_5
@@ -242,6 +244,7 @@ plot_hills_room_5
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        alt_palette = 1
         return thisbank
 
 plot_hills_room_6
@@ -293,52 +296,6 @@ plot_hills_room_10
         zone2_objects  = 4
         zone14_objects = 1
         return thisbank
-
-        data hills_room_0_obj
-        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HGHOST, $58, $40
-        TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
-        $00
-end
-
-        data hills_room_1_obj
-        $00
-end
-
-        data hills_room_2_obj
-        $00
-end
-
-        data hills_room_3_obj
-        $00
-end
-
-        data hills_room_4_obj
-        $00
-end
-
-        data hills_room_5_obj
-        $00
-end
-
-        data hills_room_6_obj
-        $00
-end
-
-        data hills_room_7_obj
-        $00
-end
-
-        data hills_room_8_obj
-        $00
-end
-
-        data hills_room_9_obj
-        $00
-end
-
-        data hills_room_10_obj
-        $00
-end
 
 test_walkable_hills
         asm
@@ -668,4 +625,57 @@ end
         00, 00, 00, 00, 00, 00, 00
         00, 00, 02, 00, 00, 00, 00
         00, 00, 01, 00, 00, 00, 00
+end
+
+        data hills_room_0_obj
+        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HGHOST, $58, $40
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
+        $00
+end
+
+        data hills_room_1_obj
+        TYPE_SHIELD3, $80, $60
+        $00
+end
+
+        data hills_room_2_obj
+        $00
+end
+
+        data hills_room_3_obj
+        TYPE_SPIDER, $74, $40
+        $00
+end
+
+        data hills_room_4_obj
+        TYPE_HSLIME, $60, $60, TYPE_SPIDER, $7C, $60
+        TYPE_TORCH, $28, $30, TYPE_CHARM3, $78, $30
+        $00
+end
+
+        data hills_room_5_obj
+        TYPE_SPIDER, $20, $30, TYPE_SPIDER, $30, $30, TYPE_SPIDER, $74, $40
+        TYPE_SPIDER, $18, $60, TYPE_SPIDER, $28, $60, TYPE_HSLIME, $48, $80
+        TYPE_TORCH, $4C, $60
+        $00
+end
+
+        data hills_room_6_obj
+        $00
+end
+
+        data hills_room_7_obj
+        $00
+end
+
+        data hills_room_8_obj
+        $00
+end
+
+        data hills_room_9_obj
+        $00
+end
+
+        data hills_room_10_obj
+        $00
 end
