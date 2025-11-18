@@ -15,6 +15,9 @@
  <tileset firstgid="77" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/hills_waterf.png" width="8" height="16"/>
  </tileset>
+ <tileset firstgid="78" name="forest_tiles" tilewidth="4" tileheight="16" tilecount="64" columns="64">
+  <image source="../../rpg/gfx/tiles/forest_tiles.png" width="256" height="16"/>
+ </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14">
   <data>
    <tile gid="54"/>

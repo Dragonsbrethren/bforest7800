@@ -199,8 +199,11 @@ tp_coin   cmp #TYPE_COIN
           bne tp_prism
           jmp .plot_coin
 tp_prism  cmp #TYPE_PRISM
-          bne tp_blood
+          bne tp_harpy_sh
           jmp .plot_prism
+tp_harpy_sh cmp #TYPE_HARPY_SH
+          bne tp_blood
+          jmp .plot_harpy_sh
 tp_blood  cmp #TYPE_BLOOD
           bne tp_dooro
           jmp .plot_blood
@@ -624,6 +627,11 @@ spawn_object
         ; torches have special logic for changing drops
           cmp #TYPE_TORCH
           beq .spawns_torch
+        ; hack - if type was Harpy, remove its shadow
+          cmp #TYPE_HARPY
+          bne spawn_zero_nibble
+          jmp .remove_harpy_shadow
+spawn_zero_nibble
         ; zero Ypos lower nibble to avoid gfx glitch
           lda object_Ypos,x
           and #$F0
@@ -1828,28 +1836,5 @@ restore_object_props
         lda #0
         sta flags
         sta timer
-        rts
-end
-
-;==============================================================================
-; SUBROUTINE: FIND NEW OBJECT
-;------------------------------------------------------------------------------
-; Iterates through all 16 object slots and sets the index variable to a 0 slot
-;==============================================================================
-find_new_object
-        asm
-        ldx #0
-        stx no_empty_slot
-new_obj_loop
-        inx
-        lda object_type,x
-        beq new_obj_found
-        cpx #MAX_MAP_OBJECTS
-        bne new_obj_loop
-        ; no empty obj slot found, routines can test if this is non-zero
-        stx no_empty_slot
-        rts
-new_obj_found
-        stx spawn_index
         rts
 end

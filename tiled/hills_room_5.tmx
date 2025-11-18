@@ -3,16 +3,16 @@
  <tileset firstgid="1" name="hills_ledges" tilewidth="8" tileheight="16" tilecount="43" columns="43">
   <image source="../gfx/tiles/hills_ledges.png" width="344" height="16"/>
  </tileset>
- <tileset firstgid="44" name="hills_high" tilewidth="8" tileheight="16" tilecount="34" columns="18">
+ <tileset firstgid="44" name="hills_high" tilewidth="8" tileheight="16" tilecount="18" columns="18">
   <image source="../gfx/tiles/hills_high.png" width="144" height="16"/>
  </tileset>
- <tileset firstgid="78" name="hills_water" tilewidth="8" tileheight="16" tilecount="11" columns="11">
+ <tileset firstgid="62" name="hills_water" tilewidth="8" tileheight="16" tilecount="11" columns="11">
   <image source="../gfx/tiles/hills_water.png" width="88" height="16"/>
  </tileset>
- <tileset firstgid="89" name="hills_veg" tilewidth="8" tileheight="16" tilecount="4" columns="4">
+ <tileset firstgid="73" name="hills_veg" tilewidth="8" tileheight="16" tilecount="4" columns="4">
   <image source="../gfx/tiles/hills_veg.png" width="32" height="16"/>
  </tileset>
- <tileset firstgid="93" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="77" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/hills_waterf.png" width="8" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14">
@@ -115,8 +115,8 @@
    <tile gid="48"/>
    <tile gid="48"/>
    <tile gid="48"/>
-   <tile gid="56"/>
-   <tile gid="54"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
    <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
@@ -134,9 +134,9 @@
    <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
-   <tile gid="46"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
    <tile gid="20"/>
    <tile gid="20"/>
    <tile gid="20"/>
@@ -154,17 +154,17 @@
    <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
-   <tile gid="46"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="89"/>
-   <tile gid="91"/>
+   <tile gid="73"/>
+   <tile gid="75"/>
    <tile gid="3"/>
    <tile gid="19"/>
    <tile gid="20"/>
@@ -174,9 +174,9 @@
    <tile gid="20"/>
    <tile gid="28"/>
    <tile gid="26"/>
-   <tile gid="46"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
    <tile gid="5"/>
    <tile gid="5"/>
    <tile gid="5"/>
@@ -194,9 +194,9 @@
    <tile gid="3"/>
    <tile gid="25"/>
    <tile gid="26"/>
-   <tile gid="46"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
+   <tile gid="26"/>
+   <tile gid="45"/>
+   <tile gid="45"/>
    <tile gid="51"/>
    <tile gid="51"/>
    <tile gid="51"/>
@@ -210,13 +210,13 @@
    <tile gid="5"/>
    <tile gid="5"/>
    <tile gid="5"/>
-   <tile gid="92"/>
+   <tile gid="76"/>
    <tile gid="6"/>
    <tile gid="25"/>
    <tile gid="26"/>
    <tile gid="46"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
+   <tile gid="50"/>
+   <tile gid="51"/>
    <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="54"/>

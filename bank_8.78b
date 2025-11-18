@@ -10,8 +10,8 @@
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
         incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
-        incgraphic gfx/sprites/harpy0.png 160B 0 6 5 3 4 1
-        incgraphic gfx/sprites/harpy1.png 160B 0 6 3 5 4 1
+        incgraphic gfx/sprites/harpy0.png 160B 0 4 6 7 3 5 2
+        incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 7 5 2
         incgraphic gfx/sprites/spider0.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider2.png 160A 0 1 3
@@ -23,6 +23,8 @@
         incgraphic gfx/sprites/hslime0.png 160A 0 2 3 1
         incgraphic gfx/sprites/hslime1.png 160A 0 2 3 1
         incgraphic gfx/sprites/hghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/hghost1.png 160A 0 1 2 3
+        incgraphic gfx/sprites/harpy_sh.png 160A 0 1 1 1
         incgraphic gfx/sprites/mhslime0.png 160A 0 2 3 1 
         incgraphic gfx/sprites/mhslime1.png 160A 0 2 3 1
 
@@ -344,7 +346,32 @@ test_water_hills
         if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
         return thisbank
 
+;=========================================================
+; HARPY
+;---------------------------------------------------------
+; Decends from top of screen, swoops at player
+; Maybe fires feathers as projectile attack?
+; Has shadow, the shadow object for each Harpy must be
+; placed in map object data directly after Harpy object
+;=========================================================
 harpy_ai
+        object_pal[index] = 0
+        frame = F_HARPY_FLY_0
+        if animation_frame then frame++ : Yposition = Yposition - 1
+        Yvelocity = Yvelocity + move_speed
+        Ydirection = DIR_DOWN
+        temp1 = index + 1
+        ; update shadow position TODO: more dynamic shadow movement
+        object_Ypos[temp1] = Yposition + $10
+
+harpy_move
+        return thisbank
+
+;=========================================================
+; OCHRE JELLY
+;---------------------------------------------------------
+; Hills variant of Slime
+;=========================================================
 hslime_ai
         object_pal[index] = 6
         frame = F_HSLIME_1
@@ -469,6 +496,17 @@ spider_walk_return
         return thisbank
 
 obj_harpy_stats
+        object_hp[obj_index] = HARPY_HP
+        object_vel_cap_hi[obj_index] = HARPY_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = HARPY_VEL_CAP_LO
+        object_damage[obj_index] = HARPY_DAMAGE
+        object_def[obj_index] = HARPY_DEF
+        object_mdef[obj_index] = HARPY_MDEF
+        object_friction_hi[obj_index] = HARPY_FRICTION_HI
+        object_friction_lo[obj_index] = HARPY_FRICTION_LO
+        object_speed_hi[obj_index] = HARPY_SPEED_HI
+        object_speed_lo[obj_index] = HARPY_SPEED_LO
+        object_flags[obj_index] = HARPY_FLAGS
 
 hills_160b_sprite
         asm
@@ -537,6 +575,11 @@ plot_hud_hills
         plotvalue hills_hud 0 move_tile_1 4 32 12
         return
 
+        dmahole 0
+plot_harpy_sh
+        frame = F_HARPY_SH
+        sprite_pal = 4
+
 plot_hills_160a
         asm
           ; don't lock zone if elevation > 0
@@ -561,7 +604,6 @@ plot_hills_160b
         PLOTSPRITE harpy0 sprite_pal Xposition Yposition frame
         goto plot_next
 
-        dmahole 0
 torch_tile_block_hills
         ; block with a floatable tile so projectiles can hit torch
         pokechar current_map peekX peekY 20 14 $50
@@ -576,6 +618,18 @@ torch_tile_unblock_hills
         ; $27 is a special tile that is walkable at all elevations
         pokechar current_map peekX peekY 20 14 $4E
         goto kill_torch_done
+
+remove_harpy_shadow
+        asm
+          ; increment x to get index of shadow
+          inx
+          lda #0
+          sta object_type,x
+          ; put x back to harpy's index
+          dex
+          ; resume spawner code
+          jmp spawn_zero_nibble
+end
 
         ; %00000001 = walkable
         ; %00000010 = floatable
@@ -619,8 +673,8 @@ end
 
         data hills_rooms
         00, 00, 00, 00, 00, 00, 00
-        03, 04, 05, 00, 00, 00, 00
-        02, 10, 06,  9, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        03, 04, 05,  9, 00, 00, 00
         01, 00, 07,  8, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
         00, 00, 02, 00, 00, 00, 00
@@ -628,7 +682,7 @@ end
 end
 
         data hills_room_0_obj
-        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HGHOST, $58, $40
+        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HARPY, $58, $40, TYPE_HARPY_SH, $58, $50
         TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
         $00
 end
@@ -654,13 +708,14 @@ end
 end
 
         data hills_room_5_obj
-        TYPE_SPIDER, $20, $30, TYPE_SPIDER, $30, $30, TYPE_SPIDER, $74, $40
-        TYPE_SPIDER, $18, $60, TYPE_SPIDER, $28, $60, TYPE_HSLIME, $48, $80
+        TYPE_SPIDER, $20, $30, TYPE_SPIDER, $74, $40
+        TYPE_SPIDER, $18, $60, TYPE_HSLIME, $48, $80
         TYPE_TORCH, $4C, $60
         $00
 end
 
         data hills_room_6_obj
+        TYPE_HGHOST, $18, $70
         $00
 end
 
@@ -673,6 +728,7 @@ end
 end
 
         data hills_room_9_obj
+        TYPE_HARPY, $20, $10, TYPE_HARPY_SH, $20, $20
         $00
 end
 

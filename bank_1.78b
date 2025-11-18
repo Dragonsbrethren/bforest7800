@@ -1166,3 +1166,26 @@ do_st_yl  sta Yvelocity_lo
 do_st_yh  sta Yvelocity_hi
           rts
 end
+
+;==============================================================================
+; SUBROUTINE: FIND NEW OBJECT
+;------------------------------------------------------------------------------
+; Iterates through all 16 object slots and sets the index variable to a 0 slot
+;==============================================================================
+find_new_object
+        asm
+        ldx #0
+        stx no_empty_slot
+new_obj_loop
+        inx
+        lda object_type,x
+        beq new_obj_found
+        cpx #MAX_MAP_OBJECTS
+        bne new_obj_loop
+        ; no empty obj slot found, routines can test if this is non-zero
+        stx no_empty_slot
+        rts
+new_obj_found
+        stx spawn_index
+        rts
+end
