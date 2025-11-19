@@ -333,6 +333,7 @@
 
         ; HILL SLIME
         const HSLIME_HP = 6
+        const MHSLIME_HP = (HSLIME_HP / 2)
         const HSLIME_SPEED_HI = 0
         const HSLIME_SPEED_LO = 64
         const HSLIME_VEL_CAP_HI = 1
@@ -341,9 +342,13 @@
         const HSLIME_FRICTION_LO = 0
         const HSLIME_DAMAGE = 8
         const HSLIME_DEF = 255
+        const MHSLIME_DEF = 0
         const HSLIME_MDEF = 0
+        const MHSLIME_MDEF = 0
         const F_HSLIME_1 = 8
         const F_HSLIME_2 = 9
+        const F_MHSLIME_1 = 13
+        const F_MHSLIME_2 = 14
 
         ; FEUERMANN
         const HGHOST_HP = 6
@@ -419,6 +424,8 @@
         const spider_ai_hi    = #>.spider_ai
         const hslime_ai_lo    = #<.hslime_ai
         const hslime_ai_hi    = #>.hslime_ai
+        const mhslime_ai_lo    = #<.mhslime_ai
+        const mhslime_ai_hi    = #>.mhslime_ai
         const hghost_ai_lo    = #<.hghost_ai
         const hghost_ai_hi    = #>.hghost_ai
 

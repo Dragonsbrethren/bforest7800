@@ -375,10 +375,10 @@ end
         'Skull Shield*'
 end
         alphadata pickup_shield3 font_spr
-        'Shield 3     *'
+        'Kite Shield*'
 end
         alphadata pickup_shield4 font_spr
-        'Shield 4     *'
+        'Heater Shield*'
 end
         alphadata pickup_shield5 font_spr
         'Shield 5     *'
@@ -434,10 +434,10 @@ end
         'Dark Rosary*'
 end
         alphadata pickup_charm3 font_spr
-        'Charm 3      *'
+        'Thunder Rock*'
 end
         alphadata pickup_charm4 font_spr
-        'Charm 4      *'
+        'Harpy` Locket*'
 end
         alphadata pickup_charm5 font_spr
         'Charm 5      *'

@@ -493,14 +493,14 @@ pos_swd_left
         data object_ai_lo
         0, 0, wolf_ai_lo, warg_ai_lo, nix_ai_lo, octopus_ai_lo, slime_ai_lo, mslime_ai_lo, 
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
-        ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, hslime_ai_lo
+        ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo
 end
 
         data object_ai_hi
         0, 0, wolf_ai_hi, warg_ai_hi, nix_ai_hi, octopus_ai_hi, slime_ai_hi, mslime_ai_hi, 
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
-        ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, hslime_ai_hi
+        ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi
 end
 
@@ -690,19 +690,20 @@ _spawn_coin
         TYPE_LIFEAPPLE  ; merman
         TYPE_HIPOTION   ; octopus
         TYPE_HIETHER    ; slime
-        TYPE_HIETHER    ; mini-slime
+        0               ; mini-slime
         TYPE_POTION     ; raven
         TYPE_CHARM2     ; priest
         TYPE_SWORD2     ; skeleton
         TYPE_HIETHER    ; red slime
-        TYPE_ANTIDOTE   ; mini red slime
+        0               ; mini red slime
         TYPE_HIETHER    ; ghost
         TYPE_HIETHER    ; river ghost
         TYPE_LIFEAPPLE  ; harpy
         TYPE_LIFEAPPLE  ; spider
         TYPE_LIFEAPPLE  ; vertical spider
         TYPE_ELIXIR     ; ochre jelly
-        TYPE_ELIXIR     ; feuermann
+        0               ; mini ochre jelly
+        TYPE_SHIELD4    ; feuermann
 end
 
         data common_drops
@@ -713,18 +714,19 @@ end
         TYPE_EYEDROP    ; merman
         TYPE_EYEDROP    ; octopus
         TYPE_ANTIDOTE   ; slime
-        TYPE_ANTIDOTE   ; mini-slime
+        0               ; mini-slime
         TYPE_FOOD       ; raven
         TYPE_ETHER      ; priest
         TYPE_SHIELD2    ; skeleton
         TYPE_ANTIDOTE   ; red slime
-        TYPE_ANTIDOTE   ; mini red slime
+        0               ; mini red slime
         TYPE_UNCURSE    ; ghost
         TYPE_UNCURSE    ; river ghost
-        TYPE_SHIELD3    ; harpy
+        TYPE_CHARM4     ; harpy
         TYPE_ANTIDOTE   ; spider
         TYPE_ANTIDOTE   ; vertical spider
         TYPE_ANTIDOTE   ; ochre jelly
+        0               ; mini ochre jelly
         TYPE_UNCURSE    ; feuermann
 end
 
@@ -1455,17 +1457,6 @@ kill_object
           ldx index
           bne spawner_flag
 change_to_spawner
-          cmp #TYPE_SLIME
-          bne spawner_rslime
-          ldy animation_frame
-          beq spawner_rslime
-          jmp .split_slime
-spawner_rslime
-          cmp #TYPE_RSLIME
-          bne spawner_flag
-          ldy animation_frame
-          beq spawner_flag
-          jmp .split_rslime
 spawner_flag
           lda object_type,x
           sta object_flags,x
@@ -1489,18 +1480,18 @@ sword_damage
         ; TODO: Much better damage calculations
         asm
           ldx index
-          lda object_def,x
-          cmp #255
-          beq sword_damage_dec_invuln
 sword_damage_dec_invuln
           lda object_invuln,x
           ; if invuln is zero, damage object, otherwise dec invuln frames
-          beq .damage_object
+          beq damage_object
           dec object_invuln,x
           rts
-end
 
 damage_object
+          lda object_def,x
+          cmp #255
+          beq .test_slime_index
+end
         temp_hp = object_hp[index]
         temp1 = temp_hp
         hp_change = player_atk - object_def[index]
@@ -1514,8 +1505,27 @@ damage_object
         gosub decrease_hp
         if temp1 < temp_hp then temp_hp = 0
         object_hp[index] = temp_hp
+sword_damage_set_invuln
         object_invuln[index] = INVULN_FRAMES
         goto set_enemy_name
+
+test_slime_index
+        asm
+          lda object_type,x
+          cmp #TYPE_SLIME
+          bne test_river_slime
+          jmp .split_slime
+test_river_slime
+          cmp #TYPE_RSLIME
+          bne test_hills_slime
+          jmp .split_rslime
+test_hills_slime
+          cmp #TYPE_HSLIME
+          bne not_a_slime
+          jmp .split_hslime
+not_a_slime
+          jmp .sword_damage_set_invuln
+end
 
 kill_torch
         gosub get_torch_pos

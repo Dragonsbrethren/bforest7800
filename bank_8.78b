@@ -372,12 +372,17 @@ harpy_move
 ;---------------------------------------------------------
 ; Hills variant of Slime
 ;=========================================================
+mhslime_ai
+        object_pal[index] = 6
+        frame = F_MHSLIME_1
+        goto hslime_anim
+
 hslime_ai
         object_pal[index] = 6
         frame = F_HSLIME_1
-        if animation_frame then frame = frame + 1 : temp1 = 0 else temp1 = HSLIME_DEF
+hslime_anim
+        if animation_frame then frame++
 hslime_chase
-        object_def[index] = temp1
         goto followplayer
 
 ;=========================================================
@@ -625,11 +630,61 @@ remove_harpy_shadow
           inx
           lda #0
           sta object_type,x
+          ; for aesthetics, move harpy's spawner to shadow pos
+          lda object_Xpos,x
           ; put x back to harpy's index
           dex
-          ; resume spawner code
+          ; store the new Xpos and resume spawner code
+          sta object_Xpos,x
           jmp spawn_zero_nibble
 end
+
+split_hslime
+        ; replace slime mobj with mini slime
+        object_invuln[index] = INVULN_FRAMES
+        object_type[index] = TYPE_MHSLIME
+        object_hp[index] = MHSLIME_HP
+        object_def[index] = MHSLIME_DEF
+        temp1 = object_Xpos[index]
+        temp2 = object_Ypos[index]
+        ; mini slime is moved to the left of the parent slime's pos
+        object_Xpos[index] = object_Xpos[index] - 1
+        object_frame[index] = F_MHSLIME_1
+        asm
+          ldx index
+          lda #<.plot_hills_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160a
+          sta object_spr_ptr_hi,x
+end
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
+        ; initialize the new mini slime object
+        object_type[spawn_index] = TYPE_MHSLIME
+        object_hp[spawn_index] = MHSLIME_HP
+        object_vel_cap_hi[spawn_index] = HSLIME_VEL_CAP_HI
+        object_vel_cap_lo[spawn_index] = HSLIME_VEL_CAP_LO
+        object_damage[spawn_index] = HSLIME_DAMAGE
+        object_def[spawn_index] = MHSLIME_DEF
+        object_mdef[spawn_index] = MHSLIME_MDEF
+        object_friction_hi[spawn_index] = HSLIME_FRICTION_HI
+        object_friction_lo[spawn_index] = HSLIME_FRICTION_LO
+        object_speed_hi[spawn_index] = HSLIME_SPEED_HI
+        object_speed_lo[spawn_index] = HSLIME_SPEED_LO
+        object_frame[spawn_index] = F_MHSLIME_1
+        ; mini slime spawns to the right of the parent slime's pos
+        object_Xpos[spawn_index] = temp1 + 9
+        object_Ypos[spawn_index] = temp2
+        object_pal[spawn_index] = 6
+        asm
+          ldx spawn_index
+          lda #<.plot_hills_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160a
+          sta object_spr_ptr_hi,x
+end
+        goto set_enemy_name
 
         ; %00000001 = walkable
         ; %00000010 = floatable
