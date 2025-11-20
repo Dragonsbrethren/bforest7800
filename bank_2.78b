@@ -453,47 +453,68 @@ end
 
 split_slime
         ; replace slime mobj with mini slime
-        object_type[index] = TYPE_MSLIME
-        object_hp[index] = MSLIME_HP
-        object_def[index] = MSLIME_DEF
-        temp1 = object_Xpos[index]
-        temp2 = object_Ypos[index]
-        ; mini slime is moved to the left of the parent slime's pos
-        object_Xpos[index] = object_Xpos[index] - 1
         asm
           ldx index
+          lda #TYPE_SLIME
+          sta object_type,x
+          lda #SLIME_HP
+          sta object_hp,x
+          lda #SLIME_DEF
+          sta object_def,x
           lda #<.plot_minislime
           sta object_spr_ptr_lo,x
           lda #>.plot_minislime
           sta object_spr_ptr_hi,x
 end
         gosub find_new_object
-        index = spawn_index
         ; if no slots, the slime just becomes a single mini slime
-        if no_empty_slot then object_Xpos[index] = temp1 : cc_next
-        ; initialize the new mini slime object
-        object_type[index] = TYPE_MSLIME
-        object_hp[index] = MSLIME_HP
-        object_vel_cap_hi[index] = SLIME_VEL_CAP_HI
-        object_vel_cap_lo[index] = SLIME_VEL_CAP_LO
-        object_damage[index] = SLIME_DAMAGE
-        object_def[index] = MSLIME_DEF
-        object_mdef[index] = MSLIME_MDEF
-        object_friction_hi[index] = SLIME_FRICTION_HI
-        object_friction_lo[index] = SLIME_FRICTION_LO
-        object_speed_hi[index] = SLIME_SPEED_HI
-        object_speed_lo[index] = SLIME_SPEED_LO
-        ; mini slime spawns to the right of the parent slime's pos
-        object_Xpos[index] = temp1 + 9
-        object_Ypos[index] = temp2
+        if no_empty_slot then goto set_enemy_name
         asm
+          ; move the original slime to the left
           ldx index
+          lda object_Xpos,x
+          ; push Xpos to stack for later use
+          pha
+          sec
+          sbc #1
+          sta object_Xpos,x
+          lda object_Ypos,x
+        ; initialize the new mini slime object
+          ldx spawn_index
+          sta object_Ypos,x
+          lda #TYPE_SLIME
+          sta object_type,x
+          lda #SLIME_HP
+          sta object_hp,x
+          lda #SLIME_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #SLIME_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #SLIME_DAMAGE
+          sta object_damage,x
+          lda #SLIME_DEF
+          sta object_def,x
+          lda #SLIME_MDEF
+          sta object_mdef,x
+          lda #SLIME_FRICTION_HI
+          sta object_friction_hi,x
+          lda #SLIME_FRICTION_LO
+          sta object_friction_lo,x
+          lda #SLIME_SPEED_HI
+          sta object_speed_hi,x
+          lda #SLIME_SPEED_LO
+          sta object_speed_lo,x
+          ; pull parent X position from stack and move spawned slime to the right
+          pla
+          clc
+          adc #9
+          sta object_Xpos,x
           lda #<.plot_minislime
           sta object_spr_ptr_lo,x
           lda #>.plot_minislime
           sta object_spr_ptr_hi,x
 end
-        goto cc_next
+        goto set_enemy_name
 
 ;==============================================================================
 ; RAVEN AI
