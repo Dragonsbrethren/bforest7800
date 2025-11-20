@@ -437,7 +437,7 @@ end
         'Thunder Rock*'
 end
         alphadata pickup_charm4 font_spr
-        'Harpy` Locket*'
+        'Harpy` Charm*'
 end
         alphadata pickup_charm5 font_spr
         'Charm 5      *'

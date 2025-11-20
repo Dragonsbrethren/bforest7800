@@ -10,8 +10,8 @@
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
         incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
-        incgraphic gfx/sprites/harpy0.png 160B 0 4 6 7 3 5 2
-        incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 7 5 2
+        incgraphic gfx/sprites/harpy0.png 160B 0 4 6 7 3 5 2 1
+        incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 7 5 2 1
         incgraphic gfx/sprites/spider0.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider2.png 160A 0 1 3
@@ -355,16 +355,53 @@ test_water_hills
 ; placed in map object data directly after Harpy object
 ;=========================================================
 harpy_ai
-        object_pal[index] = 0
-        frame = F_HARPY_FLY_0
-        if animation_frame then frame++ : Yposition = Yposition - 1
-        Yvelocity = Yvelocity + move_speed
-        Ydirection = DIR_DOWN
-        temp1 = index + 1
-        ; update shadow position TODO: more dynamic shadow movement
-        object_Ypos[temp1] = Yposition + $10
+        if timer then goto harpy_dive_timer
 
-harpy_move
+; object data will fill these in as 0
+;        object_pal[index] = 0
+;        frame = F_HARPY_FLY_0
+
+        ; if the player is above the harpy, the harpy flies upward
+        if (player_Ypos - 12) >= Yposition then harpy_dive
+harpy_fly_up
+        frame = F_HARPY_FLY_0
+        Xvelocity = 0
+        Yvelocity = Yvelocity + move_speed
+        Ydirection = DIR_UP
+        ; harpy moves upward 1 pixel every other frame
+        if animation_frame then frame++ : Yposition--
+        goto harpy_shadow_update
+
+harpy_dive
+        frame = F_HARPY_DIVE
+        if player_Xpos < Xposition then temp1 = Xposition - player_Xpos : Xdirection = DIR_LEFT : goto harpy_dive_Y
+        temp1 = player_Xpos - Xposition : Xdirection = DIR_RIGHT
+harpy_dive_Y
+        Ydirection = DIR_DOWN
+        if player_Ypos < Yposition then temp2 = Yposition - player_Ypos : Ydirection : goto harpy_dive_arc
+        temp2 = player_Ypos - Yposition
+harpy_dive_arc
+        ; if there's no Y offset, treat this as a fly up frame
+        if !temp2 then harpy_fly_up
+        
+        if temp1 > temp2 then Xvelocity = Xvelocity + move_speed
+        Xvelocity = Xvelocity + move_speed
+
+        if temp2 > temp1 then Yvelocity = Yvelocity + move_speed
+        Yvelocity = Yvelocity + move_speed
+
+        timer = HARPY_DIVE_TIME
+
+harpy_dive_timer
+        timer--
+
+harpy_shadow_update
+        ; update shadow position TODO: more dynamic shadow movement
+        temp1 = index + 1
+        object_Ypos[temp1] = Yposition + $10
+        object_Xpos[temp1] = Xposition
+
+harpy_done
         return thisbank
 
 ;=========================================================
@@ -512,16 +549,7 @@ obj_harpy_stats
         object_speed_hi[obj_index] = HARPY_SPEED_HI
         object_speed_lo[obj_index] = HARPY_SPEED_LO
         object_flags[obj_index] = HARPY_FLAGS
-
-hills_160b_sprite
-        asm
-          ldx obj_index
-          lda #<.plot_hills_160b
-          sta object_spr_ptr_lo,x
-          lda #>.plot_hills_160b
-          sta object_spr_ptr_hi,x
-end
-        goto obj_next_stats
+        goto hills_160b_sprite
 
 obj_spider_stats
         object_hp[obj_index] = SPIDER_HP
@@ -563,8 +591,9 @@ obj_hghost_stats
         object_speed_hi[obj_index] = HGHOST_SPEED_HI
         object_speed_lo[obj_index] = HGHOST_SPEED_LO
         object_flags[obj_index] = 0
-;        goto hills_160a_sprite
+        goto hills_160a_sprite    
 
+        dmahole 0
 hills_160a_sprite
         asm
           ldx obj_index
@@ -573,17 +602,27 @@ hills_160a_sprite
           lda #>.plot_hills_160a
           sta object_spr_ptr_hi,x
 end
-        goto obj_next_stats      
+        goto obj_next_stats  
+
+hills_160b_sprite
+        asm
+          ldx obj_index
+          lda #<.plot_hills_160b
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160b
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
 
 plot_hud_hills
         plotvalue hills_hud 0 object_elevation 2 32 11
         plotvalue hills_hud 0 move_tile_1 4 32 12
         return
 
-        dmahole 0
 plot_harpy_sh
         frame = F_HARPY_SH
         sprite_pal = 4
+        object_elevation[index] = 1
 
 plot_hills_160a
         asm

@@ -303,20 +303,23 @@
         const HARPY_SPEED_LO = 128
         const HARPY_VEL_CAP_HI = 1
         const HARPY_VEL_CAP_LO = 0
-        const HARPY_FRICTION_HI = 1
+        const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
         const HARPY_DAMAGE = 3
         const HARPY_DEF = 0
         const HARPY_MDEF = 0
         const HARPY_FLAGS = %00000100
+        const HARPY_DIVE_TIME = 20
         const F_HARPY_FLY_0 = 0
+        const F_HARPY_FLY_1 = 1
+        const F_HARPY_DIVE  = 1
         const F_HARPY_SH    = 12
 
 
         ; SPIDER
         const SPIDER_HP = 6
-        const SPIDER_SPEED_HI = 0
-        const SPIDER_SPEED_LO = 128
+        const SPIDER_SPEED_HI = 1
+        const SPIDER_SPEED_LO = 0
         const SPIDER_VEL_CAP_HI = 1
         const SPIDER_VEL_CAP_LO = 0
         const SPIDER_FRICTION_HI = 1
