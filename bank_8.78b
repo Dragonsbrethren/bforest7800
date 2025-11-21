@@ -356,13 +356,14 @@ test_water_hills
 ;=========================================================
 harpy_ai
         if timer then goto harpy_dive_timer
+        Yvelocity = 0
 
 ; object data will fill these in as 0
 ;        object_pal[index] = 0
 ;        frame = F_HARPY_FLY_0
 
         ; if the player is above the harpy, the harpy flies upward
-        if (player_Ypos - 12) >= Yposition then harpy_dive
+        if (player_Ypos - 32) >= Yposition then harpy_dive
 harpy_fly_up
         frame = F_HARPY_FLY_0
         Xvelocity = 0
