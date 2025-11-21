@@ -10,8 +10,8 @@
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
         incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
-        incgraphic gfx/sprites/harpy0.png 160B 0 4 6 7 3 5 2 1
-        incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 7 5 2 1
+        incgraphic gfx/sprites/harpy0.png 160B 0 4 6 8 3 5 2 1
+        incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 8 5 2 1
         incgraphic gfx/sprites/spider0.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider2.png 160A 0 1 3
@@ -370,7 +370,7 @@ harpy_fly_up
         Yvelocity = Yvelocity + move_speed
         Ydirection = DIR_UP
         ; harpy moves upward 1 pixel every other frame
-        if animation_frame then frame++ : Yposition--
+        if animation_frame then frame++ : Yposition-- : playsfx sfx_berzerkrobotdeath 
         goto harpy_shadow_update
 
 harpy_dive
@@ -847,10 +847,22 @@ end
 end
 
         data hills_room_9_obj
-        TYPE_HARPY, $20, $10, TYPE_HARPY_SH, $20, $20
+        TYPE_HARPY, $38, $90, TYPE_HARPY_SH, $38, $90, TYPE_HARPY, $60, $A0, TYPE_HARPY_SH, $38, $A0
         $00
 end
 
         data hills_room_10_obj
         $00
 end
+
+        data sfx_berzerkrobotdeath
+        $10,$10,$00 ; version, priority, frames per chunk
+        $00,$08,$06 ; first chunk of freq,channel,volume data 
+        $01,$08,$05
+        $02,$08,$04
+        $03,$08,$03
+        $04,$08,$02
+        $05,$08,$01
+        $06,$08,$01
+        $00,$00,$00
+        end
