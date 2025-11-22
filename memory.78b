@@ -290,6 +290,7 @@
         autodim byte exit_Ypos
         autodim byte exit_room_index
         autodim byte demo_end
+        autodim byte shadow_offset
 
         const INPUT_BUFFER_MAX = 7      ; array starts at 0
         autodim byte input_buffer 8

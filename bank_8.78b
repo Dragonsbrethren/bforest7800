@@ -115,6 +115,8 @@ hills_set_room
         sta pal_animation
         sta exit_room_index
         sta save_room_index
+        lda #1
+        sta shadow_offset
         lda #$FF
         sta locked_zone
         ldx room_index
@@ -287,6 +289,7 @@ plot_hills_room_9
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
+        shadow_offset  = 2
         return thisbank
 
 plot_hills_room_10
@@ -352,7 +355,8 @@ test_water_hills
 ; Decends from top of screen, swoops at player
 ; Maybe fires feathers as projectile attack?
 ; Has shadow, the shadow object for each Harpy must be
-; placed in map object data directly after Harpy object
+; placed in map object data directly after
+; shadow_offset number of objects
 ;=========================================================
 harpy_ai
         if timer then goto harpy_dive_timer
@@ -370,7 +374,8 @@ harpy_fly_up
         Yvelocity = Yvelocity + move_speed
         Ydirection = DIR_UP
         ; harpy moves upward 1 pixel every other frame
-        if animation_frame then frame++ : Yposition-- : playsfx sfx_berzerkrobotdeath 
+        temp7 = rand&3
+        if animation_frame then frame++ : Yposition-- : playsfx sfx_berzerkrobotdeath temp7
         goto harpy_shadow_update
 
 harpy_dive
@@ -398,7 +403,7 @@ harpy_dive_timer
 
 harpy_shadow_update
         ; update shadow position TODO: more dynamic shadow movement
-        temp1 = index + 1
+        temp1 = index + shadow_offset
         object_Ypos[temp1] = Yposition + $10
         object_Xpos[temp1] = Xposition
 
@@ -538,6 +543,7 @@ spider_walk_anim
 spider_walk_return
         return thisbank
 
+        dmahole 0
 obj_harpy_stats
         object_hp[obj_index] = HARPY_HP
         object_vel_cap_hi[obj_index] = HARPY_VEL_CAP_HI
@@ -594,7 +600,6 @@ obj_hghost_stats
         object_flags[obj_index] = 0
         goto hills_160a_sprite    
 
-        dmahole 0
 hills_160a_sprite
         asm
           ldx obj_index
@@ -666,14 +671,18 @@ torch_tile_unblock_hills
 
 remove_harpy_shadow
         asm
-          ; increment x to get index of shadow
-          inx
+          ; add shadow_offset to Harpy's index, zero shadow's object slot
+          stx temp1
+          txa
+          clc
+          adc shadow_offset
+          tax
           lda #0
           sta object_type,x
           ; for aesthetics, move harpy's spawner to shadow pos
           lda object_Xpos,x
           ; put x back to harpy's index
-          dex
+          ldx temp1
           ; store the new Xpos and resume spawner code
           sta object_Xpos,x
           jmp spawn_zero_nibble
@@ -847,7 +856,8 @@ end
 end
 
         data hills_room_9_obj
-        TYPE_HARPY, $38, $90, TYPE_HARPY_SH, $38, $90, TYPE_HARPY, $60, $A0, TYPE_HARPY_SH, $38, $A0
+        TYPE_HARPY, $38, $90, TYPE_HARPY, $60, $A0, TYPE_HARPY_SH, $38, $90, TYPE_HARPY_SH, $60, $A0
+        TYPE_TORCH, $20, $50, TYPE_TORCH, $20, $70, TYPE_TORCH, $70, $50, TYPE_TORCH, $70, $70
         $00
 end
 

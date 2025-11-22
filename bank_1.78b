@@ -933,7 +933,7 @@ end
 end
 
         data f_charm_pals
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0
 end
 
 ledge_hop
