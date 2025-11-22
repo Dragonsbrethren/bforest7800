@@ -41,6 +41,7 @@
         incbasic bank_7.78b
         ; hills tileset
         incbasic bank_8.78b
+        incbasic bank_9.78b
 
         ; title graphics
         incbasic bank_10.78b
