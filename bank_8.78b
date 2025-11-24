@@ -10,25 +10,25 @@
         data hills_map_lo
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
         plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo, plot_hills_room_11_lo
-        plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo
+        plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo, plot_hills_room_15_lo, plot_hills_room_16_lo, plot_hills_room_17_lo
 end
 
         data hills_map_hi
         plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
         plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi, plot_hills_room_11_hi
-        plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi
+        plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi, plot_hills_room_15_hi, plot_hills_room_16_hi, plot_hills_room_17_hi
 end
 
         data hills_obj_lo
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
-        hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo
+        hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
-        hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi
+        hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
 end
 
 hills_waterfall
@@ -79,6 +79,14 @@ hills_set_room
         clc
         adc #1
         sta menu_map_index_2
+        cpx #5
+        bcc .hills_room_bank_8
+end
+        gosub hills_room_bank_9 bank9
+        return thisbank
+
+hills_room_bank_8
+        asm
         lda hills_map_lo,x
         sta temp1
         lda hills_map_hi,x
@@ -128,85 +136,6 @@ hills_shared_pals
 hills_slime_pal
         P6C2 = getfade(PAL_H_SLIME_DK) : P6C3 = getfade(PAL_H_SLIME_LT)
         goto hills_veg_pal
-        
-plot_hills_room_0
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_DR
-        memcpy current_map hills_room_0 280
-        plotmapfile tiled/hills_room_0.tmx hills_room_0 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 3
-        zone14_objects = 3
-        locked_zone = 6
-        alt_palette = 1
-        exit_tileset = T_RIVER
-        exit_Xpos = 96
-        exit_Ypos = 192
-        exit_room_index = 48
-        return thisbank
-
-plot_hills_room_1
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_1 280
-        plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
-        zone1_objects  = 5
-        zone2_objects  = 4
-        zone14_objects = 3
-        goto hills_waterfall
-
-plot_hills_room_2
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_DR
-        memcpy current_map hills_room_2 280
-        plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
-        zone1_objects  = 5
-        zone2_objects  = 5
-        zone14_objects = 4
-        locked_zone = 7
-        return thisbank
-
-plot_hills_room_3
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_3 280
-        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 4
-        goto hills_waterfall
-
-plot_hills_room_4
-        menu_map_room[menu_map_index] = ROOML_L
-        menu_map_room[menu_map_index_2] = ROOMR_R
-        memcpy current_map hills_room_4 280
-        plotmapfile tiled/hills_room_4.tmx hills_room_4 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        alt_palette = 1
-        return thisbank
-
-plot_hills_room_5
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy current_map hills_room_5 280
-        plotmapfile tiled/hills_room_5.tmx hills_room_5 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 3
-        alt_palette = 1
-        return thisbank
-
-plot_hills_room_6
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map hills_room_6 280
-        plotmapfile tiled/hills_room_6.tmx hills_room_6 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 3
-        return thisbank
 
 test_walkable_hills
         asm
@@ -447,86 +376,62 @@ spider_walk_return
         return thisbank
 
         dmahole 0
-plot_hills_room_7
-        menu_map_room[menu_map_index] = ROOML_UL
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        memcpy current_map hills_room_7 280
-        plotmapfile tiled/hills_room_7.tmx hills_room_7 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_8
-        menu_map_room[menu_map_index] = ROOML_UL
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        memcpy current_map hills_room_8 280
-        plotmapfile tiled/hills_room_8.tmx hills_room_8 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_9
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_9 280
-        plotmapfile tiled/hills_room_9.tmx hills_room_9 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 3
-        shadow_offset  = 2
-        locked_zone    = 6
-        return thisbank
-
-plot_hills_room_10
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_10 280
-        plotmapfile tiled/hills_room_10.tmx hills_room_10 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_11
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map hills_room_11 280
-        plotmapfile tiled/hills_room_11.tmx hills_room_11 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_12
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map hills_room_12 280
-        plotmapfile tiled/hills_room_12.tmx hills_room_12 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_13
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy current_map hills_room_13 280
-        plotmapfile tiled/hills_room_13.tmx hills_room_13 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 1
-        return thisbank
-
-plot_hills_room_14
+plot_hills_room_0
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
-        memcpy current_map hills_room_14 280
-        plotmapfile tiled/hills_room_14.tmx hills_room_14 0 0 20 14
+        memcpy current_map hills_room_0 280
+        plotmapfile tiled/hills_room_0.tmx hills_room_0 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 3
+        zone14_objects = 3
+        locked_zone = 6
+        alt_palette = 1
+        exit_tileset = T_RIVER
+        exit_Xpos = 96
+        exit_Ypos = 192
+        exit_room_index = 48
+        return thisbank
+
+plot_hills_room_1
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map hills_room_1 280
+        plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
+        zone1_objects  = 5
+        zone2_objects  = 4
+        zone14_objects = 3
+        goto hills_waterfall
+
+plot_hills_room_2
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy current_map hills_room_2 280
+        plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
+        zone1_objects  = 5
+        zone2_objects  = 5
+        zone14_objects = 4
+        locked_zone = 7
+        return thisbank
+
+plot_hills_room_3
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        memcpy current_map hills_room_3 280
+        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 0 20 14
         zone1_objects  = 4
         zone2_objects  = 4
+        zone14_objects = 4
+        goto hills_waterfall
+
+plot_hills_room_4
+        menu_map_room[menu_map_index] = ROOML_L
+        menu_map_room[menu_map_index_2] = ROOMR_R
+        memcpy current_map hills_room_4 280
+        plotmapfile tiled/hills_room_4.tmx hills_room_4 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 1
+        alt_palette = 1
         return thisbank
 
 obj_harpy_stats
@@ -785,8 +690,8 @@ end
 end
 
         data hills_rooms
-        00, 00, 00, 14, 13, 00, 00
-        00, 00, 00, 06, 12, 00, 00
+        00, 17, 16, 14, 13, 00, 00
+        00, 00, 15, 06, 12, 00, 00
         03, 04, 05,  9, 10, 00, 00
         01, 00, 07,  8, 11, 00, 00
         00, 00, 00, 00, 00, 00, 00
@@ -863,6 +768,18 @@ end
 end
 
         data hills_room_14_obj
+        $00
+end
+
+        data hills_room_15_obj
+        $00
+end
+
+        data hills_room_16_obj
+        $00
+end
+
+        data hills_room_17_obj
         $00
 end
 

@@ -104,6 +104,13 @@
             "width": 160,
             "x": 320,
             "y": -672
+        },
+        {
+            "fileName": "hills_room_15.tmx",
+            "height": 224,
+            "width": 160,
+            "x": 160,
+            "y": -448
         }
     ],
     "onlyShowAdjacentMaps": false,
