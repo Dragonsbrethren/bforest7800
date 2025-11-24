@@ -973,7 +973,7 @@ hop_down_down
 hop_left
         lda timer
         bne hop_left_up
-        lda #12
+        lda #11
         sta timer
         lda Xposition
         sec
@@ -997,7 +997,7 @@ hop_left_down
 hop_right
         lda timer
         bne hop_right_up
-        lda #12
+        lda #11
         sta timer
         lda Xposition
         clc
@@ -1021,15 +1021,16 @@ hop_right_down
 hop_up
         lda timer
         bne hop_up_up
-        lda #16
+        lda #15
         sta timer
         lda Yposition
         sec
-        sbc #16
+        sbc #24
         sta hop_dest
 hop_up_up
         cmp #8
         bcc hop_up_down
+        dec Yposition
         dec Yposition
         dec timer
         rts
