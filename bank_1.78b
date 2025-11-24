@@ -943,7 +943,11 @@ ledge_hop
         beq hop_left
         cmp #DIR_RIGHT
         beq hop_right
+        lda Ydirection
+        cmp #DIR_UP
+        beq hop_up
         ; must be down
+
 hop_down
         lda timer
         bne hop_down_up
@@ -1011,6 +1015,28 @@ hop_right_down
         inc Xposition
         lda hop_dest
         cmp Xposition
+        beq hop_done
+        rts
+
+hop_up
+        lda timer
+        bne hop_up_up
+        lda #16
+        sta timer
+        lda Yposition
+        sec
+        sbc #16
+        sta hop_dest
+hop_up_up
+        cmp #8
+        bcc hop_up_down
+        dec Yposition
+        dec timer
+        rts
+hop_up_down
+        dec Yposition
+        lda hop_dest
+        cmp Yposition
         beq hop_done
         rts
 
@@ -1187,5 +1213,82 @@ new_obj_loop
         rts
 new_obj_found
         stx spawn_index
+        rts
+end
+
+copy_player_props
+copy_object_props
+        asm
+        ldx index
+        lda object_Xpos,x
+        sta Xposition
+        lda object_Xdir,x
+        sta Xdirection
+        lda object_Xvel_lo,x
+        sta Xvelocity_lo
+        lda object_Xvel_hi,x
+        sta Xvelocity_hi
+        lda object_Ypos,x
+        sta Yposition
+        lda object_Ydir,x
+        sta Ydirection
+        lda object_Yvel_lo,x
+        sta Yvelocity_lo
+        lda object_Yvel_hi,x
+        sta Yvelocity_hi
+        lda object_speed_lo,x
+        sta move_speed_lo
+        lda object_speed_hi,x
+        sta move_speed_hi
+        lda object_vel_cap_lo,x
+        sta vel_cap_lo
+        lda object_vel_cap_hi,x
+        sta vel_cap_hi
+        lda object_friction_lo,x
+        sta friction_lo
+        lda object_friction_hi,x
+        sta friction_hi
+        lda object_frame,x
+        sta frame
+        lda object_flags,x
+        sta flags
+        lda object_dest,x
+        sta hop_dest
+        lda object_timer,x
+        sta timer
+        rts
+end
+
+restore_player_props
+restore_object_props
+        asm
+        ldx index
+        lda Xposition
+        sta object_Xpos,x
+        lda Xdirection
+        sta object_Xdir,x
+        lda Xvelocity_lo
+        sta object_Xvel_lo,x
+        lda Xvelocity_hi
+        sta object_Xvel_hi,x
+        lda Yposition
+        sta object_Ypos,x
+        lda Ydirection
+        sta object_Ydir,x
+        lda Yvelocity_lo
+        sta object_Yvel_lo,x
+        lda Yvelocity_hi
+        sta object_Yvel_hi,x
+        lda frame
+        sta object_frame,x
+        lda flags
+        sta object_flags,x
+        lda hop_dest
+        sta object_dest,x
+        lda timer
+        sta object_timer,x
+        lda #0
+        sta flags
+        sta timer
         rts
 end

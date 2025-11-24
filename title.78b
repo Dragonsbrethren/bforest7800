@@ -99,7 +99,7 @@ title_new_game
         m_charm_bits_1 = %00000001
         m_charm_bits_2 = 0
         m_relic_bits_1 = %00010000
-        m_relic_bits_2 = %00000001
+        m_relic_bits_2 = %00000101
 
 init_field
         ; code shared by new game and continue options

@@ -1131,6 +1131,8 @@ end
         if !flags{4} then test_walkable_up
         if tile_properties{1} then move_up
 test_walkable_up
+        ; test for downward ledge, set hopping flag
+        if m_relic_bits_2{2} && tile_properties{4} then Xdirection = 0 : Ydirection = DIR_UP : flags{5} = 1
         if !tile_properties{0} then Yvelocity = 0 : return
 move_up
         Yposition = Yposition - Yvelocity_hi
@@ -1177,7 +1179,7 @@ end
         if tile_properties{1} then move_down
 test_walkable_down
         ; test for downward ledge, set hopping flag
-        if tile_properties{4} then Xdirection = 0 : flags{5} = 1
+        if tile_properties{4} then Xdirection = 0 : Ydirection = DIR_DOWN : flags{5} = 1
         if !tile_properties{0} then Yvelocity = 0 : return
 move_down
         Yposition = Yposition + Yvelocity_hi
@@ -1229,6 +1231,8 @@ end
 test_walkable_left
         ; test for leftward ledge, set hopping flag
         if tile_properties{6} then Xdirection = DIR_LEFT : flags{5} = 1
+        ; test if Harpy's Claw is available, allow hopping up ledge
+        if m_relic_bits_2{2} && tile_properties{5} then Xdirection = DIR_LEFT : flags{5} = 1
         if !tile_properties{0} then Xvelocity = 0 : return
 move_left
         Xposition = Xposition - Xvelocity_hi
@@ -1276,7 +1280,10 @@ end
         if !flags{4} then test_walkable_right
         if tile_properties{1} then move_right
 test_walkable_right
+        ; test for rightward ledge, set hopping flag
         if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
+        ; test if Harpy's Claw is available, allow hopping up ledge
+        if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
         if !tile_properties{0} then Xvelocity = 0 : return
 move_right
         Xposition = Xposition + Xvelocity_hi
@@ -1770,81 +1777,3 @@ get_object_pos
         sta peekY
 end
         return thisbank
-
-
-copy_player_props
-copy_object_props
-        asm
-        ldx index
-        lda object_Xpos,x
-        sta Xposition
-        lda object_Xdir,x
-        sta Xdirection
-        lda object_Xvel_lo,x
-        sta Xvelocity_lo
-        lda object_Xvel_hi,x
-        sta Xvelocity_hi
-        lda object_Ypos,x
-        sta Yposition
-        lda object_Ydir,x
-        sta Ydirection
-        lda object_Yvel_lo,x
-        sta Yvelocity_lo
-        lda object_Yvel_hi,x
-        sta Yvelocity_hi
-        lda object_speed_lo,x
-        sta move_speed_lo
-        lda object_speed_hi,x
-        sta move_speed_hi
-        lda object_vel_cap_lo,x
-        sta vel_cap_lo
-        lda object_vel_cap_hi,x
-        sta vel_cap_hi
-        lda object_friction_lo,x
-        sta friction_lo
-        lda object_friction_hi,x
-        sta friction_hi
-        lda object_frame,x
-        sta frame
-        lda object_flags,x
-        sta flags
-        lda object_dest,x
-        sta hop_dest
-        lda object_timer,x
-        sta timer
-        rts
-end
-
-restore_player_props
-restore_object_props
-        asm
-        ldx index
-        lda Xposition
-        sta object_Xpos,x
-        lda Xdirection
-        sta object_Xdir,x
-        lda Xvelocity_lo
-        sta object_Xvel_lo,x
-        lda Xvelocity_hi
-        sta object_Xvel_hi,x
-        lda Yposition
-        sta object_Ypos,x
-        lda Ydirection
-        sta object_Ydir,x
-        lda Yvelocity_lo
-        sta object_Yvel_lo,x
-        lda Yvelocity_hi
-        sta object_Yvel_hi,x
-        lda frame
-        sta object_frame,x
-        lda flags
-        sta object_flags,x
-        lda hop_dest
-        sta object_dest,x
-        lda timer
-        sta object_timer,x
-        lda #0
-        sta flags
-        sta timer
-        rts
-end
