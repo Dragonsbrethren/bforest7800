@@ -11,24 +11,28 @@
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
         plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo, plot_hills_room_11_lo
         plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo, plot_hills_room_15_lo, plot_hills_room_16_lo, plot_hills_room_17_lo
+        plot_hills_room_18_lo, plot_hills_room_18_lo
 end
 
         data hills_map_hi
         plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
         plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi, plot_hills_room_11_hi
         plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi, plot_hills_room_15_hi, plot_hills_room_16_hi, plot_hills_room_17_hi
+        plot_hills_room_18_hi, plot_hills_room_19_hi
 end
 
         data hills_obj_lo
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
         hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
+        hills_room_18_obj_lo, hills_room_19_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
         hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
+        hills_room_18_obj_hi, hills_room_19_obj_hi
 end
 
 hills_waterfall
@@ -288,89 +292,64 @@ hghost_follow
 ; Crawls along ledges until lined up with player,
 ; then decends and becomes a standard ground enemy
 ;=========================================================
-
 spider_ai
-        if flags{7} then spider_elev
+        if flags{7} then goto spider_drop_horz
         if flags{4} then spider_stalk
 
 spider_init
         ; water palette
         object_pal[index] = 6
         ; TODO: Wall crawl flag?
-        ; Spiders "float" so they can walk on ledges
+        ; Spiders originally were set to "float" so they could walk on ledges
+        ; this is no longer used but the flag is still needed for this init
         flags = %00010000
-        ; always start at elevation 1
-        object_elevation[index] = 1
+        ; always start at player's elevation
+        object_elevation[index] = player_elevation
 
 spider_stalk
         if object_type[index] = TYPE_SPIDER_V then spider_vert
 
 spider_horiz
-        if Yposition >= player_Ypos then temp1 = (Yposition - 48) else temp1 = Yposition
-        temp2 = Xposition - 16
+        temp1 = Yposition - 32
+        temp2 = Xposition - 12
         if temp2 >= Xposition then temp2 = 0
         ; spider checks for player proximity before moving
-        if !boxcollision(temp2, temp1, 44, 48, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then return thisbank
-        Ydirection = 0
-        ; spider lined up with player decends/ascends from cliff face
-        if boxcollision(Xposition, temp1, 12, 48, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then goto spider_drop_horz
-        if Xposition >= player_Xpos then spider_left
-
-spider_right
-        object_facing[index] = DIR_RIGHT
-        Xdirection = DIR_RIGHT
-        goto spider_crawl_horz
-
-spider_left
-        object_facing[index] = DIR_LEFT
-        Xdirection = DIR_LEFT
-
-spider_crawl_horz
-        frame = F_SPIDER_CRAWL_H
-        if animation_frame then frame = frame + 1
-        Xvelocity = Xvelocity + move_speed
-        return thisbank
+        if !boxcollision(temp2, temp1, 36, 80, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then return thisbank
+        timer = 0
+        goto spider_drop_horz
 
 spider_vert
-        Xdirection = 0
-        if Yposition < player_Ypos then spider_down
-
-spider_up
-        object_facing[index] = DIR_UP
-        Ydirection = DIR_UP
-        goto spider_crawl_vert
-
-spider_down
-        object_facing[index] = DIR_DOWN
-        Ydirection = DIR_DOWN
-
-spider_crawl_vert
-        frame = F_SPIDER_CRAWL_V
-        if animation_frame then frame = frame + 1
-        Yvelocity = Yvelocity + move_speed
+        ; not implemented
         return thisbank
 
 spider_drop_horz
-        ; flag 7 bypass stalk phase
-        flags{7} = 1
-        if Yposition < player_Ypos then spider_down
-        goto spider_up
-
-spider_elev
         if !flags{4} then spider_walk
+        if timer then spider_drop_move
+        if flags{7} then spider_drop_done
+        ; flags 7 = horizontal drop started
+        flags{7} = 1
+        timer = SPIDER_DROP_TIME
+        ; elevation/move direction is finalized once in spider's range
+        object_elevation[index] = player_elevation
+        if Yposition >= player_Ypos then Ydirection = DIR_UP : frame = F_SPIDER_UP else Ydirection = DIR_DOWN
+        ; wait a frame to start movement
+        return thisbank
+spider_drop_move
+        ; does the spider drop or crawl up cliff?
+        if Ydirection = DIR_DOWN then Yposition++ else Yposition--
+        timer--
+        return thisbank
+
+spider_drop_done
         ; turn off floating flag
         flags{4} = 0
-        gosub get_object_pos
-        temp1 = peekchar(current_map, peekX, peekY, 20, 14)
-        temp1 = hills_tile_properties_2[temp1]
-        if !temp1{0} then object_elevation[index] = 0
 
 spider_walk
         if Xposition < player_Xpos then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
         if Yposition < player_Ypos then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
 spider_walk_anim
-        if animation_frame then frame = frame + 1
-        goto test_follow_box
+        if animation_frame then frame++
+        goto followplayer
 
 spider_walk_return
         return thisbank
@@ -690,8 +669,8 @@ end
 end
 
         data hills_rooms
-        00, 17, 16, 14, 13, 00, 00
-        00, 00, 15, 06, 12, 00, 00
+        02, 17, 16, 14, 13, 00, 00
+        18, 00, 15, 06, 12, 00, 00
         03, 04, 05,  9, 10, 00, 00
         01, 00, 07,  8, 11, 00, 00
         00, 00, 00, 00, 00, 00, 00
@@ -780,6 +759,14 @@ end
 end
 
         data hills_room_17_obj
+        $00
+end
+
+        data hills_room_18_obj
+        $00
+end
+
+        data hills_room_19_obj
         $00
 end
 

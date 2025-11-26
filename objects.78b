@@ -327,6 +327,7 @@
         const SPIDER_DAMAGE = 3
         const SPIDER_DEF = 0
         const SPIDER_MDEF = 0
+        const SPIDER_DROP_TIME = 16
         const F_SPIDER_CRAWL_H = 0
         const F_SPIDER_CRAWL_V = 0
         const F_SPIDER_UP    = 2
@@ -362,7 +363,7 @@
         const HGHOST_FRICTION_HI = 0
         const HGHOST_FRICTION_LO = 0
         const HGHOST_DAMAGE = 3
-        const HGHOST_DEF = 255
+        const HGHOST_DEF = 5
         const HGHOST_MDEF = 0
         const F_HGHOST_1 = 10
         const F_HGHOST_2 = 11

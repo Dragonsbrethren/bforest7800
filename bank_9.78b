@@ -90,6 +90,7 @@ plot_hills_room_10
         zone14_objects = 3
         return otherbank
 
+        dmahole 0
 plot_hills_room_11
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
@@ -120,7 +121,6 @@ plot_hills_room_13
         zone14_objects = 3
         return otherbank
 
-        dmahole 0
 plot_hills_room_14
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
@@ -161,4 +161,24 @@ plot_hills_room_17
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 1
+        return otherbank
+
+plot_hills_room_18
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map hills_room_18 280
+        plotmapfile tiled/hills_room_18.tmx hills_room_18 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 3
+        return otherbank
+
+plot_hills_room_19
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map hills_room_19 280
+        plotmapfile tiled/hills_room_19.tmx hills_room_19 0 0 20 14
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 3
         return otherbank

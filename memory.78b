@@ -62,7 +62,7 @@
         dim player_flags        = object_flags
         dim player_timer        = object_timer
         dim player_dest         = object_dest
-        dim player_hop_dir      = object_elevation
+        dim player_elevation    = object_elevation
         dim player_hp           = object_hp
 
         autodim byte player_max_hp
