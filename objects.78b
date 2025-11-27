@@ -328,6 +328,7 @@
         const SPIDER_DEF = 0
         const SPIDER_MDEF = 0
         const SPIDER_DROP_TIME = 16
+        const SPIDER_WALK_TIMER  = 10
         const F_SPIDER_CRAWL_H = 0
         const F_SPIDER_CRAWL_V = 0
         const F_SPIDER_UP    = 2

@@ -323,7 +323,7 @@ spider_vert
         return thisbank
 
 spider_drop_horz
-        if !flags{4} then spider_walk
+        if !flags{4} then spider_dir
         if timer then spider_drop_move
         if flags{7} then spider_drop_done
         ; flags 7 = horizontal drop started
@@ -344,15 +344,69 @@ spider_drop_done
         ; turn off floating flag
         flags{4} = 0
 
+spider_dir
+        if timer then goto spider_walk
+        timer = SPIDER_WALK_TIMER
+        asm
+          jsr randomize
+          bpl .spider_move_vert
+end
+
+spider_move_horz
+        Ydirection = 0
+        if Xposition >= player_Xpos then spider_move_left
+
+spider_move_right
+        object_facing[index] = DIR_RIGHT
+        Xdirection = DIR_RIGHT
+        goto spider_walk
+
+spider_move_left
+        object_facing[index] = DIR_LEFT
+        Xdirection = DIR_LEFT
+        goto spider_walk
+
+spider_move_vert
+        Xdirection = 0
+        if Yposition < player_Ypos then spider_move_down
+
+spider_move_up
+        object_facing[index] = DIR_UP
+        Ydirection = DIR_UP
+        goto spider_walk
+
+spider_move_down
+        object_facing[index] = DIR_DOWN
+        Ydirection = DIR_DOWN
+        goto spider_walk
+
 spider_walk
-        if Xposition < player_Xpos then frame = F_SPIDER_RIGHT else frame = F_SPIDER_LEFT
-        if Yposition < player_Ypos then frame = F_SPIDER_DOWN else frame =  F_SPIDER_UP
+        timer--
+        if Ydirection then spider_walk_y
+
+spider_walk_x
+        Xvelocity = Xvelocity + move_speed
+        goto spider_walk_anim
+        
+spider_walk_y
+        Yvelocity = Yvelocity + move_speed
+
 spider_walk_anim
+        asm
+          ldx index
+          lda object_facing,x
+          tax
+          lda spider_walk_frames,x
+          sta frame
+end
         if animation_frame then frame++
-        goto followplayer
 
 spider_walk_return
         return thisbank
+
+        data spider_walk_frames
+        0, F_SPIDER_UP, F_SPIDER_DOWN, F_SPIDER_LEFT, F_SPIDER_RIGHT
+end
 
         dmahole 0
 plot_hills_room_0

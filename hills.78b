@@ -10,8 +10,8 @@
         incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider2.png 160A 0 1 3
         incgraphic gfx/sprites/spider3.png 160A 0 1 3
-        incgraphic gfx/sprites/spider4.png 160A 0 1 3 2
-        incgraphic gfx/sprites/spider5.png 160A 0 1 3 2
+        incgraphic gfx/sprites/spider4.png 160A 0 1 2 3
+        incgraphic gfx/sprites/spider5.png 160A 0 1 2 3
         incgraphic gfx/sprites/spider6.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider7.png 160A 0 1 3 2
         incgraphic gfx/sprites/hslime0.png 160A 0 2 3 1

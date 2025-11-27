@@ -32,8 +32,8 @@ plot_hills_room_5
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy current_map hills_room_5 280
         plotmapfile tiled/hills_room_5.tmx hills_room_5 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         alt_palette = 1
         return otherbank
