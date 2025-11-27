@@ -48,6 +48,14 @@ load_hills
         if save_room_index = 2 then hills_save_2
 
 hills_save_1
+        room_index    = F_HILLS_SAVE1_I
+        menu_map_Xpos = M_HILLS_SAVE1_X
+        menu_map_Ypos = M_HILLS_SAVE1_Y
+        player_Xpos   = F_HILLS_SAVE1_X
+        player_Ypos   = F_HILLS_SAVE1_Y
+        player_facing = F_HILLS_SAVE1_D ; DIR_RIGHT
+        goto hills_set_room
+        
 hills_save_2
         room_index    = F_HILLS_START_I
         menu_map_Xpos = M_HILLS_START_X
@@ -766,11 +774,14 @@ end
 end
 
         data hills_room_6_obj
-        TYPE_HGHOST, $18, $70
+        TYPE_HGHOST, $28, $50, TYPE_HGHOST, $58, $A0
+        TYPE_TORCH, $38, $70
         $00
 end
 
         data hills_room_7_obj
+        TYPE_SPIDER, $28, $90, TYPE_HSLIME, $60, $90, TYPE_SPIDER, $78, $30
+        TYPE_TORCH, $28, $30, TYPE_TORCH, $60, $30, TYPE_TORCH, $40, $80
         $00
 end
 
@@ -785,6 +796,8 @@ end
 end
 
         data hills_room_10_obj
+        TYPE_HGHOST, $38, $70, TYPE_HGHOST, $18, $C0, TYPE_HGHOST, $88, $10
+        TYPE_TORCH, $28, $80, TYPE_TORCH, $48, $50
         $00
 end
 

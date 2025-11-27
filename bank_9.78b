@@ -35,7 +35,7 @@ plot_hills_room_5
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
-        alt_palette = 1
+        alt_palette    = 1
         return otherbank
 
 plot_hills_room_6
@@ -46,6 +46,7 @@ plot_hills_room_6
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
+        alt_palette    = 1
         return otherbank
 
 plot_hills_room_7
@@ -56,6 +57,7 @@ plot_hills_room_7
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 1
+        alt_palette    = 1
         return otherbank
 
 plot_hills_room_8
@@ -88,6 +90,7 @@ plot_hills_room_10
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
+        alt_palette    = 1
         return otherbank
 
         dmahole 0
@@ -140,6 +143,10 @@ plot_hills_room_15
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 1
+        entered_save_room{0} = 1
         return otherbank
 
 plot_hills_room_16

@@ -204,10 +204,10 @@
         const M_HILLS_SAVE1_X = 78
         const M_HILLS_SAVE1_Y = 96
         ; field positions
-        const F_HILLS_SAVE1_I = 17      ; save room 1 index
+        const F_HILLS_SAVE1_I = 10      ; save room 1 index
         const F_HILLS_SAVE1_X = $50
         const F_HILLS_SAVE1_Y = $70
-        const F_HILLS_SAVE1_D = DIR_DOWN
+        const F_HILLS_SAVE1_D = DIR_RIGHT
 
         ; map positions
         const M_HILLS_SAVE2_X = 94

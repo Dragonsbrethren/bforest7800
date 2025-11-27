@@ -1599,9 +1599,42 @@ test_player_box
         if object_type[index] >= TYPE_DARKSPARK then shield_check
 player_knockback_status
         ; TODO: reorder objects to add ranges for inflicting status effects
-        if object_type[index] = TYPE_SLIME  || object_type[index] = TYPE_MSLIME  then temp1 = BITS_POISON : gosub set_status
-        if object_type[index] = TYPE_RSLIME || object_type[index] = TYPE_MRSLIME then temp1 = BITS_POISON : gosub set_status
-        if object_type[index] = TYPE_GHOST  || object_type[index] = TYPE_RGHOST  then temp1 = BITS_CURSE : gosub set_status
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_SLIME
+          beq set_poison_status
+          cmp #TYPE_MSLIME
+          beq set_poison_status
+          cmp #TYPE_RSLIME
+          beq set_poison_status
+          cmp #TYPE_MRSLIME
+          beq set_poison_status
+          cmp #TYPE_HSLIME
+          beq set_poison_status
+          cmp #TYPE_MHSLIME
+          beq set_poison_status
+          cmp #TYPE_SPIDER
+          beq set_poison_status
+          cmp #TYPE_GHOST
+          beq set_curse_status
+          cmp #TYPE_RGHOST
+          beq set_curse_status
+          cmp #TYPE_HGHOST
+          beq set_curse_status
+          jmp .pc_damage
+
+set_poison_status
+          lda #BITS_POISON
+          bne set_status_temp
+set_curse_status
+          lda #BITS_CURSE
+set_status_temp
+          sta temp1
+          jsr .set_status
+          jmp .pc_damage
+end
+
 
 pc_damage
         if player_flags{0} then return thisbank
