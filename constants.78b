@@ -188,6 +188,13 @@
         const F_RIVER_SAVE2_Y = $80
         const F_RIVER_SAVE2_D = DIR_DOWN
 
+        const M_RIVER_START2_X = 86
+        const M_RIVER_START2_Y = 64
+        const F_RIVER_START2_I = 4
+        const F_RIVER_START2_X = $68
+        const F_RIVER_START2_Y = $30
+        const F_RIVER_START2_D = DIR_DOWN
+
 ;------------------------------------------------------------------------------
 ; HILLS TILESET
 ;------------------------------------------------------------------------------
@@ -204,7 +211,7 @@
         const M_HILLS_SAVE1_X = 78
         const M_HILLS_SAVE1_Y = 96
         ; field positions
-        const F_HILLS_SAVE1_I = 10      ; save room 1 index
+        const F_HILLS_SAVE1_I = 9      ; save room 1 index
         const F_HILLS_SAVE1_X = $50
         const F_HILLS_SAVE1_Y = $70
         const F_HILLS_SAVE1_D = DIR_RIGHT

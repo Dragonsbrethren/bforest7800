@@ -47,6 +47,15 @@ load_hills
         if save_room_index = 1 then hills_save_1
         if save_room_index = 2 then hills_save_2
 
+        room_index    = F_HILLS_START_I
+        menu_map_Xpos = M_HILLS_START_X
+        menu_map_Ypos = M_HILLS_START_Y
+        player_Xpos   = F_HILLS_START_X
+        player_Ypos   = F_HILLS_START_Y
+        player_facing = F_HILLS_START_D ; DIR_UP
+        goto hills_set_room
+
+
 hills_save_1
         room_index    = F_HILLS_SAVE1_I
         menu_map_Xpos = M_HILLS_SAVE1_X
@@ -430,7 +439,7 @@ plot_hills_room_0
         exit_tileset = T_RIVER
         exit_Xpos = 96
         exit_Ypos = 192
-        exit_room_index = 48
+        exit_room_index = F_RIVER_START2_I
         return thisbank
 
 plot_hills_room_1

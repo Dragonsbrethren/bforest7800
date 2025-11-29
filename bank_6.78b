@@ -140,6 +140,7 @@ load_river
         first_load = 0
         if save_room_index = 1 then river_save_1
         if save_room_index = 2 then river_save_2
+        if exit_room_index = F_RIVER_START2_I then river_entrance_2
 
         room_index    = F_RIVER_START_I ; 21
         menu_map_Xpos = M_RIVER_START_X ; 54
@@ -165,6 +166,16 @@ river_save_2
         player_Xpos   = F_RIVER_SAVE2_X
         player_Ypos   = F_RIVER_SAVE2_Y
         player_facing = F_RIVER_SAVE2_D
+        goto river_set_room
+
+river_entrance_2
+        room_index    = F_RIVER_START2_I ; 21
+        menu_map_Xpos = M_RIVER_START2_X ; 54
+        menu_map_Ypos = M_RIVER_START2_Y ; 112
+        player_Xpos   = F_RIVER_START2_X ; 50
+        player_Ypos   = F_RIVER_START2_Y ; 80
+        player_facing = F_RIVER_START2_D ; DIR_UP
+;        goto river_set_room
 
 river_set_room
         characterset forest_trees
