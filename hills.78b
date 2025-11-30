@@ -22,11 +22,6 @@
         incgraphic gfx/sprites/mhslime0.png 160A 0 2 3 1 
         incgraphic gfx/sprites/mhslime1.png 160A 0 2 3 1
 
-        incmapfile tiled/hills_room_0.tmx
-        incmapfile tiled/hills_room_1.tmx
-        incmapfile tiled/hills_room_2.tmx
-        incmapfile tiled/hills_room_3.tmx
-        incmapfile tiled/hills_room_4.tmx
         incmapfile tiled/hills_room_5.tmx
         incmapfile tiled/hills_room_6.tmx
         incmapfile tiled/hills_room_7.tmx

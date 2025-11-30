@@ -6,19 +6,18 @@
         bank 8
         incbasic hills.78b
 
+        incmapfile tiled/hills_room_0.tmx
+        incmapfile tiled/hills_room_1.tmx
+        incmapfile tiled/hills_room_2.tmx
+        incmapfile tiled/hills_room_3.tmx
+        incmapfile tiled/hills_room_4.tmx
 
         data hills_map_lo
-        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
-        plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo, plot_hills_room_11_lo
-        plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo, plot_hills_room_15_lo, plot_hills_room_16_lo, plot_hills_room_17_lo
-        plot_hills_room_18_lo, plot_hills_room_19_lo, plot_hills_room_20_lo, plot_hills_room_21_lo, plot_hills_room_22_lo
+        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo
 end
 
         data hills_map_hi
-        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
-        plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi, plot_hills_room_11_hi
-        plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi, plot_hills_room_15_hi, plot_hills_room_16_hi, plot_hills_room_17_hi
-        plot_hills_room_18_hi, plot_hills_room_19_hi, plot_hills_room_20_hi, plot_hills_room_21_hi, plot_hills_room_22_hi
+        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi
 end
 
         data hills_obj_lo
