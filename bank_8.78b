@@ -11,28 +11,28 @@
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
         plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo, plot_hills_room_11_lo
         plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo, plot_hills_room_15_lo, plot_hills_room_16_lo, plot_hills_room_17_lo
-        plot_hills_room_18_lo, plot_hills_room_18_lo
+        plot_hills_room_18_lo, plot_hills_room_19_lo, plot_hills_room_20_lo, plot_hills_room_21_lo, plot_hills_room_22_lo
 end
 
         data hills_map_hi
         plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi, plot_hills_room_5_hi
         plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi, plot_hills_room_11_hi
         plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi, plot_hills_room_15_hi, plot_hills_room_16_hi, plot_hills_room_17_hi
-        plot_hills_room_18_hi, plot_hills_room_19_hi
+        plot_hills_room_18_hi, plot_hills_room_19_hi, plot_hills_room_20_hi, plot_hills_room_21_hi, plot_hills_room_22_hi
 end
 
         data hills_obj_lo
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
         hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
-        hills_room_18_obj_lo, hills_room_19_obj_lo
+        hills_room_18_obj_lo, hills_room_19_obj_lo, hills_room_20_obj_lo, hills_room_21_obj_lo, hills_room_22_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
         hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
-        hills_room_18_obj_hi, hills_room_19_obj_hi
+        hills_room_18_obj_hi, hills_room_19_obj_hi, hills_room_20_obj_hi, hills_room_21_obj_hi, hills_room_22_obj_hi
 end
 
 hills_waterfall
@@ -453,12 +453,12 @@ plot_hills_room_1
         goto hills_waterfall
 
 plot_hills_room_2
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_DR
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map hills_room_2 280
         plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
-        zone1_objects  = 5
-        zone2_objects  = 5
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 4
         locked_zone = 7
         return thisbank
@@ -740,13 +740,13 @@ end
 end
 
         data hills_rooms
-        02, 17, 16, 14, 13, 00, 00
-        18, 00, 15, 06, 12, 00, 00
-        03, 04, 05,  9, 10, 00, 00
-        01, 00, 07,  8, 11, 00, 00
         00, 00, 00, 00, 00, 00, 00
-        00, 00, 02, 00, 00, 00, 00
-        00, 00, 01, 00, 00, 00, 00
+        00, 19, 20, 21, 22, 00, 00
+        00, 02, 17, 16, 14, 13, 00
+        00, 18, 00, 15, 06, 12, 00
+        00, 03, 04, 05,  9, 10, 00
+        00, 01, 00, 07,  8, 11, 00
+        00, 00, 00, 00, 00, 00, 00
 end
 
         data hills_room_0_obj
@@ -843,6 +843,18 @@ end
 end
 
         data hills_room_19_obj
+        $00
+end
+
+        data hills_room_20_obj
+        $00
+end
+
+        data hills_room_21_obj
+        $00
+end
+
+        data hills_room_22_obj
         $00
 end
 

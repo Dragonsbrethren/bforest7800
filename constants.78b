@@ -199,19 +199,19 @@
 ; HILLS TILESET
 ;------------------------------------------------------------------------------
         ; map positions
-        const M_HILLS_START_X = 62
-        const M_HILLS_START_Y = 112
+        const M_HILLS_START_X = 70
+        const M_HILLS_START_Y = 144
         ; field positions
-        const F_HILLS_START_I = 22      ; starting room index
+        const F_HILLS_START_I = 37      ; starting room index
         const F_HILLS_START_X = $64
         const F_HILLS_START_Y = $A0
         const F_HILLS_START_D = DIR_UP
 
         ; map positions
         const M_HILLS_SAVE1_X = 78
-        const M_HILLS_SAVE1_Y = 96
+        const M_HILLS_SAVE1_Y = 112
         ; field positions
-        const F_HILLS_SAVE1_I = 9      ; save room 1 index
+        const F_HILLS_SAVE1_I = 24     ; save room 1 index
         const F_HILLS_SAVE1_X = $50
         const F_HILLS_SAVE1_Y = $70
         const F_HILLS_SAVE1_D = DIR_RIGHT
