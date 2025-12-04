@@ -894,9 +894,7 @@ retract_stand
 player_chant_start
         if chant_timer > CHANT_START_TIME then set_state_chant
         player_state = STATE_CHANT_START
-        asm
-        inc chant_timer
-end
+        chant_timer++
         if player_facing = DIR_UP    then player_frame = FRAME_UP
         if player_facing = DIR_DOWN  then player_frame = FRAME_DOWN
         if player_facing = DIR_LEFT  then player_frame = FRAME_LEFT
@@ -909,20 +907,24 @@ set_state_chant
         player_state = STATE_CHANT
         player_facing = DIR_DOWN
         player_frame = FRAME_CHANT
+        chant_timer = 0
 
 chant_handler
-
+        chant_timer++
         if !joy0fire0 && action_button = 0 then chant_done_no_hold
         if !joy0fire1 && action_button = 1 then chant_done_no_hold
 
         ; chant_new_input is set when a direction is pressed
         if chant_new_input then chant_input_test_release
 
+        ; must wait a few frames before spell can be cast
+        if chant_timer < CHANT_CAST_TIME then goto test_joy_done
+
         ; parse the most recent directional entered and test for combos
-        if input_buffer[chant_index] = DIR_UP    then chant_spells_up
-        if input_buffer[chant_index] = DIR_DOWN  then chant_spells_down
-        if input_buffer[chant_index] = DIR_LEFT  then chant_spells_left
-        if input_buffer[chant_index] = DIR_RIGHT then chant_spells_right
+        if input_buffer[chant_index] = DIR_UP    then parse_fireball_up
+        if input_buffer[chant_index] = DIR_DOWN  then parse_fireball_down
+        if input_buffer[chant_index] = DIR_LEFT  then parse_fireball_left
+        if input_buffer[chant_index] = DIR_RIGHT then parse_fireball_right
 
 chant_test_dirs
         if joy0left  then chant_input = DIR_LEFT  : chant_new_input = 1
@@ -952,60 +954,60 @@ chant_buffer_input
 
 ; all chant tests seach for button combos "backwards" from the most recent input
 chant_spells_up
-        chant_index = chant_index - 1
+        chant_index--
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] = DIR_DOWN then parse_fireball_up
 
 chant_spells_down
-        chant_index = chant_index - 1
+        chant_index--
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] = DIR_UP then parse_fireball_down
         goto chant_test_dirs
 
 chant_spells_left
-        chant_index = chant_index - 1
+        chant_index--
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] = DIR_RIGHT then parse_fireball_left
         goto chant_test_dirs
 
 chant_spells_right
-        chant_index = chant_index - 1
+        chant_index--
         ; chant index will underflow to 255, set to 7
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
         if input_buffer[chant_index] = DIR_LEFT then parse_fireball_right
         goto chant_test_dirs
 
 parse_fireball_up
-        chant_index = chant_index - 1
+        chant_index--
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] <> DIR_UP then chant_test_dirs
+;        if input_buffer[chant_index] <> DIR_UP then chant_test_dirs
         player_facing = DIR_UP : player_frame = FRAME_UP
         gosub cast_fireball
         goto chant_done
 
 parse_fireball_down
-        chant_index = chant_index - 1
+        chant_index--
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] <> DIR_DOWN then chant_test_dirs
+;        if input_buffer[chant_index] <> DIR_DOWN then chant_test_dirs
         player_frame = FRAME_DOWN
         gosub cast_fireball
         goto chant_done
 
 parse_fireball_left
-        chant_index = chant_index - 1
+        chant_index--
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] <> DIR_LEFT then chant_test_dirs
+;        if input_buffer[chant_index] <> DIR_LEFT then chant_test_dirs
         player_facing = DIR_LEFT : player_frame = FRAME_LEFT
         gosub cast_fireball
         goto chant_done
 
 parse_fireball_right
-        chant_index = chant_index - 1
+        chant_index--
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
-        if input_buffer[chant_index] <> DIR_RIGHT then chant_test_dirs
+;        if input_buffer[chant_index] <> DIR_RIGHT then chant_test_dirs
         player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
         gosub cast_fireball
         goto chant_done ; because I know I'll cause a bug adding code later...

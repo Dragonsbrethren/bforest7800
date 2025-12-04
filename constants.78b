@@ -79,6 +79,7 @@
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
+        const CHANT_CAST_TIME  = 12
         const INVULN_FRAMES = 8
 
         const PLAYER_HP_MAX = 48
