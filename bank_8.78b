@@ -24,14 +24,16 @@ end
         hills_room_0_obj_lo, hills_room_1_obj_lo, hills_room_2_obj_lo, hills_room_3_obj_lo, hills_room_4_obj_lo, hills_room_5_obj_lo
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
         hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
-        hills_room_18_obj_lo, hills_room_19_obj_lo, hills_room_20_obj_lo, hills_room_21_obj_lo, hills_room_22_obj_lo
+        hills_room_18_obj_lo, hills_room_19_obj_lo, hills_room_20_obj_lo, hills_room_21_obj_lo, hills_room_22_obj_lo, hills_room_23_obj_lo
+        hills_room_24_obj_lo
 end
 
         data hills_obj_hi
         hills_room_0_obj_hi, hills_room_1_obj_hi, hills_room_2_obj_hi, hills_room_3_obj_hi, hills_room_4_obj_hi, hills_room_5_obj_hi
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
         hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
-        hills_room_18_obj_hi, hills_room_19_obj_hi, hills_room_20_obj_hi, hills_room_21_obj_hi, hills_room_22_obj_hi
+        hills_room_18_obj_hi, hills_room_19_obj_hi, hills_room_20_obj_hi, hills_room_21_obj_hi, hills_room_22_obj_hi, hills_room_23_obj_hi
+        hills_room_24_obj_hi
 end
 
 hills_waterfall
@@ -204,6 +206,7 @@ test_water_hills
         if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
         return thisbank
 
+        dmahole 0
 ;=========================================================
 ; HARPY
 ;---------------------------------------------------------
@@ -424,7 +427,6 @@ spider_walk_return
         0, F_SPIDER_UP, F_SPIDER_DOWN, F_SPIDER_LEFT, F_SPIDER_RIGHT
 end
 
-        dmahole 0
 plot_hills_room_0
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
@@ -442,8 +444,8 @@ plot_hills_room_0
         return thisbank
 
 plot_hills_room_1
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map hills_room_1 280
         plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
         zone1_objects  = 5
@@ -459,7 +461,6 @@ plot_hills_room_2
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 4
-        locked_zone = 7
         return thisbank
 
 plot_hills_room_3
@@ -470,6 +471,7 @@ plot_hills_room_3
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 4
+        locked_zone    = 6
         goto hills_waterfall
 
 plot_hills_room_4
@@ -743,8 +745,8 @@ end
         00, 19, 20, 21, 22, 00, 00
         00, 02, 17, 16, 14, 13, 00
         00, 18, 00, 15, 06, 12, 00
-        00, 03, 04, 05,  9, 10, 00
-        00, 01, 00, 07,  8, 11, 00
+        23, 03, 04, 05,  9, 10, 00
+        24, 01, 00, 07,  8, 11, 00
         00, 00, 00, 00, 00, 00, 00
 end
 
@@ -854,6 +856,14 @@ end
 end
 
         data hills_room_22_obj
+        $00
+end
+
+        data hills_room_23_obj
+        $00
+end
+
+        data hills_room_24_obj
         $00
 end
 
