@@ -1,0 +1,97 @@
+;RMTA - This line is required for 7800basic autodetection. Don't remove.
+;#### blackforest_indoorarea01.rmta - converted by 7800rmt2asm 0.1 Oct 30 2025 23:25:07
+
+.RMTSTART SET .
+
+
+ ; #### RMT header...
+   .byte "RMT4"              ; magic
+   .byte $40                 ; tracklen
+   .byte $09                 ; song speed
+   .byte $01                 ; player freq
+   .byte $01                 ; format version number
+   .word (.RMTSTART+$0010)   ; pointer to instrument pointers
+   .word (.RMTSTART+$0018)   ; pointer to track pointers, lo
+   .word (.RMTSTART+$0020)   ; pointer to track pointers, hi
+   .word (.RMTSTART+$0296)   ; pointer to song
+
+ ; #### Instrument Pointer Table...
+   .word (.RMTSTART+$0028)
+   .word (.RMTSTART+$0038)
+   .word (.RMTSTART+$0048)
+   .word (.RMTSTART+$0058)
+
+
+ ; #### Track Pointer Table, Lo...
+ .byte <(.RMTSTART+$0068)
+ .byte <(.RMTSTART+$00e8)
+ .byte <(.RMTSTART+$0111)
+ .byte <(.RMTSTART+$014d)
+ .byte <(.RMTSTART+$017f)
+ .byte <(.RMTSTART+$01ff)
+ .byte <(.RMTSTART+$0228)
+ .byte <(.RMTSTART+$0264)
+
+ ; #### Track Pointer Table, Hi...
+ .byte >(.RMTSTART+$0068)
+ .byte >(.RMTSTART+$00e8)
+ .byte >(.RMTSTART+$0111)
+ .byte >(.RMTSTART+$014d)
+ .byte >(.RMTSTART+$017f)
+ .byte >(.RMTSTART+$01ff)
+ .byte >(.RMTSTART+$0228)
+ .byte >(.RMTSTART+$0264)
+
+ ; #### Track+Instrument Data...
+   .byte $0c,$0c,$0d,$0d,$00,$00,$40,$00,$00,$00,$00,$00,$00,$ff,$0e,$00
+   .byte $0c,$0c,$0d,$0d,$00,$00,$80,$50,$08,$02,$00,$00,$00,$ff,$0a,$00
+   .byte $0c,$0c,$0d,$0d,$00,$00,$40,$00,$00,$00,$00,$00,$00,$ff,$8a,$00
+   .byte $0c,$0c,$0d,$0d,$00,$00,$40,$00,$00,$00,$00,$00,$00,$ff,$0a,$00
+   .byte $e3,$07,$bd,$02,$fd,$01,$3d,$00,$da,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $de,$07,$bd,$02,$fd,$01,$3d,$00,$e1,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $e3,$07,$3d,$03,$bd,$02,$7d,$02,$fd,$01,$7d,$01,$fd,$00,$3d,$00
+   .byte $e1,$07,$3d,$00,$e3,$07,$3d,$00,$e5,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $e3,$07,$bd,$02,$fd,$01,$3d,$00,$da,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $de,$07,$bd,$02,$fd,$01,$3d,$00,$e1,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $e3,$07,$3d,$03,$bd,$02,$7d,$02,$fd,$01,$7d,$01,$fd,$00,$3d,$00
+   .byte $e1,$07,$3d,$00,$e3,$07,$3d,$00,$e6,$07,$bd,$02,$fd,$01,$3d,$00
+   .byte $3e,$04,$dc,$0f,$fe,$dc,$0f,$fe,$dc,$0f,$3e,$07,$de,$0f,$fe,$de
+   .byte $0f,$fe,$de,$0f,$3e,$07,$df,$0f,$fe,$df,$0f,$fe,$df,$0f,$3e,$07
+   .byte $dc,$0f,$fe,$d9,$0f,$fe,$dc,$0f,$fe,$c2,$0b,$7e,$c6,$0b,$7e,$c9
+   .byte $0b,$fe,$c9,$0b,$fe,$c9,$0b,$fe,$c4,$0b,$7e,$c7,$0b,$7e,$cb,$0b
+   .byte $fe,$cb,$0b,$fe,$cb,$0b,$fe,$c9,$0b,$7e,$cd,$0b,$7e,$d0,$0b,$fe
+   .byte $d0,$0b,$fe,$d0,$0b,$fe,$ce,$0b,$7e,$cd,$0b,$7e,$c9,$0b,$fe,$c6
+   .byte $0b,$fe,$c9,$0b,$fe,$d7,$03,$fe,$ce,$03,$fe,$d2,$03,$fe,$d5,$03
+   .byte $fe,$d7,$03,$3e,$07,$d5,$03,$7e,$d7,$03,$7e,$d9,$03,$fe,$d7,$03
+   .byte $fe,$ce,$03,$fe,$d2,$03,$fe,$d5,$03,$fe,$d7,$03,$3e,$07,$d5,$03
+   .byte $7e,$d7,$03,$7e,$da,$03,$fe,$e6,$07,$bd,$02,$fd,$01,$3d,$00,$de
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$e1,$07,$bd,$02,$fd,$01,$3d,$00,$e5
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$e6,$07,$3d,$03,$bd,$02,$7d,$02,$fd
+   .byte $01,$7d,$01,$fd,$00,$3d,$00,$f1,$07,$3d,$00,$ed,$07,$3d,$00,$ea
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$e6,$07,$bd,$02,$fd,$01,$3d,$00,$de
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$e1,$07,$bd,$02,$fd,$01,$3d,$00,$e5
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$ea,$07,$3d,$03,$bd,$02,$7d,$02,$fd
+   .byte $01,$7d,$01,$fd,$00,$3d,$00,$de,$07,$3d,$00,$df,$07,$3d,$00,$e5
+   .byte $07,$bd,$02,$fd,$01,$3d,$00,$3e,$04,$d7,$0f,$fe,$d7,$0f,$fe,$d7
+   .byte $0f,$3e,$07,$d9,$0f,$fe,$d9,$0f,$fe,$d9,$0f,$3e,$07,$df,$0f,$fe
+   .byte $df,$0f,$fe,$df,$0f,$3e,$07,$d9,$0f,$fe,$d5,$0f,$fe,$d5,$0f,$fe
+   .byte $c9,$0b,$7e,$cd,$0b,$7e,$d0,$0b,$fe,$d0,$0b,$fe,$d0,$0b,$fe,$cb
+   .byte $0b,$7e,$ce,$0b,$7e,$d2,$0b,$fe,$d2,$0b,$fe,$d2,$0b,$fe,$c9,$0b
+   .byte $7e,$cd,$0b,$7e,$d0,$0b,$fe,$d0,$0b,$fe,$d0,$0b,$fe,$cd,$0b,$7e
+   .byte $c9,$0b,$7e,$c6,$0b,$fe,$c2,$0b,$fe,$c2,$0b,$fe,$da,$03,$fe,$d2
+   .byte $03,$fe,$d5,$03,$fe,$d9,$03,$fe,$da,$03,$3e,$07,$e5,$03,$7e,$e1
+   .byte $03,$7e,$de,$03,$fe,$da,$03,$fe,$d2,$03,$fe,$d5,$03,$fe,$d9,$03
+   .byte $fe,$d2,$03,$3e,$07,$d2,$03,$7e,$d3,$03,$7e,$d9,$03,$fe
+
+ ; #### Song Data...
+   .byte $ff,$ff,$ff,$03,$00,$ff,$ff,$03,$00,$ff,$02,$03,$00,$01,$02,$03
+   .byte $04,$05,$06,$07,$00,$01,$02,$03,$04,$05,$06,$07,$00,$01,$02,$03
+   .byte $04,$05,$06,$07,$00,$ff,$ff,$ff
+   .word $00FE,(.RMTSTART+$0296) ; GOTO
+   .byte $c2,$42,$25,$43,$42,$6c,$61,$63,$6b,$20,$46,$6f,$72,$65,$73,$74
+   .byte $20,$2d,$20,$49,$6e,$64,$6f,$6f,$72,$20,$41,$72,$65,$61,$20,$30
+   .byte $31,$00,$42,$61,$73,$73,$20,$74,$6f,$6e,$65,$20,$32,$20,$28,$62
+   .byte $61,$73,$73,$20,$74,$61,$62,$6c,$65,$20,$32,$29,$00,$50,$75,$72
+   .byte $65,$20,$74,$6f,$6e,$65,$20,$33,$20,$2b,$20,$76,$69,$62,$72,$61
+   .byte $74,$6f,$00,$46,$69,$6c,$74,$65,$72,$20,$31,$00,$50,$75,$72,$65
+

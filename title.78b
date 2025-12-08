@@ -7,8 +7,8 @@
         incmapfile tiled/title_blackforest.tmx
 
 title_init
-        lockzone 0
-        unlockzone 0
+        stoprmt
+        music_playing = 0
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
@@ -99,7 +99,7 @@ title_new_game
         m_charm_bits_1 = %00000001
         m_charm_bits_2 = 0
         m_relic_bits_1 = %00010000
-        m_relic_bits_2 = %00000001
+        m_relic_bits_2 = %00000111
 
 init_field
         ; code shared by new game and continue options

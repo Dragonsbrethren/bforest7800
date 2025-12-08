@@ -194,6 +194,10 @@ castle_save_2
 
 castle_rooms
         characterset castle_stone
+        if music_playing then init_castle
+        playrmt blackforest_indoorarea01
+        music_playing = 1
+init_castle
         asm
         lda #0
         sta no_flash
@@ -289,6 +293,7 @@ end
         $00
 end
 
+        dmahole 0
         data castle_room_2_obj
         TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
         TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $A0,
@@ -296,7 +301,6 @@ end
         $00
 end
 
-        dmahole 0
         data castle_room_3_obj
         TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,

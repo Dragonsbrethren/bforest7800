@@ -458,8 +458,8 @@ plot_hills_room_2
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map hills_room_2 280
         plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 6
+        zone2_objects  = 6
         zone14_objects = 4
         return thisbank
 
@@ -777,7 +777,7 @@ end
 end
 
         data hills_room_5_obj
-        TYPE_SPIDER, $20, $30, TYPE_SPIDER, $74, $40
+        TYPE_SPIDER, $20, $30
         TYPE_SPIDER, $18, $60, TYPE_HSLIME, $48, $80
         TYPE_TORCH, $4C, $60
         $00
@@ -796,6 +796,10 @@ end
 end
 
         data hills_room_8_obj
+        TYPE_SPIDER, $18, $30, TYPE_SPIDER, $70, $30
+        TYPE_HSLIME, $38, $A0, TYPE_HSLIME, $58, $A0
+        TYPE_ARMOR3, $64, $60
+        TYPE_TORCH, $40, $70, TYPE_TORCH, $58, $70
         $00
 end
 

@@ -278,6 +278,7 @@
         autodim byte alt_palette        ; use alternate palettes
         autodim byte pal_animation      ; 8th palette is cycled
         autodim byte music_playing      ; prevents music from restarting after leaving menu/game over
+        autodim byte music_change       ; forces music to start on tileset transition
         autodim byte zone1_objects      ; reserved for HUD changes
         autodim byte zone2_objects      ; ''
         autodim byte zone14_objects     ; used by pickup string

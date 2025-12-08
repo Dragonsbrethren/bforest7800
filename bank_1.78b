@@ -39,6 +39,8 @@ init
 tileset_transition
         tileset = exit_tileset
         first_load = 1
+        ; handle the possibility of continuing a track across tilesets
+        if music_change then music_playing = 0
 clear_menu_map
         asm
           ldx #100       ; menu_map_room array + 2 to clear menu_map_revealed and exit_tileset as well
@@ -92,7 +94,7 @@ end
 
 main
         drawscreen
-        if switchreset then reboot
+        if switchreset then goto title_init bank10
         if !switchselect then select_debounce = 0
         if !switchpause then pause_debounce = 0
         if !joy0fire0 && action_button = 0 then action_debounce = 0
