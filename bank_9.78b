@@ -106,6 +106,7 @@ plot_hills_room_11
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 1
+        alt_palette    = 1
         return otherbank
 
         dmahole 0

@@ -77,6 +77,10 @@ hills_save_2
 
 hills_set_room
         characterset hills_ledges
+        if music_playing then hills_init
+        playrmt blackforest_indoorarea01
+        music_playing = 1
+hills_init
         asm
         lda #0
         sta no_flash
@@ -799,7 +803,7 @@ end
         TYPE_SPIDER, $18, $30, TYPE_SPIDER, $70, $30
         TYPE_HSLIME, $38, $A0, TYPE_HSLIME, $58, $A0
         TYPE_ARMOR3, $64, $60
-        TYPE_TORCH, $40, $70, TYPE_TORCH, $58, $70
+        TYPE_TORCH, $60, $80
         $00
 end
 
@@ -816,6 +820,9 @@ end
 end
 
         data hills_room_11_obj
+        TYPE_SPIDER, $40, $30, TYPE_SPIDER, $40, $70
+        TYPE_HSLIME, $7C, $70
+        TYPE_TORCH, $28, $60
         $00
 end
 

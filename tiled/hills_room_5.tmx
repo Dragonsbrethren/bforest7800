@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="hills_ledges" tilewidth="8" tileheight="16" tilecount="43" columns="43">
   <image source="../gfx/tiles/hills_ledges.png" width="344" height="16"/>
  </tileset>
@@ -299,4 +299,5 @@
    <tile gid="54"/>
   </data>
  </layer>
+ <objectgroup id="2" name="Object Layer 1"/>
 </map>
