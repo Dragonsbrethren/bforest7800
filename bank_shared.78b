@@ -378,17 +378,66 @@ test_follow_box
         if temp2 >=225 then temp2 = 0
         if boxcollision(Xposition, Yposition, 12, 16, temp1, temp2, FAIRY_CHASE_X, FAIRY_CHASE_Y) then return thisbank
 
-followplayer
+follow_player
+        asm
         ; add a little randomness to stop a constant movement pattern from happening
-        if rand >= 240 then follow_player_Y
+        jsr randomize
+        cmp #240
+        bcc follow_player_Y
+follow_player_X
+        lda player_Xpos
+        cmp object_Xpos,x
+        bcs follow_player_X_right
+follow_player_X_left
+        lda #DIR_LEFT
+        sta object_Xdir,x
+        bne follow_player_Xvel
+follow_player_X_right
+        lda #DIR_RIGHT
+        sta object_Xdir,x
+follow_player_Xvel
+        lda object_Xvel_lo,x
+        clc
+        adc object_speed_lo,x
+        sta object_Xvel_lo,x
+        lda object_Xvel_hi,x
+        adc object_speed_hi,x
+        sta object_Xvel_hi,x
+follow_player_Y
+        jsr randomize
+        cmp #240
+        bcc follow_player_done
+        lda player_Ypos
+        cmp object_Ypos,x
+        bcs follow_player_Y_down
+follow_player_Y_up
+        lda #DIR_UP
+        sta object_Ydir,x
+follow_player_Y_down
+        lda #DIR_DOWN
+        sta object_Ydir,x
+follow_player_Yvel
+        lda object_Yvel_lo,x
+        clc
+        adc object_speed_lo,x
+        sta object_Yvel_lo,x
+        lda object_Yvel_hi,x
+        adc object_speed_hi,x
+        sta object_Yvel_hi,x
+follow_player_done
+        rts
+end
+
+followplayer
+        if rand >= 240 then followplayer_Y
         if Xposition >= player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
-follow_player_Y
-        if rand >= 240 then follow_player_done
+followplayer_Y
+        if rand >= 240 then followplayer_done
         if Yposition >= player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
         if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
-follow_player_done
-        return thisbank
+followplayer_done
+        return thisbank        
 
 get_player_pos
         Xdestination = player_Xpos : Ydestination = player_Ypos
@@ -541,23 +590,41 @@ load_object_ai
 end
 
 object_handler
-        for index = 1 to 15
-        if !object_type[index] then object_done    ; 0 = no object
-        if object_type[index] = TYPE_DOOR_LOCK then goto torch_tile_block
-        if object_type[index] >= TYPE_STATIC then object_done      ;  coins, prisms are static
-        if object_type[index] = TYPE_SPAWNER then spawn_object
-        if object_type[index] = TYPE_TORCH then goto torch_tile_block
-        gosub copy_object_props 
-        if flags{5} then gosub ledge_hop : goto object_restore
-        gosub decelerate_object
-        gosub load_ai_pointer
+        asm
+        ldx #MAX_MAP_OBJECTS
+oh_loop stx index
+        lda object_type,x
+        beq .object_done
+        cmp #TYPE_SPAWNER
+        bne oh_torch
+        jmp .spawn_object
+oh_torch
+        cmp #TYPE_TORCH
+        beq .torch_tile_block
+        cmp #TYPE_DOOR_LOCK
+        beq .torch_tile_block
+        cmp #TYPE_STATIC
+        bcs .object_done
+
+        jsr .copy_object_props
+        jsr .decelerate_object
+        jsr .load_ai_pointer
+end
 object_ai_loaded
-        gosub move_object
-object_restore
-        gosub restore_object_props
+        asm
+        jsr .move_object
+end
+restore_object
+        asm
+        jsr .restore_object_props
+        ldx index
+end
 object_done
-        next
-        return
+        asm
+        dex
+        bne oh_loop
+        rts
+end
 
 ;==============================================================================
 ; FIREBALL AI
