@@ -609,6 +609,7 @@ oh_torch
         jsr .copy_object_props
         jsr .decelerate_object
         jsr .load_ai_pointer
+        jsr .restore_object_props
 end
 object_ai_loaded
         asm
@@ -1170,24 +1171,33 @@ end
         ; optimization: bypass direction checks if no velocity
         asm
           lda object_Yvel_hi,x
-          beq .move_object_X
+          beq move_object_X
           lda object_Ydir,x
 mo_Yup    cmp #DIR_UP
           bne mo_Ydown
           jsr .move_test_up
-          jmp .move_object_X
+          jmp move_object_X
 mo_Ydown
           cmp #DIR_DOWN
-          bne .move_object_X
+          bne move_object_X
           jsr .move_test_down
-end
 
 move_object_X
-        if !Xvelocity then move_object_done
-        if Xdirection = DIR_LEFT  then gosub move_test_left
-        if Xdirection = DIR_RIGHT then gosub move_test_right
+          ldx index
+          lda object_Xvel_hi,x
+          beq move_object_done
+          lda object_Xdir,x
+mo_Xleft  cmp #DIR_LEFT
+          bne mo_Xright
+          jsr .move_test_left
+          rts
+mo_Xright
+          cmp #DIR_RIGHT
+          bne move_object_done
+          jsr .move_test_right
 move_object_done
-        goto move_return
+          rts
+end
 
 move_test_up
         asm
@@ -1245,22 +1255,22 @@ mo_up_s   sta object_Ypos,x
 end
 
 move_test_down
-        if flags{2} then move_down
+;        if flags{2} then move_down
         ;peekX = (Xposition + 2) / TILE_WIDTH
         ;peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
         asm
-        lda Xposition
+        lda object_Xpos,x
         clc
         adc #2
         lsr
         lsr
         lsr
         sta peekX
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #15
         clc
-        adc Yvelocity_hi
+        adc object_Yvel_hi,x
         lsr
         lsr
         lsr
@@ -1270,7 +1280,7 @@ end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
         ;peekX = (Xposition + 8) / TILE_WIDTH
         asm
-        lda Xposition
+        lda object_Xpos,x
         clc
         adc #8
         lsr
@@ -1287,27 +1297,34 @@ test_walkable_down
         if tile_properties{4} then Xdirection = 0 : Ydirection = DIR_DOWN : flags{5} = 1
         if !tile_properties{0} then Yvelocity = 0 : return
 move_down
-        Yposition = Yposition + Yvelocity_hi
-        ; keep objects out of bottom zone
-        if Yposition >= 208 then Yposition = 208
-        return thisbank
+        asm
+          ldx index
+          lda object_Ypos,x
+          clc
+          adc object_Yvel_hi,x
+          cmp #208
+          bcc mo_dn_s
+          lda #208
+mo_dn_s   sta object_Ypos,x
+          rts
+end
 
 move_test_left
-        if flags{2} then move_left
+;        if flags{2} then move_left
 ;        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
         asm
-        lda Xposition
+        lda object_Xpos,x
         clc
         adc #2
         sec
-        sbc Xvelocity_hi
+        sbc object_Xvel_hi,x
         lsr
         lsr
         lsr
         sta peekX
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #8
         lsr
@@ -1319,7 +1336,7 @@ end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
 ;        peekY = (Yposition + 15) / TILE_HEIGHT
         asm
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #15
         lsr
@@ -1340,26 +1357,34 @@ test_walkable_left
         if m_relic_bits_2{2} && tile_properties{5} then Xdirection = DIR_LEFT : flags{5} = 1
         if !tile_properties{0} then Xvelocity = 0 : return
 move_left
-        Xposition = Xposition - Xvelocity_hi
-        if Xposition >= 160 then Xposition = 0
-        return thisbank
+        asm
+          ldx index
+          lda object_Xpos,x
+          sec
+          sbc object_Xvel_hi,x
+          cmp #160
+          bcc mo_lf_s
+          lda #0
+mo_lf_s   sta object_Xpos,x
+          rts
+end
 
 move_test_right
-        if flags{2} then move_right
+;        if flags{2} then move_right
 ;        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
         asm
-        lda Xposition
+        lda object_Xpos,x
         clc
         adc #9
         clc
-        adc Xvelocity_hi
+        adc object_Xvel_hi,x
         lsr
         lsr
         lsr
         sta peekX
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #8
         lsr
@@ -1371,7 +1396,7 @@ end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
 ;        peekY = (Yposition + 15) / TILE_HEIGHT
         asm
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #15
         lsr
@@ -1391,12 +1416,18 @@ test_walkable_right
         if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
         if !tile_properties{0} then Xvelocity = 0 : return
 move_right
-        Xposition = Xposition + Xvelocity_hi
-        if Xposition >= 160 then Xposition = 160
-        return thisbank
-        
+        asm
+          ldx index
+          lda object_Xpos,x
+          clc
+          adc object_Xvel_hi,x
+          cmp #160
+          bcc mo_rt_s
+          lda #160
+mo_rt_s   sta object_Xpos,x
 move_return
-        return thisbank
+          rts
+end
 
 test_walkable
         move_tile_1 = move_tile_1 / 2
