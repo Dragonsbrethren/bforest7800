@@ -1163,36 +1163,36 @@ decelerate_object
           sta temp1
           lda object_friction_lo,x
           sta temp2
-          lda Xvelocity_lo
+          lda object_Xvel_lo,x
           beq do_st_xl
           sec
           sbc temp2
           bcs do_st_xl
           lda #0
-do_st_xl  sta Xvelocity_lo
-          lda Xvelocity_hi
+do_st_xl  sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
           beq do_st_xh
           sta temp3
           sbc temp1
           cmp temp3
           bcs do_st_xh
           lda #0
-do_st_xh  sta Xvelocity_hi
-          lda Yvelocity_lo
+do_st_xh  sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
           beq do_st_yl
           sec
           sbc temp2
           bcs do_st_yl
           lda #0
-do_st_yl  sta Yvelocity_lo
-          lda Yvelocity_hi
+do_st_yl  sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
           beq do_st_yh
           sta temp5
           sbc temp1
           cmp temp5
           bcs do_st_yh
           lda #0
-do_st_yh  sta Yvelocity_hi
+do_st_yh  sta object_Yvel_hi,x
           rts
 end
 

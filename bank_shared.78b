@@ -616,7 +616,7 @@ object_ai_loaded
 end
 restore_object
         asm
-        jsr .restore_object_props
+;        jsr .restore_object_props
         ldx index
 end
 object_done
@@ -876,7 +876,7 @@ test_joy_done
         if player_flags{5} then player_move_done
         index = 0 : gosub copy_player_props
         gosub move_object
-        gosub restore_player_props
+;        gosub restore_player_props
 
 player_move_done
 
@@ -1148,14 +1148,40 @@ end
 move_object
 
         ; Cap the object's velocity TODO: separate X/Y cap?
-        if Xvelocity > vel_cap then Xvelocity = vel_cap
-        if Yvelocity > vel_cap then Yvelocity = vel_cap
+        asm
+          ldx index
+mo_Xcap   lda object_vel_cap_hi,x
+          cmp object_Xvel_hi,x
+          bcs mo_Ycap
+          sta object_Xvel_hi,x
+          lda object_vel_cap_lo,x
+          sta object_Xvel_lo,x
+mo_Ycap
+          lda object_vel_cap_hi,x
+          cmp object_Yvel_hi,x
+          bcs mo_capdone
+          sta object_Yvel_hi,x
+          lda object_vel_cap_lo,x
+          sta object_Yvel_lo,x
+mo_capdone
+end
 
         ; Current direction(s) are determined by player input or AI logic
         ; optimization: bypass direction checks if no velocity
-        if !Yvelocity then move_object_X
-        if Ydirection = DIR_UP    then gosub move_test_up
-        if Ydirection = DIR_DOWN  then gosub move_test_down
+        asm
+          lda object_Yvel_hi,x
+          beq .move_object_X
+          lda object_Ydir,x
+mo_Yup    cmp #DIR_UP
+          bne mo_Ydown
+          jsr .move_test_up
+          jmp .move_object_X
+mo_Ydown
+          cmp #DIR_DOWN
+          bne .move_object_X
+          jsr .move_test_down
+end
+
 move_object_X
         if !Xvelocity then move_object_done
         if Xdirection = DIR_LEFT  then gosub move_test_left
@@ -1164,20 +1190,22 @@ move_object_done
         goto move_return
 
 move_test_up
-        if flags{2} then move_up
         asm
-        lda Xposition
+        lda object_flags,x
+        and #4
+;        bne .move_up
+        lda object_Xpos,x
         clc
         adc #2
         lsr
         lsr
         lsr
         sta peekX
-        lda Yposition
+        lda object_Ypos,x
         clc
         adc #8
         sec
-        sbc Yvelocity_hi
+        sbc object_Yvel_hi,x
         lsr
         lsr
         lsr
@@ -1187,7 +1215,7 @@ end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
 ;        peekX = (Xposition + 8) / TILE_WIDTH
         asm
-        lda Xposition
+        lda object_Xpos,x
         clc
         adc #8
         lsr
@@ -1204,9 +1232,17 @@ test_walkable_up
         if m_relic_bits_2{2} && tile_properties{4} then Xdirection = 0 : Ydirection = DIR_UP : flags{5} = 1
         if !tile_properties{0} then Yvelocity = 0 : return
 move_up
-        Yposition = Yposition - Yvelocity_hi
-        if Yposition >= 224 then Yposition = 0
-        return thisbank
+        asm
+          ldx index
+          lda object_Ypos,x
+          sec
+          sbc object_Yvel_hi,x
+          cmp #224
+          bcc mo_up_s
+          lda #0
+mo_up_s   sta object_Ypos,x
+          rts
+end
 
 move_test_down
         if flags{2} then move_down
