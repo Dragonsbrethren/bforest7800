@@ -278,17 +278,30 @@ harpy_done
 ; Hills variant of Slime
 ;=========================================================
 mhslime_ai
-        object_pal[index] = 6
-        frame = F_MHSLIME_1
-        goto hslime_anim
+        asm
+          ldx index
+          lda #MHSLIME_PAL
+          sta object_pal,x
+          lda #F_MHSLIME_1
+          sta object_frame,x
+          jmp hslime_anim
+end
 
 hslime_ai
-        object_pal[index] = 6
-        frame = F_HSLIME_1
+        asm
+          ldx index
+          lda #HSLIME_PAL
+          sta object_pal,x
+          lda #F_HSLIME_1
+          sta object_frame,x
 hslime_anim
-        if animation_frame then frame++
-hslime_chase
-        goto followplayer
+          lda animation_frame
+          beq hslime_ooze
+          inc object_frame,x
+hslime_ooze
+          jmp .follow_player
+end
+
 
 ;=========================================================
 ; FEUERMANN
@@ -316,56 +329,104 @@ hghost_follow
 ; then decends and becomes a standard ground enemy
 ;=========================================================
 spider_ai
-        if flags{7} then goto spider_drop_horz
-        if flags{4} then spider_stalk
+        asm
+          ldx index
+          lda object_flags,x
+          ; flag 7 causes spider to drop
+          bmi spider_drop_horiz
+          ; flag 4 makes spider stalk
+          and #%00010000
+          bne spider_stalk
 
 spider_init
-        ; water palette
-        object_pal[index] = 6
+          lda #SPIDER_PAL
+          sta object_pal,x
         ; TODO: Wall crawl flag?
         ; Spiders originally were set to "float" so they could walk on ledges
         ; this is no longer used but the flag is still needed for this init
-        flags = %00010000
+          lda #%00010000
+          sta object_flags,x
         ; always start at player's elevation
-        object_elevation[index] = player_elevation
+          lda player_elevation
+          sta object_elevation,x
 
 spider_stalk
-        if object_type[index] = TYPE_SPIDER_V then spider_vert
+          ; vertical spiders unused, omitted code to detect them
+
 
 spider_horiz
-        temp1 = Yposition - 32
-        temp2 = Xposition - 12
-        if temp2 >= Xposition then temp2 = 0
+          lda object_Ypos,x
+          sec
+          sbc #32
+          sta temp1
+          lda object_Xpos,x
+          sec
+          sbc #12
+          sta temp2
         ; spider checks for player proximity before moving
-        if !boxcollision(temp2, temp1, 36, 80, player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT) then return thisbank
-        timer = 0
-        goto spider_drop_horz
+          QBOXCOLLISIONCHECK temp2,temp1,36,80,player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT
+          bcs spider_drop_clear_timer
+          rts
 
-spider_vert
+;spider_vert
         ; not implemented
-        return thisbank
+;         rts
 
-spider_drop_horz
-        if !flags{4} then spider_dir
-        if timer then spider_drop_move
-        if flags{7} then spider_drop_done
-        ; flags 7 = horizontal drop started
-        flags{7} = 1
-        timer = SPIDER_DROP_TIME
-        ; elevation/move direction is finalized once in spider's range
-        object_elevation[index] = player_elevation
-        if Yposition >= player_Ypos then Ydirection = DIR_UP : frame = F_SPIDER_UP else Ydirection = DIR_DOWN
-        ; wait a frame to start movement
-        return thisbank
+spider_drop_clear_timer
+          lda #0
+          sta object_timer,x
+spider_drop_horiz
+          lda object_flags,x
+          and #%00010000
+          beq .spider_dir
+          lda object_timer,x
+          bne spider_drop_move
+          ; test flag 7
+          lda object_flags,x
+          bmi spider_drop_done
+          ; flag 7 = horizontal drop started
+          ora #%10000000
+          sta object_flags,x
+          lda #SPIDER_DROP_TIME
+          sta object_timer,x
+          lda player_elevation
+          sta object_elevation,x
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc spider_drop_down
+          lda #DIR_UP
+          sta object_Ydir,x
+          lda #F_SPIDER_UP
+          sta object_frame,x
+          jmp spider_drop_next
+spider_drop_down
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          lda #F_SPIDER_DOWN
+          sta object_frame,x
+spider_drop_next
+          ; wait a frame to start movement
+          rts
 spider_drop_move
-        ; does the spider drop or crawl up cliff?
-        if Ydirection = DIR_DOWN then Yposition++ else Yposition--
-        timer--
-        return thisbank
+          ; does the spider drop or crawl up cliff?
+          lda object_Ydir,x
+          cmp #DIR_DOWN
+          bne spider_climb_up
+          inc object_Ypos,x
+          jmp spider_dec_timer
+spider_climb_up
+          dec object_Ypos,x
+
+spider_dec_timer
+          dec object_timer,x
+          rts
 
 spider_drop_done
-        ; turn off floating flag
-        flags{4} = 0
+          ; turn off "floating" flag to signify drop done
+          lda object_flags,x
+          and #%11101111
+          sta object_flags,x
+end
 
 spider_dir
         if timer then goto spider_walk

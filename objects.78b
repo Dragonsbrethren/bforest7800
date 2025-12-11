@@ -335,6 +335,7 @@
         const F_SPIDER_DOWN  = 0
         const F_SPIDER_LEFT  = 4
         const F_SPIDER_RIGHT = 6
+        const SPIDER_PAL = 6
 
         ; HILL SLIME
         const HSLIME_HP = 6
@@ -354,6 +355,8 @@
         const F_HSLIME_2 = 9
         const F_MHSLIME_1 = 13
         const F_MHSLIME_2 = 14
+        const HSLIME_PAL = 6
+        const MHSLIME_PAL = 6
 
         ; FEUERMANN
         const HGHOST_HP = 6

@@ -385,9 +385,9 @@ follow_player
         cmp #240
         bcc follow_player_Y
 follow_player_X
-        lda player_Xpos
-        cmp object_Xpos,x
-        bcs follow_player_X_right
+        lda object_Xpos,x
+        cmp player_Xpos
+        bcc follow_player_X_right
 follow_player_X_left
         lda #DIR_LEFT
         sta object_Xdir,x
@@ -407,9 +407,9 @@ follow_player_Y
         jsr randomize
         cmp #240
         bcc follow_player_done
-        lda player_Ypos
-        cmp object_Ypos,x
-        bcs follow_player_Y_down
+        lda object_Ypos,x
+        cmp player_Ypos
+        bcc follow_player_Y_down
 follow_player_Y_up
         lda #DIR_UP
         sta object_Ydir,x
@@ -606,10 +606,10 @@ oh_torch
         cmp #TYPE_STATIC
         bcs .object_done
 
-        jsr .copy_object_props
-        jsr .decelerate_object
+;        jsr .copy_object_props
+;        jsr .decelerate_object
         jsr .load_ai_pointer
-        jsr .restore_object_props
+;        jsr .restore_object_props
 end
 object_ai_loaded
         asm
