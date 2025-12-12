@@ -833,9 +833,7 @@ player_handler
 handle_input_field
         if !player_flags{5} then player_no_hop
         index = 0
-        gosub copy_player_props
         gosub ledge_hop
-        gosub restore_player_props
         goto test_joy_done
 player_no_hop
         ; player timer is set for knockback and attack timing
@@ -883,7 +881,7 @@ test_joy_done
         if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         if player_flags{5} then player_move_done
-        index = 0 : gosub copy_player_props
+        index = 0
         gosub move_object
 ;        gosub restore_player_props
 
@@ -1211,7 +1209,9 @@ move_test_up
         asm
         lda object_flags,x
         and #4
-;        bne .move_up
+        beq move_test_up_no_fly
+        jmp move_up
+move_test_up_no_fly
         lda object_Xpos,x
         clc
         adc #2
@@ -1242,16 +1242,46 @@ end
         sta peekX
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        gosub test_walkable
-        if !flags{4} then test_walkable_up
-        if tile_properties{1} then move_up
-test_walkable_up
-        ; test for downward ledge, set hopping flag
-        if m_relic_bits_2{2} && tile_properties{4} then Xdirection = 0 : Ydirection = DIR_UP : flags{5} = 1
-        if !tile_properties{0} then Yvelocity = 0 : return
-move_up
         asm
+          jsr .test_walkable
           ldx index
+          ; floating objects bypass solidity check if floatable tile
+          lda object_flags,x
+          and #%00010000
+          beq test_walkable_up
+          lda tile_properties
+          and #%00000010
+          beq test_walkable_up
+          jmp move_up
+test_walkable_up
+          ; harpy's talon check
+          ldx index
+          beq test_walkable_up_ledge_done
+          lda m_relic_bits_2
+          and #%00000100
+          beq test_walkable_up_ledge_done
+          ; test for downward ledge, set hopping flag
+          lda tile_properties
+          and #%00010000
+          beq test_walkable_up_ledge_done
+          ; set object hopping direction and flag
+          lda #0
+          sta object_Xdir,x
+          lda #DIR_UP
+          sta object_Ydir,x
+          lda object_flags,x
+          ora #%00100000
+          sta object_flags,x
+test_walkable_up_ledge_done
+          lda tile_properties
+          ; test walkable bit 0
+          lsr
+          bcs move_up
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          rts
+move_up
           lda object_Ypos,x
           sec
           sbc object_Yvel_hi,x
@@ -1263,49 +1293,78 @@ mo_up_s   sta object_Ypos,x
 end
 
 move_test_down
-;        if flags{2} then move_down
+        asm
+          lda object_flags,x
+          and #4
+          beq move_test_down_no_fly
+          jmp move_down
         ;peekX = (Xposition + 2) / TILE_WIDTH
         ;peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
-        asm
-        lda object_Xpos,x
-        clc
-        adc #2
-        lsr
-        lsr
-        lsr
-        sta peekX
-        lda object_Ypos,x
-        clc
-        adc #15
-        clc
-        adc object_Yvel_hi,x
-        lsr
-        lsr
-        lsr
-        lsr
-        sta peekY
+move_test_down_no_fly
+          lda object_Xpos,x
+          clc
+          adc #2
+          lsr
+          lsr
+          lsr
+          sta peekX
+          lda object_Ypos,x
+          clc
+          adc #15
+          clc
+          adc object_Yvel_hi,x
+          lsr
+          lsr
+          lsr
+          lsr
+          sta peekY
 end
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
         ;peekX = (Xposition + 8) / TILE_WIDTH
         asm
-        lda object_Xpos,x
-        clc
-        adc #8
-        lsr
-        lsr
-        lsr
-        sta peekX
+          lda object_Xpos,x
+          clc
+          adc #8
+          lsr
+          lsr
+          lsr
+          sta peekX
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        gosub test_walkable
-        if !flags{4} then test_walkable_down
-        if tile_properties{1} then move_down
-test_walkable_down
-        ; test for downward ledge, set hopping flag
-        if tile_properties{4} then Xdirection = 0 : Ydirection = DIR_DOWN : flags{5} = 1
-        if !tile_properties{0} then Yvelocity = 0 : return
-move_down
         asm
+          jsr .test_walkable
+          ldx index
+          ; floating objects bypass solidity check if floatable tile
+          lda object_flags,x
+          and #%00010000
+          beq test_walkable_down
+          lda tile_properties
+          and #%00000010
+          beq test_walkable_down
+          jmp move_down
+test_walkable_down
+          ; test for downward ledge, set hopping flag
+          lda tile_properties
+          and #%00010000
+          beq test_walkable_down_ledge_done
+          ; set object hopping direction and flag
+          lda #0
+          sta object_Xdir,x
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          lda object_flags,x
+          ora #%00100000
+          sta object_flags,x
+test_walkable_down_ledge_done
+          lda tile_properties
+          ; test walkable bit 0
+          lsr
+          bcs move_down
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          rts
+move_down
           ldx index
           lda object_Ypos,x
           clc
@@ -1318,11 +1377,15 @@ mo_dn_s   sta object_Ypos,x
 end
 
 move_test_left
-;        if flags{2} then move_left
+        asm
+          lda object_flags,x
+          and #4
+          beq move_test_left_no_fly
+          jmp move_left
 ;        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
-        asm
+move_test_left_no_fly
         lda object_Xpos,x
         clc
         adc #2
@@ -1354,19 +1417,52 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        gosub test_walkable
-        if !flags{4} then test_walkable_left
-        ; floating objects bypass walk test
-        if tile_properties{1} then move_left
+        asm
+          jsr .test_walkable
+          ldx index
+          ; floating objects bypass solidity check if floatable tile
+          lda object_flags,x
+          and #%00010000
+          beq test_walkable_left
+          lda tile_properties
+          and #%00000010
+          beq test_walkable_left
+          jmp move_left
 test_walkable_left
         ; test for leftward ledge, set hopping flag
-        if tile_properties{6} then Xdirection = DIR_LEFT : flags{5} = 1
+        ; if tile_properties{6} then Xdirection = DIR_LEFT : flags{5} = 1
         ; test if Harpy's Claw is available, allow hopping up ledge
-        if m_relic_bits_2{2} && tile_properties{5} then Xdirection = DIR_LEFT : flags{5} = 1
-        if !tile_properties{0} then Xvelocity = 0 : return
-move_left
-        asm
+        ; if m_relic_bits_2{2} && tile_properties{5} then Xdirection = DIR_LEFT : flags{5} = 1
+        ; if !tile_properties{0} then Xvelocity = 0 : return
+          lda tile_properties
+          and #%01000000
+          bne test_walkable_left_hop
+          and #%00100000
+          beq test_walkable_left_ledge_done
           ldx index
+          bne test_walkable_left_ledge_done
+          lda m_relic_bits_2
+          and #%00000100
+          beq test_walkable_left_ledge_done
+          ; set object hopping direction and flag
+test_walkable_left_hop
+          lda #0
+          sta object_Ydir,x
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          lda object_flags,x
+          ora #%00100000
+          sta object_flags,x
+test_walkable_left_ledge_done
+          lda tile_properties
+          ; test walkable bit 0
+          lsr
+          bcs move_left
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          rts
+move_left
           lda object_Xpos,x
           sec
           sbc object_Xvel_hi,x
@@ -1378,11 +1474,15 @@ mo_lf_s   sta object_Xpos,x
 end
 
 move_test_right
-;        if flags{2} then move_right
+        asm
+          lda object_flags,x
+          and #4
+          beq move_test_right_no_fly
+          jmp move_right
 ;        peekX = ((Xposition + 9) + Xvelocity_hi) / TILE_WIDTH
         ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
-        asm
+move_test_right_no_fly
         lda object_Xpos,x
         clc
         adc #9
@@ -1414,18 +1514,52 @@ end
         sta peekY
 end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
-        gosub test_walkable
-        if !flags{4} then test_walkable_right
-        if tile_properties{1} then move_right
+        asm
+          jsr .test_walkable
+          ldx index
+          ; floating objects bypass solidity check if floatable tile
+          lda object_flags,x
+          and #%00010000
+          beq test_walkable_right
+          lda tile_properties
+          and #%00000010
+          beq test_walkable_right
+          jmp move_right
 test_walkable_right
         ; test for rightward ledge, set hopping flag
-        if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
+        ; if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
         ; test if Harpy's Claw is available, allow hopping up ledge
-        if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
-        if !tile_properties{0} then Xvelocity = 0 : return
-move_right
-        asm
+        ; if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
+        ; if !tile_properties{0} then Xvelocity = 0 : return
+          lda tile_properties
+          and #%00100000
+          bne test_walkable_right_hop
+          and #%01000000
+          beq test_walkable_right_ledge_done
           ldx index
+          bne test_walkable_right_ledge_done
+          lda m_relic_bits_2
+          and #%00000100
+          beq test_walkable_right_ledge_done
+          ; set object hopping direction and flag
+test_walkable_right_hop
+          lda #0
+          sta object_Ydir,x
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+          lda object_flags,x
+          ora #%00100000
+          sta object_flags,x
+test_walkable_right_ledge_done
+          lda tile_properties
+          ; test walkable bit 0
+          lsr
+          bcs move_right
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          rts
+move_right
           lda object_Xpos,x
           clc
           adc object_Xvel_hi,x
@@ -1441,10 +1575,10 @@ test_walkable
         move_tile_1 = move_tile_1 / 2
         move_tile_2 = move_tile_2 / 2
         asm
-          ldx tileset
-          lda walkable_jump_lo,x
+          ldy tileset
+          lda walkable_jump_lo,y
           sta pointer
-          lda walkable_jump_hi,x
+          lda walkable_jump_hi,y
           sta pointer_hi
           jmp (pointer)
 end

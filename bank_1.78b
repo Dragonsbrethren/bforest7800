@@ -940,114 +940,119 @@ end
 
 ledge_hop
         asm
-        lda Xdirection
+        ldx index
+        lda object_Xdir,x
         cmp #DIR_LEFT
         beq hop_left
         cmp #DIR_RIGHT
         beq hop_right
-        lda Ydirection
+        lda object_Ydir,x
         cmp #DIR_UP
-        beq hop_up
-        ; must be down
+        bne hop_down
+        jmp hop_up
 
 hop_down
-        lda timer
+        lda object_timer,x
         bne hop_down_up
         lda #16
-        sta timer
-        lda Yposition
+        sta object_timer,x
+        lda object_Ypos,x
         clc
         adc #16
-        sta hop_dest
+        sta object_dest,x
 hop_down_up
         cmp #8
         bcc hop_down_down
-        dec Yposition
-        dec timer
+        dec object_Ypos,x
+        dec object_timer,x
         rts
 hop_down_down
-        inc Yposition
-        lda hop_dest
-        cmp Yposition
-        beq hop_done
+        inc object_Ypos,x
+        lda object_dest,x
+        cmp object_Ypos,x
+        bne hop_down_rts
+        jmp hop_done
+hop_down_rts
         rts
 
 hop_left
-        lda timer
+        lda object_timer,x
         bne hop_left_up
         lda #11
-        sta timer
-        lda Xposition
+        sta object_timer,x
+        lda object_Xpos,x
         sec
         sbc #12
-        sta hop_dest
+        sta object_dest,x
 hop_left_up
         cmp #6
         bcc hop_left_down
-        dec Yposition
-        dec Xposition
-        dec timer
+        dec object_Ypos,x
+        dec object_Xpos,x
+        dec object_timer,x
         rts
 hop_left_down
-        inc Yposition
-        dec Xposition
-        lda hop_dest
-        cmp Xposition
+        inc object_Ypos,x
+        dec object_Xpos,x
+        lda object_dest,x
+        cmp object_Xpos,x
         beq hop_done
         rts
 
 hop_right
-        lda timer
+        lda object_timer,x
         bne hop_right_up
         lda #11
-        sta timer
-        lda Xposition
+        sta object_timer,x
+        lda object_Xpos,x
         clc
         adc #12
-        sta hop_dest
+        sta object_dest,x
 hop_right_up
         cmp #6
         bcc hop_right_down
-        dec Yposition
-        inc Xposition
-        dec timer
+        dec object_Ypos,x
+        inc object_Xpos,x
+        dec object_timer,x
         rts
 hop_right_down
-        inc Yposition
-        inc Xposition
-        lda hop_dest
-        cmp Xposition
+        inc object_Ypos,x
+        inc object_Xpos,x
+        lda object_dest,x
+        cmp object_Xpos,x
         beq hop_done
         rts
 
 hop_up
-        lda timer
+        lda object_timer,x
         bne hop_up_up
         lda #15
-        sta timer
-        lda Yposition
+        sta object_timer,x
+        lda object_Ypos,x
         sec
         sbc #24
-        sta hop_dest
+        sta object_dest,x
 hop_up_up
         cmp #8
         bcc hop_up_down
-        dec Yposition
-        dec Yposition
-        dec timer
+        dec object_Ypos,x
+        dec object_Ypos,x
+        dec object_timer,x
         rts
 hop_up_down
-        dec Yposition
-        lda hop_dest
-        cmp Yposition
+        dec object_Ypos,x
+        lda object_dest,x
+        cmp object_Ypos,x
         beq hop_done
         rts
 
 hop_done
         lda #0
-        sta flags
-        sta timer
-        sta hop_dest
+        sta object_timer,x
+        sta object_dest,x
+        lda object_flags,x
+        and #%11011111
+        sta object_flags,x
         rts
 end
 

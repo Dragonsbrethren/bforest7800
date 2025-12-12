@@ -317,7 +317,7 @@ hghost_ai
           lda player_elevation
           sta object_elevation,x
           lda #%00000100
-          ora object_flags,x
+          sta object_flags,x
           lda animation_frame
           bne hghost_timer
           inc object_frame,x
