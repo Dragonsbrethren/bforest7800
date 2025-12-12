@@ -309,18 +309,37 @@ end
 ; Hills variant of Ghost, follows player across any ledges
 ;=========================================================
 hghost_ai
-        frame = F_HGHOST_1
+        asm
+          ldx index
+          lda #F_HGHOST_1
+          sta object_frame,x
         ; for zone-locking code, elevation is ignored since flying
-        object_elevation[index] = 1
-;        if animation_frame then frame = frame + 1
-        flags{2} = 1
-        if timer then goto hghost_follow
-        timer = 4
-        if object_pal[index] = 6 then object_pal[index] = 2 : goto hghost_follow
-        object_pal[index] = 6
+          lda player_elevation
+          sta object_elevation,x
+          lda #%00000100
+          ora object_flags,x
+          lda animation_frame
+          bne hghost_timer
+          inc object_frame,x
+hghost_timer
+          lda object_timer,x
+          bne hghost_follow
+          lda #HGHOST_ANIM_TIME
+          sta object_timer,x
+          lda object_pal,x
+          cmp #HGHOST_PAL_A
+          bne hghost_set_pal_a
+          lda #HGHOST_PAL_B
+          sta object_pal,x
+          bne hghost_follow
+
+hghost_set_pal_a
+          lda #HGHOST_PAL_A
+          sta object_pal,x
 hghost_follow
-        timer = timer - 1
-        goto test_follow_box
+          dec object_timer,x
+          jmp .test_follow_box
+end
 
 ;=========================================================
 ; SPIDER

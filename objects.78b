@@ -371,6 +371,9 @@
         const HGHOST_MDEF = 0
         const F_HGHOST_1 = 10
         const F_HGHOST_2 = 11
+        const HGHOST_PAL_A = 6
+        const HGHOST_PAL_B = 2
+        const HGHOST_ANIM_TIME = 4
 
 
         ; FAMILIARS

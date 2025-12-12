@@ -1159,21 +1159,17 @@ end
 decelerate_object
         asm
           ldx index
-          lda object_friction_hi,x
-          sta temp1
-          lda object_friction_lo,x
-          sta temp2
           lda object_Xvel_lo,x
           beq do_st_xl
           sec
-          sbc temp2
+          sbc object_friction_lo,x
           bcs do_st_xl
           lda #0
 do_st_xl  sta object_Xvel_lo,x
           lda object_Xvel_hi,x
           beq do_st_xh
           sta temp3
-          sbc temp1
+          sbc object_friction_hi,x
           cmp temp3
           bcs do_st_xh
           lda #0
@@ -1181,14 +1177,14 @@ do_st_xh  sta object_Xvel_hi,x
           lda object_Yvel_lo,x
           beq do_st_yl
           sec
-          sbc temp2
+          sbc object_friction_lo,x
           bcs do_st_yl
           lda #0
 do_st_yl  sta object_Yvel_lo,x
           lda object_Yvel_hi,x
           beq do_st_yh
           sta temp5
-          sbc temp1
+          sbc object_friction_hi,x
           cmp temp5
           bcs do_st_yh
           lda #0

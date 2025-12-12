@@ -376,6 +376,13 @@ test_follow_box
         if temp1 >=161 then temp1 = 0
         temp2 = player_Ypos - (FAIRY_CHASE_Y / 2)
         if temp2 >=225 then temp2 = 0
+        asm
+          ldx index
+          lda object_Xpos,x
+          sta Xposition
+          lda object_Ypos,x
+          sta Yposition
+end
         if boxcollision(Xposition, Yposition, 12, 16, temp1, temp2, FAIRY_CHASE_X, FAIRY_CHASE_Y) then return thisbank
 
 follow_player
@@ -383,7 +390,7 @@ follow_player
         ; add a little randomness to stop a constant movement pattern from happening
         jsr randomize
         cmp #240
-        bcc follow_player_Y
+        bcs follow_player_Y
 follow_player_X
         lda object_Xpos,x
         cmp player_Xpos
@@ -406,13 +413,14 @@ follow_player_Xvel
 follow_player_Y
         jsr randomize
         cmp #240
-        bcc follow_player_done
+        bcs follow_player_done
         lda object_Ypos,x
         cmp player_Ypos
         bcc follow_player_Y_down
 follow_player_Y_up
         lda #DIR_UP
         sta object_Ydir,x
+        bne follow_player_Yvel
 follow_player_Y_down
         lda #DIR_DOWN
         sta object_Ydir,x
@@ -607,7 +615,7 @@ oh_torch
         bcs .object_done
 
 ;        jsr .copy_object_props
-;        jsr .decelerate_object
+        jsr .decelerate_object
         jsr .load_ai_pointer
 ;        jsr .restore_object_props
 end
