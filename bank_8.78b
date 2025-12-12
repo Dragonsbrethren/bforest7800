@@ -378,7 +378,7 @@ spider_drop_clear_timer
 spider_drop_horiz
           lda object_flags,x
           and #%00010000
-          beq .spider_dir
+          beq spider_dir
           lda object_timer,x
           bne spider_drop_move
           ; test flag 7
@@ -426,67 +426,85 @@ spider_drop_done
           lda object_flags,x
           and #%11101111
           sta object_flags,x
-end
 
 spider_dir
-        if timer then goto spider_walk
-        timer = SPIDER_WALK_TIMER
-        asm
+          lda object_timer,x
+          beq spider_set_timer
+          jmp spider_walk
+spider_set_timer
+          lda #SPIDER_WALK_TIMER
+          sta object_timer,x
           jsr randomize
-          bpl .spider_move_vert
-end
+          bpl spider_move_vert
 
 spider_move_horz
-        Ydirection = 0
-        if Xposition >= player_Xpos then spider_move_left
-
+          lda #0
+          sta object_Ydir,x
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcs spider_move_left
 spider_move_right
-        object_facing[index] = DIR_RIGHT
-        Xdirection = DIR_RIGHT
-        goto spider_walk
-
+          lda #DIR_RIGHT
+          bne spider_move_h_store
 spider_move_left
-        object_facing[index] = DIR_LEFT
-        Xdirection = DIR_LEFT
-        goto spider_walk
+          lda #DIR_LEFT
+spider_move_h_store
+          sta object_facing,x
+          sta object_Xdir,x
+          bne spider_walk
 
 spider_move_vert
-        Xdirection = 0
-        if Yposition < player_Ypos then spider_move_down
-
+          lda #0
+          sta object_Xdir,x
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc spider_move_down
 spider_move_up
-        object_facing[index] = DIR_UP
-        Ydirection = DIR_UP
-        goto spider_walk
-
+          lda #DIR_UP
+          bne spider_move_v_store
 spider_move_down
-        object_facing[index] = DIR_DOWN
-        Ydirection = DIR_DOWN
-        goto spider_walk
+          lda #DIR_DOWN
+
+spider_move_v_store
+          sta object_facing,x
+          sta object_Ydir,x
 
 spider_walk
-        timer--
-        if Ydirection then spider_walk_y
+          dec object_timer,x
+          lda object_Xdir,x
+          beq spider_walk_y
 
 spider_walk_x
-        Xvelocity = Xvelocity + move_speed
-        goto spider_walk_anim
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          jmp spider_walk_anim
         
 spider_walk_y
-        Yvelocity = Yvelocity + move_speed
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
 
 spider_walk_anim
-        asm
-          ldx index
           lda object_facing,x
-          tax
-          lda spider_walk_frames,x
-          sta frame
-end
-        if animation_frame then frame++
+          tay
+          lda spider_walk_frames,y
+          sta object_frame,x
+          lda animation_frame
+          beq spider_walk_return
+          inc object_frame,x
 
 spider_walk_return
-        return thisbank
+          rts
+end
 
         data spider_walk_frames
         0, F_SPIDER_UP, F_SPIDER_DOWN, F_SPIDER_LEFT, F_SPIDER_RIGHT
