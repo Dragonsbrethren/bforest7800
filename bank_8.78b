@@ -206,9 +206,22 @@ test_water_hills
 ;        gosub get_object_pos
 ;        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
 ;        temp1 = temp1 / 2
-;        temp1 = hills_tile_properties[temp1]
-        if temp1{2} then flags = flags | %00000010 else flags = flags & %11111101
-        return thisbank
+;        temp1 = hills_tile_properties[temp1]\
+        asm
+          ldx index
+          lda temp1
+          and #%00000100
+          beq test_water_hills_land
+          lda object_flags,x
+          ora #%00000010
+          jmp test_water_hills_done
+test_water_hills_land
+          lda object_flags,x
+          and #%11111101
+test_water_hills_done
+          sta object_flags,x
+          rts
+end
 
         dmahole 0
 ;=========================================================
