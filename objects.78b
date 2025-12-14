@@ -299,10 +299,10 @@
 
         ; HARPY
         const HARPY_HP = 6
-        const HARPY_SPEED_HI = 0
-        const HARPY_SPEED_LO = 128
+        const HARPY_SPEED_HI = 1
+        const HARPY_SPEED_LO = 16
         const HARPY_VEL_CAP_HI = 1
-        const HARPY_VEL_CAP_LO = 0
+        const HARPY_VEL_CAP_LO = 128
         const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
         const HARPY_DAMAGE = 3

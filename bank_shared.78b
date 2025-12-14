@@ -385,6 +385,7 @@ test_follow_box
 end
         if boxcollision(Xposition, Yposition, 12, 16, temp1, temp2, FAIRY_CHASE_X, FAIRY_CHASE_Y) then return thisbank
 
+followplayer
 follow_player
         asm
         ; add a little randomness to stop a constant movement pattern from happening
@@ -436,7 +437,7 @@ follow_player_done
         rts
 end
 
-followplayer
+
         if rand >= 240 then followplayer_Y
         if Xposition >= player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
         if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
@@ -1183,11 +1184,9 @@ mo_Yup    cmp #DIR_UP
           bne mo_Ydown
           jsr .move_test_up
           jmp move_object_X
-mo_Ydown
-          cmp #DIR_DOWN
+mo_Ydown  cmp #DIR_DOWN
           bne move_object_X
           jsr .move_test_down
-
 move_object_X
           ldx index
           lda object_Xvel_hi,x
@@ -1197,8 +1196,7 @@ mo_Xleft  cmp #DIR_LEFT
           bne mo_Xright
           jsr .move_test_left
           rts
-mo_Xright
-          cmp #DIR_RIGHT
+mo_Xright cmp #DIR_RIGHT
           bne move_object_done
           jsr .move_test_right
 move_object_done

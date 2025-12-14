@@ -234,56 +234,142 @@ end
 ; shadow_offset number of objects
 ;=========================================================
 harpy_ai
-        if timer then goto harpy_dive_timer
-        Yvelocity = 0
+        asm
+          ldx index
+          lda object_timer,x
+          beq harpy_zero_Yvel
+          jmp harpy_dive_timer
+harpy_zero_Yvel
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
 
 ; object data will fill these in as 0
 ;        object_pal[index] = 0
 ;        frame = F_HARPY_FLY_0
 
         ; if the player is above the harpy, the harpy flies upward
-        if (player_Ypos - 32) >= Yposition then harpy_dive
+          lda player_Ypos
+          sec
+          sbc #32
+          cmp object_Ypos,x
+          bcs harpy_dive
+
 harpy_fly_up
-        frame = F_HARPY_FLY_0
-        Xvelocity = 0
-        Yvelocity = Yvelocity + move_speed
-        Ydirection = DIR_UP
+          lda #F_HARPY_FLY_0
+          sta object_frame,x
+          lda #0
+          sta object_Xvel_lo,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+          lda #DIR_UP
+          sta object_Ydir,x
+end
         ; harpy moves upward 1 pixel every other frame
+        if !animation_frame then harpy_update_shadow
         temp7 = rand&3
-        if animation_frame then frame++ : Yposition-- : playsfx sfx_berzerkrobotdeath temp7
-        goto harpy_shadow_update
+        asm
+          ldx index
+          inc object_frame,x
+          dec object_Ypos,x
+end
+        playsfx sfx_berzerkrobotdeath temp7
+harpy_update_shadow
+        asm
+          ldx index             ; sound code modifies x
+          jmp harpy_shadow_update
 
 harpy_dive
-        frame = F_HARPY_DIVE
-        if player_Xpos < Xposition then temp1 = Xposition - player_Xpos : Xdirection = DIR_LEFT : goto harpy_dive_Y
-        temp1 = player_Xpos - Xposition : Xdirection = DIR_RIGHT
+          lda #F_HARPY_DIVE
+          sta object_frame,x
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc harpy_dive_right
+harpy_dive_left
+          sec
+          sbc player_Xpos
+          sta temp1
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          jmp harpy_dive_Y
+harpy_dive_right
+          lda player_Xpos
+          sec
+          sbc object_Xpos,x
+          sta temp1
+          lda #DIR_RIGHT
+          sta object_Xdir,x
 harpy_dive_Y
-        Ydirection = DIR_DOWN
-        if player_Ypos < Yposition then temp2 = Yposition - player_Ypos : Ydirection : goto harpy_dive_arc
-        temp2 = player_Ypos - Yposition
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc harpy_dive_Y_greater
+          sec
+          sbc player_Ypos
+          sta temp2
+          jmp harpy_dive_arc
+harpy_dive_Y_greater
+          lda player_Ypos
+          sec
+          sbc object_Ypos,x
+          sta temp2
 harpy_dive_arc
         ; if there's no Y offset, treat this as a fly up frame
-        if !temp2 then harpy_fly_up
-        
-        if temp1 > temp2 then Xvelocity = Xvelocity + move_speed
-        Xvelocity = Xvelocity + move_speed
+        ; lda temp2
+        ; beq harpy_dive_vel
+        ; jmp harpy_fly_up
 
-        if temp2 > temp1 then Yvelocity = Yvelocity + move_speed
-        Yvelocity = Yvelocity + move_speed
+harpy_dive_vel
+;        if temp1 > temp2 then Xvelocity = Xvelocity + move_speed
+;        Xvelocity = Xvelocity + move_speed
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
 
-        timer = HARPY_DIVE_TIME
+;        if temp2 > temp1 then Yvelocity = Yvelocity + move_speed
+;        Yvelocity = Yvelocity + move_speed
+          lda #HARPY_DIVE_TIME
+          sta object_timer,x
 
 harpy_dive_timer
-        timer--
+          dec object_timer,x
 
 harpy_shadow_update
         ; update shadow position TODO: more dynamic shadow movement
-        temp1 = index + shadow_offset
-        object_Ypos[temp1] = Yposition + $10
-        object_Xpos[temp1] = Xposition
+          lda index
+          clc
+          adc shadow_offset
+          tay
+          lda object_Ypos,x
+          clc
+          adc #$10
+          sta object_Ypos,y
+          lda object_Xpos,x
+          sta object_Xpos,y
 
 harpy_done
-        return thisbank
+          rts
+end
 
 ;=========================================================
 ; OCHRE JELLY
