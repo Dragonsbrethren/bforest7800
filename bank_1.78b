@@ -1165,32 +1165,32 @@ decelerate_object
         asm
           ldx index
           lda object_Xvel_lo,x
-          beq do_ld_xh
           sec
+          beq do_ld_xh
           sbc object_friction_lo,x
           bcs do_st_xl
           lda #0
 do_st_xl  sta object_Xvel_lo,x
 do_ld_xh  lda object_Xvel_hi,x
           beq do_ld_yl
-          sta temp3
+;         sta temp3
           sbc object_friction_hi,x
-          cmp temp3
+;         cmp temp3
           bcs do_st_xh
           lda #0
 do_st_xh  sta object_Xvel_hi,x
 do_ld_yl  lda object_Yvel_lo,x
-          beq do_ld_yh
           sec
+          beq do_ld_yh
           sbc object_friction_lo,x
           bcs do_st_yl
           lda #0
 do_st_yl  sta object_Yvel_lo,x
 do_ld_yh  lda object_Yvel_hi,x
           beq do_rts
-          sta temp5
+;         sta temp5
           sbc object_friction_hi,x
-          cmp temp5
+;         cmp temp5
           bcs do_st_yh
           lda #0
 do_st_yh  sta object_Yvel_hi,x
@@ -1204,95 +1204,18 @@ end
 ;==============================================================================
 find_new_object
         asm
-        ldx #0
-        stx no_empty_slot
+        ldy #0
+        sty no_empty_slot
 new_obj_loop
-        inx
-        lda object_type,x
+        iny
+        lda object_type,y
         beq new_obj_found
         cpx #MAX_MAP_OBJECTS
         bne new_obj_loop
         ; no empty obj slot found, routines can test if this is non-zero
-        stx no_empty_slot
+        sty no_empty_slot
         rts
 new_obj_found
-        stx spawn_index
-        rts
-end
-
-copy_player_props
-copy_object_props
-        asm
-        ldx index
-        lda object_Xpos,x
-        sta Xposition
-        lda object_Xdir,x
-        sta Xdirection
-        lda object_Xvel_lo,x
-        sta Xvelocity_lo
-        lda object_Xvel_hi,x
-        sta Xvelocity_hi
-        lda object_Ypos,x
-        sta Yposition
-        lda object_Ydir,x
-        sta Ydirection
-        lda object_Yvel_lo,x
-        sta Yvelocity_lo
-        lda object_Yvel_hi,x
-        sta Yvelocity_hi
-        lda object_speed_lo,x
-        sta move_speed_lo
-        lda object_speed_hi,x
-        sta move_speed_hi
-        lda object_vel_cap_lo,x
-        sta vel_cap_lo
-        lda object_vel_cap_hi,x
-        sta vel_cap_hi
-        lda object_friction_lo,x
-        sta friction_lo
-        lda object_friction_hi,x
-        sta friction_hi
-        lda object_frame,x
-        sta frame
-        lda object_flags,x
-        sta flags
-        lda object_dest,x
-        sta hop_dest
-        lda object_timer,x
-        sta timer
-        rts
-end
-
-restore_player_props
-restore_object_props
-        asm
-        ldx index
-        lda Xposition
-        sta object_Xpos,x
-        lda Xdirection
-        sta object_Xdir,x
-        lda Xvelocity_lo
-        sta object_Xvel_lo,x
-        lda Xvelocity_hi
-        sta object_Xvel_hi,x
-        lda Yposition
-        sta object_Ypos,x
-        lda Ydirection
-        sta object_Ydir,x
-        lda Yvelocity_lo
-        sta object_Yvel_lo,x
-        lda Yvelocity_hi
-        sta object_Yvel_hi,x
-        lda frame
-        sta object_frame,x
-        lda flags
-        sta object_flags,x
-        lda hop_dest
-        sta object_dest,x
-        lda timer
-        sta object_timer,x
-        lda #0
-        sta flags
-        sta timer
+        sty spawn_index
         rts
 end

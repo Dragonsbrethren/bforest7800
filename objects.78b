@@ -305,7 +305,7 @@
         const HARPY_VEL_CAP_LO = 128
         const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
-        const HARPY_DAMAGE = 3
+        const HARPY_DAMAGE = 8
         const HARPY_DEF = 0
         const HARPY_MDEF = 0
         const HARPY_FLAGS = %00000100

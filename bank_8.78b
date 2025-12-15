@@ -335,14 +335,12 @@ harpy_dive_vel
           sta object_Xvel_lo,x
           lda object_Xvel_hi,x
           adc object_speed_hi,x
-          adc object_speed_hi,x
           sta object_Xvel_hi,x
           lda object_Yvel_lo,x
           clc
           adc object_speed_lo,x
           sta object_Yvel_lo,x
           lda object_Yvel_hi,x
-          adc object_speed_hi,x
           adc object_speed_hi,x
           sta object_Yvel_hi,x
 
