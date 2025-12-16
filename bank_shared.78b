@@ -582,58 +582,51 @@ load_ai_pointer
           bcc load_object_ai
           ; need to offset X for projectile arrays
           sbc #TYPE_PROJECTILE
-          tax
-          lda projectile_ai_lo,x
+          tay
+          lda projectile_ai_lo,y
           sta pointer
-          lda projectile_ai_hi,x
+          lda projectile_ai_hi,y
           sta pointer_hi
           jmp (pointer)
 
 load_object_ai
-          tax
-          lda object_ai_lo,x
+          tay
+          lda object_ai_lo,y
           sta pointer
-          lda object_ai_hi,x
+          lda object_ai_hi,y
           sta pointer_hi
           jmp (pointer)
 end
 
 object_handler
         asm
-        ldx #MAX_MAP_OBJECTS
-oh_loop stx index
-        lda object_type,x
-        beq .object_done
-        cmp #TYPE_SPAWNER
-        bne oh_torch
-        jmp .spawn_object
-oh_torch
-        cmp #TYPE_TORCH
-        beq .torch_tile_block
-        cmp #TYPE_DOOR_LOCK
-        beq .torch_tile_block
-        cmp #TYPE_STATIC
-        bcs .object_done
-
-;        jsr .copy_object_props
-        jsr .decelerate_object
-        jsr .load_ai_pointer
-;        jsr .restore_object_props
-end
-object_ai_loaded
-        asm
-        jsr .move_object
-end
-restore_object
-        asm
-;        jsr .restore_object_props
-        ldx index
-end
-object_done
-        asm
-        dex
-        bne oh_loop
-        rts
+          ldx #MAX_MAP_OBJECTS
+oh_loop   stx index
+          lda object_type,x
+          beq .object_done
+          cmp #TYPE_SPAWNER
+          bne oh_torch
+          jmp .spawn_object
+oh_torch  cmp #TYPE_TORCH
+          beq .torch_tile_block
+          cmp #TYPE_DOOR_LOCK
+          beq .torch_tile_block
+          cmp #TYPE_STATIC
+          bcs .object_done
+          ; is the object hopping?
+          lda object_flags,x
+          and #%00100000
+          beq oh_decel
+          jsr .ledge_hop
+          jmp .object_done
+oh_decel  jsr .decelerate_object
+          jsr .load_ai_pointer
+.object_ai_loaded
+          jsr .move_object
+.object_done
+          dex
+          bne oh_loop
+          rts
 end
 
 ;==============================================================================
@@ -822,9 +815,7 @@ player_handler
         if player_state = STATE_DEATH then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
-;        gosub copy_player_props
         index = 0 : gosub decelerate_player
-;        gosub restore_player_props
 
 ;==============================================================================
 ; SUBROUTINE: HANDLE INPUT FIELD
@@ -834,6 +825,7 @@ player_handler
 handle_input_field
         if !player_flags{5} then player_no_hop
         index = 0
+        gosub set_player_facing_frame
         gosub ledge_hop
         goto test_joy_done
 player_no_hop
@@ -864,13 +856,8 @@ player_test_state
 end
 
 ;------------------------------------------------------------------------------
+        gosub set_player_facing_frame
 
-        if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
-        if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
-        if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
-        player_frame = FRAME_RIGHT
-
-frames_done
         if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
         if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
         if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
@@ -1106,40 +1093,49 @@ end
         gosub decrease_player_mp
         goto test_joy_done
 
+set_player_facing_frame
+        if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
+        if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
+        player_frame = FRAME_RIGHT
+frames_done
+        return thisbank
+
 decelerate_player
+decelerate_object
         asm
-        ldx index
-        lda object_friction,x
-        beq decel_return
-        lda object_Xvel,x
-        beq decel_Y
-        pha
-        sec
-        sbc object_friction_hi,x
-        sta object_Xvel_hi,x
-        pla
-        cmp object_Xvel_hi,x
-        bcs decel_Y
-        lda #0
-        sta object_Xvel_lo,x
-        sta object_Xvel_hi,x
-
-decel_Y
-        lda object_Yvel_hi,x
-        beq decel_return
-        pha
-        sec
-        sbc object_friction_hi,x
-        sta object_Yvel_hi,x
-        pla
-        cmp object_Yvel_hi,x
-        bcs decel_return
-        lda #0
-        sta object_Yvel_lo,x
-        sta object_Yvel_hi,x
-
-decel_return
-        rts
+          ldx index
+          lda object_Xvel_lo,x
+          sec
+          beq do_ld_xh
+          sbc object_friction_lo,x
+          bcs do_st_xl
+          lda #0
+do_st_xl  sta object_Xvel_lo,x
+do_ld_xh  lda object_Xvel_hi,x
+          beq do_ld_yl
+;         sta temp3
+          sbc object_friction_hi,x
+;         cmp temp3
+          bcs do_st_xh
+          lda #0
+do_st_xh  sta object_Xvel_hi,x
+do_ld_yl  lda object_Yvel_lo,x
+          sec
+          beq do_ld_yh
+          sbc object_friction_lo,x
+          bcs do_st_yl
+          lda #0
+do_st_yl  sta object_Yvel_lo,x
+do_ld_yh  lda object_Yvel_hi,x
+          beq do_rts
+;         sta temp5
+          sbc object_friction_hi,x
+;         cmp temp5
+          bcs do_st_yh
+          lda #0
+do_st_yh  sta object_Yvel_hi,x
+do_rts    rts
 end
 
 ;==============================================================================
@@ -1154,10 +1150,8 @@ end
 ; player collisions with map tiles at the expense of other sprite proportions
 ;==============================================================================
 move_object
-
-        ; Cap the object's velocity TODO: separate X/Y cap?
         asm
-          ldx index
+          ; Cap the object's velocity TODO: separate X/Y cap?
 mo_Xcap   lda object_vel_cap_hi,x
           cmp object_Xvel_hi,x
           bcs mo_Ycap
@@ -1254,7 +1248,7 @@ end
 test_walkable_up
           ; harpy's talon check
           ldx index
-          beq test_walkable_up_ledge_done
+          bne test_walkable_up_ledge_done
           lda m_relic_bits_2
           and #%00000100
           beq test_walkable_up_ledge_done
@@ -1435,6 +1429,7 @@ test_walkable_left
           lda tile_properties
           and #%01000000
           bne test_walkable_left_hop
+          lda tile_properties
           and #%00100000
           beq test_walkable_left_ledge_done
           ldx index
@@ -1527,11 +1522,14 @@ test_walkable_right
         ; test for rightward ledge, set hopping flag
         ; if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
         ; test if Harpy's Claw is available, allow hopping up ledge
-        ; if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
+end
+        if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
+        asm
         ; if !tile_properties{0} then Xvelocity = 0 : return
           lda tile_properties
           and #%00100000
           bne test_walkable_right_hop
+          lda tile_properties
           and #%01000000
           beq test_walkable_right_ledge_done
           ldx index
@@ -1898,6 +1896,8 @@ player_knockback_status
           beq set_curse_status
           cmp #TYPE_HGHOST
           beq set_curse_status
+          cpy #TYPE_HARPY
+          beq set_fury_status
           jmp .pc_damage
 
 set_poison_status
@@ -1905,6 +1905,9 @@ set_poison_status
           bne set_status_temp
 set_curse_status
           lda #BITS_CURSE
+          bne set_status_temp
+set_fury_status
+          lda #BITS_FURY
 set_status_temp
           sta temp1
           jsr .set_status

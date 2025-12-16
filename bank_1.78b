@@ -941,12 +941,22 @@ end
 ledge_hop
         asm
         ldx index
+        lda object_timer,x
+        bne hop_direction
+        lda #0
+        sta object_Xvel_lo,x
+        sta object_Xvel_hi,x
+        sta object_Yvel_lo,x
+        sta object_Yvel_hi,x
+hop_direction
         lda object_Xdir,x
+        sta object_facing,x
         cmp #DIR_LEFT
         beq hop_left
         cmp #DIR_RIGHT
         beq hop_right
         lda object_Ydir,x
+        sta object_facing,x
         cmp #DIR_UP
         bne hop_down
         jmp hop_up
@@ -954,38 +964,28 @@ ledge_hop
 hop_down
         lda object_timer,x
         bne hop_down_up
-        lda #16
+        lda #24
         sta object_timer,x
-        lda object_Ypos,x
-        clc
-        adc #16
-        sta object_dest,x
 hop_down_up
-        cmp #8
+        cmp #17
         bcc hop_down_down
         dec object_Ypos,x
         dec object_timer,x
         rts
 hop_down_down
         inc object_Ypos,x
-        lda object_dest,x
-        cmp object_Ypos,x
-        bne hop_down_rts
-        jmp hop_done
-hop_down_rts
+        inc object_Ypos,x
+        dec object_timer,x
+        beq hop_done
         rts
 
 hop_left
         lda object_timer,x
         bne hop_left_up
-        lda #11
+        lda #16
         sta object_timer,x
-        lda object_Xpos,x
-        sec
-        sbc #12
-        sta object_dest,x
 hop_left_up
-        cmp #6
+        cmp #9
         bcc hop_left_down
         dec object_Ypos,x
         dec object_Xpos,x
@@ -994,22 +994,17 @@ hop_left_up
 hop_left_down
         inc object_Ypos,x
         dec object_Xpos,x
-        lda object_dest,x
-        cmp object_Xpos,x
+        dec object_timer,x
         beq hop_done
         rts
 
 hop_right
         lda object_timer,x
         bne hop_right_up
-        lda #11
+        lda #16
         sta object_timer,x
-        lda object_Xpos,x
-        clc
-        adc #12
-        sta object_dest,x
 hop_right_up
-        cmp #6
+        cmp #9
         bcc hop_right_down
         dec object_Ypos,x
         inc object_Xpos,x
@@ -1018,22 +1013,17 @@ hop_right_up
 hop_right_down
         inc object_Ypos,x
         inc object_Xpos,x
-        lda object_dest,x
-        cmp object_Xpos,x
+        dec object_timer,x
         beq hop_done
         rts
 
 hop_up
         lda object_timer,x
         bne hop_up_up
-        lda #15
+        lda #16
         sta object_timer,x
-        lda object_Ypos,x
-        sec
-        sbc #24
-        sta object_dest,x
 hop_up_up
-        cmp #8
+        cmp #5
         bcc hop_up_down
         dec object_Ypos,x
         dec object_Ypos,x
@@ -1041,8 +1031,7 @@ hop_up_up
         rts
 hop_up_down
         dec object_Ypos,x
-        lda object_dest,x
-        cmp object_Ypos,x
+        dec object_timer,x
         beq hop_done
         rts
 
@@ -1159,42 +1148,6 @@ end
 
         data torch_unblock_tileset_hi
         0, torch_tile_unblock_forest_hi, torch_tile_unblock_castle_hi, torch_tile_unblock_river_hi, torch_tile_unblock_hills_hi
-end
-
-decelerate_object
-        asm
-          ldx index
-          lda object_Xvel_lo,x
-          sec
-          beq do_ld_xh
-          sbc object_friction_lo,x
-          bcs do_st_xl
-          lda #0
-do_st_xl  sta object_Xvel_lo,x
-do_ld_xh  lda object_Xvel_hi,x
-          beq do_ld_yl
-;         sta temp3
-          sbc object_friction_hi,x
-;         cmp temp3
-          bcs do_st_xh
-          lda #0
-do_st_xh  sta object_Xvel_hi,x
-do_ld_yl  lda object_Yvel_lo,x
-          sec
-          beq do_ld_yh
-          sbc object_friction_lo,x
-          bcs do_st_yl
-          lda #0
-do_st_yl  sta object_Yvel_lo,x
-do_ld_yh  lda object_Yvel_hi,x
-          beq do_rts
-;         sta temp5
-          sbc object_friction_hi,x
-;         cmp temp5
-          bcs do_st_yh
-          lda #0
-do_st_yh  sta object_Yvel_hi,x
-do_rts    rts
 end
 
 ;==============================================================================
