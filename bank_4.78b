@@ -552,57 +552,89 @@ torch_tile_unblock_castle
 ; Walks slowly until aligned with player, then casts dark spark or sword attack
 ;==============================================================================
 priest_ai
-        if flags{6} then goto priest_cast_2
-priest_dir
-        if timer then goto priest_walk
-        object_state[index] = 0
-        timer = PRIEST_WALK_TIMER
         asm
+          ; check flag 6
+          lda object_flags,x
+          cmp #%01000000
+          bne priest_dir
+          jmp .priest_cast_2
+priest_dir
+          lda object_timer,x
+          beq priest_init_walk
+          jmp priest_walk
+priest_init_walk
+          lda #0
+          sta object_state,x
+          lda #PRIEST_WALK_TIMER
+          sta object_timer,peekX
           jsr randomize
-          bpl .priest_vert
-end
+          bpl priest_vert
 
 priest_horiz
-        Ydirection = 0
-        if Xposition >= player_Xpos then priest_left
+          lda #0
+          sta object_Ydir,x
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcs priest_left
 
 priest_right
-        object_facing[index] = DIR_RIGHT
-        Xdirection = DIR_RIGHT
-        goto priest_walk
+          lda #DIR_RIGHT
+          bne priest_horiz_set
 
 priest_left
-        object_facing[index] = DIR_LEFT
-        Xdirection = DIR_LEFT
-        goto priest_walk
+          lda #DIR_LEFT
+
+priest_horiz_set
+          sta object_facing,x
+          sta object_Xdir,x
+          bne priest_walk
 
 priest_vert
-        Xdirection = 0
-        if Yposition < player_Ypos then priest_down
+          lda #0
+          sta object_Xdir,x
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc priest_down
 
 priest_up
-        object_facing[index] = DIR_UP
-        Ydirection = DIR_UP
-        goto priest_walk
+          lda #DIR_UP
+          bne priest_vert_set
 
 priest_down
-        object_facing[index] = DIR_DOWN
-        Ydirection = DIR_DOWN
+          lda #DIR_DOWN
+
+priest_vert_set
+          sta object_facing,x
+          sta object_Ydir,x
 
 priest_walk
-        asm
-          dec timer
-end
-        if Ydirection then priest_walk_y
+          dec object_timer,x
+          lda object_Ydir,x
+          bne .priest_walk_y
         
 priest_walk_x
-        if object_type[index] <> TYPE_PRIEST then skel_melee_x
+          lda object_type,x
+          beq priest_test_horz
+          jmp .skel_melee_x
+
 priest_test_horz
+end
         gosub priest_box
         if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
-priest_walk_x_2
-        Xvelocity = Xvelocity + move_speed : Yvelocity = 0
-        goto priest_walk_anim
+        asm
+.priest_walk_x_2
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          beq priest_walk_anim
+end
 
 priest_walk_y
         if object_type[index] <> TYPE_PRIEST then skel_melee_y
@@ -612,13 +644,27 @@ priest_test_vert
 priest_walk_y_2
         Yvelocity = Yvelocity + move_speed : Xvelocity = 0
 
+        asm
 priest_walk_anim
-        if Ydirection = DIR_DOWN then frame = 0
-        if Ydirection = DIR_UP then frame = 2
-        if Xdirection = DIR_LEFT then frame = 4
-        if Xdirection = DIR_RIGHT then frame = 6
-        if animation_frame then frame = frame + 1
-        return thisbank
+          lda object_Xdir,x
+          beq priest_walk_anim_Y
+          bne priest_walk_anim_set
+priest_walk_anim_Y
+          lda object_Ydir,x
+priest_walk_anim_set
+          tay
+          lda priest_walk_frames,y
+          sta object_frame,x
+          lda animation_frame
+          beq priest_walk_anim_done
+          inc object_frame,x
+priest_walk_anim_done
+          rts
+end
+
+        data priest_walk_frames
+        0, 2, 0, 4, 6
+end
 
 skel_melee_x
         gosub test_melee
