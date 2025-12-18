@@ -348,6 +348,8 @@ harpy_dive_vel
 ;        Yvelocity = Yvelocity + move_speed
           lda #HARPY_DIVE_TIME
           sta object_timer,x
+          ; cut off the current frame here, will resume below
+          rts
 
 harpy_dive_timer
           dec object_timer,x
