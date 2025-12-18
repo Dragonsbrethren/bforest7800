@@ -828,7 +828,6 @@ end
 split_hslime
         ; replace slime mobj with mini slime
         asm
-          ldx index
           lda #TYPE_MHSLIME
           sta object_type,x
           lda #MHSLIME_HP
@@ -837,17 +836,16 @@ split_hslime
           sta object_def,x
           lda #F_MHSLIME_1
           sta object_frame,x
-          lda #<.plot_hills_160a
-          sta object_spr_ptr_lo,x
-          lda #>.plot_hills_160a
-          sta object_spr_ptr_hi,x
+;         lda #<.plot_hills_160a
+;         sta object_spr_ptr_lo,x
+;         lda #>.plot_hills_160a
+;         sta object_spr_ptr_hi,x
 end
         gosub find_new_object
         ; if no slots, the slime just becomes a single mini slime
         if no_empty_slot then goto set_enemy_name
         asm
           ; move the original slime to the left
-          ldx index
           lda object_Xpos,x
           ; push Xpos to stack for later use
           pha
@@ -857,42 +855,42 @@ end
           lda object_Ypos,x
         ; initialize the new mini slime object
           ldx spawn_index
-          sta object_Ypos,x
+          sta object_Ypos,y
           lda #TYPE_MHSLIME
-          sta object_type,x
+          sta object_type,y
           lda #MHSLIME_HP
-          sta object_hp,x
+          sta object_hp,y
           lda #HSLIME_VEL_CAP_HI
-          sta object_vel_cap_hi,x
+          sta object_vel_cap_hi,y
           lda #HSLIME_VEL_CAP_LO
-          sta object_vel_cap_lo,x
+          sta object_vel_cap_lo,y
           lda #HSLIME_DAMAGE
-          sta object_damage,x
+          sta object_damage,y
           lda #MHSLIME_DEF
-          sta object_def,x
+          sta object_def,y
           lda #MHSLIME_MDEF
-          sta object_mdef,x
+          sta object_mdef,y
           lda #HSLIME_FRICTION_HI
-          sta object_friction_hi,x
+          sta object_friction_hi,y
           lda #HSLIME_FRICTION_LO
-          sta object_friction_lo,x
+          sta object_friction_lo,y
           lda #HSLIME_SPEED_HI
-          sta object_speed_hi,x
+          sta object_speed_hi,y
           lda #HSLIME_SPEED_LO
-          sta object_speed_lo,x
+          sta object_speed_lo,y
           lda #F_MHSLIME_1
-          sta object_frame,x
+          sta object_frame,y
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc
           adc #9
-          sta object_Xpos,x
+          sta object_Xpos,y
           lda #6
-          sta object_pal,x
+          sta object_pal,y
           lda #<.plot_hills_160a
-          sta object_spr_ptr_lo,x
+          sta object_spr_ptr_lo,y
           lda #>.plot_hills_160a
-          sta object_spr_ptr_hi,x
+          sta object_spr_ptr_hi,y
 end
         goto set_enemy_name
 
