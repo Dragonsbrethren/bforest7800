@@ -555,9 +555,9 @@ priest_ai
         asm
           ; check flag 6
           lda object_flags,x
-          cmp #%01000000
+          and #%01000000
           bne priest_dir
-          jmp .priest_cast_2
+          jmp priest_cast_2
 priest_dir
           lda object_timer,x
           beq priest_init_walk
@@ -566,7 +566,7 @@ priest_init_walk
           lda #0
           sta object_state,x
           lda #PRIEST_WALK_TIMER
-          sta object_timer,peekX
+          sta object_timer,x
           jsr randomize
           bpl priest_vert
 
@@ -610,19 +610,19 @@ priest_vert_set
 priest_walk
           dec object_timer,x
           lda object_Ydir,x
-          bne .priest_walk_y
+          bne priest_walk_y
         
 priest_walk_x
           lda object_type,x
+          cmp #TYPE_PRIEST
           beq priest_test_horz
-          jmp .skel_melee_x
+          jmp skel_melee_x
 
 priest_test_horz
-end
-        gosub priest_box
-        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
-        asm
-.priest_walk_x_2
+;        gosub priest_box
+;        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
+
+priest_walk_x_2
           lda object_Xvel_lo,x
           clc
           adc object_speed_lo,x
@@ -634,17 +634,28 @@ end
           sta object_Yvel_lo,x
           sta object_Yvel_hi,x
           beq priest_walk_anim
-end
 
 priest_walk_y
-        if object_type[index] <> TYPE_PRIEST then skel_melee_y
-priest_test_vert
-        gosub priest_box
-        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
-priest_walk_y_2
-        Yvelocity = Yvelocity + move_speed : Xvelocity = 0
+          lda object_type,x
+          cmp #TYPE_PRIEST
+          beq priest_test_vert
+          jmp skel_melee_y
 
-        asm
+priest_test_vert
+;        gosub priest_box
+;        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
+
+priest_walk_y_2
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+          lda #0
+          sta object_Xvel_lo,x
+          sta object_Xvel_hi,x
 priest_walk_anim
           lda object_Xdir,x
           beq priest_walk_anim_Y
@@ -660,84 +671,122 @@ priest_walk_anim_set
           inc object_frame,x
 priest_walk_anim_done
           rts
-end
-
-        data priest_walk_frames
-        0, 2, 0, 4, 6
-end
 
 skel_melee_x
-        gosub test_melee
-        if !temp6 || object_state[index] then goto priest_walk_x_2
+          jsr .test_melee
+          lda temp6
+          beq priest_walk_x_2
+          lda object_state,x
+          beq priest_walk_x_2
 
 priest_cast_horiz
-        object_facing[index] = DIR_LEFT
-        if Xposition < player_Xpos then object_facing[index] = DIR_RIGHT
-        goto priest_cast
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc priest_cast_right
+priest_cast_left
+          lda #DIR_LEFT
+          bne priest_cast_horiz_set
+priest_cast_right
+          lda #DIR_RIGHT
+priest_cast_horiz_set
+          sta object_facing,x
+          jmp priest_cast
 
 skel_melee_y
-        gosub test_melee
-        if !temp6 || object_state[index] then goto priest_walk_y_2
+          jsr .test_melee
+          lda temp6
+          beq priest_walk_y_2
+          lda object_state,x
+          beq priest_walk_y_2
 
 priest_cast_vert
-        object_facing[index] = DIR_UP
-        if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc priest_cast_down
+priest_cast_up
+          lda #DIR_UP
+          bne priest_cast_vert_set
+priest_cast_down
+          lda #DIR_DOWN
+priest_cast_vert_set
+          sta object_facing,x
+          jmp priest_cast
 
         ; prep the priest/skeleton object for spawning their attacks
 priest_cast
-        gosub find_new_object
-        if no_empty_slot then return thisbank
-        ; set the spawned object slot's parent to the index of this object
-        object_parent[spawn_index] = index
-        flags{6} = 1
-        frame_index = object_facing[index]
-        frame = priest_cast_frames[frame_index]
-        asm
-        lda #0
-        sta Xvelocity_hi
-        sta Xvelocity_lo
-        sta Yvelocity_hi
-        sta Yvelocity_lo
-end
-        timer = PRIEST_CAST_FRAMES
+          jsr .find_new_object
+          lda no_empty_slot
+          beq priest_cast_prep
+          rts
+priest_cast_prep
+          ; set the spawned object slot's parent to the index of this object
+          txa
+          sta object_parent,y
+          lda object_flags,x
+          ora #%01000000
+          sta object_flags,x
+
+          ; y is reloaded from spawn index later
+          lda object_facing,x
+          tay
+          lda priest_cast_frames,y
+          sta object_frame,x
+          lda #0
+          sta object_Xvel_hi,x
+          sta object_Xvel_lo,x
+          sta object_Yvel_hi,x
+          sta object_Yvel_lo,x
+          lda #PRIEST_CAST_FRAMES
+          sta object_timer,x
 
 priest_cast_2
-        if object_type[index] = TYPE_SKELETON then goto skel_sword
-        timer = timer - 1
-        if timer then return thisbank
+          lda object_type,x
+          cmp #TYPE_SKELETON
+          bne priest_cast_3
+          jmp .skel_sword
 
+priest_cast_3
+          dec object_timer,x
+          beq priest_cast_sound
+          rts
+
+priest_cast_sound
+end
         ; todo: roll off into its own spawn projectile subroutine
         playsfx sfx_nonobounce
 
 load_darkspark
         asm
-        ldx spawn_index
-        ldy index
+        ; playsfx overwrites x/y
+        ldx index
+        ldy spawn_index
         lda #TYPE_DARKSPARK
-        sta object_type,x
-        sta object_hp,x
+        sta object_type,y
+        sta object_hp,y
         lda #DARKSPARK_VEL_CAP_HI
-        sta object_vel_cap_hi,x
+        sta object_vel_cap_hi,y
         lda #DARKSPARK_SPEED_HI
-        sta object_speed_hi,x
+        sta object_speed_hi,y
         lda #DARKSPARK_VEL_CAP_LO
-        sta object_vel_cap_lo,x
+        sta object_vel_cap_lo,y
         lda #DARKSPARK_SPEED_LO
-        sta object_speed_lo,x
+        sta object_speed_lo,y
         lda #DARKSPARK_DAMAGE
-        sta object_damage,x
+        sta object_damage,y
         lda #0
-        sta object_frame,x
-        sta object_friction_hi,x
-        sta object_friction_lo,x
+        sta object_frame,y
+        sta object_friction_hi,y
+        sta object_friction_lo,y
         lda #<.plot_darkspark
-        sta object_spr_ptr_lo,x
+        sta object_spr_ptr_lo,y
         lda #>.plot_darkspark
-        sta object_spr_ptr_hi,x
+        sta object_spr_ptr_hi,y
         jsr set_cast_direction
+        lda object_flags,x
+        and #%10111111
+        sta object_flags,x
+        rts
 end
-        flags{6} = 0
-        return thisbank
 
 
 priest_box
@@ -749,47 +798,54 @@ priest_box
         temp6 = player_Ypos + 16
         return
 
+        data priest_walk_frames
+        0, 2, 0, 4, 6
+end
         data priest_cast_frames
         0, 9, 8, 10, 11
 end
 
 
 skel_sword
-        if flags{7} then return thisbank
         asm
+        lda object_flags,x
+        bpl skel_sword_pos
+        rts
+skel_sword_pos
         jsr .position_sword
-        ldx spawn_index
-        ldy index
+        ldy spawn_index
         lda #TYPE_SKELSWORD
-        sta object_type,x
+        sta object_type,y
         lda #0
-        sta object_flags,x
-        sta object_vel_cap_hi,x
-        sta object_speed_hi,x
-        sta object_vel_cap_lo,x
-        sta object_speed_lo,x
+        sta object_flags,y
+        sta object_vel_cap_hi,y
+        sta object_speed_hi,y
+        sta object_vel_cap_lo,y
+        sta object_speed_lo,y
         lda #SKELSWORD_DAMAGE
-        sta object_damage,x
-        sta object_hp,x ; dummy stat but needed for damage code
+        sta object_damage,y
+        sta object_hp,y ; dummy stat but needed for damage code
         lda #255
-        sta object_def
+        sta object_def,y
         lda temp1
-        sta object_Xpos,x
+        sta object_Xpos,y
         lda temp2
-        sta object_Ypos,x
+        sta object_Ypos,y
         lda temp5
-        sta object_frame,x
-        lda object_facing,y
-        sta object_facing,x
+        sta object_frame,y
+        lda object_facing,x
+        sta object_facing,y
         lda #1
-        sta object_timer,x
+        sta object_timer,y
         lda #<.plot_skelsword
-        sta object_spr_ptr_lo,x
+        sta object_spr_ptr_lo,y
         lda #>.plot_skelsword
-        sta object_spr_ptr_hi,x
+        sta object_spr_ptr_hi,y
+        lda object_flags,x
+        ora #%10000000
+        sta object_flags,x
+        rts
 end
-        flags{7} = 1
-        return thisbank
 
 ;==============================================================================
 ; SKELSWORD AI
@@ -797,41 +853,49 @@ end
 ; Exists for ATTACK_FRAMES duration, then kills itself
 ;==============================================================================
 skelsword_ai
-        temp1 = object_parent[index]
-        ; if Skeleton has died, remove sword instantly
-        if !object_type[temp1] then ss_kill
-        timer = timer - 1
-        if flags{7} then ss_retract_2
-        if timer then return thisbank
-        if flags{6} then ss_retract
-        timer = ATTACK_FRAMES
-        flags{6} = 1
-        return thisbank
+        asm
+          lda object_parent,x
+          tay
+          lda object_type,y     ; if Skeleton has died
+          beq ss_kill           ; remove sword instantly
+          dec object_timer,x
+          lda object_flags,x
+          bmi ss_retract_2
+          lda object_timer,x
+          bne skelsword_flags
+          rts
+skelsword_flags
+          lda object_flags,x
+          and #%01000000
+          beq ss_retract
+          lda #ATTACK_FRAMES
+          sta object_timer,x
+          lda object_flags,x
+          ora #%01000000
+          sta object_flags,x
+          rts
 
 ss_retract
-        timer = RETRACT_FRAMES
-        flags{7} = 1
+          lda #RETRACT_FRAMES
+          sta object_timer,x
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
 
 ss_retract_2
-        if !timer then ss_kill
-        return thisbank ; bypass retract code until object priority handling is added
-        if object_facing[index] = DIR_DOWN  then Yposition = Yposition - 4 : return
-        if object_facing[index] = DIR_UP    then Yposition = Yposition + 4 : return
-        if object_facing[index] = DIR_LEFT  then Xposition = Xposition + 2 : return
-        Xposition = Xposition - 2 : return
+          lda object_timer,x
+          beq ss_kill
+          rts
 
 ss_kill
-        asm
-        lda #0
-        ldx temp1
-        ldy index
+          lda #0
         ; unset flags 6 and 7 on parent skeleton
-        sta object_flags,x
-        sta object_type,y
+          sta object_flags,y
+          sta object_type,x
         ; use state as an extra flag to force skeleton to walk after melee
-        lda #1
-        sta object_state,x
-        rts
+          lda #1
+          sta object_state,y
+          rts
 end
 
 obj_priest_stats

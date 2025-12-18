@@ -1163,7 +1163,7 @@ new_obj_loop
         iny
         lda object_type,y
         beq new_obj_found
-        cpx #MAX_MAP_OBJECTS
+        cpy #MAX_MAP_OBJECTS
         bne new_obj_loop
         ; no empty obj slot found, routines can test if this is non-zero
         sty no_empty_slot

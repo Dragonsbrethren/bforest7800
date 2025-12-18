@@ -478,29 +478,50 @@ swoop_Y
 ; Can object hit player with melee attack?
 ;==============================================================================
 test_melee
-        temp6 = 0
-        if object_facing[index] = DIR_UP then melee_up
-        if object_facing[index] = DIR_DOWN then melee_down
-        if object_facing[index] = DIR_LEFT then melee_left
+        asm
+          lda #0
+          sta temp6
+          lda object_facing,x
+          cmp #DIR_UP
+          beq melee_up
+          cmp #DIR_DOWN
+          beq melee_down
+          cmp #DIR_LEFT
+          beq melee_left
 melee_right
-        temp1 = Xposition + 12
-        temp2 = Yposition - 8
-        goto melee_range
+          lda object_Xpos,x
+          clc
+          adc #12
+          sta temp1
+          lda object_Ypos,x
+          sec
+          sbc #8
+          sta temp2
+          jmp .melee_range
 
 melee_up
-        temp1 = Xposition
-        temp2 = Yposition - 16
-        if temp2 >= 225 then temp2 = 0
-        goto melee_range
+          lda object_Xpos,x
+          sta temp1
+          lda object_Ypos,x
+          sec
+          sbc #16
+          sta temp2
+          jmp .melee_range
 
 melee_down
-        temp1 = Xposition
-        temp2 = Yposition
-        goto melee_range
+          lda object_Xpos,x
+          sta temp1
+          lda object_Ypos,x
+          sta temp2
+          jmp .melee_range
 
 melee_left
-        temp1 = Xposition
-        temp2 = Yposition - 8
+          lda object_Xpos,x
+          sta temp1
+          lda object_Ypos,x
+          sec
+          sbc #8
+end
 
 melee_range
         if boxcollision(temp1, temp2, 12, 32, player_Xpos, player_Ypos, 16, 12) then temp6 = 1
