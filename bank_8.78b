@@ -235,7 +235,6 @@ end
 ;=========================================================
 harpy_ai
         asm
-          ldx index
           lda object_timer,x
           beq harpy_zero_Yvel
           jmp harpy_dive_timer
@@ -356,7 +355,7 @@ harpy_dive_timer
 
 harpy_shadow_update
         ; update shadow position TODO: more dynamic shadow movement
-          lda index
+          txa
           clc
           adc shadow_offset
           tay
@@ -378,7 +377,6 @@ end
 ;=========================================================
 mhslime_ai
         asm
-          ldx index
           lda #MHSLIME_PAL
           sta object_pal,x
           lda #F_MHSLIME_1
@@ -388,7 +386,6 @@ end
 
 hslime_ai
         asm
-          ldx index
           lda #HSLIME_PAL
           sta object_pal,x
           lda #F_HSLIME_1
@@ -409,7 +406,6 @@ end
 ;=========================================================
 hghost_ai
         asm
-          ldx index
           lda #F_HGHOST_1
           sta object_frame,x
         ; for zone-locking code, elevation is ignored since flying
@@ -448,7 +444,6 @@ end
 ;=========================================================
 spider_ai
         asm
-          ldx index
           lda object_flags,x
           ; flag 7 causes spider to drop
           bmi spider_drop_horiz

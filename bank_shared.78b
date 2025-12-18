@@ -635,16 +635,28 @@ end
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
 fireball_ai
-        if !Xvelocity_hi && !Yvelocity_hi && !Xvelocity_lo && !Yvelocity_lo then fireball_poof
-fireball_animate
-        frame = 0
-        if animation_frame then frame++
-fireball_done
-        return thisbank
-
+        asm
+          lda object_Xvel_lo,x
+          bne fireball_animate
+          lda object_Xvel_hi,x
+          bne fireball_animate
+          lda object_Yvel_lo,x
+          bne fireball_animate
+          lda object_Yvel_hi,x
+          bne fireball_animate
 fireball_poof
-        object_type[index] = 0
-        return thisbank
+          lda #0
+          sta object_type,x
+          rts
+fireball_animate
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          bne fireball_done
+          inc object_frame,x
+fireball_done
+          rts
+end
 
 
 torch_tile_block
