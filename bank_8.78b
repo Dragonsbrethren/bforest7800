@@ -292,34 +292,34 @@ harpy_dive
           cmp player_Xpos
           bcc harpy_dive_right
 harpy_dive_left
-          sec
-          sbc player_Xpos
-          sta temp1
+;         sec
+;         sbc player_Xpos
+;         sta temp1
           lda #DIR_LEFT
           sta object_Xdir,x
           jmp harpy_dive_Y
 harpy_dive_right
-          lda player_Xpos
-          sec
-          sbc object_Xpos,x
-          sta temp1
+;         lda player_Xpos
+;         sec
+;         sbc object_Xpos,x
+;         sta temp1
           lda #DIR_RIGHT
           sta object_Xdir,x
 harpy_dive_Y
           lda #DIR_DOWN
           sta object_Ydir,x
-          lda object_Ypos,x
-          cmp player_Ypos
-          bcc harpy_dive_Y_greater
-          sec
-          sbc player_Ypos
-          sta temp2
-          jmp harpy_dive_arc
+;         lda object_Ypos,x
+;         cmp player_Ypos
+;         bcc harpy_dive_Y_greater
+;         sec
+;         sbc player_Ypos
+;         sta temp2
+;         jmp harpy_dive_arc
 harpy_dive_Y_greater
-          lda player_Ypos
-          sec
-          sbc object_Ypos,x
-          sta temp2
+;         lda player_Ypos
+;         sec
+;         sbc object_Ypos,x
+;         sta temp2
 harpy_dive_arc
         ; if there's no Y offset, treat this as a fly up frame
         ; lda temp2
