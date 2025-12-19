@@ -557,7 +557,7 @@ priest_ai
           lda object_flags,x
           and #%01000000
           bne priest_dir
-          jmp priest_cast_2
+;         jmp priest_cast_2
 priest_dir
           lda object_timer,x
           beq priest_init_walk
@@ -610,7 +610,8 @@ priest_vert_set
 priest_walk
           dec object_timer,x
           lda object_Ydir,x
-          bne priest_walk_y
+          beq priest_walk_x
+          jmp priest_walk_y
         
 priest_walk_x
           lda object_type,x
@@ -619,9 +620,11 @@ priest_walk_x
           jmp skel_melee_x
 
 priest_test_horz
-;        gosub priest_box
-;        if temp4 < player_Ypos && temp5 >= temp6 then goto priest_cast_horiz
-
+          lda object_Ypos,x
+          sta Yposition
+          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,0,Yposition,160,PLAYER_HEIGHT
+          bcc priest_walk_x_2
+          jmp priest_cast_horiz
 priest_walk_x_2
           lda object_Xvel_lo,x
           clc
@@ -642,9 +645,11 @@ priest_walk_y
           jmp skel_melee_y
 
 priest_test_vert
-;        gosub priest_box
-;        if temp1 < player_Xpos && temp2 >= temp3 then goto priest_cast_vert
-
+          lda object_Xpos,x
+          sta Xposition
+          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,0,PLAYER_WIDTH,224
+          bcc priest_walk_y_2
+          jmp priest_cast_vert
 priest_walk_y_2
           lda object_Yvel_lo,x
           clc
@@ -664,7 +669,14 @@ priest_walk_anim_Y
           lda object_Ydir,x
 priest_walk_anim_set
           tay
+          lda object_type,x
+          cmp #TYPE_SKELETON
+          beq skel_walk_anim_set
           lda priest_walk_frames,y
+          bne priest_walk_store_frame
+skel_walk_anim_set
+          lda skel_walk_frames,y
+priest_walk_store_frame
           sta object_frame,x
           lda animation_frame
           beq priest_walk_anim_done
@@ -675,9 +687,12 @@ priest_walk_anim_done
 skel_melee_x
           jsr .test_melee
           lda temp6
-          beq priest_walk_x_2
+          bne skel_melee_x_state
+          jmp priest_walk_x_2
+skel_melee_x_state
           lda object_state,x
-          beq priest_walk_x_2
+          bne priest_cast_horiz
+          jmp priest_walk_x_2
 
 priest_cast_horiz
           lda object_Xpos,x
@@ -722,6 +737,9 @@ priest_cast_prep
           ; set the spawned object slot's parent to the index of this object
           txa
           sta object_parent,y
+          ; back up the spawn index in the priest's parent variable
+          tya
+          sta object_parent,x
           lda object_flags,x
           ora #%01000000
           sta object_flags,x
@@ -729,7 +747,14 @@ priest_cast_prep
           ; y is reloaded from spawn index later
           lda object_facing,x
           tay
+          lda object_type,x
+          cmp #TYPE_SKELETON
+          beq skel_cast_prep
           lda priest_cast_frames,y
+          bne priest_cast_store_frame
+skel_cast_prep
+        lda skel_cast_frames,y
+priest_cast_store_frame
           sta object_frame,x
           lda #0
           sta object_Xvel_hi,x
@@ -777,9 +802,9 @@ load_darkspark
         sta object_frame,y
         sta object_friction_hi,y
         sta object_friction_lo,y
-        lda #<.plot_darkspark
+        lda #<.plot_castle_160a
         sta object_spr_ptr_lo,y
-        lda #>.plot_darkspark
+        lda #>.plot_castle_160a
         sta object_spr_ptr_hi,y
         jsr set_cast_direction
         lda object_flags,x
@@ -799,10 +824,16 @@ priest_box
         return
 
         data priest_walk_frames
-        0, 2, 0, 4, 6
+        0, F_PRIEST_UP_1, F_PRIEST_DOWN_1, F_PRIEST_LEFT_1, F_PRIEST_RIGHT_1
+end
+        data skel_walk_frames
+        0, F_SKEL_UP_1, F_SKEL_DOWN_1, F_SKEL_LEFT_1, F_SKEL_RIGHT_1
 end
         data priest_cast_frames
-        0, 9, 8, 10, 11
+        0, F_PRIEST_CAST_UP, F_PRIEST_CAST_DOWN, F_PRIEST_CAST_LEFT, F_PRIEST_CAST_RIGHT
+end
+        data skel_cast_frames
+        0, F_SKEL_CAST_UP, F_SKEL_CAST_DOWN, F_SKEL_CAST_LEFT, F_SKEL_CAST_RIGHT
 end
 
 
@@ -813,7 +844,9 @@ skel_sword
         rts
 skel_sword_pos
         jsr .position_sword
-        ldy spawn_index
+        ; get the backed up object slot for sword
+        lda object_parent,x
+        tay
         lda #TYPE_SKELSWORD
         sta object_type,y
         lda #0
@@ -901,10 +934,14 @@ end
 obj_priest_stats
         asm
           ldx obj_index
-          lda #<.plot_priest
+          lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_priest
+          lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
+          lda #F_PRIEST_DOWN_1
+          sta object_frame,x
+          lda #PRIEST_PAL
+          sta object_pal,x
 end
         object_hp[obj_index] = PRIEST_HP
         object_vel_cap_hi[obj_index] = PRIEST_VEL_CAP_HI
@@ -919,6 +956,9 @@ end
         object_flags[obj_index] = PRIEST_FLAGS
         goto obj_next_stats
 
+        const plot_castle_160a_lo = #<.plot_castle_160a
+        const plot_castle_160a_hi = #>.plot_castle_160a
+
 obj_skel_stats
         object_hp[obj_index] = SKEL_HP
         object_vel_cap_hi[obj_index] = SKEL_VEL_CAP_HI
@@ -931,8 +971,14 @@ obj_skel_stats
         object_speed_hi[obj_index] = SKEL_SPEED_HI
         object_speed_lo[obj_index] = SKEL_SPEED_LO
         object_flags[obj_index] = SKEL_FLAGS
-        object_spr_ptr_lo[obj_index] = plot_skeleton_lo
-        object_spr_ptr_hi[obj_index] = plot_skeleton_hi
+        object_spr_ptr_lo[obj_index] = plot_castle_160a_lo
+        object_spr_ptr_hi[obj_index] = plot_castle_160a_hi
+        asm
+          lda #SKEL_PAL
+          sta object_pal,x
+          lda #F_SKEL_DOWN_1
+          sta object_frame,x
+end
         goto obj_next_stats
 
 ;==============================================================================
@@ -941,14 +987,19 @@ obj_skel_stats
 ; Floats through walls to attack player
 ;==============================================================================
 ghost_ai
-        flags{2} = 1
-        if timer then goto ghost_follow
-        timer = 4
-        if !object_pal[index] then object_pal[index] = 2 : goto ghost_follow
-        object_pal[index] = 0
+        asm
+          lda #GHOST_PAL_1
+          sta object_pal,x
+          lda #F_GHOST_1
+          sta object_frame,x
+          lda animation_frame
+          bne ghost_follow
+          lda #GHOST_PAL_2
+          sta object_pal,x
+          inc object_frame,x
 ghost_follow
-        timer = timer - 1
-        goto test_follow_box
+          jmp .test_follow_box
+end
 
 obj_ghost_stats
         object_hp[obj_index] = GHOST_HP
@@ -964,9 +1015,13 @@ obj_ghost_stats
         object_flags[obj_index] = GHOST_FLAGS
         asm
           ldx obj_index
-          lda #<.plot_ghost
+          lda #GHOST_PAL_1
+          sta object_pal,x
+          lda #F_GHOST_1
+          sta object_frame,x
+          lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_ghost
+          lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
@@ -978,10 +1033,12 @@ end
 ; Command?
 ;==============================================================================
 redslime_ai
+        object_frame[index] = F_RSLIME_1
         ; slimes have no physical defense on their squished frame
         if !animation_frame then temp1 = RSLIME_DEF : goto rslime_chase
         ; this will allow them to split into mini-slimes
         temp1 = 0
+        object_frame[index] = F_RSLIME_2
 rslime_chase
         object_def[index] = temp1
         goto followplayer
@@ -1000,9 +1057,13 @@ obj_redslime_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #<.plot_rslime
+          lda RSLIME_PAL
+          sta object_pal,x
+          lda F_RSLIME_1
+          sta object_frame,x
+          lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_rslime
+          lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
@@ -1017,10 +1078,12 @@ split_rslime
           sta object_hp,x
           lda #MRSLIME_DEF
           sta object_def,x
-          lda #<.plot_mrslime
+          lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_mrslime
+          lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
+          lda #F_MRSLIME_1
+          sta object_frame,x
 end
         gosub find_new_object
         ; if no slots, the slime just becomes a single mini slime
@@ -1060,50 +1123,28 @@ end
           sta object_speed_hi,x
           lda #RSLIME_SPEED_LO
           sta object_speed_lo,x
+          lda #F_MRSLIME_1
+          sta object_frame,x
+          lda #RSLIME_PAL
+          sta object_pal,x
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc
           adc #9
           sta object_Xpos,x
-          lda #<.plot_mrslime
+          lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_mrslime
+          lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
 end
         goto set_enemy_name
 
-plot_priest
-        plotsprite priest0 1 Xposition Yposition frame
-        goto plot_next
-
-plot_darkspark
-        plotsprite darkspark0 0 Xposition Yposition frame
-        goto plot_next
-
-        const plot_skeleton_lo = #<.plot_skeleton
-        const plot_skeleton_hi = #>.plot_skeleton
-plot_skeleton
-        plotsprite skeleton0 5 Xposition Yposition frame
+plot_castle_160a
+        PLOTSPRITE blood sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_skelsword
-        plotsprite sword0 0 Xposition Yposition frame
-        goto plot_next
-
-plot_rslime
-        plotsprite c_slime0 7 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_mrslime
-        plotsprite c_minislime0 7 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_blood
-        plotsprite blood 2 Xposition Yposition 0
-        goto plot_next
-
-plot_ghost
-        plotsprite ghost0 sprite_pal Xposition Yposition animation_frame
+        PLOTSPRITE sword0 0 Xposition Yposition frame
         goto plot_next
 
 plot_hud_castle

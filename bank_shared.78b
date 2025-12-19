@@ -206,7 +206,7 @@ tp_harpy_sh cmp #TYPE_HARPY_SH
           jmp .plot_harpy_sh
 tp_blood  cmp #TYPE_BLOOD
           bne tp_dooro
-          jmp .plot_blood
+          jmp .plot_castle_160a
 tp_dooro  cmp #TYPE_DOOR_OPEN
           bne tp_door
           lda #1

@@ -204,12 +204,30 @@
         const PRIEST_WALK_TIMER  = 20
         const PRIEST_CAST_FRAMES = 20
         const PRIEST_FLAGS       = %00000000
+        const F_PRIEST_DOWN_1     =  6
+        const F_PRIEST_DOWN_2     =  7
+        const F_PRIEST_UP_1       =  8
+        const F_PRIEST_UP_2       =  9
+        const F_PRIEST_LEFT_1     = 10
+        const F_PRIEST_LEFT_2     = 11
+        const F_PRIEST_RIGHT_1    = 12
+        const F_PRIEST_RIGHT_2    = 13
+        const F_PRIEST_CAST_DOWN  = 14
+        const F_PRIEST_CAST_UP    = 15
+        const F_PRIEST_CAST_LEFT  = 16
+        const F_PRIEST_CAST_RIGHT = 17
+        const PRIEST_PAL = (1 * 32)
+
 
         const DARKSPARK_SPEED_HI = 2
         const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_VEL_CAP_HI = 2
         const DARKSPARK_VEL_CAP_LO = 0
         const DARKSPARK_DAMAGE = 6
+        const F_DARKSPARK_1 = 1
+        const F_DARKSPARK_2 = 2
+        const F_DARKSPARK_3 = 3
+        const DARKSPARK_PAL = (0 * 32)
 
         ; SKELETAL KNIGHT
         const SKEL_HP          =  5
@@ -225,6 +243,20 @@
         const SKEL_WALK_TIMER  = 20
         const SKEL_CAST_FRAMES = 20
         const SKEL_FLAGS       = %00000000
+        const F_SKEL_DOWN_1     = 18
+        const F_SKEL_DOWN_2     = 19
+        const F_SKEL_UP_1       = 20
+        const F_SKEL_UP_2       = 21
+        const F_SKEL_LEFT_1     = 22
+        const F_SKEL_LEFT_2     = 23
+        const F_SKEL_RIGHT_1    = 24
+        const F_SKEL_RIGHT_2    = 25
+        const F_SKEL_CAST_DOWN  = 26
+        const F_SKEL_CAST_UP    = 27
+        const F_SKEL_CAST_LEFT  = 28
+        const F_SKEL_CAST_RIGHT = 29
+        const SKEL_PAL = (5 * 32)
+
 
         const SKELSWORD_DAMAGE = 3
         const RETRACT_FRAMES = 4
@@ -236,11 +268,16 @@
         const GHOST_DAMAGE = 4
         const GHOST_DEF = 2
         const GHOST_MDEF = 0
-        const GHOST_FRICTION_HI = 1
+        const GHOST_FRICTION_HI = 0
         const GHOST_FRICTION_LO = 0
         const GHOST_SPEED_HI = 0
-        const GHOST_SPEED_LO = 64
-        const GHOST_FLAGS = %00000000
+        const GHOST_SPEED_LO = 128
+        const GHOST_FLAGS = %00000100
+        const F_GHOST_1 = 4
+        const F_GHOST_2 = 5
+        const GHOST_PAL_1 = (0 * 32)
+        const GHOST_PAL_2 = (2 * 32)
+        const GHOST_ANIM_TIMER = 4
 
         ; RED SLIME
         const RSLIME_DROP_RATE = 128
@@ -256,7 +293,12 @@
         const RSLIME_FRICTION_HI = 1
         const RSLIME_FRICTION_LO = 0
         const RSLIME_SPEED_HI = 0
-        const RSLIME_SPEED_LO = 5
+        const RSLIME_SPEED_LO = 64
+        const F_RSLIME_1 = 30
+        const F_RSLIME_2 = 31
+        const F_MRSLIME_1 = 32
+        const F_MRSLIME_2 = 33
+        const RSLIME_PAL = (2 * 32)
 
         ; Nix (Merman) frames
         const F_NIX_EMERGE = 0
