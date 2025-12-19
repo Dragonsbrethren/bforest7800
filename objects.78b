@@ -298,7 +298,7 @@
         const F_RSLIME_2 = 31
         const F_MRSLIME_1 = 32
         const F_MRSLIME_2 = 33
-        const RSLIME_PAL = (2 * 32)
+        const RSLIME_PAL = (7 * 32)
 
         ; Nix (Merman) frames
         const F_NIX_EMERGE = 0

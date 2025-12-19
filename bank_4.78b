@@ -1057,9 +1057,9 @@ obj_redslime_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda RSLIME_PAL
+          lda #RSLIME_PAL
           sta object_pal,x
-          lda F_RSLIME_1
+          lda #F_RSLIME_1
           sta object_frame,x
           lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
