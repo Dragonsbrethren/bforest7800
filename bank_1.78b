@@ -619,31 +619,31 @@ cast_fireball
         bne .load_fireball_index
         jmp .test_joy_done ; allow player to try a different input
 .load_fireball_index
-        ldx #14
-        ldy #0  ; player index
+        ldy #14
+        ldx #0  ; player index
 load_fireball_data
         lda #TYPE_FIREBALL
-        sta object_type,x
+        sta object_type,y
         lda #FIREBALL_SPEED_HI
-        sta object_vel_cap_hi,x
-        sta object_speed_hi,x
+        sta object_vel_cap_hi,y
+        sta object_speed_hi,y
         lda #FIREBALL_SPEED_LO
-        sta object_vel_cap_lo,x
-        sta object_speed_lo,x
+        sta object_vel_cap_lo,y
+        sta object_speed_lo,y
         lda #FIREBALL_DAMAGE
         clc
         adc player_wisdom
-        sta object_damage,x
+        sta object_damage,y
         lda #%00010000
-        sta object_flags,x
-        lda object_elevation,y
-        sta object_elevation,x
+        sta object_flags,y
+        lda player_elevation
+        sta object_elevation,y
         lda #<.plot_fireball
-        sta object_spr_ptr_lo,x
+        sta object_spr_ptr_lo,y
         lda #>.plot_fireball
-        sta object_spr_ptr_hi,x
+        sta object_spr_ptr_hi,y
 set_cast_direction
-        lda player_facing,y
+        lda player_facing,x
         cmp #DIR_UP
         beq cast_fireball_up
         cmp #DIR_DOWN
@@ -652,80 +652,80 @@ set_cast_direction
         bne cast_fireball_right
         jmp cast_fireball_left  ; branch out of range
 cast_fireball_right
-        sta object_facing,x
-        sta object_Xdir,x
-        lda player_Xpos,y
+        sta object_facing,y
+        sta object_Xdir,y
+        lda player_Xpos,x
         clc
         adc #14
-        sta object_Xpos,x
-        lda player_Ypos,y
-        sta object_Ypos,x
-        lda object_speed_hi,x
-        sta object_Xvel_hi,x
-        lda object_speed_lo,x
-        sta object_Xvel_lo,x
+        sta object_Xpos,y
+        lda player_Ypos,x
+        sta object_Ypos,y
+        lda object_speed_hi,y
+        sta object_Xvel_hi,y
+        lda object_speed_lo,y
+        sta object_Xvel_lo,y
         lda #0
-        sta object_Ydir,x
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,x
+        sta object_Ydir,y
+        sta object_Yvel_hi,y
+        sta object_Yvel_lo,y
         rts
 cast_fireball_up
-        sta object_facing,x
-        sta object_Ydir,x
-        lda player_Xpos,y
+        sta object_facing,y
+        sta object_Ydir,y
+        lda player_Xpos,x
         clc
         adc #2
-        sta object_Xpos,x
-        lda player_Ypos,y
+        sta object_Xpos,y
+        lda player_Ypos,x
         sec
         sbc #10
-        sta object_Ypos,x
+        sta object_Ypos,y
         lda #0
-        sta object_Xdir,x
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,x
-        lda object_speed_lo,x
-        sta object_Yvel_lo,x
-        lda object_speed_hi,x
-        sta object_Yvel_hi,x
+        sta object_Xdir,y
+        sta object_Xvel_hi,y
+        sta object_Xvel_lo,y
+        lda object_speed_lo,y
+        sta object_Yvel_lo,y
+        lda object_speed_hi,y
+        sta object_Yvel_hi,y
         rts
 cast_fireball_down
-        sta object_facing,x
-        sta object_Ydir,x
-        lda player_Xpos,y
+        sta object_facing,y
+        sta object_Ydir,y
+        lda player_Xpos,x
         clc
         adc #2
-        sta object_Xpos,x
-        lda player_Ypos,y
+        sta object_Xpos,y
+        lda player_Ypos,x
         clc
         adc #10
-        sta object_Ypos,x
+        sta object_Ypos,y
         lda #0
-        sta object_Xdir,x
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,x
-        lda object_speed_lo,x
-        sta object_Yvel_lo,x
-        lda object_speed_hi,x
-        sta object_Yvel_hi,x
+        sta object_Xdir,y
+        sta object_Xvel_hi,y
+        sta object_Xvel_lo,y
+        lda object_speed_lo,y
+        sta object_Yvel_lo,y
+        lda object_speed_hi,y
+        sta object_Yvel_hi,y
         rts
 cast_fireball_left
-        sta object_facing,x
-        sta object_Xdir,x
-        lda player_Xpos,y
+        sta object_facing,y
+        sta object_Xdir,y
+        lda player_Xpos,x
         sec
         sbc #8
-        sta object_Xpos,x
-        lda player_Ypos,y
-        sta object_Ypos,x
-        lda object_speed_hi,x
-        sta object_Xvel_hi,x
-        lda object_speed_lo,x
-        sta object_Xvel_lo,x
+        sta object_Xpos,y
+        lda player_Ypos,x
+        sta object_Ypos,y
+        lda object_speed_hi,y
+        sta object_Xvel_hi,y
+        lda object_speed_lo,y
+        sta object_Xvel_lo,y
         lda #0
-        sta object_Ydir,x
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,x
+        sta object_Ydir,y
+        sta object_Yvel_hi,y
+        sta object_Yvel_lo,y
         rts
 end
 

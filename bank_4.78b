@@ -610,8 +610,7 @@ priest_vert_set
 priest_walk
           dec object_timer,x
           lda object_Ydir,x
-          beq priest_walk_x
-          jmp priest_walk_y
+          bne priest_walk_y
         
 priest_walk_x
           lda object_type,x
@@ -620,6 +619,7 @@ priest_walk_x
           jmp skel_melee_x
 
 priest_test_horz
+          ; tests a screen-wide box set to priest height to see if it intersects player
           lda object_Ypos,x
           sta Yposition
           QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,0,Yposition,160,PLAYER_HEIGHT
@@ -645,6 +645,7 @@ priest_walk_y
           jmp skel_melee_y
 
 priest_test_vert
+          ; tests a screen-high box set to priest width to see if it intersects player
           lda object_Xpos,x
           sta Xposition
           QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,0,PLAYER_WIDTH,224
@@ -725,19 +726,15 @@ priest_cast_down
           lda #DIR_DOWN
 priest_cast_vert_set
           sta object_facing,x
-          jmp priest_cast
 
         ; prep the priest/skeleton object for spawning their attacks
 priest_cast
           jsr .find_new_object
-          lda no_empty_slot
-          beq priest_cast_prep
+          cpy #0
+          bne priest_cast_prep
           rts
 priest_cast_prep
-          ; set the spawned object slot's parent to the index of this object
-          txa
-          sta object_parent,y
-          ; back up the spawn index in the priest's parent variable
+          ; back up the open object slot to this object's parent variable
           tya
           sta object_parent,x
           lda object_flags,x
@@ -753,7 +750,7 @@ priest_cast_prep
           lda priest_cast_frames,y
           bne priest_cast_store_frame
 skel_cast_prep
-        lda skel_cast_frames,y
+          lda skel_cast_frames,y
 priest_cast_store_frame
           sta object_frame,x
           lda #0
@@ -784,7 +781,8 @@ load_darkspark
         asm
         ; playsfx overwrites x/y
         ldx index
-        ldy spawn_index
+        lda object_parent,x
+        tay
         lda #TYPE_DARKSPARK
         sta object_type,y
         sta object_hp,y
@@ -802,6 +800,10 @@ load_darkspark
         sta object_frame,y
         sta object_friction_hi,y
         sta object_friction_lo,y
+        lda #F_DARKSPARK_1
+        sta object_frame,y
+        lda #DARKSPARK_PAL
+        sta object_pal,y
         lda #<.plot_castle_160a
         sta object_spr_ptr_lo,y
         lda #>.plot_castle_160a
@@ -812,16 +814,6 @@ load_darkspark
         sta object_flags,x
         rts
 end
-
-
-priest_box
-        temp1 = Xposition - 2
-        temp2 = Xposition + 14
-        temp3 = player_Xpos + 12
-        temp4 = Yposition - 4
-        temp5 = Yposition + 20
-        temp6 = player_Ypos + 16
-        return
 
         data priest_walk_frames
         0, F_PRIEST_UP_1, F_PRIEST_DOWN_1, F_PRIEST_LEFT_1, F_PRIEST_RIGHT_1
@@ -841,17 +833,20 @@ skel_sword
         asm
         lda object_flags,x
         bpl skel_sword_pos
+skel_sword_rts
         rts
 skel_sword_pos
         jsr .position_sword
         ; get the backed up object slot for sword
         lda object_parent,x
+        ; failsafe
+        beq skel_sword_rts
         tay
         lda #TYPE_SKELSWORD
         sta object_type,y
         lda #0
         sta object_flags,y
-        sta object_vel_cap_hi,y
+        sta object_vel_cap_hi,y 
         sta object_speed_hi,y
         sta object_vel_cap_lo,y
         sta object_speed_lo,y
