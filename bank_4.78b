@@ -556,8 +556,8 @@ priest_ai
           ; check flag 6
           lda object_flags,x
           and #%01000000
-          bne priest_dir
-;         jmp priest_cast_2
+          beq priest_dir
+          jmp priest_cast_2
 priest_dir
           lda object_timer,x
           beq priest_init_walk
@@ -760,6 +760,7 @@ priest_cast_store_frame
           sta object_Yvel_lo,x
           lda #PRIEST_CAST_FRAMES
           sta object_timer,x
+          rts
 
 priest_cast_2
           lda object_type,x
@@ -797,11 +798,11 @@ load_darkspark
         lda #DARKSPARK_DAMAGE
         sta object_damage,y
         lda #0
-        sta object_frame,y
         sta object_friction_hi,y
         sta object_friction_lo,y
         lda #F_DARKSPARK_1
         sta object_frame,y
+        sta object_state,y
         lda #DARKSPARK_PAL
         sta object_pal,y
         lda #<.plot_castle_160a

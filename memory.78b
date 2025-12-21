@@ -64,6 +64,14 @@
         dim player_dest         = object_dest
         dim player_elevation    = object_elevation
         dim player_hp           = object_hp
+        dim player_damage       = object_damage
+        dim player_atk_elem     = object_atk_elem
+        dim player_def          = object_def
+        dim player_def_elem     = object_def_elem
+        dim player_mdef         = object_mdef
+        dim player_speed_hi     = object_speed_hi
+        dim player_speed_lo     = object_speed_lo
+        dim player_speed        = player_speed_hi
 
         autodim byte player_max_hp
         autodim byte player_mp
@@ -72,12 +80,7 @@
         dim player_exp = score1
         autodim byte player_str
         autodim byte player_atk ; str + wpn atk
-        autodim byte player_damage
-        autodim byte player_atk_elem
-        autodim byte player_def
-        autodim byte player_def_elem
         autodim byte player_wisdom
-        autodim 8.8  player_speed
         autodim byte player_sword
         autodim byte player_shield
         autodim byte player_armor

@@ -109,8 +109,8 @@ init_field
         player_state = STATE_STAND
         player_status = 0
         player_flags = 0
-        player_speed = 1.0
-        player_friction = player_speed
+        object_speed = 1.0
+        player_friction = object_speed
         player_vel_cap = 5.0
         object_elevation = 0
         dec player_max_hp = $48

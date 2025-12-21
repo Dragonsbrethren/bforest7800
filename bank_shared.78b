@@ -436,16 +436,6 @@ follow_player_Yvel
 follow_player_done
         rts
 end
-
-
-        if rand >= 240 then followplayer_Y
-        if Xposition >= player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
-        if Xposition < player_Xpos then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
-followplayer_Y
-        if rand >= 240 then followplayer_done
-        if Yposition >= player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
-        if Yposition < player_Ypos then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
-followplayer_done
         return thisbank        
 
 get_player_pos
@@ -670,7 +660,7 @@ fireball_poof
           sta object_type,x
           rts
 fireball_animate
-          lda #0
+          lda object_state,x
           sta object_frame,x
           lda animation_frame
           bne fireball_done
@@ -891,10 +881,10 @@ end
 ;------------------------------------------------------------------------------
         gosub set_player_facing_frame
 
-        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_Yvel = player_Yvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
-        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_Xvel = player_Xvel + player_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_Yvel = player_Yvel + object_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_Yvel = player_Yvel + object_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_Xvel = player_Xvel + object_speed : player_state = STATE_MOVING : test_joy_done
+        if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_Xvel = player_Xvel + object_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
         if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
