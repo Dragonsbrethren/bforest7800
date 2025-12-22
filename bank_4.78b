@@ -692,7 +692,7 @@ skel_melee_x
           jmp priest_walk_x_2
 skel_melee_x_state
           lda object_state,x
-          bne priest_cast_horiz
+          beq priest_cast_horiz
           jmp priest_walk_x_2
 
 priest_cast_horiz
@@ -713,7 +713,7 @@ skel_melee_y
           lda temp6
           beq priest_walk_y_2
           lda object_state,x
-          beq priest_walk_y_2
+          bne priest_walk_y_2
 
 priest_cast_vert
           lda object_Ypos,x
@@ -737,6 +737,9 @@ priest_cast_prep
           ; back up the open object slot to this object's parent variable
           tya
           sta object_parent,x
+          ; back up this object to the spawned object's parent slot
+          txa
+          sta object_parent,y
           lda object_flags,x
           ora #%01000000
           sta object_flags,x
@@ -840,8 +843,6 @@ skel_sword_pos
         jsr .position_sword
         ; get the backed up object slot for sword
         lda object_parent,x
-        ; failsafe
-        beq skel_sword_rts
         tay
         lda #TYPE_SKELSWORD
         sta object_type,y
@@ -891,12 +892,12 @@ skelsword_ai
           lda object_flags,x
           bmi ss_retract_2
           lda object_timer,x
-          bne skelsword_flags
+          beq skelsword_flags
           rts
 skelsword_flags
           lda object_flags,x
           and #%01000000
-          beq ss_retract
+          bne ss_retract
           lda #ATTACK_FRAMES
           sta object_timer,x
           lda object_flags,x

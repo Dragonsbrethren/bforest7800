@@ -511,6 +511,7 @@ melee_left
           lda object_Ypos,x
           sec
           sbc #8
+          sta temp2
 end
 
 melee_range
