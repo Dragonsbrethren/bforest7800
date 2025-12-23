@@ -318,6 +318,7 @@
         const NIX_ATK_TIME  = 20
         const NIX_ATK2_TIME = 20
         const NIX_TAIL_TIME = 20
+        const NIX_PAL = 3
 
         const OCTOPUS_HP = 4
         const OCTOPUS_POP_TIMER  = 60
