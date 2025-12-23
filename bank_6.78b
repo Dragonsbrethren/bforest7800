@@ -864,14 +864,19 @@ end
 ; Floats through walls to attack player
 ;==============================================================================
 rghost_ai
-        flags{2} = 1
-        if timer then goto rghost_follow
-        timer = 4
-        if !object_pal[index] then object_pal[index] = 2 : goto rghost_follow
-        object_pal[index] = 0
+        asm
+          lda #GHOST_PAL_1
+          sta object_pal,x
+          lda #F_GHOST_1
+          sta object_frame,x
+          lda animation_frame
+          bne rghost_follow
+          lda #GHOST_PAL_2
+          sta object_pal,x
+          inc object_frame,x
 rghost_follow
-        timer = timer - 1
-        goto test_follow_box
+          jmp .test_follow_box
+end
 
 obj_rghost_stats
         object_hp[obj_index] = 5
@@ -901,26 +906,42 @@ end
 ;==============================================================================
 warg_ai
         ; Once wolves start chasing, they don't stop
-        if flags{7} then warg_chase
-
-        ; Test player distance to wolf
-        temp1 = Xposition - WOLF_CHASE_OFFSET_X
-        if temp1 > Xposition then temp1 = 0
-        temp2 = Yposition - WOLF_CHASE_OFFSET_Y
-        if temp2 > Yposition then temp2 = 0
-        if !boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, temp1, temp2, WOLF_CHASE_DIST_X, WOLF_CHASE_DIST_Y) then goto  warg_anim
-        flags{7} = 1
+        asm
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc warg_right
+          lda #F_WARG_LEFT_1
+          sta object_frame,x
+          jmp warg_anim
+warg_right
+          lda #F_WARG_RIGHT_1
+          sta object_frame,x
+warg_anim
+          lda animation_frame
+          bne warg_flags
+          inc object_frame,x
+warg_flags
+          lda object_flags,x
+          cmp #%10000000
+          beq warg_chase
+          lda object_Xpos,x
+          sec
+          sbc #WOLF_CHASE_OFFSET_X
+          sta Xposition
+          lda object_Ypos,x
+          sec
+          sbc #WOLF_CHASE_DIST_Y
+          sta Yposition
+end
+        if !boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, WOLF_CHASE_DIST_X, WOLF_CHASE_DIST_Y) then return thisbank
+        asm
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
 
 warg_chase
-        gosub followplayer
-
-warg_anim
-        ; Wolves flip left or right facing depending on player position
-        frame = 0
-        temp3 = Xposition + 4
-        if temp3 < player_Xpos then frame = frame + 2
-        if animation_frame then frame = frame + 1
-        return thisbank
+          jmp .follow_player
+end
 
 obj_warg_stats
 ; TODO: Make this implementation suck less
@@ -957,5 +978,5 @@ plot_rghost
         goto plot_next
 
 plot_warg
-        plotsprite warg0 6 Xposition Yposition frame
+        plotsprite warg0 1 Xposition Yposition frame
         goto plot_next

@@ -340,6 +340,10 @@
         const OCTOINK_SPEED_LO = 0
         const OCTOINK_DAMAGE   = 6
 
+        ; WARG
+        const F_WARG_LEFT_1  = 0
+        const F_WARG_RIGHT_1 = 2
+
         ; HARPY
         const HARPY_HP = 6
         const HARPY_SPEED_HI = 1
