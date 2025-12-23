@@ -892,6 +892,7 @@ obj_rghost_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
+          lda #GHOST_PAL_1
           lda #<.plot_rghost
           sta object_spr_ptr_lo,x
           lda #>.plot_rghost
