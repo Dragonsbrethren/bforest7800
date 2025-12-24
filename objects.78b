@@ -339,6 +339,10 @@
         const OCTOINK_SPEED_HI = 2
         const OCTOINK_SPEED_LO = 0
         const OCTOINK_DAMAGE   = 6
+        const OCTOINK_VEL_CAP_HI = 2
+        const OCTOINK_VEL_CAP_LO = 0
+        const F_OCTOINK = 1
+        const OCTOINK_PAL = (6 * 32)
 
         ; WARG
         const F_WARG_LEFT_1  = 0

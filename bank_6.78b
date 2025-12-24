@@ -726,45 +726,70 @@ plot_nix
 ; It's an octorock from Zelda but instead of walking, it dives under water
 ;==============================================================================
 octopus_ai
-        if debug_time then BACKGRND = $78
-        if flags{6} then goto octo_shoot_2
-        if flags{0} then goto octo_swim
-        if timer then goto octo_pop_2
-        ; set up a timer to make the octopus appear out of water before diving
+        asm
+          lda object_flags,x
+          and #%01000000
+          bne octo_flag_0
+          jmp octo_shoot
+octo_flag_0
+          lda object_flags,x
+          lsr
+          bcs octo_swim
+          lda object_timer,x
+          bne octo_pop_2
+          ; set up a timer to make the octopus appear out of water before diving
 octo_pop
-        timer = OCTOPUS_POP_TIMER
-        flags{0} = 0
+          lda #OCTOPUS_POP_TIMER
+          sta object_timer,x
+          lda object_flags,x
+          and #%11111110
+          sta object_flags,x
 octo_pop_2
-        timer = timer - 1
-        if !timer then goto octo_submerge
-        frame = F_OCTO_POP
-        object_pal[index] = OCTO_PAL
-;        if animation_frame then frame = F_OCTO_POP_2
+          dec object_timer,x
+          beq octo_submerge
+          lda #F_OCTO_POP
+          sta object_frame,x
+          lda #OCTO_PAL
+          sta object_pal,x
         ; octo_test_shoot handles return for this frame
-        goto octo_test_shoot
+          jmp octo_test_shoot
 
 octo_submerge
-        timer = OCTOPUS_SWIM_TIMER
-        flags{0} = 1
-        object_pal[index] = OCTO_SHADOW_PAL
-        frame = F_OCTO_SHADOW
+          lda #OCTOPUS_SWIM_TIMER
+          sta object_timer,x
+          lda object_flags,x
+          ora #%00000001
+          sta object_flags,x
+          lda #OCTO_SHADOW_PAL
+          sta object_pal,x
+          lda #F_OCTO_SHADOW
+          sta object_frame,x
 
 octo_swim
-        timer = timer - 1
-        if !timer then goto octo_pop
+          dec object_timer,x
+          beq octo_pop
 ;        gosub octo_test_shoot
         ; followplayer used for return this frame
-        object_parent[index] = 0
-        goto followplayer
-
+          lda #0
+          sta object_parent,x
+          jmp .follow_player
 
 octo_test_shoot
-        if object_parent[index] then octo_done
+          lda object_parent,x
+          bne octo_test_y
+          jmp octo_done
 octo_test_y
+          lda object_Xpos,x
+          sta Xposition
+end
         ; vertical range check
         if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, 0, 12, 224) then goto octo_shoot_y
 
 octo_test_x
+        asm
+          lda object_Ypos,x
+          sta Yposition
+end
         ; horizontal range check
         if boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, 0, Yposition, 160, 16) then goto octo_shoot_x
 
@@ -773,65 +798,99 @@ octo_test_return
         goto octo_done
 
 octo_shoot_y
-        object_facing[index] = DIR_UP
-        if Yposition < player_Ypos then object_facing[index] = DIR_DOWN
-        goto octo_shoot
+        asm
+          ; Yposition still set from test_y
+          lda Yposition
+          cmp player_Ypos
+          bcs octo_shoot_up
+octo_shoot_down
+          lda #DIR_DOWN
+          bne octo_shoot
+octo_shoot_up
+          lda #DIR_UP
+          bne octo_shoot
 
-octo_shoot_x
-        object_facing[index] = DIR_LEFT
-        if Xposition < player_Xpos then object_facing[index] = DIR_RIGHT
+.octo_shoot_x
+          lda Xposition
+          cmp player_Xpos
+          bcs octo_shoot_left
+octo_shoot_right
+          lda #DIR_RIGHT
+          bne octo_shoot
+octo_shoot_left
+          lda #DIR_LEFT
 
 octo_shoot
-        gosub find_new_object
-        if no_empty_slot then goto octo_done
-        object_parent[spawn_index] = index
-        flags{6} = 1
-        flags{0} = 0
-        object_pal[index] = OCTO_PAL
-        frame_index = object_facing[index]
-        frame = octo_shoot_frames[frame_index]
-        asm
+          sta object_facing,x
+          jsr .find_new_object
+          cpy #0
+          bne octo_spawn_ink
+          rts
+
+octo_spawn_ink
+          tya
+          sta object_parent,x
+          lda object_flags,x
+          ora #%01000000
+          and #%11111110
+          sta object_flags,x
+          lda #OCTO_PAL
+          sta object_pal,x
+          lda object_facing,x
+          tay
+          lda octo_shoot_frames,y
+          sta object_frame,x
           lda #0
           sta Xvelocity_hi
           sta Xvelocity_lo
           sta Yvelocity_hi
           sta Yvelocity_lo
-end
-        timer = OCTOPUS_SHOOT_FRAMES
+          lda #OCTOPUS_SHOOT_FRAMES
+          sta object_timer,x
 
 octo_shoot_2
-        timer = timer - 1
-        if timer then goto octo_done
+          dec object_timer,x
+          beq load_octoink
+          rts
 
 load_octoink
-        asm
-          ldx spawn_index
-          ldy index
+          lda object_parent,x
+          tay
           lda #TYPE_OCTOINK
-          sta object_type,x
+          sta object_type,y
+          sta object_hp,y
           lda #OCTOINK_SPEED_HI
-          sta object_vel_cap_hi,x
-          sta object_speed_hi,x
+          sta object_vel_cap_hi,y
+          sta object_speed_hi,y
           lda #OCTOINK_SPEED_LO
-          sta object_vel_cap_lo,x
-          sta object_speed_lo,x
+          sta object_vel_cap_lo,y
+          sta object_speed_lo,y
           lda #OCTOINK_DAMAGE
-          sta object_damage,x
+          sta object_damage,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          lda #F_OCTOINK
+          sta object_frame,y
+          lda #OCTOINK_PAL
+          sta object_pal,y
           lda #<.plot_octoink
-          sta object_spr_ptr_lo,x
+          sta object_spr_ptr_lo,y
           lda #>.plot_octoink
-          sta object_spr_ptr_hi,x
-          tya
-          sta object_parent,x
+          sta object_spr_ptr_hi,y
           txa
           sta object_parent,y
           jsr set_cast_direction
-end
-        flags{6} = 0
-        timer = OCTOPUS_POP_TIMER
+          lda object_flags,x
+          and #%10111111
+          sta object_flags,x
+          lda #OCTOPUS_POP_TIMER
+          sta object_timer,x
+
+.octo_done
 octo_done
-        if debug_time then BACKGRND = bg_color
-        return thisbank
+          rts
+end
 
         data octo_shoot_frames
         0, F_OCTO_SHOOT_U, F_OCTO_SHOOT_D, F_OCTO_SHOOT_L, F_OCTO_SHOOT_R
