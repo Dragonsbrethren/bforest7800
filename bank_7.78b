@@ -215,7 +215,10 @@ plot_river_room_17
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 1
-        demo_end = 1
+        exit_tileset = T_HILLS
+        exit_Xpos = 96
+        exit_Ypos =  8
+        exit_room_index = F_HILLS_START_I
         return otherbank
 
 plot_river_room_18
