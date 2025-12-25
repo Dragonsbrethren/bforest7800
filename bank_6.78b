@@ -729,8 +729,8 @@ octopus_ai
         asm
           lda object_flags,x
           and #%01000000
-          bne octo_flag_0
-          jmp octo_shoot
+          beq octo_flag_0
+          jmp octo_shoot_2
 octo_flag_0
           lda object_flags,x
           lsr
@@ -768,7 +768,6 @@ octo_submerge
 octo_swim
           dec object_timer,x
           beq octo_pop
-;        gosub octo_test_shoot
         ; followplayer used for return this frame
           lda #0
           sta object_parent,x
@@ -776,8 +775,8 @@ octo_swim
 
 octo_test_shoot
           lda object_parent,x
-          bne octo_test_y
-          jmp octo_done
+          beq octo_test_y 
+          rts
 octo_test_y
           lda object_Xpos,x
           sta Xposition
@@ -830,6 +829,8 @@ octo_shoot
 octo_spawn_ink
           tya
           sta object_parent,x
+          txa
+          sta object_parent,y
           lda object_flags,x
           ora #%01000000
           and #%11111110
@@ -847,13 +848,17 @@ octo_spawn_ink
           sta Yvelocity_lo
           lda #OCTOPUS_SHOOT_FRAMES
           sta object_timer,x
+          rts
 
 octo_shoot_2
           dec object_timer,x
-          beq load_octoink
+          beq octo_shoot_sound
           rts
 
+octo_shoot_sound
+
 load_octoink
+          ldx index
           lda object_parent,x
           tay
           lda #TYPE_OCTOINK
@@ -867,6 +872,8 @@ load_octoink
           sta object_speed_lo,y
           lda #OCTOINK_DAMAGE
           sta object_damage,y
+          lda #%00010000
+          sta object_flags,y
           lda #0
           sta object_friction_hi,y
           sta object_friction_lo,y
@@ -903,6 +910,10 @@ obj_octo_stats
           sta object_spr_ptr_lo,x
           lda #>.plot_octopus
           sta object_spr_ptr_hi,x
+          lda #OCTO_SHADOW_PAL
+          sta object_pal,x
+          lda #F_OCTO_SHADOW
+          sta object_frame,x
 end
         object_hp[obj_index] = OCTOPUS_HP
         object_vel_cap_hi[obj_index] = 1

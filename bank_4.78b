@@ -800,6 +800,8 @@ load_darkspark
         sta object_speed_lo,y
         lda #DARKSPARK_DAMAGE
         sta object_damage,y
+        lda #%00010000
+        sta object_flags,y
         lda #0
         sta object_friction_hi,y
         sta object_friction_lo,y

@@ -612,7 +612,7 @@ end
 
 object_handler
         asm
-          ldx #MAX_MAP_OBJECTS
+          ldx #MAX_OBJECTS
 oh_loop   stx index
           lda object_type,x
           beq .object_done

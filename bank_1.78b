@@ -636,13 +636,13 @@ load_fireball_data
         sta object_damage,y
         lda #%00010000
         sta object_flags,y
-        lda player_elevation
-        sta object_elevation,y
         lda #<.plot_fireball
         sta object_spr_ptr_lo,y
         lda #>.plot_fireball
         sta object_spr_ptr_hi,y
 set_cast_direction
+        lda player_elevation,x
+        sta object_elevation,y
         lda player_facing,x
         cmp #DIR_UP
         beq cast_fireball_up
