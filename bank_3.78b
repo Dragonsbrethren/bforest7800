@@ -6,26 +6,6 @@
         bank 3
         incbasic menu_shared.78b
 
-menu_init
-        game_state = STATE_MENU
-        clearscreen
-        displaymode 320B
-        adjustvisible 0 14
-        drawwait
-        P0C2 = $10
-        P4C2 = $10
-        menu_change = 1
-        gosub disable_double_wide_mode
-        goto main
-
-menu_handler
-        if menu = MENU_GAMEOVER then goto plot_gameover bank11
-        if menu = MENU_ITEMS then goto plot_items_menu
-        if menu = MENU_MAGIC then goto plot_magic_menu bank11
-        if menu = MENU_EQUIP then goto plot_equip_menu
-        if menu = MENU_RELICS then goto plot_relics_menu
-        if menu = MENU_PASSWORD then goto plot_password_menu bank11
-
 plot_main_menu
         P0C3 = PAL_LTPURP
         P4C3 = PAL_LTRED
@@ -963,10 +943,6 @@ end
 
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
-        return
-
-disable_double_wide_mode
-        sCTRL{4} = 0 : CTRL = sCTRL
         return
 
         inline plotvaluesw.asm

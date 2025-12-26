@@ -151,7 +151,7 @@ main_pal_done
 main_state_handler
         if game_state = STATE_TITLE then goto title_handler
         if game_state = STATE_FIELD then goto field_handler
-        if game_state = STATE_MENU  then goto menu_handler bank3
+        if game_state = STATE_MENU  then goto menu_handler
         goto main
 
 plot_player
@@ -273,7 +273,7 @@ password_display
         menu_debounce = 1
         pause_debounce = 1
         action_debounce = 1
-        goto menu_init bank3
+        goto menu_init bank11
 
         data inv_bits
         %00000001, %00000010, %00000100, %00001000, %00010000
