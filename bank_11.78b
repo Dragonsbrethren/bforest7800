@@ -266,7 +266,7 @@ plot_password_menu
         gosub password_to_buffer
         gosub plot_menu_border
         menu_change = 0
-        menu_selection = 0
+        if pw_index >= 24 then menu_selection = 39 else menu_selection = 0
         menu_max = 40
         menu_columns = 13
         plotchars 'Enter Password' 0 52 2 singlewide
@@ -332,7 +332,7 @@ encode_sel_to_pw
 pw_backspace
         pw_error = 0
         menu_debounce = 1
-        if pw_index > 24 then pw_index = 24
+        if pw_index >= 24 then pw_index = 24
         pw_index = pw_index - 1
         ; replace with dash character
         pw_index0[pw_index] = 82
