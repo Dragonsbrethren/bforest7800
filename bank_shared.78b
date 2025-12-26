@@ -834,8 +834,6 @@ poison_damage
         if player_status{0} then goto damage_player_hp
 
 player_handler
-        ; TODO: saving cutscene
-        if in_save_room then old_tileset = tileset : goto save_room_handler
         if player_state = STATE_DEATH then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
@@ -943,7 +941,16 @@ check_room_exit
         reload_map = 1
         goto player_handler_done
 
+player_save_input
+        old_tileset = tileset
+        goto save_room_handler
+
 player_attack
+        ; TODO: saving cutscene
+        asm
+          lda in_save_room
+          bne .player_save_input
+end
         ; workaround for wierdness of attacking while obscurred - TODO: detect if sword is on obscurred tile & hide?
         if obscure_player && player_obscure then goto player_handler_done
         sword_hit = 0
