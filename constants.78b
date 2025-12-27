@@ -133,11 +133,13 @@
         const TILE_HEIGHT = 16
         const TILE_WIDTH  = 8
 
-        const T_TITLE  = 0
-        const T_FOREST = 1
-        const T_CASTLE = 2
-        const T_RIVER  = 3
-        const T_HILLS  = 4
+        const T_TITLE   = 0
+        const T_FOREST  = 1
+        const T_CASTLE  = 2
+        const T_RIVER   = 3
+        const T_HILLS   = 4
+        const T_CAVES   = 5
+        const T_CASTLE2 = 6
 
         const ROOMS_PER_ROW = 7
         const MAX_MAP_OBJECTS = 12
@@ -234,6 +236,13 @@
         const F_HILLS_SAVE2_D = DIR_DOWN
 
 ;------------------------------------------------------------------------------
+; CAVES TILESET
+;------------------------------------------------------------------------------
+        const F_CAVES_ENT_1_I = 0
+        const F_CAVES_ENT_2_I = 0
+        const F_CAVES_ENT_3_I = 0
+
+;------------------------------------------------------------------------------
 ; MENU DATA
 ;------------------------------------------------------------------------------
         const MENU_MAIN   = 0
@@ -254,7 +263,7 @@
         const MENU_MAIN_EXIT_X   = 128
 
         ; once menu debounce >= this value, act as button was tapped
-        const MENU_TAP_FRAMES = 6
+        const MENU_TAP_FRAMES = 4
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32

@@ -647,6 +647,10 @@ plot_hills_room_1
         zone1_objects  = 5
         zone2_objects  = 4
         zone14_objects = 3
+        exit_tileset = T_CAVES
+        exit_Xpos = 32
+        exit_Ypos = 32
+        exit_room_index = F_CAVES_ENT_1_I
         goto hills_waterfall
 
 plot_hills_room_2

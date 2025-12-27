@@ -82,7 +82,7 @@ end
         goto menu_init bank3
 
 title_new_game
-        tileset = T_RIVER
+        tileset = T_HILLS
         fade = $0F
         player_sword = 3
         player_shield = 2

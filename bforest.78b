@@ -49,6 +49,10 @@
 
         ; menu overflow
         incbasic bank_11.78b
+
+        ; caves tileset
+        incbasic bank_12.78b
+        incbasic bank_13.78b
         
         ; shared graphics and code
         incbasic bank_shared.78b
