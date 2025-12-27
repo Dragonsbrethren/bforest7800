@@ -176,7 +176,7 @@ plot_hills_room_17
         zone14_objects = 1
         exit_tileset = T_CAVES
         exit_Xpos = 64
-        exit_Ypos = 32
+        exit_Ypos = 28
         exit_room_index = F_CAVES_ENT_3_I
         return otherbank
 
@@ -254,6 +254,6 @@ plot_hills_room_24
         alt_palette    = 1
         exit_tileset = T_CAVES
         exit_Xpos = 32
-        exit_Ypos = 112
+        exit_Ypos = 108
         exit_room_index = F_CAVES_ENT_2_I
         return otherbank
