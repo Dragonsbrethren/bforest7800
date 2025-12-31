@@ -526,6 +526,8 @@ end
         dec temp1 = player_def 
         dec player_def = armor_def[player_armor] + temp1
         dec player_wisdom = charm_wis[player_charm]
+        ; hack in status-causing equipment here
+        if player_charm = CHARM_FURY then temp1 = BITS_FURY : gosub set_status
         ; this must stay a normal return command so title code can use
         return
 
