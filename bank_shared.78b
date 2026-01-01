@@ -1121,6 +1121,8 @@ clear_input_buffer
         sta input_buffer,x
         bne clear_input_buffer
 end
+        if !mp_change then goto test_joy_done
+        playsfx sfx_bubbleup
         gosub decrease_player_mp
         goto test_joy_done
 
@@ -2085,10 +2087,10 @@ update_mp_bar
         return thisbank
 
 test_spell_cost
-        if mp_change < player_mp then return
+        if mp_change < player_mp then return thisbank
         ; routines can test if mp_change is 0 after calling this subroutine
         mp_change = 0
-        return
+        return thisbank
 
 increase_hp
         temp_hp = temp_hp + hp_change

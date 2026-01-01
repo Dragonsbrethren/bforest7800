@@ -609,13 +609,13 @@ magic_collision
 
 cast_fireball
         m_spell_bits_1{0} = 1
-        playsfx sfx_bubbleup
         asm
         lda #FIREBALL_MP_COST
         sta mp_change
         jsr .test_spell_cost
+        
         bne .load_fireball_index
-        jmp .test_joy_done ; allow player to try a different input
+        rts ; allow player to try a different input
 .load_fireball_index
         ldy #14
         ldx #0  ; player index
