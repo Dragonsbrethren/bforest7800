@@ -253,11 +253,7 @@ castle_lightning
         if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
         lightning_delay = LIGHTNING_DELAY
-
-castle_shared_pals
-        bg_color = flash_color
-        incbasic shared_pals.78b
-        goto palette_done
+        goto castle_shared_pals
         
 castle_maroon_pal
         ; override tile colors with maroons for carpeted stairs
@@ -282,6 +278,12 @@ plot_castle_room_1
 plot_castle_bank5_return
         return thisbank
 
+      dmahole 0
+castle_shared_pals
+        bg_color = flash_color
+        incbasic shared_pals.78b
+        goto palette_done
+
         data castle_room_0_obj
         $00
 end
@@ -293,7 +295,7 @@ end
         $00
 end
 
-        dmahole 0
+
         data castle_room_2_obj
         TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
         TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $A0,
