@@ -483,11 +483,11 @@ end
 end
 
         alphadata pickup_relic7 font_spr
-        'Relic 7      *'
+        'Miracle Gem*'
 end
 
         alphadata pickup_relic8 font_spr
-        'Relic 8      *'
+        'Harpy` Talon*'
 end
 
         alphadata pickup_relic9 font_spr

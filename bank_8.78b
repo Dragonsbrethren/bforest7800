@@ -1061,6 +1061,9 @@ end
 end
 
         data hills_room_22_obj
+        TYPE_HARPY, $20, $10, TYPE_HARPY, $78, $10
+        TYPE_HTALON, $4C, $80
+        TYPE_HARPY_SH, $20, $20, TYPE_HARPY_SH, $78, $20
         $00
 end
 

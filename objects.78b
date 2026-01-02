@@ -95,6 +95,7 @@
         const TYPE_BESTIARY  = TYPE_RELIC5
         const TYPE_NIXTAIL   = TYPE_RELIC6
         const TYPE_WATERFALL = TYPE_RELIC7
+        const TYPE_HTALON    = TYPE_RELIC8
         const TYPE_SWORD1   = 210
         const TYPE_SWORD2   = 211
         const TYPE_SWORD3   = 212

@@ -230,6 +230,7 @@ plot_hills_room_22
         zone2_objects  = 4
         zone14_objects = 3
         pal_animation  = 1
+        shadow_offset  = 3
         goto hills_waterfall bank8
 
 plot_hills_room_23
