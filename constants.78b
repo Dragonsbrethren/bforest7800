@@ -265,7 +265,7 @@
         const MENU_MAIN_EXIT_X   = 128
 
         ; once menu debounce >= this value, act as button was tapped
-        const MENU_TAP_FRAMES = 4
+        const MENU_TAP_FRAMES = 6
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32
