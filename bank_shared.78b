@@ -251,8 +251,10 @@ plot_items
         goto plot_next
 
 plot_relics
-        temp1 = object_type[index] - (TYPE_RELIC1 - 1)
+        temp2 = object_type[index]
+        temp1 = temp2 - (TYPE_RELIC1 - 1)
         sprite_pal = f_relic_pals[temp1]
+        if temp2 = TYPE_HTALON then frame = F_HARPY_TALON : goto plot_hills_160a
         frame = f_relic_frames[temp1]
         plotsprite relic0 sprite_pal Xposition Yposition frame
         goto plot_next

@@ -77,6 +77,7 @@ hills_save_2
 
 hills_set_room
         characterset hills_ledges
+        goto hills_init
         if music_playing then hills_init
         playrmt blackforest_indoorarea01
         music_playing = 1
@@ -1021,14 +1022,22 @@ end
 end
 
         data hills_room_12_obj
+        TYPE_HSLIME, $60, $50
+        TYPE_TORCH, $28, $30, TYPE_TORCH, $88, $90
         $00
 end
 
         data hills_room_13_obj
+        TYPE_HARPY, $28, $01, TYPE_HARPY, $50, $01
+        TYPE_SWORD4, $78, $A0
+        TYPE_TORCH, $70, $40
+        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $50, $11
         $00
 end
 
         data hills_room_14_obj
+        TYPE_HARPY, $28, $01, TYPE_HARPY, $58, $01
+        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $58, $11
         $00
 end
 
@@ -1037,10 +1046,13 @@ end
 end
 
         data hills_room_16_obj
+        TYPE_HARPY, $48, $01, TYPE_HARPY, $78, $01
+        TYPE_HARPY_SH, $48, $11, TYPE_HARPY_SH, $78, $11
         $00
 end
 
         data hills_room_17_obj
+        TYPE_TORCH, $38, $60, TYPE_TORCH, $50, $60
         $00
 end
 
@@ -1049,21 +1061,29 @@ end
 end
 
         data hills_room_19_obj
+        TYPE_HARPY, $48, $01
+        TYPE_TORCH, $78, $B0, TYPE_TORCH, $28, $60
+        TYPE_HARPY_SH, $48, $11
         $00
 end
 
         data hills_room_20_obj
+        TYPE_HARPY, $28, $01, TYPE_HARPY, $70, $10
+        TYPE_TORCH, $48, $30
+        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $70, $20
         $00
 end
 
         data hills_room_21_obj
+        TYPE_HARPY, $60, $10
+        TYPE_TORCH, $18, $80
+        TYPE_HARPY_SH, $60, $20
         $00
 end
 
         data hills_room_22_obj
-        TYPE_HARPY, $20, $10, TYPE_HARPY, $78, $10
-        TYPE_HTALON, $4C, $80
-        TYPE_HARPY_SH, $20, $20, TYPE_HARPY_SH, $78, $20
+        TYPE_HARPY, $4C, $20
+        TYPE_HTALON, $4C, $30
         $00
 end
 

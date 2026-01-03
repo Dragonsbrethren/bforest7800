@@ -180,8 +180,8 @@
    <tile gid="54"/>
    <tile gid="55"/>
    <tile gid="1"/>
-   <tile gid="62"/>
-   <tile gid="63"/>
+   <tile gid="69"/>
+   <tile gid="66"/>
    <tile gid="63"/>
    <tile gid="63"/>
    <tile gid="63"/>
@@ -200,10 +200,10 @@
    <tile gid="54"/>
    <tile gid="55"/>
    <tile gid="4"/>
+   <tile gid="5"/>
+   <tile gid="76"/>
    <tile gid="69"/>
-   <tile gid="63"/>
    <tile gid="65"/>
-   <tile gid="63"/>
    <tile gid="63"/>
    <tile gid="63"/>
    <tile gid="63"/>

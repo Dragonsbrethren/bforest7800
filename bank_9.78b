@@ -109,15 +109,31 @@ plot_hills_room_11
         alt_palette    = 1
         return otherbank
 
+plot_hills_room_20
+        menu_map_room[menu_map_index] = ROOML_L
+        menu_map_room[menu_map_index_2] = ROOMR_R
+        memcpy current_map hills_room_20 280
+        plotmapfile tiled/hills_room_20.tmx hills_room_20 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 1
+        shadow_offset  = 3
+        return otherbank
+
         dmahole 0
 plot_hills_room_12
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy current_map hills_room_12 280
         plotmapfile tiled/hills_room_12.tmx hills_room_12 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
+        asm
+          lda #6
+          sta zone1_objects
+          sta zone2_objects
+end
         zone14_objects = 3
+        alt_palette    = 1
+        locked_zone    = 4
         return otherbank
 
 plot_hills_room_13
@@ -127,7 +143,8 @@ plot_hills_room_13
         plotmapfile tiled/hills_room_13.tmx hills_room_13 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 3
+        zone14_objects = 4
+        shadow_offset  = 4
         return otherbank
 
 plot_hills_room_14
@@ -135,10 +152,11 @@ plot_hills_room_14
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map hills_room_14 280
         plotmapfile tiled/hills_room_14.tmx hills_room_14 0 0 20 14
-        zone1_objects  = 5
-        zone2_objects  = 5
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 3
         pal_animation  = 1
+        shadow_offset  = 2
         goto hills_waterfall bank8
 
 plot_hills_room_15
@@ -160,10 +178,11 @@ plot_hills_room_16
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy current_map hills_room_16 280
         plotmapfile tiled/hills_room_16.tmx hills_room_16 0 0 20 14
-        zone1_objects  = 5
-        zone2_objects  = 5
+        zone1_objects  = 4
+        zone2_objects  = 4
         zone14_objects = 1
         pal_animation  = 1
+        shadow_offset  = 2
         goto hills_waterfall bank8
 
 plot_hills_room_17
@@ -171,8 +190,8 @@ plot_hills_room_17
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy current_map hills_room_17 280
         plotmapfile tiled/hills_room_17.tmx hills_room_17 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 2
+        zone2_objects  = 2
         zone14_objects = 1
         exit_tileset = T_CAVES
         exit_Xpos = 64
@@ -195,19 +214,10 @@ plot_hills_room_19
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map hills_room_19 280
         plotmapfile tiled/hills_room_19.tmx hills_room_19 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
-        zone14_objects = 3
-        return otherbank
-
-plot_hills_room_20
-        menu_map_room[menu_map_index] = ROOML_L
-        menu_map_room[menu_map_index_2] = ROOMR_R
-        memcpy current_map hills_room_20 280
-        plotmapfile tiled/hills_room_20.tmx hills_room_20 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 1
+        zone14_objects = 5
+        shadow_offset  = 3
         return otherbank
 
 plot_hills_room_21
@@ -219,6 +229,8 @@ plot_hills_room_21
         zone2_objects  = 2
         zone14_objects = 4
         pal_animation  = 1
+        locked_zone    = 8
+        shadow_offset  = 2
         goto hills_waterfall bank8
 
 plot_hills_room_22
@@ -230,7 +242,8 @@ plot_hills_room_22
         zone2_objects  = 4
         zone14_objects = 3
         pal_animation  = 1
-        shadow_offset  = 3
+        shadow_offset  = 1
+        locked_zone    = 8
         goto hills_waterfall bank8
 
 plot_hills_room_23

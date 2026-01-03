@@ -366,6 +366,7 @@
         const F_HARPY_FLY_1 = 1
         const F_HARPY_DIVE  = 1
         const F_HARPY_SH    = 12
+        const F_HARPY_TALON = 15
 
 
         ; SPIDER

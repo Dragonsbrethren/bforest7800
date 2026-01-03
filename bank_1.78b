@@ -536,7 +536,7 @@ check_relic_bits
         if object_type[index] = TYPE_RELIC5 && m_relic_bits_1{4} then object_type[index] = 0 
         if object_type[index] = TYPE_RELIC6 && m_relic_bits_2{0} then object_type[index] = 0 
         if object_type[index] = TYPE_RELIC7 && m_relic_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = 0 
+        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = TYPE_HARPY_SH
         if object_type[index] = TYPE_RELIC9 && m_relic_bits_2{3} then object_type[index] = 0 
         if object_type[index] = TYPE_RELIC10 && m_relic_bits_2{4} then object_type[index] = 0 
         goto remove_duplicates_next
