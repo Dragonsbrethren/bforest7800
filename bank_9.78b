@@ -143,7 +143,7 @@ plot_hills_room_13
         plotmapfile tiled/hills_room_13.tmx hills_room_13 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 4
+        zone14_objects = 2
         shadow_offset  = 4
         return otherbank
 

@@ -234,9 +234,9 @@
    <tile gid="1"/>
    <tile gid="2"/>
    <tile gid="3"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
-   <tile gid="54"/>
+   <tile gid="47"/>
+   <tile gid="48"/>
+   <tile gid="56"/>
    <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="54"/>
@@ -254,9 +254,9 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="3"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
-   <tile gid="54"/>
+   <tile gid="25"/>
+   <tile gid="46"/>
+   <tile gid="47"/>
    <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="54"/>
@@ -274,9 +274,9 @@
    <tile gid="2"/>
    <tile gid="76"/>
    <tile gid="3"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
-   <tile gid="54"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
    <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="54"/>
@@ -294,9 +294,9 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="3"/>
-   <tile gid="53"/>
-   <tile gid="54"/>
-   <tile gid="54"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
   </data>
  </layer>
 </map>
