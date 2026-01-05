@@ -234,6 +234,18 @@ end
 ; placed in map object data directly after
 ; shadow_offset number of objects
 ;=========================================================
+
+; HARPY QUEEN
+harpy_queen_ai
+        asm
+          lda object_flags,x
+          and #%10000000
+          bne .harpy_ai
+          lda #HARPY_QUEEN_HP
+          sta object_hp,x
+          lda #HARPY_QUEEN_FLAGS
+          sta object_flags,x
+end
 harpy_ai
         asm
           lda object_timer,x
@@ -1082,7 +1094,7 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HARPY, $4C, $20
+        TYPE_HARPY_QUEEN, $4C, $20
         TYPE_HTALON, $4C, $30
         $00
 end

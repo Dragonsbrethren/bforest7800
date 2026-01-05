@@ -4,7 +4,7 @@
         name_slime_lo, name_slime_lo, name_raven_lo, name_priest_lo,
         name_skeleton_lo, name_rslime_lo, name_rslime_lo, name_ghost_lo,
         name_ghost_lo, name_harpy_lo, name_spider_lo, name_spider_lo
-        name_hslime_lo, name_hslime_lo, name_hghost_lo
+        name_hslime_lo, name_hslime_lo, name_hghost_lo, name_harpyqueen_lo
 end
 
         data enemy_names_hi
@@ -13,7 +13,7 @@ end
         name_slime_hi, name_slime_hi, name_raven_hi, name_priest_hi,
         name_skeleton_hi, name_rslime_hi, name_rslime_hi, name_ghost_hi,
         name_ghost_hi, name_harpy_hi, name_spider_hi, name_spider_hi
-        name_hslime_hi, name_hslime_hi, name_hghost_hi
+        name_hslime_hi, name_hslime_hi, name_hghost_hi, name_harpyqueen_hi
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -98,4 +98,10 @@ end
         const name_hghost_hi = #>name_hghost
         alphadata name_hghost font_spr
         'Feuermann*'
+end
+
+        const name_harpyqueen_lo = #<name_harpyqueen
+        const name_harpyqueen_hi = #>name_harpyqueen
+        alphadata name_harpyqueen font_spr
+        'Harpy Queen*'
 end
