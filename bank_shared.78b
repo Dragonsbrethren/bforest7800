@@ -626,6 +626,8 @@ oh_torch  cmp #TYPE_TORCH
           beq .torch_tile_block
           cmp #TYPE_DOOR_LOCK
           beq .torch_tile_block
+          cmp #TYPE_BOSS_FLAME
+          beq .boss_flame
           cmp #TYPE_STATIC
           bcs .object_done
           ; is the object hopping?
@@ -673,6 +675,30 @@ fireball_done
           rts
 end
 
+; BOSS FLAME
+boss_flame
+        asm
+          ; tileset's boss handler needs to set flag 7 on these to make them appear
+          lda object_flags,x
+          and #%10000000
+          bne boss_flame_anim
+          ; if flag 6 is set, run the unblock code and remove self
+          lda object_flags,x
+          and #%01000000
+          bne boss_flame_unblock
+          rts
+
+boss_flame_unblock
+          ; jsr .torch_tile_unblock
+          lda #0
+          sta object_type,x
+          rts
+
+boss_flame_anim
+          lda animation_frame
+          bne .torch_tile_block
+          inc object_frame,x
+end
 
 torch_tile_block
         ; flags are used to track if the tile has already been blocked
@@ -681,7 +707,7 @@ torch_tile_block
         if object_type[index] = TYPE_TORCH then torch_animation
 torch_flag_check
         if object_flags[index] then object_done
-        if object_type[index] = TYPE_TORCH then goto torch_tile_block_get_pos
+        if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_get_pos
 
 locked_door_block
         ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed

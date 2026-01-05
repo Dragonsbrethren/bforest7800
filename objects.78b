@@ -28,7 +28,8 @@
         const TYPE_OCTOINK  = 141
         const TYPE_FIREBALL = 150
         const TYPE_F_FAIRY  = 151
-        const TYPE_STATIC   = TYPE_HARPY_SH
+        const TYPE_STATIC   = TYPE_BOSS_FLAME
+        const TYPE_BOSS_FLAME = 158
         const TYPE_HARPY_SH = 159       ; Harpy's shadow
         const TYPE_BLOOD    = 160
         const TYPE_DOOR_OPEN= 161
