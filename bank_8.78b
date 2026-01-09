@@ -230,6 +230,56 @@ end
 ; Updates objects based on state of boss
 ;=========================================================
 hills_boss_ai
+        asm
+;         lda m_relic_bits_2
+;         and #%00000100
+;         bne hills_boss_zero
+
+;         lda object_flags,x
+;         and #%10000000
+;         bne hills_boss_handler
+          lda player_Xpos
+          cmp #64
+          bcs hills_flame_on
+          rts
+
+hills_boss_handler
+          lda object_timer,x
+          bne hills_boss_wait
+          ldy #3
+          lda object_type,y
+          beq hills_boss_dead
+          lda object_flags,y
+          and #%10111111        ; activate boss
+          sta object_flags,y
+          lda #$01
+          sta object_Ypos,y
+          rts
+
+hills_flame_on
+          lda #FLAME_BOSS_DELAY ; set timer between boss
+          sta object_timer,x    ; flame and spawn boss
+          lda #%10000000
+          sta object_flags,x    ; boss fight active
+          ldy #2                ; index of boss flame
+          sta object_flags,y    ; turn flame on
+hills_boss_wait
+          rts
+
+
+hills_boss_dead
+          ldy #2
+          sty index             ; change index to flame
+          jsr .get_object_pos
+end     ; unblock the tile the flame was on
+        pokechar current_map peekX peekY 20 14 $4A
+        asm
+hills_boss_zero
+          lda #0
+          sta object_type,x
+          stx index             ; restore index
+          rts
+end
 
 
         dmahole 0
@@ -247,12 +297,13 @@ hills_boss_ai
 harpy_queen_ai
         asm
           lda object_flags,x
-          and #%10000000
+          and #%01000000
           bne .harpy_ai
           lda #HARPY_QUEEN_HP
           sta object_hp,x
           lda #HARPY_QUEEN_FLAGS
           sta object_flags,x
+;         rts
 end
 harpy_ai
         asm
@@ -271,7 +322,7 @@ harpy_zero_Yvel
         ; if the player is above the harpy, the harpy flies upward
           lda player_Ypos
           sec
-          sbc #32
+          sbc #28
           cmp object_Ypos,x
           bcs harpy_dive
 
@@ -1102,8 +1153,10 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HARPY_QUEEN, $4C, $20
-        TYPE_HTALON, $4C, $30
+        TYPE_HILLS_BOSS, $10, $60
+        TYPE_BOSS_FLAME, $30, $80
+        TYPE_HARPY_QUEEN, $4C, $F0
+        TYPE_HTALON, $4C, $F0
         $00
 end
 

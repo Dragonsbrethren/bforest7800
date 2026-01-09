@@ -567,14 +567,14 @@ pos_swd_left
         0, 0, wolf_ai_lo, warg_ai_lo, nix_ai_lo, octopus_ai_lo, slime_ai_lo, mslime_ai_lo, 
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
-        hghost_ai_lo, harpy_queen_ai_lo
+        hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo
 end
 
         data object_ai_hi
         0, 0, wolf_ai_hi, warg_ai_hi, nix_ai_hi, octopus_ai_hi, slime_ai_hi, mslime_ai_hi, 
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
-        hghost_ai_hi, harpy_queen_ai_hi
+        hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi
 end
 
         data projectile_ai_lo
@@ -682,16 +682,6 @@ boss_flame
           lda object_flags,x
           and #%10000000
           bne boss_flame_anim
-          ; if flag 6 is set, run the unblock code and remove self
-          lda object_flags,x
-          and #%01000000
-          bne boss_flame_unblock
-          rts
-
-boss_flame_unblock
-          ; jsr .torch_tile_unblock
-          lda #0
-          sta object_type,x
           rts
 
 boss_flame_anim

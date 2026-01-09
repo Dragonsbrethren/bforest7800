@@ -21,6 +21,7 @@
         const TYPE_MHSLIME  =  19
         const TYPE_HGHOST   =  20
         const TYPE_HARPY_QUEEN =  21
+        const TYPE_HILLS_BOSS = 22
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -371,7 +372,7 @@
         const F_HARPY_TALON = 15
 
         ; HARPY QUEEN
-        const HARPY_QUEEN_HP = 24
+        const HARPY_QUEEN_HP = 15
         const HARPY_QUEEN_FLAGS = %10000100
 
 
@@ -500,6 +501,8 @@
         const hghost_ai_hi    = #>.hghost_ai
         const harpy_queen_ai_lo = #<.harpy_queen_ai
         const harpy_queen_ai_hi = #>.harpy_queen_ai
+        const hills_boss_ai_lo = #<.hills_boss_ai
+        const hills_boss_ai_hi = #>.hills_boss_ai
 
         const fairy_ai_lo    = #<.fairy_ai
         const fairy_ai_hi    = #>.fairy_ai

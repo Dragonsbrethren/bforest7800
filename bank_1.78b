@@ -442,11 +442,11 @@ end
         for obj_index = 1 to MAX_MAP_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
         if !object_type[obj_index] then object_familiars
-        temp1 = temp1 + 1
+        temp1++
         object_Xpos[obj_index] = pointer[[temp1]]
-        temp1 = temp1 + 1
+        temp1++
         object_Ypos[obj_index] = pointer[[temp1]]
-        temp1 = temp1 + 1
+        temp1++
         next
 
 object_familiars
@@ -493,7 +493,7 @@ remove_duplicates_next
         obj_octo_stats_lo, obj_slime_stats_lo, obj_slime_stats_lo, obj_raven_stats_lo
         obj_priest_stats_lo, obj_skel_stats_lo, obj_redslime_stats_lo, obj_redslime_stats_lo
         obj_ghost_stats_lo, obj_rghost_stats_lo, obj_harpy_stats_lo, obj_spider_stats_lo, obj_spider_stats_lo
-        obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo
+        obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo, obj_boss_stats_lo
 end
 
         data object_stats_hi
@@ -501,7 +501,7 @@ end
         obj_octo_stats_hi, obj_slime_stats_hi, obj_slime_stats_hi, obj_raven_stats_hi
         obj_priest_stats_hi, obj_skel_stats_hi, obj_redslime_stats_hi, obj_redslime_stats_hi
         obj_ghost_stats_hi, obj_rghost_stats_hi, obj_harpy_stats_hi, obj_spider_stats_hi, obj_spider_stats_hi
-        obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi
+        obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi, obj_boss_stats_hi
 end
 
 check_map_bits
@@ -1171,4 +1171,12 @@ new_obj_loop
 new_obj_found
         sty spawn_index
         rts
+end
+
+obj_boss_stats
+        asm
+          ldx obj_index
+          lda #1
+          sta object_hp,x
+          jmp .obj_next_stats
 end

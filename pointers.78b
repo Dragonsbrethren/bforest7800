@@ -75,6 +75,8 @@
         const obj_hslime_stats_hi   = #>.obj_hslime_stats
         const obj_hghost_stats_lo   = #<.obj_hghost_stats
         const obj_hghost_stats_hi   = #>.obj_hghost_stats
+        const obj_boss_stats_lo     = #<.obj_boss_stats
+        const obj_boss_stats_hi     = #>.obj_boss_stats
 
 ; torch blocking and unblocking
         const torch_tile_block_forest_lo = #<.torch_tile_block_forest
