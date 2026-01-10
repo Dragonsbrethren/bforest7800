@@ -817,6 +817,8 @@ _spawn_coin
         TYPE_ELIXIR     ; ochre jelly
         0               ; mini ochre jelly
         TYPE_SHIELD4    ; feuermann
+        0               ; harpy queen
+        0               ; hills boss
 end
 
         data common_drops
@@ -842,6 +844,7 @@ end
         0               ; mini ochre jelly
         TYPE_UNCURSE    ; feuermann
         0               ; harpy queen
+        0               ; hills boss
 end
 
         ; handles poison and regen

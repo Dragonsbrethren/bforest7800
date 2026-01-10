@@ -311,9 +311,9 @@ harpy_ai
           beq harpy_zero_Yvel
           jmp harpy_dive_timer
 harpy_zero_Yvel
-          lda #0
-          sta object_Yvel_lo,x
-          sta object_Yvel_hi,x
+;         lda #0
+;         sta object_Yvel_lo,x
+;         sta object_Yvel_hi,x
 
 ; object data will fill these in as 0
 ;        object_pal[index] = 0
@@ -322,7 +322,7 @@ harpy_zero_Yvel
         ; if the player is above the harpy, the harpy flies upward
           lda player_Ypos
           sec
-          sbc #28
+          sbc #32
           cmp object_Ypos,x
           bcs harpy_dive
 
