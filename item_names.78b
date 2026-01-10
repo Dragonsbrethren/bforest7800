@@ -259,7 +259,7 @@ end
         'Hills Map*'
 end
         alphadata pickup_map5 font_spr
-        'Map5         *'
+        'Caves Map*'
 end
         alphadata pickup_key1 font_spr
         'Crypt Key*'

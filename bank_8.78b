@@ -1153,10 +1153,8 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HILLS_BOSS, $10, $60
-        TYPE_BOSS_FLAME, $30, $80
-        TYPE_HARPY_QUEEN, $4C, $F0
-        TYPE_HTALON, $4C, $F0
+        TYPE_HARPY_QUEEN, $4C, $70
+        TYPE_HTALON, $4C, $80
         $00
 end
 
