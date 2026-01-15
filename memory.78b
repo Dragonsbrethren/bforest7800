@@ -29,7 +29,7 @@
         autodim byte pickup_ptr_hi
         autodim byte temp_hp
         autodim byte hp_change
-        autodim byte bg_color
+        autodim byte bg_color        
         autodim byte animation_timer
         autodim byte retract_counter
         autodim byte action_button
@@ -287,7 +287,28 @@
         autodim byte zone14_objects     ; used by pickup string
         autodim byte locked_zone        ; doors and bridges
         autodim byte obscure_player     ; secret passages
-        autodim byte sP7C1              ; hold color values for palette animation
+        autodim byte sP0C1
+        autodim byte sP0C2
+        autodim byte sP0C3
+        autodim byte sP1C1
+        autodim byte sP1C2
+        autodim byte sP1C3
+        autodim byte sP2C1
+        autodim byte sP2C2
+        autodim byte sP2C3
+        autodim byte sP3C1
+        autodim byte sP3C2
+        autodim byte sP3C3
+        autodim byte sP4C1
+        autodim byte sP4C2
+        autodim byte sP4C3
+        autodim byte sP5C1
+        autodim byte sP5C2
+        autodim byte sP5C3
+        autodim byte sP6C1
+        autodim byte sP6C2
+        autodim byte sP6C3
+        autodim byte sP7C1
         autodim byte sP7C2
         autodim byte sP7C3
         autodim byte exit_Xpos

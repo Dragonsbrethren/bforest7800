@@ -1,7 +1,7 @@
-        incgraphic gfx/tiles/caves_floors.png 160A
-        incgraphic gfx/tiles/caves_walls.png 160A
-        incgraphic gfx/tiles/caves_water.png 160A
-        incgraphic gfx/tiles/caves_waterf.png 160A
+        incgraphic gfx/tiles/caves_floors.png 160A 1 0 2 3 4
+        incgraphic gfx/tiles/caves_walls.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/caves_water.png 160A 1 0 2 3 6
+        incgraphic gfx/tiles/caves_waterf.png 160A 1 0 2 3 7
 
         incmapfile tiled/caves_room_0.tmx
         incmapfile tiled/caves_room_1.tmx
@@ -19,3 +19,8 @@
         incmapfile tiled/caves_room_13.tmx
         incmapfile tiled/caves_room_14.tmx
         incmapfile tiled/caves_room_15.tmx
+        incmapfile tiled/caves_room_16.tmx
+        incmapfile tiled/caves_room_17.tmx
+        incmapfile tiled/caves_room_18.tmx
+        incmapfile tiled/caves_room_19.tmx
+        incmapfile tiled/caves_room_20.tmx

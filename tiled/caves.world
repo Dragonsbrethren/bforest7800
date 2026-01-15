@@ -111,6 +111,41 @@
             "width": 160,
             "x": 0,
             "y": 896
+        },
+        {
+            "fileName": "caves_room_16.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": 896
+        },
+        {
+            "fileName": "caves_room_17.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -160,
+            "y": 672
+        },
+        {
+            "fileName": "caves_room_18.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -320,
+            "y": 896
+        },
+        {
+            "fileName": "caves_room_19.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -480,
+            "y": 896
+        },
+        {
+            "fileName": "caves_room_20.tmx",
+            "height": 224,
+            "width": 160,
+            "x": -480,
+            "y": 1120
         }
     ],
     "onlyShowAdjacentMaps": false,

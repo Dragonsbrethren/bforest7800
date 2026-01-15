@@ -6,7 +6,160 @@
         bank 12
         incbasic caves.78b
 
+        data caves_obj_lo
+        caves_room_0_obj_lo, caves_room_1_obj_lo, caves_room_2_obj_lo, caves_room_3_obj_lo, caves_room_4_obj_lo, caves_room_5_obj_lo
+        caves_room_6_obj_lo, caves_room_7_obj_lo, caves_room_8_obj_lo, caves_room_9_obj_lo, caves_room_10_obj_lo, caves_room_11_obj_lo
+        caves_room_12_obj_lo, caves_room_13_obj_lo, caves_room_14_obj_lo, caves_room_15_obj_lo, caves_room_16_obj_lo, caves_room_17_obj_lo
+        caves_room_18_obj_lo, caves_room_19_obj_lo, caves_room_20_obj_lo
+end
+
+        data caves_obj_hi
+        caves_room_0_obj_hi, caves_room_1_obj_hi, caves_room_2_obj_hi, caves_room_3_obj_hi, caves_room_4_obj_hi, caves_room_5_obj_hi
+        caves_room_6_obj_hi, caves_room_7_obj_hi, caves_room_8_obj_hi, caves_room_9_obj_hi, caves_room_10_obj_hi, caves_room_11_obj_hi
+        caves_room_12_obj_hi, caves_room_13_obj_hi, caves_room_14_obj_hi, caves_room_15_obj_hi, caves_room_16_obj_hi, caves_room_17_obj_hi
+        caves_room_18_obj_hi, caves_room_19_obj_hi, caves_room_20_obj_hi
+end
+
+caves_waterfall
+        ; prevent blacked out waterfalls when loading pal_animation rooms
+        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        pal_animation = 1
+        return
+
 load_caves
-        demo_end = 1
-        goto password_display
+        if !first_load then caves_set_room
+        first_load = 0
+
+caves_set_room
+        characterset caves_floors
+
+caves_init
+        asm
+          lda #0
+          sta no_flash
+          sta alt_palette
+          sta pal_animation
+          sta exit_room_index
+          sta save_room_index
+          lda #1
+          sta shadow_offset
+          lda #$FF
+          sta locked_zone
+          ldx room_index
+          lda caves_rooms,x
+          tax
+          lda caves_obj_lo,x
+          sta pointer_lo
+          lda caves_obj_hi,x
+          sta pointer_hi
+          lda room_index
+          asl
+          sta menu_map_index
+          clc
+          adc #1
+          sta menu_map_index_2
+end
+        gosub caves_room_bank_13 bank13
         return thisbank
+
+        asm
+;         lda caves_map_lo,x
+          sta temp1
+;         lda caves_map_hi,x
+          sta temp2
+          jmp (temp1)
+end
+
+        data caves_rooms
+        00, 00, 01, 00, 00, 00, 00
+        00, 00, 00, 04, 02, 03, 00
+        00, 00, 00, 07, 06, 05, 00
+        00, 01, 17,  8,  9, 10, 11
+        19, 18, 16, 15, 14, 13, 12
+        20, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+end
+
+        data caves_room_0_obj
+        $00
+end
+
+        data caves_room_1_obj
+        $00
+end
+
+        data caves_room_2_obj
+        $00
+end
+
+        data caves_room_3_obj
+        $00
+end
+
+        data caves_room_4_obj
+        $00
+end
+
+        data caves_room_5_obj
+        $00
+end
+
+        data caves_room_6_obj
+        $00
+end
+
+        data caves_room_7_obj
+        $00
+end
+
+        data caves_room_8_obj
+        $00
+end
+
+        data caves_room_9_obj
+        $00
+end
+
+        data caves_room_10_obj
+        $00
+end
+
+        data caves_room_11_obj
+        $00
+end
+
+        data caves_room_12_obj
+        $00
+end
+
+        data caves_room_13_obj
+        $00
+end
+
+        data caves_room_14_obj
+        $00
+end
+
+        data caves_room_15_obj
+        $00
+end
+
+        data caves_room_16_obj
+        $00
+end
+
+        data caves_room_17_obj
+        $00
+end
+
+        data caves_room_18_obj
+        $00
+end
+
+        data caves_room_19_obj
+        $00
+end
+
+        data caves_room_20_obj
+        $00
+end
