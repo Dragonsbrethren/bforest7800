@@ -73,3 +73,12 @@
 
         const PAL_H_SLIME_DK = $34
         const PAL_H_SLIME_LT = $37
+
+;------------------------------------------------------------------------------
+; CAVES
+;------------------------------------------------------------------------------
+        const PAL_CV_GRND  = $11
+        const PAL_CV_DKGRN = $B1
+        const PAL_CV_LTGRN = $B4
+        const PAL_CV_DKBRN = $10
+        const PAL_CV_WATER = $A1

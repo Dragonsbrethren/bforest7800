@@ -27,8 +27,16 @@ caves_waterfall
         return
 
 load_caves
-        if !first_load then caves_set_room
+        if !first_load then goto caves_set_room
         first_load = 0
+        player_facing = DIR_DOWN
+
+        room_index      = F_CAVES_ENT_1_I
+        menu_map_Xpos   = M_CAVES_ENT_1_X
+        menu_map_Ypos   = M_CAVES_ENT_1_Y
+        player_Xpos     = F_CAVES_ENT_1_X
+        player_Ypos     = F_CAVES_ENT_1_Y
+        goto caves_set_room
 
 caves_set_room
         characterset caves_floors
@@ -49,7 +57,7 @@ caves_init
           lda caves_rooms,x
           tax
           lda caves_obj_lo,x
-          sta pointer_lo
+          sta pointer
           lda caves_obj_hi,x
           sta pointer_hi
           lda room_index
@@ -61,14 +69,6 @@ caves_init
 end
         gosub caves_room_bank_13 bank13
         return thisbank
-
-        asm
-;         lda caves_map_lo,x
-          sta temp1
-;         lda caves_map_hi,x
-          sta temp2
-          jmp (temp1)
-end
 
         data caves_rooms
         00, 00, 01, 00, 00, 00, 00
