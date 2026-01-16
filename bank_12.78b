@@ -70,6 +70,26 @@ end
         gosub caves_room_bank_13 bank13
         return thisbank
 
+caves_pals
+        asm
+          ; set these all at once to save cycles
+          lda flash_color
+          sta P4C1
+          sta P5C1
+          sta P6C1
+end
+        bg_color = PAL_CV_GRND  ; brown ground
+        P4C2 = getfade(PAL_CV_DKBRN, black)
+        P4C3 = getfade(PAL_CV_DKGRN, black)
+        P5C2 = getfade(PAL_CV_DKGRN, black)
+        P5C3 = getfade(PAL_CV_LTGRN)
+        P6C2 = getfade(PAL_CV_WATER, black)
+        P4C3 = getfade(PAL_CV_DKGRN, black)
+
+caves_shared_pals
+        incbasic shared_pals.78b
+        goto palette_done
+
         data caves_rooms
         00, 00, 01, 00, 00, 00, 00
         00, 00, 00, 04, 02, 03, 00
