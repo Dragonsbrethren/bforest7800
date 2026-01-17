@@ -291,9 +291,9 @@
    <tile gid="21"/>
    <tile gid="21"/>
    <tile gid="31"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
+   <tile gid="41"/>
+   <tile gid="41"/>
+   <tile gid="41"/>
   </data>
  </layer>
 </map>

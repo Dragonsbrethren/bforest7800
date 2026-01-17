@@ -36,7 +36,7 @@ plot_caves_room_0
         plotmapfile tiled/caves_room_0.tmx caves_room_0 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 1
+        zone14_objects = 2
         return otherbank
 
 plot_caves_room_1
