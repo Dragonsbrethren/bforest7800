@@ -3,7 +3,6 @@
         incgraphic gfx/tiles/caves_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/caves_waterf.png 160A 0 2 3 1 7
 
-        incmapfile tiled/caves_room_0.tmx
         incmapfile tiled/caves_room_1.tmx
         incmapfile tiled/caves_room_2.tmx
         incmapfile tiled/caves_room_3.tmx

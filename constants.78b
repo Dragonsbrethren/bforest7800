@@ -237,11 +237,19 @@
         const F_HILLS_SAVE2_Y = $80
         const F_HILLS_SAVE2_D = DIR_DOWN
 
+; CAVE EXIT 1 (mountaintop)
+        const M_HILLS_CAVE1_X = 70
+        const M_HILLS_CAVE1_Y = 80
+        const F_HILLS_CAVE1_I = 16
+        const F_HILLS_CAVE1_X = 64
+        const F_HILLS_CAVE1_Y = $30
+        const F_HILLS_CAVE1_D = DIR_DOWN
+
 ;------------------------------------------------------------------------------
 ; CAVES TILESET
 ;------------------------------------------------------------------------------
-        const M_CAVES_ENT_1_X = 70
-        const M_CAVES_ENT_1_Y = 144
+        const M_CAVES_ENT_1_X = 78
+        const M_CAVES_ENT_1_Y = 64
         const F_CAVES_ENT_1_I = 3
         const F_CAVES_ENT_1_X = 72
         const F_CAVES_ENT_1_Y = $30

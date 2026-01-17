@@ -5,6 +5,15 @@
 ;==============================================================================
         bank 12
         incbasic caves.78b
+        incmapfile tiled/caves_room_0.tmx
+
+        data caves_map_lo
+        plot_caves_room_0_lo
+end
+
+        data caves_map_hi
+        plot_caves_room_0_hi
+end
 
         data caves_obj_lo
         caves_room_0_obj_lo, caves_room_1_obj_lo, caves_room_2_obj_lo, caves_room_3_obj_lo, caves_room_4_obj_lo, caves_room_5_obj_lo
@@ -66,9 +75,20 @@ caves_init
           clc
           adc #1
           sta menu_map_index_2
+          cpx #0
+          beq .caves_room_bank_12
 end
         gosub caves_room_bank_13 bank13
         return thisbank
+
+caves_room_bank_12
+        asm
+          lda caves_map_lo,x
+          sta temp1
+          lda caves_map_hi,x
+          sta temp2
+          jmp (temp1)
+end
 
 caves_pals
         asm
@@ -150,6 +170,7 @@ end
 end
 
         data caves_room_0_obj
+        TYPE_TORCH, (11*8), $80
         $00
 end
 
@@ -232,3 +253,17 @@ end
         data caves_room_20_obj
         $00
 end
+
+plot_caves_room_0
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        memcpy current_map caves_room_0 280
+        plotmapfile tiled/caves_room_0.tmx caves_room_0 0 0 20 14
+        zone1_objects  = 2
+        zone2_objects  = 2
+        zone14_objects = 2
+        exit_tileset = T_HILLS
+        exit_Xpos = 72
+        exit_Ypos = $20
+        exit_room_index = F_HILLS_CAVE1_I
+        return thisbank

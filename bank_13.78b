@@ -29,16 +29,6 @@ caves_room_bank_13
         jmp (temp1)
 end
 
-plot_caves_room_0
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map caves_room_0 280
-        plotmapfile tiled/caves_room_0.tmx caves_room_0 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 2
-        return otherbank
-
 plot_caves_room_1
         menu_map_room[menu_map_index] = ROOML_N
         menu_map_room[menu_map_index_2] = ROOMR_R
@@ -50,32 +40,32 @@ plot_caves_room_1
         return otherbank
 
 plot_caves_room_2
-        menu_map_room[menu_map_index] = ROOML_UD
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_L 
+        menu_map_room[menu_map_index_2] = ROOMR_R  
         memcpy current_map caves_room_2 280
         plotmapfile tiled/caves_room_2.tmx caves_room_2 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return otherbank
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 3
+        goto caves_waterfall bank12
 
 plot_caves_room_3
-        menu_map_room[menu_map_index] = ROOML_UD
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_L 
+        menu_map_room[menu_map_index_2] = ROOMR_N  
         memcpy current_map caves_room_3 280
         plotmapfile tiled/caves_room_3.tmx caves_room_3 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return otherbank
+        zone1_objects  = 4
+        zone2_objects  = 4
+        zone14_objects = 3
+        goto caves_waterfall bank12
 
 plot_caves_room_4
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy current_map caves_room_4 280
         plotmapfile tiled/caves_room_4.tmx caves_room_4 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
+        zone1_objects  = 3
+        zone2_objects  = 3
         zone14_objects = 1
         return otherbank
 
