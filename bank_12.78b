@@ -159,6 +159,16 @@ end
         %10000100
 end
 
+torch_tile_block_caves
+        ; block with a floatable tile so projectiles can hit torch
+        pokechar current_map peekX peekY 20 14 $00
+        goto torch_tile_block_set_flag
+
+torch_tile_unblock_caves
+        ; the poked tile doesn't affect visuals since those are plotted from ROM
+        pokechar current_map peekX peekY 20 14 $06
+        goto kill_torch_done
+
         data caves_rooms
         00, 00, 01, 00, 00, 00, 00
         00, 00, 00, 04, 02, 03, 00
