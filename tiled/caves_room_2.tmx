@@ -14,8 +14,8 @@
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14">
   <data>
+   <tile gid="42"/>
    <tile gid="24"/>
-   <tile gid="40"/>
    <tile gid="40"/>
    <tile gid="40"/>
    <tile gid="25"/>
@@ -35,7 +35,7 @@
    <tile gid="40"/>
    <tile gid="40"/>
    <tile gid="42"/>
-   <tile gid="41"/>
+   <tile gid="42"/>
    <tile gid="41"/>
    <tile gid="41"/>
    <tile gid="42"/>

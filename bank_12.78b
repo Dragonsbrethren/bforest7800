@@ -104,6 +104,7 @@ end
         P5C2 = getfade(PAL_CV_DKGRN, black)
         P5C3 = getfade(PAL_CV_LTGRN)
         P6C2 = getfade(PAL_CV_WATER, black)
+        P6C3 = getfade(PAL_CV_EYES)
         P4C3 = getfade(PAL_CV_DKGRN, black)
 
 caves_shared_pals
@@ -189,10 +190,12 @@ end
 end
 
         data caves_room_2_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_3_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
@@ -201,10 +204,12 @@ end
 end
 
         data caves_room_5_obj
+         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_6_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
@@ -217,10 +222,12 @@ end
 end
 
         data caves_room_9_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_10_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
@@ -277,3 +284,151 @@ plot_caves_room_0
         exit_Ypos = $20
         exit_room_index = F_HILLS_CAVE1_I
         return thisbank
+
+;==============================================================================
+; BAT SPAWNER
+;------------------------------------------------------------------------------
+; Unsurprisingly, exists soley to spawn bat enemies
+; - Bats are spawned at player's Yposition
+; - player_Xpos determines if bats spawn flying left or right
+; - Yposition should be off screen since it does not have a sprite
+;==============================================================================
+bat_spawner_ai
+        asm
+          lda object_timer,x
+          beq batspawn
+          dec object_timer,x
+          rts
+batspawn  lda object_parent,x   ; less a parent, more a tracker for slot used
+          tay
+          lda object_type,y     ; load the spawned bat slot's object type
+          bne batnspawn         ; if it's not null, prevent new spawn
+          jsr .find_new_object
+          cpy #0        ; make sure all object slots aren't full
+          bne batsobj   ; slot available, spawn bat object
+batnspawn rts
+batsobj
+          tya
+          sta object_parent,x   ; spawned bat's index saved here
+          lda #TYPE_BAT
+          sta object_type,y
+          lda #BAT_HP
+          sta object_hp,y
+          lda #BAT_SPEED_HI
+          sta object_speed_hi,y
+          sta object_vel_cap_hi,y
+          lda #BAT_SPEED_LO
+          sta object_speed_lo,y
+          sta object_vel_cap_hi,y
+          lda #BAT_DAMAGE
+          sta object_damage,y
+          lda #%00000100        ; object flying
+          sta object_flags,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          lda #F_BAT
+          sta object_frame,y
+          lda #BAT_PAL
+          sta object_pal,y
+          lda #<.plot_caves_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_caves_160a
+          sta object_spr_ptr_hi,y
+batpldir  lda player_Xpos       ; determine which side
+          cmp #80               ; of screen to spawn bat
+          bcs batright
+batleft
+          lda #DIR_LEFT
+          sta object_Xdir,y
+          lda #159
+          sta object_Xpos,y
+          bne batsetY
+batright
+          lda #DIR_RIGHT
+          sta object_Xdir,y
+          lda #0
+          sta object_Xpos,y
+batsetY   lda player_Ypos
+          sta object_Ypos,y
+          sta object_state,y
+          lda #DIR_DOWN
+          sta object_Ydir,y
+batstime  lda #BAT_SPAWN_TIME
+          sta object_timer,x
+          tya
+          sta object_parent,x
+          rts
+end
+
+;==============================================================================
+; BAT
+;------------------------------------------------------------------------------
+; Flies in horizontally from off screen, attempts to collide with player
+; - Bat Spawner sets X and Y starting positions, velocity
+;==============================================================================
+bat_ai
+        asm
+; The first thing the Bat AI does is determine if it is on screen
+; There is a 12-pixel grace area off both sides of the screen to allow bats
+; to spawn off screen. If the bat is outside this area, it despawns
+          lda object_Xpos,x
+          cmp #172            ; right edge of screen + 12
+          bcs batledge          ; determine if bat is off left edge
+          bcc batwave           ; position is on visible screen
+batledge  cmp #243            ; left edge of screen - 12
+          bcc batdie            ; bat isn't on screen, kill it 
+batwave   lda object_Ydir,x     ; is the bat moving up or down?
+          cmp #DIR_DOWN
+          beq batdown
+batup     lda object_Ypos,x
+          sec
+          sbc #16
+          cmp object_state,x    ; bat spawner stores initial Y in state
+          bcs batvel            ; Y position is greater than initial - 16
+          lda #DIR_DOWN         ; make bat start moving down
+          sta object_Ydir,x
+batdown   lda object_Ypos,x
+          clc
+          adc #16
+          cmp object_state,x
+          bcc batvel            ; Y position is less than initial + 16
+          lda #DIR_UP           ; make bat start moving up
+          sta object_Ydir,x
+batvel    lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          beq batdone
+          lda #1
+          sta object_frame,x
+batdone   rts
+batdie    lda #0
+          sta object_type,x
+          rts
+end
+
+plot_caves_160a
+        PLOTSPRITE bat0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+obj_bat_spawner_stats
+        asm
+          ldx obj_index
+          lda #1
+          sta object_hp,x
+          jmp .obj_next_stats
+end

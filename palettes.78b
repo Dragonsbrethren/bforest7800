@@ -82,3 +82,4 @@
         const PAL_CV_LTGRN = $B4
         const PAL_CV_DKBRN = $10
         const PAL_CV_WATER = $A1
+        const PAL_CV_EYES  = $33        ; bat's eyes/wings
