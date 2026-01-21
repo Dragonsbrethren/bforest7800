@@ -383,35 +383,36 @@ batledge  cmp #243            ; left edge of screen - 12
 batwave   lda object_Ydir,x     ; is the bat moving up or down?
           cmp #DIR_DOWN
           beq batdown
-batup     lda object_Ypos,x
-          sec
-          sbc #16
-          cmp object_state,x    ; bat spawner stores initial Y in state
-          bcs batvel            ; Y position is greater than initial - 16
-          lda #DIR_DOWN         ; make bat start moving down
-          sta object_Ydir,x
-batdown   lda object_Ypos,x
+batup     lda object_Ypos,x     ; take the bat's current Y position
           clc
-          adc #16
-          cmp object_state,x
-          bcc batvel            ; Y position is less than initial + 16
-          lda #DIR_UP           ; make bat start moving up
-          sta object_Ydir,x
+          adc #16               ; add 16 to it
+          cmp object_state,x    ; compare with initial Y position
+          bcs batvel            ; current + 16 >= initial, move bat up
+          lda #DIR_DOWN         ; current + 16 < initial
+          sta object_Ydir,x     ; so change direction to down
+          bne batvel            ; bypass down comparison this frame
+batdown   lda object_state,x    ; start with initial Y position
+          clc
+          adc #16               ; add 16 to it
+          cmp object_Ypos,x     ; compare with current Y position
+          bcs batvel            ; initial + 16 >= current, move bat down
+          lda #DIR_UP           ; initial + 16 < current
+          sta object_Ydir,x     ; so change direction to up
 batvel    lda object_Xvel_lo,x
           clc
-          adc object_speed_lo,x
+          adc object_speed_lo,x ; add speed to current X velocity
           sta object_Xvel_lo,x
           lda object_Xvel_hi,x
           adc object_speed_hi,x
           sta object_Xvel_hi,x
           lda object_Yvel_lo,x
           clc
-          adc object_speed_lo,x
+          adc object_speed_lo,x ; add speed to current Y velocity
           sta object_Yvel_lo,x
           lda object_Yvel_hi,x
           adc object_speed_hi,x
           sta object_Yvel_hi,x
-batanim   lda object_Xdir,x     ; determine bat's direction again
+batanim   lda object_Xdir,x     ; determine bat's X direction again
           cmp #DIR_LEFT
           bne batanrt
 batanlf   lda #F_BAT_L1         ; left-facing frame 1

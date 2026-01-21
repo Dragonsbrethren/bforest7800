@@ -438,14 +438,14 @@
         const HGHOST_ANIM_TIME = 4
 
         ; BAT   
-        const BAT_HP = 6
+        const BAT_HP = 3
         const BAT_SPEED_HI = 0
         const BAT_SPEED_LO = 16
         const BAT_VEL_CAP_HI = 1
         const BAT_VEL_CAP_LO = 128
         const BAT_FRICTION_HI = 0
         const BAT_FRICTION_LO = 0
-        const BAT_DAMAGE = 3
+        const BAT_DAMAGE = 8
         const BAT_DEF = 5
         const BAT_MDEF = 0
         const F_BAT   = 0
