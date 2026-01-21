@@ -449,9 +449,11 @@
         const BAT_DEF = 5
         const BAT_MDEF = 0
         const F_BAT   = 0
-        const F_BAT_1 = 10
-        const F_BAT_2 = 11
-        const BAT_PAL = (6 * 32)
+        const F_BAT_R1 = 0
+        const F_BAT_R2 = 1
+        const F_BAT_L1 = 2
+        const F_BAT_L2 = 3
+        const BAT_PAL  = 6
         const BAT_SPAWN_TIME = 255
 
 

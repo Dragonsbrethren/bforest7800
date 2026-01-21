@@ -411,12 +411,16 @@ batvel    lda object_Xvel_lo,x
           lda object_Yvel_hi,x
           adc object_speed_hi,x
           sta object_Yvel_hi,x
-          lda #0
-          sta object_frame,x
-          lda animation_frame
+batanim   lda object_Xdir,x     ; determine bat's direction again
+          cmp #DIR_LEFT
+          bne batanrt
+batanlf   lda #F_BAT_L1         ; left-facing frame 1
+          jmp batanfr
+batanrt   lda #F_BAT_R1         ; right-facing frame 1
+batanfr   sta object_frame,x    ; store it
+          lda animation_frame   ; check if it needs to animate
           beq batdone
-          lda #1
-          sta object_frame,x
+          inc object_frame,x    ; frame++ - frames are stored R1, R2, L1, L2
 batdone   rts
 batdie    lda #0
           sta object_type,x
@@ -424,7 +428,7 @@ batdie    lda #0
 end
 
 plot_caves_160a
-        PLOTSPRITE bat0 sprite_pal Xposition Yposition frame
+        plotsprite bat0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 obj_bat_spawner_stats
