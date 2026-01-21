@@ -316,10 +316,12 @@ batsobj
           sta object_hp,y
           lda #BAT_SPEED_HI
           sta object_speed_hi,y
+          lda #BAT_VEL_CAP_HI
           sta object_vel_cap_hi,y
           lda #BAT_SPEED_LO
           sta object_speed_lo,y
-          sta object_vel_cap_hi,y
+          lda #BAT_VEL_CAP_LO
+          sta object_vel_cap_lo,y
           lda #BAT_DAMAGE
           sta object_damage,y
           lda #%00000100        ; object flying

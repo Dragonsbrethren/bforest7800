@@ -440,9 +440,9 @@
         ; BAT   
         const BAT_HP = 6
         const BAT_SPEED_HI = 0
-        const BAT_SPEED_LO = 64
+        const BAT_SPEED_LO = 16
         const BAT_VEL_CAP_HI = 1
-        const BAT_VEL_CAP_LO = 0
+        const BAT_VEL_CAP_LO = 128
         const BAT_FRICTION_HI = 0
         const BAT_FRICTION_LO = 0
         const BAT_DAMAGE = 3
