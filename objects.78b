@@ -455,7 +455,8 @@
         const F_BAT_L1 = 2
         const F_BAT_L2 = 3
         const BAT_PAL  = 6
-        const BAT_SPAWN_TIME = 255
+        const BAT_SPAWN_TIME = 128
+        const BAT_MAX  = 6
 
 
         ; FAMILIARS

@@ -301,16 +301,20 @@ bat_spawner_ai
           dec object_timer,x
           rts
 batspawn  lda object_parent,x   ; less a parent, more a tracker for slot used
-          tay
-          lda object_type,y     ; load the spawned bat slot's object type
-          bne batnspawn         ; if it's not null, prevent new spawn
-          jsr .find_new_object
-          cpy #0        ; make sure all object slots aren't full
-          bne batsobj   ; slot available, spawn bat object
+          cmp #BAT_MAX
+          bcs batnspawn         ; at or more than max bats
+          cmp #$FF              ; see if parent slot has underflowed
+          beq batzspawn         ; zero it if so
+          jsr .find_new_object  ; find an open object slot
+          cpy #0                ; make sure all object slots aren't full
+          bne batsobj           ; slot available, spawn bat object
 batnspawn rts
+batzspawn lda #0
+          sta object_parent,x
 batsobj
-          tya
-          sta object_parent,x   ; spawned bat's index saved here
+          inc object_parent,x   ; spawned bat counter + 1
+          txa
+          sta object_parent,y   ; back up the spawner's object index
           lda #TYPE_BAT
           sta object_type,y
           lda #BAT_HP
@@ -424,7 +428,11 @@ batanfr   sta object_frame,x    ; store it
           beq batdone
           inc object_frame,x    ; frame++ - frames are stored R1, R2, L1, L2
 batdone   rts
-batdie    lda #0
+batdie    lda object_parent,x   ; get the spawner object that created this bat
+          tax
+          dec object_parent,x   ; decrement spawner's bat counter
+          ldx index             ; reload this object's index
+          lda #0
           sta object_type,x
           rts
 end
