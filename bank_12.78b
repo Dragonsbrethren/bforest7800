@@ -200,6 +200,7 @@ end
 end
 
         data caves_room_4_obj
+        TYPE_ROSE, 128, $30, TYPE_ROSE, 72, $90
         $00
 end
 
@@ -438,4 +439,83 @@ obj_bat_spawner_stats
           lda #1
           sta object_hp,x
           jmp .obj_next_stats
+end
+
+obj_rose_stats
+        asm
+          ldx obj_index
+          lda #1
+          sta object_hp,x
+          jmp .obj_next_stats
+end
+
+
+;==============================================================================
+; STONE ROSE
+;------------------------------------------------------------------------------
+; Static. Calculates position between self and player, shoots seed at player
+;==============================================================================
+rose_ai
+        asm
+          lda object_parent,x
+          beq roseseed
+          rts
+roseseed  jsr .find_new_object
+          cpy #0
+          bne rosecalc
+          rts   ; no empty slot
+rosecalc  lda player_Xpos
+          cmp object_Xpos,x
+          bcs rosert
+roself    lda #DIR_LEFT
+          sta object_Xdir,y
+          bne roseY
+rosert    lda #DIR_RIGHT
+          sta object_Xdir,y
+roseY     lda player_Ypos
+          cmp object_Ypos,x
+          bcs rosedn
+roseup    lda #DIR_UP
+          sta object_Ydir,y
+          bne rospawn
+rosedn    lda #DIR_DOWN
+          sta object_Ydir,y
+rospawn   tya
+          sta object_parent,x   ; spawned bat's index saved here
+          lda #TYPE_BAT
+          sta object_type,y
+          lda #BAT_HP
+          sta object_hp,y
+          lda #BAT_SPEED_HI
+          sta object_speed_hi,y
+          sta object_Xvel_hi,y
+          sta object_Yvel_hi,y
+          lda #BAT_VEL_CAP_HI
+          sta object_vel_cap_hi,y
+          lda #BAT_SPEED_LO
+          sta object_speed_lo,y
+          sta object_Xvel_lo,y
+          sta object_Yvel_lo,y
+          lda #BAT_VEL_CAP_LO
+          sta object_vel_cap_lo,y
+          lda #BAT_DAMAGE
+          sta object_damage,y
+          lda #%00000100        ; object flying
+          sta object_flags,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          lda #F_BAT
+          sta object_frame,y
+          lda #BAT_PAL
+          sta object_pal,y
+          lda #<.plot_caves_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_caves_160a
+          sta object_spr_ptr_hi,y
+          lda object_Xpos,x
+          sta object_Xpos,y
+          lda object_Ypos,x
+          sta object_Ypos,y
+          rts
 end

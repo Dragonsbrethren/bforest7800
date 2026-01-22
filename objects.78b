@@ -24,6 +24,7 @@
         const TYPE_HILLS_BOSS = 22
         const TYPE_BAT_SPAWNER = 23
         const TYPE_BAT      =  24
+        const TYPE_ROSE     =  25
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD

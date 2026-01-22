@@ -494,7 +494,7 @@ remove_duplicates_next
         obj_priest_stats_lo, obj_skel_stats_lo, obj_redslime_stats_lo, obj_redslime_stats_lo
         obj_ghost_stats_lo, obj_rghost_stats_lo, obj_harpy_stats_lo, obj_spider_stats_lo, obj_spider_stats_lo
         obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo, obj_boss_stats_lo
-        <.obj_bat_spawner_stats, <.obj_bat_spawner_stats
+        <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats
 end
 
         data object_stats_hi
@@ -503,7 +503,7 @@ end
         obj_priest_stats_hi, obj_skel_stats_hi, obj_redslime_stats_hi, obj_redslime_stats_hi
         obj_ghost_stats_hi, obj_rghost_stats_hi, obj_harpy_stats_hi, obj_spider_stats_hi, obj_spider_stats_hi
         obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi, obj_boss_stats_hi
-        >.obj_bat_spawner_stats, >.obj_bat_spawner_stats
+        >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats
 end
 
 check_map_bits
