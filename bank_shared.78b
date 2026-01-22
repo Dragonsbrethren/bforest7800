@@ -1916,7 +1916,18 @@ player_knockback
 end
 test_player_box
         ; enemies can only hit player when on same elevation unless flying
-        if object_elevation[index] <> object_elevation && !flags{2} then return
+        asm
+          ldx index
+          lda object_elevation,x
+          cmp object_elevation
+          beq .test_player_elevation_match
+          lda object_flags,x
+          and #%00000100
+          bne .test_player_elevation_match
+          rts
+end
+
+test_player_elevation_match
         if object_type[index] = TYPE_SKELSWORD then goto enemy_sword_collision
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
