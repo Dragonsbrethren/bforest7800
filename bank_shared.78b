@@ -820,6 +820,9 @@ _spawn_coin
         TYPE_SHIELD4    ; feuermann
         0               ; harpy queen
         0               ; hills boss
+        0               ; bat spawner
+        TYPE_HIPOTION   ; bat
+        TYPE_LIFEAPPLE  ; stone rose
 end
 
         data common_drops
@@ -846,6 +849,9 @@ end
         TYPE_UNCURSE    ; feuermann
         0               ; harpy queen
         0               ; hills boss
+        0               ; bat spawner
+        TYPE_POTION     ; bat
+        TYPE_SOFT       ; stone rose
 end
 
         ; handles poison and regen

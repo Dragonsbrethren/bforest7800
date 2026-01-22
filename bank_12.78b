@@ -429,10 +429,6 @@ batdie    lda #0
           rts
 end
 
-plot_caves_160a
-        plotsprite bat0 sprite_pal Xposition Yposition frame
-        goto plot_next
-
 obj_bat_spawner_stats
         asm
           ldx obj_index
@@ -446,6 +442,14 @@ obj_rose_stats
           ldx obj_index
           lda #1
           sta object_hp,x
+          lda #<.plot_caves_160b
+          sta object_spr_ptr_lo,x
+          lda #>.plot_caves_160b
+          sta object_spr_ptr_hi,x
+          lda #4
+          sta object_pal,x
+          lda #1
+          sta object_elevation,x
           jmp .obj_next_stats
 end
 
@@ -519,3 +523,11 @@ rospawn   tya
           sta object_Ypos,y
           rts
 end
+
+plot_caves_160a
+        plotsprite bat0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_caves_160b
+        plotsprite rose0 sprite_pal Xposition Yposition frame
+        goto plot_next
