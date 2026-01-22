@@ -292,27 +292,22 @@ plot_caves_room_0
 ; Unsurprisingly, exists soley to spawn bat enemies
 ; - Bats are spawned at player's Yposition
 ; - player_Xpos determines if bats spawn flying left or right
-; - Yposition should be off screen since it does not have a sprite
+; - Needs to be off screen since it does not have a sprite
 ;==============================================================================
 bat_spawner_ai
         asm
-          lda object_timer,x
-          beq batspawn
-          dec object_timer,x
+          lda object_timer,x    ; timer set after a bat has spawned
+          beq batspawn          ; it's bat time!
+          dec object_timer,x    ; timer--
           rts
-batspawn  lda object_parent,x   ; less a parent, more a tracker for slot used
-          cmp #BAT_MAX
-          bcs batnspawn         ; at or more than max bats
-          cmp #$FF              ; see if parent slot has underflowed
-          beq batzspawn         ; zero it if so
+batspawn  lda object_parent,x   ; tracker for number of bats
+          cmp #BAT_MAX          ; set to 6 means 5 bats can spawn
+          bcs batnspawn         ; at or more than BAT_MAX
           jsr .find_new_object  ; find an open object slot
           cpy #0                ; make sure all object slots aren't full
           bne batsobj           ; slot available, spawn bat object
 batnspawn rts
-batzspawn lda #0
-          sta object_parent,x
-batsobj
-          inc object_parent,x   ; spawned bat counter + 1
+batsobj   inc object_parent,x   ; spawned bat counter + 1
           txa
           sta object_parent,y   ; back up the spawner's object index
           lda #TYPE_BAT
@@ -334,8 +329,6 @@ batsobj
           lda #0
           sta object_friction_hi,y
           sta object_friction_lo,y
-          lda #F_BAT
-          sta object_frame,y
           lda #BAT_PAL
           sta object_pal,y
           lda #<.plot_caves_160a
@@ -363,8 +356,6 @@ batsetY   lda player_Ypos
           sta object_Ydir,y
 batstime  lda #BAT_SPAWN_TIME
           sta object_timer,x
-          tya
-          sta object_parent,x
           rts
 end
 
@@ -372,7 +363,7 @@ end
 ; BAT
 ;------------------------------------------------------------------------------
 ; Flies in horizontally from off screen, attempts to collide with player
-; - Bat Spawner sets X and Y starting positions, velocity
+; - Bat Spawner sets X and Y starting positions
 ;==============================================================================
 bat_ai
         asm
@@ -433,7 +424,7 @@ batdie    lda object_parent,x   ; get the spawner object that created this bat
           dec object_parent,x   ; decrement spawner's bat counter
           ldx index             ; reload this object's index
           lda #0
-          sta object_type,x
+          sta object_type,x     ; and kill it
           rts
 end
 
