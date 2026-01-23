@@ -34,6 +34,7 @@
         incgraphic gfx/sprites/key0.png 160A 0 3 1
         incgraphic gfx/sprites/flame0.png 160A
         incgraphic gfx/sprites/flame1.png 160A
+        incgraphic gfx/sprites/jostone0.png 160A 0 2 3 1
 
 init
         goto title_init bank10
@@ -172,7 +173,9 @@ plot_player_no_lock
         ; plot shield behind player if facing up/right
         if player_facing = DIR_UP || player_facing = DIR_RIGHT then gosub plot_player_shield
 plot_johanna
+        if player_status{3} then plotsprite jostone0 5 player_Xpos player_Ypos 0 : goto plot_joshield
         if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
+plot_joshield
         if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
 plot_player_unlock        
         asm

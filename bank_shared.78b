@@ -867,6 +867,7 @@ player_handler
         if player_state = STATE_DEATH then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
+        if player_status{3} then goto stone_handler
         index = 0 : gosub decelerate_player
 
 ;==============================================================================
@@ -927,29 +928,7 @@ test_joy_done
 
 player_move_done
 
-position_shield
-        temp2 = SHIELD_OFFSET_Y
-        ; the shield changes frames based on the player's direction and state
-        if player_state = STATE_STAND then position_shield_stand
-        ; TODO: Table of frames for different shield graphics
-        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 2 else shield_frame = 0
-        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT
-        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT
-        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN
-        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP : temp2 = SHIELD_OFFSET_Y_UP 
-        goto position_shield_done
-
-position_shield_stand
-        ; TODO: Table of frames for different shield graphics
-        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 0 else shield_frame = 2
-        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT_STAND
-        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT_STAND
-        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN_STAND
-        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP_STAND : temp2 = SHIELD_OFFSET_Y_UP_STAND ; raise shield slightly for up frame
-
-position_shield_done
-        shield_Xpos = player_Xpos + temp1
-        shield_Ypos = player_Ypos + temp2
+        gosub position_shield
 
 input_frame_done
         if !player_Xvel && !player_Yvel && player_state <> STATE_ATTACK && player_state <> STATE_CHANT then player_state = STATE_STAND
@@ -1163,6 +1142,57 @@ set_player_facing_frame
         player_frame = FRAME_RIGHT
 frames_done
         return thisbank
+
+position_shield
+        temp2 = SHIELD_OFFSET_Y
+        ; the shield changes frames based on the player's direction and state
+        if player_state = STATE_STAND then position_shield_stand
+        ; TODO: Table of frames for different shield graphics
+        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 2 else shield_frame = 0
+        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT
+        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT
+        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN
+        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP : temp2 = SHIELD_OFFSET_Y_UP 
+        goto position_shield_done
+
+position_shield_stand
+        ; TODO: Table of frames for different shield graphics
+        if player_facing = DIR_UP || player_facing = DIR_DOWN then shield_frame = 0 else shield_frame = 2
+        if player_facing = DIR_LEFT then temp1 = SHIELD_OFFSET_X_LEFT_STAND
+        if player_facing = DIR_RIGHT then temp1 = SHIELD_OFFSET_X_RIGHT_STAND
+        if player_facing = DIR_DOWN then temp1 = SHIELD_OFFSET_X_DOWN_STAND
+        if player_facing = DIR_UP then temp1 = SHIELD_OFFSET_X_UP_STAND : temp2 = SHIELD_OFFSET_Y_UP_STAND ; raise shield slightly for up frame
+
+position_shield_done
+        shield_Xpos = player_Xpos + temp1
+        shield_Ypos = player_Ypos + temp2
+        return thisbank
+
+stone_handler
+        if stone_duration then stone_set
+        ; make sure Johanna is zone-aligned
+        temp1 = player_Ypos && $0F
+        ; prevent player from getting stuck when overlapping higher zone
+        if temp1 >= 8 then player_Ypos = player_Ypos + 16
+        ; align Johanna to her zone
+        player_Ypos = player_Ypos && $F0
+        ; face her downward
+        player_facing = DIR_DOWN : player_Ydir = DIR_DOWN
+        ; fix shield position
+        gosub position_shield
+        ; deceleration code handles zeroing velocity
+        stone_duration = 255
+stone_set
+        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
+        if joy0any then stone_duration--
+        stone_duration--
+        if !stone_duration then stone_done
+        goto player_handler_done
+
+stone_done
+        player_status{3} = 0
+        goto player_handler_done
 
 decelerate_player
 decelerate_object
@@ -1970,8 +2000,8 @@ player_knockback_status
           beq set_curse_status
           cmp #TYPE_RGHOST
           beq set_curse_status
-          cmp #TYPE_HGHOST
-          beq set_curse_status
+          cmp #TYPE_BAT
+          beq set_stone_status
           cmp #TYPE_HARPY_QUEEN
           beq set_fury_status
           jmp .pc_damage
@@ -1981,6 +2011,9 @@ set_poison_status
           bne set_status_temp
 set_curse_status
           lda #BITS_CURSE
+          bne set_status_temp
+set_stone_status
+          lda #BITS_STONE
           bne set_status_temp
 set_fury_status
           lda #BITS_FURY
