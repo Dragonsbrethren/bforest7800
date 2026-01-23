@@ -2000,7 +2000,7 @@ player_knockback_status
           beq set_curse_status
           cmp #TYPE_RGHOST
           beq set_curse_status
-          cmp #TYPE_BAT
+          cmp #TYPE_HGHOST
           beq set_stone_status
           cmp #TYPE_HARPY_QUEEN
           beq set_fury_status

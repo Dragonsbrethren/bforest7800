@@ -149,13 +149,13 @@ hills_grays
         ; normal gray shades
           lda #PAL_H_DKGRY
           sta P4C3
-          sta P5C3
+          sta P5C2
 end
 hills_colors
         ; the remaining colors not covered by darkness exceptions
         bg_color = PAL_H_GRND
         P4C2 = getfade(PAL_H_DIRT, black)
-        P5C2 = getfade(PAL_H_LTGRY, black)
+        P5C3 = getfade(PAL_H_LTGRY, black)
         ; hill slime palette
         if alt_palette = 1 then hills_slime_pal
         P6C2 = getfade(PAL_H_WATER, black) : P6C3 = getfade(PAL_H_DIRT, black)

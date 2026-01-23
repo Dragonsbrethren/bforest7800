@@ -1,5 +1,5 @@
         incgraphic gfx/tiles/hills_ledges.png 160A 1 2 0 3 4
-        incgraphic gfx/tiles/hills_high.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/hills_high.png 160A 1 0 3 2 5
         incgraphic gfx/tiles/hills_water.png 160A 1 2 3 0 6
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
