@@ -580,13 +580,13 @@ end
 
         data projectile_ai_lo
         skelsword_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        darkspark_ai_lo, octoink_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0,
+        darkspark_ai_lo, octoink_ai_lo, <.seed_ai, 0, 0, 0, 0, 0, 0, 0,
         fireball_ai_lo, fairy_ai_lo, 0, 0, 0, 0
 end
 
         data projectile_ai_hi
         skelsword_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        darkspark_ai_hi, octoink_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0,
+        darkspark_ai_hi, octoink_ai_hi, >.seed_ai, 0, 0, 0, 0, 0, 0, 0,
         fireball_ai_hi, fairy_ai_hi, 0, 0, 0, 0
 end
 
@@ -653,6 +653,7 @@ end
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
 fireball_ai
+seed_ai
         asm
           lda object_Xvel_lo,x
           bne fireball_animate
@@ -1167,32 +1168,6 @@ position_shield_done
         shield_Xpos = player_Xpos + temp1
         shield_Ypos = player_Ypos + temp2
         return thisbank
-
-stone_handler
-        if stone_duration then stone_set
-        ; make sure Johanna is zone-aligned
-        temp1 = player_Ypos && $0F
-        ; prevent player from getting stuck when overlapping higher zone
-        if temp1 >= 8 then player_Ypos = player_Ypos + 16
-        ; align Johanna to her zone
-        player_Ypos = player_Ypos && $F0
-        ; face her downward
-        player_facing = DIR_DOWN : player_Ydir = DIR_DOWN
-        ; fix shield position
-        gosub position_shield
-        ; deceleration code handles zeroing velocity
-        stone_duration = 255
-stone_set
-        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
-        if joy0any then stone_duration--
-        stone_duration--
-        if !stone_duration then stone_done
-        goto player_handler_done
-
-stone_done
-        player_status{3} = 0
-        goto player_handler_done
 
 decelerate_player
 decelerate_object

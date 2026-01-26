@@ -1185,3 +1185,78 @@ obj_boss_stats
           sta object_hp,x
           jmp .obj_next_stats
 end
+
+stone_handler
+        if stone_duration then stone_set
+        ; make sure Johanna is zone-aligned
+        temp1 = player_Ypos && $0F
+        ; prevent player from getting stuck when overlapping higher zone
+        if temp1 >= 8 then player_Ypos = player_Ypos + 16
+        ; align Johanna to her zone
+        player_Ypos = player_Ypos && $F0
+        ; face her downward
+        player_facing = DIR_DOWN : player_Ydir = DIR_DOWN
+        ; set her to moving so shield doesn't work
+        player_state = STATE_MOVING
+        ; fix shield position and palette
+        gosub position_shield
+        shield_pal = 5
+        ; deceleration code can't handle zeroing velocity
+        asm
+          lda #0
+          sta player_Xvel_lo
+          sta player_Xvel_hi
+          sta player_Yvel_lo
+          sta player_Yvel_hi
+end
+        stone_duration = 255
+stone_set
+        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
+        if joy0any then stone_duration--
+        stone_duration--
+        if !stone_duration then stone_done
+        goto player_handler_done
+
+stone_done
+        player_status{3} = 0
+        goto player_handler_done
+
+;========================================
+; SUBROUTINE: CALCULATE DISTANCE
+;----------------------------------------
+; Find distance between object and player
+; temp1: X distance
+; temp2: Y distance
+; temp3 = 0: X farther
+; temp3 = 1: Y farther
+;========================================
+calculate_distance
+        asm
+          lda object_Xpos,x
+          cmp player_Xpos 
+          bcs cd_Xgreat
+cd_Xless  lda player_Xpos
+          sec
+          sbc object_Xpos,x
+          jmp cd_Xstore
+cd_Xgreat sbc player_Xpos
+cd_Xstore sta temp1
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcs cd_Ygreat
+cd_Yless  lda player_Ypos
+          sec
+          sbc object_Ypos,x
+          jmp cd_Ystore
+cd_Ygreat sbc player_Ypos
+cd_Ystore sta temp2             ; is temp1 or temp2 greater?
+          cmp temp1
+          bcs cd_temp3Y
+          lda #0
+          sta temp3             ; temp3 0 = X greater
+          rts
+cd_temp3Y lda #1
+          sta temp3             ; temp3 1 = Y greater
+          rts
+end

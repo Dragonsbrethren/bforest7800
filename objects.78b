@@ -30,6 +30,7 @@
         const TYPE_PROJECTILE = TYPE_SKELSWORD
         const TYPE_DARKSPARK = 140
         const TYPE_OCTOINK  = 141
+        const TYPE_SEED     = 142
         const TYPE_FIREBALL = 150
         const TYPE_F_FAIRY  = 151
         const TYPE_STATIC   = TYPE_BOSS_FLAME
@@ -457,6 +458,20 @@
         const BAT_PAL  = 6
         const BAT_SPAWN_TIME = 128
         const BAT_MAX  = 6
+
+        ; STONE ROSE
+        const ROSE_HP = 8
+        const ROSE_DAMAGE = 16
+
+        ; STONE ROSE SEED
+        const SEED_HP = 1
+        const SEED_FAST_SPEED_HI = 0
+        const SEED_FAST_SPEED_LO = 32
+        const SEED_SPEED_HI = 0
+        const SEED_SPEED_LO = 16
+        const SEED_VEL_CAP_HI = 2
+        const SEED_VEL_CAP_LO = 128
+        const SEED_DAMAGE = 4
 
 
         ; FAMILIARS

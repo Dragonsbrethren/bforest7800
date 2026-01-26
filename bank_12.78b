@@ -439,8 +439,10 @@ end
 obj_rose_stats
         asm
           ldx obj_index
-          lda #1
+          lda #ROSE_HP
           sta object_hp,x
+          lda #ROSE_DAMAGE
+          sta object_damage,x
           lda #<.plot_caves_160b
           sta object_spr_ptr_lo,x
           lda #>.plot_caves_160b
@@ -467,50 +469,41 @@ roseseed  jsr .find_new_object
           cpy #0
           bne rosecalc
           rts   ; no empty slot
-rosecalc  lda player_Xpos
-          cmp object_Xpos,x
-          bcs rosert
-roself    lda #DIR_LEFT
-          sta object_Xdir,y
-          bne roseY
-rosert    lda #DIR_RIGHT
-          sta object_Xdir,y
-roseY     lda player_Ypos
-          cmp object_Ypos,x
-          bcs rosedn
-roseup    lda #DIR_UP
-          sta object_Ydir,y
-          bne rospawn
-rosedn    lda #DIR_DOWN
-          sta object_Ydir,y
+rosecalc  jsr .calculate_distance
 rospawn   tya
-          sta object_parent,x   ; spawned bat's index saved here
+          sta object_parent,x   ; spawned seed's index saved here
           lda #TYPE_BAT
           sta object_type,y
-          lda #BAT_HP
+          lda #1
           sta object_hp,y
-          lda #BAT_SPEED_HI
+          lda temp3
+          lda #DIR_UP
+          sta object_Ydir,y
+          lda #DIR_RIGHT
+          sta object_Xdir,y
+          lda #SEED_FAST_SPEED_HI
           sta object_speed_hi,y
           sta object_Xvel_hi,y
+          lda #SEED_SPEED_HI
           sta object_Yvel_hi,y
-          lda #BAT_VEL_CAP_HI
+          lda #SEED_VEL_CAP_HI
           sta object_vel_cap_hi,y
-          lda #BAT_SPEED_LO
+          lda #SEED_FAST_SPEED_LO
           sta object_speed_lo,y
-          sta object_Xvel_lo,y
-          sta object_Yvel_lo,y
-          lda #BAT_VEL_CAP_LO
+          lda #SEED_VEL_CAP_LO
           sta object_vel_cap_lo,y
-          lda #BAT_DAMAGE
+          lda #SEED_SPEED_LO
+          sta object_Yvel_lo,y
+          lda #SEED_DAMAGE
           sta object_damage,y
-          lda #%00000100        ; object flying
+          lda #%00010000        ; object floating
           sta object_flags,y
           lda #0
           sta object_friction_hi,y
           sta object_friction_lo,y
           lda #F_BAT
           sta object_frame,y
-          lda #BAT_PAL
+          lda #5
           sta object_pal,y
           lda #<.plot_caves_160a
           sta object_spr_ptr_lo,y
