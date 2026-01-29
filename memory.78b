@@ -171,7 +171,9 @@
         autodim byte object_parent 16
         autodim byte object_flags 16
         autodim byte object_timer 16
-        autodim byte object_dest 16
+        dim object_dest = object_Xdest
+        autodim byte object_Xdest 16
+        autodim byte object_Ydest 16
         autodim byte object_elevation 16
 
         autodim init $2400 $25FF

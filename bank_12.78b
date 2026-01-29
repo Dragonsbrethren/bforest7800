@@ -540,8 +540,27 @@ rofastY   lda #SEED_SPEED_HI
           sta object_timer,x
           lda #1
           sta object_elevation,y
-.seed_ai  rts
+          rts
 end
+
+seed_ai
+        asm
+          lda object_dest,x
+          cmp object_Xpos,x
+          beq seed_die
+          lda object_Ydest,x
+          cmp object_Ypos,x
+          beq seed_die
+          lda object_Xpos,x
+          sta object_dest,x 
+          lda object_Ypos,x
+          sta object_Ydest,x
+          rts
+seed_die  lda #0
+          sta object_type,x
+          rts
+end
+
 
 plot_caves_160a
         plotsprite bat0 sprite_pal Xposition Yposition frame
