@@ -465,13 +465,15 @@
 
         ; STONE ROSE SEED
         const SEED_HP = 1
-        const SEED_FAST_SPEED_HI = 0
-        const SEED_FAST_SPEED_LO = 32
-        const SEED_SPEED_HI = 0
-        const SEED_SPEED_LO = 16
+        const SEED_FAST_SPEED_HI = 2
+        const SEED_FAST_SPEED_LO = 0
+        const SEED_SPEED_HI = 1
+        const SEED_SPEED_LO = 0
         const SEED_VEL_CAP_HI = 2
-        const SEED_VEL_CAP_LO = 128
+        const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
+        const F_SEED = 4
+        const SEED_PAL = 5
 
 
         ; FAMILIARS

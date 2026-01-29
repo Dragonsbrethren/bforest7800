@@ -653,7 +653,6 @@ end
 ; Fireballs poof out of existence when velocities = 0
 ;==============================================================================
 fireball_ai
-seed_ai
         asm
           lda object_Xvel_lo,x
           bne fireball_animate
@@ -1976,7 +1975,7 @@ player_knockback_status
           cmp #TYPE_RGHOST
           beq set_curse_status
           cmp #TYPE_HGHOST
-          beq set_stone_status
+          beq set_curse_status
           cmp #TYPE_HARPY_QUEEN
           beq set_fury_status
           jmp .pc_damage
@@ -2071,6 +2070,7 @@ shield_check
 projectile_status
         ; hardcode Octoink to set dark status for now
         if flags = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
+        if flags = TYPE_SEED then temp1 = BITS_STONE : gosub set_status
         goto pc_damage
 
 deflect_projectile
