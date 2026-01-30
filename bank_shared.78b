@@ -654,25 +654,31 @@ end
 ;==============================================================================
 fireball_ai
         asm
-          lda object_Xvel_lo,x
-          bne fireball_animate
-          lda object_Xvel_hi,x
-          bne fireball_animate
-          lda object_Yvel_lo,x
-          bne fireball_animate
-          lda object_Yvel_hi,x
-          bne fireball_animate
-fireball_poof
-          lda #0
-          sta object_type,x
-          rts
 fireball_animate
           lda object_state,x
           sta object_frame,x
           lda animation_frame
-          bne fireball_done
+          bne fireball_poof
           inc object_frame,x
-fireball_done
+fireball_poof
+.seed_ai                        ; stone rose seeds share this code
+          lda object_Xdir,x     ; if no X dir, must be moving Y
+          beq projY             ; skip over Y dir check
+          lda object_Xdest,x
+          cmp object_Xpos,x
+          beq proj_die
+          lda object_Ydir,x     ; if no Y dir, done here
+          beq proj_done
+projY     lda object_Ydest,x
+          cmp object_Ypos,x
+          beq proj_die
+proj_done lda object_Xpos,x     ; store current positions
+          sta object_Xdest,x    ; for next frame's tests
+          lda object_Ypos,x
+          sta object_Ydest,x
+          rts
+proj_die  lda #0
+          sta object_type,x
           rts
 end
 
