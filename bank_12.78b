@@ -200,7 +200,7 @@ end
 end
 
         data caves_room_4_obj
-        TYPE_ROSE, 128, $30, TYPE_ROSE, 72, $90
+        TYPE_CSPIDER, 128, $30, TYPE_ROSE, 72, $90
         $00
 end
 
@@ -466,10 +466,14 @@ rose_ai
           beq roseseed
           dec object_timer,x
           rts
-roseseed  jsr .find_new_object
+roseseed  lda object_parent,x
+          tay
+          lda object_type,y
+          bne rosenos
+          jsr .find_new_object
           cpy #0
           bne rosecalc
-          rts   ; no empty slot
+rosenos   rts   ; no empty slot/seed already spawned
 rosecalc  jsr .calculate_distance
 rospawn   tya
           sta object_parent,x   ; spawned seed's index saved here
@@ -543,6 +547,217 @@ rofastY   lda #SEED_SPEED_HI
           rts
 end
 
+;=========================================================
+; CAVE SPIDER
+;---------------------------------------------------------
+; Crawls along ledges until lined up with player,
+; then decends and becomes a standard ground enemy
+;=========================================================
+cave_spider_ai
+        asm
+          lda object_flags,x
+          ; flag 7 causes spider to drop
+          bmi cave_spider_drop_horiz
+          ; flag 4 makes spider stalk
+          and #%00010000
+          bne cave_spider_stalk
+
+cave_spider_init
+          lda #CSPIDER_PAL 
+          sta object_pal,x
+        ; TODO: Wall crawl flag?
+        ; spiders originally were set to "float" so they could walk on ledges
+        ; this is no longer used but the flag is still needed for this init
+          lda #%00010000
+          sta object_flags,x
+        ; always start at player's elevation
+          lda player_elevation
+          sta object_elevation,x
+
+cave_spider_stalk
+          ; vertical spiders unused, omitted code to detect them
+
+cave_spider_horiz
+          lda object_Ypos,x
+;         sec
+;         sbc #32
+          sta temp1
+          lda object_Xpos,x
+          sec
+          sbc #12
+          sta temp2
+        ; cave_spider checks for player proximity before moving
+          QBOXCOLLISIONCHECK temp2,temp1,36,48,player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT
+          bcs cave_spider_drop_clear_timer
+          rts
+
+;cave_spider_vert
+        ; not implemented
+;         rts
+
+cave_spider_drop_clear_timer
+          lda #0
+          sta object_timer,x
+cave_spider_drop_horiz
+          lda object_flags,x
+          and #%00010000
+          beq cave_spider_dir
+          lda object_timer,x
+          bne cave_spider_drop_move
+          ; test flag 7
+          lda object_flags,x
+          bmi cave_spider_drop_done
+          ; flag 7 = horizontal drop started
+          ora #%10000000
+          sta object_flags,x
+          lda #CSPIDER_DROP_TIME
+          sta object_timer,x
+;         lda player_elevation
+;         sta object_elevation,x
+;         lda object_Ypos,x
+;         cmp player_Ypos
+;         bcc cave_spider_drop_down
+;         lda #DIR_UP
+;         sta object_Ydir,x
+;         lda #F_CSPIDER_UP
+;         sta object_frame,x
+;         jmp cave_spider_drop_next
+cave_spider_drop_down
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          lda #F_CSPIDER_DOWN
+          sta object_frame,x
+cave_spider_drop_next
+          ; wait a frame to start movement
+          rts
+cave_spider_drop_move
+          ; does the cave_spider drop or crawl up cliff?
+;         lda object_Ydir,x
+;         cmp #DIR_DOWN
+;         bne cave_spider_climb_up
+          inc object_Ypos,x
+;         jmp cave_spider_dec_timer
+;ave_spider_climb_up
+;         dec object_Ypos,x
+
+cave_spider_dec_timer
+          dec object_timer,x
+          rts
+
+cave_spider_drop_done
+          ; turn off "floating" flag to signify drop done
+          lda object_flags,x
+          and #%11101111
+          sta object_flags,x
+
+cave_spider_dir
+          lda object_timer,x
+          beq cave_spider_set_timer
+          jmp cave_spider_walk
+cave_spider_set_timer
+          lda #CSPIDER_WALK_TIMER
+          sta object_timer,x
+          jsr randomize
+          bpl cave_spider_move_vert
+
+cave_spider_move_horz
+          lda #0
+          sta object_Ydir,x
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcs cave_spider_move_left
+cave_spider_move_right
+          lda #DIR_RIGHT
+          bne cave_spider_move_h_store
+cave_spider_move_left
+          lda #DIR_LEFT
+cave_spider_move_h_store
+          sta object_facing,x
+          sta object_Xdir,x
+          bne cave_spider_walk
+
+cave_spider_move_vert
+          lda #0
+          sta object_Xdir,x
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc cave_spider_move_down
+cave_spider_move_up
+          lda #DIR_UP
+          bne cave_spider_move_v_store
+cave_spider_move_down
+          lda #DIR_DOWN
+
+cave_spider_move_v_store
+          sta object_facing,x
+          sta object_Ydir,x
+
+cave_spider_walk
+          dec object_timer,x
+          lda object_Xdir,x
+          beq cave_spider_walk_y
+
+cave_spider_walk_x
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          jmp cave_spider_walk_anim
+        
+cave_spider_walk_y
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+
+cave_spider_walk_anim
+          lda object_facing,x
+          tay
+          lda cave_spider_walk_frames,y
+          sta object_frame,x
+          lda animation_frame
+          beq cave_spider_walk_return
+          inc object_frame,x
+
+cave_spider_walk_return
+          rts
+end
+
+        data cave_spider_walk_frames
+        0, F_CSPIDER_UP, F_CSPIDER_DOWN, F_CSPIDER_LEFT, F_CSPIDER_RIGHT
+end
+
+obj_cave_spider_stats
+        object_hp[obj_index] = CSPIDER_HP
+        object_vel_cap_hi[obj_index] = CSPIDER_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = CSPIDER_VEL_CAP_LO
+        object_damage[obj_index] = CSPIDER_DAMAGE
+        object_def[obj_index] = CSPIDER_DEF
+        object_mdef[obj_index] = CSPIDER_MDEF
+        object_friction_hi[obj_index] = CSPIDER_FRICTION_HI
+        object_friction_lo[obj_index] = CSPIDER_FRICTION_LO
+        object_speed_hi[obj_index] = CSPIDER_SPEED_HI
+        object_speed_lo[obj_index] = CSPIDER_SPEED_LO
+        object_flags[obj_index] = 0
+        goto caves_160a_sprite
+
+caves_160a_sprite
+        asm
+          ldx obj_index
+          lda #<.plot_caves_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_caves_160a
+          sta object_spr_ptr_hi,x
+          lda #F_CSPIDER_DOWN
+          sta object_frame,x
+end
+        goto obj_next_stats  
 
 plot_caves_160a
         plotsprite bat0 sprite_pal Xposition Yposition frame

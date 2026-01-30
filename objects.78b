@@ -25,6 +25,7 @@
         const TYPE_BAT_SPAWNER = 23
         const TYPE_BAT      =  24
         const TYPE_ROSE     =  25
+        const TYPE_CSPIDER  =  26
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -472,8 +473,29 @@
         const SEED_VEL_CAP_HI = 2
         const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
-        const F_SEED = 4
+        const F_SEED = 12
         const SEED_PAL = 5
+
+        ; CAVE SPIDER
+        const CSPIDER_HP = 6
+        const CSPIDER_SPEED_HI = 1
+        const CSPIDER_SPEED_LO = 0
+        const CSPIDER_VEL_CAP_HI = 1
+        const CSPIDER_VEL_CAP_LO = 0
+        const CSPIDER_FRICTION_HI = 1
+        const CSPIDER_FRICTION_LO = 0
+        const CSPIDER_DAMAGE = 3
+        const CSPIDER_DEF = 0
+        const CSPIDER_MDEF = 0
+        const CSPIDER_DROP_TIME = 16
+        const CSPIDER_WALK_TIMER  = 10
+        const F_CSPIDER_CRAWL_H = 0
+        const F_CSPIDER_CRAWL_V = 0
+        const F_CSPIDER_UP    = 6
+        const F_CSPIDER_DOWN  = 4
+        const F_CSPIDER_LEFT  = 8
+        const F_CSPIDER_RIGHT = 10
+        const CSPIDER_PAL = 6
 
 
         ; FAMILIARS
