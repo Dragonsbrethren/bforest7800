@@ -28,6 +28,7 @@
         const TYPE_CSPIDER  =  26
         const TYPE_PUDDING  =  27
         const TYPE_MPUDDING =  28
+        const TYPE_CGHOST   =  29
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -475,7 +476,7 @@
         const SEED_VEL_CAP_HI = 2
         const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
-        const F_SEED = 16
+        const F_SEED = 18
         const SEED_PAL = 5
 
         ; CAVE SPIDER
@@ -515,10 +516,27 @@
         const MPUDDING_MDEF = 0
         const F_PUDDING_1 = 12
         const F_PUDDING_2 = 13
-        const F_MPUDDING_1 = 14
-        const F_MPUDDING_2 = 15
+        const F_MPUDDING_1 = 16
+        const F_MPUDDING_2 = 17
         const PUDDING_PAL = 7
         const MPUDDING_PAL = 7
+
+        ; CAVE GHOST
+        const CGHOST_HP = 6
+        const CGHOST_SPEED_HI = 0
+        const CGHOST_SPEED_LO = 64
+        const CGHOST_VEL_CAP_HI = 1
+        const CGHOST_VEL_CAP_LO = 0
+        const CGHOST_FRICTION_HI = 0
+        const CGHOST_FRICTION_LO = 0
+        const CGHOST_DAMAGE = 3
+        const CGHOST_DEF = 5
+        const CGHOST_MDEF = 0
+        const F_CGHOST_1 = 14
+        const F_CGHOST_2 = 15
+        const CGHOST_PAL_A = 0
+        const CGHOST_PAL_B = 3
+        const CGHOST_ANIM_TIME = 4
 
 
         ; FAMILIARS

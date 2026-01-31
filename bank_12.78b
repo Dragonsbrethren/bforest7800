@@ -159,9 +159,9 @@ end
         %00000001, %00000001, %00000001, %00000001
         %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000010, %00000000
         %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000
-        %00000000, %00000000
-        %00000110, %00000111, %00000110, %00000110, %00000110, %00000110
-        %00000110, %00000110, %00000110, %00000111
+        %00000000, %00000000, %00000000,
+        %00000110, %00000111, %00000110, %00000110, %00000110
+        %00000110, %00000110, %00000110, %00000110, %00000111
         %10000100
 end
 
@@ -206,7 +206,7 @@ end
 
         data caves_room_4_obj
         TYPE_PUDDING, 128, $30, TYPE_ROSE, 72, $90
-        TYPE_CSPIDER, (4*8), $30
+        TYPE_CGHOST, (4*8), $30
         $00
 end
 
@@ -870,6 +870,54 @@ obj_pudding_stats
         object_flags[obj_index] = 0
         object_elevation[obj_index] = player_elevation
         goto caves_160a_sprite
+
+;=========================================================
+; GHOST
+;---------------------------------------------------------
+; Caves variant of Ghost, follows player across any ledges
+;=========================================================
+cghost_ai
+        asm
+          lda #F_CGHOST_1
+          sta object_frame,x
+          lda #%00000100
+          sta object_flags,x
+          lda animation_frame
+          bne cghost_timer
+          inc object_frame,x
+cghost_timer
+          lda object_timer,x
+          bne cghost_follow
+          lda #CGHOST_ANIM_TIME
+          sta object_timer,x
+          lda object_pal,x
+          cmp #CGHOST_PAL_A
+          bne cghost_set_pal_a
+          lda #CGHOST_PAL_B
+          sta object_pal,x
+          bne cghost_follow
+
+cghost_set_pal_a
+          lda #CGHOST_PAL_A
+          sta object_pal,x
+cghost_follow
+          dec object_timer,x
+          jmp .test_follow_box
+end
+
+obj_cghost_stats
+        object_hp[obj_index] = CGHOST_HP
+        object_vel_cap_hi[obj_index] = CGHOST_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = CGHOST_VEL_CAP_LO
+        object_damage[obj_index] = CGHOST_DAMAGE
+        object_def[obj_index] = CGHOST_DEF
+        object_mdef[obj_index] = CGHOST_MDEF
+        object_friction_hi[obj_index] = CGHOST_FRICTION_HI
+        object_friction_lo[obj_index] = CGHOST_FRICTION_LO
+        object_speed_hi[obj_index] = CGHOST_SPEED_HI
+        object_speed_lo[obj_index] = CGHOST_SPEED_LO
+        object_flags[obj_index] = 0
+        goto caves_160a_sprite  
 
 caves_160a_sprite
         asm

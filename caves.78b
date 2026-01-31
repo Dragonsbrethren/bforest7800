@@ -16,6 +16,8 @@
         incgraphic gfx/sprites/cspider7.png 160A 0 1 2 3
         incgraphic gfx/sprites/pudding0.png 160A 0 2 3 1
         incgraphic gfx/sprites/pudding1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/cghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/cghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/mpudding0.png 160A 0 2 3 1
         incgraphic gfx/sprites/mpudding1.png 160A 0 2 3 1
         incgraphic gfx/sprites/seed.png 160A 0 2 3 1
