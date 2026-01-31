@@ -97,6 +97,7 @@ caves_pals
           sta P4C1
           sta P5C1
           sta P6C1
+          sta P7C1
 end
         bg_color = PAL_CV_GRND  ; brown ground
         P4C2 = getfade(PAL_CV_DKBRN, black)
@@ -106,6 +107,10 @@ end
         P6C2 = getfade(PAL_CV_WATER, black)
         P6C3 = getfade(PAL_CV_EYES)
         P4C3 = getfade(PAL_CV_DKGRN, black)
+        if pal_animation then caves_shared_pals
+;       P7C2 = getfade(PAL_PUDDING_DK, black)
+        P7C2 = flash_color      ; black pudding is BLACK (or purple...)
+        P7C3 = getfade(PAL_PUDDING_LT)
 
 caves_shared_pals
         incbasic shared_pals.78b
@@ -200,7 +205,8 @@ end
 end
 
         data caves_room_4_obj
-        TYPE_CSPIDER, 128, $30, TYPE_ROSE, 72, $90
+        TYPE_PUDDING, 128, $30, TYPE_ROSE, 72, $90
+        TYPE_CSPIDER, (4*8), $30
         $00
 end
 
@@ -745,6 +751,124 @@ obj_cave_spider_stats
         object_speed_hi[obj_index] = CSPIDER_SPEED_HI
         object_speed_lo[obj_index] = CSPIDER_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #F_CSPIDER_DOWN
+          sta object_frame,x
+          jmp .caves_160a_sprite
+end
+
+        dmahole 0
+;=========================================================
+; BLACK PUDDING
+;---------------------------------------------------------
+; Caves variant of Slime
+;=========================================================
+mpudding_ai
+        asm
+          lda #PUDDING_PAL
+          sta object_pal,x
+          lda #F_MPUDDING_1
+          sta object_frame,x
+          jmp pudding_anim
+end
+
+pudding_ai
+        asm
+          lda #PUDDING_PAL
+          sta object_pal,x
+          lda #F_PUDDING_1
+          sta object_frame,x
+pudding_anim
+          lda animation_frame
+          beq pudding_ooze
+          inc object_frame,x
+pudding_ooze
+          jmp .follow_player
+end
+
+split_pudding
+        ; replace slime mobj with mini slime
+        asm
+          lda #TYPE_MPUDDING
+          sta object_type,x
+          lda #MPUDDING_HP
+          sta object_hp,x
+          lda #MPUDDING_DEF
+          sta object_def,x
+          lda #F_MPUDDING_1
+          sta object_frame,x
+;         lda #<.plot_caves_160a
+;         sta object_spr_ptr_lo,x
+;         lda #>.plot_caves_160a
+;         sta object_spr_ptr_hi,x
+end
+        gosub find_new_object
+        ; if no slots, the slime just becomes a single mini slime
+        if no_empty_slot then goto set_enemy_name
+        asm
+          ; move the original slime to the left
+          lda object_Xpos,x
+          ; push Xpos to stack for later use
+          pha
+          sec
+          sbc #1
+          sta object_Xpos,x
+          lda object_Ypos,x
+        ; initialize the new mini slime object
+          ldx spawn_index
+          sta object_Ypos,y
+          lda #TYPE_MPUDDING
+          sta object_type,y
+          lda #MPUDDING_HP
+          sta object_hp,y
+          lda #PUDDING_VEL_CAP_HI
+          sta object_vel_cap_hi,y
+          lda #PUDDING_VEL_CAP_LO
+          sta object_vel_cap_lo,y
+          lda #PUDDING_DAMAGE
+          sta object_damage,y
+          lda #MPUDDING_DEF
+          sta object_def,y
+          lda #MPUDDING_MDEF
+          sta object_mdef,y
+          lda #PUDDING_FRICTION_HI
+          sta object_friction_hi,y
+          lda #PUDDING_FRICTION_LO
+          sta object_friction_lo,y
+          lda #PUDDING_SPEED_HI
+          sta object_speed_hi,y
+          lda #PUDDING_SPEED_LO
+          sta object_speed_lo,y
+          lda #F_MPUDDING_1
+          sta object_frame,y
+          ; pull parent X position from stack and move spawned slime to the right
+          pla
+          clc
+          adc #9
+          sta object_Xpos,y
+          lda #6
+          sta object_pal,y
+          lda #<.plot_caves_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_caves_160a
+          sta object_spr_ptr_hi,y
+end
+        goto set_enemy_name
+
+obj_pudding_stats
+        object_hp[obj_index] = PUDDING_HP
+        object_vel_cap_hi[obj_index] = PUDDING_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = PUDDING_VEL_CAP_LO
+        object_damage[obj_index] = PUDDING_DAMAGE
+        object_def[obj_index] = PUDDING_DEF
+        object_mdef[obj_index] = PUDDING_MDEF
+        object_friction_hi[obj_index] = PUDDING_FRICTION_HI
+        object_friction_lo[obj_index] = PUDDING_FRICTION_LO
+        object_speed_hi[obj_index] = PUDDING_SPEED_HI
+        object_speed_lo[obj_index] = PUDDING_SPEED_LO
+        object_flags[obj_index] = 0
+        object_elevation[obj_index] = player_elevation
         goto caves_160a_sprite
 
 caves_160a_sprite
@@ -754,8 +878,6 @@ caves_160a_sprite
           sta object_spr_ptr_lo,x
           lda #>.plot_caves_160a
           sta object_spr_ptr_hi,x
-          lda #F_CSPIDER_DOWN
-          sta object_frame,x
 end
         goto obj_next_stats  
 

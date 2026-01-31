@@ -6,6 +6,7 @@
         name_ghost_lo, name_harpy_lo, name_spider_lo, name_spider_lo
         name_hslime_lo, name_hslime_lo, name_hghost_lo, name_harpyqueen_lo
         name_hillsboss_lo, name_bat_lo, name_bat_lo, name_rose_lo, name_cspider_lo
+        name_pudding_lo, name_pudding_lo
 end
 
         data enemy_names_hi
@@ -16,6 +17,7 @@ end
         name_ghost_hi, name_harpy_hi, name_spider_hi, name_spider_hi
         name_hslime_hi, name_hslime_hi, name_hghost_hi, name_harpyqueen_hi
         name_hillsboss_hi, name_bat_hi, name_bat_hi, name_rose_hi, name_cspider_hi
+        name_pudding_hi, name_pudding_hi
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -127,4 +129,10 @@ end
         const name_cspider_hi = #>name_cspider
         alphadata name_cspider font_spr
         'Cave Crawler*'
+end
+
+        const name_pudding_lo = #<name_pudding
+        const name_pudding_hi = #>name_pudding
+        alphadata name_pudding font_spr
+        'Black Pudding*'
 end

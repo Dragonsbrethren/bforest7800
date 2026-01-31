@@ -83,3 +83,6 @@
         const PAL_CV_DKBRN = $10
         const PAL_CV_WATER = $A1
         const PAL_CV_EYES  = $33        ; bat's eyes/wings
+
+        const PAL_PUDDING_DK = $70
+        const PAL_PUDDING_LT = $60

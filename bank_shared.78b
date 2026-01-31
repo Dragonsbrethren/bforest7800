@@ -569,6 +569,7 @@ pos_swd_left
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo, <.bat_spawner_ai, <.bat_ai, <.rose_ai, <.cave_spider_ai
+        <.pudding_ai, <.mpudding_ai
 end
 
         data object_ai_hi
@@ -576,6 +577,7 @@ end
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi, >.bat_spawner_ai, >.bat_ai, >.rose_ai, >.cave_spider_ai
+        >.pudding_ai, >.mpudding_ai
 end
 
         data projectile_ai_lo
@@ -829,6 +831,8 @@ _spawn_coin
         0               ; bat spawner
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
+        TYPE_ELIXIR     ; cave spider
+        TYPE_ELIXIR     ; pudding
 end
 
         data common_drops
@@ -858,6 +862,8 @@ end
         0               ; bat spawner
         TYPE_POTION     ; bat
         TYPE_SOFT       ; stone rose
+        TYPE_SOFT       ; cave spider
+        TYPE_ANTIDOTE   ; pudding
 end
 
         ; handles poison and regen
@@ -1879,6 +1885,10 @@ test_hills_slime
           cmp #TYPE_HSLIME
           bne not_a_slime
           jmp .split_hslime
+test_caves_slime
+          cmp #TYPE_PUDDING
+          bne not_a_slime
+          jmp .split_pudding
 not_a_slime
           jmp .sword_damage_set_invuln
 end
@@ -1984,6 +1994,8 @@ player_knockback_status
           beq set_curse_status
           cmp #TYPE_HARPY_QUEEN
           beq set_fury_status
+          cmp #TYPE_PUDDING
+          beq set_poison_status
           jmp .pc_damage
 
 set_poison_status
