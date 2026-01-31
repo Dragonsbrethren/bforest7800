@@ -833,6 +833,7 @@ _spawn_coin
         TYPE_LIFEAPPLE  ; stone rose
         TYPE_ELIXIR     ; cave spider
         TYPE_ELIXIR     ; pudding
+        0               ; mini pudding
 end
 
         data common_drops
@@ -864,6 +865,7 @@ end
         TYPE_SOFT       ; stone rose
         TYPE_SOFT       ; cave spider
         TYPE_ANTIDOTE   ; pudding
+        0               ; mini pudding
 end
 
         ; handles poison and regen
@@ -1883,7 +1885,7 @@ test_river_slime
           jmp .split_rslime
 test_hills_slime
           cmp #TYPE_HSLIME
-          bne not_a_slime
+          bne test_caves_slime
           jmp .split_hslime
 test_caves_slime
           cmp #TYPE_PUDDING
