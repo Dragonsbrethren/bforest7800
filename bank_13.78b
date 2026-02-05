@@ -128,8 +128,8 @@ plot_caves_room_10
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy current_map caves_room_10 280
         plotmapfile tiled/caves_room_10.tmx caves_room_10 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 8
+        zone2_objects  = 8
         zone14_objects = 7
         pal_animation  = 1
         goto caves_waterfall bank12
@@ -141,7 +141,7 @@ plot_caves_room_11
         plotmapfile tiled/caves_room_11.tmx caves_room_11 0 0 20 14
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 5
+        zone14_objects = 2
         return otherbank
 
 plot_caves_room_12
@@ -149,8 +149,8 @@ plot_caves_room_12
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy current_map caves_room_12 280
         plotmapfile tiled/caves_room_12.tmx caves_room_12 0 0 20 14
-        zone1_objects  = 6
-        zone2_objects  = 6
+        zone1_objects  = 3
+        zone2_objects  = 3
         zone14_objects = 1
         return otherbank
 

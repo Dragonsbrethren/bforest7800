@@ -3,13 +3,13 @@
  <tileset firstgid="1" name="caves_walls" tilewidth="8" tileheight="16" tilecount="23" columns="23">
   <image source="../gfx/tiles/caves_walls.png" width="184" height="16"/>
  </tileset>
- <tileset firstgid="24" name="caves_floors" tilewidth="8" tileheight="16" tilecount="20" columns="20">
-  <image source="../gfx/tiles/caves_floors.png" width="160" height="16"/>
+ <tileset firstgid="24" name="caves_floors" tilewidth="8" tileheight="16" tilecount="21" columns="21">
+  <image source="../gfx/tiles/caves_floors.png" width="168" height="16"/>
  </tileset>
- <tileset firstgid="44" name="caves_water" tilewidth="8" tileheight="16" tilecount="10" columns="10">
+ <tileset firstgid="45" name="caves_water" tilewidth="8" tileheight="16" tilecount="10" columns="10">
   <image source="../gfx/tiles/caves_water.png" width="80" height="16"/>
  </tileset>
- <tileset firstgid="54" name="caves_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="55" name="caves_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/caves_waterf.png" width="8" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14">
@@ -100,7 +100,7 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="32"/>
+   <tile gid="44"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
@@ -126,7 +126,7 @@
    <tile gid="11"/>
    <tile gid="30"/>
    <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="43"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="3"/>
@@ -169,7 +169,7 @@
    <tile gid="24"/>
    <tile gid="40"/>
    <tile gid="39"/>
-   <tile gid="25"/>
+   <tile gid="24"/>
    <tile gid="26"/>
    <tile gid="12"/>
    <tile gid="11"/>
@@ -274,20 +274,20 @@
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
+   <tile gid="42"/>
+   <tile gid="42"/>
    <tile gid="30"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="31"/>
+   <tile gid="31"/>
    <tile gid="32"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
+   <tile gid="42"/>
+   <tile gid="42"/>
+   <tile gid="42"/>
    <tile gid="30"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="31"/>
+   <tile gid="31"/>
+   <tile gid="31"/>
+   <tile gid="31"/>
    <tile gid="3"/>
    <tile gid="12"/>
    <tile gid="11"/>
