@@ -755,6 +755,7 @@ spawn_object
           cmp #TYPE_HARPY
           bne spawn_zero_nibble
           jmp .remove_harpy_shadow
+harpy_shadow_removed
 spawn_zero_nibble
         ; zero Ypos lower nibble to avoid gfx glitch
           lda object_Ypos,x
@@ -882,11 +883,12 @@ poison_damage
         if player_status{0} then goto damage_player_hp
 
 player_handler
+        index = 0
         if player_state = STATE_DEATH then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
         if player_status{3} then goto stone_handler
-        index = 0 : gosub decelerate_player
+        gosub decelerate_player
 
 ;==============================================================================
 ; SUBROUTINE: HANDLE INPUT FIELD
@@ -895,7 +897,6 @@ player_handler
 ;==============================================================================
 handle_input_field
         if !player_flags{5} then player_no_hop
-        index = 0
         gosub set_player_facing_frame
         gosub ledge_hop
         goto test_joy_done

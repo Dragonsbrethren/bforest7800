@@ -908,7 +908,7 @@ remove_harpy_shadow
           ldx temp1
           ; store the new Xpos and resume spawner code
           sta object_Xpos,x
-          jmp spawn_zero_nibble
+          jmp harpy_shadow_removed
 end
 
 split_hslime

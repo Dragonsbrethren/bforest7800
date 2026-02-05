@@ -35,6 +35,8 @@
         incgraphic gfx/sprites/flame0.png 160A
         incgraphic gfx/sprites/flame1.png 160A
         incgraphic gfx/sprites/jostone0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/lightning0.png 160A 0 2 3
+        incgraphic gfx/sprites/lightning1.png 160A 0 2 3
 
 init
         goto title_init bank10
