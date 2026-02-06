@@ -223,7 +223,7 @@
         const M_HILLS_START_X = 70
         const M_HILLS_START_Y = 144
         ; field positions
-        const F_HILLS_START_I = 16 ; 37      ; starting room index
+        const F_HILLS_START_I = 37      ; starting room index
         const F_HILLS_START_X = $64
         const F_HILLS_START_Y = $A0
         const F_HILLS_START_D = DIR_UP
