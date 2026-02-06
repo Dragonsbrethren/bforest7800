@@ -205,6 +205,10 @@ plot_caves_room_17
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        exit_tileset = T_HILLS
+        exit_Xpos = 80
+        exit_Ypos = $20
+        exit_room_index = F_HILLS_CAVE2_I
         return otherbank
 
 plot_caves_room_18
@@ -216,6 +220,10 @@ plot_caves_room_18
         zone2_objects  = 2
         zone14_objects = 3
         pal_animation  = 1
+        exit_tileset = T_HILLS
+        exit_Xpos = 40
+        exit_Ypos = $90
+        exit_room_index = F_HILLS_CAVE3_I
         goto caves_waterfall bank12
 
 plot_caves_room_19
@@ -236,5 +244,9 @@ plot_caves_room_20
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        exit_tileset = T_CASTLE
+        exit_Xpos = 32
+        exit_Ypos = $20
+        exit_room_index = F_CASTLE_CAVE_I
         return otherbank
         

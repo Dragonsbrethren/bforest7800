@@ -48,6 +48,8 @@ load_hills
         if save_room_index = 1 then hills_save_1
         if save_room_index = 2 then hills_save_2
         if exit_room_index = F_HILLS_CAVE1_I then hills_cave_1
+        if exit_room_index = F_HILLS_CAVE2_I then hills_cave_2
+        if exit_room_index = F_HILLS_CAVE3_I then hills_cave_3
 
         room_index    = F_HILLS_START_I
         menu_map_Xpos = M_HILLS_START_X
@@ -83,6 +85,24 @@ hills_cave_1
         player_Xpos   = F_HILLS_CAVE1_X
         player_Ypos   = F_HILLS_CAVE1_Y
         player_facing = F_HILLS_CAVE1_D ; DIR_UP
+        goto hills_set_room
+
+hills_cave_2
+        room_index    = F_HILLS_CAVE2_I
+        menu_map_Xpos = M_HILLS_CAVE2_X
+        menu_map_Ypos = M_HILLS_CAVE2_Y
+        player_Xpos   = F_HILLS_CAVE2_X
+        player_Ypos   = F_HILLS_CAVE2_Y
+        player_facing = F_HILLS_CAVE2_D ; DIR_UP
+        goto hills_set_room
+
+hills_cave_3
+        room_index    = F_HILLS_CAVE3_I
+        menu_map_Xpos = M_HILLS_CAVE3_X
+        menu_map_Ypos = M_HILLS_CAVE3_Y
+        player_Xpos   = F_HILLS_CAVE3_X
+        player_Ypos   = F_HILLS_CAVE3_Y
+        player_facing = F_HILLS_CAVE3_D ; DIR_UP
         goto hills_set_room
 
 hills_set_room
@@ -732,7 +752,7 @@ plot_hills_room_1
         exit_tileset = T_CAVES
         exit_Xpos = 32
         exit_Ypos = 28
-        exit_room_index = F_CAVES_ENT_1_I
+        exit_room_index = F_CAVES_ENT_2_I
         goto hills_waterfall
 
 plot_hills_room_2

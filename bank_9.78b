@@ -196,7 +196,7 @@ plot_hills_room_17
         exit_tileset = T_CAVES
         exit_Xpos = 64
         exit_Ypos = 28
-        exit_room_index = F_CAVES_ENT_3_I
+        exit_room_index = F_CAVES_ENT_1_I
         return otherbank
 
 plot_hills_room_18
@@ -269,5 +269,5 @@ plot_hills_room_24
         exit_tileset = T_CAVES
         exit_Xpos = 32
         exit_Ypos = 108
-        exit_room_index = F_CAVES_ENT_2_I
+        exit_room_index = F_CAVES_ENT_3_I
         return otherbank

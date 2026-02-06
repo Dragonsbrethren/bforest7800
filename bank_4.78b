@@ -156,6 +156,7 @@ load_castle
         if save_room_index = 1 then castle_save_1
         if save_room_index = 2 then castle_save_2
         if exit_room_index = 48 then castle_entrance_2
+        if exit_room_index = F_CASTLE_CAVE_I then castle_cave
 
 castle_entrance_1
         room_index = 44
@@ -173,6 +174,15 @@ castle_entrance_2
         player_Xpos = 76
         player_Ypos = $B0
         player_facing = DIR_UP
+        goto castle_rooms
+
+castle_cave
+        room_index    = F_CASTLE_CAVE_I 
+        menu_map_Xpos = M_CASTLE_CAVE_X
+        menu_map_Ypos = M_CASTLE_CAVE_Y
+        player_Xpos   = F_CASTLE_CAVE_X 
+        player_Ypos   = F_CASTLE_CAVE_Y
+        player_facing = F_CASTLE_CAVE_D
         goto castle_rooms
 
 castle_save_1

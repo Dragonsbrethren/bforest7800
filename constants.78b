@@ -170,6 +170,15 @@
         const ROOML_N   = 16
         const ROOMR_N   = 17
 
+
+; CASTLE CAVE
+        const M_CASTLE_CAVE_X = 70
+        const M_CASTLE_CAVE_Y = 80
+        const F_CASTLE_CAVE_I = 34
+        const F_CASTLE_CAVE_X = 100
+        const F_CASTLE_CAVE_Y = $40
+        const F_CASTLE_CAVE_D = DIR_UP
+
 ;------------------------------------------------------------------------------
 ; RIVER TILESET
 ;------------------------------------------------------------------------------
@@ -245,17 +254,49 @@
         const F_HILLS_CAVE1_Y = $30
         const F_HILLS_CAVE1_D = DIR_DOWN
 
+; CAVE EXIT 2 (over river)
+        const M_HILLS_CAVE2_X = 70
+        const M_HILLS_CAVE2_Y = 80
+        const F_HILLS_CAVE2_I = 36
+        const F_HILLS_CAVE2_X = (8*4)
+        const F_HILLS_CAVE2_Y = $30
+        const F_HILLS_CAVE2_D = DIR_DOWN
+
+; CAVE EXIT 3 (valley)
+        const M_HILLS_CAVE3_X = 70
+        const M_HILLS_CAVE3_Y = 80
+        const F_HILLS_CAVE3_I = 35
+        const F_HILLS_CAVE3_X = (8*4)
+        const F_HILLS_CAVE3_Y = $80
+        const F_HILLS_CAVE3_D = DIR_DOWN
+
 ;------------------------------------------------------------------------------
 ; CAVES TILESET
 ;------------------------------------------------------------------------------
+        ; mountaintop
         const M_CAVES_ENT_1_X = 78
         const M_CAVES_ENT_1_Y = 64
         const F_CAVES_ENT_1_I = 3
         const F_CAVES_ENT_1_X = 72
         const F_CAVES_ENT_1_Y = $30
-        const F_CAVES_ENT_2_I = 24
-        const F_CAVES_ENT_3_I = 30
-        const F_CAVES_ENT_4_I = 36
+        ; waterfall
+        const M_CAVES_ENT_2_X = 78
+        const M_CAVES_ENT_2_Y = 64
+        const F_CAVES_ENT_2_I = 23
+        const F_CAVES_ENT_2_X = 80
+        const F_CAVES_ENT_2_Y = $30
+        ; valley
+        const M_CAVES_ENT_3_X = 78
+        const M_CAVES_ENT_3_Y = 64
+        const F_CAVES_ENT_3_I = 29
+        const F_CAVES_ENT_3_X = 40
+        const F_CAVES_ENT_3_Y = $A0
+        ; cathedral
+        const M_CAVES_ENT_4_X = 78
+        const M_CAVES_ENT_4_Y = 64
+        const F_CAVES_ENT_4_I = 35
+        const F_CAVES_ENT_4_X = 32
+        const F_CAVES_ENT_4_Y = $30
 ;------------------------------------------------------------------------------
 ; MENU DATA
 ;------------------------------------------------------------------------------

@@ -40,12 +40,41 @@ load_caves
         first_load = 0
         player_facing = DIR_DOWN
 
+        if exit_room_index = F_CAVES_ENT_2_I then caves_ent_2
+        if exit_room_index = F_CAVES_ENT_3_I then caves_ent_3
+        if exit_room_index = F_CAVES_ENT_4_I then caves_ent_4
+
+caves_ent_1
         room_index      = F_CAVES_ENT_1_I
         menu_map_Xpos   = M_CAVES_ENT_1_X
         menu_map_Ypos   = M_CAVES_ENT_1_Y
         player_Xpos     = F_CAVES_ENT_1_X
         player_Ypos     = F_CAVES_ENT_1_Y
         goto caves_set_room
+
+caves_ent_2
+        room_index      = F_CAVES_ENT_2_I
+        menu_map_Xpos   = M_CAVES_ENT_2_X
+        menu_map_Ypos   = M_CAVES_ENT_2_Y
+        player_Xpos     = F_CAVES_ENT_2_X
+        player_Ypos     = F_CAVES_ENT_2_Y
+        goto caves_set_room
+
+caves_ent_3
+        room_index      = F_CAVES_ENT_3_I
+        menu_map_Xpos   = M_CAVES_ENT_3_X
+        menu_map_Ypos   = M_CAVES_ENT_3_Y
+        player_Xpos     = F_CAVES_ENT_3_X
+        player_Ypos     = F_CAVES_ENT_3_Y
+        goto caves_set_room
+
+caves_ent_4
+        room_index      = F_CAVES_ENT_4_I
+        menu_map_Xpos   = M_CAVES_ENT_4_X
+        menu_map_Ypos   = M_CAVES_ENT_4_Y
+        player_Xpos     = F_CAVES_ENT_4_X
+        player_Ypos     = F_CAVES_ENT_4_Y
+;       goto caves_set_room
 
 caves_set_room
         characterset caves_floors
@@ -230,17 +259,19 @@ end
 
         data caves_room_8_obj
         TYPE_PUDDING, (4*8), $40, TYPE_PUDDING, (10*8), $60
+        TYPE_TORCH, (4*8), $30, TYPE_TORCH, (8*8), $30
         $00
 end
 
         data caves_room_9_obj
         TYPE_ROSE, (5*8), $60
+        TYPE_TORCH, (16*8), $60
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_10_obj
-        TYPE_ROSE, (16*8), $50, TYPE_ROSE, (2*8), $70
+        TYPE_CGHOST, (8*8), $40, TYPE_CGHOST, (10*8), $80
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
@@ -248,10 +279,13 @@ end
         data caves_room_11_obj
         TYPE_CGHOST, (5*8), $60, TYPE_CGHOST, (10*8), $90
         TYPE_ROSE, (12*8), $50
+        TYPE_SWORD6, (3*8), $A0
         $00
 end
 
         data caves_room_12_obj
+        TYPE_ROSE, (7*8), $50, TYPE_ROSE, (13*8), $60
+        TYPE_TORCH, (14*8), $30, TYPE_TORCH, (5*8), $60
         $00
 end
 
@@ -260,30 +294,43 @@ end
 end
 
         data caves_room_14_obj
+        TYPE_ROSE, (3*8), $40
         $00
 end
 
         data caves_room_15_obj
+        TYPE_CSPIDER, (11*8), $50, TYPE_CSPIDER, (5*8), $60
+        TYPE_ARMOR6, (9*8), $20
+        TYPE_TORCH, (8*8), $60, TYPE_TORCH, (7*8), $20, TYPE_TORCH, (11*8), $20
         $00
 end
 
         data caves_room_16_obj
+        TYPE_CSPIDER, (9*8), $50, TYPE_CSPIDER, (14*8), $60
+        TYPE_TORCH, (2*8), $40, TYPE_TORCH, (11*8), $60
         $00
 end
 
         data caves_room_17_obj
+        TYPE_TORCH, (7*8), $40, TYPE_TORCH, (13*8), $40
+        TYPE_TORCH, (3*8), $90
         $00
 end
 
         data caves_room_18_obj
+        TYPE_CHARM6, (14*8), $50
         $00
 end
 
         data caves_room_19_obj
+        TYPE_CSPIDER, (13*8), $20
+        TYPE_PUDDING, (11*8), $A0, TYPE_PUDDING, (14*8), $B0
+        TYPE_TORCH, (12*8), $40, TYPE_TORCH, (14*8), $60
         $00
 end
 
         data caves_room_20_obj
+        TYPE_TORCH, 18, $20, TYPE_TORCH, 46, $20
         $00
 end
 
@@ -748,6 +795,7 @@ end
         0, F_CSPIDER_UP, F_CSPIDER_DOWN, F_CSPIDER_LEFT, F_CSPIDER_RIGHT
 end
 
+        dmahole 0
 obj_cave_spider_stats
         object_hp[obj_index] = CSPIDER_HP
         object_vel_cap_hi[obj_index] = CSPIDER_VEL_CAP_HI
@@ -767,7 +815,6 @@ obj_cave_spider_stats
           jmp .caves_160a_sprite
 end
 
-        dmahole 0
 ;=========================================================
 ; BLACK PUDDING
 ;---------------------------------------------------------
