@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" name="caves_walls" tilewidth="8" tileheight="16" tilecount="22" columns="22">
-  <image source="../gfx/tiles/caves_walls.png" width="176" height="16"/>
+ <tileset firstgid="1" name="caves_walls" tilewidth="8" tileheight="16" tilecount="23" columns="23">
+  <image source="../gfx/tiles/caves_walls.png" width="184" height="16"/>
  </tileset>
- <tileset firstgid="23" name="caves_floors" tilewidth="8" tileheight="16" tilecount="16" columns="16">
-  <image source="../gfx/tiles/caves_floors.png" width="128" height="16"/>
+ <tileset firstgid="24" name="caves_floors" tilewidth="8" tileheight="16" tilecount="21" columns="21">
+  <image source="../gfx/tiles/caves_floors.png" width="168" height="16"/>
  </tileset>
- <tileset firstgid="39" name="caves_water" tilewidth="8" tileheight="16" tilecount="10" columns="10">
+ <tileset firstgid="45" name="caves_water" tilewidth="8" tileheight="16" tilecount="10" columns="10">
   <image source="../gfx/tiles/caves_water.png" width="80" height="16"/>
  </tileset>
- <tileset firstgid="49" name="caves_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="55" name="caves_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/caves_waterf.png" width="8" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="14">
@@ -184,12 +184,12 @@
    <tile gid="11"/>
    <tile gid="10"/>
    <tile gid="4"/>
+   <tile gid="43"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="23"/>
    <tile gid="6"/>
    <tile gid="12"/>
    <tile gid="11"/>
@@ -246,7 +246,7 @@
    <tile gid="10"/>
    <tile gid="4"/>
    <tile gid="5"/>
-   <tile gid="2"/>
+   <tile gid="23"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="6"/>

@@ -330,7 +330,7 @@ end
 end
 
         data caves_room_20_obj
-        TYPE_TORCH, 18, $20, TYPE_TORCH, 46, $20
+        TYPE_TORCH, 18, $30, TYPE_TORCH, 46, $30
         $00
 end
 

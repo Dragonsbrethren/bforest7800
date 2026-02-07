@@ -127,7 +127,7 @@ plot_castle_room_8
         zone14_objects = 3
         exit_tileset = T_CAVES
         exit_Xpos = (12*8)
-        exit_Ypos = $50
+        exit_Ypos = $58
         exit_room_index = F_CAVES_ENT_4_I
         return otherbank
 
