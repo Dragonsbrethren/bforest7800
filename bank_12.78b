@@ -31,7 +31,8 @@ end
 
 caves_waterfall
         ; prevent blacked out waterfalls when loading pal_animation rooms
-        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        sP7C1 = getfade(PAL_WFALL1) : sP7C2 = getfade(PAL_WFALL2) : sP7C3 = getfade(PAL_WFALL3)
+        P7C1 = sP7C1 : P7C2 = sP7C2 : P7C3 = sP7C3 : temp7 = sP7C1
         pal_animation = 1
         return
 
@@ -126,7 +127,6 @@ caves_pals
           sta P4C1
           sta P5C1
           sta P6C1
-          sta P7C1
 end
         bg_color = PAL_CV_GRND  ; brown ground
         P4C2 = getfade(PAL_CV_DKBRN, black)
@@ -138,7 +138,11 @@ end
         P4C3 = getfade(PAL_CV_DKGRN, black)
         if pal_animation then caves_shared_pals
 ;       P7C2 = getfade(PAL_PUDDING_DK, black)
-        P7C2 = flash_color      ; black pudding is BLACK (or purple...)
+        asm
+          lda flash_color
+          sta P7C1
+          sta P7C2      ; black pudding is BLACK (or purple...)
+end
         P7C3 = getfade(PAL_PUDDING_LT)
 
 caves_shared_pals
@@ -294,7 +298,7 @@ end
 end
 
         data caves_room_14_obj
-        TYPE_ROSE, (3*8), $40
+        TYPE_ROSE, (6*8), $60
         $00
 end
 
@@ -609,6 +613,7 @@ rofastY   lda #SEED_SPEED_HI
           rts
 end
 
+        dmahole 0
 ;=========================================================
 ; CAVE SPIDER
 ;---------------------------------------------------------
@@ -795,7 +800,6 @@ end
         0, F_CSPIDER_UP, F_CSPIDER_DOWN, F_CSPIDER_LEFT, F_CSPIDER_RIGHT
 end
 
-        dmahole 0
 obj_cave_spider_stats
         object_hp[obj_index] = CSPIDER_HP
         object_vel_cap_hi[obj_index] = CSPIDER_VEL_CAP_HI

@@ -159,8 +159,8 @@ plot_caves_room_13
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy current_map caves_room_13 280
         plotmapfile tiled/caves_room_13.tmx caves_room_13 0 0 20 14
-        zone1_objects  = 4
-        zone2_objects  = 4
+        zone1_objects  = 8
+        zone2_objects  = 8
         zone14_objects = 1
         pal_animation  = 1
         goto caves_waterfall bank12
@@ -184,6 +184,8 @@ plot_caves_room_15
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 1
+        locked_zone = 4
+        pokechar current_map 9 4 20 14 6
         return otherbank
 
 plot_caves_room_16
