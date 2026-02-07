@@ -88,6 +88,7 @@ caves_init
           sta pal_animation
           sta exit_room_index
           sta save_room_index
+          sta player_elevation
           lda #1
           sta shadow_offset
           lda #$FF
@@ -515,8 +516,6 @@ obj_rose_stats
           sta object_spr_ptr_hi,x
           lda #4
           sta object_pal,x
-          lda #1
-          sta object_elevation,x
           jmp .obj_next_stats
 end
 
@@ -608,8 +607,6 @@ rofastY   lda #SEED_SPEED_HI
           sta object_Ypos,y
           lda #64
           sta object_timer,x
-          lda #1
-          sta object_elevation,y
           rts
 end
 
@@ -637,9 +634,6 @@ cave_spider_init
         ; this is no longer used but the flag is still needed for this init
           lda #%00010000
           sta object_flags,x
-        ; always start at player's elevation
-          lda player_elevation
-          sta object_elevation,x
 
 cave_spider_stalk
           ; vertical spiders unused, omitted code to detect them
@@ -679,8 +673,6 @@ cave_spider_drop_horiz
           sta object_flags,x
           lda #CSPIDER_DROP_TIME
           sta object_timer,x
-;         lda player_elevation
-;         sta object_elevation,x
 ;         lda object_Ypos,x
 ;         cmp player_Ypos
 ;         bcc cave_spider_drop_down
@@ -928,7 +920,6 @@ obj_pudding_stats
         object_speed_hi[obj_index] = PUDDING_SPEED_HI
         object_speed_lo[obj_index] = PUDDING_SPEED_LO
         object_flags[obj_index] = 0
-        object_elevation[obj_index] = player_elevation
         goto caves_160a_sprite
 
 ;=========================================================

@@ -85,6 +85,7 @@ hills_cave_1
         player_Xpos   = F_HILLS_CAVE1_X
         player_Ypos   = F_HILLS_CAVE1_Y
         player_facing = F_HILLS_CAVE1_D ; DIR_UP
+        player_elevation = 1
         goto hills_set_room
 
 hills_cave_2
@@ -94,6 +95,7 @@ hills_cave_2
         player_Xpos   = F_HILLS_CAVE2_X
         player_Ypos   = F_HILLS_CAVE2_Y
         player_facing = F_HILLS_CAVE2_D ; DIR_UP
+        player_elevation = 1
         goto hills_set_room
 
 hills_cave_3
@@ -103,6 +105,7 @@ hills_cave_3
         player_Xpos   = F_HILLS_CAVE3_X
         player_Ypos   = F_HILLS_CAVE3_Y
         player_facing = F_HILLS_CAVE3_D ; DIR_UP
+        player_elevation = 1
         goto hills_set_room
 
 hills_set_room
@@ -254,6 +257,7 @@ test_water_hills_done
           rts
 end
 
+        dmahole 0
 ;=========================================================
 ; HILLS BOSS HANDLER
 ;---------------------------------------------------------
@@ -311,8 +315,6 @@ hills_boss_zero
           rts
 end
 
-
-        dmahole 0
 ;=========================================================
 ; HARPY
 ;---------------------------------------------------------
