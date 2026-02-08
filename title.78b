@@ -56,7 +56,7 @@ title_selection
         goto title_new_game
 
 title_flash
-        plotchars 'PRE ALPHA 02-06-2026' 0 40 10
+        plotchars 'PRE ALPHA 02-08-2026' 0 40 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
