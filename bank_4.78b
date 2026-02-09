@@ -249,7 +249,7 @@ castle_pals
         P7C1 = PAL_C_BRCARP : P7C2 = getfade(PAL_C_DKCARP, black) : P7C3 = getfade(PAL_C_LTCARP) ; carpets
         if alt_palette=1 then P5C1 = getfade(PAL_C_DKCARP, black) : goto castle_maroon_pal   ; chapel
         P6C1 = PAL_C_BRTILE : P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
-        if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
         goto castle_shared_pals
 
@@ -260,7 +260,7 @@ castle_lightning
         P7C1 = PAL_C_LIGHTN : P7C2 = PAL_C_LTCARP : P7C3 = PAL_C_BRCARP ; carpets
         if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal   ; chapel
         P6C1 = PAL_C_LIGHTN : P6C2 = PAL_C_BRTILE : P6C3 = PAL_C_LTTILE ; blue-green tiles    
-        if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
         lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
@@ -502,7 +502,7 @@ end
 end
 
         data castle_room_25_obj
-        TYPE_PRIEST, $4C, $50,
+        TYPE_CARDINAL, $4C, $50,
         TYPE_KEY1, $4C, $50, $00
 end
 
@@ -564,6 +564,7 @@ torch_tile_unblock_castle
 ; Walks slowly until aligned with player, then casts dark spark or sword attack
 ;==============================================================================
 priest_ai
+cardinal_ai
         asm
           ; check flag 6
           lda object_flags,x
@@ -945,16 +946,26 @@ end
 obj_priest_stats
         asm
           ldx obj_index
+          lda #PRIEST_PAL
+          sta object_pal,x
+          lda #PRIEST_HP
+          sta object_hp,x
+          jmp obj_priest_shared
+.obj_cardinal_stats
+          ldx obj_index
+          lda #CARDINAL_PAL
+          sta object_pal,x
+          lda #CARDINAL_HP
+          sta object_hp,x
+
+obj_priest_shared
           lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
           lda #>.plot_castle_160a
           sta object_spr_ptr_hi,x
           lda #F_PRIEST_DOWN_1
           sta object_frame,x
-          lda #PRIEST_PAL
-          sta object_pal,x
 end
-        object_hp[obj_index] = PRIEST_HP
         object_vel_cap_hi[obj_index] = PRIEST_VEL_CAP_HI
         object_vel_cap_lo[obj_index] = PRIEST_VEL_CAP_LO
         object_damage[obj_index] = PRIEST_DAMAGE

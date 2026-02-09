@@ -6,7 +6,7 @@
         name_ghost_lo, name_harpy_lo, name_spider_lo, name_spider_lo
         name_hslime_lo, name_hslime_lo, name_hghost_lo, name_harpyqueen_lo
         name_hillsboss_lo, name_bat_lo, name_bat_lo, name_rose_lo, name_cspider_lo
-        name_pudding_lo, name_pudding_lo, name_cghost_lo
+        name_pudding_lo, name_pudding_lo, name_cghost_lo, name_cardinal_lo
 end
 
         data enemy_names_hi
@@ -17,7 +17,7 @@ end
         name_ghost_hi, name_harpy_hi, name_spider_hi, name_spider_hi
         name_hslime_hi, name_hslime_hi, name_hghost_hi, name_harpyqueen_hi
         name_hillsboss_hi, name_bat_hi, name_bat_hi, name_rose_hi, name_cspider_hi
-        name_pudding_hi, name_pudding_hi, name_cghost_hi
+        name_pudding_hi, name_pudding_hi, name_cghost_hi, name_cardinal_hi
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -141,4 +141,10 @@ end
         const name_cghost_hi = #>name_cghost
         alphadata name_cghost font_spr
         'Spectre'
+end
+
+        const name_cardinal_lo = #<name_cardinal
+        const name_cardinal_hi = #>name_cardinal
+        alphadata name_cardinal font_spr
+        'Cardinal*'
 end

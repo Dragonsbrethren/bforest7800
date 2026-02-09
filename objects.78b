@@ -21,14 +21,16 @@
         const TYPE_MHSLIME  =  19
         const TYPE_HGHOST   =  20
         const TYPE_HARPY_QUEEN =  21
-        const TYPE_HILLS_BOSS = 22
-        const TYPE_BAT_SPAWNER = 23
+        const TYPE_HILLS_BOSS  =  22
+        const TYPE_BAT_SPAWNER =  23
         const TYPE_BAT      =  24
         const TYPE_ROSE     =  25
         const TYPE_CSPIDER  =  26
         const TYPE_PUDDING  =  27
         const TYPE_MPUDDING =  28
         const TYPE_CGHOST   =  29
+        const TYPE_CARDINAL =  30
+        const TYPE_CASTLE_BOSS =  31
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -229,6 +231,9 @@
         const F_PRIEST_CAST_LEFT  = 16
         const F_PRIEST_CAST_RIGHT = 17
         const PRIEST_PAL = (1 * 32)
+
+        const CARDINAL_PAL = (7 * 32)
+        const CARDINAL_HP  = 20
 
 
         const DARKSPARK_SPEED_HI = 2
