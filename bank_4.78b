@@ -566,13 +566,10 @@ cardinal_ai
 end
 
 castle_boss
-        asm
-          ; check if player has entered boss arena
-          lda player_Xpos
-          cmp #32
-          bcs castle_flame_on
-          rts
+        if player_Xpos < 32 then return thisbank
+        playsfx sfx_flameon
 castle_flame_on
+        asm
           ldy index
           inx
           ldx index
@@ -1076,19 +1073,30 @@ ghost_follow
 end
 
 obj_ghost_stats
-        object_hp[obj_index] = GHOST_HP
-        object_vel_cap_hi[obj_index] = GHOST_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = GHOST_VEL_CAP_LO
-        object_damage[obj_index] = GHOST_DAMAGE
-        object_def[obj_index] = GHOST_DEF
-        object_mdef[obj_index] = GHOST_MDEF
-        object_friction_hi[obj_index] = GHOST_FRICTION_HI
-        object_friction_lo[obj_index] = GHOST_FRICTION_LO
-        object_speed_hi[obj_index] = GHOST_SPEED_HI
-        object_speed_lo[obj_index] = GHOST_SPEED_LO
-        object_flags[obj_index] = GHOST_FLAGS
         asm
           ldx obj_index
+          lda #GHOST_HP
+          sta object_hp,x
+          lda #GHOST_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #GHOST_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #GHOST_DAMAGE
+          sta object_damage,x
+          lda #GHOST_DEF
+          sta object_def,x
+          lda #GHOST_MDEF
+          sta object_mdef,x
+          lda #GHOST_FRICTION_HI
+          sta object_friction_hi,x
+          lda #GHOST_FRICTION_LO
+          sta object_friction_lo,x
+          lda #GHOST_SPEED_HI
+          sta object_speed_hi,x
+          lda #GHOST_SPEED_LO
+          sta object_speed_lo,x
+          lda #GHOST_FLAGS
+          sta object_flags,x
           lda #GHOST_PAL_1
           sta object_pal,x
           lda #F_GHOST_1
