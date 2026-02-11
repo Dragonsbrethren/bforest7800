@@ -571,7 +571,7 @@ pos_swd_left
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo, <.bat_spawner_ai, <.bat_ai, <.rose_ai, <.cave_spider_ai
-        <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai
+        <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai, <.castle_boss
 end
 
         data object_ai_hi
@@ -579,7 +579,7 @@ end
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi, >.bat_spawner_ai, >.bat_ai, >.rose_ai, >.cave_spider_ai
-        >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai
+        >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai, >.castle_boss
 end
 
         data projectile_ai_lo
@@ -691,9 +691,9 @@ boss_flame
         asm
           ; tileset's boss handler needs to set flag 7 on these to make them appear
           lda object_flags,x
-          and #%10000000
-          bne boss_flame_anim
-          rts
+;         and #%10000000
+;         bne boss_flame_anim
+;         rts
 
 boss_flame_anim
           lda animation_frame

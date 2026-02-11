@@ -500,7 +500,7 @@ remove_duplicates_next
         obj_ghost_stats_lo, obj_rghost_stats_lo, obj_harpy_stats_lo, obj_spider_stats_lo, obj_spider_stats_lo
         obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo, obj_boss_stats_lo
         <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats, <.obj_cave_spider_stats
-        <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats
+        <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
 end
 
         data object_stats_hi
@@ -510,7 +510,7 @@ end
         obj_ghost_stats_hi, obj_rghost_stats_hi, obj_harpy_stats_hi, obj_spider_stats_hi, obj_spider_stats_hi
         obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi, obj_boss_stats_hi
         >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats, >.obj_cave_spider_stats
-        >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats
+        >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
 end
 
 check_map_bits
