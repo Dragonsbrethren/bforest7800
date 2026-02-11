@@ -290,6 +290,12 @@ plot_castle_room_1
 plot_castle_bank5_return
         return thisbank
 
+        ; unblocks floor tiles in boss arena
+castle_flame_unblock
+        pokechar current_map 3 4 20 14 $28
+        pokechar current_map 3 5 20 14 $28
+        return thisbank
+
       dmahole 0
 castle_shared_pals
         bg_color = flash_color
@@ -504,7 +510,7 @@ end
 end
 
         data castle_room_25_obj
-        TYPE_CASTLE_BOSS, $4C, $50
+        TYPE_CASTLE_BOSS, $4C, $F0
         $00
 end
 
@@ -566,13 +572,22 @@ cardinal_ai
 end
 
 castle_boss
+        asm
+          lda object_flags,x
+          and #%10000000
+          bne .castle_boss_handler
+end
         if player_Xpos < 32 then return thisbank
         playsfx sfx_flameon
 castle_flame_on
         asm
+          ldx index             ; restore x after sfx plays
+          lda #%10000000
+          sta object_flags,x
+          lda #128
+          sta object_timer,x
           ldy index
           inx
-          ldx index
           iny
           iny
           lda #TYPE_BOSS_FLAME
@@ -585,10 +600,10 @@ castle_flame_on
           sta object_Ypos,x
           lda #$50
           sta object_Ypos,y
+          iny
+          sty boss_index
 
 spawn_castle_boss
-          ldx index     ; restore object index
-          iny           ; next object slot for boss
           lda #76
           sta object_Xpos,y
           lda #$50
@@ -605,8 +620,34 @@ spawn_castle_boss
           sta object_spr_ptr_hi,y
           lda #F_PRIEST_DOWN_1
           sta object_frame,y
+          ldx index     ; restore index for object handler
           rts
 end
+
+castle_boss_handler
+        asm
+          ldy boss_index
+          lda object_type,y
+          beq spawn_key
+          rts
+
+spawn_key
+          lda #TYPE_KEY1
+          sta object_type,y
+
+despawn_flames
+          ; TODO: check if key has been picked up
+          lda #0
+          dey
+          sta object_type,y
+          dey
+          sta object_type,y
+          ; remove the boss handler
+          dey
+          sta object_type,y
+end
+        ; hardcode the unblock instead of trying to reuse torch code
+        goto castle_flame_unblock
 
 ;==============================================================================
 ; PRIEST & SKELETON AI
@@ -1126,19 +1167,30 @@ rslime_chase
         goto followplayer
 
 obj_redslime_stats
-        object_hp[obj_index] = RSLIME_HP
-        object_vel_cap_hi[obj_index] = RSLIME_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = RSLIME_VEL_CAP_LO
-        object_damage[obj_index] = RSLIME_DAMAGE
-        object_def[obj_index] = RSLIME_DEF
-        object_mdef[obj_index] = RSLIME_MDEF
-        object_friction_hi[obj_index] = RSLIME_FRICTION_HI
-        object_friction_lo[obj_index] = RSLIME_FRICTION_LO
-        object_speed_hi[obj_index] = RSLIME_SPEED_HI
-        object_speed_lo[obj_index] = RSLIME_SPEED_LO
-        object_flags[obj_index] = 0
         asm
           ldx obj_index
+          lda #RSLIME_HP
+          sta object_hp,x
+          lda #RSLIME_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #RSLIME_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #RSLIME_DAMAGE
+          sta object_damage,x
+          lda #RSLIME_DEF
+          sta object_def,x
+          lda #RSLIME_MDEF
+          sta object_mdef,x
+          lda #RSLIME_FRICTION_HI
+          sta object_friction_hi,x
+          lda #RSLIME_FRICTION_LO
+          sta object_friction_lo,x
+          lda #RSLIME_SPEED_HI
+          sta object_speed_hi,x
+          lda #RSLIME_SPEED_LO
+          sta object_speed_lo,x
+          lda #0
+          sta object_flags,x
           lda #RSLIME_PAL
           sta object_pal,x
           lda #F_RSLIME_1
