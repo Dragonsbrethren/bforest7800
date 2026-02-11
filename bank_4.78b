@@ -159,7 +159,7 @@ load_castle
         if exit_room_index = F_CASTLE_CAVE_I then castle_cave
 
 castle_entrance_1
-        room_index = 44
+        room_index = 14 ; 44
         menu_map_Xpos = 70
         menu_map_Ypos = 160
         player_Xpos = $4C
@@ -246,10 +246,11 @@ end
 
 castle_pals
         P4C1 = PAL_C_SKY    : P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
-        P7C1 = PAL_C_BRCARP : P7C2 = getfade(PAL_C_DKCARP, black) : P7C3 = getfade(PAL_C_LTCARP) ; carpets
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_BRCARP  : P7C3 = getfade(PAL_C_LTCARP) ; carpets
+        P7C2 = getfade(PAL_C_DKCARP, black)
         if alt_palette=1 then P5C1 = getfade(PAL_C_DKCARP, black) : goto castle_maroon_pal   ; chapel
         P6C1 = PAL_C_BRTILE : P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
-        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
+        if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
         goto castle_shared_pals
 
@@ -257,10 +258,11 @@ castle_lightning
         ; TODO: lightning can be partially handled by palette fade
         if no_flash then goto castle_pals
         P4C1 = PAL_C_LIGHTN : P4C2 = PAL_C_MDWALL : P4C3 = PAL_C_BRWALL ; walls
-        P7C1 = PAL_C_LIGHTN : P7C2 = PAL_C_LTCARP : P7C3 = PAL_C_BRCARP ; carpets
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_LIGHTN: P7C3 = PAL_C_BRCARP ; carpets
+        P7C2 = PAL_C_LTCARP 
         if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal   ; chapel
         P6C1 = PAL_C_LIGHTN : P6C2 = PAL_C_BRTILE : P6C3 = PAL_C_LTTILE ; blue-green tiles    
-        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
+        if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
         lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
