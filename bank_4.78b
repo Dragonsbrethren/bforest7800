@@ -595,7 +595,7 @@ castle_flame_on
           sta object_timer,x
           ldy index
           inx
-          iny
+          inx
           iny
           lda #TYPE_BOSS_FLAME
           sta object_type,x
@@ -607,26 +607,21 @@ castle_flame_on
           sta object_Ypos,x
           lda #$50
           sta object_Ypos,y
-          iny
-          sty boss_index
+          inx
+          stx boss_index
 
 spawn_castle_boss
           lda #76
-          sta object_Xpos,y
+          sta object_Xpos,x
           lda #$50
-          sta object_Ypos,y
+          sta object_Ypos,x
           lda #TYPE_CARDINAL
-          sta object_type,y
+          sta object_type,x
           lda #CARDINAL_PAL
-          sta object_pal,y
+          sta object_pal,x
           lda #CARDINAL_HP
-          sta object_hp,y
-          lda #<.plot_castle_160a
-          sta object_spr_ptr_lo,y
-          lda #>.plot_castle_160a
-          sta object_spr_ptr_hi,y
-          lda #F_PRIEST_DOWN_1
-          sta object_frame,y
+          sta object_hp,x
+          jsr obj_priest_shared
           ldx index     ; restore index for object handler
           rts
 end
@@ -1041,19 +1036,15 @@ ss_kill
 end
 
 obj_priest_stats
+obj_cardinal_stats
         asm
           ldx obj_index
           lda #PRIEST_PAL
           sta object_pal,x
           lda #PRIEST_HP
           sta object_hp,x
-          jmp obj_priest_shared
-.obj_cardinal_stats
-          ldx obj_index
-          lda #CARDINAL_PAL
-          sta object_pal,x
-          lda #CARDINAL_HP
-          sta object_hp,x
+          jsr obj_priest_shared
+          jmp .obj_next_stats
 
 obj_priest_shared
           lda #<.plot_castle_160a
@@ -1082,8 +1073,8 @@ obj_priest_shared
           sta object_speed_lo,x
           lda #PRIEST_FLAGS
           sta object_flags,x
+          rts
 end
-        goto obj_next_stats
 
         const plot_castle_160a_lo = #<.plot_castle_160a
         const plot_castle_160a_hi = #>.plot_castle_160a

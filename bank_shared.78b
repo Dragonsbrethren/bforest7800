@@ -244,7 +244,7 @@ plot_prism
         goto plot_next
 
 plot_food
-        plotsprite chimkin 1 Xposition Yposition 0
+        plotsprite chimkin sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_items
@@ -689,13 +689,11 @@ end
 ; BOSS FLAME
 boss_flame
         asm
-          ; tileset's boss handler needs to set flag 7 on these to make them appear
-          lda object_flags,x
-;         and #%10000000
-;         bne boss_flame_anim
-;         rts
-
 boss_flame_anim
+          lda #23
+          sta object_frame,x
+          lda #2
+          sta object_pal,x
           lda animation_frame
           bne .torch_tile_block
           inc object_frame,x
