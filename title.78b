@@ -100,6 +100,9 @@ title_new_game
         m_charm_bits_2 = 0
         m_relic_bits_1 = %00000000
         m_relic_bits_2 = %00000000
+        m_key_bits = 0
+        m_map_bits = 0
+        save_room_index = 0
 
 init_field
         ; code shared by new game and continue options
