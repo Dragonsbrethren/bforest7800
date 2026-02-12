@@ -221,7 +221,11 @@ tp_door   cmp #TYPE_DOOR
 tp_doorl  cmp #TYPE_DOOR_LOCK
           bne tp_food
           jmp .plot_door
-tp_food   jmp .plot_food
+tp_food   lda #1
+          sta object_pal,x
+          lda #0
+          sta object_frame,x
+          jmp .plot_food
 
 plot_done
 end
