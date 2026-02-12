@@ -30,7 +30,8 @@
         const TYPE_MPUDDING =  28
         const TYPE_CGHOST   =  29
         const TYPE_CARDINAL =  30
-        const TYPE_CASTLE_BOSS =  31
+        const TYPE_CASTLE_BOSS  = 31
+        const TYPE_CASTLE_BLOCK = 32
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD

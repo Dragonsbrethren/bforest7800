@@ -690,9 +690,9 @@ end
 boss_flame
         asm
 boss_flame_anim
-          lda #23
+          lda #16
           sta object_frame,x
-          lda #2
+          lda #0
           sta object_pal,x
           lda animation_frame
           bne .torch_tile_block

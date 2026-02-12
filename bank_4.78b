@@ -43,6 +43,7 @@
         incgraphic gfx/sprites/c_slime1.png 160A 0 3 1 2
         incgraphic gfx/sprites/c_minislime0.png 160A 0 3 1 2
         incgraphic gfx/sprites/c_minislime1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/castle_blocker.png 160A 0 3 2
 
         incmapfile tiled/castle_room_6.tmx
         incmapfile tiled/castle_room_7.tmx
@@ -576,9 +577,7 @@ castle_boss
           lda m_key_bits
           and #%00000001
           beq castle_boss_flags
-          lda #0
-          sta object_type,x
-          rts
+          jmp despawn_flames
 castle_boss_flags
           lda object_flags,x
           and #%10000000
@@ -593,22 +592,17 @@ castle_flame_on
           sta object_flags,x
           lda #128
           sta object_timer,x
-          ldy index
-          inx
-          inx
-          iny
           lda #TYPE_BOSS_FLAME
-          sta object_type,x
-          sta object_type,y
+          sta object_type+2
+          sta object_type+3
           lda #24
-          sta object_Xpos,x
-          sta object_Xpos,y
+          sta object_Xpos+2
+          sta object_Xpos+3
           lda #$40
-          sta object_Ypos,x
+          sta object_Ypos+2
           lda #$50
-          sta object_Ypos,y
-          inx
-          stx boss_index
+          sta object_Ypos+3
+          ldx #4
 
 spawn_castle_boss
           lda #76
@@ -628,25 +622,21 @@ end
 
 castle_boss_handler
         asm
-          ldy boss_index
-          lda object_type,y
+          lda object_type+4
           beq spawn_key
           rts
 
 spawn_key
           lda #TYPE_KEY1
-          sta object_type,y
+          sta object_type+4
+          rts
 
 despawn_flames
-          ; TODO: check if key has been picked up
           lda #0
-          dey
-          sta object_type,y
-          dey
-          sta object_type,y
+          sta object_type+2
+          sta object_type+3
           ; remove the boss handler
-          dey
-          sta object_type,y
+          sta object_type+1
 end
         ; hardcode the unblock instead of trying to reuse torch code
         goto castle_flame_unblock
