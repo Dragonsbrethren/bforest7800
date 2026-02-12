@@ -755,7 +755,17 @@ spawn_object
           jmp .remove_harpy_shadow
 harpy_shadow_removed
 spawn_zero_nibble
-        ; zero Ypos lower nibble to avoid gfx glitch
+          lda object_Ypos,x
+          ; if lower nibble >=8, push object to next zone
+          and #$0F
+          cmp #8
+          bcc spawn_Y_ok
+          lda object_Ypos,x
+          clc
+          adc #16
+          sta object_Ypos,x
+spawn_Y_ok
+          ; zero Ypos lower nibble to avoid gfx glitch
           lda object_Ypos,x
           and #$F0
           sta object_Ypos,x
