@@ -573,6 +573,13 @@ end
 
 castle_boss
         asm
+          lda m_key_bits
+          and #%00000001
+          beq castle_boss_flags
+          lda #0
+          sta object_type,x
+          rts
+castle_boss_flags
           lda object_flags,x
           and #%10000000
           bne .castle_boss_handler
@@ -1055,17 +1062,27 @@ obj_priest_shared
           sta object_spr_ptr_hi,x
           lda #F_PRIEST_DOWN_1
           sta object_frame,x
+          lda #PRIEST_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #PRIEST_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #PRIEST_DAMAGE
+          sta object_damage,x
+          lda #PRIEST_DEF
+          sta object_def,x
+          lda #PRIEST_MDEF
+          sta object_mdef,x
+          lda #PRIEST_FRICTION_HI
+          sta object_friction_hi,x
+          lda #PRIEST_FRICTION_LO
+          sta object_friction_lo,x
+          lda #PRIEST_SPEED_HI
+          sta object_speed_hi,x
+          lda #PRIEST_SPEED_LO
+          sta object_speed_lo,x
+          lda #PRIEST_FLAGS
+          sta object_flags,x
 end
-        object_vel_cap_hi[obj_index] = PRIEST_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = PRIEST_VEL_CAP_LO
-        object_damage[obj_index] = PRIEST_DAMAGE
-        object_def[obj_index] = PRIEST_DEF
-        object_mdef[obj_index] = PRIEST_MDEF
-        object_friction_hi[obj_index] = PRIEST_FRICTION_HI
-        object_friction_lo[obj_index] = PRIEST_FRICTION_LO
-        object_speed_hi[obj_index] = PRIEST_SPEED_HI
-        object_speed_lo[obj_index] = PRIEST_SPEED_LO
-        object_flags[obj_index] = PRIEST_FLAGS
         goto obj_next_stats
 
         const plot_castle_160a_lo = #<.plot_castle_160a
