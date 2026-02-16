@@ -1070,20 +1070,34 @@ end
         const plot_castle_160a_hi = #>.plot_castle_160a
 
 obj_skel_stats
-        object_hp[obj_index] = SKEL_HP
-        object_vel_cap_hi[obj_index] = SKEL_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = SKEL_VEL_CAP_LO
-        object_damage[obj_index] = SKEL_DAMAGE
-        object_def[obj_index] = SKEL_DEF
-        object_mdef[obj_index] = SKEL_MDEF
-        object_friction_hi[obj_index] = SKEL_FRICTION_HI
-        object_friction_lo[obj_index] = SKEL_FRICTION_LO
-        object_speed_hi[obj_index] = SKEL_SPEED_HI
-        object_speed_lo[obj_index] = SKEL_SPEED_LO
-        object_flags[obj_index] = SKEL_FLAGS
-        object_spr_ptr_lo[obj_index] = plot_castle_160a_lo
-        object_spr_ptr_hi[obj_index] = plot_castle_160a_hi
         asm
+          ldx obj_index
+          lda #SKEL_HP
+          sta object_hp,x
+          lda #SKEL_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #SKEL_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #SKEL_DAMAGE
+          sta object_damage,x
+          lda #SKEL_DEF
+          sta object_def,x
+          lda #SKEL_MDEF
+          sta object_mdef,x
+          lda #SKEL_FRICTION_HI
+          sta object_friction_hi,x
+          lda #SKEL_FRICTION_LO
+          sta object_friction_lo,x
+          lda #SKEL_SPEED_HI
+          sta object_speed_hi,x
+          lda #SKEL_SPEED_LO
+          sta object_speed_lo,x
+          lda #SKEL_FLAGS
+          sta object_flags,x
+          lda #plot_castle_160a_lo
+          sta object_spr_ptr_lo,x
+          lda #plot_castle_160a_hi
+          sta object_spr_ptr_hi,x
           lda #SKEL_PAL
           sta object_pal,x
           lda #F_SKEL_DOWN_1
