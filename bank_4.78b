@@ -569,7 +569,46 @@ torch_tile_unblock_castle
 
 cardinal_ai
         asm
+          lda object_flags,x
+          and #%10000000
+          beq cardinal_teleport
+
+cardinal_walk
           jmp .priest_ai
+
+cardinal_teleport
+          dec object_timer,x
+          bmi cardinal_tele_timer
+          bne cardinal_return
+          lda player_Xpos
+          cmp #80
+          bcs cardinal_tele_right
+
+cardinal_tele_left
+          lda #52
+          sta object_Xpos,x
+          bne cardinal_tele_Y
+
+cardinal_tele_right
+          lda #100
+          sta object_Xpos,x
+
+cardinal_tele_Y
+          lda #$28
+          sta object_Ypos,x
+
+cardinal_tele_flag
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
+
+cardinal_return
+          rts
+
+cardinal_tele_timer
+          lda #128
+          sta object_timer,x
+          rts
 end
 
 castle_boss
