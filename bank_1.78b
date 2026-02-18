@@ -138,19 +138,6 @@ lightning_flash
 lightning_done
 end
 
-main_pal_animation
-        if !pal_animation then main_pal_done
-        if !animation_frame then main_pal_done
-        ; cycle the 8th palette every animation frame
-        temp7 = sP7C3
-        sP7C3  = sP7C2
-        sP7C2  = sP7C1
-        sP7C1  = temp7
-        P7C1 = sP7C1
-        P7C2 = sP7C2
-        P7C3 = sP7C3
-main_pal_done
-
 main_state_handler
         if game_state = STATE_TITLE then goto title_handler
         if game_state = STATE_FIELD then goto field_handler
@@ -869,6 +856,18 @@ swap_action_button
 topscreenroutine
         ; without this extra wsync, there's a line of wrong color drawn at the top of the screen
         WSYNC=1
+main_pal_animation
+        if !pal_animation then main_pal_done
+        if !animation_frame then main_pal_done
+        ; cycle the 8th palette every animation frame
+        temp7 = sP7C3
+        sP7C3  = sP7C2
+        sP7C2  = sP7C1
+        sP7C1  = temp7
+        P7C1 = sP7C1
+        P7C2 = sP7C2
+        P7C3 = sP7C3
+main_pal_done
         if game_state = STATE_MENU then set_menu_top_pal
         WSYNC=1
         setfade fade

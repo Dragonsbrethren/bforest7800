@@ -600,6 +600,7 @@ cardinal_tele_Y
 cardinal_tele_flag
           lda object_flags,x
           ora #%10000000
+          and #%10111111
           sta object_flags,x
 
 cardinal_return
@@ -906,8 +907,20 @@ priest_cast_2
           jmp .skel_sword
 
 priest_cast_3
+          cmp #TYPE_CARDINAL
+          beq cardinal_cast
+priest_cast_4 
           dec object_timer,x
           beq priest_cast_sound
+          rts
+
+cardinal_cast
+          jsr randomize
+          cmp #230
+          bcc priest_cast_4
+          lda object_flags,x
+          and #%01111111
+          sta object_flags,x
           rts
 
 priest_cast_sound
