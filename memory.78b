@@ -204,6 +204,9 @@
         autodim byte frame_index
         autodim byte plot_index
         autodim byte item_spawned
+        autodim byte lightning_segs
+        autodim byte lightningX_offset
+        autodim byte lightningY_offset
 
         ; MENUS
         autodim byte action_debounce

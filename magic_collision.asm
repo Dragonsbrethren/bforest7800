@@ -5,7 +5,7 @@
 ; tests if the magic object collided
 ; Uses Y for indexing to preserve X
 ;--------------------------------------
-        ldy #15
+        ldy #MAX_MAP_OBJECTS
         ldx index       ; TODO: remove when object handler is all asm
 .magic_cc_loop
         lda object_type,y
@@ -33,6 +33,17 @@
         rts
 
 .magic_damage
+        lda object_invuln,y
+        beq .magic_damage_object
+        tya
+        tax
+        dec object_invuln,x
+        txa
+        tay
+        ldx index
+        rts
+
+.magic_damage_object
         ; back up index before running fae bestiary code
         txa
         pha
@@ -83,6 +94,8 @@
         lda #TYPE_SPAWNER
         sta object_type,y
 .magic_damage_done
+        lda #INVULN_FRAMES
+        sta object_invuln,y
         rts
 
 .magic_killed_torch

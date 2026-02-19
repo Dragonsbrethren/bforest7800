@@ -33,6 +33,8 @@
         incgraphic gfx/sprites/flame1.png 160A
         incgraphic gfx/sprites/lightning0.png 160A 0 2 3
         incgraphic gfx/sprites/lightning1.png 160A 0 2 3
+        incgraphic gfx/sprites/lightning2.png 160A 0 2 3
+        incgraphic gfx/sprites/lightning3.png 160A 0 2 3
         incgraphic gfx/sprites/key0.png 160A 0 3 1
         incgraphic gfx/sprites/door0.png 160A 0 1 2 3
         incgraphic gfx/sprites/door1.png 160A 0 1 2 3
@@ -1263,3 +1265,12 @@ cd_temp3Y lda #1
           sta temp3             ; temp3 1 = Y greater
           rts
 end
+
+; Plots a lightning bolt. Bypasses the usual method of tying sprites to a specific object
+plot_lightning
+        for plot_index = 0 to lightning_segs
+                plotsprite lightning0 sprite_pal Xposition Yposition frame
+                Xposition = Xposition - lightningX_offset
+                Yposition = Yposition - lightningY_offset
+                next
+        goto plot_next
