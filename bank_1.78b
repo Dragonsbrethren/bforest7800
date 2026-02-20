@@ -1277,3 +1277,5 @@ plot_lightning
                 Yposition = Yposition + 16            
                 next
         goto plot_next
+
+        incbasic item_drops.78b
