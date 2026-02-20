@@ -1269,11 +1269,11 @@ end
 ; Plots a lightning bolt. Bypasses the usual method of tying sprites to a specific object
 plot_lightning
         lightning_segs = 5
-        lightningY_offset = 16
+;       lightningY_offset = 16
+        Yposition = 0
         lightning_timer = LIGHTNING_FRAMES
         for plot_index = 0 to lightning_segs
                 plotsprite lightning0 sprite_pal Xposition Yposition frame
-                Xposition = Xposition - lightningX_offset
-                Yposition = Yposition - lightningY_offset
+                Yposition = Yposition + 16            
                 next
         goto plot_next
