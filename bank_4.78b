@@ -558,8 +558,14 @@ torch_tile_block_castle
         pokechar current_map peekX peekY 20 14 $70
         if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
-        peekX = peekX + 1
-        pokechar current_map peekX peekY 20 14 $70
+        peekX++
+;       pokechar current_map peekX peekY 20 14 $
+        asm
+        ; temp1 (used by pokechar) should be preserved here
+          ldy peekX
+          lda #$70
+          sta (temp1),y
+end
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_castle
@@ -609,6 +615,36 @@ cardinal_return
 cardinal_tele_timer
           lda #128
           sta object_timer,x
+          rts
+end
+
+darkbolt_ai
+        asm
+          dec object_timer,x
+          bmi darkbolt_init     ; use underflow to initiate timer
+          beq darkbolt_done
+          rts
+
+darkbolt_done
+          lda #0
+          sta object_type,x
+          rts
+
+darkbolt_init
+          lda #DARKBOLT_DURATION
+          sta object_timer,x
+          sta lightning_timer
+          lda player_Ypos
+          and #$F0
+          lsr
+          lsr
+          lsr
+          lsr
+          sta lightning_segs
+          lda #<.plot_lightning
+          sta object_spr_ptr_lo,x
+          lda #>.plot_lightning
+          sta object_spr_ptr_hi,x
           rts
 end
 
@@ -934,7 +970,7 @@ load_darkspark
         ldx index
         lda object_parent,x
         tay
-        lda #TYPE_DARKSPARK
+        lda #TYPE_DARKBOLT
         sta object_type,y
         sta object_hp,y
         lda #DARKSPARK_VEL_CAP_HI
