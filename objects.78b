@@ -572,7 +572,8 @@
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
 
-        const DARKBOLT_DURATION = 8
+        const DARKBOLT_DURATION = 9
+        const DARKBOLT_DAMAGE = $10
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block

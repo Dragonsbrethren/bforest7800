@@ -315,7 +315,6 @@ plot_rosary
         goto plot_next
 
 plot_fireball
-        goto plot_lightning
         plotsprite fireball0 2 Xposition Yposition frame
         goto plot_next
 

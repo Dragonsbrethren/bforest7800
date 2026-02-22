@@ -206,7 +206,7 @@ castle_save_2
 castle_rooms
         characterset castle_stone
         if music_playing then init_castle
-;        playrmt blackforest_indoorarea01
+        playrmt blackforest_indoorarea01
         music_playing = 1
 init_castle
         asm
@@ -284,8 +284,11 @@ plot_castle_room_1
         menu_map_room[menu_map_index_2] = 3
         memcpy current_map castle_room_1 280
         plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
-        zone1_objects  = 2
-        zone2_objects  = 2
+        asm
+          lda #2
+          sta zone1_objects
+          sta zone2_objects
+end
         zone14_objects = 1
         locked_zone = 0
 plot_castle_bank5_return
@@ -586,21 +589,9 @@ cardinal_teleport
           dec object_timer,x
           bmi cardinal_tele_timer
           bne cardinal_return
-          lda player_Xpos
-          cmp #80
-          bcs cardinal_tele_right
-
-cardinal_tele_left
-          lda #52
+          lda #78
           sta object_Xpos,x
-          bne cardinal_tele_Y
-
-cardinal_tele_right
-          lda #100
-          sta object_Xpos,x
-
-cardinal_tele_Y
-          lda #$28
+          lda #$20
           sta object_Ypos,x
 
 cardinal_tele_flag
@@ -608,6 +599,7 @@ cardinal_tele_flag
           ora #%10000000
           and #%10111111
           sta object_flags,x
+          jmp .cast_darkbolt
 
 cardinal_return
           rts
@@ -623,6 +615,13 @@ darkbolt_ai
           dec object_timer,x
           bmi darkbolt_init     ; use underflow to initiate timer
           beq darkbolt_done
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          bne darkbolt_return
+          inc object_frame,x
+
+darkbolt_return
           rts
 
 darkbolt_done
@@ -641,10 +640,6 @@ darkbolt_init
           lsr
           lsr
           sta lightning_segs
-          lda #<.plot_lightning
-          sta object_spr_ptr_lo,x
-          lda #>.plot_lightning
-          sta object_spr_ptr_hi,x
           rts
 end
 
@@ -953,6 +948,7 @@ priest_cast_4
 cardinal_cast
           jsr randomize
           cmp #230
+          ldx index
           bcc priest_cast_4
           lda object_flags,x
           and #%01111111
@@ -970,7 +966,7 @@ load_darkspark
         ldx index
         lda object_parent,x
         tay
-        lda #TYPE_DARKBOLT
+        lda #TYPE_DARKSPARK
         sta object_type,y
         sta object_hp,y
         lda #DARKSPARK_VEL_CAP_HI
@@ -1378,7 +1374,7 @@ plot_castle_160a
         goto plot_next
 
 plot_skelsword
-        PLOTSPRITE sword0 0 Xposition Yposition frame
+        plotsprite sword0 0 Xposition Yposition frame
         goto plot_next
 
 plot_hud_castle
@@ -1387,3 +1383,21 @@ plot_hud_castle
 ;        plotvalue castle_hud 0 player_Ypos 2 48 12
 ;        plotvalue castle_hud 0 move_tile_1 4 32 13
         return thisbank
+
+cast_darkbolt
+        asm
+          jsr .find_new_object
+          lda #TYPE_DARKBOLT
+          sta object_type,y
+          lda player_Xpos
+          sta object_Xpos,y
+          lda #0
+          sta object_Ypos,y
+          lda #DARKBOLT_DAMAGE
+          sta object_damage,y
+          lda #<.plot_lightning
+          sta object_spr_ptr_lo,y
+          lda #>.plot_lightning
+          sta object_spr_ptr_hi,y
+          rts
+end
