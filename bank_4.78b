@@ -635,6 +635,7 @@ darkbolt_init
           sta lightning_timer
           lda player_Ypos
           and #$F0
+          sta object_Ypos,x
           lsr
           lsr
           lsr
