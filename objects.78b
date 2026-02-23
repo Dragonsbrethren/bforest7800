@@ -40,7 +40,8 @@
         const TYPE_SEED     = 142
         const TYPE_DARKBOLT = 143
         const TYPE_FIREBALL = 150
-        const TYPE_F_FAIRY  = 151
+        const TYPE_LIGHTNING = 152
+        const TYPE_F_FAIRY  = 153
         const TYPE_STATIC   = TYPE_BOSS_FLAME
         const TYPE_BOSS_FLAME = 158
         const TYPE_HARPY_SH = 159       ; Harpy's shadow
@@ -571,6 +572,10 @@
         const FIREBALL_DAMAGE = 2
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
+
+        const LIGHTNING_DAMAGE = $10
+        const LIGHTNING_MP_COST = 20
+        const LIGHTNING_DURATION = 9
 
         const DARKBOLT_DURATION = 9
         const DARKBOLT_DAMAGE = $10

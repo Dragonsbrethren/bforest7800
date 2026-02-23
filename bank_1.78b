@@ -605,6 +605,38 @@ end
 magic_collision
         inline magic_collision.asm
 
+cast_lightning
+        mp_change = #LIGHTNING_MP_COST
+        gosub test_spell_cost
+        asm
+          bne load_lightning_index
+          rts
+
+load_lightning_index
+          ldy #14
+          ldx #0
+load_lightning_data
+          lda #TYPE_LIGHTNING
+          sta object_type,y
+          lda #LIGHTNING_DAMAGE
+          clc
+          adc player_wisdom
+          sta object_damage,y
+          ; TODO: code to find target object
+          ldx #1
+          lda object_Xpos,x
+          sta object_Xpos,y
+          lda #0
+          sta object_Ypos,y
+          lda #1
+          sta object_parent,y
+          lda #<.plot_lightning
+          sta object_spr_ptr_lo,y
+          lda #>.plot_lightning
+          sta object_spr_ptr_hi,y
+          rts
+end
+
 cast_fireball
         m_spell_bits_1{0} = 1
         asm

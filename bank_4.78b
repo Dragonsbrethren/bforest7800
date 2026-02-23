@@ -610,40 +610,6 @@ cardinal_tele_timer
           rts
 end
 
-darkbolt_ai
-        asm
-          dec object_timer,x
-          bmi darkbolt_init     ; use underflow to initiate timer
-          beq darkbolt_done
-          lda #0
-          sta object_frame,x
-          lda animation_frame
-          bne darkbolt_return
-          inc object_frame,x
-
-darkbolt_return
-          rts
-
-darkbolt_done
-          lda #0
-          sta object_type,x
-          rts
-
-darkbolt_init
-          lda #DARKBOLT_DURATION
-          sta object_timer,x
-          sta lightning_timer
-          lda player_Ypos
-          and #$F0
-          sta object_Ypos,x
-          lsr
-          lsr
-          lsr
-          lsr
-          sta lightning_segs
-          rts
-end
-
 castle_boss
         asm
           lda m_key_bits
@@ -1394,6 +1360,7 @@ cast_darkbolt
           sta object_Xpos,y
           lda #0
           sta object_Ypos,y
+          sta object_parent,y   ; lightning uses "parent" slot for target
           lda #DARKBOLT_DAMAGE
           sta object_damage,y
           lda #<.plot_lightning
