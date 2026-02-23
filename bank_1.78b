@@ -1300,7 +1300,7 @@ end
 plot_lightning
         for plot_index = 0 to lightning_segs
                 plotsprite lightning0 sprite_pal Xposition Yposition frame
-                Yposition = Yposition + 16            
+                Yposition = Yposition - 16            
                 next
         goto plot_next
 
