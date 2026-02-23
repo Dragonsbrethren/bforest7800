@@ -622,14 +622,9 @@ load_lightning_data
           clc
           adc player_wisdom
           sta object_damage,y
-          ; TODO: code to find target object
-          ldx #1
-          lda object_Xpos,x
-          sta object_Xpos,y
+          jsr .find_lightning_target
           lda #0
           sta object_Ypos,y
-          lda #1
-          sta object_parent,y
           lda #<.plot_lightning
           sta object_spr_ptr_lo,y
           lda #>.plot_lightning
@@ -1305,3 +1300,77 @@ plot_lightning
         goto plot_next
 
         incbasic item_drops.78b
+
+find_lightning_target
+        asm
+          ldx #1
+          lda object_type,x
+          beq lightning_target_inc      ; exclude zero and projectiles
+          bmi lightning_target_inc
+          lda player_facing
+          cmp #DIR_UP
+          beq lightning_target_up
+          cmp #DIR_DOWN
+          beq lightning_target_down
+          cmp #DIR_LEFT
+;         beq lightning_target_left
+
+lightning_target_right
+          lda player_Xpos
+          clc
+          adc #24
+          sta temp1
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcs lightning_found_target
+          bcc lightning_target_inc
+
+lightning_target_left
+          lda player_Xpos
+          sec
+          sbc #24
+          sta temp1
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc lightning_found_target
+          bcs lightning_target_inc
+
+lightning_target_up
+          lda player_Ypos
+          sec
+          sbc #32
+          sta temp2
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcc lightning_found_target_vert
+          bcs lightning_target_inc
+
+lightning_target_down
+          lda player_Ypos
+          clc
+          adc #32
+          sta temp2
+          lda object_Ypos,x
+          cmp player_Ypos
+          bcs lightning_found_target_vert
+;         bcc lightning_target_inc
+
+lightning_target_inc
+          inx
+          cpx #MAX_MAP_OBJECTS
+          bne lightning_target_right
+          lda temp1             ; no target found
+          ldx #0
+
+lightning_found_target
+          sta object_Xpos,y     ; store lightning target's X pos
+          txa
+          sta object_parent,y   ; store the parent for Y pos calculation
+          ldx #0                ; restore X
+          rts
+
+lightning_found_target_vert
+          ; vertical targets need to get X pos into A
+          lda object_Xpos,y
+          jmp lightning_found_target
+end

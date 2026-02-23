@@ -574,7 +574,7 @@
         const FIREBALL_MAX_FRAMES = 4
 
         const LIGHTNING_DAMAGE = $10
-        const LIGHTNING_MP_COST = 20
+        const LIGHTNING_MP_COST = 0 ; 20
         const LIGHTNING_DURATION = 9
 
         const DARKBOLT_DURATION = 9

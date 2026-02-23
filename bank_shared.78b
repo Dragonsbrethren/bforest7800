@@ -1052,7 +1052,7 @@ parse_fireball_up
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
 ;        if input_buffer[chant_index] <> DIR_UP then chant_test_dirs
         player_facing = DIR_UP : player_frame = FRAME_UP
-        gosub cast_fireball
+        gosub cast_lightning
         goto chant_done
 
 parse_fireball_down
@@ -1060,7 +1060,7 @@ parse_fireball_down
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
 ;        if input_buffer[chant_index] <> DIR_DOWN then chant_test_dirs
         player_frame = FRAME_DOWN
-        gosub cast_fireball
+        gosub cast_lightning
         goto chant_done
 
 parse_fireball_left
@@ -1068,7 +1068,7 @@ parse_fireball_left
         if chant_index > INPUT_BUFFER_MAX then chant_index = INPUT_BUFFER_MAX
 ;        if input_buffer[chant_index] <> DIR_LEFT then chant_test_dirs
         player_facing = DIR_LEFT : player_frame = FRAME_LEFT
-        gosub cast_fireball
+        gosub cast_lightning
         goto chant_done
 
 parse_fireball_right
