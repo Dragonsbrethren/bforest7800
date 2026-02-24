@@ -1308,6 +1308,8 @@ find_lighting_target_loop
           lda object_type,x
           beq lightning_target_inc      ; exclude zero and projectiles
           bmi lightning_target_inc
+          cmp #TYPE_CASTLE_BOSS
+          beq lightning_target_inc      ; don't kill the boss controller...
           lda player_facing
           cmp #DIR_UP
           beq lightning_target_up
