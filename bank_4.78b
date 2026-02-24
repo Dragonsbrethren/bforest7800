@@ -205,8 +205,8 @@ castle_save_2
 
 castle_rooms
         characterset castle_stone
-;       if music_playing then init_castle
-        playrmt blackforest_indoorarea01
+        if music_playing then init_castle
+;       playrmt blackforest_indoorarea01
         music_playing = 1
 init_castle
         asm
