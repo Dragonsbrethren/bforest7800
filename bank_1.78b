@@ -1304,6 +1304,7 @@ plot_lightning
 find_lightning_target
         asm
           ldx #1
+find_lighting_target_loop
           lda object_type,x
           beq lightning_target_inc      ; exclude zero and projectiles
           bmi lightning_target_inc
@@ -1313,7 +1314,7 @@ find_lightning_target
           cmp #DIR_DOWN
           beq lightning_target_down
           cmp #DIR_LEFT
-;         beq lightning_target_left
+          beq lightning_target_left
 
 lightning_target_right
           lda player_Xpos
@@ -1336,6 +1337,8 @@ lightning_target_left
           bcs lightning_target_inc
 
 lightning_target_up
+          lda player_Xpos
+          sta temp1
           lda player_Ypos
           sec
           sbc #32
@@ -1346,6 +1349,8 @@ lightning_target_up
           bcs lightning_target_inc
 
 lightning_target_down
+          lda player_Xpos
+          sta temp1
           lda player_Ypos
           clc
           adc #32
@@ -1357,8 +1362,8 @@ lightning_target_down
 
 lightning_target_inc
           inx
-          cpx #MAX_MAP_OBJECTS
-          bne lightning_target_right
+          cpx #MAX_MAP_OBJECTS+1
+          bne find_lighting_target_loop
           lda temp1             ; no target found
           ldx #0
 
@@ -1371,6 +1376,6 @@ lightning_found_target
 
 lightning_found_target_vert
           ; vertical targets need to get X pos into A
-          lda object_Xpos,y
+          lda object_Xpos,x
           jmp lightning_found_target
 end
