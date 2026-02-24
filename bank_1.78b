@@ -1381,3 +1381,10 @@ lightning_found_target_vert
           lda object_Xpos,x
           jmp lightning_found_target
 end
+
+thunder_sound
+        playsfx sfx_bigboom
+        asm
+          ldx index
+          rts
+end

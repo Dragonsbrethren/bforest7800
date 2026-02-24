@@ -2180,5 +2180,5 @@ lightning_init
           lsr
           lsr
           sta lightning_segs
-          rts
 end
+        goto thunder_sound
