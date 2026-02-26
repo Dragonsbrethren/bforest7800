@@ -264,6 +264,16 @@ calc_inv_array
         if m_relic_bits_2{2} then m_relic_inv[8] = 8
         if m_relic_bits_2{3} then m_relic_inv[9] = 9
         if m_relic_bits_2{4} then m_relic_inv[10] = 10
+        if m_spell_bits_1{0} then m_spell_inv[1] = 1
+        if m_spell_bits_1{1} then m_spell_inv[2] = 2
+        if m_spell_bits_1{2} then m_spell_inv[3] = 3
+        if m_spell_bits_1{3} then m_spell_inv[4] = 4
+        if m_spell_bits_1{4} then m_spell_inv[5] = 5
+        if m_spell_bits_2{0} then m_spell_inv[6] = 6
+        if m_spell_bits_2{1} then m_spell_inv[7] = 7
+        if m_spell_bits_2{2} then m_spell_inv[8] = 8
+        if m_spell_bits_2{3} then m_spell_inv[9] = 9
+        if m_spell_bits_2{4} then m_spell_inv[10] = 10
 
         ; inventory-by-inventory, remove zeros
         pointer = m_item_inv_lo
@@ -283,6 +293,9 @@ calc_inv_array
         gosub remove_inv_zeros
         pointer = m_relic_inv_lo
         pointer_hi = m_relic_inv_hi
+        gosub remove_inv_zeros
+        pointer = m_spell_inv_lo
+        pointer_hi = m_spell_inv_hi
         ; riz_return pulls double duty as the return for calc_inv_array
 
 remove_inv_zeros

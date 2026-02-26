@@ -365,6 +365,13 @@ plot_magic_menu
 
 magic_menu_updater
         restorescreen
+        m_spriteX = 16
+        m_spriteY = 48
+        m_textX = 24
+        m_textY = 3
+        m_palette = 4
+        pointer = m_spell_inv_lo
+        pointer_hi = m_spell_inv_hi
 
 magic_menu_controls
         ; Either joystick button can go back to the main menu
