@@ -322,14 +322,7 @@
         autodim byte exit_room_index
         autodim byte demo_end
         autodim byte shadow_offset
-
-        const INPUT_BUFFER_MAX = 7      ; array starts at 0
-        autodim byte input_buffer 8
-        autodim byte input_buffer_index
-        autodim byte chant_index
         autodim byte chant_input
-        ; possible to start a chant on index 0 so need another variable        
-        autodim byte chant_new_input
 
         autodim byte m_map_bits
         autodim byte m_key_bits
