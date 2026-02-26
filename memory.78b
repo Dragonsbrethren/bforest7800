@@ -85,6 +85,7 @@
         autodim byte player_shield
         autodim byte player_armor
         autodim byte player_charm
+        autodim byte player_spell
         autodim byte player_status
         autodim byte status_name
         autodim byte sword_pal
@@ -347,6 +348,7 @@
         autodim byte m_armor_inv  11
         autodim byte m_charm_inv  11
         autodim byte m_relic_inv  11
+        autodim byte m_spell_inv  11
         autodim byte m_relic_toggle_1
         autodim byte m_relic_toggle_2
         autodim byte m_inv_item_0
