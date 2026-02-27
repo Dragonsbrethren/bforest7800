@@ -223,7 +223,7 @@ gameover_updater
         restorescreen
         if demo_end then menu_selection = 1 : goto gameover_controls
         gosub plot_password
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        gosub plot_menu_cursor
 
 gameover_controls
         if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
@@ -279,7 +279,7 @@ plot_password_menu
 password_menu_updater
         restorescreen
         gosub plot_password
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        gosub plot_menu_cursor
         ; $E0 is a checksum error code set by the decode subroutine
         if !pw_error then goto password_menu_controls
         plotchars 'Password Error' 0 52 2 singlewide
@@ -353,10 +353,10 @@ plot_magic_menu
         menu_selection = 0
         m_inv_scroll = 0
         menu_columns = 2
-        menu_max = 11
+        menu_max = 9
         gosub plot_menu_border
         plotchars 'Spell Tomes' 0 60 1 singlewide
-        plotchars 'MP Cost' 0 24 11 singlewide
+        plotchars 'MP Needed' 0 24 11 singlewide
         plotchars 'Exit' 0 128 12 singlewide
         gosub calc_inv_array
 
@@ -365,6 +365,35 @@ plot_magic_menu
 
 magic_menu_updater
         restorescreen
+
+magic_palettes
+        ; reuses palette variables from equip menu
+        temp1 = m_item_inv[0] + m_inv_scroll
+        m_inv0_pal1 = pal_items1[temp1]
+        m_inv0_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[1] + m_inv_scroll
+        m_sword_pal1 = pal_items1[temp1]
+        m_sword_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[2] + m_inv_scroll
+        m_inv1_pal1 = pal_items1[temp1]
+        m_inv1_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[3] + m_inv_scroll
+        m_shield_pal1 = pal_items1[temp1]
+        m_shield_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[4] + m_inv_scroll
+        m_inv2_pal1 = pal_items1[temp1]
+        m_inv2_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[5] + m_inv_scroll
+        m_armor_pal1 = pal_items1[temp1]
+        m_armor_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[6] + m_inv_scroll
+        m_inv3_pal1 = pal_items1[temp1]
+        m_inv3_pal2 = pal_items2[temp1]
+        temp1 = m_item_inv[7] + m_inv_scroll
+        m_charm_pal1 = pal_items1[temp1]
+        m_charm_pal2 = pal_items2[temp1]
+
+        ; plot the inventory
         m_spriteX = 16
         m_spriteY = 48
         m_textX = 24
@@ -372,17 +401,92 @@ magic_menu_updater
         m_palette = 4
         pointer = m_spell_inv_lo
         pointer_hi = m_spell_inv_hi
+        menu_items = 7
+        ; reuse obj_index here because index is used by menu coloring code and breaks item list
+        for obj_index = m_inv_scroll to menu_items
+        item_name = pointer[[obj_index]]
+        if !item_name then magic_left
+plot_magic_names
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap magic_names m_palette m_textX m_textY 11 1 0 item_name 11
+
+magic_left
+        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto magic_right
+        m_palette = 4
+        m_spriteX = 16 : m_textX = 24
+        m_spriteY = m_spriteY + 32
+        m_textY = m_textY + 2
+magic_right
+        next
+        
+        ; bypass description if on Exit
+        if menu_selection >= 9 then magic_menu_cursor
+        temp1 = pointer[[menu_selection]]
+        if menu = MENU_RELICS then relic_descriptions
+magic_descriptions
+        ; magic all has unique descriptions
+        m_desc = temp1
+        plotmap magic_desc 0 28 12 19 1 0 m_desc 19
+        
+magic_menu_cursor
+        gosub update_magic_cursor
 
 magic_menu_controls
-        ; Either joystick button can go back to the main menu
-        ; Maybe have an Exit "button" always highlighted to signify this?
+
         if !menu_debounce && joy0fire0 && action_button = 1 then open_main_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
         if !action_debounce && joy0fire0 then open_main_menu
         if !action_debounce && joy0fire1 then open_main_menu
+        gosub menu_dirs
         goto main
+
+update_magic_cursor
+        temp4 = 48
+magic_cursor_Y
+        if menu_selection = 0 || menu_selection = 1 then menu_cursor_Y = temp4 : goto magic_cursor_X
+        if menu_selection = 2 || menu_selection = 3 then menu_cursor_Y = temp4 + 32 : goto magic_cursor_X
+        if menu_selection = 4 || menu_selection = 5 then menu_cursor_Y = temp4 + 64 : goto magic_cursor_X
+        if menu_selection = 6 || menu_selection = 7 then menu_cursor_Y = temp4 + 96 : goto magic_cursor_X
+magic_cursor_exit_y
+        menu_cursor_Y = MENU_EQUIP_EXIT_Y
+
+magic_cursor_X
+        ; kludge - makes up from the exit option go into right column instead of left
+        if menu_selection = 8 then menu_selection = 9
+        if menu_selection = 9 then menu_cursor_X = MENU_EQUIP_EXIT_X : goto magic_cursor_set
+        if menu_selection = 1 || menu_selection = 3 then menu_cursor_X = 80 : goto magic_cursor_set
+        if menu_selection = 5 || menu_selection = 7 then menu_cursor_X = 80 : goto magic_cursor_set
+        menu_cursor_X = 12
+
+magic_cursor_set
+; plot menu cursor used for return
+        goto plot_menu_cursor
+
+        alphadata magic_names menu_font singlewide
+        '           '
+        'Fireball   '
+        'Ice Flakes '
+        'Wind Slash '
+        'Thunderbolt'
+        'Spell 5    '
+        'Spell 6    '
+        'Spell 7    '
+        'Spell 8    '
+end
+
+        alphadata magic_desc menu_font singlewide
+        '                   '
+        'Throw a Fireball   '
+        'Spread Ice Attack  '
+        'Diagonal Wind Slash'
+        'Cast Down Lightning'
+        'Learn Monster Names'
+        'Traverse Water     '
+        'Ascend Waterfalls  '
+        'Scale Ledges       '
+end
 
 copy_menu_map
         ; only reveal the map once, so that secret rooms persist when opening the menu as long as tileset doesn't change

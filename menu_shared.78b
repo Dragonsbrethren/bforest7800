@@ -90,6 +90,10 @@ plot_menu_border
         plotchars '&(__*__*_*__*__*___*_*__*___*_*_*___*_)&' 0   0 13 singlewide
         return
 
+plot_menu_cursor
+        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
+        return thisbank
+
 menu_dirs
         prev_menu_selection = menu_selection
         if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right

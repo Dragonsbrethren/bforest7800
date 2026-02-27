@@ -688,12 +688,8 @@ item_cursor_X
         menu_cursor_X = 12
 
 item_cursor_set
-; let this run into plot menu cursor
-;        goto plot_menu_cursor
-
-plot_menu_cursor
-        plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
-        return thisbank
+; plot menu cursor used for return
+        goto plot_menu_cursor
 
 gen_forest_map
         alphachars '0123456789ABCDEF'
