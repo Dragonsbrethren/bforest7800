@@ -407,7 +407,7 @@ magic_palettes
         item_name = pointer[[obj_index]]
         if !item_name then magic_left
 plot_magic_names
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotsprite menu_tome0 m_palette m_spriteX m_spriteY
         plotmap magic_names m_palette m_textX m_textY 11 1 0 item_name 11
 
 magic_left
