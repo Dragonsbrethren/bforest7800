@@ -368,30 +368,30 @@ magic_menu_updater
 
 magic_palettes
         ; reuses palette variables from equip menu
-        temp1 = m_item_inv[0] + m_inv_scroll
-        m_inv0_pal1 = pal_items1[temp1]
-        m_inv0_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[1] + m_inv_scroll
-        m_sword_pal1 = pal_items1[temp1]
-        m_sword_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[2] + m_inv_scroll
-        m_inv1_pal1 = pal_items1[temp1]
-        m_inv1_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[3] + m_inv_scroll
-        m_shield_pal1 = pal_items1[temp1]
-        m_shield_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[4] + m_inv_scroll
-        m_inv2_pal1 = pal_items1[temp1]
-        m_inv2_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[5] + m_inv_scroll
-        m_armor_pal1 = pal_items1[temp1]
-        m_armor_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[6] + m_inv_scroll
-        m_inv3_pal1 = pal_items1[temp1]
-        m_inv3_pal2 = pal_items2[temp1]
-        temp1 = m_item_inv[7] + m_inv_scroll
-        m_charm_pal1 = pal_items1[temp1]
-        m_charm_pal2 = pal_items2[temp1]
+        temp1 = m_spell_inv[0] + m_inv_scroll
+        m_relic2_pal1 = pal_magic1[temp1]
+        m_relic2_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[1] + m_inv_scroll
+        m_relic_pal1 = pal_magic1[temp1]
+        m_relic_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[2] + m_inv_scroll
+        m_inv0_pal1 = pal_magic1[temp1]
+        m_inv0_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[3] + m_inv_scroll
+        m_sword_pal1 = pal_magic1[temp1]
+        m_sword_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[4] + m_inv_scroll
+        m_inv1_pal1 = pal_magic1[temp1]
+        m_inv1_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[5] + m_inv_scroll
+        m_shield_pal1 = pal_magic1[temp1]
+        m_shield_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[6] + m_inv_scroll
+        m_inv2_pal1 = pal_magic1[temp1]
+        m_inv2_pal2 = pal_magic2[temp1]
+        temp1 = m_spell_inv[7] + m_inv_scroll
+        m_armor_pal1 = pal_magic1[temp1]
+        m_armor_pal2 = pal_magic2[temp1]
 
         ; plot the inventory
         m_spriteX = 16
@@ -486,6 +486,14 @@ end
         'Traverse Water     '
         'Ascend Waterfalls  '
         'Scale Ledges       '
+end
+
+        data pal_magic1
+        $00, $32, $99, $B3, $A9, $0F, $0F, $0F, $0F, $0F, $34
+end
+
+        data pal_magic2
+        $00, $24, $AC, $B6, $AC, $97, $45, $76, $06, $1C, $27
 end
 
 copy_menu_map
