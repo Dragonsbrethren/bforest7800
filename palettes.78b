@@ -86,3 +86,10 @@
 
         const PAL_PUDDING_DK = $70
         const PAL_PUDDING_LT = $60
+
+;
+
+
+        const PAL_DISABLED_1 = $2B
+        const PAL_DISABLED_2 = $29
+        const PAL_DISABLED_3 = $24

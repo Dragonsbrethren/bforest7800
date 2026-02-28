@@ -369,32 +369,74 @@ magic_menu_updater
         restorescreen
 
 magic_palettes
-        ; reuses palette variables from equip menu
+        ; default to everything disabled
+        m_relic2_pal1 = PAL_DISABLED_1
+        m_relic2_pal2 = PAL_DISABLED_2
+        m_relic_pal1  = PAL_DISABLED_1
+        m_relic_pal2  = PAL_DISABLED_2
+        m_inv0_pal1   = PAL_DISABLED_1
+        m_inv0_pal2   = PAL_DISABLED_2
+        m_sword_pal1  = PAL_DISABLED_1
+        m_sword_pal2  = PAL_DISABLED_2
+        m_inv1_pal1   = PAL_DISABLED_1
+        m_inv1_pal2   = PAL_DISABLED_2
+        m_shield_pal1 = PAL_DISABLED_1
+        m_shield_pal2 = PAL_DISABLED_2
+        m_inv2_pal1   = PAL_DISABLED_1
+        m_inv2_pal2   = PAL_DISABLED_2
+        m_armor_pal1  = PAL_DISABLED_1
+        m_armor_pal2  = PAL_DISABLED_2
+        P4C2 = PAL_DISABLED_3
+        ; tome by tome, check if equipped
+magic_pal_1
         temp1 = m_spell_inv[0] + m_inv_scroll
-        m_relic2_pal1 = pal_magic1[temp1]
-        m_relic2_pal2 = pal_magic2[temp1]
-        temp1 = m_spell_inv[1] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_2
         m_relic_pal1 = pal_magic1[temp1]
         m_relic_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_2
+        temp1 = m_spell_inv[1] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_3
+        m_relic_pal1 = pal_magic1[temp1]
+        m_relic_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_3
         temp1 = m_spell_inv[2] + m_inv_scroll
-        m_inv0_pal1 = pal_magic1[temp1]
-        m_inv0_pal2 = pal_magic2[temp1]
-        temp1 = m_spell_inv[3] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_4
         m_sword_pal1 = pal_magic1[temp1]
         m_sword_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_4
+        temp1 = m_spell_inv[3] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_5
+        m_sword_pal1 = pal_magic1[temp1]
+        m_sword_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_5
         temp1 = m_spell_inv[4] + m_inv_scroll
-        m_inv1_pal1 = pal_magic1[temp1]
-        m_inv1_pal2 = pal_magic2[temp1]
-        temp1 = m_spell_inv[5] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_6
         m_shield_pal1 = pal_magic1[temp1]
         m_shield_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_6
+        temp1 = m_spell_inv[5] + m_inv_scroll
+        if temp1 <> player_spell then magic_pal_7
+        m_shield_pal1 = pal_magic1[temp1]
+        m_shield_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_7
         temp1 = m_spell_inv[6] + m_inv_scroll
-        m_inv2_pal1 = pal_magic1[temp1]
-        m_inv2_pal2 = pal_magic2[temp1]
+        if temp1 <> player_spell then magic_pal_8
+        m_armor_pal1 = pal_magic1[temp1]
+        m_armor_pal2 = pal_magic2[temp1]
+        goto magic_inventory
+magic_pal_8
         temp1 = m_spell_inv[7] + m_inv_scroll
+        if temp1 <> player_spell then magic_inventory
         m_armor_pal1 = pal_magic1[temp1]
         m_armor_pal2 = pal_magic2[temp1]
 
+magic_inventory
         ; plot the inventory
         m_spriteX = 16
         m_spriteY = 48
@@ -409,19 +451,20 @@ magic_palettes
         item_name = pointer[[obj_index]]
         if !item_name then magic_left
 plot_magic_names
+        if item_name = player_spell then m_palette = 0
         plotsprite menu_tome0 m_palette m_spriteX m_spriteY
         plotmap magic_names m_palette m_textX m_textY 11 1 0 item_name 11
         if item_name <> player_spell then magic_left
-        m_textX = m_textX + 48
-        plotchars 'On' 0 m_textX m_textY singlewide
+;       m_textX = m_textX + 48
+;       plotchars 'On' 0 m_textX m_textY singlewide
 
 magic_left
-        if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto magic_right
-        m_palette = 4
+        if m_spriteX = 16 then m_spriteX = 84 : m_textX = 92 : goto magic_right
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
 magic_right
+        m_palette = 4
         next
         
         ; bypass description if on Exit
@@ -489,6 +532,7 @@ equip_spell
         player_spell = m_spell_inv[menu_selection]
         goto main
 
+        dmahole 0
         alphadata magic_names menu_font singlewide
         '           '
         'Fireball   '

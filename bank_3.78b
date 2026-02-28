@@ -8,6 +8,7 @@
 
 plot_main_menu
         P0C3 = PAL_LTPURP
+        P4C2 = $10      ; restore text color
         P4C3 = PAL_LTRED
         if !menu_change then goto main_menu_updater
         gosub copy_menu_map bank11
