@@ -610,7 +610,7 @@ cast_lightning
         gosub test_spell_cost
         asm
           bne load_lightning_index
-          rts
+          jmp .set_state_chant
 
 load_lightning_index
           ldy #14
@@ -629,7 +629,7 @@ load_lightning_data
           sta object_spr_ptr_lo,y
           lda #>.plot_lightning
           sta object_spr_ptr_hi,y
-          rts
+          jmp .chant_done
 end
 
 cast_fireball
@@ -640,7 +640,7 @@ cast_fireball
         jsr .test_spell_cost
         
         bne .load_fireball_index
-        rts ; allow player to try a different input
+        jmp .set_state_chant ; allow player to try a different input
 .load_fireball_index
         ldy #14
         ldx #0  ; player index
@@ -663,6 +663,9 @@ load_fireball_data
         sta object_spr_ptr_lo,y
         lda #>.plot_fireball
         sta object_spr_ptr_hi,y
+        jsr set_cast_direction
+        jmp .chant_done
+
 set_cast_direction
         lda player_elevation,x
         sta object_elevation,y

@@ -999,24 +999,30 @@ chant_test_dirs
 
 set_spell_up
         player_facing = DIR_UP : player_frame = FRAME_UP
-        gosub cast_lightning
-        goto chant_done
+        goto cast_spell
 
 set_spell_down
         ; chant state already sets facing to down
         player_frame = FRAME_DOWN
-        gosub cast_lightning
-        goto chant_done
+        goto cast_spell
 
 set_spell_left
         player_facing = DIR_LEFT : player_frame = FRAME_LEFT
-        gosub cast_lightning
-        goto chant_done
+        goto cast_spell
 
 set_spell_right
         player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
-        gosub cast_lightning
-        goto chant_done ; because I know I'll cause a bug adding code later...
+;       goto cast_spell
+
+cast_spell
+        asm
+          ldx player_spell
+          lda spell_ptrs_lo,x
+          sta pointer_lo
+          lda spell_ptrs_hi,x
+          sta pointer_hi
+          jmp (pointer)
+end
 
 chant_done
         player_exiting_chant = 1
@@ -2114,3 +2120,11 @@ lightning_init
           sta lightning_segs
 end
         goto thunder_sound
+
+        data spell_ptrs_lo
+        <.set_state_chant, <.cast_fireball, <.cast_fireball, <.cast_fireball, <.cast_lightning
+end
+
+        data spell_ptrs_hi
+        >.set_state_chant, >.cast_fireball, >.cast_fireball, >.cast_fireball, >.cast_lightning
+end
