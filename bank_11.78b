@@ -347,6 +347,8 @@ plot_password
         return thisbank
 
 plot_magic_menu
+        sCTRL{2} = 1 : CTRL = sCTRL
+        menu = MENU_MAGIC
         if !menu_change then goto magic_menu_updater
         clearscreen
         menu_change = 0
@@ -425,12 +427,26 @@ magic_right
         ; bypass description if on Exit
         if menu_selection >= 9 then magic_menu_cursor
         temp1 = pointer[[menu_selection]]
-        if menu = MENU_RELICS then relic_descriptions
 magic_descriptions
         ; magic all has unique descriptions
         m_desc = temp1
         plotmap magic_desc 0 28 12 19 1 0 m_desc 19
-        
+
+        item_name = m_spell_inv[menu_selection]
+        mp_cost = magic_mp[item_name]
+        asm
+          lda #64
+          sta valueX
+          lda #11
+          sta valueY
+          lda #<mp_cost
+          sta value_ptr_lo
+          lda #>mp_cost
+          sta value_ptr_hi
+          jsr plotvaluesw
+end        
+
+
 magic_menu_cursor
         gosub update_magic_cursor
 
@@ -490,19 +506,23 @@ end
         'Throw a Fireball   '
         'Spread Ice Attack  '
         'Diagonal Wind Slash'
-        'Cast Down Lightning'
+        'Call Down Lightning'
         'Learn Monster Names'
         'Traverse Water     '
         'Ascend Waterfalls  '
         'Scale Ledges       '
 end
 
+        data magic_mp
+        0, 8, $12, $16, $20
+end
+
         data pal_magic1
-        $00, $32, $99, $B3, $A9, $0F, $0F, $0F, $0F, $0F, $34
+        $00, $42, $9A, $B3, $A9, $0F, $0F, $0F, $0F, $0F, $34
 end
 
         data pal_magic2
-        $00, $24, $AC, $B6, $AC, $97, $45, $76, $06, $1C, $27
+        $00, $45, $9F, $B6, $AC, $97, $45, $76, $06, $1C, $27
 end
 
 copy_menu_map

@@ -942,5 +942,3 @@ end
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
         return
-
-        inline plotvaluesw.asm

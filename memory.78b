@@ -264,6 +264,7 @@
         autodim byte item_qty
         autodim byte using_item
         autodim byte m_desc
+        autodim byte mp_cost
 
         ; ROOM HEADER
         autodim byte first_load
