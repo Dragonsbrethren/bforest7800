@@ -633,7 +633,6 @@ load_lightning_data
 end
 
 cast_fireball
-        m_spell_bits_1{0} = 1
         asm
         lda #FIREBALL_MP_COST
         sta mp_change
