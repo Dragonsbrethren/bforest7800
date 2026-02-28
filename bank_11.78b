@@ -409,6 +409,9 @@ magic_palettes
 plot_magic_names
         plotsprite menu_tome0 m_palette m_spriteX m_spriteY
         plotmap magic_names m_palette m_textX m_textY 11 1 0 item_name 11
+        if item_name <> player_spell then magic_left
+        m_textX = m_textX + 48
+        plotchars 'On' 0 m_textX m_textY singlewide
 
 magic_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto magic_right
@@ -437,8 +440,8 @@ magic_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 then open_main_menu
-        if !action_debounce && joy0fire1 then open_main_menu
+        if !action_debounce && joy0fire0 then equip_spell
+        if !action_debounce && joy0fire1 then equip_spell
         gosub menu_dirs
         goto main
 
@@ -463,6 +466,12 @@ magic_cursor_X
 magic_cursor_set
 ; plot menu cursor used for return
         goto plot_menu_cursor
+
+equip_spell
+        action_debounce = 1
+        if menu_selection = 9 then open_main_menu
+        player_spell = m_spell_inv[menu_selection]
+        goto main
 
         alphadata magic_names menu_font singlewide
         '           '
