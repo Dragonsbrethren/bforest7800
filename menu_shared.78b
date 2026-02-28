@@ -203,7 +203,7 @@ menu_colors
         
 calc_inv_array
         ; zero the inventory arrays to prevent duplication
-        for index = 0 to 66
+        for index = 0 to 77
         m_item_inv[index] = 0
         next
         ; populate arrays based on equipment bits
