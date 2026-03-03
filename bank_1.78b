@@ -754,6 +754,138 @@ cast_fireball_left
         rts
 end
 
+cast_iceflakes
+        asm
+        lda #0
+        sta mp_change
+        jsr .test_spell_cost
+        
+        bne .load_iceflake_index
+        jmp .set_state_chant ; allow player to try a different input
+.load_iceflake_index
+        ldy #14
+        ldx #15
+load_iceflake_data
+        lda #TYPE_ICEFLAKE
+        sta object_type,y
+        lda #FIREBALL_SPEED_HI
+        sta object_vel_cap_hi,y
+        sta object_speed_hi,y
+        lda #FIREBALL_SPEED_LO
+        sta object_vel_cap_lo,y
+        sta object_speed_lo,y
+        lda #FIREBALL_DAMAGE
+        clc
+        adc player_wisdom
+        sta object_damage,y
+        lda #%00010000
+        sta object_flags,y
+        lda #<.plot_fireball
+        sta object_spr_ptr_lo,y
+        lda #>.plot_fireball
+        sta object_spr_ptr_hi,y
+        jsr set_iceflake_direction
+        jmp .chant_done
+
+set_iceflake_direction
+        lda player_elevation,x
+        sta object_elevation,y
+        lda player_facing,x
+        cmp #DIR_UP
+        beq cast_iceflakes_up
+        cmp #DIR_DOWN
+        beq cast_iceflakes_down
+        cmp #DIR_LEFT
+        bne cast_iceflakes_right
+        jmp cast_iceflakes_left  ; branch out of range
+cast_iceflakes_right
+        sta object_facing,y
+        sta object_Xdir,y
+        lda player_Xpos
+        clc
+        adc #14
+        sta object_Xpos,y
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,y
+        sta object_Ypos,x
+        lda object_speed_hi,y
+        sta object_Xvel_hi,y
+        sta object_Yvel_hi,x
+        lda object_speed_lo,y
+        sta object_Xvel_lo,y
+        sta object_Yvel_lo,x
+        lda #DIR_UP
+        sta object_Ydir,y
+        lda #DIR_DOWN
+        sta object_Ydir,x
+        lda #0
+        sta object_Yvel_hi,y
+        sta object_Yvel_hi,x
+        lda #128
+        sta object_Yvel_lo,y
+        sta object_Yvel_lo,x
+        rts
+cast_iceflakes_up
+        sta object_facing,y
+        sta object_Ydir,y
+        lda player_Xpos,x
+        clc
+        adc #2
+        sta object_Xpos,y
+        lda player_Ypos,x
+        sec
+        sbc #10
+        sta object_Ypos,y
+        lda #0
+        sta object_Xdir,y
+        sta object_Xvel_hi,y
+        sta object_Xvel_lo,y
+        lda object_speed_lo,y
+        sta object_Yvel_lo,y
+        lda object_speed_hi,y
+        sta object_Yvel_hi,y
+        rts
+cast_iceflakes_down
+        sta object_facing,y
+        sta object_Ydir,y
+        lda player_Xpos,x
+        clc
+        adc #2
+        sta object_Xpos,y
+        lda player_Ypos,x
+        clc
+        adc #10
+        sta object_Ypos,y
+        lda #0
+        sta object_Xdir,y
+        sta object_Xvel_hi,y
+        sta object_Xvel_lo,y
+        lda object_speed_lo,y
+        sta object_Yvel_lo,y
+        lda object_speed_hi,y
+        sta object_Yvel_hi,y
+        rts
+cast_iceflakes_left
+        sta object_facing,y
+        sta object_Xdir,y
+        lda player_Xpos,x
+        sec
+        sbc #8
+        sta object_Xpos,y
+        lda player_Ypos,x
+        sta object_Ypos,y
+        lda object_speed_hi,y
+        sta object_Xvel_hi,y
+        lda object_speed_lo,y
+        sta object_Xvel_lo,y
+        lda #0
+        sta object_Ydir,y
+        sta object_Yvel_hi,y
+        sta object_Yvel_lo,y
+        rts
+end
+
 ;==============================================================================
 ; FAIRY FAMILIAR
 ;------------------------------------------------------------------------------

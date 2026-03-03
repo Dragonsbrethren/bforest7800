@@ -40,6 +40,7 @@
         const TYPE_SEED     = 142
         const TYPE_DARKBOLT = 143
         const TYPE_FIREBALL = 150
+        const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
         const TYPE_F_FAIRY  = 153
         const TYPE_STATIC   = TYPE_BOSS_FLAME
