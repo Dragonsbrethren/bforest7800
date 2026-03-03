@@ -575,7 +575,7 @@ pos_swd_left
         raven_ai_lo, priest_ai_lo, priest_ai_lo, redslime_ai_lo, mredslime_ai_lo,
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo, <.bat_spawner_ai, <.bat_ai, <.rose_ai, <.cave_spider_ai
-        <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai, <.castle_boss, <.octokraken_ai
+        <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai, <.castle_boss, <.octokraken_ai, <.octokraken_ai, <.tentacle_ai
 end
 
         data object_ai_hi
@@ -583,7 +583,7 @@ end
         raven_ai_hi, priest_ai_hi, priest_ai_hi, redslime_ai_hi, mredslime_ai_hi,
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi, >.bat_spawner_ai, >.bat_ai, >.rose_ai, >.cave_spider_ai
-        >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai, >.castle_boss, >.octokraken_ai
+        >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai, >.castle_boss, >.octokraken_ai, >.octokraken_ai, >.tentacle_ai
 end
 
         data projectile_ai_lo
@@ -1719,6 +1719,10 @@ spawner_done
           jmp .cc_next
 end
 
+big_sword_check
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 36, 16) then return thisbank
+        goto sword_sound
+
 sword_collision
         temp1 = object_flags[index]
         if temp1{0} then return thisbank
@@ -1726,7 +1730,9 @@ test_sword_box
         if temp1{2} then sword_bypass_elevation
         if object_elevation <> object_elevation[index] then return thisbank
 sword_bypass_elevation
+        if object_type[index] = TYPE_OCTOKRAKEN then big_sword_check
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
+sword_sound
         if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
         if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
 sword_damage

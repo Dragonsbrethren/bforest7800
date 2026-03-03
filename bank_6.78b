@@ -420,7 +420,8 @@ end
 end
 
         data river_room_13_obj
-        TYPE_OCTOKRAKEN, 8*8, $30
+        TYPE_OCTOKRAKEN, 8*8, $40
+        TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 11*8, $F0
         $00
 end
 
@@ -972,6 +973,34 @@ end
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+tentacle_ai
+        return thisbank
+
+obj_tentacle_stats
+        asm
+          ldx obj_index
+          lda #<.plot_tentacle
+          sta object_spr_ptr_lo,x
+          lda #>.plot_tentacle
+          sta object_spr_ptr_hi,x
+          lda #5
+          sta object_pal,x
+          lda #0
+          sta object_frame,x
+end
+        object_hp[obj_index] = OCTOPUS_HP
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 10
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
 ;==============================================================================
 ; RIVER GHOST AI
 ;------------------------------------------------------------------------------
@@ -1097,6 +1126,12 @@ plot_warg
         goto plot_next
 
 plot_octokraken
-        plotsprite octokraken sprite_pal Xposition Yposition 0
-        plotsprite octokraken_tallsprite_00 sprite_pal Xposition $40 0
+        plotsprite octokraken_tallsprite_00 sprite_pal Xposition Yposition 0
+        plotsprite octokraken sprite_pal Xposition $30 0
+        goto plot_next
+
+plot_tentacle
+        frame = Yposition - $10
+        plotsprite tentacle_tallsprite_00 sprite_pal Xposition frame 0
+        plotsprite tentacle sprite_pal Xposition Yposition 0
         goto plot_next
