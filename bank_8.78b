@@ -866,8 +866,8 @@ end
         goto obj_next_stats
 
 plot_hud_hills
-        plotvalue hills_hud 0 object_elevation 2 32 11
-        plotvalue hills_hud 0 move_tile_1 4 32 12
+;       plotvalue hills_hud 0 object_elevation 2 32 11
+;       plotvalue hills_hud 0 move_tile_1 4 32 12
         return
 
 plot_harpy_sh

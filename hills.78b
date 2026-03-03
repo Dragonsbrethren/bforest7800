@@ -3,9 +3,10 @@
         incgraphic gfx/tiles/hills_water.png 160A 1 2 3 0 6
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
-        incgraphic gfx/tiles/hills_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/harpy0.png 160B 0 4 6 8 3 5 2 1
         incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 8 5 2 1
+        incgraphic gfx/sprites/queen_harpy0.png 160B 0 2 9 8 6 12 1 4 5 7
+        incgraphic gfx/sprites/queen_harpy1.png 160B 0 2 9 1 8 6 12 4 5 7
         incgraphic gfx/sprites/spider0.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider1.png 160A 0 1 3 2
         incgraphic gfx/sprites/spider2.png 160A 0 1 3
