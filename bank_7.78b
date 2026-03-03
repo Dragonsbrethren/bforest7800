@@ -9,7 +9,9 @@
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
-        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/river/octokraken.png 160A 0 3 2 1
+        incgraphic gfx/river/tentacle.png 160A 0 3 2 1
+        incgraphic gfx/river/placeholder.png 160A 0 3 2 1
 ;        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 6
@@ -34,6 +36,7 @@
         incgraphic gfx/sprites/warg1.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
+
 
 
         incmapfile tiled/river_room_0.tmx
@@ -168,7 +171,11 @@ plot_river_room_13
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
-        alt_palette = 1
+        alt_palette = 2
+        exit_tileset = T_HILLS
+        exit_Xpos = 72
+        exit_Ypos =  8
+        exit_room_index = F_HILLS_START2_I
         return otherbank
 
 plot_river_room_14

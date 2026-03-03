@@ -229,6 +229,15 @@
         const F_HILLS_START_D = DIR_UP
 
         ; map positions
+        const M_HILLS_START2_X = 62
+        const M_HILLS_START2_Y = 144
+        ; field positions
+        const F_HILLS_START2_I = 36      ; starting room index
+        const F_HILLS_START2_X = $76
+        const F_HILLS_START2_Y = $B0
+        const F_HILLS_START2_D = DIR_UP
+
+        ; map positions
         const M_HILLS_SAVE1_X = 78
         const M_HILLS_SAVE1_Y = 112
         ; field positions

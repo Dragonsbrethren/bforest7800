@@ -9,7 +9,9 @@
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
-        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/river/octokraken.png 160A 0 3 2 1
+        incgraphic gfx/river/tentacle.png 160A 0 3 2 1
+        incgraphic gfx/river/placeholder.png 160A 0 3 2 1
 ;        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 6
@@ -218,13 +220,21 @@ river_room_bank_6
 end
 
 river_pals
-        P4C1 = flash_color : P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade (PAL_F_LTGRN)     ; greens used by trees and slimes
-        P5C1 = flash_color : P5C2 = getfade(PAL_F_DKGRY)
+        asm
+          lda flash_color
+          sta P4C1
+          sta P5C1
+          sta P6C1
+end
+        P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade (PAL_F_LTGRN)     ; greens used by trees and slimes
+        if alt_palette = 2 then octokraken_pal
+        P5C2 = getfade(PAL_F_DKGRY)
         ; handle fade for rocks and wolves - gray always fades to black and makes them invisible with darkness
         if !fade then P5C3 = $01 else P5C3 = getfade(PAL_F_LTGRY)
+river_pal_6
         ; alt palette 1 = water rocks instead of veg
         if alt_palette then river_pals_rocks
-        P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_DKGRN, black)     ; blue and green used by water/veg
+        P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_DKGRN, black)     ; blue and green used by water/veg
 river_pals_anim
         ; bypass setting these colors if animated palette
         if pal_animation then river_shared_pals
@@ -238,9 +248,14 @@ river_shared_pals
         goto palette_done
 
 river_pals_rocks
-        P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black)
+        P6C2 = getfade(PAL_F_WATER, black)
         if !fade then P6C3 = $01 else P6C3 = getfade(PAL_F_LTGRY)     ; blue and gray used by water rocks
         goto river_pals_anim
+
+octokraken_pal
+        ; octokraken pinks
+        P5C2 = getfade(PAL_K_DKPINK, black) : P5C3 = getfade(PAL_K_LTPINK)
+        goto river_pal_6
 
 
 plot_river_room_0
@@ -405,6 +420,7 @@ end
 end
 
         data river_room_13_obj
+        TYPE_OCTOKRAKEN, 8*8, $30
         $00
 end
 
@@ -928,6 +944,34 @@ end
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+octokraken_ai
+        return thisbank
+
+obj_octokraken_stats
+        asm
+          ldx obj_index
+          lda #<.plot_octokraken
+          sta object_spr_ptr_lo,x
+          lda #>.plot_octokraken
+          sta object_spr_ptr_hi,x
+          lda #5
+          sta object_pal,x
+          lda #0
+          sta object_frame,x
+end
+        object_hp[obj_index] = OCTOPUS_HP
+        object_vel_cap_hi[obj_index] = 1
+        object_vel_cap_lo[obj_index] = 0
+        object_damage[obj_index] = 4
+        object_def[obj_index] = 0
+        object_mdef[obj_index] = 2
+        object_friction_hi[obj_index] = 1
+        object_friction_lo[obj_index] = 0
+        object_speed_hi[obj_index] = 0
+        object_speed_lo[obj_index] = 10
+        object_flags[obj_index] = 0
+        goto obj_next_stats
+
 ;==============================================================================
 ; RIVER GHOST AI
 ;------------------------------------------------------------------------------
@@ -1045,9 +1089,14 @@ plot_octoink
         goto plot_next
 
 plot_rghost
-        plotsprite rghost0 sprite_pal Xposition Yposition animation_frame
+        plotsprite rghost0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_warg
         plotsprite warg0 1 Xposition Yposition frame
+        goto plot_next
+
+plot_octokraken
+        plotsprite octokraken sprite_pal Xposition Yposition 0
+        plotsprite octokraken_tallsprite_00 sprite_pal Xposition $40 0
         goto plot_next
