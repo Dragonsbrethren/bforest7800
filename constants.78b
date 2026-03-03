@@ -216,6 +216,13 @@
         const F_RIVER_START2_Y = $30
         const F_RIVER_START2_D = DIR_DOWN
 
+        const M_RIVER_START3_X = 78
+        const M_RIVER_START3_Y = 64
+        const F_RIVER_START3_I = 3
+        const F_RIVER_START3_X = 76
+        const F_RIVER_START3_Y = $30
+        const F_RIVER_START3_D = DIR_DOWN
+
 ;------------------------------------------------------------------------------
 ; HILLS TILESET
 ;------------------------------------------------------------------------------
@@ -233,7 +240,7 @@
         const M_HILLS_START2_Y = 144
         ; field positions
         const F_HILLS_START2_I = 36      ; starting room index
-        const F_HILLS_START2_X = $76
+        const F_HILLS_START2_X = 76
         const F_HILLS_START2_Y = $B0
         const F_HILLS_START2_D = DIR_UP
 

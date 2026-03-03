@@ -143,6 +143,7 @@ load_river
         if save_room_index = 1 then river_save_1
         if save_room_index = 2 then river_save_2
         if exit_room_index = F_RIVER_START2_I then river_entrance_2
+        if exit_room_index = F_RIVER_START3_I then river_entrance_3
 
         room_index    = F_RIVER_START_I ; 21
         menu_map_Xpos = M_RIVER_START_X ; 54
@@ -177,6 +178,15 @@ river_entrance_2
         player_Xpos   = F_RIVER_START2_X ; 50
         player_Ypos   = F_RIVER_START2_Y ; 80
         player_facing = F_RIVER_START2_D ; DIR_UP
+        goto river_set_room
+
+river_entrance_3
+        room_index    = F_RIVER_START3_I ; 21
+        menu_map_Xpos = M_RIVER_START3_X ; 54
+        menu_map_Ypos = M_RIVER_START3_Y ; 112
+        player_Xpos   = F_RIVER_START3_X ; 50
+        player_Ypos   = F_RIVER_START3_Y ; 80
+        player_facing = F_RIVER_START3_D ; DIR_UP
 ;        goto river_set_room
 
 river_set_room
@@ -950,8 +960,24 @@ octokraken_ai
           ldy #2
           lda #$50
           sta object_Ypos,y
-          ldy #3
-          sta object_Ypos,y
+          ldx #3
+          sta object_Ypos,x
+          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,48
+          bcs octotent_noX
+          lda #DIR_LEFT
+          sta object_Xdir,y
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+octotent_noX
+          lda #DIR_DOWN
+          sta object_Ydir,y
+          sta object_Ydir,x
+          lda #1
+          sta object_Xvel_hi,y
+          sta object_Xvel_hi,x
+          sta object_Yvel_hi,y
+          sta object_Yvel_hi,x
+          ldx index
 end
         return thisbank
 
@@ -973,7 +999,7 @@ end
         object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 1
+        object_friction_hi[obj_index] = 0
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 10
