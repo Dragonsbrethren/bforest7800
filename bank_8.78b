@@ -750,7 +750,7 @@ plot_hills_room_1
         plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
         zone1_objects  = 5
         zone2_objects  = 4
-        zone14_objects = 3
+        zone14_objects = 5
         exit_tileset = T_CAVES
         exit_Xpos = 32
         exit_Ypos = 28

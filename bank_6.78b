@@ -421,7 +421,7 @@ end
 
         data river_room_13_obj
         TYPE_OCTOKRAKEN, 8*8, $40
-        TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 11*8, $F0
+        TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 12*8, $F0
         $00
 end
 
@@ -946,6 +946,13 @@ end
         goto obj_next_stats
 
 octokraken_ai
+        asm
+          ldy #2
+          lda #$50
+          sta object_Ypos,y
+          ldy #3
+          sta object_Ypos,y
+end
         return thisbank
 
 obj_octokraken_stats
@@ -1132,6 +1139,6 @@ plot_octokraken
 
 plot_tentacle
         frame = Yposition - $10
-        plotsprite tentacle_tallsprite_00 sprite_pal Xposition frame 0
-        plotsprite tentacle sprite_pal Xposition Yposition 0
+        plotsprite tentacle sprite_pal Xposition frame 0
+        plotsprite tentacle_tallsprite_00 sprite_pal Xposition Yposition 0
         goto plot_next

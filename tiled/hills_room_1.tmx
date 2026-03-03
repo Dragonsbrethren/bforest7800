@@ -18,12 +18,12 @@
  <layer id="1" name="Tile Layer 1" width="20" height="14">
   <data>
    <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
    <tile gid="56"/>
+   <tile gid="45"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="27"/>
    <tile gid="63"/>
    <tile gid="64"/>
    <tile gid="64"/>
@@ -38,12 +38,12 @@
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="57"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="56"/>
+   <tile gid="50"/>
+   <tile gid="45"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="27"/>
    <tile gid="63"/>
    <tile gid="64"/>
    <tile gid="64"/>
@@ -58,12 +58,12 @@
    <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
-   <tile gid="47"/>
-   <tile gid="48"/>
-   <tile gid="49"/>
-   <tile gid="61"/>
-   <tile gid="49"/>
-   <tile gid="50"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="26"/>
+   <tile gid="27"/>
    <tile gid="63"/>
    <tile gid="64"/>
    <tile gid="64"/>
