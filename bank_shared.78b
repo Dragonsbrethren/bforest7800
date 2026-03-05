@@ -587,13 +587,13 @@ end
 end
 
         data projectile_ai_lo
-        skelsword_ai_lo, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_lo, <.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, <.seed_ai, <.lightning_ai, 0, 0, 0, 0, 0, 0,
         fireball_ai_lo, <.fireball_ai, <.lightning_ai, fairy_ai_lo, 0, 0, 0, 0
 end
 
         data projectile_ai_hi
-        skelsword_ai_hi, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_hi, >.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, >.seed_ai, >.lightning_ai, 0, 0, 0, 0, 0, 0,
         fireball_ai_hi, >.fireball_ai, >.lightning_ai, fairy_ai_hi, 0, 0, 0, 0
 end
@@ -670,6 +670,9 @@ fireball_animate
           inc object_frame,x
 fireball_poof
 .seed_ai                        ; stone rose seeds share this code
+          lda #0
+proj_move_check
+          sta temp1             ; object to replace projectile with
           lda object_Xdir,x     ; if no X dir, must be moving Y
           beq projY             ; skip over Y dir check
           lda object_Xdest,x
@@ -685,7 +688,7 @@ proj_done lda object_Xpos,x     ; store current positions
           lda object_Ypos,x
           sta object_Ydest,x
           rts
-proj_die  lda #0
+proj_die  lda temp1
           sta object_type,x
           rts
 end

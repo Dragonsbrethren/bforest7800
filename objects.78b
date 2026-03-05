@@ -37,6 +37,7 @@
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
+        const TYPE_TENTSHADOW   = 130
         const TYPE_DARKSPARK = 140
         const TYPE_OCTOINK  = 141
         const TYPE_SEED     = 142
@@ -366,6 +367,8 @@
         const OCTOINK_VEL_CAP_LO = 0
         const F_OCTOINK = 1
         const OCTOINK_PAL = (6 * 32)
+
+        const TENTSHADOW_TIME = 60
 
         ; WARG
         const F_WARG_LEFT_1  = 0

@@ -11,7 +11,7 @@
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
         incgraphic gfx/river/octokraken.png 160A 0 3 2 1
         incgraphic gfx/river/tentacle.png 160A 0 3 2 1
-        incgraphic gfx/river/placeholder.png 160A 0 3 2 1
+        incgraphic gfx/river/tentshadow.png 160A 0 3 2 1
 ;        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 6

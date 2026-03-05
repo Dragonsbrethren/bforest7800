@@ -11,7 +11,7 @@
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
         incgraphic gfx/river/octokraken.png 160A 0 3 2 1
         incgraphic gfx/river/tentacle.png 160A 0 3 2 1
-        incgraphic gfx/river/placeholder.png 160A 0 3 2 1
+        incgraphic gfx/river/tentshadow.png 160A 0 3 2 1
 ;        incgraphic gfx/tiles/river_deep.png 160A 1 0 2 4 5
         incgraphic gfx/tiles/river_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/river_veg.png 160A 1 2 3 1 6
@@ -430,8 +430,8 @@ end
 end
 
         data river_room_13_obj
-        TYPE_OCTOKRAKEN, 8*8, $40
         TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 12*8, $F0
+        TYPE_OCTOKRAKEN, 8*8, $40
         $00
 end
 
@@ -957,14 +957,42 @@ end
 
 octokraken_ai
         asm
-          ldy #2
+          lda object_flags,x
+          beq octokraken_attack_pattern
+          ldy #1
+octokraken_tent_check_1
+          lda object_type,y
+          bne octokraken_tent_check_2
+          sta object_frame,y
+          sta object_flags,y
+          lda #TYPE_TENTACLE
+          sta object_type,y
+octokraken_tent_check_2
+          ldx #2
+          lda object_type,x
+          bne octokraken_tent_check_done
+          sta object_frame,x
+          sta object_flags,x
+          lda #TYPE_TENTACLE
+          sta object_type,x
+octokraken_attack_pattern
+          ldx #2
+          ldy #1
+          lda #1
+          sta object_Xvel_hi,x
+          sta object_Yvel_hi,x
+          sta object_Xvel_hi,y
+          sta object_Yvel_hi,y
+          lda #56
+          sta object_Xpos,y
+          lda #96
+          sta object_Xpos,x
           lda #$50
           sta object_Ypos,y
-          ldx #3
           sta object_Ypos,x
           QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,48
           bcs octotent_noX
-          lda #DIR_LEFT
+          lda #DIR_LEFT 
           sta object_Xdir,y
           lda #DIR_RIGHT
           sta object_Xdir,x
@@ -972,14 +1000,13 @@ octotent_noX
           lda #DIR_DOWN
           sta object_Ydir,y
           sta object_Ydir,x
-          lda #1
-          sta object_Xvel_hi,y
-          sta object_Xvel_hi,x
-          sta object_Yvel_hi,y
-          sta object_Yvel_hi,x
           ldx index
+          lda #%10000000
+          sta object_flags,x
+octokraken_tent_check_done
+octokraken_return
+          rts
 end
-        return thisbank
 
 obj_octokraken_stats
         asm
@@ -1007,7 +1034,31 @@ end
         goto obj_next_stats
 
 tentacle_ai
-        return thisbank
+        asm
+          lda #TYPE_TENTSHADOW
+          sta temp1
+          jmp proj_move_check
+end
+
+tentshadow_ai
+        asm
+          dec object_timer,x
+          bmi tentshadow_timer_init
+          bne tentshadow_done
+          lda #0
+          sta object_type,x
+          rts
+
+tentshadow_timer_init
+          lda #TENTSHADOW_TIME
+          sta object_timer,x
+          lda #1
+          sta object_frame,x
+;         lda #%00000001
+          sta object_flags,x
+tentshadow_done
+          rts
+end
 
 obj_tentacle_stats
         asm
@@ -1027,7 +1078,7 @@ end
         object_damage[obj_index] = 4
         object_def[obj_index] = 0
         object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 1
+        object_friction_hi[obj_index] = 0
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
         object_speed_lo[obj_index] = 10
@@ -1164,7 +1215,8 @@ plot_octokraken
         goto plot_next
 
 plot_tentacle
-        frame = Yposition - $10
-        plotsprite tentacle sprite_pal Xposition frame 0
-        plotsprite tentacle_tallsprite_00 sprite_pal Xposition Yposition 0
+        shadow_offset = Yposition - $10
+        if !frame then plotsprite tentacle sprite_pal Xposition shadow_offset 0
+plot_tentshadow
+        plotsprite tentacle_tallsprite_00 sprite_pal Xposition Yposition frame
         goto plot_next
