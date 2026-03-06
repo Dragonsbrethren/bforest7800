@@ -36,6 +36,7 @@
         incgraphic gfx/sprites/warg1.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
+        incgraphic gfx/river/octoeye.png 160A 3 3 3 3
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -1069,6 +1070,24 @@ end
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+octoeye_ai
+        asm
+          lda object_flags,x
+          bne octoeye_return
+          lda #OCTOINK_DAMAGE
+          sta object_damage,x
+          sta object_hp,x
+          lda #<.plot_octoeye
+          sta object_spr_ptr_lo,x
+          lda #>.plot_octoeye
+          sta object_spr_ptr_hi,x
+          lda #1
+          sta object_flags,x
+
+octoeye_return
+          rts
+end
+
 tentacle_ai
         asm
           lda #TYPE_TENTSHADOW
@@ -1245,6 +1264,9 @@ plot_warg
         goto plot_next
 
 plot_octokraken
+plot_octoeye
+        plotsprite octoeye 2 71 $40 0
+        plotsprite octoeye 2 87 $40 0
         plotsprite octokraken_tallsprite_00 sprite_pal Xposition Yposition 0
         plotsprite octokraken sprite_pal Xposition $30 0
         goto plot_next

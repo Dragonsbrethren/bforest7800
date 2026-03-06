@@ -1854,7 +1854,17 @@ test_player_box
 end
 
 test_player_elevation_match
-        if object_type[index] = TYPE_SKELSWORD then goto enemy_sword_collision
+        asm
+          lda object_type,x
+          cmp #TYPE_SKELSWORD
+          bne test_kraken
+          jmp .enemy_sword_collision
+test_kraken
+          cmp #TYPE_OCTOKRAKEN
+          bne normal_box
+          jmp .big_box
+normal_box
+end
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
         temp3 = Xposition + 3
@@ -1917,6 +1927,12 @@ set_status_temp
           jmp .pc_damage
 end
 
+big_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition - 1
+        temp4 = Yposition - 8
+        if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 32, 23) then return thisbank
 
 pc_damage
         if player_flags{0} then return thisbank

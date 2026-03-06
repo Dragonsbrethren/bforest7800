@@ -32,7 +32,7 @@
         const TYPE_CARDINAL =  30
         const TYPE_CASTLE_BOSS  = 31
         const TYPE_OCTOKRAKEN   = 32
-        const TYPE_OCTOEYE      = 33
+        const TYPE_RIVERBOSS    = 33
         const TYPE_TENTACLE     = 34
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
