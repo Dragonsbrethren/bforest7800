@@ -31,7 +31,9 @@
         TYPE_HIETHER    ; caves ghost
         0               ; cardinal
         0               ; cathedral boss
-        TYPE_SPELL2     ; octokraken
+        0               ; octokraken
+        0               ; kraken's eye
+        0               ; tentacle
 end
 
         data common_drops
@@ -67,5 +69,7 @@ end
         TYPE_UNCURSE    ; caves ghost
         0               ; cardinal
         0               ; cathedral boss
-        TYPE_SPELL2     ; octokraken
+        0               ; octokraken
+        0               ; kraken's eye
+        0               ; tentacle
 end

@@ -959,30 +959,59 @@ octokraken_ai
         asm
           lda object_flags,x
           beq octokraken_attack_pattern
-          ldy #1
+          ldx #1
+          ldy #2
 octokraken_tent_check_1
-          lda object_type,y
-          bne octokraken_tent_check_2
-          sta object_frame,y
-          sta object_flags,y
-          lda #TYPE_TENTACLE
-          sta object_type,y
-octokraken_tent_check_2
-          ldx #2
           lda object_type,x
-          bne octokraken_tent_check_done
+          bne octokraken_tent_check_2
           sta object_frame,x
           sta object_flags,x
+          sta object_timer,x
           lda #TYPE_TENTACLE
           sta object_type,x
+octokraken_tent_check_2
+          lda object_type,y
+          beq octokraken_tent_check_3
+          jmp octokraken_tent_check_done
+octokraken_tent_check_3
+          sta object_frame,y
+          sta object_flags,y
+          sta object_timer,y
+          lda #TYPE_TENTACLE
+          sta object_type,y
 octokraken_attack_pattern
-          ldx #2
-          ldy #1
           lda #1
+          ldx #1
+          ldy #2
           sta object_Xvel_hi,x
           sta object_Yvel_hi,x
           sta object_Xvel_hi,y
           sta object_Yvel_hi,y
+          jsr randomize
+          cmp #128
+          bcc octokraken_down
+octokraken_side_to_side
+          ldx #1
+          ldy #2
+          lda #40
+          sta object_Xpos,x
+          lda #$60
+          sta object_Ypos,x
+          lda #108      
+          sta object_Xpos,y
+          lda #$80
+          sta object_Ypos,y
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+          lda #DIR_LEFT 
+          sta object_Xdir,y
+          lda #0
+          sta object_Ydir,x
+          sta object_Ydir,y
+          beq octokraken_restore_index
+octokraken_down
+          ldx #1
+          ldy #2
           lda #56
           sta object_Xpos,y
           lda #96
@@ -990,22 +1019,29 @@ octokraken_attack_pattern
           lda #$50
           sta object_Ypos,y
           sta object_Ypos,x
-          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,48
-          bcs octotent_noX
+          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,64
+          bcc octotent_noX
           lda #DIR_LEFT 
-          sta object_Xdir,y
-          lda #DIR_RIGHT
           sta object_Xdir,x
-octotent_noX
+          lda #DIR_RIGHT
+          sta object_Xdir,y
+octokraken_set_down
           lda #DIR_DOWN
-          sta object_Ydir,y
           sta object_Ydir,x
+          sta object_Ydir,y
+octokraken_restore_index
           ldx index
           lda #%10000000
           sta object_flags,x
 octokraken_tent_check_done
 octokraken_return
           rts
+
+octotent_noX
+          lda #0
+          sta object_Xdir,x
+          sta object_Xdir,y
+          beq octokraken_set_down
 end
 
 obj_octokraken_stats
@@ -1036,7 +1072,6 @@ end
 tentacle_ai
         asm
           lda #TYPE_TENTSHADOW
-          sta temp1
           jmp proj_move_check
 end
 
