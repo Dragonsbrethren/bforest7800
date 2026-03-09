@@ -664,6 +664,9 @@ load_fireball_data
         sta object_spr_ptr_lo,y
         lda #>.plot_fireball
         sta object_spr_ptr_hi,y
+        lda #2
+        sta object_frame,x
+        sta object_frame,y
         jsr set_cast_direction
         jmp .chant_done
 
@@ -815,21 +818,19 @@ iceflakes_test_left
         jmp cast_iceflakes_left  ; branch out of range
 cast_iceflakes_right
         sta object_facing,y
+        sta object_facing,x
         sta object_Xdir,y
+        sta object_Xdir,x
         lda player_Xpos
+        sta object_Xpos,y
         clc
         adc #14
-        sta object_Xpos,y
         sta object_Xpos,x
         lda player_Ypos
         sta object_Ypos,y
+        sec
+        sbc #8
         sta object_Ypos,x
-        lda object_speed_hi,y
-        sta object_Xvel_hi,y
-        sta object_Yvel_hi,x
-        lda object_speed_lo,y
-        sta object_Xvel_lo,y
-        sta object_Yvel_lo,x
         lda #DIR_UP
         sta object_Ydir,y
         lda #DIR_DOWN
@@ -837,9 +838,14 @@ cast_iceflakes_right
         lda #0
         sta object_Yvel_hi,y
         sta object_Yvel_hi,x
-        lda #128
         sta object_Yvel_lo,y
         sta object_Yvel_lo,x
+        lda object_speed_lo,y
+        sta object_Xvel_lo,x
+        sta object_Xvel_lo,y
+        lda object_speed_hi,y
+        sta object_Xvel_hi,x
+        sta object_Xvel_hi,y
         rts
 cast_iceflakes_up
         sta object_facing,y
@@ -860,10 +866,9 @@ cast_iceflakes_up
         sta object_Xdir,y
         lda #DIR_RIGHT
         sta object_Xdir,x
-        lda #1
+        lda #0
         sta object_Xvel_hi,y
         sta object_Xvel_hi,x
-        lda #0
         sta object_Xvel_lo,y
         sta object_Xvel_lo,x
         lda object_speed_lo,y
@@ -875,41 +880,65 @@ cast_iceflakes_up
         rts
 cast_iceflakes_down
         sta object_facing,y
+        sta object_facing,x
         sta object_Ydir,y
-        lda player_Xpos,x
-        clc
-        adc #2
+        sta object_Ydir,x
+        lda player_Xpos
         sta object_Xpos,y
-        lda player_Ypos,x
         clc
-        adc #10
+        adc #4
+        sta object_Xpos,x
+        lda player_Ypos
+        clc
+        adc #8
         sta object_Ypos,y
-        lda #0
+        sta object_Ypos,x
+        lda #DIR_LEFT
         sta object_Xdir,y
+        lda #DIR_RIGHT
+        sta object_Xdir,x
+        lda #0
         sta object_Xvel_hi,y
+        sta object_Xvel_hi,x
         sta object_Xvel_lo,y
+        sta object_Xvel_lo,x
         lda object_speed_lo,y
+        sta object_Yvel_lo,x
         sta object_Yvel_lo,y
         lda object_speed_hi,y
+        sta object_Yvel_hi,x
         sta object_Yvel_hi,y
         rts
 cast_iceflakes_left
         sta object_facing,y
+        sta object_facing,x
         sta object_Xdir,y
-        lda player_Xpos,x
+        sta object_Xdir,x
+        lda player_Xpos
+        sta object_Xpos,y
+        sec
+        sbc #4
+        sta object_Xpos,x
+        lda player_Ypos
+        sta object_Ypos,y
         sec
         sbc #8
-        sta object_Xpos,y
-        lda player_Ypos,x
-        sta object_Ypos,y
-        lda object_speed_hi,y
-        sta object_Xvel_hi,y
-        lda object_speed_lo,y
-        sta object_Xvel_lo,y
-        lda #0
+        sta object_Ypos,x
+        lda #DIR_UP
         sta object_Ydir,y
+        lda #DIR_DOWN
+        sta object_Ydir,x
+        lda #0
         sta object_Yvel_hi,y
+        sta object_Yvel_hi,x
         sta object_Yvel_lo,y
+        sta object_Yvel_lo,x
+        lda object_speed_lo,y
+        sta object_Xvel_lo,x
+        sta object_Xvel_lo,y
+        lda object_speed_hi,y
+        sta object_Xvel_hi,x
+        sta object_Xvel_hi,y
         rts
 end
 

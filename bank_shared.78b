@@ -315,7 +315,7 @@ plot_rosary
         goto plot_next
 
 plot_fireball
-        plotsprite fireball0 2 Xposition Yposition frame
+        plotsprite fireball0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 
@@ -589,13 +589,13 @@ end
         data projectile_ai_lo
         skelsword_ai_lo, <.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, <.seed_ai, <.lightning_ai, 0, 0, 0, 0, 0, 0,
-        fireball_ai_lo, <.fireball_ai, <.lightning_ai, fairy_ai_lo, 0, 0, 0, 0
+        fireball_ai_lo, <.iceflake_ai, <.lightning_ai, fairy_ai_lo, 0, 0, 0, 0
 end
 
         data projectile_ai_hi
         skelsword_ai_hi, >.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, >.seed_ai, >.lightning_ai, 0, 0, 0, 0, 0, 0,
-        fireball_ai_hi, >.fireball_ai, >.lightning_ai, fairy_ai_hi, 0, 0, 0, 0
+        fireball_ai_hi, >.iceflake_ai, >.lightning_ai, fairy_ai_hi, 0, 0, 0, 0
 end
 
 load_ai_pointer
@@ -652,44 +652,6 @@ oh_decel  jsr .decelerate_object
 .object_done
           dex
           bne oh_loop
-          rts
-end
-
-;==============================================================================
-; FIREBALL AI
-;------------------------------------------------------------------------------
-; Fireballs poof out of existence when velocities = 0
-;==============================================================================
-fireball_ai
-        asm
-fireball_animate
-          lda object_state,x
-          sta object_frame,x
-          lda animation_frame
-          bne fireball_poof
-          inc object_frame,x
-fireball_poof
-.seed_ai                        ; stone rose seeds share this code
-          lda #0
-proj_move_check
-          sta temp1             ; object to replace projectile with
-          lda object_Xdir,x     ; if no X dir, must be moving Y
-          beq projY             ; skip over Y dir check
-          lda object_Xdest,x
-          cmp object_Xpos,x
-          beq proj_die
-          lda object_Ydir,x     ; if no Y dir, done here
-          beq proj_done
-projY     lda object_Ydest,x
-          cmp object_Ypos,x
-          beq proj_die
-proj_done lda object_Xpos,x     ; store current positions
-          sta object_Xdest,x    ; for next frame's tests
-          lda object_Ypos,x
-          sta object_Ydest,x
-          rts
-proj_die  lda temp1
-          sta object_type,x
           rts
 end
 
@@ -2152,4 +2114,64 @@ end
 
         data spell_ptrs_hi
         >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_fireball, >.cast_lightning
+end
+
+;==============================================================================
+; FIREBALL AI
+;------------------------------------------------------------------------------
+; Fireballs poof out of existence when velocities = 0
+;==============================================================================
+iceflake_ai
+        asm
+          lda #2
+          sta object_frame,x
+          lda #0
+          sta object_Xvel_hi,x
+          sta object_Yvel_hi,x
+          lda animation_frame
+          bne fireball_animate
+          lda #1
+          sta object_Xvel_hi,x
+          sta object_Yvel_hi,x
+          bne fireball_animate
+.fireball_ai
+          lda #0
+          sta object_frame,x
+fireball_animate
+;         lda object_state,x
+;         sta object_frame,x
+          lda animation_frame
+          bne fireball_poof
+          inc object_frame,x
+fireball_poof
+.seed_ai                        ; stone rose seeds share this code
+          lda #0
+proj_move_check
+          sta temp1             ; object to replace projectile with
+          lda object_facing,x
+          cmp #DIR_LEFT
+          beq projY
+          cmp #DIR_RIGHT
+          bne projY     ; if no X dir, must be moving Y
+          lda object_Xdest,x
+          cmp object_Xpos,x
+          beq proj_die
+          lda object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_Ydir,x     ; if no Y dir, done here
+          beq proj_done
+projY
+          lda object_Ydest,x
+          cmp object_Ypos,x
+          beq proj_die
+          lda object_speed_hi,x
+          sta object_Yvel_hi,x
+proj_done lda object_Xpos,x     ; store current positions
+          sta object_Xdest,x    ; for next frame's tests
+          lda object_Ypos,x
+          sta object_Ydest,x
+          rts
+proj_die  lda temp1
+          sta object_type,x
+          rts
 end
