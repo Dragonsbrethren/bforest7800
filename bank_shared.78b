@@ -999,7 +999,6 @@ chant_done_no_hold
           sta chant_input
 end
         if !mp_change then goto test_joy_done
-        playsfx sfx_bubbleup
         gosub decrease_player_mp
         goto test_joy_done
 
@@ -1823,8 +1822,12 @@ test_player_elevation_match
           jmp .enemy_sword_collision
 test_kraken
           cmp #TYPE_OCTOKRAKEN
-          bne normal_box
+          bne test_tentacle
           jmp .big_box
+test_tentacle
+          cmp #TYPE_TENTACLE
+          bne normal_box
+          jmp .tall_box
 normal_box
 end
         temp1 = player_Xpos + 2
@@ -1893,8 +1896,16 @@ big_box
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
         temp3 = Xposition - 1
-        temp4 = Yposition - 8
-        if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 32, 23) then return thisbank
+        temp4 = Yposition - 10
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 35, 25) then return thisbank
+        goto pc_damage
+
+tall_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition + 3
+        temp4 = Yposition - 14
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 5, 29) then return thisbank
 
 pc_damage
         if player_flags{0} then return thisbank
@@ -2150,10 +2161,10 @@ proj_move_check
           sta temp1             ; object to replace projectile with
           lda object_facing,x
           cmp #DIR_LEFT
-          beq projY
+          beq projX
           cmp #DIR_RIGHT
           bne projY     ; if no X dir, must be moving Y
-          lda object_Xdest,x
+projX     lda object_Xdest,x
           cmp object_Xpos,x
           beq proj_die
           lda object_speed_hi,x

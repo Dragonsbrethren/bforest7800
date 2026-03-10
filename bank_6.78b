@@ -984,6 +984,8 @@ octokraken_attack_pattern
           lda #1
           ldx #1
           ldy #2
+          sta object_speed_hi,x
+          sta object_speed_hi,y
           sta object_Xvel_hi,x
           sta object_Yvel_hi,x
           sta object_Xvel_hi,y
@@ -1004,8 +1006,10 @@ octokraken_side_to_side
           sta object_Ypos,y
           lda #DIR_RIGHT
           sta object_Xdir,x
+          sta object_facing,x
           lda #DIR_LEFT 
           sta object_Xdir,y
+          sta object_facing,y
           lda #0
           sta object_Ydir,x
           sta object_Ydir,y
@@ -1030,6 +1034,8 @@ octokraken_set_down
           lda #DIR_DOWN
           sta object_Ydir,x
           sta object_Ydir,y
+          sta object_facing,x
+          sta object_facing,y
 octokraken_restore_index
           ldx index
           lda #%10000000

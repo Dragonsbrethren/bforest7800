@@ -784,7 +784,6 @@ load_iceflake_data
         sta object_vel_cap_lo,x
         sta object_speed_lo,y
         sta object_speed_lo,x
-        sta object_vel_cap_lo,x
         lda #FIREBALL_DAMAGE
         clc
         adc player_wisdom
@@ -822,9 +821,9 @@ cast_iceflakes_right
         sta object_Xdir,y
         sta object_Xdir,x
         lda player_Xpos
-        sta object_Xpos,y
         clc
         adc #14
+        sta object_Xpos,y
         sta object_Xpos,x
         lda player_Ypos
         sta object_Ypos,y
@@ -915,9 +914,9 @@ cast_iceflakes_left
         sta object_Xdir,y
         sta object_Xdir,x
         lda player_Xpos
-        sta object_Xpos,y
         sec
         sbc #4
+        sta object_Xpos,y
         sta object_Xpos,x
         lda player_Ypos
         sta object_Ypos,y

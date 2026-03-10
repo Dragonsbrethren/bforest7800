@@ -35,12 +35,9 @@
 .magic_damage
         lda object_invuln,y
         beq .magic_damage_object
-        tya
-        tax
-        dec object_invuln,x
-        txa
-        tay
-        ldx index
+        sec
+        sbc #1
+        sta object_invuln,y
         rts
 
 .magic_damage_object
