@@ -800,6 +800,11 @@ load_iceflake_data
         lda #>.plot_fireball
         sta object_spr_ptr_hi,y
         sta object_spr_ptr_hi,x
+        lda #0
+        sta object_frame,y
+        sta object_pal,y
+        sta object_frame,x
+        sta object_pal,x
         jsr set_iceflake_direction
         jmp .chant_done
 
