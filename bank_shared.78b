@@ -2142,7 +2142,7 @@ end
 iceflake_ai
         asm
           lda #2
-          sta object_frame,x
+          sta object_state,x
           lda #0
           sta object_Xvel_hi,x
           sta object_Yvel_hi,x
@@ -2153,11 +2153,11 @@ iceflake_ai
           sta object_Yvel_hi,x
           bne fireball_animate
 .fireball_ai
-          lda #0
-          sta object_frame,x
-fireball_animate
-;         lda object_state,x
+;         lda #0
 ;         sta object_frame,x
+fireball_animate
+          lda object_state,x
+          sta object_frame,x
           lda animation_frame
           bne fireball_poof
           inc object_frame,x

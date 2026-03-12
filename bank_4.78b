@@ -160,7 +160,7 @@ load_castle
         if exit_room_index = F_CASTLE_CAVE_I then castle_cave
 
 castle_entrance_1
-        room_index = 14 ; 44
+        room_index = 44 ; 44
         menu_map_Xpos = 70
         menu_map_Ypos = 160
         player_Xpos = $4C

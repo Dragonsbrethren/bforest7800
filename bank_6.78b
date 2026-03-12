@@ -1231,13 +1231,13 @@ end
 ;==============================================================================
 rghost_ai
         asm
-          lda #GHOST_PAL_1
+          lda #RGHOST_PAL_1
           sta object_pal,x
-          lda #F_GHOST_1
+          lda #F_RGHOST_1
           sta object_frame,x
           lda animation_frame
           bne rghost_follow
-          lda #GHOST_PAL_2
+          lda #RGHOST_PAL_2
           sta object_pal,x
           inc object_frame,x
 rghost_follow
