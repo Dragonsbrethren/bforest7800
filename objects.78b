@@ -46,7 +46,8 @@
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
         const TYPE_F_FAIRY  = 153
-        const TYPE_STATIC   = TYPE_BOSS_FLAME
+        const TYPE_STATIC   = TYPE_BLOCKROCK
+        const TYPE_BLOCKROCK    = 157
         const TYPE_BOSS_FLAME = 158
         const TYPE_HARPY_SH = 159       ; Harpy's shadow
         const TYPE_BLOOD    = 160
@@ -368,7 +369,12 @@
         const F_OCTOINK = 1
         const OCTOINK_PAL = (6 * 32)
 
-        const TENTSHADOW_TIME = 60
+        const OCTOKRAKEN_HP     = 30
+        const OCTOKRAKEN_DAMAGE = 7
+        const OCTOKRAKEN_DEF    = 2
+        const OCTOKRAKEN_MDEF   = 2
+        const OCTOKRAKEN_PAL    = 5
+        const TENTSHADOW_TIME   = 60
 
         ; WARG
         const F_WARG_LEFT_1  = 0

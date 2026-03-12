@@ -488,7 +488,7 @@ remove_duplicates_next
         obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo, obj_boss_stats_lo
         <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats, <.obj_cave_spider_stats
         <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
-        <.obj_octokraken_stats, <.obj_octokraken_stats, <.obj_tentacle_stats
+        <.obj_octokraken_stats, <.obj_boss_stats, <.obj_tentacle_stats
 end
 
         data object_stats_hi
@@ -499,7 +499,7 @@ end
         obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi, obj_boss_stats_hi
         >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats, >.obj_cave_spider_stats
         >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
-        >.obj_octokraken_stats, >.obj_octokraken_stats, >.obj_tentacle_stats
+        >.obj_octokraken_stats, >.obj_boss_stats, >.obj_tentacle_stats
 end
 
 check_map_bits
@@ -665,8 +665,8 @@ load_fireball_data
         lda #>.plot_fireball
         sta object_spr_ptr_hi,y
         lda #2
-        sta object_frame,x
         sta object_frame,y
+        sta object_pal,y
         jsr set_cast_direction
         jmp .chant_done
 
@@ -1403,6 +1403,10 @@ obj_boss_stats
           lda #1
           sta object_hp,x
           jmp .obj_next_stats
+          lda #<.plot_next
+          sta object_spr_ptr_lo,x
+          lda #>.plot_next
+          sta object_spr_ptr_hi,x
 end
 
 stone_handler
@@ -1499,6 +1503,8 @@ find_lighting_target_loop
           bmi lightning_target_inc
           cmp #TYPE_CASTLE_BOSS         ; TODO: range
           beq lightning_target_inc      ; don't kill the boss controllers...
+          cmp #TYPE_RIVERBOSS
+          beq lightning_target_inc
           lda player_facing
           cmp #DIR_UP
           beq lightning_target_up

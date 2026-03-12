@@ -37,6 +37,7 @@
         incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
         incgraphic gfx/river/octoeye.png 160A 3 3 3 3
+        incgraphic gfx/river/blockrock.png 160A 1 2 0 3
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
@@ -432,7 +433,8 @@ end
 
         data river_room_13_obj
         TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 12*8, $F0
-        TYPE_OCTOKRAKEN, 8*8, $40
+        TYPE_RIVERBOSS, 8*8, $F0, TYPE_OCTOKRAKEN, 8*8, $F0
+        TYPE_BLOCKROCK, 74, $F0, TYPE_BLOCKROCK, 80, $F0
         $00
 end
 
@@ -956,9 +958,80 @@ end
         object_flags[obj_index] = 0
         goto obj_next_stats
 
+river_boss
+        asm
+          lda m_spell_bits_1
+          and #%00000010
+          beq river_boss_flags
+          lda m_key_bits
+          and #%00000010
+          beq river_boss_flags
+          jmp .river_remove_blocks
+river_boss_flags
+          lda object_flags,x
+          and #%10000000
+          bne .river_boss_handler
+end
+          if player_Ypos >= $90 then return thisbank
+
+spawn_river_boss
+        asm
+          lda #%10000000
+          sta object_flags+3
+          sta object_flags+4
+          lda #$40
+          sta object_Ypos+4
+          lda #$C0
+          sta object_Ypos+5
+          lda #$B0
+          sta object_Ypos+6
+end
+        ; block the area with the rock graphics
+        pokechar current_map  9 12 20 14 $2A
+        pokechar current_map 10 11 20 14 $2A
+river_boss_return
+        return thisbank
+
+river_boss_handler
+        asm
+          lda object_type+4
+          bne .river_boss_return
+          lda m_key_bits
+          ora #%00000010        ; use key2 to track boss defeat
+          sta m_key_bits
+end
+
+river_remove_blocks
+        ; replace boss collision with water
+        pokechar current_map  9  3 20 14 $3A
+        pokechar current_map  9  3 20 14 $3A
+        pokechar current_map 10  3 20 14 $3A
+        pokechar current_map  8  4 20 14 $3A
+        pokechar current_map  9  4 20 14 $3A
+        pokechar current_map 10  4 20 14 $3A
+        pokechar current_map 11  4 20 14 $3A
+        pokechar current_map  9 12 20 14 $3A
+        pokechar current_map 10 11 20 14 $3A
+        asm
+          lda #0
+          sta object_type+1
+          sta object_type+2
+          sta object_type+3
+          sta object_type+4
+          sta object_type+5
+          sta object_type+6
+          rts
+end
+
 octokraken_ai
         asm
           lda object_flags,x
+          and #%10000000
+          bne octokraken_active
+          rts
+octokraken_active
+          lda object_flags,x
+          and #%01000000
           beq octokraken_attack_pattern
           ldx #1
           ldy #2
@@ -1038,7 +1111,7 @@ octokraken_set_down
           sta object_facing,y
 octokraken_restore_index
           ldx index
-          lda #%10000000
+          lda #%01000000
           sta object_flags,x
 octokraken_tent_check_done
 octokraken_return
@@ -1075,24 +1148,6 @@ end
         object_speed_lo[obj_index] = 10
         object_flags[obj_index] = 0
         goto obj_next_stats
-
-octoeye_ai
-        asm
-          lda object_flags,x
-          bne octoeye_return
-          lda #OCTOINK_DAMAGE
-          sta object_damage,x
-          sta object_hp,x
-          lda #<.plot_octoeye
-          sta object_spr_ptr_lo,x
-          lda #>.plot_octoeye
-          sta object_spr_ptr_hi,x
-          lda #1
-          sta object_flags,x
-
-octoeye_return
-          rts
-end
 
 tentacle_ai
         asm
@@ -1271,10 +1326,11 @@ plot_warg
 
 plot_octokraken
 plot_octoeye
-        plotsprite octoeye 2 71 $40 0
-        plotsprite octoeye 2 87 $40 0
+        shadow_offset = Yposition - $10
+        plotsprite octoeye 2 71 Yposition 0
+        plotsprite octoeye 2 87 Yposition 0
         plotsprite octokraken_tallsprite_00 sprite_pal Xposition Yposition 0
-        plotsprite octokraken sprite_pal Xposition $30 0
+        plotsprite octokraken sprite_pal Xposition shadow_offset 0
         goto plot_next
 
 plot_tentacle
@@ -1282,4 +1338,8 @@ plot_tentacle
         if !frame then plotsprite tentacle sprite_pal Xposition shadow_offset 0
 plot_tentshadow
         plotsprite tentacle_tallsprite_00 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_blockrock
+        plotsprite blockrock 6 Xposition Yposition 0
         goto plot_next

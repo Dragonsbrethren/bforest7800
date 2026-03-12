@@ -37,6 +37,7 @@
         incgraphic gfx/sprites/warg2.png 160A 0 2 3 1
         incgraphic gfx/sprites/warg3.png 160A 0 2 3 1
         incgraphic gfx/river/octoeye.png 160A 3 3 3 3
+        incgraphic gfx/river/blockrock.png 160A 1 2 0 3
 
         incmapfile tiled/river_room_0.tmx
         incmapfile tiled/river_room_1.tmx
