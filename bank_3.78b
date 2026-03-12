@@ -192,6 +192,8 @@ plot_equip_menu
         clearscreen
         menu_change = 0
         menu_selection = 0
+        equip_inv_sel = 0
+        m_inv_scroll = 0
         menu_columns = 1        ; technically 2 but code handles each menu pane separately
         menu_max = 4
         gosub plot_menu_border
