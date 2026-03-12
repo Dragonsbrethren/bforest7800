@@ -1074,6 +1074,7 @@ end
 
         data hills_room_1_obj
         TYPE_SHIELD3, $80, $60
+        TYPE_SPELL2, 28, $90
         $00
 end
 

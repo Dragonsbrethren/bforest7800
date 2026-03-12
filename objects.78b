@@ -34,6 +34,7 @@
         const TYPE_OCTOKRAKEN   = 32
         const TYPE_RIVERBOSS    = 33
         const TYPE_TENTACLE     = 34
+        const TYPE_BLOCKFLAME   = 35
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -592,6 +593,9 @@
 
         const DARKBOLT_DURATION = 9
         const DARKBOLT_DAMAGE = $10
+
+        ; BOSS FLAME AND BLOCK FLAME
+        const F_FLAME = 16
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block

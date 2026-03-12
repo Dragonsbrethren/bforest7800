@@ -458,6 +458,7 @@ end
         data river_room_17_obj
         TYPE_WARG, $30, $30, TYPE_WARG, $20, $60, TYPE_WARG, $40, $80
         TYPE_TORCH, $28, $80
+        TYPE_BLOCKFLAME, 52, $40
         $00
 end
 
@@ -1020,6 +1021,30 @@ river_remove_blocks
           sta object_type+6
           rts
 end
+
+; the flame in room 17 that blocks access to hills
+blockflame_ai
+        asm
+          lda m_spell_bits_2
+          and #%00001000        ; unused spell used to track death
+          bne blockflame_remove
+end
+        pokechar current_map 6 4 20 14 $2A
+        asm
+          lda #<.plot_food
+          sta object_spr_ptr_lo,x
+          lda #>.plot_food
+          sta object_spr_ptr_hi,x
+          lda #2                ; palette index
+          jmp boss_flame_anim
+
+blockflame_remove
+          lda #0
+          sta object_type,x
+end
+        pokechar current_map 6 4 20 14 0
+        pokechar current_map 7 4 20 14 0
+        return thisbank
 
 octokraken_ai
         asm

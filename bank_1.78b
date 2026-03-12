@@ -489,6 +489,7 @@ remove_duplicates_next
         <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats, <.obj_cave_spider_stats
         <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
         <.obj_octokraken_stats, <.obj_boss_stats, <.obj_tentacle_stats
+        <.obj_boss_stats
 end
 
         data object_stats_hi
@@ -500,6 +501,7 @@ end
         >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats, >.obj_cave_spider_stats
         >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
         >.obj_octokraken_stats, >.obj_boss_stats, >.obj_tentacle_stats
+        >.obj_boss_stats
 end
 
 check_map_bits
@@ -1291,6 +1293,7 @@ set_name_ptr
           lda #PICKUP_TIME
           sta new_pickup
           sta pickup_timer
+name_ptr_set
           rts
 end
 
@@ -1402,6 +1405,9 @@ obj_boss_stats
           ldx obj_index
           lda #1
           sta object_hp,x
+          lda #255
+          sta object_def,x
+          sta object_mdef,x
           jmp .obj_next_stats
           lda #<.plot_next
           sta object_spr_ptr_lo,x

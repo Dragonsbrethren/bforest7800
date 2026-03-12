@@ -312,13 +312,13 @@ end
         'Fireball*'
 end
         alphadata pickup_spell2 font_spr
-        'Windslash*'
+        'Ice Flakes*'
 end
         alphadata pickup_spell3 font_spr
-        'Spell 3      *'
+        'Wind Slash*'
 end
         alphadata pickup_spell4 font_spr
-        'Spell 4      *'
+        'Thunderbolt*'
 end
         alphadata pickup_spell5 font_spr
         'Spell 5      *'
