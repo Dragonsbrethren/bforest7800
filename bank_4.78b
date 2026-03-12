@@ -216,6 +216,7 @@ init_castle
         sta exit_room_index
         sta save_room_index
         sta obscure_player
+        sta pal_animation
         lda #$FF
         sta locked_zone
         ldx room_index
