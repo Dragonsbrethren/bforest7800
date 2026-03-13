@@ -973,6 +973,7 @@ end
           if player_Ypos >= $90 then return thisbank
 
 spawn_river_boss
+        playsfx sfx_roarroar
         asm
           lda #%10000000
           sta object_flags+3
@@ -1367,3 +1368,44 @@ plot_tentshadow
 plot_blockrock
         plotsprite blockrock 6 Xposition Yposition 0
         goto plot_next
+
+        data sfx_roarroar
+        $10,$10,$00 ; version, priority, frames per chunk
+        $1d,$0f,$00 ; first chunk of freq,channel,volume
+        $07,$06,$03
+        $13,$0f,$06
+        $05,$06,$09
+        $1e,$0c,$0c
+        $06,$06,$0f
+        $1e,$0c,$0f
+        $1e,$0c,$0f
+        $05,$06,$0f
+        $1e,$0c,$0f
+        $1f,$0c,$0f
+        $1f,$0c,$0f
+        $1f,$0c,$0f
+        $0f,$0f,$0f
+        $05,$06,$0f
+        $1e,$0c,$0f
+        $1a,$07,$0f
+        $05,$06,$0f
+        $17,$0c,$0f
+        $0a,$0f,$0f
+        $18,$0c,$0f
+        $18,$0c,$0f
+        $05,$06,$0f
+        $08,$06,$0f
+        $04,$06,$0f
+        $05,$06,$0c
+        $1d,$0c,$06
+        $05,$06,$03
+        $17,$0c,$03
+        $17,$0c,$03
+        $17,$0c,$03
+        $1c,$0c,$02
+        $1c,$0c,$02
+        $17,$0c,$02
+        $06,$06,$01
+        $0c,$0f,$01
+        $00,$00,$00
+        end
