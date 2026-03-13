@@ -2148,8 +2148,20 @@ iceflake_ai
           sta object_Yvel_hi,x
           lda animation_frame
           bne fireball_animate
-          lda #1
+          lda object_Xvel_lo,x
+          clc
+          adc #64
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc #0
           sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc #32
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          clc
+          adc #0
           sta object_Yvel_hi,x
           bne fireball_animate
 .fireball_ai

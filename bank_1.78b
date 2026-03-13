@@ -859,6 +859,8 @@ cast_iceflakes_up
         sta object_Ydir,y
         sta object_Ydir,x
         lda player_Xpos
+        clc
+        adc #1
         sta object_Xpos,y
         clc
         adc #4
@@ -890,6 +892,8 @@ cast_iceflakes_down
         sta object_Ydir,y
         sta object_Ydir,x
         lda player_Xpos
+        clc
+        adc #1
         sta object_Xpos,y
         clc
         adc #4

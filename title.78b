@@ -100,7 +100,7 @@ title_new_game
         m_charm_bits_2  = 0
         m_relic_bits_1  = %00010000
         m_relic_bits_2  = %00000001
-        m_spell_bits_1  = %00000000
+        m_spell_bits_1  = %00000010
         m_spell_bits_2  = %00000000
         m_key_bits = 0
         m_map_bits = 0
