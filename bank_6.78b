@@ -986,8 +986,8 @@ spawn_river_boss
           sta object_Ypos+6
 end
         ; block the area with the rock graphics
-        pokechar current_map  9 12 20 14 $2A
-        pokechar current_map 10 12 20 14 $2A
+        pokechar current_map  9 12 20 14 8
+        pokechar current_map 10 12 20 14 8
 river_boss_return
         return thisbank
 
@@ -1095,7 +1095,7 @@ end
         asm
           lda player_Ypos
           cmp #$A0
-          beq octokraken_down
+          bcs octokraken_down
           jsr randomize
           cmp #128
           bcc octokraken_down
@@ -1133,19 +1133,29 @@ octokraken_side_low
 octokraken_down
           ldx #1
           ldy #2
-          lda #56
-          sta object_Xpos,y
-          lda #96
-          sta object_Xpos,x
           lda #$50
           sta object_Ypos,y
           sta object_Ypos,x
-          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,64
-          bcc octotent_noX
           lda #DIR_LEFT 
           sta object_Xdir,x
           lda #DIR_RIGHT
           sta object_Xdir,y
+          lda player_Xpos
+          sta object_Xpos,y
+          cmp #80
+          bcs octokraken_player_right
+octokraken_player_left
+          clc
+          adc #40
+          sta object_Xpos,x
+          bne octokraken_check_cross
+octokraken_player_right
+          sec
+          sbc #40
+          sta object_Xpos,x
+octokraken_check_cross
+          QBOXCOLLISIONCHECK player_Xpos,player_Ypos,PLAYER_WIDTH,PLAYER_HEIGHT,Xposition,Yposition,36,64
+          bcc octotent_noX
 octokraken_set_down
           lda #DIR_DOWN
           sta object_Ydir,x
