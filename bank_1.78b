@@ -838,9 +838,9 @@ cast_iceflakes_right
         sbc #8
         sta object_Ypos,x
         lda #DIR_UP
-        sta object_Ydir,y
-        lda #DIR_DOWN
         sta object_Ydir,x
+        lda #DIR_DOWN
+        sta object_Ydir,y
         lda #0
         sta object_Yvel_hi,y
         sta object_Yvel_hi,x
@@ -935,9 +935,9 @@ cast_iceflakes_left
         sbc #8
         sta object_Ypos,x
         lda #DIR_UP
-        sta object_Ydir,y
-        lda #DIR_DOWN
         sta object_Ydir,x
+        lda #DIR_DOWN
+        sta object_Ydir,y
         lda #0
         sta object_Yvel_hi,y
         sta object_Yvel_hi,x

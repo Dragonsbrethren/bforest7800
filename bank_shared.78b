@@ -2148,6 +2148,11 @@ iceflake_ai
           sta object_Yvel_hi,x
           lda animation_frame
           bne fireball_animate
+          lda object_facing,x
+          cmp #DIR_LEFT
+          beq iceflake_Yspread
+          cmp #DIR_RIGHT
+          beq iceflake_Yspread
           lda object_Xvel_lo,x
           clc
           adc #64
@@ -2155,12 +2160,13 @@ iceflake_ai
           lda object_Xvel_hi,x
           adc #0
           sta object_Xvel_hi,x
+          jmp .fireball_ai
+iceflake_Yspread
           lda object_Yvel_lo,x
           clc
-          adc #32
+          adc #192
           sta object_Yvel_lo,x
           lda object_Yvel_hi,x
-          clc
           adc #0
           sta object_Yvel_hi,x
           bne fireball_animate
@@ -2188,7 +2194,12 @@ projX     lda object_Xdest,x
           beq proj_die
           lda object_speed_hi,x
           sta object_Xvel_hi,x
-          lda object_Ydir,x     ; if no Y dir, done here
+          lda object_Ydir,x
+          beq proj_done
+          lda object_facing,x
+          cmp #DIR_LEFT
+          beq proj_done
+          cmp #DIR_RIGHT
           beq proj_done
 projY
           lda object_Ydest,x
