@@ -1093,6 +1093,9 @@ octokraken_attack_pattern
 end
         playsfx sfx_roarroar
         asm
+          lda player_Ypos
+          cmp #$A0
+          beq octokraken_down
           jsr randomize
           cmp #128
           bcc octokraken_down
@@ -1101,12 +1104,8 @@ octokraken_side_to_side
           ldy #2
           lda #40
           sta object_Xpos,x
-          lda #$60
-          sta object_Ypos,x
           lda #108      
           sta object_Xpos,y
-          lda #$80
-          sta object_Ypos,y
           lda #DIR_RIGHT
           sta object_Xdir,x
           sta object_facing,x
@@ -1116,6 +1115,20 @@ octokraken_side_to_side
           lda #0
           sta object_Ydir,x
           sta object_Ydir,y
+          lda player_Ypos
+          cmp #$90
+          bcs octokraken_side_low
+octokraken_side_high
+          lda #$60
+          sta object_Ypos,x
+          lda #$80
+          sta object_Ypos,y
+          bne octokraken_restore_index
+octokraken_side_low
+          lda #$70
+          sta object_Ypos,x
+          lda #$90
+          sta object_Ypos,y
           beq octokraken_restore_index
 octokraken_down
           ldx #1
