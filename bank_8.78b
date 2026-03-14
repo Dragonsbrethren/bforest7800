@@ -1067,8 +1067,8 @@ end
 end
 
         data hills_room_0_obj
-        TYPE_SPIDER, $10, $20, TYPE_HSLIME, $50, $A0, TYPE_HARPY, $58, $40, TYPE_HARPY_SH, $58, $50
-        TYPE_TORCH, $10, $90, TYPE_TORCH, $68, $40
+        TYPE_SPIDER, (4*8), $20, TYPE_SPIDER, (12*8+4), $40
+        TYPE_TORCH, $10, $90, TYPE_TORCH, 80, $50
         $00
 end
 
@@ -1083,7 +1083,7 @@ end
 end
 
         data hills_room_3_obj
-        TYPE_SPIDER, $74, $40
+        TYPE_SPIDER, $74, $30
         $00
 end
 
