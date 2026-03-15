@@ -45,6 +45,7 @@ hills_waterfall
 load_hills
         if !first_load then hills_set_room
         first_load = 0
+        goto hills_cave_1
         if save_room_index = 1 then hills_save_1
         if save_room_index = 2 then hills_save_2
         if exit_room_index = F_HILLS_START2_I then hills_start_2
@@ -120,7 +121,6 @@ hills_cave_3
 
 hills_set_room
         characterset hills_ledges
-        goto hills_init
         if music_playing then hills_init
         playrmt blackforest_indoorarea01
         music_playing = 1
@@ -305,8 +305,8 @@ hills_flame_on
           sta object_timer,x    ; flame and spawn boss
           lda #%10000000
           sta object_flags,x    ; boss fight active
-          ldy #2                ; index of boss flame
-          sta object_flags,y    ; turn flame on
+;         ldy #2                ; index of boss flame
+          sta object_flags+2    ; turn flame on
 hills_boss_wait
           rts
 
@@ -369,7 +369,14 @@ harpy_zero_Yvel
           bcs harpy_dive
 
 harpy_fly_up
+          lda object_type,x
+          cmp #TYPE_HARPY_QUEEN
+          bne harpy_fly_frame
+          lda #F_HARPY_QUEEN
+          bne store_harpy_fly
+harpy_fly_frame
           lda #F_HARPY_FLY_0
+store_harpy_fly
           sta object_frame,x
           lda #0
           sta object_Xvel_lo,x
@@ -399,7 +406,14 @@ harpy_update_shadow
           jmp harpy_shadow_update
 
 harpy_dive
+          lda object_type,x
+          cmp #TYPE_HARPY_QUEEN
+          bne harpy_dive_frame
+          lda #F_HARPY_QUEEN_DIVE
+          bne store_harpy_dive
+harpy_dive_frame
           lda #F_HARPY_DIVE
+store_harpy_dive
           sta object_frame,x
           lda object_Xpos,x
           cmp player_Xpos
@@ -784,7 +798,7 @@ plot_hills_room_3
         plotmapfile tiled/hills_room_3.tmx hills_room_3 0 0 20 14
         zone1_objects  = 4
         zone2_objects  = 4
-        zone14_objects = 4
+        zone14_objects = 5
         locked_zone    = 6
         exit_tileset = T_CAVES
         exit_Xpos = 32
@@ -804,18 +818,32 @@ plot_hills_room_4
         return thisbank
 
 obj_harpy_stats
-        object_hp[obj_index] = HARPY_HP
-        object_vel_cap_hi[obj_index] = HARPY_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = HARPY_VEL_CAP_LO
-        object_damage[obj_index] = HARPY_DAMAGE
-        object_def[obj_index] = HARPY_DEF
-        object_mdef[obj_index] = HARPY_MDEF
-        object_friction_hi[obj_index] = HARPY_FRICTION_HI
-        object_friction_lo[obj_index] = HARPY_FRICTION_LO
-        object_speed_hi[obj_index] = HARPY_SPEED_HI
-        object_speed_lo[obj_index] = HARPY_SPEED_LO
-        object_flags[obj_index] = HARPY_FLAGS
-        goto hills_160b_sprite
+        asm
+          ldx obj_index
+          lda #HARPY_HP
+          sta object_hp,x
+          lda #HARPY_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #HARPY_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #HARPY_DAMAGE
+          sta object_damage,x
+          lda #HARPY_DEF
+          sta object_def,x
+          lda #HARPY_MDEF
+          sta object_mdef,x
+          lda #HARPY_FRICTION_HI
+          sta object_friction_hi,x
+          lda #HARPY_FRICTION_LO
+          sta object_friction_lo,x
+          lda #HARPY_SPEED_HI
+          sta object_speed_hi,x
+          lda #HARPY_SPEED_LO
+          sta object_speed_lo,x
+          lda #HARPY_FLAGS
+          sta object_flags,x
+          jmp .hills_160b_sprite
+end
 
 obj_spider_stats
         object_hp[obj_index] = SPIDER_HP
@@ -1088,8 +1116,8 @@ end
 end
 
         data hills_room_4_obj
-        TYPE_HSLIME, $60, $60, TYPE_SPIDER, $7C, $60
-        TYPE_TORCH, $28, $30, TYPE_CHARM3, $78, $30
+        TYPE_SPIDER, (5*8), $20, TYPE_HSLIME, (10*8), $60, TYPE_SPIDER, (15*8), $60
+        TYPE_TORCH, $28, $30, TYPE_CHARM3, (13*8), $40
         $00
 end
 
@@ -1201,7 +1229,7 @@ end
 
         data hills_room_22_obj
         TYPE_HARPY_QUEEN, $4C, $70
-        TYPE_HTALON, $4C, $80
+        TYPE_HTALON, $4C, $80, TYPE_HILLS_BOSS, $F0, $F0
         $00
 end
 

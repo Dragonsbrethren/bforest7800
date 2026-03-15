@@ -434,7 +434,7 @@ end
         'Dark Rosary*'
 end
         alphadata pickup_charm3 font_spr
-        'Thunder Rock*'
+        'Ice Crystal*'
 end
         alphadata pickup_charm4 font_spr
         'Harpy` Charm*'

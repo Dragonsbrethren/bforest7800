@@ -409,6 +409,7 @@
         const HARPY_QUEEN_HP = 15
         const HARPY_QUEEN_FLAGS = %10000100
         const F_HARPY_QUEEN = 2
+        const F_HARPY_QUEEN_DIVE = 3
 
 
         ; SPIDER
