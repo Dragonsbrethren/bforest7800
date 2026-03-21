@@ -56,7 +56,7 @@ title_selection
         goto title_new_game
 
 title_flash
-        plotchars 'PRE ALPHA 03-12-2026' 0 40 10
+        plotchars 'PRE ALPHA 03-21-2026' 0 40 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -82,25 +82,25 @@ end
         goto menu_init bank3
 
 title_new_game
-        tileset = T_HILLS
-        fade = $0F
-        player_sword = 3
-        player_shield = 2
-        player_armor = 2
-        player_charm = 1
+        tileset = T_CASTLE
+        fade = FADE_NORMAL
+        player_sword = 1
+        player_shield = 0
+        player_armor = 1
+        player_charm = 0
         m_item_bits_1   = %00000001
         m_item_bits_2   = %00000000
-        m_sword_bits_1  = %00000111
+        m_sword_bits_1  = %00000001
         m_sword_bits_2  = %00000000
-        m_shield_bits_1 = %00000011
+        m_shield_bits_1 = %00000000
         m_shield_bits_2 = 0
-        m_armor_bits_1  = %00000011
+        m_armor_bits_1  = %00000001
         m_armor_bits_2  = 0
-        m_charm_bits_1  = %00000001
+        m_charm_bits_1  = %00000000
         m_charm_bits_2  = 0
-        m_relic_bits_1  = %00010000
-        m_relic_bits_2  = %00000001
-        m_spell_bits_1  = %00000011
+        m_relic_bits_1  = %00000000
+        m_relic_bits_2  = %00000000
+        m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000
         m_key_bits = 0
         m_map_bits = 0
