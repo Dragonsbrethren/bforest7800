@@ -1145,7 +1145,7 @@ octokraken_side_low
           sta object_Ypos,x
           lda #$90
           sta object_Ypos,y
-          beq octokraken_restore_index
+          bne octokraken_restore_index
 octokraken_down
           ldx #1
           ldy #2
