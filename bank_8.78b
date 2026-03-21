@@ -45,7 +45,6 @@ hills_waterfall
 load_hills
         if !first_load then hills_set_room
         first_load = 0
-        goto hills_cave_1
         if save_room_index = 1 then hills_save_1
         if save_room_index = 2 then hills_save_2
         if exit_room_index = F_HILLS_START2_I then hills_start_2

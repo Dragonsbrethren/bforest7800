@@ -433,7 +433,7 @@ end
 
         data river_room_13_obj
         TYPE_TENTACLE, 8*7, $F0, TYPE_TENTACLE, 12*8, $F0
-        TYPE_RIVERBOSS, 8*8, $F0, TYPE_OCTOKRAKEN, 8*8, $F0
+        TYPE_RIVERBOSS, $F0, $F0, TYPE_OCTOKRAKEN, 8*8, $F0
         TYPE_BLOCKROCK, 76, $F0
         $00
 end
@@ -973,7 +973,8 @@ end
           if player_Ypos >= $90 then return thisbank
 
 spawn_river_boss
-        playsfx sfx_roarroar
+        temp7 = rand&3
+        playsfx sfx_roarroar temp7
         asm
           lda #%10000000
           sta object_flags+3
@@ -1061,16 +1062,25 @@ octokraken_active
           ldy #2
 octokraken_tent_check_1
           lda object_type,x
+          beq octokraken_respawn_tent_1
+          cmp #TYPE_TENTSHADOW
           bne octokraken_tent_check_2
+          lda #0
+octokraken_respawn_tent_1
           sta object_frame,x
+          lda #%00010000
           sta object_flags,x
           sta object_timer,x
           lda #TYPE_TENTACLE
           sta object_type,x
+          lda #OCTOPUS_HP
+          sta object_hp,x
 octokraken_tent_check_2
           lda object_type,y
           beq octokraken_tent_check_3
-          jmp octokraken_tent_check_done
+          cmp #TYPE_TENTSHADOW
+          bne octokraken_tent_return
+          lda #0
 octokraken_tent_check_3
           sta object_frame,y
           sta object_timer,y
@@ -1080,6 +1090,11 @@ octokraken_tent_check_3
           sta object_type,y
           lda #OCTOPUS_HP
           sta object_hp,y
+          ldx index
+          lda #%10000000
+          sta object_flags,x
+octokraken_tent_return
+          rts
 octokraken_attack_pattern
           lda #1
           ldx #1
@@ -1091,7 +1106,8 @@ octokraken_attack_pattern
           sta object_Xvel_hi,y
           sta object_Yvel_hi,y
 end
-        playsfx sfx_roarroar
+        temp7 = rand&3
+        playsfx sfx_roarroar temp7
         asm
           lda player_Ypos
           cmp #$A0
@@ -1223,7 +1239,6 @@ tentshadow_timer_init
           sta object_timer,x
           lda #1
           sta object_frame,x
-;         lda #%00000001
           lda object_flags,x
           ora #%00000001
           sta object_flags,x
