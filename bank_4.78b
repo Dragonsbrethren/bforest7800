@@ -206,7 +206,7 @@ castle_save_2
 castle_rooms
         characterset castle_stone
         if music_playing then init_castle
-;       playrmt blackforest_indoorarea01
+        playrmt blackforest_indoorarea01
         music_playing = 1
 init_castle
         asm
@@ -312,8 +312,8 @@ castle_shared_pals
 end
 
         data castle_room_1_obj
-        TYPE_DOOR_OPEN, $48, $10
-        TYPE_TORCH, $40, $B0,  TYPE_TORCH, $56, $B0,  TYPE_TORCH, $40, $20,  TYPE_TORCH, $56, $20,
+        TYPE_DOOR, $48, $10
+        TYPE_TORCH, $41, $B0,  TYPE_TORCH, $58, $B0,  TYPE_TORCH, $41, $20,  TYPE_TORCH, $58, $20,
         $00
 end
 
