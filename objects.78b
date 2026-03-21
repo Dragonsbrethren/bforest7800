@@ -214,7 +214,7 @@
         const RAVEN_MDEF = 0
 
         ; DARK PRIEST
-        const PRIEST_HP          =  5
+        const PRIEST_HP          =  3
         const PRIEST_VEL_CAP_HI  =  1
         const PRIEST_VEL_CAP_LO  =  0
         const PRIEST_DAMAGE      =  4
@@ -256,7 +256,7 @@
         const DARKSPARK_PAL = (0 * 32)
 
         ; SKELETAL KNIGHT
-        const SKEL_HP          =  5
+        const SKEL_HP          =  3
         const SKEL_VEL_CAP_HI  =  1
         const SKEL_VEL_CAP_LO  =  0
         const SKEL_DAMAGE      =  4
