@@ -1055,6 +1055,11 @@ octokraken_ai
           bne octokraken_active
           rts
 octokraken_active
+          lda animation_timer
+          and #%00000001
+          bne octokraken_even_frame
+          rts
+octokraken_even_frame
           lda object_flags,x
           and #%01000000
           beq octokraken_attack_pattern
@@ -1221,6 +1226,11 @@ end
 
 tentacle_ai
         asm
+          lda animation_timer
+          and #%00000010
+          bne tentacle_even_frame
+          rts
+tentacle_even_frame
           lda #TYPE_TENTSHADOW
           jmp proj_move_check
 end
