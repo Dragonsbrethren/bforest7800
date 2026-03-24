@@ -973,8 +973,7 @@ end
           if player_Ypos >= $90 then return thisbank
 
 spawn_river_boss
-        temp7 = rand&3
-        playsfx sfx_roarroar temp7
+        playsfx sfx_roarroar
         asm
           lda #%10000000
           sta object_flags+3
@@ -1111,8 +1110,7 @@ octokraken_attack_pattern
           sta object_Xvel_hi,y
           sta object_Yvel_hi,y
 end
-        temp7 = rand&3
-        playsfx sfx_roarroar temp7
+        playsfx sfx_roarroar
         asm
           lda player_Ypos
           cmp #$A0

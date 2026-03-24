@@ -167,7 +167,6 @@ plot_river_room_13
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy current_map river_room_13 280
         plotmapfile tiled/river_room_13.tmx river_room_13 0 0 20 14
-        pal_animation = 1
         zone1_objects  = 4
         zone2_objects  = 4
         zone14_objects = 3
