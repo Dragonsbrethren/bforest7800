@@ -73,12 +73,13 @@
         lda object_hp,y
         sta temp1
         sta temp_hp
-        lda object_damage,y
+        lda object_damage,x
         sta temp2
         sec
         sbc object_mdef,y
         cmp temp2
         bcs .nov_mdef
+        bne .nov_mdef
         ; if underflow, always do 1 damage
         lda #1
 .nov_mdef
