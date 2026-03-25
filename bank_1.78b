@@ -958,9 +958,20 @@ end
 ; The Fairy doesn't engage in combat but can use healing items on Johanna
 ;==============================================================================
 fairy_ai
-        timer = timer + 1
-        if timer < FAIRY_ITEM_TIME then fairy_move
-        timer = 0
+        asm
+          lda object_flags,x
+          bne fairy_check_time
+          jmp .obj_fairy_stats
+fairy_check_time
+          inc object_timer,x
+          lda object_timer,x
+          cmp #FAIRY_ITEM_TIME
+          bcs fairy_zero_time
+          jmp .fairy_move
+fairy_zero_time
+          lda #0
+          sta object_timer,x
+end
 
 fairy_pick_item
         ; prioritize curing status effects
@@ -981,18 +992,30 @@ fairy_item_used
         asm
           ldx temp2
           dec m_item_qty,x
+          lda #F_FAIRY_ITEM1
+          sta object_frame,x
+          lda animation_frame
+          beq .fairy_item_sfx
+          lda #F_FAIRY_ITEM2
+          sta object_frame,x
 end
+fairy_item_sfx
         ; remove any zero quantity items from inventory
-        if animation_frame then frame = F_FAIRY_ITEM2 else frame = F_FAIRY_ITEM1
         gosub check_item_qtys
         playsfx sfx_bubbleup
 
 fairy_item_done
 
 fairy_move
-        if animation_frame then frame = F_FAIRY_WING1 : return thisbank
-        frame = F_FAIRY_WING2 
-
+        asm
+          lda #F_FAIRY_WING1
+          sta object_frame,x
+          lda animation_frame
+          beq .fairy_follow_box
+          lda #F_FAIRY_WING2
+          sta object_frame,x
+end
+fairy_follow_box
         ; works as return for move frames
         goto test_follow_box
 
@@ -1033,26 +1056,35 @@ fairy_use_ether
         goto fairy_item_used
 
 obj_fairy_stats
-        object_hp[obj_index] = FAIRY_HP
-        object_vel_cap_hi[obj_index] = FAIRY_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = FAIRY_VEL_CAP_LO
-        object_damage[obj_index] = FAIRY_DAMAGE
-        object_def[obj_index] = FAIRY_DEF
-        object_mdef[obj_index] = FAIRY_MDEF
-        object_friction_hi[obj_index] = FAIRY_FRICTION_HI
-        object_friction_lo[obj_index] = FAIRY_FRICTION_LO
-        object_speed_hi[obj_index] = FAIRY_SPEED_HI
-        object_speed_lo[obj_index] = FAIRY_SPEED_LO
-        object_flags[obj_index] = 0
-        object_flags[obj_index] = %00000100
         asm
-          ldx obj_index
+          lda #FAIRY_HP
+          sta object_hp,x
+          lda #FAIRY_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #FAIRY_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #FAIRY_DAMAGE
+          sta object_damage,x
+          lda #FAIRY_DEF
+          sta object_def,x
+          lda #FAIRY_MDEF
+          sta object_mdef,x
+          lda #FAIRY_FRICTION_HI
+          sta object_friction_hi,x
+          lda #FAIRY_FRICTION_LO
+          sta object_friction_lo,x
+          lda #FAIRY_SPEED_HI
+          sta object_speed_hi,x
+          lda #FAIRY_SPEED_LO
+          sta object_speed_lo,x
+          lda #%00000100
+          sta object_flags,x
           lda #<.plot_fairy
           sta object_spr_ptr_lo,x
           lda #>.plot_fairy
           sta object_spr_ptr_hi,x
+          rts
 end
-        goto obj_next_stats
 
 plot_fairy
         plotsprite fairy0 0 Xposition Yposition frame
