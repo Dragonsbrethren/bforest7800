@@ -125,6 +125,7 @@ plot_castle_room_8
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 3
+        locked_zone = 6
         exit_tileset = T_CAVES
         exit_Xpos = (12*8)
         exit_Ypos = $58

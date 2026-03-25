@@ -307,60 +307,6 @@ castle_shared_pals
         incbasic shared_pals.78b
         goto palette_done
 
-        data castle_room_0_obj
-        $00
-end
-
-        data castle_room_1_obj
-        TYPE_DOOR, $48, $10
-        TYPE_TORCH, $41, $B0,  TYPE_TORCH, $58, $B0,  TYPE_TORCH, $41, $20,  TYPE_TORCH, $58, $20,
-        $00
-end
-
-
-        data castle_room_2_obj
-        TYPE_SKELETON, $4C, $60,
-        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
-        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $A0,
-        $00
-end
-
-        data castle_room_3_obj
-        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70,
-        TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
-        TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
-        $00
-end
-
-        data castle_room_4_obj
-        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
-        TYPE_DOOR_LOCK, $68, $10
-        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0
-        $00
-end
-
-
-        data castle_room_5_obj
-        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50
-        TYPE_BLOOD, $80, $20
-        TYPE_DOOR_OPEN, $68, $10
-        $00
-end
-
-        data castle_room_6_obj
-        TYPE_GHOST, $48, $40
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
-        TYPE_CHARM1, $7C, $30, TYPE_DOOR_OPEN, $48, $10
-        $00
-end
-        data castle_room_7_obj
-        TYPE_RSLIME, $58, $A0,
-        TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
-        TYPE_NIXTAIL, $4C, $40, TYPE_GHOST, $70, $40
-        TYPE_DOOR, $48, $70
-        $00
-end
-
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
@@ -403,9 +349,63 @@ plot_castle_room_5
         locked_zone = 0
         return thisbank
 
+        data castle_room_0_obj
+        $00
+end
+
+        data castle_room_1_obj
+        TYPE_DOOR, $48, $10
+        TYPE_TORCH, $41, $B0,  TYPE_TORCH, $58, $B0,  TYPE_TORCH, $41, $20,  TYPE_TORCH, $58, $20,
+        $00
+end
+
+        data castle_room_2_obj
+        TYPE_SKELETON, $4C, $60,
+        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
+        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $A0,
+        $00
+end
+
+        data castle_room_3_obj
+        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70,
+        TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
+        TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
+        $00
+end
+
+        data castle_room_4_obj
+        TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
+        TYPE_DOOR_LOCK, $68, $10
+        TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0
+        $00
+end
+
+        data castle_room_5_obj
+        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50
+        TYPE_BLOOD, $80, $20
+        TYPE_DOOR, $68, $10
+        $00
+end
+
+        data castle_room_6_obj
+        TYPE_GHOST, $48, $40
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
+        TYPE_CHARM1, $7C, $30, TYPE_DOOR, $48, $10
+        $00
+end
+        data castle_room_7_obj
+        TYPE_RSLIME, $58, $A0,
+        TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
+        TYPE_NIXTAIL, $4C, $40, TYPE_GHOST, $70, $40
+        TYPE_DOOR, $48, $70
+        $00
+end
 
         data castle_room_8_obj
-        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90, $00
+        TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90
+        TYPE_DOOR, 40, $70
+        TYPE_TORCH, 8*8, $80, TYPE_TORCH, 4*8, $30
+        $00
 end
 
 
@@ -413,7 +413,7 @@ end
         TYPE_SKELETON, $48, $90, TYPE_SKELETON, $58, $70,
         TYPE_TORCH, $38, $20, TYPE_TORCH, $60, $20,
         TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
-        TYPE_DOOR_OPEN, $48, $10
+        TYPE_DOOR, $48, $10
         $00
 end
 
@@ -454,7 +454,7 @@ end
         TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $A0,
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
-        TYPE_DOOR_OPEN, $48, $10, TYPE_SHIELD1, $20, $70
+        TYPE_DOOR, $48, $10, TYPE_SHIELD1, $20, $70
         $00
 end
 
@@ -465,7 +465,7 @@ end
         data castle_room_17_obj
         TYPE_BESTIARY, $2C, $30, TYPE_GHOST, $6C, $30
         TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70
-        TYPE_DOOR_OPEN, $28, $60, TYPE_DOOR, $68, $60
+        TYPE_DOOR, $28, $60, TYPE_DOOR, $68, $60
         $00
 end
 
@@ -498,7 +498,7 @@ end
         TYPE_TORCH, $18, $20, TYPE_TORCH, $80, $20
         TYPE_TORCH, $18, $90, TYPE_TORCH, $80, $90
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $70, $B0
-        TYPE_DOOR_OPEN, $48, $10
+        TYPE_DOOR, $48, $10
         $00
 end
 
