@@ -442,7 +442,7 @@ end
         next
 
 object_familiars
-        if m_relic_bits_1{0} then object_type[13] = TYPE_F_FAIRY
+        if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
         ; TODO: pointer table for stats as well
 object_stats
         for obj_index = 1 to MAX_OBJECTS

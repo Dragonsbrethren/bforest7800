@@ -556,6 +556,12 @@ equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return thisbank
 
+toggle_familiar
+        action_debounce = 1
+        if menu_selection >=5 then goto main
+        toggled_familiar = m_relic_inv[menu_selection]
+        goto main
+
         dmahole 0
 plot_relics_menu
         ; turn on Kangaroo mode so palette color 1 is more manageable
@@ -576,6 +582,48 @@ plot_relics_menu
         goto main
 relic_menu_updater
         restorescreen
+
+        ; set first four slots to disabled for cards
+        m_relic2_pal1 = PAL_DISABLED_1
+        m_relic2_pal2 = PAL_DISABLED_2
+        m_relic_pal1  = PAL_DISABLED_1
+        m_relic_pal2  = PAL_DISABLED_2
+        m_inv0_pal1   = PAL_DISABLED_1
+        m_inv0_pal2   = PAL_DISABLED_2
+        m_sword_pal1  = PAL_DISABLED_1
+        m_sword_pal2  = PAL_DISABLED_2
+;       m_inv1_pal1   = PAL_DISABLED_1
+;       m_inv1_pal2   = PAL_DISABLED_2
+;       m_shield_pal1 = PAL_DISABLED_1
+;       m_shield_pal2 = PAL_DISABLED_2
+;       m_inv2_pal1   = PAL_DISABLED_1
+;       m_inv2_pal2   = PAL_DISABLED_2
+;       m_armor_pal1  = PAL_DISABLED_1
+;       m_armor_pal2  = PAL_DISABLED_2
+        P4C2 = PAL_DISABLED_3
+
+relic_pal_1
+        temp1 = m_relic_inv[0]
+        if temp1 <> toggled_familiar then relic_pal_2
+        m_relic_pal1 = pal_items1[temp1]
+        m_relic_pal2 = pal_items2[temp1]
+relic_pal_2
+        temp1 = m_relic_inv[1]
+        if temp1 <> toggled_familiar then relic_pal_3
+        m_relic_pal1 = pal_items1[temp1]
+        m_relic_pal2 = pal_items2[temp1]
+relic_pal_3
+        temp1 = m_relic_inv[2]
+        if temp1 <> toggled_familiar then relic_pal_4
+        m_sword_pal1 = pal_items1[temp1]
+        m_sword_pal2 = pal_items2[temp1]
+relic_pal_4
+        temp1 = m_relic_inv[3]
+        if temp1 <> toggled_familiar then relic_inventory
+        m_sword_pal1 = pal_items1[temp1]
+        m_sword_pal2 = pal_items2[temp1]
+
+relic_inventory
         m_spriteX = 16
         m_spriteY = 48
         m_textX = 24
@@ -592,8 +640,8 @@ relic_menu_controls
         if !menu_debounce && joy0fire1 && action_button = 0 then open_main_menu
         ; Pause is a quickie way of getting back to the action
         if !pause_debounce && switchpause then close_menu
-        if !action_debounce && joy0fire0 && action_button = 0 then open_main_menu
-        if !action_debounce && joy0fire1 && action_button = 1 then open_main_menu
+        if !action_debounce && joy0fire0 && action_button = 0 then goto toggle_familiar
+        if !action_debounce && joy0fire1 && action_button = 1 then goto toggle_familiar
         gosub menu_dirs
         goto main
 
@@ -626,6 +674,7 @@ end
 
 plot_relic_names
         ; plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        if item_name <> toggled_familiar then m_palette = 4
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
 
 ; TODO: Plot on/off toggles
