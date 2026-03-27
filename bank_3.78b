@@ -594,21 +594,25 @@ end
 
 relic_pal_1
         temp1 = m_relic_inv[0]
+        if temp1 >= 5 then relic_inventory
         if temp1 <> toggled_familiar then relic_pal_2
         m_relic_pal1 = pal_items1[temp1]
         m_relic_pal2 = pal_items2[temp1]
 relic_pal_2
         temp1 = m_relic_inv[1]
+        if temp1 >= 5 then relic_inventory
         if temp1 <> toggled_familiar then relic_pal_3
         m_relic_pal1 = pal_items1[temp1]
         m_relic_pal2 = pal_items2[temp1]
 relic_pal_3
         temp1 = m_relic_inv[2]
+        if temp1 >= 5 then relic_inventory
         if temp1 <> toggled_familiar then relic_pal_4
         m_sword_pal1 = pal_items1[temp1]
         m_sword_pal2 = pal_items2[temp1]
 relic_pal_4
         temp1 = m_relic_inv[3]
+        if temp1 >= 5 then relic_inventory
         if temp1 <> toggled_familiar then relic_inventory
         m_sword_pal1 = pal_items1[temp1]
         m_sword_pal2 = pal_items2[temp1]

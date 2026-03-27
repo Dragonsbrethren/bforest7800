@@ -1637,11 +1637,14 @@ thunder_sound
 end
 
 bank3overflow
-        if item_name < 4 && item_name+1 = toggled_familiar then m_palette = 0 else m_palette = 4
+        temp1 = m_relic_inv[menu_selection]
+        m_palette = 4
+        if temp1 < 5 && temp1 = toggled_familiar then m_palette = 0
         return thisbank
 
 toggle_familiar
         action_debounce = 1
+        if menu_selection = 11 then open_main_menu
         if menu_selection >=4 then goto main
         temp1 = m_relic_inv[menu_selection]
         if toggled_familiar = temp1 then toggled_familiar = 0 else toggled_familiar = temp1
