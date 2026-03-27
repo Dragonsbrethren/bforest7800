@@ -556,12 +556,6 @@ equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return thisbank
 
-toggle_familiar
-        action_debounce = 1
-        if menu_selection >=5 then goto main
-        toggled_familiar = m_relic_inv[menu_selection]
-        goto main
-
         dmahole 0
 plot_relics_menu
         ; turn on Kangaroo mode so palette color 1 is more manageable

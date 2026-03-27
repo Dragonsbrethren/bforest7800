@@ -158,6 +158,7 @@ set_menu_top_pal
         WSYNC = 1 : BACKGRND = $2D
         if menu = MENU_MAIN || menu = MENU_PASSWORD then return thisbank
         if menu = MENU_GAMEOVER then return thisbank
+        if menu = MENU_RELICS then P4C2 = PAL_DISABLED_3
 menu_colors
         P0C3 = PAL_LTPURP
         P4C3 = PAL_LTRED
@@ -178,6 +179,8 @@ menu_colors
         for index = 0 to 30
         WSYNC = 1
         next
+        ; kludge for relics toggling
+        if menu = MENU_RELICS then P4C2 = $10
         ; palettes used for inv 1 and shield
         P0C1 = m_shield_pal1
         P0C3 = m_shield_pal2
