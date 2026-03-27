@@ -584,22 +584,18 @@ relic_menu_updater
         restorescreen
 
         ; set first four slots to disabled for cards
-        m_relic2_pal1 = PAL_DISABLED_1
-        m_relic2_pal2 = PAL_DISABLED_2
-        m_relic_pal1  = PAL_DISABLED_1
-        m_relic_pal2  = PAL_DISABLED_2
-        m_inv0_pal1   = PAL_DISABLED_1
-        m_inv0_pal2   = PAL_DISABLED_2
-        m_sword_pal1  = PAL_DISABLED_1
-        m_sword_pal2  = PAL_DISABLED_2
-;       m_inv1_pal1   = PAL_DISABLED_1
-;       m_inv1_pal2   = PAL_DISABLED_2
-;       m_shield_pal1 = PAL_DISABLED_1
-;       m_shield_pal2 = PAL_DISABLED_2
-;       m_inv2_pal1   = PAL_DISABLED_1
-;       m_inv2_pal2   = PAL_DISABLED_2
-;       m_armor_pal1  = PAL_DISABLED_1
-;       m_armor_pal2  = PAL_DISABLED_2
+        asm
+          lda #PAL_DISABLED_1
+          sta m_relic2_pal1
+          sta m_relic_pal1
+          sta m_inv0_pal1
+          sta m_sword_pal1
+          lda #PAL_DISABLED_2
+          sta m_relic2_pal2
+          sta m_relic_pal2
+          sta m_inv0_pal2
+          sta m_sword_pal2
+end
         P4C2 = PAL_DISABLED_3
 
 relic_pal_1
@@ -674,18 +670,18 @@ end
 
 plot_relic_names
         ; plotsprite menu_potion0 m_palette m_spriteX m_spriteY
-        if item_name <> toggled_familiar then m_palette = 4
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
 
 ; TODO: Plot on/off toggles
 
 items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
-        m_palette = 4
+        gosub bank3overflow
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
 items_right
+        if item_name < 4 && item_name+1 <> toggled_familiar then m_palette = 4
         next
         
         ; bypass item description if on Exit
@@ -910,7 +906,7 @@ end
         alphadata relic_names menu_font singlewide
         '            '
         'Fairy Card  '
-        'Katze Card  '
+        'Cat Card    '
         'Spirit Card '
         'Owl Card    '
         'Fae Bestiary'

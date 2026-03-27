@@ -1630,3 +1630,7 @@ thunder_sound
           ldx index
           rts
 end
+
+bank3overflow
+        if item_name < 4 && item_name+1 = toggled_familiar then m_palette = 0 else m_palette = 4
+        return thisbank
