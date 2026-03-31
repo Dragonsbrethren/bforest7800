@@ -380,6 +380,8 @@
         const OCTOKRAKEN_DEF    = 2
         const OCTOKRAKEN_MDEF   = 2
         const OCTOKRAKEN_PAL    = 5
+        const OCTOKRAKEN_ATTACK_TIME = 30
+        const OCTOKRAKEN_WAIT_TIME = 15
         const TENTSHADOW_TIME   = 60
 
         ; WARG

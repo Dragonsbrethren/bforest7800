@@ -982,6 +982,8 @@ spawn_river_boss
           lda #%10000000
           sta object_flags+3
           sta object_flags+4
+          lda #OCTOKRAKEN_WAIT_TIME
+          sta object_timer+4
           lda #$40
           sta object_Ypos+4
           lda #$C0
@@ -1058,11 +1060,10 @@ octokraken_ai
           bne octokraken_active
           rts
 octokraken_active
-          lda animation_timer
-          and #%00000001
-          bne octokraken_even_frame
+          dec object_timer,x
+          beq octokraken_tent_respawn
           rts
-octokraken_even_frame
+octokraken_tent_respawn
           lda object_flags,x
           and #%01000000
           beq octokraken_attack_pattern
@@ -1190,6 +1191,8 @@ octokraken_restore_index
           lda #%01000000
           ora object_flags,x
           sta object_flags,x
+          lda #OCTOKRAKEN_ATTACK_TIME
+          sta object_timer,x
 octokraken_tent_check_done
 octokraken_return
           rts
@@ -1213,16 +1216,16 @@ obj_octokraken_stats
           lda #0
           sta object_frame,x
 end
-        object_hp[obj_index] = OCTOPUS_HP
-        object_vel_cap_hi[obj_index] = 1
+        object_hp[obj_index] = OCTOKRAKEN_HP
+        object_vel_cap_hi[obj_index] = 0
         object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 0
-        object_mdef[obj_index] = 2
+        object_damage[obj_index] = OCTOKRAKEN_DAMAGE
+        object_def[obj_index] = OCTOKRAKEN_DEF
+        object_mdef[obj_index] = OCTOKRAKEN_MDEF
         object_friction_hi[obj_index] = 0
         object_friction_lo[obj_index] = 0
         object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 10
+        object_speed_lo[obj_index] = 0
         object_flags[obj_index] = 0
         goto obj_next_stats
 
