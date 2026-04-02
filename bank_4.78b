@@ -589,6 +589,10 @@ cardinal_teleport
           dec object_timer,x
           bmi cardinal_tele_timer
           bne cardinal_return
+          lda object_parent,x
+          tay
+          lda object_type,y
+          bne cardinal_return
           lda #78
           sta object_Xpos,x
           lda #$20
@@ -605,7 +609,7 @@ cardinal_return
           rts
 
 cardinal_tele_timer
-          lda #128
+          lda #CARDINAL_TELE_DELAY
           sta object_timer,x
           rts
 end
@@ -1354,6 +1358,8 @@ plot_hud_castle
 cast_darkbolt
         asm
           jsr .find_new_object
+          tya
+          sta object_parent,x
           lda #TYPE_DARKBOLT
           sta object_type,y
           lda player_Xpos

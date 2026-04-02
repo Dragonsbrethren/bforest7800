@@ -243,6 +243,7 @@
 
         const CARDINAL_PAL = (7 * 32)
         const CARDINAL_HP  = 20
+        const CARDINAL_TELE_DELAY = 60
 
 
         const DARKSPARK_SPEED_HI = 2
