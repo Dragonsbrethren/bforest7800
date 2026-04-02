@@ -145,6 +145,7 @@ main_state_handler
         goto main
 
 plot_player
+        if player_flags{0} && animation_timer{0} then plot_hud
         ; Plot the player, their shield, and sword if attacking
 ;        if player_obscure then plot_hud
         asm
