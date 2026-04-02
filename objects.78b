@@ -47,6 +47,9 @@
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
         const TYPE_F_FAIRY  = 153
+        const TYPE_F_CAT    = 154
+        const TYPE_F_SPIRIT = 155
+        const TYPE_F_OWL    = 156
         const TYPE_STATIC   = TYPE_BLOCKROCK
         const TYPE_BLOCKROCK    = 157
         const TYPE_BOSS_FLAME = 158

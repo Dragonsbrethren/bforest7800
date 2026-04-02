@@ -37,6 +37,10 @@
         incgraphic gfx/sprites/door0.png 160A 0 1 2 3
         incgraphic gfx/sprites/door1.png 160A 0 1 2 3
         incgraphic gfx/sprites/jostone0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/owl0.png 160A 0 3 2 1
+        incgraphic gfx/sprites/owl1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/owl2.png 160A 0 1 2 3
+        incgraphic gfx/sprites/owl3.png 160A 0 3 2 1
 
 init
         goto title_init bank10
@@ -445,6 +449,7 @@ end
 
 object_familiars
         if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
+        if toggled_familiar = 4 then object_type[13] = TYPE_F_OWL
         ; TODO: pointer table for stats as well
 object_stats
         for obj_index = 1 to MAX_OBJECTS
@@ -1091,6 +1096,48 @@ end
 plot_fairy
         plotsprite fairy0 0 Xposition Yposition frame
         goto plot_next
+
+
+owl_ai
+        asm
+          lda #%00000100
+          sta object_flags,x
+          lda #<.plot_fairy
+          sta object_spr_ptr_lo,x
+          lda #>.plot_fairy
+          sta object_spr_ptr_hi,x
+owl_find_target
+          ldy MAX_MAP_OBJECTS
+owl_loop
+          lda object_type,y
+          beq owl_next
+          bmi owl_next
+          lda object_Ypos,y
+          and #$F0
+          sta object_Ypos,x
+          lda #176
+          sta object_Xpos,x
+          lda #0
+          sta object_Ydir,x
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          sta object_facing,x
+          lda #1
+          sta object_speed_hi,x
+          lda #0
+          jmp proj_move_check
+
+owl_next
+          dex
+          bne owl_loop
+          ; no targetable object found, hide owl off screen
+          lda #$F0
+          sta object_Xpos,x
+          sta object_Ypos,x
+
+owl_return
+          rts
+end
 
 check_item_qtys
         if !m_item_qty[1] then m_item_bits_1{0} = 0
