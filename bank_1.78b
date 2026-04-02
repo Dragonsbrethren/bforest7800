@@ -422,6 +422,7 @@ clear_obj_loop
         sta object_dest,x
         sta object_elevation,x
         sta object_pal,x
+        sta object_invuln,x
         dex
         bne clear_obj_loop
         sta temp1
@@ -1649,3 +1650,11 @@ toggle_familiar
         temp1 = m_relic_inv[menu_selection]
         if toggled_familiar = temp1 then toggled_familiar = 0 else toggled_familiar = temp1
         goto main
+
+        data spell_ptrs_lo
+        <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_fireball, <.cast_lightning
+end
+
+        data spell_ptrs_hi
+        >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_fireball, >.cast_lightning
+end

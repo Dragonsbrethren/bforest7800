@@ -146,6 +146,12 @@ plot_next
           jmp plot_done
 
 plot_stats
+          lda object_invuln,x
+          beq plot_copy_stats
+          lda animation_timer
+          and #%00000001
+          bne .plot_next
+plot_copy_stats
         ; now copy object stats to zeropage
           lda object_spr_ptr_lo,x
           sta pointer
@@ -631,6 +637,11 @@ object_handler
         asm
           ldx #MAX_OBJECTS
 oh_loop   stx index
+          dec object_invuln,x
+          bpl oh_type
+          lda #0
+          sta object_invuln,x
+oh_type
           lda object_type,x
           beq .object_done
           cmp #TYPE_SPAWNER
@@ -714,6 +725,8 @@ spawn_object
         asm
         ; index is still set by object_handler
           ldx index
+          lda #0
+          sta object_invuln,x
         ; spawner objects store old type in flags
           lda object_flags,x
         ; exclude projectiles and collectible objects
@@ -1714,7 +1727,6 @@ sword_damage_dec_invuln
           lda object_invuln,x
           ; if invuln is zero, damage object, otherwise dec invuln frames
           beq damage_object
-          dec object_invuln,x
           rts
 
 damage_object
@@ -2124,14 +2136,6 @@ lightning_init
           sta lightning_segs
 end
         goto thunder_sound
-
-        data spell_ptrs_lo
-        <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_fireball, <.cast_lightning
-end
-
-        data spell_ptrs_hi
-        >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_fireball, >.cast_lightning
-end
 
 ;==============================================================================
 ; FIREBALL AI
