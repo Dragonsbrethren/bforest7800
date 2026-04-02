@@ -148,7 +148,6 @@ plot_next
 plot_stats
           lda object_invuln,x
           beq plot_copy_stats
-          lda animation_timer
           and #%00000001
           bne .plot_next
 plot_copy_stats
@@ -454,8 +453,7 @@ follow_player_Yvel
         sta object_Yvel_hi,x
 follow_player_done
         rts
-end
-        return thisbank        
+end     
 
 get_player_pos
         Xdestination = player_Xpos : Ydestination = player_Ypos
@@ -637,10 +635,9 @@ object_handler
         asm
           ldx #MAX_OBJECTS
 oh_loop   stx index
+          lda object_invuln,x
+          beq oh_type
           dec object_invuln,x
-          bpl oh_type
-          lda #0
-          sta object_invuln,x
 oh_type
           lda object_type,x
           beq .object_done
