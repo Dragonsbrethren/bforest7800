@@ -1580,17 +1580,36 @@ end
 end
 
 check_collisions
-        for index = 0 to 15
-        ; bypass collision checks for blank objects and fairy familar
-        if !object_type[index] then cc_next
-        if object_type[index] = TYPE_F_FAIRY then cc_next
-        Xposition = object_Xpos[index]
-        Yposition = object_Ypos[index]
-        if object_type[index] >= TYPE_STATIC then cc_door
-        if object_type[index] >= TYPE_FIREBALL then magic_collision
-        if player_state <> STATE_ATTACK then cc_player_contact
-        gosub sword_collision
-        if !object_hp[index] then kill_object
+        asm
+          ldx #MAX_OBJECTS
+cc_loop
+          stx index
+          lda object_type,x
+          beq .cc_next
+          cmp #TYPE_F_FAIRY
+          beq .cc_next
+          lda object_Xpos,x
+          sta Xposition
+          lda object_Ypos,x
+          sta Yposition
+          lda object_type,x
+          cmp #TYPE_STATIC
+          bcc cc_fireball
+          jmp .cc_door
+cc_fireball
+          cmp #TYPE_FIREBALL
+          bcc cc_player_state
+          jmp .magic_collision
+cc_player_state
+          lda player_state
+          cmp #STATE_ATTACK
+          bne .cc_player_contact
+          jsr .sword_collision
+          ldx index
+          lda object_hp,x
+          bne .cc_player_contact
+          jmp .kill_object
+end
 cc_player_contact
         ; need to test torches here so the sword can still damage them
         ; but they don't knock the player back on contact
@@ -1599,7 +1618,11 @@ cc_player_contact
         gosub player_knockback
         if player_state = STATE_DEATH then goto kill_player
 cc_next
-        next
+        asm
+          ldx index
+          dex
+          bne cc_loop
+end
 cc_return
         return
 
