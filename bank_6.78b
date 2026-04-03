@@ -1421,9 +1421,9 @@ plot_octoeye
 
 plot_tentacle
         shadow_offset = Yposition - $10
-        if !frame then plotsprite tentacle sprite_pal Xposition shadow_offset 0
+        if !frame then PLOTSPRITE tentacle 5 Xposition shadow_offset 0
 plot_tentshadow
-        plotsprite tentacle_tallsprite_00 sprite_pal Xposition Yposition frame
+        PLOTSPRITE tentacle_tallsprite_00 5 Xposition Yposition frame
         goto plot_next
 
 plot_blockrock
