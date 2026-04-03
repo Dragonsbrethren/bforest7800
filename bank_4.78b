@@ -206,7 +206,7 @@ castle_save_2
 castle_rooms
         characterset castle_stone
         if music_playing then init_castle
-;       playrmt blackforest_indoorarea01
+        playrmt blackforest_indoorarea01
         music_playing = 1
 init_castle
         asm
@@ -284,7 +284,7 @@ plot_castle_room_1
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 3
         memcpy current_map castle_room_1 280
-        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 13
         asm
           lda #2
           sta zone1_objects
@@ -310,7 +310,7 @@ castle_shared_pals
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 13
         memcpy current_map castle_room_2 280
         zone1_objects  = 4
         zone2_objects  = 4
@@ -320,7 +320,7 @@ plot_castle_room_2
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 13
         memcpy current_map castle_room_3 280
         zone1_objects  = 2
         zone2_objects  = 2
@@ -330,7 +330,7 @@ plot_castle_room_3
 plot_castle_room_4
         menu_map_room[menu_map_index] = 8
         menu_map_room[menu_map_index_2] = 15
-        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 13
         memcpy current_map castle_room_4 280
         zone1_objects  = 2
         zone2_objects  = 2
@@ -341,7 +341,7 @@ plot_castle_room_5
         no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 13
         memcpy current_map castle_room_5 280
         zone1_objects  = 2
         zone2_objects  = 2
