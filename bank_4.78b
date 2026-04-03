@@ -488,9 +488,9 @@ end
 end
 
         data castle_room_21_obj
+        TYPE_PRIEST, $4C, $60,
         TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
         TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $A0,
-        TYPE_PRIEST, $4C, $60,
         $00
 end
 
