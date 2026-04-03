@@ -284,7 +284,7 @@ plot_castle_room_1
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 3
         memcpy current_map castle_room_1 280
-        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 13
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
         asm
           lda #2
           sta zone1_objects
@@ -310,7 +310,7 @@ castle_shared_pals
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 13
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
         memcpy current_map castle_room_2 280
         zone1_objects  = 4
         zone2_objects  = 4
@@ -320,7 +320,7 @@ plot_castle_room_2
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 13
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
         memcpy current_map castle_room_3 280
         zone1_objects  = 2
         zone2_objects  = 2
@@ -330,7 +330,7 @@ plot_castle_room_3
 plot_castle_room_4
         menu_map_room[menu_map_index] = 8
         menu_map_room[menu_map_index_2] = 15
-        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 13
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
         memcpy current_map castle_room_4 280
         zone1_objects  = 2
         zone2_objects  = 2
@@ -341,7 +341,7 @@ plot_castle_room_5
         no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 13
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
         memcpy current_map castle_room_5 280
         zone1_objects  = 2
         zone2_objects  = 2
@@ -438,11 +438,12 @@ end
 end
 
         data castle_room_13_obj
+        TYPE_PRIEST, 36, $50, TYPE_PRIEST, 116, $50
+        TYPE_SPELL1, 76, $40
         TYPE_TORCH, $10, $30,
         TYPE_TORCH, $88, $30,
         TYPE_TORCH, $38, $50,
         TYPE_TORCH, $60, $50,
-        TYPE_PRIEST, $50, $36,
         $00
 end
 
@@ -472,7 +473,7 @@ end
         data castle_room_18_obj
         TYPE_PRIEST, $18, $50, TYPE_PRIEST, $80, $50,
         TYPE_TORCH, $08, $40, TYPE_TORCH, $90, $40, 
-        TYPE_SPELL1, $4C, $A0, $00
+        TYPE_SPELL4, $4C, $A0, $00
 end
 
         data castle_room_19_obj
