@@ -1129,6 +1129,7 @@ end
 
         data hills_room_6_obj
         TYPE_HGHOST, $28, $50, TYPE_HGHOST, $58, $A0
+        TYPE_MAP4, 104, $50
         TYPE_TORCH, $38, $70
         $00
 end

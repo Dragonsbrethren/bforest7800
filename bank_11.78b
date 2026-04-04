@@ -577,8 +577,14 @@ copy_castle_map
         if menu_map_revealed{1} then copy_river_map
         if tileset = T_CASTLE && m_map_bits{1} then memcpy menu_map_room castle_menu_map 98 : menu_map_revealed{1} = 1 : entered_save_room = %11111111
 copy_river_map
-        if menu_map_revealed{2} then copy_menu_map_done
+        if menu_map_revealed{2} then copy_hills_map
         if tileset = T_RIVER  && m_map_bits{2} then memcpy menu_map_room river_menu_map 98  : menu_map_revealed{2} = 1 : entered_save_room = %11111111
+copy_hills_map
+        if menu_map_revealed{3} then copy_caves_map
+        if tileset = T_HILLS  && m_map_bits{3} then memcpy menu_map_room hills_menu_map 98  : menu_map_revealed{2} = 1 : entered_save_room = %11111111
+copy_caves_map
+        if menu_map_revealed{4} then copy_menu_map_done
+        if tileset = T_CAVES  && m_map_bits{4} then memcpy menu_map_room caves_menu_map 98  : menu_map_revealed{2} = 1 : entered_save_room = %11111111
 copy_menu_map_done
         return
 
@@ -603,6 +609,26 @@ end
 end
 
         data river_menu_map
+        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_N  , ROOMR_R  , ROOML_DL , ROOMR_D  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_DR , ROOML_UL , ROOMR_UR , ROOML_DL , ROOMR_DR , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_D  , ROOMR_D  , ROOML_UD , ROOMR_UDR, ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_UD , ROOMR_UDR, ROOML_UL , ROOMR_UR , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_U  , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_U  , ROOMR_UR , ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B 
+end
+
+        data hills_menu_map
+        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_DR , ROOML_L  , ROOMR_R  , ROOML_L  , ROOMR_R  , ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UDR, ROOML_L  , ROOMR_R  , ROOML_L  , ROOMR_R  , ROOML_DL , ROOMR_DR , ROOML_DL , ROOMR_D  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_DR , ROOML_UDL, ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B
+        ROOML_D  , ROOMR_DR , ROOML_UDL, ROOMR_UDR, ROOML_L  , ROOMR_R  , ROOML_UL , ROOMR_UDR, ROOML_UDL, ROOMR_UDR, ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B
+        ROOML_U  , ROOMR_UR , ROOML_UL , ROOMR_UR , ROOML_DL , ROOMR_DR , ROOML_UL , ROOMR_UR , ROOML_UL , ROOMR_UR , ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B
+        ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B 
+end
+
+        data caves_menu_map
         ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_D  , ROOML_N  , ROOMR_R  , ROOML_DL , ROOMR_D  , ROOML_B  , ROOMR_B
         ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_D  , ROOMR_DR , ROOML_UL , ROOMR_UR , ROOML_DL , ROOMR_DR , ROOML_UDL, ROOMR_UD , ROOML_B  , ROOMR_B
         ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_UD , ROOMR_UD , ROOML_D  , ROOMR_D  , ROOML_UD , ROOMR_UDR, ROOML_UL , ROOMR_U  , ROOML_B  , ROOMR_B
