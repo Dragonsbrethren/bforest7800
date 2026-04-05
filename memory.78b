@@ -319,6 +319,7 @@
         autodim byte sP7C1
         autodim byte sP7C2
         autodim byte sP7C3
+        autodim byte pal_update
         autodim byte exit_Xpos
         autodim byte exit_Ypos
         autodim byte exit_room_index

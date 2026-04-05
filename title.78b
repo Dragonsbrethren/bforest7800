@@ -82,7 +82,7 @@ end
         goto menu_init bank3
 
 title_new_game
-        tileset = T_CAVES
+        tileset = T_RIVER
         fade = FADE_NORMAL
         player_sword = 1
         player_shield = 0
@@ -150,6 +150,7 @@ init_field
         pickup_string[index] = 0
         gosub encode_password bank11
         gosub sub_update_player_stats bank3
+        if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
         ; retains the map in save rooms, continuing in same tileset
         if old_tileset = tileset then goto main
         gosub clear_menu_map

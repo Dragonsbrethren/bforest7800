@@ -156,7 +156,7 @@ use_item
         if using_item = 4 then mp_change = MP_CHANGE_XETHER : goto use_ether
         if using_item = 5 then hp_change = HP_CHANGE_XPOTION : mp_change = MP_CHANGE_XETHER : goto use_elixir
         if using_item = 6 then temp1 = MASK_POISON : goto use_heal
-        if using_item = 7 then temp1 = MASK_DARK   : goto use_heal
+        if using_item = 7 then temp1 = MASK_DARK   : fade = FADE_NORMAL : goto use_heal
         if using_item = 8 then temp1 = MASK_CURSE  : goto use_heal
         if using_item = 9 then temp1 = MASK_STONE  : goto use_heal
 

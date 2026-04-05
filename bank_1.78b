@@ -87,6 +87,8 @@ map_loaded
         gosub update_mp_bar
         if !save_objects then gosub load_objects
         asm
+        lda #1
+        sta pal_update
         lda #0
         sta reload_map
         sta save_objects
@@ -256,7 +258,7 @@ kill_player
 ; Player death jumps here. It fades the screen to black, then waits out the rest of the fade count
 death_fade
         if !fade then fade_done
-        fade = fade - 1
+        fade = fade - 1 : pal_update = 1
 fade_done
         fade_count = fade_count - 1
         if !fade_count then password_display
