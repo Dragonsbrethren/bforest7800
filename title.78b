@@ -82,7 +82,7 @@ end
         goto menu_init bank3
 
 title_new_game
-        tileset = T_HILLS
+        tileset = T_CAVES
         fade = FADE_NORMAL
         player_sword = 1
         player_shield = 0
@@ -98,8 +98,8 @@ title_new_game
         m_armor_bits_2  = 0
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = 0
-        m_relic_bits_1  = %00000000
-        m_relic_bits_2  = %00000000
+        m_relic_bits_1  = %00010000
+        m_relic_bits_2  = %00000001
         m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000
         m_key_bits = 0

@@ -284,7 +284,7 @@ end
         data caves_room_11_obj
         TYPE_CGHOST, (5*8), $60, TYPE_CGHOST, (10*8), $90
         TYPE_ROSE, (12*8), $50
-        TYPE_SWORD6, (3*8), $A0
+        TYPE_MAP5, (3*8), $A0
         $00
 end
 
