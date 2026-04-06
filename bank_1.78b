@@ -257,8 +257,9 @@ kill_player
 
 ; Player death jumps here. It fades the screen to black, then waits out the rest of the fade count
 death_fade
+        pal_update = 1
         if !fade then fade_done
-        fade = fade - 1 : pal_update = 1
+        fade = fade - 1
 fade_done
         fade_count = fade_count - 1
         if !fade_count then password_display
