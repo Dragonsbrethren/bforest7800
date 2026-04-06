@@ -31,6 +31,7 @@
         incgraphic gfx/sprites/map0.png 160A 0 3 2 1
         incgraphic gfx/sprites/flame0.png 160A
         incgraphic gfx/sprites/flame1.png 160A
+        incgraphic gfx/sprites/blank.png 160A
         incgraphic gfx/sprites/lightning0.png 160A 0 3 2
         incgraphic gfx/sprites/lightning1.png 160A 0 2 3
         incgraphic gfx/sprites/key0.png 160A 0 3 1
@@ -1699,4 +1700,31 @@ end
 
         data spell_ptrs_hi
         >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_fireball, >.cast_lightning
+end
+
+campfire_ai
+        asm
+          lda object_pal,x
+          bne campfire_saved
+          lda #2
+          sta object_pal,x
+          lda #<.plot_food
+          sta object_spr_ptr_lo,x
+          lda #>.plot_food
+          sta object_spr_ptr_hi,x
+          sta object_hp,x
+          lda #F_BLANK
+          sta object_frame,x
+campfire_saved
+          lda in_save_room
+          beq campfire_animate
+          rts
+campfire_animate
+          lda #F_FLAME
+          sta object_frame,x
+          lda animation_frame
+          beq campfire_return
+          inc object_frame,x
+campfire_return
+          rts
 end

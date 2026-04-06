@@ -1188,6 +1188,7 @@ end
 end
 
         data hills_room_15_obj
+        TYPE_CAMPFIRE, 80, $70
         $00
 end
 

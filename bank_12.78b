@@ -225,6 +225,7 @@ end
 end
 
         data caves_room_1_obj
+        TYPE_CAMPFIRE, 80, $60
         $00
 end
 

@@ -602,13 +602,13 @@ end
 end
 
         data projectile_ai_lo
-        skelsword_ai_lo, <.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_lo, <.tentshadow_ai, <.campfire_ai, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, <.seed_ai, <.lightning_ai, 0, 0, 0, 0, 0, 0,
         fireball_ai_lo, <.iceflake_ai, <.lightning_ai, fairy_ai_lo, 0, 0, <.owl_ai, 0
 end
 
         data projectile_ai_hi
-        skelsword_ai_hi, >.tentshadow_ai, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_hi, >.tentshadow_ai, >.campfire_ai, 0, 0, 0, 0, 0, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, >.seed_ai, >.lightning_ai, 0, 0, 0, 0, 0, 0,
         fireball_ai_hi, >.iceflake_ai, >.lightning_ai, fairy_ai_hi, 0, 0, >.owl_ai, 0
 end
@@ -1619,8 +1619,15 @@ end
 cc_player_contact
         ; need to test torches here so the sword can still damage them
         ; but they don't knock the player back on contact
-        if object_type[index] = TYPE_TORCH then cc_next
-        hp_change = object_damage[index]
+        asm
+          lda object_type,x
+          cmp #TYPE_TORCH
+          beq .cc_next
+          cmp #TYPE_CAMPFIRE
+          beq .cc_next
+          lda object_damage,x
+          sta hp_change
+end
         gosub player_knockback
         if player_state = STATE_DEATH then goto kill_player
 cc_next

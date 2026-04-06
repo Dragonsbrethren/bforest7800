@@ -383,6 +383,7 @@ plot_river_room_5
         return thisbank
 
         data river_room_5_obj
+        TYPE_CAMPFIRE, 80, $60
         $00
 end
 
@@ -456,6 +457,7 @@ end
 end
 
         data river_room_16_obj
+        TYPE_CAMPFIRE, (9*8), $70
         $00
 end
 
