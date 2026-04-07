@@ -743,25 +743,33 @@ gen_forest_map
         if tileset = T_CASTLE then gen_castle_s
         if tileset = T_RIVER  then gen_river_s
         if tileset = T_HILLS then gen_hills_s
-        if tileset = T_CAVES then gosub gen_caves_s bank11
+        if tileset = T_CAVES then gen_caves_s
         return thisbank
 
 gen_forest_s
-        if entered_save_room{0} then plotsprite menu_s 0 94 80
-        return thisbank
+        Xposition = 94
+        Yposition = 80
+        goto plot_map_s
 
 gen_castle_s
-        if entered_save_room{0} then plotsprite menu_s 0 86 96
-        if entered_save_room{1} then plotsprite menu_s 0 54 80
-        return thisbank
+        if entered_save_room{0} then Xposition = 86 : Yposition = 96 : gosub plot_map_s
+        if entered_save_room{1} then Xposition = 54 : Yposition = 80 : goto plot_map_s
 
 gen_river_s
-        if entered_save_room{0} then plotsprite menu_s 0 78 96
-        if entered_save_room{1} then plotsprite menu_s 0 94 64
-        return thisbank
+        if entered_save_room{0} then Xposition = 78 : Yposition = 96 : gosub plot_map_s
+        if entered_save_room{1} then Xposition = 94 : Yposition = 64 : goto plot_map_s
 
 gen_hills_s
-        if entered_save_room{0} then plotsprite menu_s 0 78 112
+        if entered_save_room{0} then Xposition = 78 : Yposition = 112 : goto plot_map_s
+
+gen_caves_s
+        if entered_save_room{0} then Xposition = 70 : Yposition = 64 : gosub plot_map_s
+        if entered_save_room{1} then Xposition = 62 : Yposition = 112 : goto plot_map_s
+        return thisbank
+
+plot_map_s
+        plotsprite menu_s 0 Xposition Yposition
+        return thisbank
 
 set_status_name
         ; Only show the most severe status effect name
