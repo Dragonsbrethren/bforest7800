@@ -289,6 +289,12 @@
 ;------------------------------------------------------------------------------
 ; CAVES TILESET
 ;------------------------------------------------------------------------------
+        const M_CAVES_SAVE1_X = 70
+        const M_CAVES_SAVE1_Y = 64
+        const F_CAVES_SAVE1_I = 2
+        const F_CAVES_SAVE1_X = 72
+        const F_CAVES_SAVE1_Y = $70
+        const F_CAVES_SAVE1_D = DIR_RIGHT
         ; mountaintop
         const M_CAVES_ENT_1_X = 78
         const M_CAVES_ENT_1_Y = 64

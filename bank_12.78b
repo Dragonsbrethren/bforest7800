@@ -41,6 +41,7 @@ load_caves
         first_load = 0
         player_facing = DIR_DOWN
 
+        if save_room_index = 1 then caves_save_1
         if exit_room_index = F_CAVES_ENT_2_I then caves_ent_2
         if exit_room_index = F_CAVES_ENT_3_I then caves_ent_3
         if exit_room_index = F_CAVES_ENT_4_I then caves_ent_4
@@ -51,6 +52,15 @@ caves_ent_1
         menu_map_Ypos   = M_CAVES_ENT_1_Y
         player_Xpos     = F_CAVES_ENT_1_X
         player_Ypos     = F_CAVES_ENT_1_Y
+        goto caves_set_room
+
+caves_save_1
+        room_index    = F_CAVES_SAVE1_I
+        menu_map_Xpos = M_CAVES_SAVE1_X
+        menu_map_Ypos = M_CAVES_SAVE1_Y
+        player_Xpos   = F_CAVES_SAVE1_X
+        player_Ypos   = F_CAVES_SAVE1_Y
+        player_facing = F_CAVES_SAVE1_D
         goto caves_set_room
 
 caves_ent_2
@@ -225,7 +235,7 @@ end
 end
 
         data caves_room_1_obj
-        TYPE_CAMPFIRE, 80, $60
+        TYPE_CAMPFIRE, 72, $60
         $00
 end
 

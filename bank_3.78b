@@ -742,6 +742,8 @@ gen_forest_map
         if tileset = T_FOREST then gen_forest_s
         if tileset = T_CASTLE then gen_castle_s
         if tileset = T_RIVER  then gen_river_s
+        if tileset = T_HILLS then gen_hills_s
+        if tileset = T_CAVES then gen_caves_s
 
 gen_forest_s
         if entered_save_room{0} then plotsprite menu_s 0 94 80
@@ -756,6 +758,12 @@ gen_river_s
         if entered_save_room{0} then plotsprite menu_s 0 78 96
         if entered_save_room{1} then plotsprite menu_s 0 94 64
         return thisbank
+
+gen_hills_s
+        if entered_save_room{0} then plotsprite menu_s 0 78 112
+
+gen_caves_s
+        if entered_save_room{0} then plotsprite menu_s 0 70 64
 
 set_status_name
         ; Only show the most severe status effect name
