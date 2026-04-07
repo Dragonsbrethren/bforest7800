@@ -39,8 +39,7 @@ plot_caves_room_1
         zone14_objects = 1
         if !pw_success then in_save_room = 1
         pw_success = 0
-        save_room_index = 1
-        entered_save_room{0} = 1
+        if room_index = 2 then save_room_index = 1 : entered_save_room{0} = 1 else save_room_index = 2 : entered_save_room{1} = 1
         return otherbank
 
 plot_caves_room_2

@@ -637,3 +637,8 @@ end
         ROOML_U  , ROOMR_U  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B
         ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B  , ROOML_B  , ROOMR_B 
 end
+
+gen_caves_s
+        if entered_save_room{0} then plotsprite menu_s 0 70 64
+        if entered_save_room{1} then plotsprite menu_s 0 62 112
+        return otherbank
