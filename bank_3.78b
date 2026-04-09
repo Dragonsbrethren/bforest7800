@@ -671,12 +671,13 @@ end
 
 items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
-        gosub bank3overflow
+        m_palette = 4
+        if menu = MENU_RELICS then gosub bank3overflow
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
 items_right
-        if item_name < 4 && item_name+1 <> toggled_familiar then m_palette = 4
+        if menu = MENU_RELICS && item_name < 4 && item_name+1 <> toggled_familiar then m_palette = 4
         next
         
         ; bypass item description if on Exit
