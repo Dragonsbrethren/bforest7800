@@ -35,9 +35,6 @@
 .magic_damage
         lda object_invuln,y
         beq .magic_damage_object
-        sec
-        sbc #1
-        sta object_invuln,y
         rts
 
 .magic_damage_object
@@ -57,18 +54,18 @@
         bne .magic_damage_def
         lda object_type,x
         cmp #TYPE_ICEFLAKE
-        bne .magic_damage_done
+        bne .magic_damage_immune
         ; set flag to remove flame
         lda m_spell_bits_2
         ora #%00001000
         sta m_spell_bits_2 
-        bne .magic_damage_done
+        bne .magic_damage_immune
 
 .magic_damage_def
         ; if object has max defense, bypass hp calc altogether
         lda object_mdef,y
         cmp #255
-        beq .magic_damage_done
+        beq .magic_damage_immune
         ; backup object's hp to check for underflow on high def/low atk values
         lda object_hp,y
         sta temp1
@@ -88,7 +85,7 @@
         ; test HP for underflow
         lda temp_hp
         cmp temp1
-        bcs .magic_damage_nov
+        bcc .magic_damage_nov
         lda #0
 .magic_damage_nov
         sta object_hp,y
@@ -105,6 +102,8 @@
         sta object_flags,y
         lda #TYPE_SPAWNER
         sta object_type,y
+.magic_damage_immune
+        rts
 .magic_damage_done
         lda #INVULN_FRAMES
         sta object_invuln,y
