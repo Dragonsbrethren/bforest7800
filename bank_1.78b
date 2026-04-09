@@ -135,6 +135,8 @@ main_lightning
         dec lightning_timer
         bne lightning_done
 lightning_flash
+        lda #1
+        sta pal_update
         dec lightning_delay
         lda lightning_delay
         bne lightning_done
