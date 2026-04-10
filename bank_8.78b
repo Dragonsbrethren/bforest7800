@@ -772,7 +772,7 @@ plot_hills_room_1
         memcpy current_map hills_room_1 280
         plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
         zone1_objects  = 6
-        zone2_objects  = 6
+        zone2_objects  = 5
         zone14_objects = 5
         exit_tileset = T_RIVER
         exit_Xpos = 8 * 9
