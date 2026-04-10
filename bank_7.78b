@@ -160,7 +160,7 @@ plot_river_room_12
         zone2_objects  = 4
         zone14_objects = 3
         alt_palette = 1
-        return otherbank
+        goto river_waterfall bank6
 
 plot_river_room_13
         menu_map_room[menu_map_index] = ROOML_D
@@ -243,7 +243,7 @@ plot_river_room_18
         zone2_objects  = 4
         zone14_objects = 5
         pal_animation = 1
-        return otherbank
+        goto river_waterfall bank6
 
 
 plot_river_room_19
@@ -256,7 +256,7 @@ plot_river_room_19
         zone14_objects = 1
         pal_animation = 1
         alt_palette = 1
-        return otherbank
+        goto river_waterfall bank6
 
 plot_river_room_20
         menu_map_room[menu_map_index] = ROOML_UD

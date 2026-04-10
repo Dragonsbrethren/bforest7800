@@ -139,6 +139,12 @@ end
         river_room_20_obj_hi, river_room_21_obj_hi
 end
 
+river_waterfall
+        ; prevent blacked out waterfalls when loading pal_animation rooms
+        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        pal_animation = 1
+        return
+
 load_river
         if !first_load then river_set_room
         first_load = 0
