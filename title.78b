@@ -153,6 +153,8 @@ init_field
         if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
         ; retains the map in save rooms, continuing in same tileset
         if old_tileset = tileset then goto main
+        ; if you die in a room with an exit, stop it from taking you to the new map
+        exit_tileset = 0
         gosub clear_menu_map
         goto main
 
