@@ -158,7 +158,7 @@ plot_river_room_12
         pal_animation = 1
         zone1_objects  = 4
         zone2_objects  = 4
-        zone14_objects = 3
+        zone14_objects = 1
         alt_palette = 1
         goto river_waterfall bank6
 
