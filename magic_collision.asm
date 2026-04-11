@@ -75,8 +75,8 @@
         sec
         sbc object_mdef,y
         cmp temp2
-        bcs .nov_mdef
-        bne .nov_mdef
+        bcc .nov_mdef
+        beq .nov_mdef
         ; if underflow, always do 1 damage
         lda #1
 .nov_mdef
@@ -86,6 +86,7 @@
         lda temp_hp
         cmp temp1
         bcc .magic_damage_nov
+        beq .magic_damage_nov
         lda #0
 .magic_damage_nov
         sta object_hp,y
