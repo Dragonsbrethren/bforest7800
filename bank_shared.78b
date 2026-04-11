@@ -868,8 +868,11 @@ end
         if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_Xvel = player_Xvel + object_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
-        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
-        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
+        if menu_debounce then test_joy_pause
+        if joy0fire0 && action_button = 1 then goto open_menu
+        if joy0fire1 && action_button = 0 then goto open_menu
+        if joy1fire0 || joy1fire1 then goto open_menu
+test_joy_pause
         if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         if player_flags{5} then player_move_done
