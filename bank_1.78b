@@ -991,7 +991,7 @@ fairy_pick_item
         if player_state = STATE_DEATH && m_item_qty[10] then temp2 = 10 : goto  fairy_revive
         if player_status{3} && m_item_qty[9] then temp1 = MASK_STONE  : temp2 = 9 : goto fairy_use_heal
         if player_status{0} && m_item_qty[6] then temp1 = MASK_POISON : temp2 = 6 : goto fairy_use_heal
-        if player_status{1} && m_item_qty[7] then temp1 = MASK_DARK   : temp2 = 7 : goto fairy_use_heal
+        if player_status{1} && m_item_qty[7] then temp1 = MASK_DARK   : temp2 = 7 : goto fairy_use_eyedrop
         if player_status{2} && m_item_qty[8] then temp1 = MASK_CURSE  : temp2 = 8 : goto fairy_use_heal
         if player_hp < PLAYER_HP_QUARTER && m_item_qty[2] then temp2 = 2 : goto fairy_use_hipotion
         if player_hp < PLAYER_HP_HALF && m_item_qty[1] then temp2 = 1 : goto fairy_use_potion
@@ -1039,7 +1039,9 @@ fairy_revive
         gosub increase_player_hp
         fade_count = 0
         goto fairy_item_used
-
+fairy_use_eyedrop
+        pal_update = 1
+        fade = FADE_NORMAL
 fairy_use_heal
         asm
           lda player_status
