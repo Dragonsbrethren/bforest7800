@@ -1781,6 +1781,7 @@ end
         object_hp[index] = temp_hp
 sword_damage_set_invuln
         object_invuln[index] = INVULN_FRAMES
+sword_damage_set_name
         goto set_enemy_name
 
 test_slime_index
@@ -1802,7 +1803,7 @@ test_caves_slime
           bne not_a_slime
           jmp .split_pudding
 not_a_slime
-          jmp .sword_damage_set_invuln
+          jmp .sword_damage_set_name
 end
 
 kill_torch
