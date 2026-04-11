@@ -2109,11 +2109,11 @@ test_spell_cost
 
 increase_hp
         temp_hp = temp_hp + hp_change
-        return
+        return thisbank
 
 decrease_hp
         temp_hp = temp_hp - hp_change
-        return
+        return thisbank
 
 ; takes a torch's X & Y position and determines the map tile under it, stores in peekX & Y
 get_torch_pos
