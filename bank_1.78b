@@ -1108,6 +1108,36 @@ plot_fairy
 
 owl_ai
         asm
+          lda object_flags,x
+          beq owl_init
+          and #%10000000
+          beq owl_find_target
+owl_move
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          beq owl_testX
+          inc object_frame,x
+owl_testX
+          lda object_Xpos,x
+          cmp #161
+          ; if the owl is off-screen, find a new target
+          bcs owl_timer
+          jmp proj_move_check
+
+owl_timer
+          ; simple: use N flag to init timer, Z to find new target, timer will be zero for next check
+          dec object_timer,x
+          bmi owl_start_timer
+          beq owl_find_target
+          rts
+
+owl_start_timer
+          lda #OWL_DELAY
+          sta object_timer,x
+          rts
+
+owl_init
           lda #%00000100
           sta object_flags,x
           lda #<.plot_fairy
@@ -1115,29 +1145,40 @@ owl_ai
           lda #>.plot_fairy
           sta object_spr_ptr_hi,x
 owl_find_target
-          ldy MAX_MAP_OBJECTS
+          ldy #0
 owl_loop
           lda object_type,y
           beq owl_next
           bmi owl_next
+owl_found_target
           lda object_Ypos,y
+          ; owl needs to be zone-aligned
           and #$F0
           sta object_Ypos,x
-          lda #176
+          lda #160
           sta object_Xpos,x
-          lda #0
-          sta object_Ydir,x
           lda #DIR_LEFT
           sta object_Xdir,x
           sta object_facing,x
           lda #1
           sta object_speed_hi,x
+          sta object_vel_cap_hi,x
           lda #0
-          jmp proj_move_check
+          sta object_speed_lo,x
+          sta object_vel_cap_lo,x
+          sta object_Ydir,x
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          lda #%10000100
+          sta object_flags,x
+          rts
 
 owl_next
-          dex
+          ; slightly less optimized, but means owl will prioritize monsters
+          iny
+          cmp #MAX_MAP_OBJECTS
           bne owl_loop
+owl_no_target
           ; no targetable object found, hide owl off screen
           lda #$F0
           sta object_Xpos,x
