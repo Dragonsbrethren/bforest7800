@@ -1608,7 +1608,8 @@ cc_loop
 cc_fireball
           cmp #TYPE_FIREBALL
           bcc cc_player_state
-          jmp .magic_collision
+          jsr .magic_collision
+          jmp .cc_next
 cc_player_state
           lda player_state
           cmp #STATE_ATTACK

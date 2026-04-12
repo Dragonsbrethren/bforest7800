@@ -96,8 +96,6 @@
         cmp #TYPE_TORCH
         beq .magic_killed_torch
 .magic_kill_object
-        lda #0
-        sta object_type,x
         ; change to spawner
         lda object_type,y
         sta object_flags,y
