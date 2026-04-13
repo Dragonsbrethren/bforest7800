@@ -146,7 +146,7 @@ end
         const name_cghost_lo = #<name_cghost
         const name_cghost_hi = #>name_cghost
         alphadata name_cghost font_spr
-        'Spectre'
+        'Spectre*'
 end
 
         const name_cardinal_lo = #<name_cardinal

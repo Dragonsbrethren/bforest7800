@@ -348,10 +348,10 @@ end
         'Thunderblitz*'
 end
         alphadata pickup_sword4 font_spr
-        'Sword 4      *'
+        'Wind Blade*'
 end
         alphadata pickup_sword5 font_spr
-        'Sword 5      *'
+        'Firebrand*'
 end
         alphadata pickup_sword6 font_spr
         'Sword 6      *'
@@ -404,16 +404,16 @@ end
         'Bronze Plate*'
 end
         alphadata pickup_armor3 font_spr
-        'Armor 3      *'
+        'Steel Plate  *'
 end
         alphadata pickup_armor4 font_spr
-        'Armor 4      *'
+        'Silver Plate *'
 end
         alphadata pickup_armor5 font_spr
-        'Armor 5      *'
+        'Maiden` Armor*'
 end
         alphadata pickup_armor6 font_spr
-        'Armor 6      *'
+        'Ancient Armor*'
 end
         alphadata pickup_armor7 font_spr
         'Armor 7      *'
@@ -440,10 +440,10 @@ end
         'Harpy` Charm*'
 end
         alphadata pickup_charm5 font_spr
-        'Charm 5      *'
+        'Thunder Rock*'
 end
         alphadata pickup_charm6 font_spr
-        'Charm 6      '
+        'Flame Gem*'
 end
         alphadata pickup_charm7 font_spr
         'Charm 7      *'
