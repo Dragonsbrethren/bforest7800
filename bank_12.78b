@@ -372,6 +372,7 @@ plot_caves_room_0
         exit_Xpos = 72
         exit_Ypos = $20
         exit_room_index = F_HILLS_CAVE1_I
+        if room_index >= 7 then demo_end = 1
         return thisbank
 
 ;==============================================================================

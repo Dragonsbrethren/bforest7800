@@ -169,8 +169,8 @@ plot_caves_room_13
         goto caves_waterfall bank12
 
 plot_caves_room_14
-        menu_map_room[menu_map_index] = ROOML_L
-        menu_map_room[menu_map_index_2] = ROOMR_R
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy current_map caves_room_14 280
         plotmapfile tiled/caves_room_14.tmx caves_room_14 0 0 20 14
         zone1_objects  = 4
