@@ -274,55 +274,53 @@ end
 ;=========================================================
 hills_boss_ai
         asm
-;         lda m_relic_bits_2
-;         and #%00000100
-;         bne hills_boss_zero
-
-;         lda object_flags,x
-;         and #%10000000
-;         bne hills_boss_handler
-          lda player_Xpos
-          cmp #64
-          bcs hills_flame_on
-          rts
-
-hills_boss_handler
-          lda object_timer,x
-          bne hills_boss_wait
-          ldy #3
-          lda object_type,y
-          beq hills_boss_dead
-          lda object_flags,y
-          and #%10111111        ; activate boss
-          sta object_flags,y
-          lda #$01
-          sta object_Ypos,y
-          rts
-
+          lda m_relic_bits_2
+          and #%00000100
+          beq hills_boss_flags
+          jmp hills_despawn_flames
+hills_boss_flags
+          lda object_flags,x
+          and #%10000000
+          bne .hills_boss_handler
+end
+        if player_Xpos < 56 then return thisbank
+        playsfx sfx_flameon
 hills_flame_on
-          lda #FLAME_BOSS_DELAY ; set timer between boss
-          sta object_timer,x    ; flame and spawn boss
-          lda #%10000000
-          sta object_flags,x    ; boss fight active
-;         ldy #2                ; index of boss flame
-          sta object_flags+2    ; turn flame on
-hills_boss_wait
-          rts
-
-
-hills_boss_dead
-          ldy #2
-          sty index             ; change index to flame
-          jsr .get_object_pos
-end     ; unblock the tile the flame was on
-        pokechar current_map peekX peekY 20 14 $4A
         asm
-hills_boss_zero
+          ldx index             ; restore x after sfx plays
+          lda #%10000000
+          sta object_flags,x
+          lda #TYPE_BOSS_FLAME
+          sta object_type+4
+          lda #48
+          sta object_Xpos+4
+          lda #$80
+          sta object_Ypos+4
+
+spawn_hills_boss
+          lda #$4C
+          sta object_Xpos+3
           lda #0
-          sta object_type,x
-          stx index             ; restore index
+          sta object_Ypos+3
+          ldx index     ; restore index for object handler
           rts
 end
+
+hills_boss_handler
+        asm
+          lda object_type+3
+          beq hills_move_talon
+          rts
+hills_move_talon
+hills_despawn_flames
+          lda #0
+          sta object_type+3
+          ; remove the boss handler
+          sta object_type+1
+end
+        ; hardcode the unblock instead of trying to reuse torch code
+        pokechar current_map 6 8 20 14 $4A
+        return thisbank
 
 ;=========================================================
 ; HARPY
@@ -1229,8 +1227,8 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HARPY_QUEEN, $4C, $70
-        TYPE_HTALON, $4C, $80, TYPE_HILLS_BOSS, $F0, $F0
+        TYPE_HARPY_QUEEN, $4C, $01
+        TYPE_HTALON, $4C, $80, 
         $00
 end
 
