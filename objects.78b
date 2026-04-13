@@ -634,8 +634,8 @@
         const priest_ai_hi    = #>.priest_ai
         const redslime_ai_lo  = #<.redslime_ai
         const redslime_ai_hi  = #>.redslime_ai
-        const mredslime_ai_lo = #<.redslime_ai
-        const mredslime_ai_hi = #>.redslime_ai
+        const mredslime_ai_lo = #<.mredslime_ai
+        const mredslime_ai_hi = #>.mredslime_ai
         const ghost_ai_lo     = #<.ghost_ai
         const ghost_ai_hi     = #>.ghost_ai
         const rghost_ai_lo    = #<.rghost_ai

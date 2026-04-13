@@ -1223,16 +1223,28 @@ end
 ; A Red Slime draws near!
 ; Command?
 ;==============================================================================
-redslime_ai
-        object_frame[index] = F_RSLIME_1
-        ; slimes have no physical defense on their squished frame
-        if !animation_frame then temp1 = RSLIME_DEF : goto rslime_chase
-        ; this will allow them to split into mini-slimes
-        temp1 = 0
-        object_frame[index] = F_RSLIME_2
+mredslime_ai
+        asm
+          lda #F_MRSLIME_1
+          sta object_frame,x
+          lda #MRSLIME_DEF
+          jmp redslime_anim
+
+.redslime_ai
+          lda #F_RSLIME_1
+          sta object_frame,x
+          lda #RSLIME_DEF
+
+redslime_anim
+          sta object_def,x
+          lda animation_frame
+          beq rslime_chase
+          lda #0
+          sta object_def,x
+          inc object_frame,x
 rslime_chase
-        object_def[index] = temp1
-        goto followplayer
+          jmp .follow_player
+end
 
 obj_redslime_stats
         asm
