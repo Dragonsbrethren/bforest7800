@@ -950,17 +950,17 @@ end
 end
 
         data pal_swords1
-        $00, $44, $74, $C2, $02, $34
+        $00, $44, $74, $C3, $D3, $36
 end
         data pal_swords2
-        $00, $FE, $0F, $AD, $51, $36
+        $00, $FE, $0F, $AD, $B6, $34
 end
 
         data pal_shields1
-        $00, $24, $0C
+        $00, $24, $0C, $44, $35
 end
         data pal_shields2
-        $00, $44, $0F
+        $00, $44, $0F, $37, $26
 end
 
         data m_shield_frames
@@ -968,17 +968,17 @@ end
 end
 
         data pal_armor1
-        $00, $12, $F2
+        $00, $12, $E2, $03, $08, $67, $E1
 end
         data pal_armor2
-        $00, $24, $F4
+        $00, $24, $E4, $06, $0B, $5B, $E3
 end
 
         data pal_charms1
-        $00, $98, $60 
+        $00, $98, $60, $99, $22, $03
 end
         data pal_charms2
-        $00, $0F, $62
+        $00, $0F, $62, $AF, $25, $AB
 end
 
         data sword_atk
