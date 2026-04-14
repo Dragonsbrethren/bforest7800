@@ -87,6 +87,8 @@ map_loaded
         gosub update_hp_bar
         gosub update_mp_bar
         if !save_objects then gosub load_objects
+        if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
+        if toggled_familiar = 4 then object_type[13] = TYPE_F_OWL
         asm
         lda #1
         sta pal_update
@@ -445,7 +447,7 @@ clear_obj_loop
 end
         for obj_index = 1 to MAX_MAP_OBJECTS
         object_type[obj_index] = pointer[[temp1]]
-        if !object_type[obj_index] then object_familiars
+        if !object_type[obj_index] then object_stats
         temp1++
         object_Xpos[obj_index] = pointer[[temp1]]
         temp1++
@@ -453,10 +455,6 @@ end
         temp1++
         next
 
-object_familiars
-        if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
-        if toggled_familiar = 4 then object_type[13] = TYPE_F_OWL
-        ; TODO: pointer table for stats as well
 object_stats
         for obj_index = 1 to MAX_OBJECTS
         index = object_type[obj_index]
@@ -1746,6 +1744,8 @@ toggle_familiar
         if menu_selection >=4 then goto main
         temp1 = m_relic_inv[menu_selection]
         if toggled_familiar = temp1 then toggled_familiar = 0 else toggled_familiar = temp1
+        ; zero familiar flags so it reinitializes itself
+        object_flags[13] = 0
         goto main
 
         data spell_ptrs_lo
