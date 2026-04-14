@@ -1641,7 +1641,7 @@ cc_next
           bne cc_loop
 end
 cc_return
-        return
+        return thisbank
 
 cc_door
         ; exclude static decorations so they don't get killed on collision
@@ -1897,7 +1897,7 @@ end
 ;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 
         ;  check player's shield and destroy projectile
-        if object_type[index] >= TYPE_DARKSPARK then shield_check
+        if object_type[index] >=  TYPE_DARKSPARK && object_type[index] < TYPE_DARKBOLT then shield_check
 player_knockback_status
         ; TODO: reorder objects to add ranges for inflicting status effects
         asm

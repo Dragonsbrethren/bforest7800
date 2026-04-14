@@ -218,7 +218,7 @@
         const RAVEN_MDEF = 0
 
         ; DARK PRIEST
-        const PRIEST_HP          =  3
+        const PRIEST_HP          =  4
         const PRIEST_VEL_CAP_HI  =  1
         const PRIEST_VEL_CAP_LO  =  0
         const PRIEST_DAMAGE      =  4
@@ -246,7 +246,7 @@
         const PRIEST_PAL = (1 * 32)
 
         const CARDINAL_PAL = (7 * 32)
-        const CARDINAL_HP  = 20
+        const CARDINAL_HP  = 40
         const CARDINAL_TELE_DELAY = 60
 
 
@@ -265,7 +265,7 @@
         const SKEL_VEL_CAP_HI  =  1
         const SKEL_VEL_CAP_LO  =  0
         const SKEL_DAMAGE      =  4
-        const SKEL_DEF         =  0
+        const SKEL_DEF         =  1
         const SKEL_MDEF        =  2
         const SKEL_FRICTION_HI =  1
         const SKEL_FRICTION_LO =  0
@@ -293,7 +293,7 @@
         const RETRACT_FRAMES = 4
 
         ; GHOST
-        const GHOST_HP = 5
+        const GHOST_HP = 2
         const GHOST_VEL_CAP_HI = 1
         const GHOST_VEL_CAP_LO = 0
         const GHOST_DAMAGE = 4
