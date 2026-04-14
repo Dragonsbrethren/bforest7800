@@ -301,22 +301,22 @@ menu_shield_next
 plot_inv_shield_0
         if !m_inv_item_0 then plot_inv_shield_1
         temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 80 temp1
+        plotsprite menu_shield0 4 16 80
         plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
 plot_inv_shield_1
         if !m_inv_item_1 then plot_inv_shield_2
         temp1 = m_shield_frames[m_inv_item_1]
-        plotsprite menu_shield0 4 16 112 temp1
+        plotsprite menu_shield0 4 16 112
         plotmap shield_names 0 24 7 13 1 0 m_inv_item_1 13
 plot_inv_shield_2
         if !m_inv_item_2 then plot_inv_shield_3
         temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 144 temp1
+        plotsprite menu_shield0 4 16 144
         plotmap shield_names 0 24 9 13 1 0 m_inv_item_2 13
 plot_inv_shield_3
         if !m_inv_item_3 then plot_inv_shield_done
         temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 176 temp1
+        plotsprite menu_shield0 4 16 176
         plotmap shield_names 0 24 11 13 1 0 m_inv_item_3 13
 plot_inv_shield_done
         goto equip_menu_draw_sprites
@@ -646,10 +646,11 @@ plot_item_inv
         for obj_index = m_inv_scroll to menu_items
         item_name = pointer[[obj_index]]
         if !item_name then items_left
+        frame = m_item_icons[item_name]
         if menu = MENU_RELICS then plot_relic_names
         item_qty = m_item_qty[item_name]
 plot_item_names
-        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY frame
         plotmap item_names m_palette m_textX m_textY 11 1 0 item_name 11
         asm
           lda m_textX
@@ -1000,3 +1001,7 @@ end
 enable_double_wide_mode
         sCTRL{4} = 1 : CTRL = sCTRL
         return
+
+        data m_item_icons
+        0, 0, 0, 1, 1, 2, 0, 1, 0, 1, 3
+end
