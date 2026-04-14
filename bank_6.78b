@@ -200,7 +200,7 @@ river_entrance_3
 river_set_room
         characterset forest_trees
         if music_playing then river_init
-        playrmt blackforest_indoorarea01
+;       playrmt blackforest_indoorarea01
         music_playing = 1
 river_init
         asm

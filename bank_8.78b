@@ -121,7 +121,7 @@ hills_cave_3
 hills_set_room
         characterset hills_ledges
         if music_playing then hills_init
-        playrmt blackforest_indoorarea01
+;       playrmt blackforest_indoorarea01
         music_playing = 1
 hills_init
         asm
