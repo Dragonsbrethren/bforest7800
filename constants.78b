@@ -273,9 +273,9 @@
 ; CAVE EXIT 2 (over river)
         const M_HILLS_CAVE2_X = 70
         const M_HILLS_CAVE2_Y = 80
-        const F_HILLS_CAVE2_I = 36
+        const F_HILLS_CAVE2_I = 29
         const F_HILLS_CAVE2_X = (8*4)
-        const F_HILLS_CAVE2_Y = $30
+        const F_HILLS_CAVE2_Y = $B0
         const F_HILLS_CAVE2_D = DIR_DOWN
 
 ; CAVE EXIT 3 (valley)
