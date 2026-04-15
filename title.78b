@@ -151,10 +151,10 @@ init_field
         gosub encode_password bank11
         gosub sub_update_player_stats bank3
         if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
-        ; retains the map in save rooms, continuing in same tileset
-        if old_tileset = tileset then goto main
         ; if you die in a room with an exit, stop it from taking you to the new map
         exit_tileset = 0
+        ; retains the map in save rooms, continuing in same tileset
+        if old_tileset = tileset then goto main
         gosub clear_menu_map
         goto main
 
