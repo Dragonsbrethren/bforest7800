@@ -259,7 +259,7 @@ plot_hills_room_23
 
 plot_hills_room_24
         menu_map_room[menu_map_index] = ROOML_U 
-        menu_map_room[menu_map_index_2] = ROOMR_U
+        menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy current_map hills_room_24 280
         plotmapfile tiled/hills_room_24.tmx hills_room_24 0 0 20 14
         zone1_objects  = 4
