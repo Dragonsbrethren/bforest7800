@@ -504,6 +504,8 @@ end
           sta object_speed_hi,x
           lda #SLIME_SPEED_LO
           sta object_speed_lo,x
+          lda #0
+          sta object_invuln,x
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc

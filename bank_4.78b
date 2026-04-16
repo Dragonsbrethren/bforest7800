@@ -1341,6 +1341,9 @@ end
           sta object_frame,x
           lda #RSLIME_PAL
           sta object_pal,x
+          lda #0
+          sta object_invuln,x
+          sta object_flags,x
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc
