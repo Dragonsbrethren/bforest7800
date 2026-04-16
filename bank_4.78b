@@ -1378,7 +1378,9 @@ cast_darkbolt
           lda player_Xpos
           sta object_Xpos,y
           lda #0
-          sta object_Ypos,y
+          sta object_speed_hi,y
+          sta object_Xvel_hi,y
+          sta object_Yvel_hi,y
           sta object_parent,y   ; lightning uses "parent" slot for target
           lda #DARKBOLT_DAMAGE
           sta object_damage,y
@@ -1386,5 +1388,13 @@ cast_darkbolt
           sta object_spr_ptr_lo,y
           lda #>.plot_lightning
           sta object_spr_ptr_hi,y
+          lda player_Ypos
+          and #$F0
+          sta object_Ypos,y
+          lsr
+          lsr
+          lsr
+          lsr
+          sta lightning_segs
           rts
 end
