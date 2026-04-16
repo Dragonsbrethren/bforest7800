@@ -774,7 +774,7 @@ end
 
 cast_iceflakes
         asm
-        lda #0
+        lda #ICEFLAKES_MP_COST
         sta mp_change
         jsr .test_spell_cost
         
@@ -787,17 +787,17 @@ load_iceflake_data
         lda #TYPE_ICEFLAKE
         sta object_type,y
         sta object_type,x
-        lda #FIREBALL_SPEED_HI
+        lda #ICEFLAKES_SPEED_HI
         sta object_vel_cap_hi,y
         sta object_vel_cap_hi,x
         sta object_speed_hi,y
         sta object_speed_hi,x
-        lda #FIREBALL_SPEED_LO
+        lda #ICEFLAKES_SPEED_LO
         sta object_vel_cap_lo,y
         sta object_vel_cap_lo,x
         sta object_speed_lo,y
         sta object_speed_lo,x
-        lda #FIREBALL_DAMAGE
+        lda #ICEFLAKES_DAMAGE
         clc
         adc player_wisdom
         sta object_damage,y
