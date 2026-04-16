@@ -737,17 +737,17 @@ reposY
 end
 
 obj_nix_stats
-        object_hp[obj_index] = WOLF_HP
-        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
-        object_damage[obj_index] = WOLF_DAMAGE
-        object_def[obj_index] = WOLF_DEF
-        object_mdef[obj_index] = WOLF_MDEF
-        object_friction_hi[obj_index] = WOLF_FRICTION_HI
-        object_friction_lo[obj_index] = WOLF_FRICTION_LO
-        object_speed_hi[obj_index] = WOLF_SPEED_HI
-        object_speed_lo[obj_index] = WOLF_SPEED_LO
-        object_flags[obj_index] = %00000011
+        object_hp[obj_index] = NIX_HP
+        object_vel_cap_hi[obj_index] = NIX_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = NIX_VEL_CAP_LO
+        object_damage[obj_index] = NIX_DAMAGE
+        object_def[obj_index] = NIX_DEF
+        object_mdef[obj_index] = NIX_MDEF
+        object_friction_hi[obj_index] = NIX_FRICTION_HI
+        object_friction_lo[obj_index] = NIX_FRICTION_LO
+        object_speed_hi[obj_index] = NIX_SPEED_HI
+        object_speed_lo[obj_index] = NIX_SPEED_LO
+        object_flags[obj_index] = NIX_FLAGS
         object_frame[obj_index] = F_NIX_BLANK
         asm
           ldx obj_index
@@ -959,16 +959,16 @@ obj_octo_stats
           sta object_frame,x
 end
         object_hp[obj_index] = OCTOPUS_HP
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 0
-        object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 10
-        object_flags[obj_index] = 0
+        object_vel_cap_hi[obj_index] = OCTOPUS_VEL_CAP_HI
+        object_vel_cap_lo[obj_index] = OCTOPUS_VEL_CAP_LO
+        object_damage[obj_index] = OCTOPUS_DAMAGE
+        object_def[obj_index] = OCTOPUS_DEF
+        object_mdef[obj_index] = OCTOPUS_MDEF
+        object_friction_hi[obj_index] = OCTOPUS_FRICTION_HI
+        object_friction_lo[obj_index] = OCTOPUS_FRICTION_LO
+        object_speed_hi[obj_index] = OCTOPUS_SPEED_HI
+        object_speed_lo[obj_index] = OCTOPUS_SPEED_LO
+        object_flags[obj_index] = OCTOPUS_FLAGS
         goto obj_next_stats
 
 river_boss

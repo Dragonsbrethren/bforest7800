@@ -356,7 +356,29 @@
         const NIX_TAIL_TIME = 20
         const NIX_PAL = 3
 
+        const NIX_SPEED_HI = 0
+        const NIX_SPEED_LO = 208
+        const NIX_HP = 6
+        const NIX_VEL_CAP_HI = 1
+        const NIX_VEL_CAP_LO = 0
+        const NIX_FRICTION_HI = 1
+        const NIX_FRICTION_LO = 0
+        const NIX_DAMAGE = 6
+        const NIX_DEF = 0
+        const NIX_MDEF = 2
+        const NIX_FLAGS = %00000011
+
         const OCTOPUS_HP = 4
+        const OCTOPUS_VEL_CAP_HI = 1
+        const OCTOPUS_VEL_CAP_LO = 0
+        const OCTOPUS_DAMAGE = 8
+        const OCTOPUS_DEF = 2
+        const OCTOPUS_MDEF = 2
+        const OCTOPUS_FRICTION_HI = 1
+        const OCTOPUS_FRICTION_LO = 0
+        const OCTOPUS_SPEED_HI = 0
+        const OCTOPUS_SPEED_LO = 128
+        const OCTOPUS_FLAGS = %00000000
         const OCTOPUS_POP_TIMER  = 60
         const OCTOPUS_SWIM_TIMER = 20
         const OCTOPUS_SHOOT_FRAMES = 30
