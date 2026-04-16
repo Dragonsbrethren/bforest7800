@@ -11,12 +11,16 @@
         lda object_type,y
         beq .magic_cc_next
         bmi .magic_cc_next       ; objects > 128 don't take damage
+        cmp #TYPE_OCTOKRAKEN
+        beq .magic_big_box
+.magic_box
         lda object_Xpos,y
         clc
         adc #8
         sbc object_Xpos,x
         cmp #19
         bcs .magic_cc_done
+.magic_box_height
         lda object_Ypos,y
         adc #8
         sbc object_Ypos,x
@@ -31,6 +35,17 @@
         dey
         bne .magic_cc_loop
         rts
+
+.magic_big_box
+        lda object_Xpos,y
+        clc
+        adc #8
+        sbc object_Xpos,x
+        clc
+        adc #28
+        cmp #43
+        bcs .magic_cc_done
+        bcc .magic_box_height
 
 .magic_damage
         lda object_invuln,y
