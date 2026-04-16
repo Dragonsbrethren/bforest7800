@@ -1315,19 +1315,34 @@ rghost_follow
 end
 
 obj_rghost_stats
-        object_hp[obj_index] = 5
-        object_vel_cap_hi[obj_index] = 1
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 2
-        object_mdef[obj_index] = 0
-        object_friction_hi[obj_index] = 1
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 20
-        object_flags[obj_index] = 0
         asm
           ldx obj_index
+          lda #GHOST_HP
+          sta object_hp,x
+          lda #GHOST_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #GHOST_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #GHOST_DAMAGE
+          sta object_damage,x
+          lda #GHOST_DEF
+          sta object_def,x
+          lda #GHOST_MDEF
+          sta object_mdef,x
+          lda #GHOST_FRICTION_HI
+          sta object_friction_hi,x
+          lda #GHOST_FRICTION_LO
+          sta object_friction_lo,x
+          lda #GHOST_SPEED_HI
+          sta object_speed_hi,x
+          lda #GHOST_SPEED_LO
+          sta object_speed_lo,x
+          lda #GHOST_FLAGS
+          sta object_flags,x
+          lda #GHOST_PAL_1
+          sta object_pal,x
+          lda #F_GHOST_1
+          sta object_frame,x
           lda #GHOST_PAL_1
           lda #<.plot_rghost
           sta object_spr_ptr_lo,x
