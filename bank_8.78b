@@ -1001,8 +1001,9 @@ end
           sta object_Xpos,x
           lda object_Ypos,x
         ; initialize the new mini slime object
-          ldx spawn_index
           sta object_Ypos,y
+          lda object_elevation,x
+          sta object_elevation,y
           lda #TYPE_MHSLIME
           sta object_type,y
           lda #MHSLIME_HP
