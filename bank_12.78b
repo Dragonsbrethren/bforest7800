@@ -344,18 +344,21 @@ end
 end
 
         data caves_room_18_obj
+        TYPE_CSPIDER, (7*8), $20
+        TYPE_ROSE, (11*8), $80
         TYPE_CHARM6, (14*8), $50
         $00
 end
 
         data caves_room_19_obj
         TYPE_CSPIDER, (13*8), $20
-        TYPE_PUDDING, (11*8), $A0, TYPE_PUDDING, (14*8), $B0
+        TYPE_ROSE, (10*8), $80
         TYPE_TORCH, (12*8), $40, TYPE_TORCH, (14*8), $60
         $00
 end
 
         data caves_room_20_obj
+        TYPE_ROSE, (12*8), $80
         TYPE_TORCH, 18, $30, TYPE_TORCH, 46, $30
         $00
 end
