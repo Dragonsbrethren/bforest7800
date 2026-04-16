@@ -417,9 +417,12 @@ follow_player
         cmp #240
         bcs follow_player_Y
 follow_player_X
-        lda object_Xpos,x
-        cmp player_Xpos
-        bcc follow_player_X_right
+        lda player_Xpos
+        cmp object_Xpos,x
+        bcs follow_player_X_right
+        adc #12
+        cmp object_Xpos,x
+        bcs follow_player_Y
 follow_player_X_left
         lda #DIR_LEFT
         sta object_Xdir,x
