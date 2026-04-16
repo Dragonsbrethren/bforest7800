@@ -397,7 +397,7 @@ equip_menu_test_shield
         goto equip_menu_test_armor
 equip_menu_draw_shield
         temp1 = m_shield_frames[player_shield]
-        plotsprite menu_shield0 0 84 112 temp1
+        plotsprite menu_shield0 0 84 112
         plotmap shield_names 0 92 7 13 1 0 player_shield 13
 equip_menu_test_armor
         if player_armor then goto equip_menu_draw_armor
@@ -976,10 +976,10 @@ end
 end
 
         data pal_charms1
-        $00, $98, $60, $99, $22, $03
+        $00, $98, $60, $99, $22, $03, $35
 end
         data pal_charms2
-        $00, $0F, $62, $AF, $25, $AB
+        $00, $0F, $62, $AF, $25, $AB, $37
 end
 
         data sword_atk
