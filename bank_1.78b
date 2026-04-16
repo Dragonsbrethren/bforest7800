@@ -354,6 +354,8 @@ add_sword
 pickup_shield
         temp1 = temp1 - TYPE_SHIELD1
         if !player_shield then player_shield = temp1+1
+        shield_pal = f_shield_pals[player_shield]
+        dec player_def = player_def + shield_def[player_shield]
         pickup_ptr_lo = pickup_shields_lo[temp1]
         pickup_ptr_hi = pickup_shields_hi[temp1]
         gosub prep_inv_bits
@@ -1601,6 +1603,7 @@ stone_set
 
 stone_done
         player_status{3} = 0
+        shield_pal = f_shield_pals[player_shield]
         goto player_handler_done
 
 ;========================================
