@@ -88,6 +88,8 @@ title_new_game
         player_shield = 0
         player_armor = 1
         player_charm = 0
+        player_spell = 0
+        toggled_familiar = 0
         m_item_bits_1   = %00000001
         m_item_bits_2   = %00000111
         m_sword_bits_1  = %00000001

@@ -315,6 +315,7 @@ add_key
 
 pickup_spell
         temp1 = temp1 - TYPE_SPELL1
+        if !player_spell then player_spell = temp1+1
         pickup_ptr_lo = pickup_spells_lo[temp1]
         pickup_ptr_hi = pickup_spells_hi[temp1]
         gosub prep_inv_bits
@@ -350,6 +351,7 @@ add_sword
 
 pickup_shield
         temp1 = temp1 - TYPE_SHIELD1
+        if !player_shield then player_shield = temp1+1
         pickup_ptr_lo = pickup_shields_lo[temp1]
         pickup_ptr_hi = pickup_shields_hi[temp1]
         gosub prep_inv_bits
@@ -370,6 +372,7 @@ add_armor
 
 pickup_charm
         temp1 = temp1 - TYPE_CHARM1
+        if !player_charm then player_charm = temp1+1
         pickup_ptr_lo = pickup_charms_lo[temp1]
         pickup_ptr_hi = pickup_charms_hi[temp1]
         gosub prep_inv_bits
@@ -380,6 +383,7 @@ add_charm
 
 pickup_relic
         temp1 = temp1 - TYPE_RELIC1
+        if temp1 < 4 && !toggled_familiar then toggled_familiar = temp1+1
         pickup_ptr_lo = pickup_relics_lo[temp1]
         pickup_ptr_hi = pickup_relics_hi[temp1]
         gosub prep_inv_bits
