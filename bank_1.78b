@@ -38,6 +38,7 @@
         incgraphic gfx/sprites/door0.png 160A 0 1 2 3
         incgraphic gfx/sprites/door1.png 160A 0 1 2 3
         incgraphic gfx/sprites/jostone0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/jostone1.png 160A 0 2 3 1
         incgraphic gfx/sprites/owl0.png 160A 0 3 2 1
         incgraphic gfx/sprites/owl1.png 160A 0 2 1 3
         incgraphic gfx/sprites/owl2.png 160A 0 1 2 3
@@ -174,7 +175,8 @@ plot_player_no_lock
         ; plot shield behind player if facing up/right
         if player_facing = DIR_UP || player_facing = DIR_RIGHT then gosub plot_player_shield
 plot_johanna
-        if player_status{3} then plotsprite jostone0 5 player_Xpos player_Ypos 0 : goto plot_joshield
+        if player_flags{1} then frame = 1 else frame = 0
+        if stone_duration then plotsprite jostone0 5 player_Xpos player_Ypos frame : goto plot_joshield
         if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
 plot_joshield
         if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
@@ -1583,14 +1585,18 @@ stone_handler
           sta player_Xvel_hi
           sta player_Yvel_lo
           sta player_Yvel_hi
+          sta object_invuln
 end
-        stone_duration = 255
+        stone_duration = 120
 stone_set
         if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
         if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
-        if joy0any then stone_duration--
+;       if joy0any then stone_duration--
+        player_timer--
         stone_duration--
         if !stone_duration then stone_done
+        ; continue checking invuln frames while stone
+        if !player_timer then player_flags{0} = 0
         goto player_handler_done
 
 stone_done
