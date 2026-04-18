@@ -894,7 +894,7 @@ input_frame_done
 check_room_boundary
         if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
         if player_Xpos > 147 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
-        if player_Ypos < 8  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
+        if player_Ypos < 12  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
         if player_Ypos > 188 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1 : exit_tileset = 0
         ; if this room can transition to another tileset, check its exit coordinates

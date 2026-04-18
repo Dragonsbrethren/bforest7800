@@ -420,8 +420,9 @@
 
 
         dim current_map = $2600
+        dim map13 = current_map
         dim map12 = current_map+20
-        dim map11 = current_map+30
+        dim map11 = current_map+40
         dim map10 = current_map+40
         dim map9  = current_map+50
         dim map8  = current_map+60

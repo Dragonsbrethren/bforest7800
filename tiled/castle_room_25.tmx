@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="13" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" name="castle_stone" tilewidth="8" tileheight="16" tilecount="20" columns="20">
   <image source="../gfx/tiles/castle_stone.png" width="160" height="16"/>
  </tileset>
@@ -12,8 +12,28 @@
  <tileset firstgid="47" name="castle_tables" tilewidth="8" tileheight="16" tilecount="14" columns="14">
   <image source="../gfx/tiles/castle_tables.png" width="112" height="16"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="20" height="14">
+ <layer id="1" name="Tile Layer 1" width="20" height="13">
   <data>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
+   <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="54"/>
    <tile gid="6"/>
@@ -232,48 +252,8 @@
    <tile gid="14"/>
    <tile gid="14"/>
    <tile gid="16"/>
-   <tile gid="54"/>
-   <tile gid="54"/>
-   <tile gid="3"/>
-   <tile gid="16"/>
-   <tile gid="15"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="16"/>
    <tile gid="60"/>
    <tile gid="60"/>
-   <tile gid="14"/>
-   <tile gid="16"/>
-   <tile gid="15"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="3"/>
-   <tile gid="14"/>
-   <tile gid="3"/>
-   <tile gid="14"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="14"/>
-   <tile gid="3"/>
-   <tile gid="14"/>
-   <tile gid="3"/>
-   <tile gid="14"/>
-   <tile gid="14"/>
-   <tile gid="16"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
    <tile gid="3"/>
    <tile gid="16"/>
    <tile gid="15"/>
@@ -292,8 +272,8 @@
    <tile gid="14"/>
    <tile gid="14"/>
    <tile gid="16"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
   </data>
  </layer>
 </map>

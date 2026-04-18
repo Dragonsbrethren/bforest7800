@@ -321,8 +321,8 @@ plot_castle_room_2
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 13
-        memcpy current_map castle_room_3 280
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 3 20 8
+        memcpy map8 castle_room_3 280
         zone1_objects  = 2
         zone2_objects  = 2
         zone14_objects = 0
