@@ -346,23 +346,23 @@ draw_hud
         asm
         lda #0
         sta Yposition
-        sta temp1
+        sta hud_1
 end
-        temp2 = 5
-        temp3 = (2 * 32)
+        hud_2 = 5
+        sprite_pal = 2
         gosub plot_bar
         plotsprite  mp   0  8 16        ; Need to use plotsprite here to avoid rendering error on MP bar
         ; prep plot_bar for MP bar
         Xposition = 24
         Yposition = 16
-        temp1 = 6
-        temp2 = 11
-        temp3 = 0
+        hud_1 = 6
+        hud_2 = 11
+        sprite_pal = 0
         ; code runs directly into 
 plot_bar
-        for index = temp1 to temp2
+        for index = hud_1 to hud_2
         frame = hp_seg_1[index]
-        PLOTSPRITE bar0 temp3 Xposition Yposition frame
+        plotsprite bar0 sprite_pal Xposition Yposition frame
         Xposition = Xposition + 8
         next
         return thisbank
@@ -893,8 +893,8 @@ input_frame_done
 
 check_room_boundary
         if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
-        if player_Xpos > 149 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
-        if player_Ypos < 2  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
+        if player_Xpos > 147 then exit_dir = EXIT_WEST  : room_index = room_index + 1 : menu_map_Xpos = menu_map_Xpos + 8
+        if player_Ypos < 8  then exit_dir = EXIT_NORTH : room_index = room_index - ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos - 16
         if player_Ypos > 188 then exit_dir = EXIT_SOUTH : room_index = room_index + ROOMS_PER_ROW : menu_map_Ypos = menu_map_Ypos + 16
         if exit_dir then reload_map = 1 : exit_tileset = 0
         ; if this room can transition to another tileset, check its exit coordinates

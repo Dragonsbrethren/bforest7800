@@ -16,7 +16,9 @@
         autodim byte pointer_hi
         autodim byte Xposition
         autodim byte Yposition
+        dim jump1 = Xdestination
         autodim byte Xdestination
+        dim jump2 = Ydestination
         autodim byte Ydestination
         autodim byte Xdirection
         autodim byte Ydirection
@@ -413,9 +415,21 @@
         autodim byte fade_count
         autodim byte fade
         autodim byte white_value
+        autodim byte hud_1
+        autodim byte hud_2
 
 
         dim current_map = $2600
+        dim map12 = current_map+20
+        dim map11 = current_map+30
+        dim map10 = current_map+40
+        dim map9  = current_map+50
+        dim map8  = current_map+60
+        dim map7  = current_map+70
+        dim map6  = current_map+80
+        dim map5  = current_map+90
+        dim map4  = current_map+100
+        dim map3  = current_map+110
 
         dim RMTRAM = $2720
         

@@ -45,6 +45,7 @@
         incgraphic gfx/sprites/owl3.png 160A 0 3 2 1
 
 init
+        doublebuffer on 2
         goto title_init bank10
 
 tileset_transition
@@ -68,7 +69,7 @@ load_map
         clearscreen
         gosub clear_palettes
         displaymode 160A
-        adjustvisible 0 14
+        adjustvisible 0 13
         if exit_tileset then gosub tileset_transition
         in_save_room = 0
         if tileset = T_FOREST then gosub load_forest bank2
@@ -81,7 +82,7 @@ draw_pickup_hud
         Xposition = 36
         for index = 0 to 12
         Xposition = Xposition + 6              
-        PLOTSPRITE font_spr 0 Xposition 208 0
+        plotsprite font_spr 0 Xposition 208 0
         next
 map_loaded
         savescreen
@@ -106,7 +107,7 @@ end
         if exit_dir = EXIT_WEST  then player_Xpos = 7  : player_Xdir = DIR_RIGHT : object_Xpos[13] = 0
 
 main
-        drawscreen
+        doublebuffer flip
         if switchreset then goto title_init bank10
         if !switchselect then select_debounce = 0
         if !switchpause then pause_debounce = 0

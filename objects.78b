@@ -262,15 +262,15 @@
 
         ; SKELETAL KNIGHT
         const SKEL_HP          =  3
-        const SKEL_VEL_CAP_HI  =  1
+        const SKEL_VEL_CAP_HI  =  2
         const SKEL_VEL_CAP_LO  =  0
         const SKEL_DAMAGE      =  4
         const SKEL_DEF         =  1
         const SKEL_MDEF        =  2
         const SKEL_FRICTION_HI =  1
         const SKEL_FRICTION_LO =  0
-        const SKEL_SPEED_HI    =  0
-        const SKEL_SPEED_LO    = 128
+        const SKEL_SPEED_HI    =  1
+        const SKEL_SPEED_LO    = 0
         const SKEL_WALK_TIMER  = 20
         const SKEL_CAST_FRAMES = 20
         const SKEL_FLAGS       = %00000000
@@ -402,14 +402,14 @@
         const F_OCTOINK = 1
         const OCTOINK_PAL = (6 * 32)
 
-        const OCTOKRAKEN_HP     = 30
+        const OCTOKRAKEN_HP     = 40
         const OCTOKRAKEN_DAMAGE = 7
-        const OCTOKRAKEN_DEF    = 2
+        const OCTOKRAKEN_DEF    = 4
         const OCTOKRAKEN_MDEF   = 2
         const OCTOKRAKEN_PAL    = 5
-        const OCTOKRAKEN_ATTACK_TIME = 30
-        const OCTOKRAKEN_WAIT_TIME = 15
-        const TENTSHADOW_TIME   = 60
+        const OCTOKRAKEN_ATTACK_TIME = 15
+        const OCTOKRAKEN_WAIT_TIME = 8
+        const TENTSHADOW_TIME   = 30
 
         ; WARG
         const F_WARG_LEFT_1  = 0

@@ -32,7 +32,7 @@
         const EXIT_EAST  = 3
         const EXIT_WEST  = 4
         
-        const ANIM_TIME = 16
+        const ANIM_TIME = 8
         const BUTTON_HOLD_FRAMES = 15
 
 ;------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
         const PLAYER_HEIGHT = 16
         const PLAYER_WIDTH  = 12
 
-        const SWORD_FRAMES = 4
+        const SWORD_FRAMES = 2
         const SWORD_OFFSET_DOWN_X  =   5
         const SWORD_OFFSET_DOWN_Y  =  15
         const SWORD_OFFSET_UP_X    =   5
@@ -346,7 +346,7 @@
         const MENU_MAIN_EXIT_X   = 128
 
         ; once menu debounce >= this value, act as button was tapped
-        const MENU_TAP_FRAMES = 6
+        const MENU_TAP_FRAMES = 3
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32

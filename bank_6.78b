@@ -1281,8 +1281,8 @@ obj_tentacle_stats
           lda #0
           sta object_frame,x
 end
-        object_hp[obj_index] = OCTOPUS_HP
-        object_vel_cap_hi[obj_index] = 1
+        object_hp[obj_index] = 10
+        object_vel_cap_hi[obj_index] = 2
         object_vel_cap_lo[obj_index] = 0
         object_damage[obj_index] = 4
         object_def[obj_index] = 0
@@ -1444,7 +1444,8 @@ plot_octoeye
 
 plot_tentacle
         shadow_offset = Yposition - $10
-        if !frame then PLOTSPRITE tentacle 5 Xposition shadow_offset 0
+        if frame then plot_tentshadow
+        PLOTSPRITE tentacle 5 Xposition shadow_offset 0
 plot_tentshadow
         PLOTSPRITE tentacle_tallsprite_00 5 Xposition Yposition frame
         goto plot_next

@@ -235,15 +235,16 @@ init_castle
         cpx #6
         bcc .castle_room_bank_4
 end
+        drawwait
         gosub castle_room_bank_5 bank5
         return thisbank         ; gosub/return needed to make bank switch
 castle_room_bank_4
         asm
         lda castle_map_lo,x
-        sta temp1               ; temp1 + 2 used for indirect jmp
+        sta jump1               ; temp1 + 2 used for indirect jmp
         lda castle_map_hi,x
-        sta temp2
-        jmp (temp1)
+        sta jump2
+        jmp (jump1)
 end
 
 castle_pals
@@ -283,14 +284,14 @@ plot_castle_room_0
 plot_castle_room_1
         menu_map_room[menu_map_index] = 2
         menu_map_room[menu_map_index_2] = 3
-        memcpy current_map castle_room_1 280
-        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 0 20 14
+        memcpy map12 castle_room_1 240
+        plotmapfile tiled/castle_room_1.tmx castle_room_1 0 1 20 12
         asm
           lda #2
           sta zone1_objects
           sta zone2_objects
 end
-        zone14_objects = 1
+        zone14_objects = 0
         locked_zone = 0
 plot_castle_bank5_return
         return thisbank
@@ -310,21 +311,21 @@ castle_shared_pals
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 0 20 14
-        memcpy current_map castle_room_2 280
-        zone1_objects  = 4
+        plotmapfile tiled/castle_room_2.tmx castle_room_2 0 1 20 12
+        memcpy map12 castle_room_2 280
+        zone1_objects  = 1
         zone2_objects  = 4
-        zone14_objects = 3
+        zone14_objects = 0
         return thisbank
 
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
-        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 14
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 0 20 13
         memcpy current_map castle_room_3 280
         zone1_objects  = 2
         zone2_objects  = 2
-        zone14_objects = 1
+        zone14_objects = 0
         return thisbank
 
 plot_castle_room_4
@@ -360,9 +361,9 @@ end
 end
 
         data castle_room_2_obj
-        TYPE_SKELETON, $4C, $60,
-        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
-        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $60, TYPE_TORCH, $60, $A0,
+        TYPE_SKELETON, $4C, $60, TYPE_SKELETON, $4C, $80, TYPE_SKELETON, $4C, $A0,
+        TYPE_TORCH, $38, $30, TYPE_TORCH, $38, $70, TYPE_TORCH, $38, $B0,
+        TYPE_TORCH, $60, $30, TYPE_TORCH, $60, $70, TYPE_TORCH, $60, $B0,
         $00
 end
 

@@ -3,7 +3,10 @@ ZONETODO   SET {1}
 ZONEADDR   SET {2}   
 OBJECTTODO SET ({3} * 5)
 
-    ldx dlend+ZONETODO
+    lda dlend+ZONETODO
+    clc
+    adc doublebufferdloffset
+    tax
 
     lda ZONEADDR+OBJECTTODO+0
     sta ZONEADDR,x
