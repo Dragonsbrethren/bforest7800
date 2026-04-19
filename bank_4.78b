@@ -312,41 +312,33 @@ plot_castle_room_2
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_2.tmx castle_room_2 0 1 20 12
-        memcpy map12 castle_room_2 280
-        zone1_objects  = 1
+        memcpy map12 castle_room_2 240
         zone2_objects  = 4
-        zone14_objects = 0
         return thisbank
 
 plot_castle_room_3
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_3.tmx castle_room_3 0 3 20 8
-        memcpy map8 castle_room_3 280
-        zone1_objects  = 2
+        memcpy map8 castle_room_3 200
         zone2_objects  = 2
-        zone14_objects = 0
         return thisbank
 
 plot_castle_room_4
         menu_map_room[menu_map_index] = 8
         menu_map_room[menu_map_index_2] = 15
-        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 0 20 14
-        memcpy current_map castle_room_4 280
-        zone1_objects  = 2
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 1 20 12
+        memcpy map12 castle_room_4 240
         zone2_objects  = 2
-        zone14_objects = 1
         return thisbank
 
 plot_castle_room_5
         no_flash = 1
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
-        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 0 20 14
-        memcpy current_map castle_room_5 280
-        zone1_objects  = 2
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 1 20 12
+        memcpy map12 castle_room_5 240
         zone2_objects  = 2
-        zone14_objects = 5
         locked_zone = 0
         return thisbank
 
@@ -368,7 +360,9 @@ end
 end
 
         data castle_room_3_obj
-        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70,
+        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70
+        TYPE_SKELETON, $38, $50, TYPE_SKELETON, $68, $80
+        TYPE_SKELETON, $48, $40, TYPE_SKELETON, $78, $90
         TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
         $00
@@ -376,13 +370,14 @@ end
 
         data castle_room_4_obj
         TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
+        TYPE_SKELETON, $50, $40, TYPE_SKELETON, $40, $80,
         TYPE_DOOR_LOCK, $68, $10
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0
         $00
 end
 
         data castle_room_5_obj
-        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50
+        TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_RSLIME, $60, $30
         TYPE_BLOOD, $80, $20
         TYPE_DOOR, $68, $10
         $00
