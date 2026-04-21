@@ -298,7 +298,7 @@ plot_castle_room_25
         menu_map_room[menu_map_index_2] = 17
         plotmapfile tiled/castle_room_25.tmx castle_room_25 0 0 20 13
         memcpy map13 castle_room_25 260
-        zone1_objects  = 3
+        zone1_objects  = 2
         zone2_objects  = 4
         zone14_objects = 0
         return otherbank
