@@ -152,6 +152,8 @@ init_field
         pickup_string[index] = 0
         gosub encode_password bank11
         gosub sub_update_player_stats bank3
+        ; clear stone timer so correct player graphics are used
+        stone_duration = 0
         if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
         ; if you die in a room with an exit, stop it from taking you to the new map
         exit_tileset = 0
