@@ -751,11 +751,9 @@ end
 plot_hills_room_0
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
-        memcpy current_map hills_room_0 280
-        plotmapfile tiled/hills_room_0.tmx hills_room_0 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 hills_room_0 240
+        plotmapfile tiled/hills_room_0.tmx hills_room_0 0 1 20 12
         zone2_objects  = 3
-        zone14_objects = 3
         locked_zone = 6
         alt_palette = 1
         exit_tileset = T_RIVER
@@ -779,21 +777,17 @@ plot_hills_room_1
 plot_hills_room_2
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_2 280
-        plotmapfile tiled/hills_room_2.tmx hills_room_2 0 0 20 14
-        zone1_objects  = 6
+        memcpy map12 hills_room_2 240
+        plotmapfile tiled/hills_room_2.tmx hills_room_2 0 1 20 12
         zone2_objects  = 6
-        zone14_objects = 4
         return thisbank
 
 plot_hills_room_3
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map hills_room_3 280
-        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 0 20 14
-        zone1_objects  = 4
+        memcpy map12 hills_room_3 240
+        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 1 20 12
         zone2_objects  = 4
-        zone14_objects = 5
         locked_zone    = 6
         exit_tileset = T_CAVES
         exit_Xpos = 32
@@ -804,11 +798,9 @@ plot_hills_room_3
 plot_hills_room_4
         menu_map_room[menu_map_index] = ROOML_L
         menu_map_room[menu_map_index_2] = ROOMR_R
-        memcpy current_map hills_room_4 280
-        plotmapfile tiled/hills_room_4.tmx hills_room_4 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 hills_room_4 240
+        plotmapfile tiled/hills_room_4.tmx hills_room_4 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 1
         alt_palette = 1
         return thisbank
 
