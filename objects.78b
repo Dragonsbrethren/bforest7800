@@ -171,10 +171,10 @@
         const COMMON_DROP_RATE = 192
 
         ; STATS -- TODO: Move these to individual files for each object?
-        const WOLF_SPEED_HI = 1
+        const WOLF_SPEED_HI = 2
         const WOLF_SPEED_LO = 0
         const WOLF_HP = 2
-        const WOLF_VEL_CAP_HI = 1
+        const WOLF_VEL_CAP_HI = 2
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
@@ -351,15 +351,15 @@
         const NIX_OFFSET_X = NIX_RANGE_X / 2
         const NIX_OFFSET_Y = NIX_RANGE_Y / 2
 
-        const NIX_ATK_TIME  = 20
-        const NIX_ATK2_TIME = 20
-        const NIX_TAIL_TIME = 20
+        const NIX_ATK_TIME  = 10
+        const NIX_ATK2_TIME = 10
+        const NIX_TAIL_TIME = 10
         const NIX_PAL = 3
 
-        const NIX_SPEED_HI = 0
+        const NIX_SPEED_HI = 1
         const NIX_SPEED_LO = 208
         const NIX_HP = 6
-        const NIX_VEL_CAP_HI = 1
+        const NIX_VEL_CAP_HI = 2
         const NIX_VEL_CAP_LO = 0
         const NIX_FRICTION_HI = 1
         const NIX_FRICTION_LO = 0
@@ -369,14 +369,14 @@
         const NIX_FLAGS = %00000011
 
         const OCTOPUS_HP = 4
-        const OCTOPUS_VEL_CAP_HI = 1
+        const OCTOPUS_VEL_CAP_HI = 2
         const OCTOPUS_VEL_CAP_LO = 0
         const OCTOPUS_DAMAGE = 8
         const OCTOPUS_DEF = 2
         const OCTOPUS_MDEF = 2
         const OCTOPUS_FRICTION_HI = 1
         const OCTOPUS_FRICTION_LO = 0
-        const OCTOPUS_SPEED_HI = 0
+        const OCTOPUS_SPEED_HI = 1
         const OCTOPUS_SPEED_LO = 128
         const OCTOPUS_FLAGS = %00000000
         const OCTOPUS_POP_TIMER  = 60
@@ -394,10 +394,10 @@
         const F_OCTO_SHOOT_L = 6
         const F_OCTO_SHOOT_R = 5
 
-        const OCTOINK_SPEED_HI = 2
+        const OCTOINK_SPEED_HI = 4
         const OCTOINK_SPEED_LO = 0
         const OCTOINK_DAMAGE   = 6
-        const OCTOINK_VEL_CAP_HI = 2
+        const OCTOINK_VEL_CAP_HI = 4
         const OCTOINK_VEL_CAP_LO = 0
         const F_OCTOINK = 1
         const OCTOINK_PAL = (6 * 32)
@@ -407,9 +407,10 @@
         const OCTOKRAKEN_DEF    = 4
         const OCTOKRAKEN_MDEF   = 2
         const OCTOKRAKEN_PAL    = 5
-        const OCTOKRAKEN_ATTACK_TIME = 15
-        const OCTOKRAKEN_WAIT_TIME = 8
-        const TENTSHADOW_TIME   = 30
+        const OCTOKRAKEN_ATTACK_TIME = 7
+        const OCTOKRAKEN_WAIT_TIME = 4
+        const TENTSHADOW_TIME   = 15
+        const TENTACLE_SPEED = 3
 
         ; WARG
         const F_WARG_LEFT_1  = 0
@@ -600,10 +601,10 @@
         const FAIRY_SPEED_HI = 1
         const FAIRY_SPEED_LO = 0
         const FAIRY_HP = 255
-        const FAIRY_VEL_CAP_HI = 1
-        const FAIRY_VEL_CAP_LO = 128
+        const FAIRY_VEL_CAP_HI = 2
+        const FAIRY_VEL_CAP_LO = 0
         const FAIRY_FRICTION_HI = 0
-        const FAIRY_FRICTION_LO = 128
+        const FAIRY_FRICTION_LO = 208
         const FAIRY_DAMAGE = 0
         const FAIRY_DEF = 255
         const FAIRY_MDEF = 255
