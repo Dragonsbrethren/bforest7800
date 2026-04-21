@@ -170,6 +170,21 @@
         const ROOML_N   = 16
         const ROOMR_N   = 17
 
+; CASTLE ENTRANCE
+        const M_CASTLE_ENT_X =  70
+        const M_CASTLE_ENT_Y = 160
+        const F_CASTLE_ENT_I =  44
+        const F_CASTLE_ENT_X = $4C
+        const F_CASTLE_ENT_Y = $B0
+        const F_CASTLE_ENT_D = DIR_UP
+
+        const M_CASTLE_ENT2_X =  48
+        const M_CASTLE_ENT2_Y = 102
+        const F_CASTLE_ENT2_I = 160
+        const F_CASTLE_ENT2_X =  76
+        const F_CASTLE_ENT2_Y = $B0
+        const F_CASTLE_ENT2_D = DIR_UP
+
 
 ; CASTLE CAVE
         const M_CASTLE_CAVE_X = 70
@@ -346,7 +361,7 @@
         const MENU_MAIN_EXIT_X   = 128
 
         ; once menu debounce >= this value, act as button was tapped
-        const MENU_TAP_FRAMES = 3
+        const MENU_TAP_FRAMES = 4
 
         const ITEMS_HP_X = 80
         const ITEMS_HP_Y = 32
@@ -382,7 +397,7 @@
         ; fairy familiar item use frames
         const FAIRY_ITEM_TIME = 120
 
-        const PICKUP_TIME = 120
+        const PICKUP_TIME = 60
         const PICKUP_STRING_LENGTH = 12
 
 ;------------------------------------------------------------------------------

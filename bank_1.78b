@@ -81,7 +81,7 @@ load_map
         gosub draw_hud
 draw_pickup_hud
         Xposition = 36
-        for index = 0 to 12
+        for index = 0 to 11
         Xposition = Xposition + 6              
         plotsprite font_spr 0 Xposition 208 0
         next
@@ -1504,9 +1504,6 @@ update_pickup_objs
         inx
         ldy #13
         SetObjectImageLo pickup_string+11
-        inx
-        ldy #13
-        SetObjectImageLo pickup_string+12
         rts
 end
 

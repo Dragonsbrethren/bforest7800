@@ -160,21 +160,21 @@ load_castle
         if exit_room_index = F_CASTLE_CAVE_I then castle_cave
 
 castle_entrance_1
-        room_index = 44 ; 44
-        menu_map_Xpos = 70
-        menu_map_Ypos = 160
-        player_Xpos = $4C
-        player_Ypos = $B0
-        player_facing = DIR_UP
+        room_index    = F_CASTLE_ENT_I
+        menu_map_Xpos = M_CASTLE_ENT_X
+        menu_map_Ypos = M_CASTLE_ENT_Y
+        player_Xpos   = F_CASTLE_ENT_X
+        player_Ypos   = F_CASTLE_ENT_Y
+        player_facing = F_CASTLE_ENT_D
         goto castle_rooms
 
 castle_entrance_2
-        room_index = 48
-        menu_map_Xpos = 102
-        menu_map_Ypos = 160
-        player_Xpos = 76
-        player_Ypos = $B0
-        player_facing = DIR_UP
+        room_index    = F_CASTLE_ENT2_I
+        menu_map_Xpos = M_CASTLE_ENT2_X
+        menu_map_Ypos = M_CASTLE_ENT2_Y
+        player_Xpos   = F_CASTLE_ENT2_X
+        player_Ypos   = F_CASTLE_ENT2_Y
+        player_facing = F_CASTLE_ENT2_D
         goto castle_rooms
 
 castle_cave
@@ -200,7 +200,7 @@ castle_save_2
         menu_map_Xpos = 54
         menu_map_Ypos = 80
         player_Xpos = $48
-        player_Ypos = $60
+        player_Ypos = $70
         player_facing = DIR_DOWN
 
 castle_rooms
@@ -296,12 +296,6 @@ end
 plot_castle_bank5_return
         return thisbank
 
-        ; unblocks floor tiles in boss arena
-castle_flame_unblock
-        pokechar current_map 3 4 20 14 $28
-        pokechar current_map 3 5 20 14 $28
-        return thisbank
-
       dmahole 0
 castle_shared_pals
         bg_color = flash_color
@@ -353,7 +347,7 @@ end
 end
 
         data castle_room_2_obj
-        TYPE_SKELETON, $4C, $60, TYPE_SKELETON, $4C, $80, TYPE_SKELETON, $4C, $A0,
+        TYPE_SKELETON, 68, $60, TYPE_SKELETON, 84, $60, TYPE_SKELETON, 76, $40,
         TYPE_TORCH, $38, $30, TYPE_TORCH, $38, $70, TYPE_TORCH, $38, $B0,
         TYPE_TORCH, $60, $30, TYPE_TORCH, $60, $70, TYPE_TORCH, $60, $B0,
         $00
@@ -384,8 +378,10 @@ end
 end
 
         data castle_room_6_obj
-        TYPE_GHOST, $48, $40
-        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80,
+        TYPE_GHOST, $48, $70
+        TYPE_RSLIME, 128, $50, TYPE_RSLIME, 56, $70
+        TYPE_RSLIME, 32, $40
+        TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80
         TYPE_CHARM1, $7C, $30, TYPE_DOOR, $48, $10
         $00
 end
@@ -420,26 +416,29 @@ end
 end
 
         data castle_room_11_obj
-        TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $50
-        TYPE_MAP2, $80, $A0
+        TYPE_SKELETON, 112, $90
+        TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $40
+        TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $48, $10, TYPE_MAP2, $80, $A0
         $00
 end
 
         data castle_room_12_obj
-        TYPE_PRIEST, $58, $20
+        TYPE_PRIEST, 20, $70, TYPE_PRIEST, 76, $40
+        TYPE_PRIEST, 44, $28, TYPE_PRIEST, 108, $28
         TYPE_TORCH, $10, $A0, TYPE_TORCH, $88, $A0
         $00
 end
 
         data castle_room_13_obj
-        TYPE_PRIEST, 36, $50, TYPE_PRIEST, 116, $50
-        TYPE_SPELL1, 76, $40
-        TYPE_TORCH, $10, $30,
-        TYPE_TORCH, $88, $30,
-        TYPE_TORCH, $38, $50,
-        TYPE_TORCH, $60, $50,
+        TYPE_PRIEST, 36, $40, TYPE_PRIEST, 116, $40
+        TYPE_PRIEST, 76, $20
+        TYPE_SPELL1, 76, $30
+        TYPE_TORCH, $10, $20,
+        TYPE_TORCH, $88, $20,
+        TYPE_TORCH, $38, $40,
+        TYPE_TORCH, $60, $40,
         $00
 end
 
@@ -448,7 +447,9 @@ end
 end
 
         data castle_room_15_obj
-        TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $A0,
+        TYPE_SKELETON, $28, $90, TYPE_SKELETON, $50, $90
+        TYPE_SKELETON, $20, $A0, TYPE_SKELETON, $58, $A0
+        TYPE_SKELETON, $28, $B0, TYPE_SKELETON, $50, $B0,
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
         TYPE_DOOR, $48, $10, TYPE_SHIELD1, $20, $70
@@ -460,21 +461,26 @@ end
 end
 
         data castle_room_17_obj
-        TYPE_BESTIARY, $2C, $30, TYPE_GHOST, $6C, $30
-        TYPE_TORCH, $18, $70, TYPE_TORCH, $80, $70
-        TYPE_DOOR, $28, $60, TYPE_DOOR, $68, $60
+        TYPE_GHOST, $6C, $28
+        TYPE_PRIEST, 48, $60, TYPE_PRIEST, 96,$70
+        TYPE_TORCH, $18, $60, TYPE_TORCH, $80, $60
+        TYPE_DOOR, $28, $50, TYPE_DOOR, $68, $50
+        TYPE_BESTIARY, $2C, $20, 
         $00
 end
 
         data castle_room_18_obj
-        TYPE_PRIEST, $18, $50, TYPE_PRIEST, $80, $50,
-        TYPE_TORCH, $09, $40, TYPE_TORCH, $90, $40, 
-        TYPE_SPELL4, $4C, $A0, $00
+        TYPE_PRIEST, 32, $40, TYPE_PRIEST, 128, $30
+        TYPE_PRIEST, 40, $50, TYPE_PRIEST, 112, $50,
+        TYPE_TORCH, 24, $30, TYPE_TORCH, 136, $30, 
+        TYPE_SPELL4, $4C, $A0
+        $00
 end
 
         data castle_room_19_obj
-        TYPE_SKELETON, $30, $80, TYPE_SKELETON, $68, $90,
-        TYPE_BLOOD, $50, $30, TYPE_ARMOR2, $28, $90
+        TYPE_SKELETON, $30, $80, TYPE_SKELETON, $68, $90
+        TYPE_SKELETON, $40, $70, TYPE_SKELETON, $58, $70
+        TYPE_BLOOD, $50, $20, TYPE_ARMOR2, $28, $80
         TYPE_DOOR, $48, $10
         $00
 end
@@ -484,9 +490,9 @@ end
 end
 
         data castle_room_21_obj
-        TYPE_PRIEST, $4C, $60,
-        TYPE_TORCH, $38, $20, TYPE_TORCH, $38, $60, TYPE_TORCH, $38, $A0,
-        TYPE_TORCH, $60, $20, TYPE_TORCH, $60, $A0,
+        TYPE_PRIEST, $4C, $58, TYPE_SKELETON, 68, $60, TYPE_SKELETON, 90, $60
+        TYPE_TORCH, $38, $30, TYPE_TORCH, $38, $70, TYPE_TORCH, $38, $B0,
+        TYPE_TORCH, $60, $30, TYPE_TORCH, $60, $B0,
         $00
 end
 
@@ -500,8 +506,8 @@ end
 end
 
         data castle_room_23_obj
-        TYPE_TORCH, $38, $A0, TYPE_TORCH, $60, $A0,
-        TYPE_BLOOD, $58, $28, TYPE_BLOOD, $60, $B0
+        TYPE_TORCH, $38, $90, TYPE_TORCH, $60, $90,
+        TYPE_BLOOD, $58, $20, TYPE_BLOOD, $60, $A0
         TYPE_DOOR, $48, $10
         $00
 end
@@ -592,7 +598,7 @@ cardinal_teleport
           bne cardinal_return
           lda #78
           sta object_Xpos,x
-          lda #$20
+          lda #$30
           sta object_Ypos,x
 
 cardinal_tele_flag
@@ -637,16 +643,16 @@ castle_flame_on
           lda #24
           sta object_Xpos+2
           sta object_Xpos+3
-          lda #$40
-          sta object_Ypos+2
           lda #$50
+          sta object_Ypos+2
+          lda #$60
           sta object_Ypos+3
           ldx #4
 
 spawn_castle_boss
           lda #76
           sta object_Xpos,x
-          lda #$50
+          lda #$60
           sta object_Ypos,x
           lda #TYPE_CARDINAL
           sta object_type,x
@@ -678,7 +684,10 @@ despawn_flames
           sta object_type+1
 end
         ; hardcode the unblock instead of trying to reuse torch code
-        goto castle_flame_unblock
+castle_flame_unblock
+        pokechar current_map 3 5 20 14 $28
+        pokechar current_map 3 6 20 14 $28
+        return thisbank
 
 ;==============================================================================
 ; PRIEST & SKELETON AI
@@ -897,7 +906,6 @@ priest_cast_store_frame
           sta object_Yvel_lo,x
           lda #PRIEST_CAST_FRAMES
           sta object_timer,x
-          rts
 
 priest_cast_2
           lda object_type,x

@@ -219,17 +219,17 @@
 
         ; DARK PRIEST
         const PRIEST_HP          =  4
-        const PRIEST_VEL_CAP_HI  =  1
+        const PRIEST_VEL_CAP_HI  =  2
         const PRIEST_VEL_CAP_LO  =  0
         const PRIEST_DAMAGE      =  4
         const PRIEST_DEF         =  0
         const PRIEST_MDEF        =  2
         const PRIEST_FRICTION_HI =  1
         const PRIEST_FRICTION_LO =  0
-        const PRIEST_SPEED_HI    =  0
-        const PRIEST_SPEED_LO    = 128
-        const PRIEST_WALK_TIMER  = 20
-        const PRIEST_CAST_FRAMES = 20
+        const PRIEST_SPEED_HI    =  1
+        const PRIEST_SPEED_LO    =  0
+        const PRIEST_WALK_TIMER  = 10
+        const PRIEST_CAST_FRAMES = 10
         const PRIEST_FLAGS       = %00000000
         const F_PRIEST_DOWN_1     =  6
         const F_PRIEST_DOWN_2     =  7
@@ -250,9 +250,9 @@
         const CARDINAL_TELE_DELAY = 60
 
 
-        const DARKSPARK_SPEED_HI = 2
+        const DARKSPARK_SPEED_HI = 4
         const DARKSPARK_SPEED_LO = 0
-        const DARKSPARK_VEL_CAP_HI = 2
+        const DARKSPARK_VEL_CAP_HI = 4
         const DARKSPARK_VEL_CAP_LO = 0
         const DARKSPARK_DAMAGE = 6
         const F_DARKSPARK_1 = 1
@@ -294,15 +294,15 @@
 
         ; GHOST
         const GHOST_HP = 2
-        const GHOST_VEL_CAP_HI = 1
+        const GHOST_VEL_CAP_HI = 2
         const GHOST_VEL_CAP_LO = 0
         const GHOST_DAMAGE = 4
         const GHOST_DEF = 2
         const GHOST_MDEF = 0
         const GHOST_FRICTION_HI = 0
         const GHOST_FRICTION_LO = 0
-        const GHOST_SPEED_HI = 0
-        const GHOST_SPEED_LO = 128
+        const GHOST_SPEED_HI = 1
+        const GHOST_SPEED_LO = 0
         const GHOST_FLAGS = %00000100
         const F_GHOST_1 = 4
         const F_GHOST_2 = 5
@@ -329,7 +329,7 @@
         const RSLIME_FRICTION_HI = 1
         const RSLIME_FRICTION_LO = 0
         const RSLIME_SPEED_HI = 0
-        const RSLIME_SPEED_LO = 64
+        const RSLIME_SPEED_LO = 128
         const F_RSLIME_1 = 30
         const F_RSLIME_2 = 31
         const F_MRSLIME_1 = 32
