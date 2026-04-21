@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" name="caves_walls" tilewidth="8" tileheight="16" tilecount="23" columns="23">
   <image source="../gfx/tiles/caves_walls.png" width="184" height="16"/>
  </tileset>
@@ -12,7 +12,7 @@
  <tileset firstgid="46" name="caves_water" tilewidth="8" tileheight="16" tilecount="10" columns="10">
   <image source="../gfx/tiles/caves_water.png" width="80" height="16"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="20" height="14">
+ <layer id="1" name="Tile Layer 1" width="20" height="12">
   <data>
    <tile gid="42"/>
    <tile gid="24"/>
@@ -176,26 +176,6 @@
    <tile gid="47"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="46"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
    <tile gid="52"/>
    <tile gid="49"/>
    <tile gid="47"/>
@@ -273,26 +253,6 @@
    <tile gid="14"/>
    <tile gid="14"/>
    <tile gid="15"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="10"/>
-   <tile gid="45"/>
-   <tile gid="45"/>
-   <tile gid="45"/>
-   <tile gid="12"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
    <tile gid="11"/>
   </data>
  </layer>

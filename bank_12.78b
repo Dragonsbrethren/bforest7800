@@ -366,11 +366,9 @@ end
 plot_caves_room_0
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map caves_room_0 280
-        plotmapfile tiled/caves_room_0.tmx caves_room_0 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 caves_room_0 240
+        plotmapfile tiled/caves_room_0.tmx caves_room_0 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 2
         exit_tileset = T_HILLS
         exit_Xpos = 72
         exit_Ypos = $20
