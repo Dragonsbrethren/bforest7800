@@ -332,8 +332,8 @@ end
 end
 
         data caves_room_16_obj
-        TYPE_CSPIDER, (9*8), $50, TYPE_CSPIDER, (14*8), $60
-        TYPE_TORCH, (2*8), $40, TYPE_TORCH, (11*8), $60
+        TYPE_CSPIDER, (9*8), $60, TYPE_CSPIDER, (14*8), $70
+        TYPE_TORCH, (2*8), $50, TYPE_TORCH, (11*8), $70
         $00
 end
 
