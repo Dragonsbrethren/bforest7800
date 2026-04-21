@@ -207,11 +207,11 @@ plot_caves_room_20
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 caves_room_20 240
-        plotmapfile tiled/caves_room_20.tmx caves_room_20 0 0 20 12
+        plotmapfile tiled/caves_room_20.tmx caves_room_20 0 1 20 12
         zone2_objects  = 2
         exit_tileset = T_CASTLE
         exit_Xpos = 32
-        exit_Ypos = $30
+        exit_Ypos = $40
         exit_room_index = F_CASTLE_CAVE_I
         return otherbank
         

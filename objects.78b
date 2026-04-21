@@ -418,9 +418,9 @@
 
         ; HARPY
         const HARPY_HP = 6
-        const HARPY_SPEED_HI = 1
+        const HARPY_SPEED_HI = 2
         const HARPY_SPEED_LO = 16
-        const HARPY_VEL_CAP_HI = 1
+        const HARPY_VEL_CAP_HI = 2
         const HARPY_VEL_CAP_LO = 128
         const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
@@ -444,11 +444,11 @@
 
         ; SPIDER
         const SPIDER_HP = 6
-        const SPIDER_SPEED_HI = 1
+        const SPIDER_SPEED_HI = 2
         const SPIDER_SPEED_LO = 0
-        const SPIDER_VEL_CAP_HI = 1
+        const SPIDER_VEL_CAP_HI = 2
         const SPIDER_VEL_CAP_LO = 0
-        const SPIDER_FRICTION_HI = 1
+        const SPIDER_FRICTION_HI = 2
         const SPIDER_FRICTION_LO = 0
         const SPIDER_DAMAGE = 3
         const SPIDER_DEF = 0
@@ -467,7 +467,7 @@
         const HSLIME_HP = 6
         const MHSLIME_HP = (HSLIME_HP / 2)
         const HSLIME_SPEED_HI = 0
-        const HSLIME_SPEED_LO = 64
+        const HSLIME_SPEED_LO = 128
         const HSLIME_VEL_CAP_HI = 1
         const HSLIME_VEL_CAP_LO = 0
         const HSLIME_FRICTION_HI = 1
@@ -487,8 +487,8 @@
         ; FEUERMANN
         const HGHOST_HP = 6
         const HGHOST_SPEED_HI = 0
-        const HGHOST_SPEED_LO = 64
-        const HGHOST_VEL_CAP_HI = 1
+        const HGHOST_SPEED_LO = 128
+        const HGHOST_VEL_CAP_HI = 2
         const HGHOST_VEL_CAP_LO = 0
         const HGHOST_FRICTION_HI = 0
         const HGHOST_FRICTION_LO = 0
@@ -503,9 +503,9 @@
 
         ; BAT   
         const BAT_HP = 3
-        const BAT_SPEED_HI = 0
-        const BAT_SPEED_LO = 16
-        const BAT_VEL_CAP_HI = 1
+        const BAT_SPEED_HI = 2
+        const BAT_SPEED_LO = 0
+        const BAT_VEL_CAP_HI = 2
         const BAT_VEL_CAP_LO = 128
         const BAT_FRICTION_HI = 0
         const BAT_FRICTION_LO = 0
@@ -518,7 +518,7 @@
         const F_BAT_L1 = 2
         const F_BAT_L2 = 3
         const BAT_PAL  = 6
-        const BAT_SPAWN_TIME = 128
+        const BAT_SPAWN_TIME = 60 
         const BAT_MAX  = 6
 
         ; STONE ROSE
@@ -527,11 +527,11 @@
 
         ; STONE ROSE SEED
         const SEED_HP = 1
-        const SEED_FAST_SPEED_HI = 2
+        const SEED_FAST_SPEED_HI = 4
         const SEED_FAST_SPEED_LO = 0
         const SEED_SPEED_HI = 1
         const SEED_SPEED_LO = 0
-        const SEED_VEL_CAP_HI = 2
+        const SEED_VEL_CAP_HI = 4
         const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
         const F_SEED = 18
@@ -539,11 +539,11 @@
 
         ; CAVE SPIDER
         const CSPIDER_HP = 6
-        const CSPIDER_SPEED_HI = 1
+        const CSPIDER_SPEED_HI = 2
         const CSPIDER_SPEED_LO = 0
-        const CSPIDER_VEL_CAP_HI = 1
+        const CSPIDER_VEL_CAP_HI = 2
         const CSPIDER_VEL_CAP_LO = 0
-        const CSPIDER_FRICTION_HI = 1
+        const CSPIDER_FRICTION_HI = 2
         const CSPIDER_FRICTION_LO = 0
         const CSPIDER_DAMAGE = 3
         const CSPIDER_DEF = 0
@@ -562,7 +562,7 @@
         const PUDDING_HP = 6
         const MPUDDING_HP = (PUDDING_HP / 2)
         const PUDDING_SPEED_HI = 0
-        const PUDDING_SPEED_LO = 64
+        const PUDDING_SPEED_LO = 128
         const PUDDING_VEL_CAP_HI = 1
         const PUDDING_VEL_CAP_LO = 0
         const PUDDING_FRICTION_HI = 1
@@ -582,8 +582,8 @@
         ; CAVE GHOST
         const CGHOST_HP = 6
         const CGHOST_SPEED_HI = 0
-        const CGHOST_SPEED_LO = 64
-        const CGHOST_VEL_CAP_HI = 1
+        const CGHOST_SPEED_LO = 128
+        const CGHOST_VEL_CAP_HI = 2
         const CGHOST_VEL_CAP_LO = 0
         const CGHOST_FRICTION_HI = 0
         const CGHOST_FRICTION_LO = 0

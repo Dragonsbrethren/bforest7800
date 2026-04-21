@@ -240,7 +240,7 @@ torch_tile_unblock_caves
 end
 
         data caves_room_0_obj
-        TYPE_TORCH, (11*8), $80
+        TYPE_TORCH, (11*8), $90
         $00
 end
 
@@ -250,13 +250,13 @@ end
 end
 
         data caves_room_2_obj
-        TYPE_ROSE, 8, $40
+        TYPE_ROSE, 8, $50
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_3_obj
-        TYPE_ROSE, (4*8), $50
+        TYPE_ROSE, (4*8), $60
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
@@ -267,13 +267,13 @@ end
 end
 
         data caves_room_5_obj
-        TYPE_ROSE, (13*8), $60
+        TYPE_ROSE, (13*8), $50
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_6_obj
-        TYPE_ROSE, (5*8), $90
+        TYPE_ROSE, (5*8), $80
         TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
@@ -284,13 +284,13 @@ end
 end
 
         data caves_room_8_obj
-        TYPE_PUDDING, (4*8), $40, TYPE_PUDDING, (10*8), $60
-        TYPE_TORCH, (4*8), $30, TYPE_TORCH, (8*8), $30
+        TYPE_PUDDING, (4*8), $50, TYPE_PUDDING, (10*8), $70
+        TYPE_TORCH, (4*8), $40, TYPE_TORCH, (8*8), $40
         $00
 end
 
         data caves_room_9_obj
-        TYPE_ROSE, (5*8), $60
+        TYPE_ROSE, (5*8), $50
         TYPE_TORCH, (16*8), $60
         TYPE_BAT_SPAWNER, $01, $F0
         $00
@@ -305,12 +305,12 @@ end
         data caves_room_11_obj
         TYPE_CGHOST, (5*8), $60, TYPE_CGHOST, (10*8), $90
         TYPE_ROSE, (12*8), $50
-        TYPE_MAP5, (3*8), $A0
+        TYPE_MAP5, (3*8), $B0
         $00
 end
 
         data caves_room_12_obj
-        TYPE_ROSE, (7*8), $50, TYPE_ROSE, (13*8), $60
+        TYPE_ROSE, (7*8), $60, TYPE_ROSE, (13*8), $60
         TYPE_TORCH, (14*8), $30, TYPE_TORCH, (5*8), $60
         $00
 end
@@ -325,9 +325,9 @@ end
 end
 
         data caves_room_15_obj
-        TYPE_CSPIDER, (11*8), $50, TYPE_CSPIDER, (5*8), $60
-        TYPE_ARMOR6, (9*8), $20
-        TYPE_TORCH, (8*8), $60, TYPE_TORCH, (7*8), $20, TYPE_TORCH, (11*8), $20
+        TYPE_CSPIDER, (11*8), $60, TYPE_CSPIDER, (5*8), $70
+        TYPE_ARMOR6, (9*8), $30
+        TYPE_TORCH, (8*8), $70, TYPE_TORCH, (7*8), $30, TYPE_TORCH, (11*8), $30
         $00
 end
 
@@ -338,22 +338,22 @@ end
 end
 
         data caves_room_17_obj
-        TYPE_TORCH, (7*8), $40, TYPE_TORCH, (13*8), $40
-        TYPE_TORCH, (3*8), $90
+        TYPE_TORCH, (7*8), $50, TYPE_TORCH, (13*8), $50
+        TYPE_TORCH, (3*8), $A0
         $00
 end
 
         data caves_room_18_obj
-        TYPE_CSPIDER, (7*8), $20
-        TYPE_ROSE, (11*8), $80
-        TYPE_CHARM6, (14*8), $50
+        TYPE_CSPIDER, (7*8), $30
+        TYPE_ROSE, (11*8), $90
+        TYPE_CHARM6, (14*8), $60
         $00
 end
 
         data caves_room_19_obj
-        TYPE_CSPIDER, (13*8), $20
-        TYPE_ROSE, (10*8), $80
-        TYPE_TORCH, (12*8), $40, TYPE_TORCH, (14*8), $60
+        TYPE_CSPIDER, (13*8), $30
+        TYPE_ROSE, (10*8), $90
+        TYPE_TORCH, (12*8), $50, TYPE_TORCH, (14*8), $70
         $00
 end
 
