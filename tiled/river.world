@@ -2,157 +2,157 @@
     "maps": [
         {
             "fileName": "river_room_1.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 0,
-            "y": 0
+            "y": -32
         },
         {
             "fileName": "river_room_0.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 0,
             "y": -224
         },
         {
             "fileName": "river_room_2.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
-            "y": 0
+            "y": -32
         },
         {
             "fileName": "river_room_3.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
             "y": -224
         },
         {
             "fileName": "river_room_4.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 320,
             "y": -224
         },
         {
             "fileName": "river_room_5.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 320,
-            "y": -448
+            "y": -416
         },
         {
             "fileName": "river_room_6.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
-            "y": -448
+            "y": -416
         },
         {
             "fileName": "river_room_7.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
-            "y": -672
+            "y": -608
         },
         {
             "fileName": "river_room_8.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 320,
-            "y": -672
+            "y": -608
         },
         {
             "fileName": "river_room_9.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 480,
-            "y": -672
+            "y": -608
         },
         {
             "fileName": "river_room_10.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 480,
-            "y": -448
+            "y": -416
         },
         {
             "fileName": "river_room_11.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 480,
             "y": -224
         },
         {
             "fileName": "river_room_12.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 480,
-            "y": 0
+            "y": -32
         },
         {
             "fileName": "river_room_13.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 320,
-            "y": -896
+            "y": -800
         },
         {
             "fileName": "river_room_14.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 640,
-            "y": -448
+            "y": -416
         },
         {
             "fileName": "river_room_15.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 640,
-            "y": -672
+            "y": -608
         },
         {
             "fileName": "river_room_16.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 640,
-            "y": -896
+            "y": -800
         },
         {
             "fileName": "river_room_17.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 480,
-            "y": -896
+            "y": -800
         },
         {
             "fileName": "river_room_18.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
-            "y": 224
+            "y": 160
         },
         {
             "fileName": "river_room_19.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 160,
-            "y": 448
+            "y": 352
         },
         {
             "fileName": "river_room_20.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 0,
-            "y": 224
+            "y": 160
         },
         {
             "fileName": "river_room_21.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 0,
-            "y": 448
+            "y": 352
         }
     ],
     "onlyShowAdjacentMaps": false,

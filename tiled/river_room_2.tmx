@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" name="forest_trees" tilewidth="8" tileheight="16" tilecount="17" columns="17">
   <image source="../gfx/tiles/forest_trees.png" width="136" height="16"/>
  </tileset>
@@ -24,28 +24,8 @@
  <tileset firstgid="66" name="river_rock" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/river_rock.png" width="8" height="16"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="20" height="14">
+ <layer id="1" name="Tile Layer 1" width="20" height="12">
   <data>
-   <tile gid="6"/>
-   <tile gid="7"/>
-   <tile gid="1"/>
-   <tile gid="35"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="31"/>
-   <tile gid="3"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
-   <tile gid="4"/>
    <tile gid="4"/>
    <tile gid="7"/>
    <tile gid="35"/>
@@ -63,7 +43,7 @@
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="37"/>
-   <tile gid="17"/>
+   <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -285,26 +265,6 @@
    <tile gid="4"/>
    <tile gid="6"/>
    <tile gid="4"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
-   <tile gid="4"/>
-   <tile gid="7"/>
-   <tile gid="6"/>
-   <tile gid="1"/>
-   <tile gid="29"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
-   <tile gid="31"/>
-   <tile gid="7"/>
-   <tile gid="4"/>
-   <tile gid="7"/>
    <tile gid="7"/>
   </data>
  </layer>
