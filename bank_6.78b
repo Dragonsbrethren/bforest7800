@@ -283,11 +283,9 @@ octokraken_pal
 plot_river_room_0
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map river_room_0 280
-        plotmapfile tiled/river_room_0.tmx river_room_0 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 river_room_0 240
+        plotmapfile tiled/river_room_0.tmx river_room_0 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 1
         exit_tileset = T_CASTLE
         exit_Xpos = 72
         exit_Ypos = 64
@@ -302,11 +300,9 @@ end
 plot_river_room_1
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map river_room_1 280
-        plotmapfile tiled/river_room_1.tmx river_room_1 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 river_room_1 240
+        plotmapfile tiled/river_room_1.tmx river_room_1 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 1
         alt_palette = 1
         return thisbank
 
@@ -319,11 +315,9 @@ end
 plot_river_room_2
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy current_map river_room_2 280
-        plotmapfile tiled/river_room_2.tmx river_room_2 0 0 20 14
-        zone1_objects  = 4
+        memcpy map12 river_room_2 240
+        plotmapfile tiled/river_room_2.tmx river_room_2 0 1 20 12
         zone2_objects  = 4
-        zone14_objects = 3
         return thisbank
 
         data river_room_2_obj
@@ -334,11 +328,9 @@ end
 plot_river_room_3
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR
-        memcpy current_map river_room_3 280
-        plotmapfile tiled/river_room_3.tmx river_room_3 0 0 20 14
-        zone1_objects  = 4
+        memcpy map12 river_room_3 240
+        plotmapfile tiled/river_room_3.tmx river_room_3 0 1 20 12
         zone2_objects  = 4
-        zone14_objects = 3
         return thisbank
 
         data river_room_3_obj
@@ -351,11 +343,9 @@ end
 plot_river_room_4
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR
-        memcpy current_map river_room_4 280
-        plotmapfile tiled/river_room_4.tmx river_room_4 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 river_room_4 240
+        plotmapfile tiled/river_room_4.tmx river_room_4 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 1
         return thisbank
 
         data river_room_4_obj
@@ -377,11 +367,9 @@ end
 plot_river_room_5
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy current_map river_room_5 280
-        plotmapfile tiled/river_room_5.tmx river_room_5 0 0 20 14
-        zone1_objects  = 2
+        memcpy map12 river_room_5 280
+        plotmapfile tiled/river_room_5.tmx river_room_5 0 1 20 12
         zone2_objects  = 2
-        zone14_objects = 1
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 1

@@ -767,11 +767,9 @@ plot_hills_room_0
 plot_hills_room_1
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR
-        memcpy current_map hills_room_1 280
-        plotmapfile tiled/hills_room_1.tmx hills_room_1 0 0 20 14
-        zone1_objects  = 6
+        memcpy map12 hills_room_1 240
+        plotmapfile tiled/hills_room_1.tmx hills_room_1 0 1 20 12
         zone2_objects  = 5
-        zone14_objects = 5
         exit_tileset = T_RIVER
         exit_Xpos = 8 * 9
         exit_Ypos = 192
