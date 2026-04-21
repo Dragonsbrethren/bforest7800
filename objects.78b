@@ -617,23 +617,24 @@
         const FAIRY_CHASE_Y = 54
 
         const OWL_DELAY = 240
+        const OWL_SPEED = 2
 
-        const FIREBALL_SPEED_HI = 2
+        const FIREBALL_SPEED_HI = 4
         const FIREBALL_SPEED_LO = 0
         const FIREBALL_DAMAGE = 4
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
 
-        const ICEFLAKES_SPEED_HI = 2
+        const ICEFLAKES_SPEED_HI = 4
         const ICEFLAKES_SPEED_LO = 0
         const ICEFLAKES_DAMAGE = 3
         const ICEFLAKES_MP_COST = 12
 
         const LIGHTNING_DAMAGE = $10
         const LIGHTNING_MP_COST = 20
-        const LIGHTNING_DURATION = 9
+        const LIGHTNING_DURATION = 5
 
-        const DARKBOLT_DURATION = 9
+        const DARKBOLT_DURATION = 5
         const DARKBOLT_DAMAGE = 8
 
         ; BOSS FLAME AND BLOCK FLAME

@@ -1177,7 +1177,7 @@ owl_found_target
           lda #DIR_LEFT
           sta object_Xdir,x
           sta object_facing,x
-          lda #1
+          lda #OWL_SPEED
           sta object_speed_hi,x
           sta object_vel_cap_hi,x
           lda #0
