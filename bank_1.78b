@@ -1346,35 +1346,44 @@ hop_direction
 hop_down
         lda object_timer,x
         bne hop_down_up
-        lda #24
+        lda #12
         sta object_timer,x
 hop_down_up
-        cmp #17
+        cmp #9
         bcc hop_down_down
+        dec object_Ypos,x
         dec object_Ypos,x
         dec object_timer,x
         rts
 hop_down_down
-        inc object_Ypos,x
-        inc object_Ypos,x
+        lda object_Ypos,x
+        clc
+        adc #4
+        sta object_Ypos,x
         dec object_timer,x
-        beq hop_done
+        bne hop_down_done
+        jmp hop_done
+hop_down_done
         rts
 
 hop_left
         lda object_timer,x
         bne hop_left_up
-        lda #16
+        lda #8
         sta object_timer,x
 hop_left_up
-        cmp #9
+        cmp #5
         bcc hop_left_down
         dec object_Ypos,x
+        dec object_Ypos,x
+        dec object_Xpos,x
         dec object_Xpos,x
         dec object_timer,x
         rts
 hop_left_down
         inc object_Ypos,x
+        inc object_Ypos,x
+        dec object_Xpos,x
         dec object_Xpos,x
         dec object_timer,x
         beq hop_done
@@ -1383,17 +1392,21 @@ hop_left_down
 hop_right
         lda object_timer,x
         bne hop_right_up
-        lda #16
+        lda #8
         sta object_timer,x
 hop_right_up
-        cmp #9
+        cmp #5
         bcc hop_right_down
         dec object_Ypos,x
+        dec object_Ypos,x
+        inc object_Xpos,x
         inc object_Xpos,x
         dec object_timer,x
         rts
 hop_right_down
         inc object_Ypos,x
+        inc object_Ypos,x
+        inc object_Xpos,x
         inc object_Xpos,x
         dec object_timer,x
         beq hop_done
