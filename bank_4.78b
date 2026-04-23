@@ -280,6 +280,7 @@ castle_gold_pal
         if !lightning_delay then lightning_delay = LIGHTNING_DELAY
 
 castle_shared_pals
+        bg_color = flash_color
         incbasic shared_pals.78b
         goto palette_done
 
