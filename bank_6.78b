@@ -322,8 +322,9 @@ plot_river_room_2
         return thisbank
 
         data river_room_2_obj
-        TYPE_MERMAN, $38, $60, TYPE_MERMAN, $50, $40, TYPE_MERMAN, $68, $90
-        TYPE_TORCH, $88, $10, TYPE_TORCH, $0C, $50
+        TYPE_MERMAN, (7*8), $60, TYPE_MERMAN, (14*8), $40
+        TYPE_MERMAN, (8*8), $90
+        TYPE_TORCH, (18*8), $20, TYPE_TORCH, $0C, $50
         $00
 end
 
@@ -337,7 +338,8 @@ plot_river_room_3
 
         data river_room_3_obj
         TYPE_OCTOPUS, $48, $60, TYPE_OCTOPUS, $70, $70,
-        TYPE_TORCH, $80, $20, TYPE_TORCH, $30, $50, TYPE_TORCH, $80, $B0,
+        TYPE_TORCH, $80, $20, TYPE_TORCH, $30, $50
+        TYPE_TORCH, (17*8), $A0,
         $00
 end
 
