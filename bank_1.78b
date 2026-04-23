@@ -1165,7 +1165,13 @@ owl_loop
           lda object_type,y
           beq owl_next
           bmi owl_next
+          cmp #TYPE_TORCH
+          beq owl_next
           cmp #TYPE_CASTLE_BOSS
+          beq owl_next
+          cmp #TYPE_RIVERBOSS
+          beq owl_next
+          cmp #TYPE_BAT_SPAWNER
           beq owl_next
 owl_found_target
           lda object_Ypos,y
@@ -1193,7 +1199,7 @@ owl_found_target
 owl_next
           ; slightly less optimized, but means owl will prioritize monsters
           iny
-          cmp #MAX_MAP_OBJECTS+1
+          cpy #MAX_MAP_OBJECTS+1
           bne owl_loop
 owl_no_target
           ; no targetable object found, hide owl off screen
