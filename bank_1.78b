@@ -1235,7 +1235,6 @@ swap_action_button
         action_button = 1 : return thisbank
 
 topscreenroutine
-main_pal_animation
         setfade fade
         WSYNC=1
         BACKGRND = bg_color
@@ -1243,6 +1242,7 @@ main_pal_animation
         if game_state = STATE_MENU then set_menu_top_pal
         if !pal_animation then main_pal_done
         if !animation_frame then main_pal_done
+main_pal_animation
         ; cycle the 8th palette every animation frame
         temp7 = sP7C3
         sP7C3  = sP7C2
