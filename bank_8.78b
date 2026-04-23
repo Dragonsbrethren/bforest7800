@@ -185,7 +185,7 @@ hills_grays
 end
 hills_colors
         ; the remaining colors not covered by darkness exceptions
-        bg_color = PAL_H_GRND
+        bg_color = getfade(PAL_H_GRND, black)
         P4C2 = getfade(PAL_H_DIRT, black)
         P5C3 = getfade(PAL_H_LTGRY, black)
         ; hill slime palette

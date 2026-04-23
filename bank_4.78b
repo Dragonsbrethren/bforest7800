@@ -278,7 +278,10 @@ castle_gold_pal
         ; override skeleton colors with golds
         P5C2 = getfade(PAL_C_DKGOLD, black) : P5C3 = getfade(PAL_C_LTGOLD)
         if !lightning_delay then lightning_delay = LIGHTNING_DELAY
-        goto castle_shared_pals
+
+castle_shared_pals
+        incbasic shared_pals.78b
+        goto palette_done
 
 plot_castle_room_0
 plot_castle_room_1
@@ -297,10 +300,6 @@ plot_castle_bank5_return
         return thisbank
 
       dmahole 0
-castle_shared_pals
-        bg_color = flash_color
-        incbasic shared_pals.78b
-        goto palette_done
 
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10

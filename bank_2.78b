@@ -62,7 +62,7 @@ forest_save_1
         player_facing = DIR_DOWN
 
 forest_pals
-        bg_color = PAL_F_GRND                          ; brown
+        bg_color = getfade(PAL_F_GRND, black)                          ; brown
         incbasic shared_pals.78b
         P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves

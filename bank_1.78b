@@ -1234,9 +1234,12 @@ swap_action_button
         action_button = 1 : return thisbank
 
 topscreenroutine
-        ; without this extra wsync, there's a line of wrong color drawn at the top of the screen
-        WSYNC=1
 main_pal_animation
+        setfade fade
+        WSYNC=1
+        BACKGRND = bg_color
+        if game_state = STATE_TITLE then set_title_top_pal
+        if game_state = STATE_MENU then set_menu_top_pal
         if !pal_animation then main_pal_done
         if !animation_frame then main_pal_done
         ; cycle the 8th palette every animation frame
@@ -1248,21 +1251,16 @@ main_pal_animation
         P7C2 = sP7C2
         P7C3 = sP7C3
 main_pal_done
-        if game_state = STATE_MENU then set_menu_top_pal
-        WSYNC=1
-        setfade fade
-        BACKGRND=getfade(bg_color, black)
-        if game_state = STATE_TITLE then set_title_top_pal
         return thisbank
 
 bottomscreenroutine
-        if game_state = STATE_MENU then BACKGRND = $10 : return
-        BACKGRND=$00
+        WSYNC=1
+        BACKGRND=flash_color
+        if game_state = STATE_MENU then BACKGRND = $10 : bg_color = $10 : return
         if game_state = STATE_TITLE then set_title_bottom_pal
         flash_color = $00
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
         ; flash the screen border
-        BACKGRND = flash_color
         if tileset = T_CASTLE then hair_flash   ; Cathedral tileset uses black as BG, not C1
         P4C1     = flash_color
         P5C1     = flash_color
@@ -1272,11 +1270,11 @@ bottomscreenroutine
         P7C1     = flash_color
 hair_flash
         ; Johanna's hair
-        if game_state = STATE_FIELD then P1C1 = getfade(HAIR_COLOR, black)
+        P1C1 = getfade(HAIR_COLOR, black)
         if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
         white_value = getfade(PAL_WHITE)
         if !white_value then white_value = WHITE_DARKNESS
-        return thisbank
+        return
 
 clear_palettes
         BACKGRND = $00

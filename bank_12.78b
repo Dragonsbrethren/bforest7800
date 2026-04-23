@@ -149,7 +149,7 @@ caves_pals
           sta P5C1
           sta P6C1
 end
-        bg_color = PAL_CV_GRND  ; brown ground
+        bg_color = getfade(PAL_CV_GRND, black)  ; brown ground
         P4C2 = getfade(PAL_CV_DKBRN, black)
         P4C3 = getfade(PAL_CV_DKGRN, black)
         P5C2 = getfade(PAL_CV_DKGRN, black)
