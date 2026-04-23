@@ -1240,8 +1240,8 @@ topscreenroutine
         BACKGRND = bg_color
         if game_state = STATE_TITLE then set_title_top_pal
         if game_state = STATE_MENU then set_menu_top_pal
-        if !pal_animation then main_pal_done
-        if !animation_frame then main_pal_done
+        if !pal_animation then top_pal_done
+        if !animation_frame then top_pal_done
 top_pal_animation
         ; cycle the 8th palette every animation frame
         inttemp1 = sP7C3
@@ -1274,7 +1274,7 @@ black_flash
         P5C1     = flash_color
         P6C1     = flash_color
         ; can't flash the animated palette
-        if pal_animation then hair_flash
+        if pal_animation then return thisbank
         P7C1     = flash_color
         return thisbank
 
