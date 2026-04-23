@@ -1242,16 +1242,16 @@ topscreenroutine
         if game_state = STATE_MENU then set_menu_top_pal
         if !pal_animation then main_pal_done
         if !animation_frame then main_pal_done
-main_pal_animation
+top_pal_animation
         ; cycle the 8th palette every animation frame
-        temp7 = sP7C3
+        inttemp1 = sP7C3
         sP7C3  = sP7C2
         sP7C2  = sP7C1
-        sP7C1  = temp7
+        sP7C1  = inttemp1
         P7C1 = sP7C1
         P7C2 = sP7C2
         P7C3 = sP7C3
-main_pal_done
+top_pal_done
         return thisbank
 
 bottomscreenroutine
