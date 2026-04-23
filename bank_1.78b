@@ -1165,6 +1165,7 @@ owl_loop
           lda object_type,y
           beq owl_next
           bmi owl_next
+          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
           cmp #TYPE_TORCH
           beq owl_next
           cmp #TYPE_CASTLE_BOSS
@@ -1678,6 +1679,7 @@ find_lighting_target_loop
           lda object_type,x
           beq lightning_target_inc      ; exclude zero and projectiles
           bmi lightning_target_inc
+          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
           cmp #TYPE_CASTLE_BOSS         ; TODO: range
           beq lightning_target_inc      ; don't kill the boss controllers...
           cmp #TYPE_RIVERBOSS
