@@ -394,8 +394,8 @@ batspawn  lda object_parent,x   ; tracker for number of bats
           cmp #BAT_MAX          ; set to 6 means 5 bats can spawn
           bcs batnspawn         ; at or more than BAT_MAX
           jsr .find_new_object  ; find an open object slot
-          cpy #0                ; make sure all object slots aren't full
-          bne batsobj           ; slot available, spawn bat object
+          lda no_empty_slot     ; make sure all object slots aren't full
+          beq batsobj           ; slot available, spawn bat object
 batnspawn rts
 batsobj   inc object_parent,x   ; spawned bat counter + 1
           txa

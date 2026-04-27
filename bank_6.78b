@@ -861,8 +861,8 @@ octo_shoot_left
 octo_shoot
           sta object_facing,x
           jsr .find_new_object
-          cpy #0
-          bne octo_spawn_ink
+          lda no_empty_slot
+          beq octo_spawn_ink
           rts
 
 octo_spawn_ink

@@ -873,8 +873,8 @@ priest_cast_vert_set
         ; prep the priest/skeleton object for spawning their attacks
 priest_cast
           jsr .find_new_object
-          cpy #0
-          bne priest_cast_prep
+          lda no_empty_slot
+          beq priest_cast_prep
           rts
 priest_cast_prep
           ; back up the open object slot to this object's parent variable
