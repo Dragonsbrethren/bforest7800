@@ -50,7 +50,7 @@
 .magic_damage
         lda object_invuln,y
         beq .magic_damage_object
-        rts
+        bne .magic_cc_next
 
 .magic_damage_object
         ; back up index before running fae bestiary code
@@ -105,6 +105,7 @@
         lda #0
 .magic_damage_nov
         sta object_hp,y
+        lda object_hp,y
         bne .magic_damage_done
         ; TODO: multi-purpose kill object that preserves index
         lda object_type,y
@@ -117,11 +118,11 @@
         lda #TYPE_SPAWNER
         sta object_type,y
 .magic_damage_immune
-        rts
+        jmp .magic_cc_next
 .magic_damage_done
         lda #INVULN_FRAMES
         sta object_invuln,y
-        rts
+        jmp .magic_cc_next
 
 .magic_killed_torch
         ; TODO: Rewrite subroutines this calls to preserve x/y
