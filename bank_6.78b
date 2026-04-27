@@ -353,7 +353,8 @@ plot_river_room_4
         return thisbank
 
         data river_room_4_obj
-        TYPE_NIX, $68, $70, TYPE_NIX, $30, $80,
+        TYPE_NIX, $68, $70, TYPE_NIX, $30, $80
+        TYPE_NIX, (14*8), $40
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20,
         $00
 end
@@ -424,7 +425,7 @@ end
 
         data river_room_11_obj
         TYPE_NIX, $30, $50, TYPE_NIX, $58, $40
-        TYPE_TORCH, $78, $10, TYPE_TORCH, $68, $B0
+        TYPE_TORCH, $70, $40, TYPE_TORCH, $68, $B0
         $00
 end
 
@@ -467,12 +468,15 @@ end
 end
 
         data river_room_18_obj
-        TYPE_NIX, $48, $70, TYPE_NIX, $78, $50,
-        TYPE_TORCH, $80, $30, $00
+        TYPE_NIX, (6*8), $70, TYPE_NIX, (8*8), $40
+        TYPE_NIX, (17*8), $80
+        TYPE_TORCH, $80, $30
+        $00
 end
 
         data river_room_19_obj
-        TYPE_NIX, $68, $70, TYPE_NIX, $60, $A0, TYPE_NIX, $18, $50,
+        TYPE_NIX, $68, $70, TYPE_NIX, $60, $A0
+        TYPE_NIX, $18, $50,
         TYPE_FAIRYCARD, $4C, $30,
         $00
 end

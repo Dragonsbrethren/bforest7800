@@ -420,7 +420,7 @@ follow_player_X
         lda player_Xpos
         cmp object_Xpos,x
         bcs follow_player_X_right
-        adc #12
+        adc #7
         cmp object_Xpos,x
         bcs follow_player_Y
 follow_player_X_left
