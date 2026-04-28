@@ -456,7 +456,7 @@ end
 end
 
         data river_room_16_obj
-        TYPE_CAMPFIRE, (9*8), $70
+        TYPE_CAMPFIRE, (9*8), $60
         $00
 end
 
