@@ -298,7 +298,7 @@
         const M_HILLS_CAVE3_Y = 144
         const F_HILLS_CAVE3_I = 35
         const F_HILLS_CAVE3_X = (8*4)
-        const F_HILLS_CAVE3_Y = $90
+        const F_HILLS_CAVE3_Y = $70
         const F_HILLS_CAVE3_D = DIR_DOWN
 
 ;------------------------------------------------------------------------------
@@ -333,7 +333,7 @@
         const M_CAVES_ENT_3_Y = 128
         const F_CAVES_ENT_3_I = 29
         const F_CAVES_ENT_3_X = 40
-        const F_CAVES_ENT_3_Y = $B0
+        const F_CAVES_ENT_3_Y = $A0
         ; cathedral
         const M_CAVES_ENT_4_X = 78
         const M_CAVES_ENT_4_Y = 64
