@@ -250,7 +250,7 @@ end
         'Forest Map*'
 end
         alphadata pickup_map2 font_spr
-        'Cathedral Map*'
+        'Chapel Map*'
 end
         alphadata pickup_map3 font_spr
         'River Map*'
@@ -265,16 +265,16 @@ end
         'Crypt Key*'
 end
         alphadata pickup_key2 font_spr
-        'Key2         *'
+        'Key2        *'
 end
         alphadata pickup_key3 font_spr
-        'Key3         *'
+        'Key3        *'
 end
         alphadata pickup_key4 font_spr
-        'Key4         *'
+        'Key4        *'
 end
         alphadata pickup_key5 font_spr
-        'Key5         *'
+        'Key5        *'
 end
 
         alphadata pickup_item1 font_spr
@@ -321,28 +321,28 @@ end
         'Thunderbolt*'
 end
         alphadata pickup_spell5 font_spr
-        'Spell 5      *'
+        'Spell 5     *'
 end
         alphadata pickup_spell6 font_spr
-        'Spell 6      *'
+        'Spell 6     *'
 end
         alphadata pickup_spell7 font_spr
-        'Spell 7      *'
+        'Spell 7     *'
 end
         alphadata pickup_spell8 font_spr
-        'Spell 8      *'
+        'Spell 8     *'
 end
         alphadata pickup_spell9 font_spr
-        'Spell 9      *'
+        'Spell 9     *'
 end
         alphadata pickup_spell10 font_spr
-        'Spell 10     *'
+        'Spell 10    *'
 end
 
         alphadata pickup_sword1 font_spr
 end
         alphadata pickup_sword2 font_spr
-        'Bone Scimitar*'
+        'Bonesaber*'
 end
         alphadata pickup_sword3 font_spr
         'Thunderblitz*'
@@ -354,19 +354,19 @@ end
         'Firebrand*'
 end
         alphadata pickup_sword6 font_spr
-        'Sword 6      *'
+        'Sword 6     *'
 end
         alphadata pickup_sword7 font_spr
-        'Sword 7      *'
+        'Sword 7     *'
 end
         alphadata pickup_sword8 font_spr
-        'Sword 8      *'
+        'Sword 8     *'
 end
         alphadata pickup_sword9 font_spr
-        'Sword 9      *'
+        'Sword 9     *'
 end
         alphadata pickup_sword10 font_spr
-        'Sword 10     *'
+        'Sword 10    *'
 end
         alphadata pickup_shield1 font_spr
         'Buckler*'
@@ -378,25 +378,25 @@ end
         'Kite Shield*'
 end
         alphadata pickup_shield4 font_spr
-        'Heater Shield*'
+        'Heater*'
 end
         alphadata pickup_shield5 font_spr
-        'Shield 5     *'
+        'Shield 5    *'
 end
         alphadata pickup_shield6 font_spr
-        'Shield 6     *'
+        'Shield 6    *'
 end
         alphadata pickup_shield7 font_spr
-        'Shield 7     *'
+        'Shield 7    *'
 end
         alphadata pickup_shield8 font_spr
-        'Shield 8     *'
+        'Shield 8    *'
 end
         alphadata pickup_shield9 font_spr
-        'Shield 9     *'
+        'Shield 9    *'
 end
         alphadata pickup_shield10 font_spr
-        'Shield 10    *'
+        'Shield 10   *'
 end
         alphadata pickup_armor1 font_spr
 end
@@ -404,28 +404,28 @@ end
         'Bronze Plate*'
 end
         alphadata pickup_armor3 font_spr
-        'Steel Plate  *'
+        'Steel Plate*'
 end
         alphadata pickup_armor4 font_spr
-        'Silver Plate *'
+        'Silver Plate*'
 end
         alphadata pickup_armor5 font_spr
-        'Maiden` Armor*'
+        'Maiden Armor*'
 end
         alphadata pickup_armor6 font_spr
-        'Ancient Armor*'
+        'Relica Armor*'
 end
         alphadata pickup_armor7 font_spr
-        'Armor 7      *'
+        'Armor 7    *'
 end
         alphadata pickup_armor8 font_spr
-        'Armor 8      *'
+        'Armor 8    *'
 end
         alphadata pickup_armor9 font_spr
-        'Armor 9      *'
+        'Armor 9    *'
 end
         alphadata pickup_armor10 font_spr
-        'Armor 10     *'
+        'Armor 10   *'
 end
         alphadata pickup_charm1 font_spr
         'Pendant*'
@@ -446,16 +446,16 @@ end
         'Flame Gem*'
 end
         alphadata pickup_charm7 font_spr
-        'Charm 7      *'
+        'Charm 7     *'
 end
         alphadata pickup_charm8 font_spr
-        'Charm 8      *'
+        'Charm 8     *'
 end
         alphadata pickup_charm9 font_spr
-        'Charm 9      *'
+        'Charm 9     *'
 end
         alphadata pickup_charm10 font_spr
-        'Charm 10     *'
+        'Charm 10    *'
 end
 
         alphadata pickup_relic1 font_spr
@@ -491,9 +491,9 @@ end
 end
 
         alphadata pickup_relic9 font_spr
-        'Relic 9      *'
+        'Relic 9     *'
 end
 
         alphadata pickup_relic10 font_spr
-        'Relic 10     *'
+        'Relic 10    *'
 end
