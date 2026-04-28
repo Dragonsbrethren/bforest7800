@@ -364,6 +364,9 @@ harpy_zero_Yvel
           sbc #32
           cmp object_Ypos,x
           bcs harpy_dive
+          lda object_Ypos,x
+          cmp #$10
+          bcc harpy_dive        ; don't let the harpy go above zone 1
 
 harpy_fly_up
           lda object_type,x
@@ -403,6 +406,9 @@ harpy_update_shadow
           jmp harpy_shadow_update
 
 harpy_dive
+          lda object_Ypos,x
+          cmp #$90
+          bcs harpy_fly_up
           lda object_type,x
           cmp #TYPE_HARPY_QUEEN
           bne harpy_dive_frame
@@ -1140,7 +1146,7 @@ end
 end
 
         data hills_room_9_obj
-        TYPE_HARPY, $38, $90, TYPE_HARPY, $60, $A0, TYPE_HARPY_SH, $38, $90, TYPE_HARPY_SH, $60, $A0
+        TYPE_HARPY, $38, $80, TYPE_HARPY, $60, $90, TYPE_HARPY_SH, $38, $80, TYPE_HARPY_SH, $60, $90
         TYPE_TORCH, $20, $50, TYPE_TORCH, $20, $70, TYPE_TORCH, $70, $50, TYPE_TORCH, $70, $70
         $00
 end
@@ -1165,16 +1171,16 @@ end
 end
 
         data hills_room_13_obj
-        TYPE_HARPY, $28, $01, TYPE_HARPY, $50, $01
+        TYPE_HARPY, $28, $10, TYPE_HARPY, $50, $10
         TYPE_SWORD4, $78, $A0
         TYPE_TORCH, $70, $40
-        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $50, $11
+        TYPE_HARPY_SH, $28, $20, TYPE_HARPY_SH, $50, $20
         $00
 end
 
         data hills_room_14_obj
-        TYPE_HARPY, $28, $01, TYPE_HARPY, $58, $01
-        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $58, $11
+        TYPE_HARPY, $28, $10, TYPE_HARPY, $58, $10
+        TYPE_HARPY_SH, $28, $20, TYPE_HARPY_SH, $58, $20
         $00
 end
 
@@ -1184,8 +1190,8 @@ end
 end
 
         data hills_room_16_obj
-        TYPE_HARPY, $48, $01, TYPE_HARPY, $78, $01
-        TYPE_HARPY_SH, $48, $11, TYPE_HARPY_SH, $78, $11
+        TYPE_HARPY, $48, $10, TYPE_HARPY, $78, $10
+        TYPE_HARPY_SH, $48, $20, TYPE_HARPY_SH, $78, $20
         $00
 end
 
@@ -1199,16 +1205,16 @@ end
 end
 
         data hills_room_19_obj
-        TYPE_HARPY, $48, $01
+        TYPE_HARPY, $48, $10
         TYPE_TORCH, $78, $B0, TYPE_TORCH, $28, $60
-        TYPE_HARPY_SH, $48, $11
+        TYPE_HARPY_SH, $48, $20
         $00
 end
 
         data hills_room_20_obj
-        TYPE_HARPY, $28, $01, TYPE_HARPY, $70, $10
+        TYPE_HARPY, $28, $10, TYPE_HARPY, $70, $20
         TYPE_TORCH, $48, $30
-        TYPE_HARPY_SH, $28, $11, TYPE_HARPY_SH, $70, $20
+        TYPE_HARPY_SH, $28, $20, TYPE_HARPY_SH, $70, $30
         $00
 end
 
@@ -1220,7 +1226,7 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HARPY_QUEEN, $4C, $01
+        TYPE_HARPY_QUEEN, $4C, $10
         TYPE_HTALON, $4C, $80, 
         $00
 end
