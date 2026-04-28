@@ -172,7 +172,7 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="36"/>
-   <tile gid="30"/>
+   <tile gid="33"/>
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
@@ -192,9 +192,9 @@
    <tile gid="12"/>
    <tile gid="2"/>
    <tile gid="8"/>
+   <tile gid="2"/>
    <tile gid="29"/>
    <tile gid="52"/>
-   <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
@@ -212,10 +212,10 @@
    <tile gid="4"/>
    <tile gid="12"/>
    <tile gid="2"/>
+   <tile gid="2"/>
    <tile gid="36"/>
    <tile gid="53"/>
    <tile gid="54"/>
-   <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
@@ -233,9 +233,9 @@
    <tile gid="4"/>
    <tile gid="12"/>
    <tile gid="2"/>
+   <tile gid="2"/>
    <tile gid="29"/>
    <tile gid="55"/>
-   <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
@@ -253,8 +253,8 @@
    <tile gid="7"/>
    <tile gid="4"/>
    <tile gid="12"/>
+   <tile gid="2"/>
    <tile gid="29"/>
-   <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
    <tile gid="30"/>
