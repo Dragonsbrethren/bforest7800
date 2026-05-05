@@ -234,7 +234,6 @@ end
 ; Currently disabled due to needing more space in shared graphics block,
 ; floatsprite relies on DMA holes and HUD graphics are now stored below $8000
 float_sprites
-        goto main
 ;        asm
 ;          floatsprite 0,ZONE0ADDRESS,1
 ;          floatsprite 0,ZONE0ADDRESS,2
@@ -251,7 +250,28 @@ float_sprites
 ;          floatsprite 1,ZONE1ADDRESS,6
 ;          floatsprite 1,ZONE1ADDRESS,7
 ;end
-;        goto main
+
+; handle the chant flash and set the top/bottom border color
+prep_bottom_color
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR else flash_color = $00
+        bottom_bg = flash_color
+;       if game_state = STATE_TITLE then set_title_bottom_pal
+hair_flash
+        ; Johanna's hair
+        P1C1 = getfade(HAIR_COLOR, black)
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
+        white_value = getfade(PAL_WHITE)
+        if !white_value then white_value = WHITE_DARKNESS
+black_flash
+        ; flash the screen border
+        if tileset = T_CASTLE then goto main    ; Cathedral tileset uses black as BG, not C1
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        ; can't flash the animated palette
+        if pal_animation then goto main
+        P7C1     = flash_color
+        goto main
 
 plot_player_shield
         if player_state = STATE_DEATH || player_state = STATE_CHANT then return thisbank
@@ -1255,27 +1275,9 @@ top_pal_done
         return thisbank
 
 bottomscreenroutine
-        WSYNC=1
-        BACKGRND=flash_color
-        if game_state = STATE_MENU then BACKGRND = $10 : bg_color = $10 : return
+        WSYNC    = 1
+        BACKGRND = bottom_bg
         if game_state = STATE_TITLE then set_title_bottom_pal
-hair_flash
-        ; Johanna's hair
-        P1C1 = getfade(HAIR_COLOR, black)
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
-        white_value = getfade(PAL_WHITE)
-        if !white_value then white_value = WHITE_DARKNESS
-black_flash
-        flash_color = $00
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR
-        ; flash the screen border
-        if tileset = T_CASTLE then return thisbank   ; Cathedral tileset uses black as BG, not C1
-        P4C1     = flash_color
-        P5C1     = flash_color
-        P6C1     = flash_color
-        ; can't flash the animated palette
-        if pal_animation then return thisbank
-        P7C1     = flash_color
         return thisbank
 
 clear_palettes

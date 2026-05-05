@@ -235,7 +235,6 @@ init_castle
         cpx #6
         bcc .castle_room_bank_4
 end
-        drawwait
         gosub castle_room_bank_5 bank5
         return thisbank         ; gosub/return needed to make bank switch
 castle_room_bank_4

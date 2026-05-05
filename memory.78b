@@ -417,6 +417,7 @@
         autodim byte white_value
         autodim byte hud_1
         autodim byte hud_2
+        autodim byte bottom_bg
 
 
         dim current_map = $2600

@@ -44,8 +44,13 @@ menu_init
         displaymode 320B
         adjustvisible 0 14
         drawwait
-        P0C2 = $10
-        P4C2 = $10
+        asm
+          lda #$10
+          sta P0C2
+          sta P4C2
+          sta bottom_bg
+          sta bg_color          ; needed for top line of menu
+end
         menu_change = 1
         gosub disable_double_wide_mode
         goto main
