@@ -936,8 +936,22 @@ cardinal_cast
           rts
 
 priest_cast_sound
-end
+        ; first make sure there is still an open object slot
+          jsr .find_new_object
+          lda no_empty_slot
+          beq priest_cast_play_sound
+          ; clear the casting flag
+          lda object_flags,x
+          and #%10111111
+          sta object_flags,x
+          rts
+
+priest_cast_play_sound 
+          ; back up spawn index to parent
+          tya
+          sta object_parent,x
         ; todo: roll off into its own spawn projectile subroutine
+end
         playsfx sfx_nonobounce
 
 load_darkspark
@@ -946,8 +960,8 @@ load_darkspark
         ldx index
         lda object_parent,x
         tay
-;       lda #TYPE_DARKSPARK
-;       sta object_type,y
+        lda #TYPE_DARKSPARK
+        sta object_type,y
         sta object_hp,y
         lda #DARKSPARK_VEL_CAP_HI
         sta object_vel_cap_hi,y
