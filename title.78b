@@ -79,7 +79,7 @@ title_no_clear
         sta menu_debounce
         sta pause_debounce
 end
-        goto menu_init bank3
+        goto menu_init bank11
 
 title_new_game
         tileset = T_CASTLE

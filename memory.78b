@@ -195,6 +195,7 @@
         autodim byte move_tile_2
         autodim byte move_tile_1_old
         autodim byte move_tile_2_old
+        autodim byte tile_index
         autodim byte animation_frame
         autodim byte frame
         autodim byte flags
@@ -210,6 +211,7 @@
         autodim byte lightning_segs
         autodim byte lightningX_offset
         autodim byte lightningY_offset
+        autodim byte melee_valid
 
         ; MENUS
         autodim byte action_debounce

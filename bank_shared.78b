@@ -496,7 +496,7 @@ swoop_Y
 test_melee
         asm
           lda #0
-          sta temp6
+          sta melee_valid
           lda object_facing,x
           cmp #DIR_UP
           beq melee_up
@@ -508,40 +508,40 @@ melee_right
           lda object_Xpos,x
           clc
           adc #12
-          sta temp1
+          sta Xposition
           lda object_Ypos,x
           sec
           sbc #8
-          sta temp2
+          sta Yposition
           jmp .melee_range
 
 melee_up
           lda object_Xpos,x
-          sta temp1
+          sta Xposition
           lda object_Ypos,x
           sec
           sbc #16
-          sta temp2
+          sta Yposition
           jmp .melee_range
 
 melee_down
           lda object_Xpos,x
-          sta temp1
+          sta Xposition
           lda object_Ypos,x
-          sta temp2
+          sta Yposition
           jmp .melee_range
 
 melee_left
           lda object_Xpos,x
-          sta temp1
+          sta Xposition
           lda object_Ypos,x
           sec
           sbc #8
-          sta temp2
+          sta Yposition
 end
 
 melee_range
-        if boxcollision(temp1, temp2, 12, 32, player_Xpos, player_Ypos, 16, 12) then temp6 = 1
+        if boxcollision(Xposition, Yposition, 12, 32, player_Xpos, player_Ypos, 16, 12) then melee_valid = 1
         return thisbank
 
 ;==============================================================================
@@ -555,35 +555,35 @@ position_sword
         if object_facing[index] = DIR_LEFT then pos_swd_left
 
 pos_swd_right
-        temp1 = object_Xpos[index] + SWORD_OFFSET_RIGHT_X
-        temp2 = object_Ypos[index] + SWORD_OFFSET_RIGHT_Y
+        Xposition = object_Xpos[index] + SWORD_OFFSET_RIGHT_X
+        Yposition = object_Ypos[index] + SWORD_OFFSET_RIGHT_Y
         ;temp3 = 12
         ;temp4 = 4
-        temp5 = 2
+        frame = 2
         return thisbank
 
 pos_swd_down
-        temp1 = object_Xpos[index] + SWORD_OFFSET_DOWN_X
-        temp2 = object_Ypos[index] + SWORD_OFFSET_DOWN_Y
+        Xposition = object_Xpos[index] + SWORD_OFFSET_DOWN_X
+        Yposition = object_Ypos[index] + SWORD_OFFSET_DOWN_Y
         ;temp3 = 4
         ;temp4 = 16
-        temp5 = 0
+        frame = 0
         return thisbank
 
 pos_swd_up
-        temp1 = object_Xpos[index] + SWORD_OFFSET_UP_X
-        temp2 = object_Ypos[index] + SWORD_OFFSET_UP_Y
+        Xposition = object_Xpos[index] + SWORD_OFFSET_UP_X
+        Yposition = object_Ypos[index] + SWORD_OFFSET_UP_Y
         ;temp3 = 4
         ;temp4 = 16
-        temp5 = 1
+        frame = 1
         return thisbank
 
 pos_swd_left
-        temp1 = object_Xpos[index] + SWORD_OFFSET_LEFT_X
-        temp2 = object_Ypos[index] + SWORD_OFFSET_LEFT_Y
+        Xposition = object_Xpos[index] + SWORD_OFFSET_LEFT_X
+        Yposition = object_Ypos[index] + SWORD_OFFSET_LEFT_Y
         ;temp3 = 12
         ;temp4 = 4
-        temp5 = 3
+        frame = 3
         return thisbank
 
         data object_ai_lo

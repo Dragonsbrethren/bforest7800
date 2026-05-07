@@ -541,10 +541,10 @@ test_obscure_castle
         ; works the same was as water in river tileset, test the tile directly
         ; below the player and set the obscure flag if bit 3 is set on tile
         gosub get_object_pos
-        temp1 = peekchar (current_map, peekX, peekY, 20, 14)
-        temp1 = temp1 / 2
-        temp1 = castle_tile_properties[temp1]
-        if temp1{3} then player_obscure = 1 else player_obscure = 0
+        tile_index = peekchar (current_map, peekX, peekY, 20, 14)
+        tile_index = tile_index / 2
+        tile_index = castle_tile_properties[tile_index]
+        if tile_index{3} then player_obscure = 1 else player_obscure = 0
         return thisbank
         
         data castle_tile_properties
@@ -829,7 +829,7 @@ priest_walk_anim_done
 
 skel_melee_x
           jsr .test_melee
-          lda temp6
+          lda melee_valid
           bne skel_melee_x_state
           jmp priest_walk_x_2
 skel_melee_x_state
@@ -852,7 +852,7 @@ priest_cast_horiz_set
 
 skel_melee_y
           jsr .test_melee
-          lda temp6
+          lda melee_valid
           beq priest_walk_y_2
           lda object_state,x
           bne priest_walk_y_2
@@ -882,6 +882,11 @@ priest_cast_prep
           ; back up this object to the spawned object's parent slot
           txa
           sta object_parent,y
+          ; fill the slot with an off-screen darkspark so it is not overwritten
+          lda #TYPE_DARKSPARK
+          sta object_type,y
+          lda #$E0
+          sta object_Xpos,y
           lda object_flags,x
           ora #%01000000
           sta object_flags,x
@@ -941,8 +946,8 @@ load_darkspark
         ldx index
         lda object_parent,x
         tay
-        lda #TYPE_DARKSPARK
-        sta object_type,y
+;       lda #TYPE_DARKSPARK
+;       sta object_type,y
         sta object_hp,y
         lda #DARKSPARK_VEL_CAP_HI
         sta object_vel_cap_hi,y
@@ -1013,11 +1018,12 @@ skel_sword_pos
         sta object_hp,y ; dummy stat but needed for damage code
         lda #255
         sta object_def,y
-        lda temp1
+        ; position and frame variables set by position_sword
+        lda Xposition
         sta object_Xpos,y
-        lda temp2
+        lda Yposition
         sta object_Ypos,y
-        lda temp5
+        lda frame
         sta object_frame,y
         lda object_facing,x
         sta object_facing,y
