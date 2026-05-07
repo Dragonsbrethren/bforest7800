@@ -1668,7 +1668,7 @@ pickup_object
           beq pustring
           cmp #TYPE_MAP1
           bcc pudoor
-          sta temp1
+          sta pickup_index
 pustring  ldy #PICKUP_TIME
           sty pickup_timer
           ldy #1

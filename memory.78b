@@ -375,6 +375,9 @@
         ; PICKUP HUD
         autodim byte pickup_string 16
         autodim byte pickup_index
+        autodim byte pickup_qty
+        autodim byte pickup_bits1
+        autodim byte pickup_bits2
         autodim byte pickup_char
         autodim byte pickup_offset
         autodim byte pickup_timer

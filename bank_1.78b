@@ -309,113 +309,113 @@ password_display
 end
 
 prep_inv_bits
-        if temp1 >= 5 then prep_bits_2
-        temp1 = inv_bits[temp1]
-        temp2 = 0
+        if pickup_index >= 5 then prep_bits_2
+        pickup_bits1 = inv_bits[pickup_index]
+        pickup_bits2 = 0
         return
 prep_bits_2
-        temp1 = temp1 - 5
-        temp2 = inv_bits[temp1]
-        temp1 = 0
+        pickup_index = pickup_index - 5
+        pickup_bits2 = inv_bits[pickup_index]
+        pickup_bits1 = 0
         return
 
 pickup_map
-        temp1 = temp1 - TYPE_MAP1
-        pickup_ptr_lo = pickup_maps_lo[temp1]
-        pickup_ptr_hi = pickup_maps_hi[temp1]
+        pickup_index = pickup_index - TYPE_MAP1
+        pickup_ptr_lo = pickup_maps_lo[pickup_index]
+        pickup_ptr_hi = pickup_maps_hi[pickup_index]
         gosub prep_inv_bits
 add_map
-        m_map_bits = m_map_bits | temp1
+        m_map_bits = m_map_bits | pickup_bits1
         goto kill_object
 
 pickup_key
-        temp1 = temp1 - TYPE_KEY1
-        pickup_ptr_lo = pickup_keys_lo[temp1]
-        pickup_ptr_hi = pickup_keys_hi[temp1]
+        pickup_index = pickup_index - TYPE_KEY1
+        pickup_ptr_lo = pickup_keys_lo[pickup_index]
+        pickup_ptr_hi = pickup_keys_hi[pickup_index]
         gosub prep_inv_bits
 add_key
-        m_key_bits = m_key_bits | temp1
+        m_key_bits = m_key_bits | pickup_bits1
         goto kill_object
 
 pickup_spell
-        temp1 = temp1 - TYPE_SPELL1
-        if !player_spell then player_spell = temp1+1
-        pickup_ptr_lo = pickup_spells_lo[temp1]
-        pickup_ptr_hi = pickup_spells_hi[temp1]
+        pickup_index = pickup_index - TYPE_SPELL1
+        if !player_spell then player_spell = pickup_index+1
+        pickup_ptr_lo = pickup_spells_lo[pickup_index]
+        pickup_ptr_hi = pickup_spells_hi[pickup_index]
         gosub prep_inv_bits
 add_spell
-        m_spell_bits_1 = m_spell_bits_1 | temp1
-        m_spell_bits_2 = m_spell_bits_2 | temp2
+        m_spell_bits_1 = m_spell_bits_1 | pickup_bits1
+        m_spell_bits_2 = m_spell_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_item
-        temp1 = temp1 - TYPE_ITEM1
+        pickup_index = pickup_index - TYPE_ITEM1
         ; quanities start at 1, not 0, to simplify menu code
-        temp2 = temp1 + 1
-        m_item_qty[temp2] = m_item_qty[temp2] + 1
+        pickup_qty = pickup_index + 1
+        m_item_qty[pickup_qty] = m_item_qty[pickup_qty] + 1
         ; cap at 9 so we don't need to deal with BCD and so qty can be stored in a nibble
-        if m_item_qty[temp2] >= 9 then m_item_qty[temp2] = 9
-        pickup_ptr_lo = pickup_items_lo[temp1]
-        pickup_ptr_hi = pickup_items_hi[temp1]
+        if m_item_qty[pickup_qty] >= 9 then m_item_qty[pickup_qty] = 9
+        pickup_ptr_lo = pickup_items_lo[pickup_index]
+        pickup_ptr_hi = pickup_items_hi[pickup_index]
         gosub prep_inv_bits
 add_item
-        m_item_bits_1 = m_item_bits_1 | temp1
-        m_item_bits_2 = m_item_bits_2 | temp2
+        m_item_bits_1 = m_item_bits_1 | pickup_bits1
+        m_item_bits_2 = m_item_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_sword
-        temp1 = temp1 - TYPE_SWORD1
-        pickup_ptr_lo = pickup_swords_lo[temp1]
-        pickup_ptr_hi = pickup_swords_hi[temp1]
+        pickup_index = pickup_index - TYPE_SWORD1
+        pickup_ptr_lo = pickup_swords_lo[pickup_index]
+        pickup_ptr_hi = pickup_swords_hi[pickup_index]
         gosub prep_inv_bits
 add_sword
-        m_sword_bits_1 = m_sword_bits_1 | temp1
-        m_sword_bits_2 = m_sword_bits_2 | temp2
+        m_sword_bits_1 = m_sword_bits_1 | pickup_bits1
+        m_sword_bits_2 = m_sword_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_shield
-        temp1 = temp1 - TYPE_SHIELD1
-        if !player_shield then player_shield = temp1+1
+        pickup_index = pickup_index - TYPE_SHIELD1
+        if !player_shield then player_shield = pickup_index + 1
         shield_pal = f_shield_pals[player_shield]
         dec player_def = player_def + shield_def[player_shield]
-        pickup_ptr_lo = pickup_shields_lo[temp1]
-        pickup_ptr_hi = pickup_shields_hi[temp1]
+        pickup_ptr_lo = pickup_shields_lo[pickup_index]
+        pickup_ptr_hi = pickup_shields_hi[pickup_index]
         gosub prep_inv_bits
 add_shield
-        m_shield_bits_1 = m_shield_bits_1 | temp1
-        m_shield_bits_2 = m_shield_bits_2 | temp2
+        m_shield_bits_1 = m_shield_bits_1 | pickup_bits1
+        m_shield_bits_2 = m_shield_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_armor
-        temp1 = temp1 - TYPE_ARMOR1
-        pickup_ptr_lo = pickup_armor_lo[temp1]
-        pickup_ptr_hi = pickup_armor_hi[temp1]
+        pickup_index = pickup_index - TYPE_ARMOR1
+        pickup_ptr_lo = pickup_armor_lo[pickup_index]
+        pickup_ptr_hi = pickup_armor_hi[pickup_index]
         gosub prep_inv_bits
 add_armor
-        m_armor_bits_1 = m_armor_bits_1 | temp1
-        m_armor_bits_2 = m_armor_bits_2 | temp2
+        m_armor_bits_1 = m_armor_bits_1 | pickup_bits1
+        m_armor_bits_2 = m_armor_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_charm
-        temp1 = temp1 - TYPE_CHARM1
-        if !player_charm then player_charm = temp1+1
-        pickup_ptr_lo = pickup_charms_lo[temp1]
-        pickup_ptr_hi = pickup_charms_hi[temp1]
+        pickup_index = pickup_index - TYPE_CHARM1
+        if !player_charm then player_charm = pickup_index + 1
+        pickup_ptr_lo = pickup_charms_lo[pickup_index]
+        pickup_ptr_hi = pickup_charms_hi[pickup_index]
         gosub prep_inv_bits
 add_charm
-        m_charm_bits_1 = m_charm_bits_1 | temp1
-        m_charm_bits_2 = m_charm_bits_2 | temp2
+        m_charm_bits_1 = m_charm_bits_1 | pickup_bits1
+        m_charm_bits_2 = m_charm_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_relic
-        temp1 = temp1 - TYPE_RELIC1
-        if temp1 < 4 && !toggled_familiar then toggled_familiar = temp1+1
-        pickup_ptr_lo = pickup_relics_lo[temp1]
-        pickup_ptr_hi = pickup_relics_hi[temp1]
+        pickup_index = pickup_index - TYPE_RELIC1
+        if pickup_index < 4 && !toggled_familiar then toggled_familiar = pickup_index+1
+        pickup_ptr_lo = pickup_relics_lo[pickup_index]
+        pickup_ptr_hi = pickup_relics_hi[pickup_index]
         gosub prep_inv_bits
 add_relic
-        m_relic_bits_1 = m_relic_bits_1 | temp1
-        m_relic_bits_2 = m_relic_bits_2 | temp2
+        m_relic_bits_1 = m_relic_bits_1 | pickup_bits1
+        m_relic_bits_2 = m_relic_bits_2 | pickup_bits2
         goto kill_object
 
 set_locked_string
