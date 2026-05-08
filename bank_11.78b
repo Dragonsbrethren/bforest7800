@@ -289,8 +289,6 @@ password_menu_updater
 password_menu_controls
         if !menu_debounce && joy0fire0 && action_button = 1 then pw_backspace
         if !menu_debounce && joy0fire1 && action_button = 0 then pw_backspace
-        ; Pause is a quickie way of getting back to the action
-        if !pause_debounce && switchpause then gosub buffer_to_password : goto close_menu
         if !action_debounce && joy0fire0 && action_button = 0 then encode_sel_to_pw
         if !action_debounce && joy0fire1 && action_button = 1 then encode_sel_to_pw
         gosub menu_dirs
