@@ -60,6 +60,15 @@
  sta (temp1),y
  ENDM
 
+  MAC SetObjectWidth
+  ; SetObjectWidth - X=object_X Y=object_Y {1}=width
+ jsr SetObjectPointer
+ ldy #3 ; palette+width is the 4th byte in the dl object
+ lda (temp1),y
+ ora {1}
+ sta (temp1),y
+ ENDM
+
 
   MAC SetObjectX
   ; SetObjectX - X=object_X Y=object_Y {1}=X-coordinate
