@@ -65,8 +65,16 @@
  jsr SetObjectPointer
  ldy #3 ; palette+width is the 4th byte in the dl object
  lda (temp1),y
+ and #%11100000
  ora {1}
  sta (temp1),y
+ ENDM
+
+ MAC GetObjectWidthTwosComplement
+ eor #$7F
+ clc
+ adc #1
+ and #%00011111
  ENDM
 
 

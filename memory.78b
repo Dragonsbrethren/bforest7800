@@ -118,12 +118,16 @@
         autodim byte hp_bar_4
         autodim byte hp_bar_5
         autodim byte hp_bar_6
+        autodim byte hp_bar_width
+        autodim byte hp_bar_end
         autodim byte mp_bar_1
         autodim byte mp_bar_2
         autodim byte mp_bar_3
         autodim byte mp_bar_4
         autodim byte mp_bar_5
         autodim byte mp_bar_6
+        autodim byte mp_bar_width
+        autodim byte mp_bar_end
         autodim byte mp_change
         autodim byte chant_timer
         autodim byte flash_color

@@ -340,31 +340,16 @@ plot_fireball
 ; Bars must be plotted in separate zones or there isn't enough DMA time
 ;==============================================================================
 draw_hud
-        plotsprite  hp   0  8  0       ; HP is 160B
-        ; prep plot_par to draw the rest of the HP segments
-        Xposition = 24
-        asm
-        lda #0
-        sta Yposition
-        sta hud_1
-end
-        hud_2 = 5
-        sprite_pal = 2
+        Xposition = HP_BAR_POS
+        Yposition = HP_BAR_ZONE
+        sprite_pal = HP_BAR_PAL
         gosub plot_bar
-        plotsprite  mp   0  8 16        ; Need to use plotsprite here to avoid rendering error on MP bar
-        ; prep plot_bar for MP bar
-        Xposition = 24
-        Yposition = 16
-        hud_1 = 6
-        hud_2 = 11
-        sprite_pal = 0
-        ; code runs directly into 
+        Xposition = MP_BAR_POS
+        sprite_pal = MP_BAR_PAL
 plot_bar
-        for index = hud_1 to hud_2
-        frame = hp_seg_1[index]
-        plotsprite bar0 sprite_pal Xposition Yposition frame
-        Xposition = Xposition + 8
-        next
+        plotsprite bar0 sprite_pal Xposition Yposition 0
+        Xposition = Xposition + BAR_END_OFFSET
+        plotsprite bar_end sprite_pal Xposition Yposition 0
         return thisbank
 
 plot_debug_hud
@@ -1975,35 +1960,34 @@ pc_damage
         ; moved damage subroutine here to avoid a goto
 damage_player_hp
         ; TODO: This currently can't scale, only works with max HP 48...
-        dec temp1 = player_hp        ; temp1 used to detect underflow
-        dec temp2 = hp_change
-        dec temp3 = player_def
+        temp1 = player_hp        ; temp1 used to detect underflow
+        temp2 = hp_change
+        temp3 = player_def
         ; players under fury have quarter defense
         if player_status{4} then temp3 = temp3 / 4
-        dec hp_change = hp_change - temp3
+        hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
         if hp_change > temp2 then hp_change = 1
-        dec player_hp = player_hp - hp_change
+        player_hp = player_hp - hp_change
         if player_hp > temp1 then player_hp = 0
-
 update_hp_bar
-        dec temp1 = player_hp
-        dec hp_seg_1 = player_hp
+        temp1 = player_hp
+        hp_seg_1 = player_hp
         if hp_seg_1 > temp1 then hp_seg_1 = 0
-        dec temp1 = hp_seg_1
-        dec hp_seg_2 = hp_seg_1 - 8
+        temp1 = hp_seg_1
+        hp_seg_2 = hp_seg_1 - 8
         if hp_seg_2 > temp1 then hp_seg_2 = 0
-        dec temp1 = hp_seg_2
-        dec hp_seg_3 = hp_seg_2 - 8
+        temp1 = hp_seg_2
+        hp_seg_3 = hp_seg_2 - 8
         if hp_seg_3 > temp1 then hp_seg_3 = 0
-        dec temp1 = hp_seg_3
-        dec hp_seg_4 = hp_seg_3 - 8
+        temp1 = hp_seg_3
+        hp_seg_4 = hp_seg_3 - 8
         if hp_seg_4 > temp1 then hp_seg_4 = 0
-        dec temp1 = hp_seg_4
-        dec hp_seg_5 = hp_seg_4 - 8
+        temp1 = hp_seg_4
+        hp_seg_5 = hp_seg_4 - 8
         if hp_seg_5 > temp1 then hp_seg_5 = 0
-        dec temp1 = hp_seg_5
-        dec hp_seg_6 = hp_seg_5 - 8
+        temp1 = hp_seg_5
+        hp_seg_6 = hp_seg_5 - 8
         if hp_seg_6 > temp1 then hp_seg_6 = 0
         if hp_seg_6 > 8 then hp_seg_6 = 8
         if hp_seg_5 > 8 then hp_seg_5 = 8
@@ -2054,41 +2038,41 @@ set_status
 end
 
 increase_player_hp
-        dec player_hp = player_hp + hp_change
+        player_hp = player_hp + hp_change
         if player_hp > player_max_hp then player_hp = player_max_hp
         hp_change = 0
         goto update_hp_bar
 
 increase_player_mp
-        dec player_mp = player_mp + mp_change
+        player_mp = player_mp + mp_change
         if player_mp > player_max_mp then player_mp = player_max_mp
         goto update_mp_bar
 
 decrease_player_mp
         ; TODO: This currently can't scale, only works with max HP 48...
-        dec temp1 = player_mp        ; temp1 used to detect underflow
-        dec player_mp = player_mp - mp_change
+        temp1 = player_mp        ; temp1 used to detect underflow
+        player_mp = player_mp - mp_change
         if player_mp > temp1 then player_mp = 0
 
 update_mp_bar
         mp_change = 0
-        dec temp1 = player_mp
-        dec mp_seg_1 = player_mp
+        temp1 = player_mp
+        mp_seg_1 = player_mp
         if mp_seg_1 > temp1 then mp_seg_1 = 0
-        dec temp1 = mp_seg_1
-        dec mp_seg_2 = mp_seg_1 - 8
+        temp1 = mp_seg_1
+        mp_seg_2 = mp_seg_1 - 8
         if mp_seg_2 > temp1 then mp_seg_2 = 0
-        dec temp1 = mp_seg_2
-        dec mp_seg_3 = mp_seg_2 - 8
+        temp1 = mp_seg_2
+        mp_seg_3 = mp_seg_2 - 8
         if mp_seg_3 > temp1 then mp_seg_3 = 0
-        dec temp1 = mp_seg_3
-        dec mp_seg_4 = mp_seg_3 - 8
+        temp1 = mp_seg_3
+        mp_seg_4 = mp_seg_3 - 8
         if mp_seg_4 > temp1 then mp_seg_4 = 0
-        dec temp1 = mp_seg_4
-        dec mp_seg_5 = mp_seg_4 - 8
+        temp1 = mp_seg_4
+        mp_seg_5 = mp_seg_4 - 8
         if mp_seg_5 > temp1 then mp_seg_5 = 0
-        dec temp1 = mp_seg_5
-        dec mp_seg_6 = mp_seg_5 - 8
+        temp1 = mp_seg_5
+        mp_seg_6 = mp_seg_5 - 8
         if mp_seg_6 > temp1 then mp_seg_6 = 0
         if mp_seg_6 > 8 then mp_seg_6 = 8
         if mp_seg_5 > 8 then mp_seg_5 = 8

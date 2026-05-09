@@ -56,7 +56,7 @@ title_selection
         goto title_new_game
 
 title_flash
-        plotchars 'ALPHA 05-07-2026' 0 48 10
+        plotchars 'ALPHA 05-09-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -120,22 +120,10 @@ init_field
         player_friction = object_speed
         player_vel_cap = 5.0
         object_elevation = 0
-        dec player_max_hp = $48
-        dec player_hp = $48
-        dec player_mp = $48
-        dec player_max_mp = $48
-        dec hp_seg_1 = 8
-        dec hp_seg_2 = 8
-        dec hp_seg_3 = 8
-        dec hp_seg_4 = 8
-        dec hp_seg_5 = 8
-        dec hp_seg_6 = 8
-        dec mp_seg_1 = 8
-        dec mp_seg_2 = 8
-        dec mp_seg_3 = 8
-        dec mp_seg_4 = 8
-        dec mp_seg_5 = 8
-        dec mp_seg_6 = 8
+        player_max_hp = 48
+        player_hp = 48
+        player_mp = 48
+        player_max_mp = 48
         ; make sure all toggled items have a quantity
         if m_item_bits_1{0} then m_item_qty[1] = 1
         if m_item_bits_1{1} then m_item_qty[2] = 1

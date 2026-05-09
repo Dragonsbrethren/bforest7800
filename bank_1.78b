@@ -4,15 +4,8 @@
 ; Game Initialization, extra code and graphics, sounds
 ;==============================================================================
         incgraphic gfx/sprites/font_spr.png 160A 3 0 1
-        incgraphic gfx/sprites/bar0.png 160A 0 1
-        incgraphic gfx/sprites/bar1.png 160A 0 2 1
-        incgraphic gfx/sprites/bar2.png 160A 0 2 1
-        incgraphic gfx/sprites/bar3.png 160A 0 2 1
-        incgraphic gfx/sprites/bar4.png 160A 0 2 1
-        incgraphic gfx/sprites/bar5.png 160A 0 2 1
-        incgraphic gfx/sprites/bar6.png 160A 0 2 1
-        incgraphic gfx/sprites/bar7.png 160A 0 2 1
-        incgraphic gfx/sprites/bar8.png 160A 0 2 1
+        incgraphic gfx/sprites/bar0.png 160A 0 2 1
+        incgraphic gfx/sprites/bar_end.png 160A 0 2 1
         incgraphic gfx/sprites/hp.png 160B 0 3 7 8 1 2
         incgraphic gfx/sprites/mp.png 160A 0 3 1
         incgraphic gfx/sprites/coin.png 160A 0 3 2
@@ -79,6 +72,8 @@ load_map
         if tileset = T_HILLS  then gosub load_hills bank8
         if tileset = T_CAVES  then gosub load_caves bank12
         gosub draw_hud
+        plotsprite  hp   0  8  0       ; HP is 160B
+        plotsprite  mp   0  87 0       ; Need to use plotsprite here to avoid rendering error on MP bar
 draw_pickup_hud
         Xposition = 36
         for index = 0 to 11
@@ -191,43 +186,53 @@ end
 
 plot_hud
         asm
-          ldx zone1_objects
-          ldy #0
-          SetObjectImageLo hp_bar_1
-          inx
-          ldy #0
-          SetObjectImageLo hp_bar_2
-          inx
-          ldy #0
-          SetObjectImageLo hp_bar_3
-          inx
-          ldy #0
-          SetObjectImageLo hp_bar_4
-          inx
-          ldy #0
-          SetObjectImageLo hp_bar_5
-          inx
-          ldy #0
-          SetObjectImageLo hp_bar_6
-          ldx zone2_objects
-          ldy #1
-          SetObjectImageLo mp_bar_1
-          inx
-          ldy #1
-          SetObjectImageLo mp_bar_2
-          inx
-          ldy #1
-          SetObjectImageLo mp_bar_3
-          inx
-          ldy #1
-          SetObjectImageLo mp_bar_4
-          inx
-          ldy #1
-          SetObjectImageLo mp_bar_5
-          inx
-          ldy #1
-          SetObjectImageLo mp_bar_6
+          ldx #HP_BAR_OBJECT
+          ldy #HP_BAR_ZONE
+          lda player_hp
+          beq zero_hp_bar
+          clc
+          adc #4        ; add 4 to account for bar end width
+          lsr
+          lsr
+          bne scale_hp_bar
+zero_hp_bar
+          lda #1
+scale_hp_bar
+          GetObjectWidthTwosComplement
+          sta hp_bar_width
+          SetObjectWidth hp_bar_width
 end
+move_hp_end
+        hp_bar_end = player_hp + HP_BAR_OFFSET
+        asm
+          ldx #HP_BAR_END_OBJECT
+          ldy #HP_BAR_ZONE
+          SetObjectX hp_bar_end
+end
+        asm
+          ldx #MP_BAR_OBJECT
+          ldy #MP_BAR_ZONE
+          lda player_mp
+          clc
+          adc #4        ; add 4 to account for bar end width
+          lsr
+          lsr
+          bne scale_mp_bar
+zero_mp_bar
+          lda #1
+scale_mp_bar
+          GetObjectWidthTwosComplement
+          sta mp_bar_width
+          SetObjectWidth mp_bar_width
+end
+move_mp_end
+        mp_bar_end = player_mp + MP_BAR_OFFSET
+        asm
+          ldx #MP_BAR_END_OBJECT
+          ldy #MP_BAR_ZONE
+          SetObjectX mp_bar_end
+end
+
         if debug_hud then gosub plot_debug_hud
 
 
