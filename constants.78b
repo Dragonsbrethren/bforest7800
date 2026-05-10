@@ -413,16 +413,20 @@
 ;------------------------------------------------------------------------------
 ; HUD
 ;------------------------------------------------------------------------------
+        const HP_LABEL_POS      = 8
+        const HP_LABEL_PAL      = 0
         const HP_BAR_OBJECT     = 0
         const HP_BAR_POS        = 20
         const HP_BAR_ZONE       = 0
         const HP_BAR_PAL        = 2
         const HP_BAR_END_OBJECT = 1
         const HP_BAR_OFFSET     = 21
+        const MP_LABEL_POS      = 86
+        const MP_LABEL_PAL      = 0
         const MP_BAR_OBJECT     = 2
-        const MP_BAR_POS        = 95
+        const MP_BAR_POS        = 98
         const MP_BAR_ZONE       = 0
         const MP_BAR_PAL        = 0
         const MP_BAR_END_OBJECT = 3
-        const MP_BAR_OFFSET     = 96
+        const MP_BAR_OFFSET     = 99
         const BAR_END_OFFSET    = 48

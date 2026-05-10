@@ -72,8 +72,8 @@ load_map
         if tileset = T_HILLS  then gosub load_hills bank8
         if tileset = T_CAVES  then gosub load_caves bank12
         gosub draw_hud
-        plotsprite  hp   0  8  0       ; HP is 160B
-        plotsprite  mp   0  87 0       ; Need to use plotsprite here to avoid rendering error on MP bar
+        plotsprite  hp HP_LABEL_PAL HP_LABEL_POS HP_BAR_ZONE ; HP is 160B
+        plotsprite  mp MP_LABEL_PAL MP_LABEL_POS MP_BAR_ZONE
 draw_pickup_hud
         Xposition = 36
         for index = 0 to 11

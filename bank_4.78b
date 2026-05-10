@@ -364,7 +364,7 @@ end
         data castle_room_4_obj
         TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
         TYPE_SKELETON, $50, $40, TYPE_SKELETON, $40, $80,
-        TYPE_DOOR_LOCK, $68, $10
+        TYPE_DOOR, (5*8), $10, TYPE_DOOR_LOCK, $68, $10
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0
         $00
 end
@@ -372,7 +372,7 @@ end
         data castle_room_5_obj
         TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_RSLIME, $60, $30
         TYPE_BLOOD, $80, $20
-        TYPE_DOOR, $68, $10
+        TYPE_DOOR, (5*8), $10, TYPE_DOOR, $68, $10
         $00
 end
 
