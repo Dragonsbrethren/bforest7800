@@ -74,12 +74,15 @@ load_map
         gosub draw_hud
         plotsprite  hp HP_LABEL_PAL HP_LABEL_POS HP_BAR_ZONE ; HP is 160B
         plotsprite  mp MP_LABEL_PAL MP_LABEL_POS MP_BAR_ZONE
+        ; update the bars before saving the screen so they don't jump
+        gosub update_hud
 draw_pickup_hud
         Xposition = 36
         for index = 0 to 11
         Xposition = Xposition + 6              
         plotsprite font_spr 0 Xposition 208 0
         next
+
 map_loaded
         savescreen
         gosub update_hp_bar
@@ -185,6 +188,53 @@ plot_player_unlock
 end
 
 plot_hud
+        gosub update_hud
+        if debug_hud then gosub plot_debug_hud
+
+
+; Currently disabled due to needing more space in shared graphics block,
+; floatsprite relies on DMA holes and HUD graphics are now stored below $8000
+float_sprites
+;        asm
+;          floatsprite 0,ZONE0ADDRESS,1
+;          floatsprite 0,ZONE0ADDRESS,2
+;          floatsprite 0,ZONE0ADDRESS,3
+;          floatsprite 0,ZONE0ADDRESS,4
+;          floatsprite 0,ZONE0ADDRESS,5
+;          floatsprite 0,ZONE0ADDRESS,6
+;          floatsprite 0,ZONE0ADDRESS,7
+;          floatsprite 1,ZONE1ADDRESS,1
+;          floatsprite 1,ZONE1ADDRESS,2
+;          floatsprite 1,ZONE1ADDRESS,3
+;          floatsprite 1,ZONE1ADDRESS,4
+;          floatsprite 1,ZONE1ADDRESS,5
+;          floatsprite 1,ZONE1ADDRESS,6
+;          floatsprite 1,ZONE1ADDRESS,7
+;end
+
+; handle the chant flash and set the top/bottom border color
+prep_bottom_color
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR else flash_color = $00
+        bottom_bg = flash_color
+;       if game_state = STATE_TITLE then set_title_bottom_pal
+hair_flash
+        ; Johanna's hair
+        P1C1 = getfade(HAIR_COLOR, black)
+        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
+        white_value = getfade(PAL_WHITE)
+        if !white_value then white_value = WHITE_DARKNESS
+black_flash
+        ; flash the screen border
+        if tileset = T_CASTLE then goto main    ; Cathedral tileset uses black as BG, not C1
+        P4C1     = flash_color
+        P5C1     = flash_color
+        P6C1     = flash_color
+        ; can't flash the animated palette
+        if pal_animation then goto main
+        P7C1     = flash_color
+        goto main
+
+update_hud
         asm
           ldx #HP_BAR_OBJECT
           ldy #HP_BAR_ZONE
@@ -231,52 +281,8 @@ move_mp_end
           ldx #MP_BAR_END_OBJECT
           ldy #MP_BAR_ZONE
           SetObjectX mp_bar_end
+          rts
 end
-
-        if debug_hud then gosub plot_debug_hud
-
-
-; Currently disabled due to needing more space in shared graphics block,
-; floatsprite relies on DMA holes and HUD graphics are now stored below $8000
-float_sprites
-;        asm
-;          floatsprite 0,ZONE0ADDRESS,1
-;          floatsprite 0,ZONE0ADDRESS,2
-;          floatsprite 0,ZONE0ADDRESS,3
-;          floatsprite 0,ZONE0ADDRESS,4
-;          floatsprite 0,ZONE0ADDRESS,5
-;          floatsprite 0,ZONE0ADDRESS,6
-;          floatsprite 0,ZONE0ADDRESS,7
-;          floatsprite 1,ZONE1ADDRESS,1
-;          floatsprite 1,ZONE1ADDRESS,2
-;          floatsprite 1,ZONE1ADDRESS,3
-;          floatsprite 1,ZONE1ADDRESS,4
-;          floatsprite 1,ZONE1ADDRESS,5
-;          floatsprite 1,ZONE1ADDRESS,6
-;          floatsprite 1,ZONE1ADDRESS,7
-;end
-
-; handle the chant flash and set the top/bottom border color
-prep_bottom_color
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then flash_color = CHANT_COLOR else flash_color = $00
-        bottom_bg = flash_color
-;       if game_state = STATE_TITLE then set_title_bottom_pal
-hair_flash
-        ; Johanna's hair
-        P1C1 = getfade(HAIR_COLOR, black)
-        if player_state = STATE_CHANT && animation_timer > ANIM_TIME / 2 then P1C1 = CHANT_COLOR
-        white_value = getfade(PAL_WHITE)
-        if !white_value then white_value = WHITE_DARKNESS
-black_flash
-        ; flash the screen border
-        if tileset = T_CASTLE then goto main    ; Cathedral tileset uses black as BG, not C1
-        P4C1     = flash_color
-        P5C1     = flash_color
-        P6C1     = flash_color
-        ; can't flash the animated palette
-        if pal_animation then goto main
-        P7C1     = flash_color
-        goto main
 
 plot_player_shield
         if player_state = STATE_DEATH || player_state = STATE_CHANT then return thisbank
