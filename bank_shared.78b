@@ -268,7 +268,8 @@ plot_food
 plot_items
         temp1 = object_type[index] - (TYPE_ITEM1 - 1)
         sprite_pal = f_item_pals[temp1]
-        plotsprite potion0 sprite_pal Xposition Yposition 0
+        frame = f_item_frames[temp1]
+        plotsprite potion0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_relics
