@@ -151,6 +151,7 @@
         autodim byte timer
         autodim byte hop_dir
         autodim 8.8  friction
+        autodim byte demoplay
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS

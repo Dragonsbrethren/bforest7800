@@ -1092,7 +1092,8 @@ end
 end
 
         data hills_room_0_obj
-        TYPE_SPIDER, (12*8+4), $40
+        TYPE_SPIDER, (12*8+4), $40, TYPE_SPIDER, (9*8+4), $80
+        TYPE_SPIDER, (16*8), $90, TYPE_SPIDER, (5*8), $20
         TYPE_TORCH, $10, $90, TYPE_TORCH, 80, $50
         $00
 end
@@ -1108,18 +1109,22 @@ end
 end
 
         data hills_room_3_obj
+        TYPE_SPIDER, (14*8), $30, TYPE_SPIDER, (16*8), $30
         $00
 end
 
         data hills_room_4_obj
-        TYPE_SPIDER, (5*8), $20, TYPE_HSLIME, (10*8), $60, TYPE_SPIDER, (15*8), $60
+        TYPE_SPIDER, (5*8), $20, TYPE_HSLIME, (9*8), $60
+        TYPE_SPIDER, (15*8), $60, TYPE_HSLIME, (11*8), $A0
+        TYPE_HSLIME, (12*8), $90
         TYPE_TORCH, $28, $30, TYPE_CHARM3, (13*8), $40
         $00
 end
 
         data hills_room_5_obj
-        TYPE_SPIDER, $20, $30
-        TYPE_SPIDER, $18, $60, TYPE_HSLIME, $48, $80
+        TYPE_SPIDER, (4*8), $30
+        TYPE_SPIDER, (4*8), $60, TYPE_SPIDER, (6*8), $60
+        TYPE_HSLIME, (6*8), $80, TYPE_HSLIME, (8*8), $70
         TYPE_TORCH, $4C, $60
         $00
 end

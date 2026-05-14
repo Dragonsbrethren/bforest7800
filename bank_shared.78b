@@ -822,6 +822,7 @@ handle_input_field
         gosub ledge_hop
         goto test_joy_done
 player_no_hop
+        if demoplay then gosub demo_jo : goto player_move_done
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1

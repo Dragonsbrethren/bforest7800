@@ -1496,6 +1496,113 @@ plot_relic_names
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
         goto items_left
 
+; Johanna AI for demo purposes - TODO: unify this with a tileset's 4-directional enemy
+demo_jo
+        asm
+;         lda player_flags
+;         and #%01000000
+;         beq demo_jo_dir
+;         jmp demo_jo_atk
+demo_jo_dir
+          lda object_timer
+          beq demo_jo_init_walk
+          jmp demo_jo_walk
+demo_jo_init_walk
+          lda #STATE_MOVING
+          sta player_state
+          lda #PRIEST_WALK_TIMER
+          sta player_timer
+          jsr randomize
+          bpl demo_jo_vert
+
+demo_jo_horiz
+          lda #0
+          sta player_Ydir
+          jsr randomize
+          bpl demo_jo_left
+demo_jo_right
+          lda #DIR_RIGHT
+          bne demo_jo_horiz_set
+demo_jo_left
+          lda #DIR_LEFT
+demo_jo_horiz_set
+          sta player_facing
+          sta player_Xdir
+          bne demo_jo_walk
+
+demo_jo_vert
+          lda #0
+          sta player_Xdir
+          jsr randomize
+          bpl demo_jo_down
+demo_jo_up
+          lda #DIR_UP
+          bne demo_jo_vert_set
+demo_jo_down
+          lda #DIR_DOWN
+demo_jo_vert_set
+          sta player_facing
+          sta player_Ydir
+
+demo_jo_walk
+          dec player_timer
+          ldx MAX_MAP_OBJECTS
+demo_jo_melee_loop
+          jsr .test_melee
+          lda melee_valid
+          bne demo_jo_attack
+          dex
+          bne demo_jo_melee_loop
+
+demo_jo_walk_dir
+          lda player_Ydir
+          bne demo_jo_walk_y
+
+demo_jo_walk_x
+          jsr .test_melee
+demo_jo_walk_x_2
+          lda player_Xvel_lo
+          clc
+          adc player_speed_lo
+          sta player_Xvel_lo
+          lda player_Xvel_hi
+          adc player_speed_hi
+          sta player_Xvel_hi
+          jmp demo_jo_walk_anim
+
+demo_jo_walk_y
+          ; TODO: Melee test
+
+demo_jo_walk_y_2
+          lda player_Yvel_lo
+          clc
+          adc player_speed_lo
+          sta player_Yvel_lo
+          lda player_Yvel_hi
+          adc player_speed_hi
+          sta player_Yvel_hi
+
+demo_jo_walk_anim
+          lda player_facing
+          tay
+          lda demo_jo_walk_frames,y
+demo_jo_walk_store_frame
+          sta player_frame
+          lda animation_frame
+          beq demo_jo_walk_anim_done
+          inc player_frame
+demo_jo_walk_anim_done
+          jmp .move_object
+
+demo_jo_attack
+          jmp .move_object
+end
+
+        data demo_jo_walk_frames
+        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT
+end
+
+
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
