@@ -1194,16 +1194,31 @@ end
           beq test_walkable_up
           jmp move_up
 test_walkable_up
+          ldx index
+          bne test_walkable_up_ledge_done
+          ; test for miracle gem
+          lda m_relic_bits_2
+          and #%00000010
+          beq test_walkable_up_ledge_done
+          lda tile_properties
+          and #%10000000
+          beq test_walkable_up_ledge
+          lda object_flags,x
+          ora #%00000010
+          sta object_flags,x
+          bne test_walkable_up_hop
           ; harpy's talon check
           ldx index
           bne test_walkable_up_ledge_done
           lda m_relic_bits_2
           and #%00000100
           beq test_walkable_up_ledge_done
+test_walkable_up_ledge
           ; test for downward ledge, set hopping flag
           lda tile_properties
           and #%00010000
           beq test_walkable_up_ledge_done
+test_walkable_up_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x

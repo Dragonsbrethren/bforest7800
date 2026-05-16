@@ -1445,10 +1445,16 @@ hop_right_down
 
 hop_up
         lda object_timer,x
-        bne hop_up_up
+        bne hop_up_wf
         lda #16
         sta object_timer,x
+hop_up_wf
+        lda object_flags,x
+        and #%00000010
+        beq hop_up_up
+        jmp waterfall_up
 hop_up_up
+        lda object_timer,x
         cmp #5
         bcc hop_up_down
         dec object_Ypos,x
@@ -1475,6 +1481,12 @@ waterfall_down
         inc object_Ypos,x
         inc object_Ypos,x
         jmp move_test_down_no_fly
+
+waterfall_up
+        ; move down waterfall and do a specialized map peek for non-waterfall tile
+        dec object_Ypos,x
+        dec object_Ypos,x
+        jmp move_test_up_no_fly
 end
 
 
