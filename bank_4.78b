@@ -65,6 +65,7 @@
         incmapfile tiled/castle_room_23.tmx
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
+        incmapfile tiled/castle_room_26.tmx
         incmapfile tiled/castle_room_1.tmx
         incmapfile tiled/castle_room_2.tmx
         incmapfile tiled/castle_room_3.tmx
@@ -139,7 +140,8 @@ end
         castle_room_6_obj_lo, castle_room_7_obj_lo, castle_room_8_obj_lo, castle_room_9_obj_lo, castle_room_10_obj_lo,
         castle_room_11_obj_lo, castle_room_12_obj_lo, castle_room_13_obj_lo, castle_room_14_obj_lo, castle_room_15_obj_lo,
         castle_room_16_obj_lo, castle_room_17_obj_lo, castle_room_18_obj_lo, castle_room_19_obj_lo, castle_room_20_obj_lo,
-        castle_room_21_obj_lo, castle_room_22_obj_lo, castle_room_23_obj_lo, castle_room_24_obj_lo, castle_room_25_obj_lo
+        castle_room_21_obj_lo, castle_room_22_obj_lo, castle_room_23_obj_lo, castle_room_24_obj_lo, castle_room_25_obj_lo,
+        castle_room_26_obj_lo
 end
 
         data castle_obj_hi
@@ -148,7 +150,8 @@ end
         castle_room_6_obj_hi, castle_room_7_obj_hi, castle_room_8_obj_hi, castle_room_9_obj_hi, castle_room_10_obj_hi,
         castle_room_11_obj_hi, castle_room_12_obj_hi, castle_room_13_obj_hi, castle_room_14_obj_hi, castle_room_15_obj_hi,
         castle_room_16_obj_hi, castle_room_17_obj_hi, castle_room_18_obj_hi, castle_room_19_obj_hi, castle_room_20_obj_hi,
-        castle_room_21_obj_hi, castle_room_22_obj_hi, castle_room_23_obj_hi, castle_room_24_obj_hi, castle_room_25_obj_hi
+        castle_room_21_obj_hi, castle_room_22_obj_hi, castle_room_23_obj_hi, castle_room_24_obj_hi, castle_room_25_obj_hi,
+        castle_room_26_obj_hi
 end
 
 load_castle
@@ -520,10 +523,19 @@ end
         $00
 end
 
+        data castle_room_26_obj
+        TYPE_CARDINAL, (8*9+4), $40
+        TYPE_WATERFALL, (8*9+4), $50
+        TYPE_TORCH, (8*8), $30, TYPE_TORCH, (11*8), $30
+        TYPE_TORCH, (6*8), $40, TYPE_TORCH, (13*8), $40
+        TYPE_TORCH, (4*8), $50, TYPE_TORCH, (15*8), $50
+        $00
+end
+
         data castle_rooms
         00, 00, 00, 00, 00, 00, 00,
         24, 25, 00, 00, 00, 00, 00,
-        23, 00, 16, 00, 14, 00, 00,
+        23, 00, 26, 00, 14, 00, 00,
         19, 18, 13, 17, 11, 00, 00,
         21, 22, 12, 00, 06,  7,  8,
         02, 00, 02, 00, 05, 00,  9,

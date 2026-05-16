@@ -64,6 +64,7 @@
         incmapfile tiled/castle_room_23.tmx
         incmapfile tiled/castle_room_24.tmx
         incmapfile tiled/castle_room_25.tmx
+        incmapfile tiled/castle_room_26.tmx
 
         data castle_map_b5_lo
         plot_castle_room_0_lo,
@@ -71,7 +72,8 @@
         plot_castle_room_6_lo, plot_castle_room_7_lo, plot_castle_room_8_lo, plot_castle_room_9_lo, plot_castle_room_10_lo,
         plot_castle_room_11_lo, plot_castle_room_12_lo, plot_castle_room_13_lo, plot_castle_room_14_lo, plot_castle_room_15_lo,
         plot_castle_room_16_lo, plot_castle_room_17_lo, plot_castle_room_18_lo, plot_castle_room_19_lo, plot_castle_room_20_lo,
-        plot_castle_room_21_lo, plot_castle_room_22_lo, plot_castle_room_23_lo, plot_castle_room_24_lo, plot_castle_room_25_lo
+        plot_castle_room_21_lo, plot_castle_room_22_lo, plot_castle_room_23_lo, plot_castle_room_24_lo, plot_castle_room_25_lo,
+        <.plot_castle_room_26
 end
 
         data castle_map_b5_hi
@@ -80,7 +82,8 @@ end
         plot_castle_room_6_hi, plot_castle_room_7_hi, plot_castle_room_8_hi, plot_castle_room_9_hi, plot_castle_room_10_hi,
         plot_castle_room_11_hi, plot_castle_room_12_hi, plot_castle_room_13_hi, plot_castle_room_14_hi, plot_castle_room_15_hi,
         plot_castle_room_16_hi, plot_castle_room_17_hi, plot_castle_room_18_hi, plot_castle_room_19_hi, plot_castle_room_20_hi,
-        plot_castle_room_21_hi, plot_castle_room_22_hi, plot_castle_room_23_hi, plot_castle_room_24_hi, plot_castle_room_25_hi
+        plot_castle_room_21_hi, plot_castle_room_22_hi, plot_castle_room_23_hi, plot_castle_room_24_hi, plot_castle_room_25_hi,
+        >.plot_castle_room_26
 end
 
 castle_room_bank_5
@@ -301,4 +304,12 @@ plot_castle_room_25
         zone1_objects  = 2
         zone2_objects  = 4
         zone14_objects = 0
+        return otherbank
+
+plot_castle_room_26
+        alt_palette = 1
+        menu_map_room[menu_map_index]   = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_D
+        plotmapfile tiled/castle_room_26.tmx castle_room_26 0 2 20 11
+        memcpy map10 castle_room_26 220
         return otherbank
