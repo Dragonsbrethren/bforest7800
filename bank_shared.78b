@@ -1259,6 +1259,7 @@ move_test_down_no_fly
           lsr
           sta peekY
 end
+move_down_map_peek
         move_tile_1 = peekchar (current_map, peekX, peekY, 20, 14)
         ;peekX = (Xposition + 8) / TILE_WIDTH
         asm
@@ -1283,10 +1284,20 @@ end
           beq test_walkable_down
           jmp move_down
 test_walkable_down
+          ; test for waterfall
+          lda tile_properties
+          and #%10000000
+          beq test_walkable_down_ledge
+          lda object_flags,x
+          ora #%00000010
+          sta object_flags,x
+          bne test_walkable_down_hop
+test_walkable_down_ledge
           ; test for downward ledge, set hopping flag
           lda tile_properties
           and #%00010000
           beq test_walkable_down_ledge_done
+test_walkable_down_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x
@@ -1295,6 +1306,7 @@ test_walkable_down
           lda object_flags,x
           ora #%00100000
           sta object_flags,x
+          rts
 test_walkable_down_ledge_done
           lda tile_properties
           ; test walkable bit 0
@@ -1306,6 +1318,9 @@ test_walkable_down_ledge_done
           rts
 move_down
           ldx index
+          lda object_flags,x
+          and #%11011111
+          sta object_flags,x
           lda object_Ypos,x
           clc
           adc object_Yvel_hi,x

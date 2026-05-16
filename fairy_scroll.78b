@@ -140,7 +140,7 @@ end
         const name_pudding_lo = #<name_pudding
         const name_pudding_hi = #>name_pudding
         alphadata name_pudding font_spr
-        'Black Pudding*'
+        'Dark Pudding*'
 end
 
         const name_cghost_lo = #<name_cghost

@@ -45,7 +45,6 @@ plot_caves_room_2
         menu_map_room[menu_map_index_2] = ROOMR_R  
         memcpy map12 caves_room_2 240
         plotmapfile tiled/caves_room_2.tmx caves_room_2 0 1 20 12
-        zone2_objects  = 4
         goto caves_waterfall bank12
 
 plot_caves_room_3
@@ -147,8 +146,10 @@ plot_caves_room_14
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 caves_room_14 240
         plotmapfile tiled/caves_room_14.tmx caves_room_14 0 1 20 12
-        zone2_objects  = 4
         pal_animation  = 1
+        pokechar current_map  10 6 20 14 110
+        pokechar current_map  11 6 20 14 110
+        pokechar current_map  12 6 20 14 110
         goto caves_waterfall bank12
 
 plot_caves_room_15

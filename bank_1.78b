@@ -1370,10 +1370,16 @@ hop_direction
 
 hop_down
         lda object_timer,x
-        bne hop_down_up
+        bne hop_down_wf
         lda #12
         sta object_timer,x
+hop_down_wf
+        lda object_flags,x
+        and #%00000010
+        beq hop_down_up
+        jmp waterfall_down
 hop_down_up
+        lda object_timer,x
         cmp #9
         bcc hop_down_down
         dec object_Ypos,x
@@ -1463,7 +1469,14 @@ hop_done
         and #%11011111
         sta object_flags,x
         rts
+
+waterfall_down
+        ; move down waterfall and do a specialized map peek for non-waterfall tile
+        inc object_Ypos,x
+        inc object_Ypos,x
+        jmp move_test_down_no_fly
 end
+
 
 set_enemy_name
         ; if an item was collected, don't overwrite its string

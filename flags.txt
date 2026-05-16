@@ -4,5 +4,6 @@
 %00001000 = at destination
 %00010000 = floating
 %00100000 = ledge hopping
+%00100010 = waterfall decent
 %01000000 = used by AI
 %10000000 = used by AI
