@@ -51,6 +51,8 @@ load_hills
         if exit_room_index = F_HILLS_CAVE1_I then hills_cave_1
         if exit_room_index = F_HILLS_CAVE2_I then hills_cave_2
         if exit_room_index = F_HILLS_CAVE3_I then hills_cave_3
+        if exit_room_index = F_HILLS_WF1_I then hills_wf_1
+        if exit_room_index = F_HILLS_WF2_I then hills_wf_2
 
         room_index    = F_HILLS_START_I
         menu_map_Xpos = M_HILLS_START_X
@@ -117,6 +119,26 @@ hills_cave_3
         player_facing = F_HILLS_CAVE3_D ; DIR_UP
         player_elevation = 1
         goto hills_set_room
+
+hills_wf_1
+        room_index    = F_HILLS_WF1_I
+        menu_map_Xpos = M_HILLS_WF1_X
+        menu_map_Ypos = M_HILLS_WF1_Y
+;       player_Xpos   = F_HILLS_WF1_X
+        player_Ypos   = F_HILLS_WF1_Y
+        player_facing = F_HILLS_WF1_D ; DIR_UP
+;       player_elevation = 0
+        goto hills_set_room
+
+hills_wf_2
+        room_index    = F_HILLS_WF2_I
+        menu_map_Xpos = M_HILLS_WF2_X
+        menu_map_Ypos = M_HILLS_WF2_Y
+        player_Xpos   = F_HILLS_WF2_X
+        player_Ypos   = F_HILLS_WF2_Y
+        player_facing = F_HILLS_WF2_D ; DIR_UP
+;       player_elevation = 0
+;       goto hills_set_room
 
 hills_set_room
         characterset hills_ledges

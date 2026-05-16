@@ -301,6 +301,22 @@
         const F_HILLS_CAVE3_Y = $70
         const F_HILLS_CAVE3_D = DIR_DOWN
 
+; WATERFALL 1
+        const M_HILLS_WF1_X = 78
+        const M_HILLS_WF1_Y = 96
+        const F_HILLS_WF1_I = 17
+        const F_HILLS_WF1_X = (12*8)
+        const F_HILLS_WF1_Y = $A0
+        const F_HILLS_WF1_D = DIR_UP
+
+; WATERFALL 2
+        const M_HILLS_WF2_X = 84
+        const M_HILLS_WF2_Y = 96
+        const F_HILLS_WF2_I = 18
+        const F_HILLS_WF2_X = (7*8)
+        const F_HILLS_WF2_Y = $A0
+        const F_HILLS_WF2_D = DIR_UP
+
 ;------------------------------------------------------------------------------
 ; CAVES TILESET
 ;------------------------------------------------------------------------------

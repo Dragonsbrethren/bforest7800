@@ -45,6 +45,10 @@ plot_caves_room_2
         menu_map_room[menu_map_index_2] = ROOMR_R  
         memcpy map12 caves_room_2 240
         plotmapfile tiled/caves_room_2.tmx caves_room_2 0 1 20 12
+        exit_tileset = T_HILLS
+        exit_Xpos = 92
+        exit_Ypos = $10
+        exit_room_index = F_HILLS_WF1_I
         goto caves_waterfall bank12
 
 plot_caves_room_3
@@ -52,7 +56,10 @@ plot_caves_room_3
         menu_map_room[menu_map_index_2] = ROOMR_N  
         memcpy map12 caves_room_3 240
         plotmapfile tiled/caves_room_3.tmx caves_room_3 0 1 20 12
-        zone2_objects  = 4
+         exit_tileset = T_HILLS
+        exit_Xpos = (7*8)
+        exit_Ypos = $10
+        exit_room_index = F_HILLS_WF2_I
         goto caves_waterfall bank12
 
 plot_caves_room_4
