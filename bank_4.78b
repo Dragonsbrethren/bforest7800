@@ -592,6 +592,13 @@ torch_tile_unblock_castle
 
 cardinal_ai
         asm
+          lda #CARDINAL_PAL
+          cmp object_pal,x
+          beq cardinal_flags
+          sta object_pal,x
+          lda #CARDINAL_HP
+          sta object_hp,x
+cardinal_flags
           lda object_flags,x
           and #%10000000
           beq cardinal_teleport

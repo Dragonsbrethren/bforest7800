@@ -307,7 +307,7 @@ plot_castle_room_25
         return otherbank
 
 plot_castle_room_26
-        alt_palette = 1
+        alt_palette = 2
         menu_map_room[menu_map_index]   = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_D
         plotmapfile tiled/castle_room_26.tmx castle_room_26 0 2 20 11
