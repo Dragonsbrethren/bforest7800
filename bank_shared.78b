@@ -1179,11 +1179,14 @@ move_test_up_no_fly
         ; load dlend for this zone
         tay
         lda dlend,y
+        clc
+        adc #1
+        sta dlend,y
         ; buffer for player, shield, sword, projectiles, familiar
         cmp #DLLASTOBJ-7
         bcc move_test_up_peekY
         ; deny move if too many objects in zone
-        rts
+        jmp move_test_vertical_deny
 move_test_up_peekY
         lda temp1
         lsr
@@ -1305,6 +1308,9 @@ move_test_down_no_fly
           ; load dlend for this zone
           tay
           lda dlend,y
+          clc
+          adc #1
+          sta dlend,y
           ; buffer for player, shield, sword, projectiles, familiar
           cmp #DLLASTOBJ-7
           bcc move_test_down_peekY
@@ -1586,6 +1592,29 @@ move_right
           lda #160
 mo_rt_s   sta object_Xpos,x
 move_return
+          rts
+
+move_test_vertical_deny
+          lda #0
+          sta object_Yvel_hi,x
+          sta object_Yvel_lo,x
+          sta object_Ydir,x
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          jsr randomize
+          bmi move_test_vertical_deny_right
+          lda #DIR_LEFT
+          bne move_test_vertical_deny_store
+move_test_vertical_deny_right
+          lda #DIR_RIGHT
+move_test_vertical_deny_store
+          sta object_Xdir,x
+          sta object_facing,x
           rts
 end
 
