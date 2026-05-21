@@ -1164,6 +1164,28 @@ move_test_up_no_fly
         adc #8
         sec
         sbc object_Yvel_hi,x
+        sta temp1
+        ldx index
+        ; player can always move
+        beq move_test_up_peekY
+        ; don't want projectiles to stop suddenly
+        bmi move_test_up_peekY
+        ; figure out which zone object is in after move
+        and #$F0
+        lsr
+        lsr
+        lsr
+        lsr
+        ; load dlend for this zone
+        tay
+        lda dlend,y
+        ; buffer for player, shield, sword, projectiles, familiar
+        cmp #DLLASTOBJ-7
+        bcc move_test_up_peekY
+        ; deny move if too many objects in zone
+        rts
+move_test_up_peekY
+        lda temp1
         lsr
         lsr
         lsr
@@ -1268,6 +1290,28 @@ move_test_down_no_fly
           adc #15
           clc
           adc object_Yvel_hi,x
+          sta temp1
+          ldx index
+          ; player can always move
+          beq move_test_down_peekY
+          ; don't want projectiles to stop suddenly
+          bmi move_test_down_peekY
+          ; figure out which zone object is in after move
+          and #$F0
+          lsr
+          lsr
+          lsr
+          lsr
+          ; load dlend for this zone
+          tay
+          lda dlend,y
+          ; buffer for player, shield, sword, projectiles, familiar
+          cmp #DLLASTOBJ-7
+          bcc move_test_down_peekY
+          ; deny move if too many objects in zone
+          rts
+move_test_down_peekY
+          lda temp1
           lsr
           lsr
           lsr

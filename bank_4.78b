@@ -356,9 +356,9 @@ end
 end
 
         data castle_room_3_obj
-        TYPE_SKELETON, $58, $60, TYPE_SKELETON, $38, $70
-        TYPE_SKELETON, $38, $50, TYPE_SKELETON, $68, $80
-        TYPE_SKELETON, $48, $40, TYPE_SKELETON, $78, $90
+        TYPE_GHOST, $58, $60, TYPE_GHOST, $38, $70
+        TYPE_GHOST, $38, $50, TYPE_GHOST, $68, $80
+        TYPE_GHOST, $48, $40, TYPE_GHOST, $78, $90
         TYPE_TORCH, $10, $40, TYPE_TORCH, $80, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $80, $90,
         $00
