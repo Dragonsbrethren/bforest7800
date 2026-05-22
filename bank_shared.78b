@@ -1179,11 +1179,8 @@ move_test_up_no_fly
         ; load dlend for this zone
         tay
         lda dlend,y
-        clc
-        adc #1
-        sta dlend,y
         ; buffer for player, shield, sword, projectiles, familiar
-        cmp #DLLASTOBJ-7
+        cmp #ZONE_BUFFER_OBJS
         bcc move_test_up_peekY
         ; deny move if too many objects in zone
         jmp move_test_vertical_deny
@@ -1308,11 +1305,8 @@ move_test_down_no_fly
           ; load dlend for this zone
           tay
           lda dlend,y
-          clc
-          adc #1
-          sta dlend,y
           ; buffer for player, shield, sword, projectiles, familiar
-          cmp #DLLASTOBJ-7
+          cmp #ZONE_BUFFER_OBJS
           bcc move_test_down_peekY
           ; deny move if too many objects in zone
           rts

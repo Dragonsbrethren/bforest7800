@@ -700,6 +700,7 @@ cast_fireball
         jmp .set_state_chant ; allow player to try a different input
 .load_fireball_index
         ldy #14
+        sty spawn_index
         ldx #0  ; player index
 load_fireball_data
         lda #TYPE_FIREBALL
@@ -733,11 +734,31 @@ set_cast_direction
         cmp #DIR_UP
         beq cast_fireball_up
         cmp #DIR_DOWN
-        beq cast_fireball_down
+        bne set_cast_cmp_left
+        jmp cast_fireball_down
+set_cast_cmp_left
         cmp #DIR_LEFT
         bne cast_fireball_right
         jmp cast_fireball_left  ; branch out of range
 cast_fireball_right
+        cpx #0
+        beq cast_fireball_right_zone_open
+        lda object_Ypos,x
+        and #$F0
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        lda dlend,y
+        ldy spawn_index
+        cmp #ZONE_BUFFER_OBJS
+        bcc cast_fireball_right_zone_open
+        lda #0
+        sta object_type,y
+        rts
+cast_fireball_right_zone_open
+        lda player_facing,x
         sta object_facing,y
         sta object_Xdir,y
         lda player_Xpos,x
@@ -756,6 +777,29 @@ cast_fireball_right
         sta object_Yvel_lo,y
         rts
 cast_fireball_up
+        ; player projectiles always spawn
+        cpx #0
+        beq cast_fireball_up_zone_open
+        lda object_Ypos,x
+        and #$F0
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        dey
+        lda dlend,y
+        clc
+        adc #1
+        sta dlend,y
+        ldy spawn_index
+        cmp #ZONE_BUFFER_OBJS
+        bcc cast_fireball_up_zone_open
+        lda #0
+        sta object_type,y
+        rts
+cast_fireball_up_zone_open
+        lda player_facing,x
         sta object_facing,y
         sta object_Ydir,y
         lda player_Xpos,x
@@ -776,6 +820,29 @@ cast_fireball_up
         sta object_Yvel_hi,y
         rts
 cast_fireball_down
+; player projectiles always spawn
+        cpx #0
+        beq cast_fireball_down_zone_open
+        lda object_Ypos,x
+        and #$F0
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        dey
+        lda dlend,y
+        clc
+        adc #1
+        sta dlend,y
+        ldy spawn_index
+        cmp #ZONE_BUFFER_OBJS
+        bcc cast_fireball_down_zone_open
+        lda #0
+        sta object_type,y
+        rts
+cast_fireball_down_zone_open
+        lda player_facing,x
         sta object_facing,y
         sta object_Ydir,y
         lda player_Xpos,x
@@ -796,6 +863,24 @@ cast_fireball_down
         sta object_Yvel_hi,y
         rts
 cast_fireball_left
+;       cpx #0
+;       beq cast_fireball_left_zone_open
+        lda object_Xpos,x
+        and #$F0
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        lda dlend,y
+        ldy spawn_index
+        cmp #ZONE_BUFFER_OBJS
+        bcc cast_fireball_left_zone_open
+        lda #0
+        sta object_type,y
+        rts
+cast_fireball_left_zone_open
+        lda player_facing,x
         sta object_facing,y
         sta object_Xdir,y
         lda player_Xpos,x
@@ -1963,4 +2048,59 @@ campfire_animate
           inc object_frame,x
 campfire_return
           rts
+end
+
+;========================================================
+; SUBROUTINE: TEST OPEN ZONE
+;--------------------------------------------------------
+; Takes an object's Y position and determines which zone
+; it will be in when plotted. Tests this zone against the
+; maximum number of objects per zone and denies the move
+; if it would cause display corruption
+;========================================================
+        asm
+test_open_zone
+        lda object_Ypos,x
+        pha             ; save on stack for later
+        ldy object_Ydir,x
+        cpy #DIR_UP
+;        beq test_open_zone_up
+        cpy #DIR_DOWN
+;        beq test_open_zone_down
+
+test_open_zone_current
+        and #$0F        ; check if object zone-aligned
+        bne test_open_zone_one
+        lda object_Ypos,x
+        clc
+        adc #16
+        pha             ; second copy of Y position on stack
+        ldx #1
+
+test_open_zone_loop
+        pla             ; pull Y position from stack so X is preserved
+        and #$F0        ; get zone number and shift to right
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        lda dlend,y     ; object count for zone Y
+        cmp #ZONE_BUFFER_OBJS
+        bcc test_open_zone_open
+        lda #0
+        beq test_open_zone_next
+
+test_open_zone_open
+        lda #1
+test_open_zone_next
+        sta zone_open,x
+        dex
+        bpl test_open_zone_loop
+test_open_zone_return
+        rts
+
+test_open_zone_one
+        ldx #0
+        beq test_open_zone_loop
 end

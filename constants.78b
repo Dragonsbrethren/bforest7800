@@ -35,6 +35,9 @@
         const ANIM_TIME = 8
         const BUTTON_HOLD_FRAMES = 15
 
+        const PLAYER_OBJS = (4*5)   ; player, sword, shield, 1 extra
+        const ZONE_BUFFER_OBJS  = DLLASTOBJ - PLAYER_OBJS
+
 ;------------------------------------------------------------------------------
 ; PLAYER DATA
 ;------------------------------------------------------------------------------
