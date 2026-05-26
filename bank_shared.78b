@@ -1154,7 +1154,7 @@ move_test_up
 move_test_up_no_fly
         lda object_Xpos,x
         clc
-        adc #2
+        adc #3
         lsr
         lsr
         lsr
@@ -1280,7 +1280,7 @@ move_test_down
 move_test_down_no_fly
           lda object_Xpos,x
           clc
-          adc #2
+          adc #3
           lsr
           lsr
           lsr
