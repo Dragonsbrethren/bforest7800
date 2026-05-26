@@ -19,6 +19,7 @@
 ;        set multibutton on
 ;        set multibuttonpause on
         set tallsprite spritesheet
+        set zoneprotection on
         set 7800header 'name Black Forest'
 
         const debug_hud = 0

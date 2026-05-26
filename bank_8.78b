@@ -25,7 +25,7 @@ end
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
         hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
         hills_room_18_obj_lo, hills_room_19_obj_lo, hills_room_20_obj_lo, hills_room_21_obj_lo, hills_room_22_obj_lo, hills_room_23_obj_lo
-        hills_room_24_obj_lo
+        hills_room_24_obj_lo, hills_room_25_obj_lo
 end
 
         data hills_obj_hi
@@ -33,7 +33,7 @@ end
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
         hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
         hills_room_18_obj_hi, hills_room_19_obj_hi, hills_room_20_obj_hi, hills_room_21_obj_hi, hills_room_22_obj_hi, hills_room_23_obj_hi
-        hills_room_24_obj_hi
+        hills_room_24_obj_hi, hills_room_25_obj_hi
 end
 
 hills_waterfall
@@ -82,12 +82,12 @@ hills_save_1
         goto hills_set_room
         
 hills_save_2
-        room_index    = F_HILLS_START_I
-        menu_map_Xpos = M_HILLS_START_X
-        menu_map_Ypos = M_HILLS_START_Y
-        player_Xpos   = F_HILLS_START_X
-        player_Ypos   = F_HILLS_START_Y
-        player_facing = F_HILLS_START_D ; DIR_UP
+        room_index    = F_HILLS_SAVE2_I
+        menu_map_Xpos = M_HILLS_SAVE2_X
+        menu_map_Ypos = M_HILLS_SAVE2_Y
+        player_Xpos   = F_HILLS_SAVE2_X
+        player_Ypos   = F_HILLS_SAVE2_Y
+        player_facing = F_HILLS_SAVE2_D ; DIR_UP
         goto hills_set_room
 
 hills_cave_1
@@ -1107,7 +1107,7 @@ end
         00, 00, 00, 00, 00, 00, 00
         00, 19, 20, 21, 22, 00, 00
         00, 02, 17, 16, 14, 13, 00
-        00, 18, 00, 15, 06, 12, 00
+        15, 18, 25, 15, 06, 12, 00
         23, 03, 04, 05,  9, 10, 00
         24, 01, 00, 07,  8, 11, 00
         00, 00, 00, 00, 00, 00, 00
@@ -1264,6 +1264,10 @@ end
 
         data hills_room_24_obj
         TYPE_OWLCARD, 128, $A0
+        $00
+end
+
+        data hills_room_25_obj
         $00
 end
 

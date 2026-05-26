@@ -35,7 +35,7 @@
         const ANIM_TIME = 8
         const BUTTON_HOLD_FRAMES = 15
 
-        const PLAYER_OBJS = (4*5)   ; player, sword, shield, 1 extra
+        const PLAYER_OBJS = (2*5)   ; player, sword, shield, 1 extra
         const ZONE_BUFFER_OBJS  = DLLASTOBJ - PLAYER_OBJS
 
 ;------------------------------------------------------------------------------
@@ -272,13 +272,13 @@
         const F_HILLS_SAVE1_D = DIR_RIGHT
 
         ; map positions
-        const M_HILLS_SAVE2_X = 94
-        const M_HILLS_SAVE2_Y = 64
+        const M_HILLS_SAVE2_X = 70
+        const M_HILLS_SAVE2_Y = 112
         ; field positions
-        const F_HILLS_SAVE2_I = 5      ; save room 2 index
-        const F_HILLS_SAVE2_X = $72
-        const F_HILLS_SAVE2_Y = $80
-        const F_HILLS_SAVE2_D = DIR_DOWN
+        const F_HILLS_SAVE2_I = 23     ; save room 2 index
+        const F_HILLS_SAVE2_X = (7*8)
+        const F_HILLS_SAVE2_Y = $70
+        const F_HILLS_SAVE2_D = DIR_LEFT
 
 ; CAVE EXIT 1 (mountaintop)
         const M_HILLS_CAVE1_X = 70
