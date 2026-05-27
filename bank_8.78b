@@ -25,7 +25,7 @@ end
         hills_room_6_obj_lo, hills_room_7_obj_lo, hills_room_8_obj_lo, hills_room_9_obj_lo, hills_room_10_obj_lo, hills_room_11_obj_lo
         hills_room_12_obj_lo, hills_room_13_obj_lo, hills_room_14_obj_lo, hills_room_15_obj_lo, hills_room_16_obj_lo, hills_room_17_obj_lo
         hills_room_18_obj_lo, hills_room_19_obj_lo, hills_room_20_obj_lo, hills_room_21_obj_lo, hills_room_22_obj_lo, hills_room_23_obj_lo
-        hills_room_24_obj_lo, hills_room_25_obj_lo
+        hills_room_24_obj_lo, hills_room_25_obj_lo, hills_room_26_obj_lo
 end
 
         data hills_obj_hi
@@ -33,7 +33,7 @@ end
         hills_room_6_obj_hi, hills_room_7_obj_hi, hills_room_8_obj_hi, hills_room_9_obj_hi, hills_room_10_obj_hi, hills_room_11_obj_hi
         hills_room_12_obj_hi, hills_room_13_obj_hi, hills_room_14_obj_hi, hills_room_15_obj_hi, hills_room_16_obj_hi, hills_room_17_obj_hi
         hills_room_18_obj_hi, hills_room_19_obj_hi, hills_room_20_obj_hi, hills_room_21_obj_hi, hills_room_22_obj_hi, hills_room_23_obj_hi
-        hills_room_24_obj_hi, hills_room_25_obj_hi
+        hills_room_24_obj_hi, hills_room_25_obj_hi, hills_room_26_obj_hi
 end
 
 hills_waterfall
@@ -1268,6 +1268,11 @@ end
 end
 
         data hills_room_25_obj
+        TYPE_CAMPFIRE, 64, $70
+        $00
+end
+
+        data hills_room_26_obj
         $00
 end
 

@@ -45,6 +45,7 @@
         incmapfile tiled/hills_room_23.tmx
         incmapfile tiled/hills_room_24.tmx
         incmapfile tiled/hills_room_25.tmx
+        incmapfile tiled/hills_room_26.tmx
 
         const plot_hills_room_0_lo = #<.plot_hills_room_0
         const plot_hills_room_0_hi = #>.plot_hills_room_0
@@ -98,3 +99,5 @@
         const plot_hills_room_24_hi = #>.plot_hills_room_24
         const plot_hills_room_25_lo = #<.plot_hills_room_25
         const plot_hills_room_25_hi = #>.plot_hills_room_25
+        const plot_hills_room_26_lo = #<.plot_hills_room_26
+        const plot_hills_room_26_hi = #>.plot_hills_room_26

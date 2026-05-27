@@ -11,7 +11,7 @@
         plot_hills_room_6_lo, plot_hills_room_7_lo, plot_hills_room_8_lo, plot_hills_room_9_lo, plot_hills_room_10_lo, plot_hills_room_11_lo
         plot_hills_room_12_lo, plot_hills_room_13_lo, plot_hills_room_14_lo, plot_hills_room_15_lo, plot_hills_room_16_lo, plot_hills_room_17_lo
         plot_hills_room_18_lo, plot_hills_room_19_lo, plot_hills_room_20_lo, plot_hills_room_21_lo, plot_hills_room_22_lo, plot_hills_room_23_lo
-        plot_hills_room_24_lo, plot_hills_room_25_lo
+        plot_hills_room_24_lo, plot_hills_room_25_lo, plot_hills_room_26_lo
 end
 
         data hills_map_b9_hi
@@ -19,7 +19,7 @@ end
         plot_hills_room_6_hi, plot_hills_room_7_hi, plot_hills_room_8_hi, plot_hills_room_9_hi, plot_hills_room_10_hi, plot_hills_room_11_hi
         plot_hills_room_12_hi, plot_hills_room_13_hi, plot_hills_room_14_hi, plot_hills_room_15_hi, plot_hills_room_16_hi, plot_hills_room_17_hi
         plot_hills_room_18_hi, plot_hills_room_19_hi, plot_hills_room_20_hi, plot_hills_room_21_hi, plot_hills_room_22_hi, plot_hills_room_23_hi
-        plot_hills_room_24_hi, plot_hills_room_25_hi
+        plot_hills_room_24_hi, plot_hills_room_25_hi, plot_hills_room_26_hi
 end
 
 hills_room_bank_9
@@ -242,4 +242,11 @@ plot_hills_room_25
         pw_success = 0
         save_room_index = 2
         entered_save_room{1} = 1
+        return otherbank
+
+plot_hills_room_26
+        menu_map_room[menu_map_index] = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy map12 hills_room_26 240
+        plotmapfile tiled/hills_room_26.tmx hills_room_26 0 1 20 12
         return otherbank
