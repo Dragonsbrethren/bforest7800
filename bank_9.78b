@@ -42,7 +42,7 @@ plot_hills_room_5
 
 plot_hills_room_6
         menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_6 240
         plotmapfile tiled/hills_room_6.tmx hills_room_6 0 1 20 12
         zone2_objects  = 4
@@ -161,8 +161,8 @@ plot_hills_room_16
         goto hills_waterfall bank8
 
 plot_hills_room_17
-        menu_map_room[menu_map_index] = ROOML_L
-        menu_map_room[menu_map_index_2] = ROOMR_R
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_17 280
         plotmapfile tiled/hills_room_17.tmx hills_room_17 0 1 20 12
         zone2_objects  = 2
@@ -173,8 +173,8 @@ plot_hills_room_17
         return otherbank
 
 plot_hills_room_18
-        menu_map_room[menu_map_index] = ROOML_UD
-        menu_map_room[menu_map_index_2] = ROOMR_UD
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_18 240
         plotmapfile tiled/hills_room_18.tmx hills_room_18 0 1 20 12
         zone2_objects  = 4
@@ -212,8 +212,8 @@ plot_hills_room_22
         goto hills_waterfall bank8
 
 plot_hills_room_23
-        menu_map_room[menu_map_index] = ROOML_D
-        menu_map_room[menu_map_index_2] = ROOMR_DR
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_23 240
         plotmapfile tiled/hills_room_23.tmx hills_room_23 0 1 20 12
         zone2_objects  = 2
