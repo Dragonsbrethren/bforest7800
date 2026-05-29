@@ -44,8 +44,8 @@
         const TYPE_DARKSPARK = 140
         const TYPE_OCTOINK  = 141
         const TYPE_SEED     = 142
-        const TYPE_DARKBOLT = 143
-        const TYPE_HSEED    = 144
+        const TYPE_HSEED    = 143
+        const TYPE_DARKBOLT = 144
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
@@ -544,7 +544,7 @@
         const SEED_PAL = 5
 
         ; HILLS
-        const F_HSEED = 18
+        const F_HSEED = 16
         const HSEED_PAL = 5
 
         ; CAVE SPIDER

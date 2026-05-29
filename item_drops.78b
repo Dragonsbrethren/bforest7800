@@ -34,6 +34,8 @@
         0               ; octokraken
         0               ; kraken's eye
         0               ; tentacle
+        0               ; flame
+        TYPE_LIFEAPPLE  ; stone rose hills
 end
 
         data common_drops
@@ -72,4 +74,6 @@ end
         0               ; octokraken
         0               ; kraken's eye
         0               ; tentacle
+        0               ; flame
+        TYPE_SOFT       ; stone rose hills
 end

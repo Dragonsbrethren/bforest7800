@@ -342,6 +342,7 @@ hrofastX  lda #SEED_FAST_SPEED_HI
           sta object_Yvel_hi,y
           lda #SEED_SPEED_LO
           sta object_Yvel_lo,y
+          beq hrodam
 hrofastY  lda #SEED_SPEED_HI
           sta object_Xvel_hi,y
           lda #SEED_SPEED_LO
@@ -356,7 +357,7 @@ hrofastY  lda #SEED_SPEED_HI
           sta object_vel_cap_hi,y
           lda #SEED_VEL_CAP_LO
           sta object_vel_cap_lo,y
-          lda #SEED_DAMAGE
+hrodam    lda #SEED_DAMAGE
           sta object_damage,y
           lda #%00010000        ; object floating
           sta object_flags,y
@@ -365,7 +366,7 @@ hrofastY  lda #SEED_SPEED_HI
           sta object_friction_lo,y
           lda #F_HSEED
           sta object_frame,y
-          lda #SEED_PAL
+          lda #HSEED_PAL
           sta object_pal,y
           lda #<.plot_hills_160a
           sta object_spr_ptr_lo,y
@@ -1248,7 +1249,7 @@ end
 end
 
         data hills_room_3_obj
-        TYPE_SPIDER, (14*8), $30, TYPE_SPIDER, (16*8), $30
+        TYPE_HROSE, (14*8), $70, TYPE_SPIDER, (16*8), $30
         $00
 end
 
