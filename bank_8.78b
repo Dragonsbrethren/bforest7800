@@ -288,6 +288,118 @@ test_water_hills_done
           rts
 end
 
+;==============================================================================
+; STONE ROSE HILLS
+;------------------------------------------------------------------------------
+; Static. Calculates position between self and player, shoots seed at player
+;==============================================================================
+hrose_ai
+        asm
+          lda object_timer,x
+          beq hroseseed
+          dec object_timer,x
+          rts
+hroseseed lda object_parent,x
+          tay
+          lda object_type,y
+          bne hrosenos
+          jsr .find_new_object
+          cpy #0
+          bne hrosecalc
+hrosenos  rts   ; no empty slot/seed already spawned
+hrosecalc jsr .calculate_distance
+hrospawn  tya
+          sta object_parent,x   ; spawned seed's index saved here
+          lda #TYPE_HSEED
+          sta object_type,y
+          lda #1
+          sta object_hp,y
+          lda object_elevation,x
+          sta object_elevation,y
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs hrosXrt
+hrosXlf   lda #DIR_LEFT
+          bne hrosXst
+hrosXrt   lda #DIR_RIGHT
+hrosXst   sta object_Xdir,y
+          lda player_Ypos
+          cmp object_Ypos,x
+          bcs hrosYdn
+hrosYup   lda #DIR_UP
+          bne hrosYst
+hrosYdn   lda #DIR_DOWN
+hrosYst   sta object_Ydir,y
+          lda temp3
+          bne hrofastY
+hrofastX  lda #SEED_FAST_SPEED_HI
+          sta object_speed_hi,y
+          sta object_Xvel_hi,y
+          lda #SEED_FAST_SPEED_LO
+          sta object_speed_lo,y
+          sta object_Xvel_lo,y
+          lda #SEED_SPEED_HI
+          sta object_Yvel_hi,y
+          lda #SEED_SPEED_LO
+          sta object_Yvel_lo,y
+hrofastY  lda #SEED_SPEED_HI
+          sta object_Xvel_hi,y
+          lda #SEED_SPEED_LO
+          sta object_Xvel_lo,y
+          lda #SEED_FAST_SPEED_HI
+          sta object_speed_hi,y
+          sta object_Yvel_hi,y
+          lda #SEED_FAST_SPEED_LO
+          sta object_speed_lo,y
+          sta object_Yvel_lo,y
+          lda #SEED_VEL_CAP_HI
+          sta object_vel_cap_hi,y
+          lda #SEED_VEL_CAP_LO
+          sta object_vel_cap_lo,y
+          lda #SEED_DAMAGE
+          sta object_damage,y
+          lda #%00010000        ; object floating
+          sta object_flags,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          lda #F_HSEED
+          sta object_frame,y
+          lda #SEED_PAL
+          sta object_pal,y
+          lda #<.plot_hills_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_hills_160a
+          sta object_spr_ptr_hi,y
+          lda object_Xpos,x
+          sta object_Xpos,y
+          lda object_Ypos,x
+          sta object_Ypos,y
+          lda #64
+          sta object_timer,x
+          rts
+end
+
+obj_hrose_stats
+        asm
+          ldx obj_index
+          lda #1
+          sta object_elevation,x
+          lda #ROSE_HP
+          sta object_hp,x
+          lda #ROSE_DAMAGE
+          sta object_damage,x
+          lda #HROSE_PAL
+          sta object_pal,x
+          lda #F_HROSE
+          sta object_frame,x
+          lda #<.plot_hills_160b8
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160b8
+          sta object_spr_ptr_hi,x
+          jmp .obj_next_stats
+end
+
         dmahole 0
 ;=========================================================
 ; HILLS BOSS HANDLER
@@ -953,7 +1065,11 @@ plot_hills_160a_done
         goto plot_next
 
 plot_hills_160b
-        PLOTSPRITE harpy0 sprite_pal Xposition Yposition frame
+        plotsprite harpy0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_hills_160b8
+        plotsprite hrose4 sprite_pal Xposition Yposition frame
         goto plot_next
 
 torch_tile_block_hills
@@ -1084,7 +1200,7 @@ end
         %00000010, %00000100, %00000101, %00000100, %00000000, %00000100, %00000100, %00000100
         %00000100, %00000100, %00000100, %00000101
         %10000000
-        %00000001, %00000001, %00000001, %00000001
+        %00000001, %00000001, %00000001, %00000001, %00000001
 end
 
         data hills_tile_properties_2
@@ -1100,7 +1216,7 @@ end
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %0000010, %00000010
         %00000010, %00000010, %00000010, %00000010
         %10000000
-        %00000010, %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010, %00000010
 end
 
         data hills_rooms
@@ -1121,6 +1237,7 @@ end
 end
 
         data hills_room_1_obj
+        TYPE_HROSE, 4*8, $40
         TYPE_SHIELD3, $80, $60
         TYPE_SPELL2, 28, $90
         $00

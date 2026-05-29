@@ -35,6 +35,7 @@
         const TYPE_RIVERBOSS    = 33
         const TYPE_TENTACLE     = 34
         const TYPE_BLOCKFLAME   = 35
+        const TYPE_HROSE        = 36
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -44,6 +45,7 @@
         const TYPE_OCTOINK  = 141
         const TYPE_SEED     = 142
         const TYPE_DARKBOLT = 143
+        const TYPE_HSEED    = 144
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
@@ -525,6 +527,10 @@
         const ROSE_HP = 8
         const ROSE_DAMAGE = 16
 
+        ; HILLS
+        const HROSE_PAL = 4
+        const F_HROSE = 0
+
         ; STONE ROSE SEED
         const SEED_HP = 1
         const SEED_FAST_SPEED_HI = 4
@@ -536,6 +542,10 @@
         const SEED_DAMAGE = 4
         const F_SEED = 18
         const SEED_PAL = 5
+
+        ; HILLS
+        const F_HSEED = 18
+        const HSEED_PAL = 5
 
         ; CAVE SPIDER
         const CSPIDER_HP = 6
