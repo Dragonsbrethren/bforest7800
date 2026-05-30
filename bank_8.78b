@@ -298,7 +298,11 @@ hrose_ai
           lda object_timer,x
           beq hroseseed
           dec object_timer,x
-          rts
+          cmp #ROSE_ANIM_FRAMES
+          bcs hroserts
+          lda #F_ROSE_CLOSE
+          sta object_frame,x
+hroserts  rts
 hroseseed lda object_parent,x
           tay
           lda object_type,y
@@ -376,8 +380,10 @@ hrodam    lda #SEED_DAMAGE
           sta object_Xpos,y
           lda object_Ypos,x
           sta object_Ypos,y
-          lda #64
+          lda #ROSE_DELAY_FRAMES
           sta object_timer,x
+          lda #F_ROSE_SHOOT
+          sta object_frame,x
           rts
 end
 
@@ -398,6 +404,13 @@ obj_hrose_stats
           sta object_spr_ptr_lo,x
           lda #>.plot_hills_160b8
           sta object_spr_ptr_hi,x
+          ; multiply index by 16 to desync shots
+          txa
+          asl
+          asl
+          asl
+          asl
+          sta object_timer,x
           jmp .obj_next_stats
 end
 
@@ -1245,7 +1258,8 @@ end
 end
 
         data hills_room_3_obj
-        TYPE_HROSE, (14*8), $70, TYPE_SPIDER, (16*8), $30
+        TYPE_HROSE, (14*8), $70, TYPE_HROSE, (4*8), $60
+        TYPE_SPIDER, (16*8), $30
         $00
 end
 
@@ -1266,6 +1280,7 @@ end
 end
 
         data hills_room_6_obj
+        TYPE_HROSE, 6*8, $50
         TYPE_HGHOST, $28, $50, TYPE_HGHOST, $58, $A0
         TYPE_MAP4, 104, $50
         TYPE_TORCH, $38, $70

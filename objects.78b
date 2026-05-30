@@ -526,6 +526,10 @@
         ; STONE ROSE
         const ROSE_HP = 8
         const ROSE_DAMAGE = 16
+        const ROSE_DELAY_FRAMES = 64
+        const ROSE_ANIM_FRAMES  = 40
+        const F_ROSE_CLOSE = 0
+        const F_ROSE_SHOOT = 1
 
         ; HILLS
         const HROSE_PAL = 4
