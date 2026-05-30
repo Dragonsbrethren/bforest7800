@@ -1954,6 +1954,12 @@ test_player_box
           lda object_flags,x
           and #%00000100
           bne .test_player_elevation_match
+          ; special handle seeds
+          lda object_type,x
+          cmp #TYPE_SEED
+          beq .test_player_elevation_match
+          cmp #TYPE_HSEED
+          beq .test_player_elevation_match
           rts
 end
 

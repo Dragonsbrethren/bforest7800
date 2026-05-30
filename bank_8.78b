@@ -314,7 +314,7 @@ hrospawn  tya
           sta object_type,y
           lda #1
           sta object_hp,y
-          lda object_elevation,x
+;         lda object_elevation,x
           sta object_elevation,y
           lda player_Xpos
           cmp object_Xpos,x
@@ -894,7 +894,6 @@ plot_hills_room_0
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_0 240
         plotmapfile tiled/hills_room_0.tmx hills_room_0 0 1 20 12
-        zone2_objects  = 3
         locked_zone = 6
         alt_palette = 1
         exit_tileset = T_RIVER
@@ -908,7 +907,6 @@ plot_hills_room_1
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 hills_room_1 240
         plotmapfile tiled/hills_room_1.tmx hills_room_1 0 1 20 12
-        zone2_objects  = 5
         exit_tileset = T_RIVER
         exit_Xpos = 8 * 9
         exit_Ypos = 192
@@ -928,8 +926,7 @@ plot_hills_room_3
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_3 240
         plotmapfile tiled/hills_room_3.tmx hills_room_3 0 1 20 12
-        zone2_objects  = 4
-        locked_zone    = 6
+        locked_zone  = 5
         exit_tileset = T_CAVES
         exit_Xpos = 32
         exit_Ypos = $A0
@@ -941,7 +938,6 @@ plot_hills_room_4
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy map12 hills_room_4 240
         plotmapfile tiled/hills_room_4.tmx hills_room_4 0 1 20 12
-        zone2_objects  = 2
         alt_palette = 1
         return thisbank
 
@@ -1207,13 +1203,13 @@ end
         data hills_tile_properties_2
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %01110001, %01110001
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %00000010
-        %00000010, %00000010, %00000010, %00000010, %00000010, %00000001, %00000001, %00000010
-        %00000001, %00000001, %00000010, %00000001, %00000000, %00000001, %00000001, %00000000
-        %00000010, %00000010, %00000010, %00000010, %00000001, %00000001, %00000010, %00000010
-        %00000010, %00000010, %00000010, %00000001
-        %00000001, %00000001, %00000001, %00000000
+        %00000010, %00000010, %00000010, %00000010, %00000010, %00000011, %00000011, %00000010
+        %00000011, %00000011, %00000010, %00000011, %00000000, %00000011, %00000011, %00000000
+        %00000010, %00000010, %00000010, %00000010, %00000011, %00000011, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000011
+        %00000011, %00000011, %00000011, %00000000
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
-        %00000000, %00000000, %00000000, %00000000, %00000001
+        %00000000, %00000000, %00000000, %00000000, %00000011
         %00000010, %00000010, %00000010, %00000010, %00000010, %00000010, %0000010, %00000010
         %00000010, %00000010, %00000010, %00000010
         %10000000
@@ -1277,6 +1273,7 @@ end
 end
 
         data hills_room_7_obj
+        TYPE_HROSE, 8*8, $60
         TYPE_SPIDER, $28, $90, TYPE_HSLIME, $60, $90, TYPE_SPIDER, $78, $30
         TYPE_TORCH, $28, $30, TYPE_TORCH, $60, $30, TYPE_TORCH, $40, $80
         $00
@@ -1377,10 +1374,16 @@ end
 end
 
         data hills_room_23_obj
+        TYPE_HROSE, 5*8, $60
+        TYPE_HSLIME, 7*8, $90, TYPE_HSLIME, 14*8, $80
+        TYPE_HSLIME, 11*8, $B0
         $00
 end
 
         data hills_room_24_obj
+        TYPE_HROSE, 9*8, $40, TYPE_HROSE, 15*8, $40
+        TYPE_SPIDER, 100, $20
+        TYPE_TORCH, 10*8, $20, TYPE_TORCH, 16*8, $20
         TYPE_OWLCARD, 128, $A0
         $00
 end
