@@ -9,10 +9,10 @@
  <tileset firstgid="63" name="hills_water" tilewidth="8" tileheight="16" tilecount="11" columns="11">
   <image source="../gfx/tiles/hills_water.png" width="88" height="16"/>
  </tileset>
- <tileset firstgid="74" name="hills_veg" tilewidth="8" tileheight="16" tilecount="4" columns="4">
-  <image source="../gfx/tiles/hills_veg.png" width="32" height="16"/>
+ <tileset firstgid="74" name="hills_veg" tilewidth="8" tileheight="16" tilecount="5" columns="5">
+  <image source="../gfx/tiles/hills_veg.png" width="40" height="16"/>
  </tileset>
- <tileset firstgid="78" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="79" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/hills_waterf.png" width="8" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="12">
@@ -169,7 +169,7 @@
    <tile gid="11"/>
    <tile gid="12"/>
    <tile gid="25"/>
-   <tile gid="44"/>
+   <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
    <tile gid="26"/>
