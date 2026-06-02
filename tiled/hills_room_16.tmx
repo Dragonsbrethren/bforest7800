@@ -3,16 +3,16 @@
  <tileset firstgid="1" name="hills_ledges" tilewidth="8" tileheight="16" tilecount="44" columns="44">
   <image source="../gfx/tiles/hills_ledges.png" width="352" height="16"/>
  </tileset>
- <tileset firstgid="45" name="hills_high" tilewidth="8" tileheight="16" tilecount="18" columns="18">
-  <image source="../gfx/tiles/hills_high.png" width="144" height="16"/>
+ <tileset firstgid="45" name="hills_high" tilewidth="8" tileheight="16" tilecount="19" columns="19">
+  <image source="../gfx/tiles/hills_high.png" width="152" height="16"/>
  </tileset>
- <tileset firstgid="63" name="hills_water" tilewidth="8" tileheight="16" tilecount="11" columns="11">
+ <tileset firstgid="64" name="hills_water" tilewidth="8" tileheight="16" tilecount="11" columns="11">
   <image source="../gfx/tiles/hills_water.png" width="88" height="16"/>
  </tileset>
- <tileset firstgid="74" name="hills_veg" tilewidth="8" tileheight="16" tilecount="4" columns="4">
-  <image source="../gfx/tiles/hills_veg.png" width="32" height="16"/>
+ <tileset firstgid="75" name="hills_veg" tilewidth="8" tileheight="16" tilecount="5" columns="5">
+  <image source="../gfx/tiles/hills_veg.png" width="40" height="16"/>
  </tileset>
- <tileset firstgid="78" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="80" name="hills_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
   <image source="../gfx/tiles/hills_waterf.png" width="8" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="12">
@@ -28,9 +28,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -48,9 +48,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -68,9 +68,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -88,9 +88,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -128,9 +128,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="62"/>
-   <tile gid="62"/>
-   <tile gid="62"/>
+   <tile gid="63"/>
+   <tile gid="63"/>
+   <tile gid="63"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -148,9 +148,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -168,9 +168,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -188,9 +188,9 @@
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -208,9 +208,9 @@
    <tile gid="52"/>
    <tile gid="53"/>
    <tile gid="62"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
@@ -228,9 +228,9 @@
    <tile gid="55"/>
    <tile gid="60"/>
    <tile gid="53"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
+   <tile gid="80"/>
    <tile gid="62"/>
    <tile gid="62"/>
    <tile gid="62"/>
