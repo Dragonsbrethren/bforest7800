@@ -67,7 +67,6 @@ load_map
         adjustvisible 1 13
         if exit_tileset then gosub tileset_transition
         in_save_room = 0
-        zone1_objects = 1
         if tileset = T_FOREST then gosub load_forest bank2
         if tileset = T_CASTLE then gosub load_castle bank4
         if tileset = T_RIVER  then gosub load_river bank6
