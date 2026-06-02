@@ -359,6 +359,20 @@
         const F_CAVES_ENT_4_I = 35
         const F_CAVES_ENT_4_X = 32
         const F_CAVES_ENT_4_Y = $30
+        ; WATERFALL 1
+        const M_CAVES_WF1_X = 86
+        const M_CAVES_WF1_Y = 80
+        const F_CAVES_WF1_I = 11
+        const F_CAVES_WF1_X = (12*8)
+        const F_CAVES_WF1_Y = $20
+        const F_CAVES_WF1_D = DIR_DOWN
+        ; WATERFALL 2
+        const M_CAVES_WF2_X = 94
+        const M_CAVES_WF2_Y = 80
+        const F_CAVES_WF2_I = 12
+        const F_CAVES_WF2_X = (7*8)
+        const F_CAVES_WF2_Y = $20
+        const F_CAVES_WF2_D = DIR_DOWN
 ;------------------------------------------------------------------------------
 ; MENU DATA
 ;------------------------------------------------------------------------------

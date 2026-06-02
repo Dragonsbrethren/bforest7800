@@ -46,6 +46,8 @@ load_caves
         if exit_room_index = F_CAVES_ENT_2_I then caves_ent_2
         if exit_room_index = F_CAVES_ENT_3_I then caves_ent_3
         if exit_room_index = F_CAVES_ENT_4_I then caves_ent_4
+        if exit_room_index = F_CAVES_WF1_I then caves_wf_1
+        if exit_room_index = F_CAVES_WF2_I then caves_wf_2
 
 caves_ent_1
         room_index      = F_CAVES_ENT_1_I
@@ -95,6 +97,20 @@ caves_ent_4
         menu_map_Ypos   = M_CAVES_ENT_4_Y
         player_Xpos     = F_CAVES_ENT_4_X
         player_Ypos     = F_CAVES_ENT_4_Y
+        goto caves_set_room
+
+caves_wf_1
+        room_index      = F_CAVES_WF1_I
+        menu_map_Xpos   = M_CAVES_WF1_X
+        menu_map_Ypos   = M_CAVES_WF1_Y
+        player_Ypos     = F_CAVES_WF1_Y
+        goto caves_set_room
+
+caves_wf_2
+        room_index      = F_CAVES_WF2_I
+        menu_map_Xpos   = M_CAVES_WF2_X
+        menu_map_Ypos   = M_CAVES_WF2_Y
+        player_Ypos     = F_CAVES_WF2_Y
 ;       goto caves_set_room
 
 caves_set_room

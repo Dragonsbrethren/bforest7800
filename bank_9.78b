@@ -121,6 +121,19 @@ plot_hills_room_14
         plotmapfile tiled/hills_room_14.tmx hills_room_14 0 1 20 12
         zone2_objects  = 4
         pal_animation  = 1
+        locked_zone    = 5
+        ; elevation set to zero when in waterfall
+        if player_elevation then plot_hills_room_14_done
+        ; replace bridge and shadow with waterfall tiles
+        pokechar current_map 7 5 20 14 $92
+        pokechar current_map 8 5 20 14 $92
+        pokechar current_map 7 6 20 14 $92
+        pokechar current_map 8 6 20 14 $92
+plot_hills_room_14_done
+        exit_tileset = T_CAVES
+        exit_Xpos = 56
+        exit_Ypos = $B0
+        exit_room_index = F_CAVES_WF2_I
         goto hills_waterfall bank8
 
 plot_hills_room_15
@@ -141,6 +154,21 @@ plot_hills_room_16
         plotmapfile tiled/hills_room_16.tmx hills_room_16 0 1 20 12
         pal_animation  = 1
         shadow_offset  = 2
+        locked_zone    = 5
+        ; elevation set to zero when in waterfall
+        if player_elevation then plot_hills_room_16_done
+        ; replace bridge and shadow with waterfall tiles
+        pokechar current_map 11 5 20 14 $92
+        pokechar current_map 12 5 20 14 $92
+        pokechar current_map 13 5 20 14 $92
+        pokechar current_map 11 6 20 14 $92
+        pokechar current_map 12 6 20 14 $92
+        pokechar current_map 13 6 20 14 $92
+plot_hills_room_16_done
+        exit_tileset = T_CAVES
+        exit_Xpos = 90
+        exit_Ypos = $B0
+        exit_room_index = F_CAVES_WF1_I
         goto hills_waterfall bank8
 
 plot_hills_room_17
@@ -175,7 +203,7 @@ plot_hills_room_21
         memcpy map12 hills_room_21 240
         plotmapfile tiled/hills_room_21.tmx hills_room_21 0 1 20 12
         pal_animation  = 1
-        locked_zone    = 8
+        locked_zone    = 7
         shadow_offset  = 3
         goto hills_waterfall bank8
 
@@ -186,7 +214,7 @@ plot_hills_room_22
         plotmapfile tiled/hills_room_22.tmx hills_room_22 0 1 20 12
         pal_animation  = 1
         shadow_offset  = 1
-        locked_zone    = 8
+        locked_zone    = 7
         goto hills_waterfall bank8
 
 plot_hills_room_23
