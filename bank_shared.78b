@@ -1245,11 +1245,14 @@ test_walkable_up_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x
+          ; ledges and waterfall top always 0 elevation
+          sta object_elevation,x
           lda #DIR_UP
           sta object_Ydir,x
           lda object_flags,x
           ora #%00100000
           sta object_flags,x
+          rts
 test_walkable_up_ledge_done
           lda tile_properties
           ; test walkable bit 0
@@ -1260,6 +1263,9 @@ test_walkable_up_ledge_done
           sta object_Yvel_hi,x
           rts
 move_up
+          lda object_flags,x
+          and #%11011111
+          sta object_flags,x
           lda object_Ypos,x
           sec
           sbc object_Yvel_hi,x
@@ -1361,6 +1367,8 @@ test_walkable_down_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x
+          ; ledges and waterfall bottom always 0 elevation
+          sta object_elevation,x
           lda #DIR_DOWN
           sta object_Ydir,x
           lda object_flags,x
@@ -2199,14 +2207,6 @@ test_spell_cost
         if mp_change < player_mp then return thisbank
         ; routines can test if mp_change is 0 after calling this subroutine
         mp_change = 0
-        return thisbank
-
-increase_hp
-        temp_hp = temp_hp + hp_change
-        return thisbank
-
-decrease_hp
-        temp_hp = temp_hp - hp_change
         return thisbank
 
 ; takes a torch's X & Y position and determines the map tile under it, stores in peekX & Y

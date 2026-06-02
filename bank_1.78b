@@ -2104,3 +2104,11 @@ test_open_zone_one
         ldx #0
         beq test_open_zone_loop
 end
+
+increase_hp
+        temp_hp = temp_hp + hp_change
+        return thisbank
+
+decrease_hp
+        temp_hp = temp_hp - hp_change
+        return thisbank
