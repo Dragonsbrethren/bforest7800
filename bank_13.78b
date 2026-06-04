@@ -23,10 +23,10 @@ end
 caves_room_bank_13
         asm
         lda caves_map_b13_lo,x
-        sta temp1
+        sta jump1
         lda caves_map_b13_hi,x
-        sta temp2
-        jmp (temp1)
+        sta jump2
+        jmp (jump1)
 end
 
 plot_caves_room_1
