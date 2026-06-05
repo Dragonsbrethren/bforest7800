@@ -876,7 +876,7 @@ player_move_done
 
 input_frame_done
         if !player_Xvel && !player_Yvel && player_state <> STATE_ATTACK && player_state <> STATE_CHANT then player_state = STATE_STAND
-        if animation_frame && player_state = STATE_MOVING then player_frame = player_frame + 1
+        if animation_frame && player_state = STATE_MOVING then player_frame++
 
 check_room_boundary
         if player_Xpos < 2  then exit_dir = EXIT_EAST  : room_index = room_index - 1 : menu_map_Xpos = menu_map_Xpos - 8
@@ -941,10 +941,7 @@ player_chant_start
         if chant_timer > CHANT_START_TIME then set_state_chant
         player_state = STATE_CHANT_START
         chant_timer++
-        if player_facing = DIR_UP    then player_frame = FRAME_UP
-        if player_facing = DIR_DOWN  then player_frame = FRAME_DOWN
-        if player_facing = DIR_LEFT  then player_frame = FRAME_LEFT
-        if player_facing = DIR_RIGHT then player_frame = FRAME_RIGHT
+        gosub set_player_facing_frame
         goto test_joy_done
 
 set_state_chant
@@ -977,20 +974,18 @@ chant_test_dirs
         goto test_joy_done
 
 set_spell_up
-        player_facing = DIR_UP : player_frame = FRAME_UP
+        player_facing = DIR_UP
         goto cast_spell
 
 set_spell_down
-        ; chant state already sets facing to down
-        player_frame = FRAME_DOWN
         goto cast_spell
 
 set_spell_left
-        player_facing = DIR_LEFT : player_frame = FRAME_LEFT
+        player_facing = DIR_LEFT
         goto cast_spell
 
 set_spell_right
-        player_facing = DIR_RIGHT : player_frame = FRAME_RIGHT
+        player_facing = DIR_RIGHT
 ;       goto cast_spell
 
 cast_spell
@@ -1012,17 +1007,18 @@ chant_done_no_hold
           sta chant_timer
           sta chant_input
 end
+        gosub set_player_facing_frame
         if !mp_change then goto test_joy_done
         gosub decrease_player_mp
         goto test_joy_done
 
 set_player_facing_frame
-        if player_facing = DIR_UP then player_frame = FRAME_UP : goto frames_done
-        if player_facing = DIR_DOWN then player_frame = FRAME_DOWN : goto frames_done
-        if player_facing = DIR_LEFT then player_frame = FRAME_LEFT : goto frames_done
-        player_frame = FRAME_RIGHT
-frames_done
-        return thisbank
+        asm
+          ldy player_facing
+          lda player_facing_frames,y
+          sta player_frame
+          rts
+end
 
 position_shield
         temp2 = SHIELD_OFFSET_Y
@@ -2350,4 +2346,8 @@ proj_done lda object_Xpos,x     ; store current positions
 proj_die  lda temp1
           sta object_type,x
           rts
+end
+
+        data player_facing_frames
+        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT
 end
