@@ -124,8 +124,8 @@ caves_init
           sta pal_animation
           sta exit_room_index
           sta save_room_index
-          sta player_elevation
           lda #1
+          sta player_elevation
           sta shadow_offset
           lda #$FF
           sta locked_zone
@@ -551,6 +551,8 @@ obj_rose_stats
           ldx obj_index
           lda #ROSE_HP
           sta object_hp,x
+          lda #1
+          sta object_elevation,x
           lda #ROSE_DAMAGE
           sta object_damage,x
           lda #<.plot_caves_160b
@@ -854,6 +856,7 @@ obj_cave_spider_stats
         object_speed_hi[obj_index] = CSPIDER_SPEED_HI
         object_speed_lo[obj_index] = CSPIDER_SPEED_LO
         object_flags[obj_index] = 0
+        object_elevation[obj_index] = 1
         asm
           ldx obj_index
           lda #F_CSPIDER_DOWN
@@ -973,6 +976,7 @@ obj_pudding_stats
         object_speed_hi[obj_index] = PUDDING_SPEED_HI
         object_speed_lo[obj_index] = PUDDING_SPEED_LO
         object_flags[obj_index] = 0
+        object_elevation[obj_index] = 1
         goto caves_160a_sprite
 
 ;=========================================================

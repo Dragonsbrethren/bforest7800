@@ -1241,8 +1241,6 @@ test_walkable_up_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x
-          ; ledges and waterfall top always 0 elevation
-          sta object_elevation,x
           lda #DIR_UP
           sta object_Ydir,x
           lda object_flags,x
@@ -1363,8 +1361,6 @@ test_walkable_down_hop
           ; set object hopping direction and flag
           lda #0
           sta object_Xdir,x
-          ; ledges and waterfall bottom always 0 elevation
-          sta object_elevation,x
           lda #DIR_DOWN
           sta object_Ydir,x
           lda object_flags,x

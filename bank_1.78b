@@ -164,9 +164,14 @@ plot_player
         asm
           ldx locked_zone
           bmi .plot_player_no_lock      ; default locked_zone is $FF so that zone 0 can be locked
+          ; always lock if in water
+          lda player_flags
+          and #%00000010
+          bne plot_player_zone_lock
           ; don't lock zone if elevation > 0
           lda object_elevation
           bne .plot_player_no_lock
+plot_player_zone_lock
           jsr lockzonex
 end
 plot_player_no_lock
