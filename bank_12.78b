@@ -573,7 +573,11 @@ rose_ai
           lda object_timer,x
           beq roseseed
           dec object_timer,x
-          rts
+          cmp #ROSE_ANIM_FRAMES
+          bcs roserts
+          lda #F_ROSE_CLOSE
+          sta object_frame,x
+roserts   rts
 roseseed  lda object_parent,x
           tay
           lda object_type,y
@@ -615,6 +619,7 @@ rofastX   lda #SEED_FAST_SPEED_HI
           sta object_Yvel_hi,y
           lda #SEED_SPEED_LO
           sta object_Yvel_lo,y
+          beq rodam
 rofastY   lda #SEED_SPEED_HI
           sta object_Xvel_hi,y
           lda #SEED_SPEED_LO
@@ -629,7 +634,7 @@ rofastY   lda #SEED_SPEED_HI
           sta object_vel_cap_hi,y
           lda #SEED_VEL_CAP_LO
           sta object_vel_cap_lo,y
-          lda #SEED_DAMAGE
+rodam     lda #SEED_DAMAGE
           sta object_damage,y
           lda #%00010000        ; object floating
           sta object_flags,y
@@ -648,8 +653,10 @@ rofastY   lda #SEED_SPEED_HI
           sta object_Xpos,y
           lda object_Ypos,x
           sta object_Ypos,y
-          lda #64
+          lda #ROSE_DELAY_FRAMES
           sta object_timer,x
+          lda #F_ROSE_SHOOT
+          sta object_frame,x
           rts
 end
 
@@ -1031,5 +1038,5 @@ plot_caves_160a
         goto plot_next
 
 plot_caves_160b
-        plotsprite rose0 sprite_pal Xposition Yposition frame
+        plotsprite rose4 sprite_pal Xposition Yposition frame
         goto plot_next

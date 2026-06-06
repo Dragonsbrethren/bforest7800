@@ -534,6 +534,8 @@
         ; HILLS
         const HROSE_PAL = 4
         const F_HROSE = 0
+        const F_HROSE_CLOSE = 0
+        const F_HROSE_SHOOT = 1
 
         ; STONE ROSE SEED
         const SEED_HP = 1

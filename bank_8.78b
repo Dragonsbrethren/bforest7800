@@ -300,7 +300,7 @@ hrose_ai
           dec object_timer,x
           cmp #ROSE_ANIM_FRAMES
           bcs hroserts
-          lda #F_ROSE_CLOSE
+          lda #F_HROSE_CLOSE
           sta object_frame,x
 hroserts  rts
 hroseseed lda object_parent,x
@@ -382,7 +382,7 @@ hrodam    lda #SEED_DAMAGE
           sta object_Ypos,y
           lda #ROSE_DELAY_FRAMES
           sta object_timer,x
-          lda #F_ROSE_SHOOT
+          lda #F_HROSE_SHOOT
           sta object_frame,x
           rts
 end

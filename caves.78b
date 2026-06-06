@@ -21,8 +21,8 @@
         incgraphic gfx/sprites/mpudding0.png 160A 0 2 3 1
         incgraphic gfx/sprites/mpudding1.png 160A 0 2 3 1
         incgraphic gfx/sprites/seed.png 160A 0 2 3 1
-        incgraphic gfx/sprites/rose0.png 160B 0 9 7 6 5 4
-        incgraphic gfx/sprites/rose1.png 160B 0 9 2 8 4 5 6 7
+        incgraphic gfx/sprites/rose4.png 160B 0 6 4 5
+        incgraphic gfx/sprites/rose5.png 160B 0 9 4 2 6 5
 
         incmapfile tiled/caves_room_1.tmx
         incmapfile tiled/caves_room_2.tmx
