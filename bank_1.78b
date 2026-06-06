@@ -178,7 +178,8 @@ plot_player_no_lock
 plot_johanna
         if player_flags{1} then frame = 1 else frame = 0
         if stone_duration then plotsprite jostone0 5 player_Xpos player_Ypos frame : goto plot_joshield
-        if player_flags{1} then plotsprite joswim0 0 player_Xpos player_Ypos player_frame else plotsprite heroine0 0 player_Xpos player_Ypos player_frame
+        if player_flags{1} then frame = player_frame + SWIM_OFFSET else frame = player_frame
+        plotsprite heroine0 0 player_Xpos player_Ypos frame
 plot_joshield
         if player_facing = DIR_DOWN || player_facing = DIR_LEFT then gosub plot_player_shield
 plot_player_unlock        

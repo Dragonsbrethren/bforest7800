@@ -86,6 +86,7 @@
         const FRAME_ATK_R = 11
         const FRAME_CHANT = 12
         const FRAME_DEATH = 13
+        const SWIM_OFFSET = 14
 
         const ATTACK_FRAMES = 8
         const CHANT_START_TIME = 12
