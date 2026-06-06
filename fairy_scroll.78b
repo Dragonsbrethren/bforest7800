@@ -36,6 +36,12 @@ end
         'Locked*'
 end
 
+        const door_sealed_lo = #<door_sealed
+        const door_sealed_hi = #>door_sealed
+        alphadata door_sealed font_spr
+        'Magic Seal*'
+end
+
         const name_wolf_lo = #<name_wolf
         const name_wolf_hi = #>name_wolf
         alphadata name_wolf font_spr
@@ -60,7 +66,7 @@ end
         const name_slime_lo = #<name_slime
         const name_slime_hi = #>name_slime
         alphadata name_slime font_spr
-        'Green Slime*'
+        'Slime*'
 end
         const name_raven_lo = #<name_raven
         const name_raven_hi = #>name_raven
@@ -103,7 +109,7 @@ end
         const name_hslime_lo = #<name_hslime
         const name_hslime_hi = #>name_hslime
         alphadata name_hslime font_spr
-        'Ochre Jelly*'
+        'Jelly*'
 end
 
         const name_hghost_lo = #<name_hghost
@@ -124,7 +130,7 @@ end
         const name_bat_lo = #<name_bat
         const name_bat_hi = #>name_bat
         alphadata name_bat font_spr
-        'Cave Bat*'
+        'Bat*'
 end
 
         const name_rose_lo = #<name_rose
@@ -136,13 +142,13 @@ end
         const name_cspider_lo = #<name_cspider
         const name_cspider_hi = #>name_cspider
         alphadata name_cspider font_spr
-        'Cave Crawler*'
+        'Crawler*'
 end
 
         const name_pudding_lo = #<name_pudding
         const name_pudding_hi = #>name_pudding
         alphadata name_pudding font_spr
-        'Dark Pudding*'
+        'Pudding*'
 end
 
         const name_cghost_lo = #<name_cghost
