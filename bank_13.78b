@@ -81,6 +81,15 @@ plot_caves_room_6
         memcpy map12 caves_room_6 240
         plotmapfile tiled/caves_room_6.tmx caves_room_6 0 1 20 12
         locked_zone = 7
+        if !player_flags{1} then plot_caves_room_6_done
+        ; replace bridge and shadow with waterfall tiles
+        pokechar current_map 10 7 20 14 $6C
+        pokechar current_map 11 7 20 14 $6C
+        pokechar current_map 12 7 20 14 $6C
+        pokechar current_map 10 8 20 14 $6C
+        pokechar current_map 11 8 20 14 $6C
+        pokechar current_map 12 8 20 14 $6C
+plot_caves_room_6_done
         goto caves_waterfall bank12
 
         dmahole 0
@@ -104,6 +113,15 @@ plot_caves_room_9
         memcpy map12 caves_room_9 240
         plotmapfile tiled/caves_room_9.tmx caves_room_9 0 1 20 12
         locked_zone = 8
+        if !player_flags{1} then plot_caves_room_9_done
+        ; replace bridge and shadow with waterfall tiles
+        pokechar current_map 10 8 20 14 $6C
+        pokechar current_map 11 8 20 14 $6C
+        pokechar current_map 12 8 20 14 $6C
+        pokechar current_map 10 9 20 14 $6C
+        pokechar current_map 11 9 20 14 $6C
+        pokechar current_map 12 9 20 14 $6C
+plot_caves_room_9_done
         goto caves_waterfall bank12
 
 plot_caves_room_10
@@ -112,6 +130,16 @@ plot_caves_room_10
         memcpy map12 caves_room_10 240
         plotmapfile tiled/caves_room_10.tmx caves_room_10 0 1 20 12
         locked_zone = 7
+        if !player_flags{1} then plot_caves_room_10_done
+        pokechar current_map  5 7 20 14 $6C
+        pokechar current_map  6 7 20 14 $6C
+        pokechar current_map 12 7 20 14 $6C
+        pokechar current_map 13 7 20 14 $6C
+        pokechar current_map  5 8 20 14 $6C
+        pokechar current_map  6 8 20 14 $6C
+        pokechar current_map 12 8 20 14 $6C
+        pokechar current_map 13 8 20 14 $6C
+plot_caves_room_10_done
         goto caves_waterfall bank12
 
 plot_caves_room_11
