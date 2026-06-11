@@ -131,7 +131,7 @@ plot_hills_room_14
         pokechar current_map 8 6 20 14 $92
 plot_hills_room_14_done
         exit_tileset = T_CAVES
-        exit_Xpos = 56
+        exit_Xpos = 54
         exit_Ypos = $B0
         exit_room_index = F_CAVES_WF2_I
         goto hills_waterfall bank8

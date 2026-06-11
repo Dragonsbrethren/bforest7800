@@ -1218,17 +1218,19 @@ test_walkable_up
           lda m_relic_bits_2
           and #%00000010
           beq test_walkable_up_talon
+          lda player_flags
+          and #%00000010
+          ; only swimming players can ascend waterfall
+          beq test_walkable_up_talon
           lda tile_properties
           and #%10000000
           beq test_walkable_up_talon
-          lda object_flags,x
+          lda player_flags
           ora #%00000010
-          sta object_flags,x
+          sta player_flags
           bne test_walkable_up_hop
 test_walkable_up_talon
           ; harpy's talon check
-          ldx index
-          bne test_walkable_up_ledge_done
           lda m_relic_bits_2
           and #%00000100
           beq test_walkable_up_ledge_done

@@ -194,10 +194,15 @@ test_walkable_caves
         goto walkable_return
 
 walkable_water_caves
+        ; test if tile is a waterfall, which is never made walkable
+        if tile_properties_1{7} then walkable_water_caves_tile_2
         ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
         if tile_properties_1{2} then tile_properties_1{0} = 1
+walkable_water_caves_tile_2
+        if tile_properties_2{7} then walkable_water_caves_done
         if tile_properties_2{2} then tile_properties_2{0} = 1
-        
+walkable_water_caves_done
+
         ; objects can call this part of the subroutine to test if they are in water
 test_water_caves
         ; water is tested differently than other properties, it tests the tile directly under the object
@@ -232,7 +237,7 @@ end
         %00000000, %00000000, %00000000, %00000000
         %00000110, %00000111, %00000110, %00000110
         %00000110, %00000110, %00000110, %00000110, %00000110, %00000111
-        %10000000
+        %10000100
 end
 
 torch_tile_block_caves
