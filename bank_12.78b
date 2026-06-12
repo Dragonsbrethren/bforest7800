@@ -194,11 +194,10 @@ test_walkable_caves
         goto walkable_return
 
 walkable_water_caves
-        ; test if tile is a waterfall, which is never made walkable
-        if tile_properties_1{7} then walkable_water_caves_tile_2
         ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
         if tile_properties_1{2} then tile_properties_1{0} = 1
 walkable_water_caves_tile_2
+        ; test if tile is a waterfall, which is never made walkable
         if tile_properties_2{7} then walkable_water_caves_done
         if tile_properties_2{2} then tile_properties_2{0} = 1
 walkable_water_caves_done
