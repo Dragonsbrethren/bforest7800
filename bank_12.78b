@@ -260,7 +260,7 @@ torch_tile_unblock_caves
 end
 
         data caves_room_0_obj
-        TYPE_TORCH, (11*8), $90
+        TYPE_TORCH, (11*8), $80
         $00
 end
 
