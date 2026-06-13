@@ -295,6 +295,7 @@ end
         data caves_room_6_obj
         TYPE_ROSE, (5*8), $80
         TYPE_BAT_SPAWNER, $01, $F0
+        TYPE_SHIELD5, 37, $50
         $00
 end
 

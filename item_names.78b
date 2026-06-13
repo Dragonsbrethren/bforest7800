@@ -381,7 +381,7 @@ end
         'Heater*'
 end
         alphadata pickup_shield5 font_spr
-        'Shield 5    *'
+        'Dusk Shield*'
 end
         alphadata pickup_shield6 font_spr
         'Shield 6    *'

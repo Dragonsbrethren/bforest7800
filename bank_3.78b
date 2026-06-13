@@ -878,7 +878,7 @@ end
         'Skull Shield '
         'Kite Shield  '
         'Heater       '
-        'Venus Shield '
+        'Dusk Shield  '
         'Shield Num 6 '
         'Shield Num 7 '
         'Shield Num 8 '
@@ -958,10 +958,10 @@ end
 end
 
         data pal_shields1
-        $00, $24, $0C, $44, $35
+        $00, $24, $0C, $44, $35, $A1
 end
         data pal_shields2
-        $00, $44, $0F, $37, $26
+        $00, $44, $0F, $37, $26, $E3
 end
 
         data m_shield_frames
