@@ -410,12 +410,6 @@ update_equipment_pals
         lda pal_charms2,x
         sta m_charm_pal2
 end
-        const pal_shields1 = pal_swords1 + 11
-        const pal_shields2 = pal_swords2 + 11
-        const pal_armor1   = pal_swords1 + 22
-        const pal_armor2   = pal_swords2 + 22
-        const pal_charms1  = pal_swords1 + 33
-        const pal_charms2  = pal_swords2 + 33
         ; currently this just reads from an array for each type of equipment,
         ; swords only do attack, shields/armor only defense, and charms wisdom
         dec player_atk = sword_atk[player_sword]

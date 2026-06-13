@@ -446,6 +446,14 @@
         const MENU_ICON_PENDANT = 7
         const MENU_ICON_ROSARY  = 8
 
+        ; equip menu palette offsets
+        const pal_shields1 = pal_swords1 + 11
+        const pal_shields2 = pal_swords2 + 11
+        const pal_armor1   = pal_swords1 + 22
+        const pal_armor2   = pal_swords2 + 22
+        const pal_charms1  = pal_swords1 + 33
+        const pal_charms2  = pal_swords2 + 33
+
 ;------------------------------------------------------------------------------
 ; FIELD
 ;------------------------------------------------------------------------------
