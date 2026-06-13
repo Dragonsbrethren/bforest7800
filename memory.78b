@@ -245,6 +245,7 @@
         autodim byte m_textY
         autodim byte m_inv_index
         autodim byte m_inv_scroll
+        autodim byte m_inv_offset
         autodim byte m_inv_slot
         autodim byte m_relic_pal1
         autodim byte m_relic_pal2
@@ -379,7 +380,7 @@
         autodim byte menu_map_Ypos
 
         ; PICKUP HUD
-        autodim byte pickup_string 16
+        autodim byte pickup_string 13
         autodim byte pickup_index
         autodim byte pickup_qty
         autodim byte pickup_bits1

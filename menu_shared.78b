@@ -13,20 +13,13 @@
         incgraphic gfx/menu/menu_bar9.png 320B 0 2
         incgraphic gfx/menu/menu_pin.png 320B 0 3 2
         incgraphic gfx/menu/menu_s.png 320A
+        incgraphic gfx/menu/menu_icon0.png 320B 0 0 0 0
         incgraphic gfx/menu/menu_sword0.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_sword1.png 320B 2 0 3 1
-        incgraphic gfx/menu/menu_sword2.png 320B 2 0 3 1
-        incgraphic gfx/menu/menu_sword3.png 320B 2 0 3 1
-        incgraphic gfx/menu/menu_sword4.png 320B 2 0 3 1
         incgraphic gfx/menu/menu_shield0.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_shield3.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_shield4.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
-        incgraphic gfx/menu/menu_armor3.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3

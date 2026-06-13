@@ -247,170 +247,59 @@ equip_menu_inv_controls
         if !down_debounce && joy0down then gosub equip_inv_sel_down
 
 equip_menu_dirs_done
-        menu_cursor_X = MENU_EQUIP_EQUIPPED_X
-        if menu_selection = 0 then menu_cursor_Y = MENU_EQUIP_SWORD_Y : goto equip_menu_sword_inv
-        if menu_selection = 1 then menu_cursor_Y = MENU_EQUIP_SHIELD_Y : goto equip_menu_shield_inv
-        if menu_selection = 2 then menu_cursor_Y = MENU_EQUIP_ARMOR_Y : goto equip_menu_armor_inv
-        if menu_selection = 3 then menu_cursor_Y = MENU_EQUIP_CHARM_Y : goto equip_menu_charm_inv
-        if menu_selection = 4 then menu_cursor_X = MENU_EQUIP_EXIT_X : menu_cursor_Y = MENU_EQUIP_EXIT_Y
+        if menu_selection = 4 then menu_cursor_X = MENU_EQUIP_EXIT_X else menu_cursor_X = MENU_EQUIP_EQUIPPED_X
+        menu_cursor_Y = equip_menu_cursor_y[menu_selection]
         ; continue showing the inventory of the previously selected option
-        if prev_menu_selection = 3 then goto equip_menu_charm_inv
+        m_inv_offset = equip_menu_inv_offsets[menu_selection]
+        if prev_menu_selection = 3 then m_inv_offset = 33
 
 equip_menu_sword_inv
-        m_inv_index = m_inv_scroll
+        m_inv_index = m_inv_scroll + m_inv_offset
         for m_inv_slot = 0 to 3
         temp1 = m_sword_inv[m_inv_index]
         m_inv_item_0[m_inv_slot] = temp1
-        m_inv0_pal1[m_inv_slot] = pal_swords1[temp1]
-        m_inv0_pal2[m_inv_slot] = pal_swords2[temp1]
-        m_inv_index = m_inv_index + 1
+        temp2 = temp1 + m_inv_offset
+        m_inv0_pal1[m_inv_slot] = pal_swords1[temp2]
+        m_inv0_pal2[m_inv_slot] = pal_swords2[temp2]
+        m_inv_index++
 menu_sword_next 
         next
 
         ; TODO: LUT for item icons
 plot_inv_sword_0
-        if !m_inv_item_0 then plot_inv_sword_1
-        plotsprite menu_sword0 4 16 80
-        plotmap sword_names 0 24 5 13 1 0 m_inv_item_0 13
-plot_inv_sword_1
-        if !m_inv_item_1 then plot_inv_sword_2
-        plotsprite menu_sword0 4 16 112
-        plotmap sword_names 0 24 7 13 1 0 m_inv_item_1 13
-plot_inv_sword_2
-        if !m_inv_item_2 then plot_inv_sword_3
-        plotsprite menu_sword0 4 16 144
-        plotmap sword_names 0 24 9 13 1 0 m_inv_item_2 13
-plot_inv_sword_3
-        if !m_inv_item_3 then plot_inv_sword_done
-        plotsprite menu_sword0 4 16 176
-        plotmap sword_names 0 24 11 13 1 0 m_inv_item_3 13
+        m_spriteY = 80
+        Yposition =  5
+        for m_inv_slot = 0 to 3
+                m_inv_index = m_inv_item_0[m_inv_slot]
+                ; skip empty slots
+                if !m_inv_index then plot_inv_sword_done
+                ; offset for the type of equipment
+                m_inv_index = m_inv_index + m_inv_offset
+                frame = equip_menu_item_icons[m_inv_index]
+                plotsprite menu_icon0 4 16 m_spriteY frame
+                plotmap sword_names 0 24 Yposition 13 1 0 m_inv_index 13
+                m_spriteY = m_spriteY + 32
+                Yposition++
+                Yposition++
+        next
 plot_inv_sword_done
-        goto equip_menu_draw_sprites
-
-equip_menu_shield_inv
-        m_inv_index = m_inv_scroll
-        for m_inv_slot = 0 to 3
-        temp1 = m_shield_inv[m_inv_index]
-        m_inv_item_0[m_inv_slot] = temp1
-        m_inv0_pal1[m_inv_slot] = pal_shields1[temp1]
-        m_inv0_pal2[m_inv_slot] = pal_shields2[temp1]
-        m_inv_index = m_inv_index + 1
-menu_shield_next 
-        next
-
-plot_inv_shield_0
-        if !m_inv_item_0 then plot_inv_shield_1
-        temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 80
-        plotmap shield_names 0 24 5 13 1 0 m_inv_item_0 13
-plot_inv_shield_1
-        if !m_inv_item_1 then plot_inv_shield_2
-        temp1 = m_shield_frames[m_inv_item_1]
-        plotsprite menu_shield0 4 16 112
-        plotmap shield_names 0 24 7 13 1 0 m_inv_item_1 13
-plot_inv_shield_2
-        if !m_inv_item_2 then plot_inv_shield_3
-        temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 144
-        plotmap shield_names 0 24 9 13 1 0 m_inv_item_2 13
-plot_inv_shield_3
-        if !m_inv_item_3 then plot_inv_shield_done
-        temp1 = m_shield_frames[m_inv_item_0]
-        plotsprite menu_shield0 4 16 176
-        plotmap shield_names 0 24 11 13 1 0 m_inv_item_3 13
-plot_inv_shield_done
-        goto equip_menu_draw_sprites
-
-equip_menu_armor_inv
-        m_inv_index = m_inv_scroll
-        for m_inv_slot = 0 to 3
-        temp1 = m_armor_inv[m_inv_index]
-        m_inv_item_0[m_inv_slot] = temp1
-        m_inv0_pal1[m_inv_slot] = pal_armor1[temp1]
-        m_inv0_pal2[m_inv_slot] = pal_armor2[temp1]
-        m_inv_index = m_inv_index + 1
-menu_armor_next 
-        next
-
-plot_inv_armor_0
-        if !m_inv_item_0 then plot_inv_armor_1
-        plotsprite menu_armor0 4 16 80
-        plotmap armor_names 0 24 5 13 1 0  m_inv_item_0 13
-plot_inv_armor_1
-        if !m_inv_item_1 then plot_inv_armor_2
-        plotsprite menu_armor0 4 16 112
-        plotmap armor_names 0 24 7 13 1 0  m_inv_item_1 13
-plot_inv_armor_2
-        if !m_inv_item_2 then plot_inv_armor_3
-        plotsprite menu_armor0 4 16 144
-        plotmap armor_names 0 24 9 13 1 0  m_inv_item_2 13
-plot_inv_armor_3
-        if !m_inv_item_3 then plot_inv_armor_done
-        plotsprite menu_armor0 4 16 176
-        plotmap armor_names 0 24 11 13 1 0  m_inv_item_3 13
-plot_inv_armor_done
-        goto equip_menu_draw_sprites
-
-equip_menu_charm_inv
-        m_inv_index = m_inv_scroll
-        for m_inv_slot = 0 to 3
-        temp1 = m_charm_inv[m_inv_index]
-        m_inv_item_0[m_inv_slot] = temp1
-        m_inv0_pal1[m_inv_slot] = pal_charms1[temp1]
-        m_inv0_pal2[m_inv_slot] = pal_charms2[temp1]
-        m_inv_index = m_inv_index + 1
-menu_charm_next 
-        next
-
-plot_inv_charm_0
-        if !m_inv_item_0 then plot_inv_charm_1
-        plotsprite menu_charm0 4 16 80
-        plotmap charm_names 0 24 5 13 1 0  m_inv_item_0 13
-plot_inv_charm_1
-        if !m_inv_item_1 then plot_inv_charm_2
-        plotsprite menu_charm0 4 16 112
-        plotmap charm_names 0 24 7 13 1 0  m_inv_item_1 13
-plot_inv_charm_2
-        if !m_inv_item_2 then plot_inv_charm_3
-        plotsprite menu_charm0 4 16 144
-        plotmap charm_names 0 24 9 13 1 0  m_inv_item_2 13
-plot_inv_charm_3
-        if !m_inv_item_3 then plot_inv_charm_done
-        plotsprite menu_charm0 4 16 176
-        plotmap charm_names 0 24 11 13 1 0  m_inv_item_3 13
-plot_inv_charm_done
-        goto equip_menu_draw_sprites
 
 equip_menu_draw_sprites
-        ; This block of code has gotten pretty messy!
-        ; It tests each equipment slot to see if it is a non-zero value,
-        ; then plots a sprite and a character map for that value.
-        ; If it IS zero, no name is drawn, except in the case of weapon
-        if player_sword then goto equip_menu_draw_sword
-        plotmap unarmed_name 0 92 5 13 1 0 0
-        goto equip_menu_test_shield
-equip_menu_draw_sword
-        plotsprite menu_sword0 0 84 80
-        plotmap sword_names 0 92 5 13 1 0 player_sword 13
-equip_menu_test_shield
-        if player_shield then goto equip_menu_draw_shield
-        goto equip_menu_test_armor
-equip_menu_draw_shield
-        temp1 = m_shield_frames[player_shield]
-        plotsprite menu_shield0 0 84 112
-        plotmap shield_names 0 92 7 13 1 0 player_shield 13
-equip_menu_test_armor
-        if player_armor then goto equip_menu_draw_armor
-        goto equip_menu_test_charm
-equip_menu_draw_armor
-        plotsprite menu_armor0 0 84 144
-        plotmap armor_names 0 92 9 13 1 0 player_armor 13
-equip_menu_test_charm
-        if player_charm then goto equip_menu_draw_charm
-        goto equip_menu_draw_atk
-equip_menu_draw_charm
-        plotsprite menu_charm0 0 84 176
-        plotmap charm_names 0 92 11 13 1 0 player_charm 13
+        ; draws each inventory slot's equipment
+        m_spriteY = 80
+        Yposition = 5
+        for m_inv_slot = 0 to 3
+        ; offset for the type of equipment
+        m_inv_offset = equip_menu_inv_offsets[m_inv_slot]
+        m_inv_index = player_sword[m_inv_slot] + m_inv_offset
+        frame = equip_menu_item_icons[m_inv_index]
+        plotsprite menu_icon0 0 84 m_spriteY frame
+        plotmap sword_names 0 92 Yposition 13 1 0 m_inv_index 13
+        m_spriteY = m_spriteY + 32
+        Yposition++
+        Yposition++
+        next
+
 equip_menu_draw_atk
         ; plotvalue menu_font 0 player_atk 2 88 1
         asm
@@ -521,6 +410,12 @@ update_equipment_pals
         lda pal_charms2,x
         sta m_charm_pal2
 end
+        const pal_shields1 = pal_swords1 + 11
+        const pal_shields2 = pal_swords2 + 11
+        const pal_armor1   = pal_swords1 + 22
+        const pal_armor2   = pal_swords2 + 22
+        const pal_charms1  = pal_swords1 + 33
+        const pal_charms2  = pal_swords2 + 33
         ; currently this just reads from an array for each type of equipment,
         ; swords only do attack, shields/armor only defense, and charms wisdom
         dec player_atk = sword_atk[player_sword]
@@ -555,6 +450,74 @@ equip_inv_sel_up
 equip_inv_up_no_Y
         m_inv_scroll = m_inv_scroll - 1
         return thisbank
+
+        data equip_menu_cursor_y
+        MENU_EQUIP_SWORD_Y, MENU_EQUIP_SHIELD_Y, MENU_EQUIP_ARMOR_Y, MENU_EQUIP_CHARM_Y, MENU_EQUIP_EXIT_Y
+end
+
+        data equip_menu_inv_offsets
+        0, 11, 22, 33
+end
+
+        data equip_menu_item_icons
+        MENU_ICON_BLANK         ; Unarmed
+        MENU_ICON_RAPIER        ; Rapier
+        MENU_ICON_SWORD         ; Bonesaber
+        MENU_ICON_SWORD         ; 
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_SWORD
+        MENU_ICON_BLANK         ; No Shield
+        MENU_ICON_BUCKLER       ; BUCKLER
+        MENU_ICON_HEATER        ; SKULL SHIELD
+        MENU_ICON_HEATER        ; KITE SHIELD
+        MENU_ICON_HEATER        ; HEATER
+        MENU_ICON_BUCKLER       ; DUSK SHIELD
+        MENU_ICON_BUCKLER
+        MENU_ICON_BUCKLER
+        MENU_ICON_BUCKLER
+        MENU_ICON_BUCKLER
+        MENU_ICON_BUCKLER
+        MENU_ICON_BLANK         ; NO ARMOR
+        MENU_ICON_ARMOR         ; LEATHER ARMOR
+        MENU_ICON_ARMOR         ; BRONZE PLATE
+        MENU_ICON_ARMOR         ; STEEL PLATE
+        MENU_ICON_ARMOR         ; SILVER PLATE
+        MENU_ICON_ARMOR         ; MIRROR MAIL
+        MENU_ICON_ARMOR         ; RELICA ARMOR
+        MENU_ICON_ARMOR
+        MENU_ICON_ARMOR
+        MENU_ICON_ARMOR
+        MENU_ICON_ARMOR
+        MENU_ICON_BLANK         ; NO CHARM
+        MENU_ICON_PENDANT       ; PENDANT
+        MENU_ICON_ROSARY        ; DARK ROSARY
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT
+end
+
+        data pal_swords1
+        $00, $44, $74, $C3, $D3, $36, $36, $36, $36, $36, $36
+        $00, $24, $0C, $44, $35, $A1, $A1, $A1, $A1, $A1, $A1
+        $00, $12, $E2, $03, $08, $67, $E1, $E1, $E1, $E1, $E1
+        $00, $98, $60, $99, $22, $03, $35, $35, $35, $35, $35
+end
+        data pal_swords2
+        $00, $FE, $0F, $AD, $B6, $34, $34, $34, $34, $34, $34
+        $00, $44, $0F, $37, $26, $E3, $E3, $E3, $E3, $E3, $E3
+        $00, $24, $E4, $06, $0B, $5B, $E3, $E3, $E3, $E3, $E3
+        $00, $0F, $62, $AF, $25, $AB, $37, $37, $37, $37, $37
+end
 
         dmahole 0
 plot_relics_menu
@@ -853,13 +816,8 @@ end
         'Familiar Revives  '
 end
 
-        ; used when attacking without a weapon
-        alphadata unarmed_name menu_font singlewide
-        'Unarmed      '
-end
-
         alphadata sword_names menu_font singlewide
-        '             '
+        'Unarmed      '
         'Rapier       '
         'Bonesaber    '
         'Thunderblitz '
@@ -870,9 +828,6 @@ end
         'Sword Num 8  '
         'Sword Num 9  '
         'Sword Num 10 '
-end
-
-        alphadata shield_names menu_font singlewide
         '             '
         'Buckler      '
         'Skull Shield '
@@ -884,9 +839,6 @@ end
         'Shield Num 8 '
         'Shield Num 9 '
         'Shield Num 10'
-end
-
-        alphadata armor_names menu_font singlewide
         '             '
         'Leather Armor'
         'Bronze Plate '
@@ -898,9 +850,6 @@ end
         'Armor Num 8  '
         'Armor Num 9  '
         'Armor Num 10 '
-end
-
-        alphadata charm_names menu_font singlewide
         '             '
         'Pendant      '
         'Dark Rosary  '
@@ -948,38 +897,6 @@ end
 
         data pal_items2
         $00, $83, $84, $74, $75, $97, $45, $76, $06, $1C, $27
-end
-
-        data pal_swords1
-        $00, $44, $74, $C3, $D3, $36
-end
-        data pal_swords2
-        $00, $FE, $0F, $AD, $B6, $34
-end
-
-        data pal_shields1
-        $00, $24, $0C, $44, $35, $A1
-end
-        data pal_shields2
-        $00, $44, $0F, $37, $26, $E3
-end
-
-        data m_shield_frames
-        0, 1, 0
-end
-
-        data pal_armor1
-        $00, $12, $E2, $03, $08, $67, $E1
-end
-        data pal_armor2
-        $00, $24, $E4, $06, $0B, $5B, $E3
-end
-
-        data pal_charms1
-        $00, $98, $60, $99, $22, $03, $35
-end
-        data pal_charms2
-        $00, $0F, $62, $AF, $25, $AB, $37
 end
 
         data sword_atk

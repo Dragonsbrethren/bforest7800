@@ -434,6 +434,18 @@
         const PICKUP_TIME = 60
         const PICKUP_STRING_LENGTH = 11
 
+
+        ; item icons
+        const MENU_ICON_BLANK   = 0
+        const MENU_ICON_RAPIER  = 1
+        const MENU_ICON_SWORD   = 2
+        const MENU_ICON_BUCKLER = 3
+        const MENU_ICON_SHIELD  = 4
+        const MENU_ICON_HEATER  = 5
+        const MENU_ICON_ARMOR   = 6
+        const MENU_ICON_PENDANT = 7
+        const MENU_ICON_ROSARY  = 8
+
 ;------------------------------------------------------------------------------
 ; FIELD
 ;------------------------------------------------------------------------------
