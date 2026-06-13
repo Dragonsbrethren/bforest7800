@@ -513,6 +513,26 @@ end
         $00, $0F, $62, $AF, $25, $AB, $37, $37, $37, $37, $37
 end
 
+plot_relic_names
+        plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
+        goto items_left
+
+bank3overflow
+        if item_name >= 4 then m_palette = 0
+        if item_name + 1 = toggled_familiar then m_palette = 0
+        return thisbank
+
+toggle_familiar
+        action_debounce = 1
+        if menu_selection = 11 then open_main_menu
+        temp1 = m_relic_inv[menu_selection]
+        if temp1 >= 5 then goto main
+        if toggled_familiar = temp1 then toggled_familiar = 0 else toggled_familiar = temp1
+        ; zero familiar flags so it reinitializes itself
+        object_flags[13] = 0
+        goto main
+
         dmahole 0
 plot_relics_menu
         ; turn on Kangaroo mode so palette color 1 is more manageable
