@@ -7,8 +7,9 @@
         incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
-        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 7
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
         incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
         incgraphic gfx/forest/hud2.png 160A 0 3 1 2
         incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
@@ -67,7 +68,7 @@ forest_pals
         P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
         P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
-        P7C1 = PAL_BLACK  : P7C2 = PAL_F_DKBRN : P7C3 = PAL_F_LTBRN    ; ledges, dark and light browns
+        P7C1 = PAL_BLACK  : P7C2 = PAL_F_LTBRN : P7C3 = PAL_F_HOUSE    ; ledges, beige and light browns
 
         characterset forest_trees
         room = forest_rooms[room_index]

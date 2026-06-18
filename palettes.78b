@@ -31,7 +31,8 @@
         const PAL_F_WATER = $A1 ; water blue
         const PAL_F_LTWTR = $06 ; duplicate gray
         const PAL_F_DKBRN = $F0 ; scrapped browns (for now)
-        const PAL_F_LTBRN = $F2
+        const PAL_F_LTBRN = $23
+        const PAL_F_HOUSE = $3C
 
 ;------------------------------------------------------------------------------
 ; CATHEDRAL
