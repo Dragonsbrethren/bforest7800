@@ -211,8 +211,15 @@ calc_inv_array
         ; populate arrays based on equipment bits
         ; TODO: Optimize for ROM space, this is quick and dirty...
         asm
-          ldx #0
-          stx index
+          lda #<m_item_bits_1
+          sta pointer
+          lda #>m_item_bits_1
+          sta pointer_hi
+          lda #<m_item_inv
+          sta jump1
+          lda #>m_item_inv
+          sta jump2
+          jsr .calc_inv_load
           lda #<m_sword_bits_1
           sta pointer
           lda #>m_sword_bits_1
@@ -221,79 +228,46 @@ calc_inv_array
           sta jump1
           lda #>m_sword_inv
           sta jump2
-calc_inv_load
-          ldy index
-          lda (pointer),y
-calc_inv_loop
-          lsr
-          bcc calc_inv_next
-          pha
-          txa
-          sta (jump1),y
-          pla
-          iny
-calc_inv_next
-          inx
-          cpx #11
-          beq calc_inv_done
-          cpx #5
-          bne calc_inv_loop
-          sty index
-          ldy #2
-          bne calc_inv_load
-calc_inv_done
+          jsr .calc_inv_load
+          lda #<m_shield_bits_1
+          sta pointer
+          lda #>m_shield_bits_1
+          sta pointer_hi
+          lda #<m_shield_inv
+          sta jump1
+          lda #>m_shield_inv
+          sta jump2
+          jsr .calc_inv_load
+          lda #<m_armor_bits_1
+          sta pointer
+          lda #>m_armor_bits_1
+          sta pointer_hi
+          lda #<m_armor_inv
+          sta jump1
+          lda #>m_armor_inv
+          sta jump2
+          jsr .calc_inv_load
+          lda #<m_charm_bits_1
+          sta pointer
+          lda #>m_charm_bits_1
+          sta pointer_hi
+          lda #<m_charm_inv
+          sta jump1
+          lda #>m_charm_inv
+          sta jump2
+          jsr .calc_inv_load
+          lda #<m_spell_bits_1
+          sta pointer
+          lda #>m_spell_bits_1
+          sta pointer_hi
+          lda #<m_spell_inv
+          sta jump1
+          lda #>m_spell_inv
+          sta jump2
+          jsr .calc_inv_load
 end
-        if m_shield_bits_1{0} then m_shield_inv[1] = 1
-        if m_shield_bits_1{1} then m_shield_inv[2] = 2
-        if m_shield_bits_1{2} then m_shield_inv[3] = 3
-        if m_shield_bits_1{3} then m_shield_inv[4] = 4
-        if m_shield_bits_1{4} then m_shield_inv[5] = 5
-        if m_shield_bits_2{0} then m_shield_inv[6] = 6
-        if m_shield_bits_2{1} then m_shield_inv[7] = 7
-        if m_shield_bits_2{2} then m_shield_inv[8] = 8
-        if m_shield_bits_2{3} then m_shield_inv[9] = 9
-        if m_shield_bits_2{4} then m_shield_inv[10] = 10
-        if m_armor_bits_1{0} then m_armor_inv[1] = 1
-        if m_armor_bits_1{1} then m_armor_inv[2] = 2
-        if m_armor_bits_1{2} then m_armor_inv[3] = 3
-        if m_armor_bits_1{3} then m_armor_inv[4] = 4
-        if m_armor_bits_1{4} then m_armor_inv[5] = 5
-        if m_armor_bits_2{0} then m_armor_inv[6] = 6
-        if m_armor_bits_2{1} then m_armor_inv[7] = 7
-        if m_armor_bits_2{2} then m_armor_inv[8] = 8
-        if m_armor_bits_2{3} then m_armor_inv[9] = 9
-        if m_armor_bits_2{4} then m_armor_inv[10] = 10
-        if m_charm_bits_1{0} then m_charm_inv[1] = 1
-        if m_charm_bits_1{1} then m_charm_inv[2] = 2
-        if m_charm_bits_1{2} then m_charm_inv[3] = 3
-        if m_charm_bits_1{3} then m_charm_inv[4] = 4
-        if m_charm_bits_1{4} then m_charm_inv[5] = 5
-        if m_charm_bits_2{0} then m_charm_inv[6] = 6
-        if m_charm_bits_2{1} then m_charm_inv[7] = 7
-        if m_charm_bits_2{2} then m_charm_inv[8] = 8
-        if m_charm_bits_2{3} then m_charm_inv[9] = 9
-        if m_charm_bits_2{4} then m_charm_inv[10] = 10
-        if m_relic_bits_1{0} then m_relic_inv[1] = 1
-        if m_relic_bits_1{1} then m_relic_inv[2] = 2
-        if m_relic_bits_1{2} then m_relic_inv[3] = 3
-        if m_relic_bits_1{3} then m_relic_inv[4] = 4
-        if m_relic_bits_1{4} then m_relic_inv[5] = 5
-        if m_relic_bits_2{0} then m_relic_inv[6] = 6
-        if m_relic_bits_2{1} then m_relic_inv[7] = 7
-        if m_relic_bits_2{2} then m_relic_inv[8] = 8
-        if m_relic_bits_2{3} then m_relic_inv[9] = 9
-        if m_relic_bits_2{4} then m_relic_inv[10] = 10
-        if m_spell_bits_1{0} then m_spell_inv[1] = 1
-        if m_spell_bits_1{1} then m_spell_inv[2] = 2
-        if m_spell_bits_1{2} then m_spell_inv[3] = 3
-        if m_spell_bits_1{3} then m_spell_inv[4] = 4
-        if m_spell_bits_1{4} then m_spell_inv[5] = 5
-        if m_spell_bits_2{0} then m_spell_inv[6] = 6
-        if m_spell_bits_2{1} then m_spell_inv[7] = 7
-        if m_spell_bits_2{2} then m_spell_inv[8] = 8
-        if m_spell_bits_2{3} then m_spell_inv[9] = 9
-        if m_spell_bits_2{4} then m_spell_inv[10] = 10
 
+calc_inv_remove_zeros
         ; inventory-by-inventory, remove zeros
         pointer = m_item_inv_lo
         pointer_hi = m_item_inv_hi
@@ -315,14 +289,12 @@ end
         gosub remove_inv_zeros
         pointer = m_spell_inv_lo
         pointer_hi = m_spell_inv_hi
-        gosub remove_inv_zeros
-        return
         ; riz_return pulls double duty as the return for calc_inv_array
 
 remove_inv_zeros
         ; reads thru the inv array and removes any empty slots
         temp1 = 0
-        for index = 1 to 10
+        for index = 0 to 10
         if !pointer[[index]] then riz_next
         pointer[[temp1]] = pointer[[index]]
         temp1++
@@ -334,6 +306,35 @@ riz_next
         next
 riz_return
         return
+
+calc_inv_load
+        asm
+          ldx #1
+          ldy #0
+          sty index
+calc_inv_pointer
+          lda (pointer),y
+          ldy index
+calc_inv_loop
+          lsr
+          bcc calc_inv_next
+          pha
+          txa
+          sta (jump1),y
+          pla
+          iny
+calc_inv_next
+          inx
+          cpx #12
+          beq calc_inv_done
+          cpx #6
+          bne calc_inv_loop
+          sty index
+          ldy #1
+          bne calc_inv_pointer
+calc_inv_done
+          rts
+end
 
 disable_double_wide_mode
         sCTRL{4} = 0 : CTRL = sCTRL
