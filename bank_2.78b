@@ -39,6 +39,14 @@
         incmapfile tiled/forest_room_10.tmx
         incmapfile tiled/forest_room_11.tmx
         incmapfile tiled/forest_room_12.tmx
+        incmapfile tiled/forest_room_13.tmx
+        incmapfile tiled/forest_room_14.tmx
+        incmapfile tiled/forest_room_15.tmx
+        incmapfile tiled/forest_room_16.tmx
+        incmapfile tiled/forest_room_17.tmx
+        incmapfile tiled/forest_room_18.tmx
+        incmapfile tiled/forest_room_19.tmx
+
 
 load_forest
         if !first_load then forest_pals
@@ -264,6 +272,7 @@ plot_forest_room_10
         $00
 end
 
+        dmahole 0
 plot_forest_room_11
         if !pw_success then in_save_room = 1
         pw_success = 0
@@ -308,7 +317,6 @@ end
         00, 00, 00, 00, 00, 00, 00
 end
 
-        dmahole 0
 test_walkable_forest
         tile_properties_1 = forest_tile_properties[move_tile_1]
         tile_properties_2 = forest_tile_properties[move_tile_2]
