@@ -47,20 +47,88 @@
         incmapfile tiled/forest_room_18.tmx
         incmapfile tiled/forest_room_19.tmx
 
+        const plot_forest_room_0_lo = #<.plot_forest_room_0
+        const plot_forest_room_0_hi = #>.plot_forest_room_0
+        const plot_forest_room_1_lo = #<.plot_forest_room_1
+        const plot_forest_room_1_hi = #>.plot_forest_room_1
+        const plot_forest_room_2_lo = #<.plot_forest_room_2
+        const plot_forest_room_2_hi = #>.plot_forest_room_2
+        const plot_forest_room_3_lo = #<.plot_forest_room_3
+        const plot_forest_room_3_hi = #>.plot_forest_room_3
+        const plot_forest_room_4_lo = #<.plot_forest_room_4
+        const plot_forest_room_4_hi = #>.plot_forest_room_4
+        const plot_forest_room_5_lo = #<.plot_forest_room_5
+        const plot_forest_room_5_hi = #>.plot_forest_room_5
+        const plot_forest_room_6_lo = #<.plot_forest_room_6
+        const plot_forest_room_6_hi = #>.plot_forest_room_6
+        const plot_forest_room_7_lo = #<.plot_forest_room_7
+        const plot_forest_room_7_hi = #>.plot_forest_room_7
+        const plot_forest_room_8_lo = #<.plot_forest_room_8
+        const plot_forest_room_8_hi = #>.plot_forest_room_8
+        const plot_forest_room_9_lo = #<.plot_forest_room_9
+        const plot_forest_room_9_hi = #>.plot_forest_room_9
+        const plot_forest_room_10_lo = #<.plot_forest_room_10
+        const plot_forest_room_10_hi = #>.plot_forest_room_10
+        const plot_forest_room_11_lo = #<.plot_forest_room_11
+        const plot_forest_room_11_hi = #>.plot_forest_room_11
+        const plot_forest_room_12_lo = #<.plot_forest_room_12
+        const plot_forest_room_12_hi = #>.plot_forest_room_12
+        const plot_forest_room_13_lo = #<.plot_forest_room_13
+        const plot_forest_room_13_hi = #>.plot_forest_room_13
+        const plot_forest_room_14_lo = #<.plot_forest_room_14
+        const plot_forest_room_14_hi = #>.plot_forest_room_14
+        const plot_forest_room_15_lo = #<.plot_forest_room_15
+        const plot_forest_room_15_hi = #>.plot_forest_room_15
+        const plot_forest_room_16_lo = #<.plot_forest_room_16
+        const plot_forest_room_16_hi = #>.plot_forest_room_16
+        const plot_forest_room_17_lo = #<.plot_forest_room_17
+        const plot_forest_room_17_hi = #>.plot_forest_room_17
+        const plot_forest_room_18_lo = #<.plot_forest_room_18
+        const plot_forest_room_18_hi = #>.plot_forest_room_18
+        const plot_forest_room_19_lo = #<.plot_forest_room_19
+        const plot_forest_room_19_hi = #>.plot_forest_room_19
+
+        data forest_map_lo
+        plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
+        plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
+        plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
+        plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
+end
+
+        data forest_map_hi
+        plot_forest_room_0_hi, plot_forest_room_1_hi, plot_forest_room_2_hi, plot_forest_room_3_hi, plot_forest_room_4_hi,
+        plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
+        plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
+        plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
+end
+
+        data forest_obj_lo
+        forest_room_0_obj_lo, forest_room_1_obj_lo, forest_room_2_obj_lo, forest_room_3_obj_lo, forest_room_4_obj_lo,
+        forest_room_5_obj_lo, forest_room_6_obj_lo, forest_room_7_obj_lo, forest_room_8_obj_lo, forest_room_9_obj_lo,
+        forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
+        forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
+end
+
+        data forest_obj_hi
+        forest_room_0_obj_hi, forest_room_1_obj_hi, forest_room_2_obj_hi, forest_room_3_obj_hi, forest_room_4_obj_hi,
+        forest_room_5_obj_hi, forest_room_6_obj_hi, forest_room_7_obj_hi, forest_room_8_obj_hi, forest_room_9_obj_hi,
+        forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
+        forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
+end
 
 load_forest
-        if !first_load then forest_pals
+        if !first_load then forest_set_room
         first_load = 0
         if save_room_index = 1 then forest_save_1
 
 ; Initial player location on game start
-        room_index = 17
+        room_index = 38
         menu_map_Xpos = 78
-        menu_map_Ypos = 96
-        player_Xpos = 24
-        player_Ypos = 60
-        player_facing = DIR_DOWN
-        goto forest_pals
+        menu_map_Ypos = 144
+        player_Xpos = 9*8
+        player_Ypos = $A0
+        player_facing = DIR_UP
+        goto forest_set_room
 
 forest_save_1
         room_index = 12
@@ -70,6 +138,49 @@ forest_save_1
         player_Ypos = 60
         player_facing = DIR_DOWN
 
+forest_set_room
+        characterset forest_trees
+        if music_playing then forest_init
+        music_playing = 1
+forest_init
+        asm
+          lda #0
+          sta no_flash
+          sta alt_palette
+          sta pal_animation
+          sta exit_room_index
+          sta save_room_index
+          sta obscure_player
+          lda #$FF
+          sta locked_zone
+          ldx room_index
+          lda forest_rooms,x
+          tax
+          lda forest_obj_lo,x
+          sta pointer
+          lda forest_obj_hi,x
+          sta pointer_hi
+          lda room_index
+          asl
+          sta menu_map_index
+          clc
+          adc #1
+          sta menu_map_index_2
+          cpx #12
+          bcc .forest_room_bank_2
+end
+        gosub forest_room_bank_16 bank16
+        return thisbank
+
+forest_room_bank_2
+        asm
+          lda forest_map_lo,x
+          sta jump1
+          lda forest_map_hi,x
+          sta jump2
+          jmp (jump1)
+end
+
 forest_pals
         bg_color = getfade(PAL_F_GRND, black)                          ; brown
         incbasic shared_pals.78b
@@ -77,22 +188,9 @@ forest_pals
         P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
         P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
         P7C1 = PAL_BLACK  : P7C2 = PAL_F_LTBRN : P7C3 = PAL_F_HOUSE    ; ledges, beige and light browns
+        goto palette_done
 
-        characterset forest_trees
-        room = forest_rooms[room_index]
-        if room = 1 then pointer = forest_room_1_obj_lo : pointer_hi = forest_room_1_obj_hi : goto plot_forest_room_1
-        if room = 2 then pointer = forest_room_2_obj_lo : pointer_hi = forest_room_2_obj_hi : goto plot_forest_room_2
-        if room = 3 then pointer = forest_room_3_obj_lo : pointer_hi = forest_room_3_obj_hi : goto plot_forest_room_3
-        if room = 4 then pointer = forest_room_4_obj_lo : pointer_hi = forest_room_4_obj_hi : goto plot_forest_room_4
-        if room = 5 then pointer = forest_room_5_obj_lo : pointer_hi = forest_room_5_obj_hi : goto plot_forest_room_5
-        if room = 6 then pointer = forest_room_6_obj_lo : pointer_hi = forest_room_6_obj_hi : goto plot_forest_room_6
-        if room = 7 then pointer = forest_room_7_obj_lo : pointer_hi = forest_room_7_obj_hi : goto plot_forest_room_7
-        if room = 8 then pointer = forest_room_8_obj_lo : pointer_hi = forest_room_8_obj_hi : goto plot_forest_room_8
-        if room = 9 then pointer = forest_room_9_obj_lo : pointer_hi = forest_room_9_obj_hi : goto plot_forest_room_9
-        if room = 10 then pointer = forest_room_10_obj_lo : pointer_hi = forest_room_10_obj_hi : goto plot_forest_room_10
-        if room = 11 then pointer = forest_room_11_obj_lo : pointer_hi = forest_room_11_obj_hi : goto plot_forest_room_11
-        if room = 12 then pointer = forest_room_12_obj_lo : pointer_hi = forest_room_12_obj_hi : goto plot_forest_room_12
-
+plot_forest_room_0
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
         menu_map_index = room_index * 2
@@ -105,6 +203,10 @@ plot_forest_room_1
         zone2_objects  = 2
         zone14_objects = 1
         return
+
+        data forest_room_0_obj
+        $00
+end
 
         data forest_room_1_obj
         $00
@@ -307,14 +409,42 @@ plot_forest_room_12
         $00
 end
 
+        data forest_room_13_obj
+        $00
+end
+
+        data forest_room_14_obj
+        $00
+end
+
+        data forest_room_15_obj
+        $00
+end
+
+        data forest_room_16_obj
+        $00
+end
+
+        data forest_room_17_obj
+        $00
+end
+
+        data forest_room_18_obj
+        $00
+end
+
+        data forest_room_19_obj
+        $00
+end
+
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
         00, 10,  9, 04, 05, 11, 00,
         00, 00, 00, 03, 02, 12, 00,
         00, 00, 00, 01, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00,
-        00, 00, 00, 00, 00, 00, 00
+        00, 00, 17, 15, 18, 00, 00,
+        00, 00, 16, 13, 14, 00, 00,
+        00, 00, 00, 19, 00, 00, 00
 end
 
 test_walkable_forest

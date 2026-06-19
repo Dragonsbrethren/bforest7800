@@ -54,6 +54,9 @@
         ; caves tileset
         incbasic bank_12.78b
         incbasic bank_13.78b
+
+        ; forest tileset overflow
+        incbasic bank_16.78b
         
         ; shared graphics and code
         incbasic bank_shared.78b

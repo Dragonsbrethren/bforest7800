@@ -1,0 +1,121 @@
+;==============================================================================
+; BANK 16
+;------------------------------------------------------------------------------
+; Contains forest tileset graphics, maps, and enemy AI
+;==============================================================================
+        bank 16
+        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
+        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
+        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
+        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
+        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
+        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
+        incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
+        incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
+        incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
+
+        incmapfile tiled/forest.tmx
+        incmapfile tiled/forest_room_1.tmx
+        incmapfile tiled/forest_room_2.tmx
+        incmapfile tiled/forest_room_3.tmx
+        incmapfile tiled/forest_room_4.tmx
+        incmapfile tiled/forest_room_5.tmx
+        incmapfile tiled/forest_room_6.tmx
+        incmapfile tiled/forest_room_7.tmx
+        incmapfile tiled/forest_room_8.tmx
+        incmapfile tiled/forest_room_9.tmx
+        incmapfile tiled/forest_room_10.tmx
+        incmapfile tiled/forest_room_11.tmx
+        incmapfile tiled/forest_room_12.tmx
+        incmapfile tiled/forest_room_13.tmx
+        incmapfile tiled/forest_room_14.tmx
+        incmapfile tiled/forest_room_15.tmx
+        incmapfile tiled/forest_room_16.tmx
+        incmapfile tiled/forest_room_17.tmx
+        incmapfile tiled/forest_room_18.tmx
+        incmapfile tiled/forest_room_19.tmx
+
+
+        data forest_map_b16_lo
+        plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
+        plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
+        plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
+        plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
+end
+
+        data forest_map_b16_hi
+        plot_forest_room_0_hi, plot_forest_room_1_hi, plot_forest_room_2_hi, plot_forest_room_3_hi, plot_forest_room_4_hi,
+        plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
+        plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
+        plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
+end
+
+forest_room_bank_16
+        asm
+          lda forest_map_b16_lo,x
+          sta jump1
+          lda forest_map_b16_hi,x
+          sta jump2
+          jmp (jump1)
+end
+
+plot_forest_room_13
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_13.tmx forest_room_13 0 1 20 12
+        memcpy map12 forest_room_13 240
+        return otherbank
+
+plot_forest_room_14
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_14.tmx forest_room_14 0 1 20 12
+        memcpy map12 forest_room_14 240
+        return otherbank
+
+plot_forest_room_15
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_15.tmx forest_room_15 0 1 20 12
+        memcpy map12 forest_room_13 240
+        return otherbank
+
+plot_forest_room_16
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_16.tmx forest_room_16 0 1 20 12
+        memcpy map12 forest_room_13 240
+        return otherbank
+
+plot_forest_room_17
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_17.tmx forest_room_17 0 1 20 12
+        memcpy map12 forest_room_13 240
+        return otherbank
+
+plot_forest_room_18
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_18.tmx forest_room_18 0 1 20 12
+        memcpy map12 forest_room_18 240
+        return otherbank
+
+plot_forest_room_19
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_19.tmx forest_room_19 0 1 20 12
+        memcpy map12 forest_room_19 240
+        return otherbank

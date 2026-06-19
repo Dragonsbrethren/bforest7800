@@ -116,7 +116,7 @@ darkness_done
         if tileset = T_CASTLE then goto castle_lightning
 no_lightning
         if !pal_update then palette_done
-;        if tileset = T_FOREST then goto forest_pals
+        if tileset = T_FOREST then goto forest_pals
         if tileset = T_CASTLE then goto castle_pals
         if tileset = T_RIVER then goto river_pals
         if tileset = T_HILLS then goto hills_pals
