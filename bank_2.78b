@@ -214,15 +214,10 @@ end
 
 
 plot_forest_room_2
-        menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = $08
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = $09
-        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 0 20 14
-        memcpy current_map forest_room_2 280
-        zone1_objects  = 3
-        zone2_objects  = 3
-        zone14_objects = 1
+        menu_map_room[menu_map_index_2] = $09
+        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 1 20 12
+        memcpy map12 forest_room_2 240
         return
 
         data forest_room_2_obj
@@ -248,32 +243,22 @@ plot_forest_room_3
 end
 
 plot_forest_room_4
-        menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = 2
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 3
-        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 0 20 14
-        memcpy current_map forest_room_4 280
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index] = ROOMR_UDR
+        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 1 20 12
+        memcpy map12 forest_room_4 240
+        return thisbank
 
         data forest_room_4_obj
         TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00
 end
 
 plot_forest_room_5
-        menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = 2
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = $0B
-        plotmapfile tiled/forest_room_5.tmx forest_room_5 0 0 20 14
-        memcpy current_map forest_room_5 280
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 2
-        return
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_U
+        plotmapfile tiled/forest_room_5.tmx forest_room_5 0 1 20 12
+        memcpy map12 forest_room_5 240
+        return thisbank
 
         data forest_room_5_obj
         TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00
@@ -410,6 +395,7 @@ plot_forest_room_12
 end
 
         data forest_room_13_obj
+        TYPE_DOOR_LOCK, 14*8, $70
         $00
 end
 
@@ -418,10 +404,12 @@ end
 end
 
         data forest_room_15_obj
+        TYPE_DOOR_LOCK, 2*8, $50
         $00
 end
 
         data forest_room_16_obj
+        TYPE_DOOR_LOCK, 8*8, $80
         $00
 end
 
@@ -430,6 +418,7 @@ end
 end
 
         data forest_room_18_obj
+        TYPE_DOOR_LOCK, 8*8, $60
         $00
 end
 
@@ -441,7 +430,7 @@ end
         00, 00,  8, 07, 06, 00, 00,
         00, 10,  9, 04, 05, 11, 00,
         00, 00, 00, 03, 02, 12, 00,
-        00, 00, 00, 01, 00, 00, 00,
+        00, 00, 00, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
         00, 00, 00, 19, 00, 00, 00
@@ -479,22 +468,25 @@ test_water_forest
         ; %01000000 = ledge - hop left
         ; %10000000 = waterfall
         data forest_tile_properties
-        %00000001, %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000001,
-        %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
-        %00000001, %00010010, %00010010, %00010010, %00000000, %00000010, %00100010, %00100010,
+        %00000011, %00000011, %00000011, %00000000, %00000000, %00000000, %00000000, %00000011,
+        %00000000, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011,
+        %00000011, %00010010, %00010010, %00010010, %00000000, %00000010, %00100010, %00100010,
         %00100010, %01000010, %01000010, %01000010, %00000110, %00000111, %00000110, %00000000,
         %00000110, %00000110, %00000110, %00000110, %00000110, %00000110, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000001, %00000000, %00000000
+        %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000001,
+        %00000000, %00000000, %00000000, %00000000, %00000000
 end
 
 torch_tile_block_forest
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 20
+        pokechar current_map peekX peekY 20 14 $2A
         if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
         peekX = peekX + 1
-        pokechar current_map peekX peekY 20 14 20
+        pokechar current_map peekX peekY 20 14 $2A
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_forest

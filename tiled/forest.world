@@ -37,38 +37,38 @@
         },
         {
             "fileName": "forest_room_4.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 1440,
-            "y": 0
+            "y": 288
         },
         {
             "fileName": "forest_room_5.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 1600,
-            "y": 0
+            "y": 288
         },
         {
             "fileName": "forest_room_3.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
-            "x": 1440,
-            "y": 224
+            "x": 1760,
+            "y": 480
         },
         {
             "fileName": "forest_room_2.tmx",
             "height": 224,
             "width": 160,
-            "x": 1600,
-            "y": 224
+            "x": 1928,
+            "y": 192
         },
         {
             "fileName": "forest_room_1.tmx",
             "height": 224,
             "width": 160,
-            "x": 1440,
-            "y": 448
+            "x": 1280,
+            "y": 224
         },
         {
             "fileName": "forest_room_12.tmx",
@@ -83,6 +83,55 @@
             "width": 160,
             "x": 1760,
             "y": 0
+        },
+        {
+            "fileName": "forest_room_13.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1440,
+            "y": 672
+        },
+        {
+            "fileName": "forest_room_14.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1600,
+            "y": 672
+        },
+        {
+            "fileName": "forest_room_15.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1440,
+            "y": 480
+        },
+        {
+            "fileName": "forest_room_16.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1280,
+            "y": 672
+        },
+        {
+            "fileName": "forest_room_17.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1280,
+            "y": 480
+        },
+        {
+            "fileName": "forest_room_18.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1600,
+            "y": 480
+        },
+        {
+            "fileName": "forest_room_19.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1440,
+            "y": 864
         }
     ],
     "onlyShowAdjacentMaps": false,
