@@ -296,16 +296,11 @@ plot_forest_room_6
 end
 
 plot_forest_room_7
-        menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = 6
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 7
-        plotmapfile tiled/forest_room_7.tmx forest_room_7 0 0 20 14
-        memcpy current_map forest_room_7 280
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return
+        menu_map_room[menu_map_index_2] = 7
+        plotmapfile tiled/forest_room_7.tmx forest_room_7 0 1 20 12
+        memcpy map12 forest_room_7 240
+        return thisbank
 
         data forest_room_7_obj
         TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
@@ -328,16 +323,11 @@ plot_forest_room_8
 end
 
 plot_forest_room_9
-        menu_map_index = room_index * 2
         menu_map_room[menu_map_index] = 4
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 5
-        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 0 20 14
-        memcpy current_map forest_room_9 280
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 1 20 12
+        memcpy map12 forest_room_9 240
+        return thisbank
 
         data forest_room_9_obj
         $00
@@ -428,8 +418,8 @@ end
 
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
-        00, 10,  9, 04, 05, 11, 00,
-        00, 00, 00, 03, 02, 12, 00,
+        00, 10, 00,  9, 05, 11, 00,
+        00, 00, 00, 07, 02, 12, 00,
         00, 00, 00, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
