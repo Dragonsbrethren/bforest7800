@@ -1406,13 +1406,6 @@ plot_skelsword
         plotsprite sword0 0 Xposition Yposition frame
         goto plot_next
 
-plot_hud_castle
-        plotvalue castle_hud 0 player_Xpos 2 32 12
-        plotvalue castle_hud 0 move_tile_1 4 32 11
-;        plotvalue castle_hud 0 player_Ypos 2 48 12
-;        plotvalue castle_hud 0 move_tile_1 4 32 13
-        return thisbank
-
 cast_darkbolt
         asm
           jsr .find_new_object

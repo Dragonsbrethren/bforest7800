@@ -8,9 +8,9 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
-        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_carpet.png 160A 0 1 2 3 4
         incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
-        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_walls.png 160A 1 1 2 3 5
         incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
@@ -46,13 +46,14 @@
         incmapfile tiled/forest_room_17.tmx
         incmapfile tiled/forest_room_18.tmx
         incmapfile tiled/forest_room_19.tmx
-
+        incmapfile tiled/forest_room_20.tmx
 
         data forest_map_b16_lo
         plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
         plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
+        plot_forest_room_20_lo
 end
 
         data forest_map_b16_hi
@@ -60,6 +61,7 @@ end
         plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
+        plot_forest_room_20_hi
 end
 
 forest_room_bank_16
@@ -118,4 +120,12 @@ plot_forest_room_19
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_19.tmx forest_room_19 0 1 20 12
         memcpy map12 forest_room_19 240
+        return otherbank
+
+plot_forest_room_20
+        menu_map_room[menu_map_index] = ROOML_B
+        menu_map_room[menu_map_index_2] = ROOMR_B
+        plotmapfile tiled/forest_room_20.tmx forest_room_20 0 1 20 12
+        memcpy map12 forest_room_20 240
+        alt_palette = 1
         return otherbank

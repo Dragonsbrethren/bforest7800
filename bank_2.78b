@@ -8,9 +8,9 @@
         incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
         incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
         incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
-        incgraphic gfx/forest/hud.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_carpet.png 160A 0 1 2 3 4
         incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
-        incgraphic gfx/forest/hud2.png 160A 0 3 1 2
+        incgraphic gfx/tiles/forest_walls.png 160A 1 1 2 3 5
         incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
@@ -46,6 +46,7 @@
         incmapfile tiled/forest_room_17.tmx
         incmapfile tiled/forest_room_18.tmx
         incmapfile tiled/forest_room_19.tmx
+        incmapfile tiled/forest_room_20.tmx
 
         const plot_forest_room_0_lo = #<.plot_forest_room_0
         const plot_forest_room_0_hi = #>.plot_forest_room_0
@@ -87,12 +88,15 @@
         const plot_forest_room_18_hi = #>.plot_forest_room_18
         const plot_forest_room_19_lo = #<.plot_forest_room_19
         const plot_forest_room_19_hi = #>.plot_forest_room_19
+        const plot_forest_room_20_lo = #<.plot_forest_room_20
+        const plot_forest_room_20_hi = #>.plot_forest_room_20
 
         data forest_map_lo
         plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
         plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
+        plot_forest_room_20_lo
 end
 
         data forest_map_hi
@@ -100,6 +104,7 @@ end
         plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
+        plot_forest_room_20_hi
 end
 
         data forest_obj_lo
@@ -107,6 +112,7 @@ end
         forest_room_5_obj_lo, forest_room_6_obj_lo, forest_room_7_obj_lo, forest_room_8_obj_lo, forest_room_9_obj_lo,
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
+        forest_room_20_obj_lo
 end
 
         data forest_obj_hi
@@ -114,6 +120,7 @@ end
         forest_room_5_obj_hi, forest_room_6_obj_hi, forest_room_7_obj_hi, forest_room_8_obj_hi, forest_room_9_obj_hi,
         forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
+        forest_room_20_obj_hi
 end
 
 load_forest
@@ -183,12 +190,26 @@ end
 
 forest_pals
         bg_color = getfade(PAL_F_GRND, black)                          ; brown
+        asm
+          lda #PAL_BLACK
+          sta P4C1
+          sta P5C1
+          sta P6C1
+          sta P7C1
+end
+        if alt_palette = 1 then forest_interior
+        P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+forest_shared
         incbasic shared_pals.78b
-        P4C1 = PAL_BLACK  : P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
-        P5C1 = PAL_BLACK  : P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
-        P6C1 = PAL_BLACK  : P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
-        P7C1 = PAL_BLACK  : P7C2 = PAL_F_LTBRN : P7C3 = PAL_F_HOUSE    ; ledges, beige and light browns
+        P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
+        P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
+        P7C2 = PAL_F_LTBRN : P7C3 = PAL_F_HOUSE    ; ledges, beige and light browns
         goto palette_done
+
+forest_interior
+        P4C3 = PAL_C_LTCARP
+        P4C2 = PAL_C_DKCARP 
+        goto forest_shared
 
 plot_forest_room_0
 ; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
@@ -334,16 +355,11 @@ plot_forest_room_9
 end
 
 plot_forest_room_10
-        menu_map_index = room_index * 2
-        menu_map_room[menu_map_index] = 2
-        menu_map_index = menu_map_index + 1
-        menu_map_room[menu_map_index] = 3
-        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 0 20 14
-        memcpy current_map forest_room_10 280
-        zone1_objects  = 2
-        zone2_objects  = 2
-        zone14_objects = 1
-        return
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 1 20 12
+        memcpy map12 forest_room_10 240
+        return thisbank
 
         data forest_room_10_obj
         $00
@@ -416,10 +432,14 @@ end
         $00
 end
 
+        data forest_room_20_obj
+        $00
+end
+
         data forest_rooms
         00, 00,  8, 07, 06, 00, 00,
-        00, 10, 00,  9, 05, 11, 00,
-        00, 00, 00, 07, 02, 12, 00,
+        00, 10,  9,  9, 05, 11, 00,
+        00, 00, 10, 07, 02, 12, 00,
         00, 00, 00, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
@@ -460,14 +480,19 @@ test_water_forest
         data forest_tile_properties
         %00000011, %00000011, %00000011, %00000000, %00000000, %00000000, %00000000, %00000011,
         %00000000, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011,
-        %00000011, %00010010, %00010010, %00010010, %00000000, %00000010, %00100010, %00100010,
-        %00100010, %01000010, %01000010, %01000010, %00000110, %00000111, %00000110, %00000000,
-        %00000110, %00000110, %00000110, %00000110, %00000110, %00000110, %00000000, %00000000,
+        %00000011, %00000011,
+                              %00010010, %00010010, %00010010, %00000000, %00000010, %00100010,
+        %00100010, %00100010, %01000010, %01000010, %01000010,
+                                                               %00000110, %00000111, %00000110,
+        %00000000, %00000110, %00000110, %00000110, %00000110, %00000110, %00000110, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000001, %00000000, %00000000,
+                                                    %00000001, %00000001, %00000001, %00000001,
+        %00000001, %00000001, %00000001, %00000001, %00000001,
+                                                               %00000000, %00000000, %00000000,
+        %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000001,
-        %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000011, %00000010, %00000000
 end
 
 torch_tile_block_forest

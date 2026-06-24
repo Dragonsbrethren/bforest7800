@@ -2,24 +2,24 @@
     "maps": [
         {
             "fileName": "forest_room_10.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
-            "x": 1120,
-            "y": 0
+            "x": 1280,
+            "y": 96
         },
         {
             "fileName": "forest_room_9.tmx",
             "height": 192,
             "width": 160,
-            "x": 1440,
+            "x": 1280,
             "y": -96
         },
         {
             "fileName": "forest_room_8.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
-            "x": 1280,
-            "y": -224
+            "x": 1440,
+            "y": -96
         },
         {
             "fileName": "forest_room_7.tmx",
@@ -30,10 +30,10 @@
         },
         {
             "fileName": "forest_room_6.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
             "x": 1600,
-            "y": -224
+            "y": -96
         },
         {
             "fileName": "forest_room_4.tmx",

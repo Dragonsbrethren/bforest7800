@@ -353,22 +353,6 @@ plot_bar
         plotsprite bar_end sprite_pal Xposition Yposition 0
         return thisbank
 
-plot_debug_hud
-        if tileset = T_CASTLE then plot_hud_castle
-        if tileset = T_HILLS then plot_hud_hills
-        ; plotvalue hud 0 player_hp 2 72 0
-        ; plotvalue hud 0 player_mp 2 72 1
-        plotvalue hud 0 player_Xpos 4 32 12
-        plotvalue hud2 0 move_tile_1 4 32 11
-;        plotvalue hud 0 tile_properties_1 2 64 12
-;        plotvalue hud 0 tile_properties_2 2 80 12
-        ; plotvalue hud 0 room_index 2 32 13
-        ; plotvalue hud 0 room 2 48 13
-;        plotvalue hud 0 input_buffer 16 16 13
-        ; plotvalue hud 0 chant_input 2 8 13
-        ; plotvalue hud 0 retract_counter 2 64 13
-        return thisbank
-
 open_menu
         gosub clear_palettes
         ; prevent menu access from loading wrong tileset on exit

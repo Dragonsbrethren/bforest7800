@@ -196,7 +196,6 @@ end
 
 plot_hud
         gosub update_hud
-        if debug_hud then gosub plot_debug_hud
 
 
 ; Currently disabled due to needing more space in shared graphics block,
