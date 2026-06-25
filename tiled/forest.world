@@ -18,8 +18,8 @@
             "fileName": "forest_room_8.tmx",
             "height": 192,
             "width": 160,
-            "x": 1440,
-            "y": -96
+            "x": 1600,
+            "y": -288
         },
         {
             "fileName": "forest_room_7.tmx",
@@ -53,8 +53,8 @@
             "fileName": "forest_room_3.tmx",
             "height": 192,
             "width": 160,
-            "x": 1760,
-            "y": 480
+            "x": 1280,
+            "y": -288
         },
         {
             "fileName": "forest_room_2.tmx",
@@ -72,17 +72,17 @@
         },
         {
             "fileName": "forest_room_12.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
-            "x": 1760,
-            "y": 224
+            "x": 1440,
+            "y": -288
         },
         {
             "fileName": "forest_room_11.tmx",
-            "height": 224,
+            "height": 192,
             "width": 160,
-            "x": 1760,
-            "y": 0
+            "x": 1440,
+            "y": -96
         },
         {
             "fileName": "forest_room_13.tmx",
@@ -131,6 +131,27 @@
             "height": 192,
             "width": 160,
             "x": 1440,
+            "y": 864
+        },
+        {
+            "fileName": "forest_room_21.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 960,
+            "y": 864
+        },
+        {
+            "fileName": "forest_room_22.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1120,
+            "y": 864
+        },
+        {
+            "fileName": "forest_room_20.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1280,
             "y": 864
         }
     ],
