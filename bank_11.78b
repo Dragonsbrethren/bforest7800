@@ -229,9 +229,9 @@ gameover_controls
         if !action_debounce && joy0fire0 && action_button = 0 then gameover_input
         if !action_debounce && joy0fire1 && action_button = 1 then gameover_input
         if demo_end then goto main
-        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if up_debounce >= MENU_TAP_FRAMES || up_debounce = 1 then gosub menu_selection_up
         if !up_debounce && joy0up then gosub menu_selection_up
-        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if down_debounce >= MENU_TAP_FRAMES || down_debounce = 1 then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
         if menu_selection > 1 then menu_selection = 0
         menu_cursor_X = 56

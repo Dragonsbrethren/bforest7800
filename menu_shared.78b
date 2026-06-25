@@ -95,36 +95,36 @@ plot_menu_cursor
 
 menu_dirs
         prev_menu_selection = menu_selection
-        if right_debounce >= MENU_TAP_FRAMES then gosub menu_selection_right
+        if right_debounce >= MENU_TAP_FRAMES || right_debounce = 1 then gosub menu_selection_right
         if !right_debounce && joy0right then gosub menu_selection_right
-        if left_debounce >= MENU_TAP_FRAMES then gosub menu_selection_left
+        if left_debounce >= MENU_TAP_FRAMES || left_debounce = 1 then gosub menu_selection_left
         if !left_debounce && joy0left then gosub menu_selection_left
-        if up_debounce >= MENU_TAP_FRAMES then gosub menu_selection_up
+        if up_debounce >= MENU_TAP_FRAMES || up_debounce = 1 then gosub menu_selection_up
         if !up_debounce && joy0up then gosub menu_selection_up
-        if down_debounce >= MENU_TAP_FRAMES then gosub menu_selection_down
+        if down_debounce >= MENU_TAP_FRAMES || down_debounce = 1 then gosub menu_selection_down
         if !down_debounce && joy0down then gosub menu_selection_down
         return
 
 menu_selection_right
-        menu_selection = menu_selection + 1 : right_debounce = 1
+        menu_selection++ : right_debounce = 2
         ; wrap menu selection back to zero
         if menu_selection > menu_max then menu_selection = 0
         return
 
 menu_selection_left
-        menu_selection = menu_selection - 1 : left_debounce  = 1
+        menu_selection-- : left_debounce = 2
         ; selection underflow, wrap to last option
         if menu_selection > menu_max then menu_selection = menu_max
         return
 
 menu_selection_down
-        menu_selection = menu_selection + menu_columns : down_debounce = 1
+        menu_selection = menu_selection + menu_columns : down_debounce = 2
         ; wrap menu selection back to zero
         if menu_selection > menu_max then menu_selection = 0
         return
 
 menu_selection_up
-        menu_selection = menu_selection - menu_columns : up_debounce = 1
+        menu_selection = menu_selection - menu_columns : up_debounce = 2
         ; selection underflow, wrap to last option
         if menu_selection > menu_max then menu_selection = menu_max
         return
