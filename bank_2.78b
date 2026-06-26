@@ -396,6 +396,8 @@ end
 end
 
         data forest_room_13_obj
+        TYPE_TORCH, 5*8, $60
+        TYPE_TORCH, 13*8, $80, TYPE_TORCH, 16*8, $80
         TYPE_DOOR, 14*8, $70
         $00
 end
@@ -424,6 +426,7 @@ end
 end
 
         data forest_room_19_obj
+        TYPE_TORCH, 7*8, $30, TYPE_TORCH, 11*8, $30
         $00
 end
 
@@ -519,26 +522,42 @@ torch_tile_unblock_forest
 ;==============================================================================
 wolf_ai
         ; Once wolves start chasing, they don't stop
-        if flags{7} then wolf_chase
-
-        ; Test player distance to wolf
-        temp1 = Xposition - player_Xpos
-        if temp1 < WOLF_CHASE_DIST then wolf_chase
-        temp1 = Yposition - player_Ypos
-        if temp1 < (WOLF_CHASE_DIST * 2) then wolf_chase
-
+        asm
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc wolf_right
+          lda #F_WOLF_LEFT_1
+          sta object_frame,x
+          jmp wolf_anim
+wolf_right
+          lda #F_WOLF_RIGHT_1
+          sta object_frame,x
 wolf_anim
-        ; Wolves flip left or right facing depending on player position
-        frame = 0
-        if Xposition <= player_Xpos then frame = frame + 2
-        if animation_frame then frame = frame + 1
-        return
+          lda animation_frame
+          bne wolf_flags
+          inc object_frame,x
+wolf_flags
+          lda object_flags,x
+          cmp #%10000000
+          beq wolf_chase
+          lda object_Xpos,x
+          sec
+          sbc #WOLF_CHASE_OFFSET_X
+          sta Xposition
+          lda object_Ypos,x
+          sec
+          sbc #WOLF_CHASE_DIST_Y
+          sta Yposition
+end
+        if !boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, WOLF_CHASE_DIST_X, WOLF_CHASE_DIST_Y) then return thisbank
+        asm
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
 
 wolf_chase
-        flags{7} = 1
-        gosub get_player_pos
-        gosub go_to_destination
-        goto wolf_anim
+          jmp .follow_player
+end
 
 obj_wolf_stats
 ; TODO: Make this implementation suck less
@@ -555,9 +574,11 @@ obj_wolf_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #<.plot_wolf
+          lda #WOLF_PAL
+          sta object_pal,x
+          lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_wolf
+          lda #>.plot_forest_160a
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
@@ -568,16 +589,28 @@ end
 ; A Slime draws near!
 ; Command?
 ;==============================================================================
-slime_ai
-        ; slimes have no physical defense on their squished frame
-        if !animation_frame then temp1 = SLIME_DEF : goto slime_chase
-        ; this will allow them to split into mini-slimes
-        temp1 = 0
+mslime_ai
+        asm
+          lda #F_MSLIME_1
+          sta object_frame,x
+          lda #MSLIME_DEF
+          jmp slime_anim
+
+.slime_ai
+          lda #F_SLIME_1
+          sta object_frame,x
+          lda #SLIME_DEF
+
+slime_anim
+          sta object_def,x
+          lda animation_frame
+          beq slime_chase
+          lda #0
+          sta object_def,x
+          inc object_frame,x
 slime_chase
-        object_def[index] = temp1
-        gosub get_player_pos
-        gosub go_to_destination
-        return
+          jmp .follow_player
+end
 
 obj_slime_stats
         object_hp[obj_index] = SLIME_HP
@@ -593,9 +626,11 @@ obj_slime_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #<.plot_slime
+          lda #SLIME_PAL
+          sta object_pal,x
+          lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_slime
+          lda #>.plot_forest_160a
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
@@ -604,16 +639,18 @@ split_slime
         ; replace slime mobj with mini slime
         asm
           ldx index
-          lda #TYPE_SLIME
+          lda #TYPE_MSLIME
           sta object_type,x
-          lda #SLIME_HP
+          lda #MSLIME_HP
           sta object_hp,x
-          lda #SLIME_DEF
+          lda #MSLIME_DEF
           sta object_def,x
-          lda #<.plot_minislime
+          lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_minislime
+          lda #>.plot_forest_160a
           sta object_spr_ptr_hi,x
+          lda #F_MSLIME_1
+          sta object_frame,x
 end
         gosub find_new_object
         ; if no slots, the slime just becomes a single mini slime
@@ -624,16 +661,14 @@ end
           lda object_Xpos,x
           ; push Xpos to stack for later use
           pha
-          sec
-          sbc #1
-          sta object_Xpos,x
+          dec object_Xpos,x
           lda object_Ypos,x
         ; initialize the new mini slime object
           ldx spawn_index
           sta object_Ypos,x
-          lda #TYPE_SLIME
+          lda #TYPE_MSLIME
           sta object_type,x
-          lda #SLIME_HP
+          lda #MSLIME_HP
           sta object_hp,x
           lda #SLIME_VEL_CAP_HI
           sta object_vel_cap_hi,x
@@ -653,16 +688,21 @@ end
           sta object_speed_hi,x
           lda #SLIME_SPEED_LO
           sta object_speed_lo,x
+          lda #F_MSLIME_1
+          sta object_frame,x
+          lda #SLIME_PAL
+          sta object_pal,x
           lda #0
           sta object_invuln,x
+          sta object_flags,x
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc
           adc #9
           sta object_Xpos,x
-          lda #<.plot_minislime
+          lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_minislime
+          lda #>.plot_forest_160a
           sta object_spr_ptr_hi,x
 end
         goto set_enemy_name
@@ -749,25 +789,13 @@ obj_raven_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #<.plot_raven
+          lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
-          lda #>.plot_raven
+          lda #>.plot_forest_160a
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
 
-plot_wolf
-        PLOTSPRITE wolf0 5 Xposition Yposition frame
-        goto plot_next
-
-plot_slime
-        PLOTSPRITE slime0 4 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_minislime
-        PLOTSPRITE minislime0 4 Xposition Yposition animation_frame
-        goto plot_next
-
-plot_raven
-        PLOTSPRITE raven0 5 Xposition Yposition frame
+plot_forest_160a
+        plotsprite wolf0 sprite_pal Xposition Yposition frame
         goto plot_next

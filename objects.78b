@@ -189,6 +189,9 @@
         const WOLF_CHASE_DIST_Y = 64
         const WOLF_CHASE_OFFSET_X = WOLF_CHASE_DIST_X / 2
         const WOLF_CHASE_OFFSET_Y = WOLF_CHASE_DIST_Y / 2
+        const F_WOLF_LEFT_1  = 0
+        const F_WOLF_RIGHT_1 = 2
+        const WOLF_PAL = 5
 
         const SLIME_DROP_RATE = 128     ; depreciated
         const SLIME_HP = 4
@@ -203,7 +206,12 @@
         const SLIME_FRICTION_HI = 1
         const SLIME_FRICTION_LO = 0
         const SLIME_SPEED_HI = 0
-        const SLIME_SPEED_LO = 5
+        const SLIME_SPEED_LO = 128
+        const F_SLIME_1 = 4
+        const F_SLIME_2 = 5
+        const F_MSLIME_1 = 6
+        const F_MSLIME_2 = 7
+        const SLIME_PAL = 4
 
         const RAVEN_CHASE_DIST = 50
         const RAVEN_FLIGHT_TIME = 10
@@ -671,8 +679,8 @@
         const octopus_ai_hi   = #>.octopus_ai
         const slime_ai_lo     = #<.slime_ai
         const slime_ai_hi     = #>.slime_ai
-        const mslime_ai_lo    = #<.slime_ai
-        const mslime_ai_hi    = #>.slime_ai
+        const mslime_ai_lo    = #<.mslime_ai
+        const mslime_ai_hi    = #>.mslime_ai
         const raven_ai_lo     = #<.raven_ai
         const raven_ai_hi     = #>.raven_ai
         const priest_ai_lo    = #<.priest_ai
