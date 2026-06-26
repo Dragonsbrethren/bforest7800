@@ -4,15 +4,15 @@
             "fileName": "forest_room_10.tmx",
             "height": 192,
             "width": 160,
-            "x": 1280,
-            "y": 96
+            "x": 1120,
+            "y": 288
         },
         {
             "fileName": "forest_room_9.tmx",
             "height": 192,
             "width": 160,
-            "x": 1280,
-            "y": -96
+            "x": 1120,
+            "y": 96
         },
         {
             "fileName": "forest_room_8.tmx",
@@ -54,7 +54,7 @@
             "height": 192,
             "width": 160,
             "x": 1280,
-            "y": -288
+            "y": 96
         },
         {
             "fileName": "forest_room_2.tmx",

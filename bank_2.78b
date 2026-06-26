@@ -374,7 +374,7 @@ end
 end
 
         data forest_room_7_obj
-        TYPE_BURNBUSH, 14*8, $50
+        TYPE_BURNBUSH, 12*8, $50
         TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
 end
 
@@ -507,11 +507,11 @@ end
 
 torch_tile_block_forest
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 $2A
+        pokechar current_map peekX peekY 20 14 $2C
         if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
         peekX = peekX + 1
-        pokechar current_map peekX peekY 20 14 $2A
+        pokechar current_map peekX peekY 20 14 $2C
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_forest
