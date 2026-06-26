@@ -562,7 +562,7 @@ pos_swd_left
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo, <.bat_spawner_ai, <.bat_ai, <.rose_ai, <.cave_spider_ai
         <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai, <.castle_boss, <.octokraken_ai, <.river_boss, <.tentacle_ai
-        <.blockflame_ai, <.hrose_ai
+        <.blockflame_ai, <.hrose_ai, <.burnbush_ai
 end
 
         data object_ai_hi
@@ -571,7 +571,7 @@ end
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi, >.bat_spawner_ai, >.bat_ai, >.rose_ai, >.cave_spider_ai
         >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai, >.castle_boss, >.octokraken_ai, >.river_boss, >.tentacle_ai
-        >.blockflame_ai, >.hrose_ai
+        >.blockflame_ai, >.hrose_ai, >.burnbush_ai
 end
 
         data projectile_ai_lo
@@ -1703,6 +1703,8 @@ cc_player_contact
           beq .cc_next
           cmp #TYPE_CAMPFIRE
           beq .cc_next
+          cmp #TYPE_BURNBUSH
+          beq .cc_next
           lda object_damage,x
           sta hp_change
 end
@@ -1827,9 +1829,25 @@ sword_bypass_elevation
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
 sword_sound
         ; no sound on flames
-        if object_type[index] = TYPE_BLOCKFLAME then sword_damage
-        if object_type[index] < TYPE_SPAWNER then playsfx sfx_poof2
-        if object_type[index] = TYPE_SKELSWORD then playsfx sfx_gotthecoin
+        asm
+          ldx index
+          lda object_type,x
+          bmi .sword_damage
+          cmp #TYPE_BLOCKFLAME
+          beq .sword_damage
+          cmp #TYPE_BURNBUSH
+          beq .sword_damage
+          cmp #TYPE_SKELSWORD
+          bne .sword_poof
+end
+
+sword_coin
+        playsfx sfx_gotthecoin
+        goto sword_damage
+
+sword_poof
+        playsfx sfx_poof2
+
 sword_damage
         ; TODO: Much better damage calculations
         asm

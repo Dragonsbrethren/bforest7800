@@ -1033,6 +1033,19 @@ river_remove_blocks
           rts
 end
 
+blockflame_check
+        ; this check comes from magic_collision.asm, X is the player's projectile
+        asm
+          lda object_type,x
+          cmp #TYPE_ICEFLAKE
+          jmp .magic_damage_immune
+          ; set flag to remove flame
+          lda m_spell_bits_2
+          ora #%00001000
+          sta m_spell_bits_2 
+          jmp .magic_damage_immune
+end
+
 ; the flame in room 17 that blocks access to hills
 blockflame_ai
         asm

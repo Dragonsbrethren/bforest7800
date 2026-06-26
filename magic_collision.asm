@@ -66,15 +66,13 @@
         ; hacked in check for river's blocking flame object
         lda object_type,y
         cmp #TYPE_BLOCKFLAME
-        bne .magic_damage_def
-        lda object_type,x
-        cmp #TYPE_ICEFLAKE
+        bne .magic_burnbush_check
+        jmp .blockflame_check
+
+.magic_burnbush_check
+        cmp #TYPE_BURNBUSH
         bne .magic_damage_immune
-        ; set flag to remove flame
-        lda m_spell_bits_2
-        ora #%00001000
-        sta m_spell_bits_2 
-        bne .magic_damage_immune
+        jmp .burnbush_check
 
 .magic_damage_def
         ; if object has max defense, bypass hp calc altogether

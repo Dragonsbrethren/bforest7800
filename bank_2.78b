@@ -19,12 +19,15 @@
         incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
         incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
         incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
+        incgraphic gfx/sprites/burnbush.png 160A 1 0 2 3
         incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
+        incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
 
         incmapfile tiled/forest.tmx
         incmapfile tiled/forest_room_1.tmx
@@ -235,18 +238,17 @@ forest_interior
         goto forest_shared
 
 plot_forest_room_0
-; room 1 is the default and uses a "crossroads" setup in case the player gets out of bounds somehow
 plot_forest_room_1
-        menu_map_room[menu_map_index] = 2
-        menu_map_room[menu_map_index_2] = 3
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
         plotmapfile tiled/forest_room_1.tmx forest_room_1 0 1 20 12
         memcpy map12 forest_room_1 240
         return thisbank
 
 
 plot_forest_room_2
-        menu_map_room[menu_map_index] = $08
-        menu_map_room[menu_map_index_2] = $09
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
         plotmapfile tiled/forest_room_2.tmx forest_room_2 0 1 20 12
         memcpy map12 forest_room_2 240
         return thisbank
@@ -261,7 +263,7 @@ plot_forest_room_3
 
 plot_forest_room_4
         menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index] = ROOMR_UDR
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 1 20 12
         memcpy map12 forest_room_4 240
         return thisbank
@@ -274,8 +276,8 @@ plot_forest_room_5
         return thisbank
 
 plot_forest_room_6
-        menu_map_room[menu_map_index] = 6
-        menu_map_room[menu_map_index_2] = $0D
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_6.tmx forest_room_6 0 1 20 12
         memcpy map12 forest_room_6 240
         return thisbank
@@ -295,8 +297,8 @@ plot_forest_room_8
         return thisbank
 
 plot_forest_room_9
-        menu_map_room[menu_map_index] = 4
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_D
         plotmapfile tiled/forest_room_9.tmx forest_room_9 0 1 20 12
         memcpy map12 forest_room_9 240
         return thisbank
@@ -314,7 +316,7 @@ plot_forest_room_11
         pw_success = 0
         save_room_index = 1
         entered_save_room{0} = 1
-        menu_map_room[menu_map_index]   = ROOML_UD
+        menu_map_room[menu_map_index]   = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 1 20 12
         memcpy map12 forest_room_11 240
@@ -372,6 +374,7 @@ end
 end
 
         data forest_room_7_obj
+        TYPE_BURNBUSH, 14*8, $50
         TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
 end
 
@@ -384,6 +387,7 @@ end
 end
 
         data forest_room_10_obj
+        TYPE_BURNBUSH, 13*8, $A0
         $00
 end
 
@@ -445,8 +449,8 @@ end
         data forest_rooms
         00, 00,  8, 07,  8, 00, 00,
         00, 10,  9, 11, 06, 11, 00,
-        00, 00, 10, 07, 02, 12, 00,
-        00, 00, 00, 04, 05, 00, 00,
+        00,  9, 03, 07, 02, 12, 00,
+        00, 10, 01, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
         21, 22, 20, 19, 00, 00, 00
@@ -514,6 +518,23 @@ torch_tile_unblock_forest
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 0
         goto kill_torch_done
+
+burnbush_check
+        ; this check comes from magic_collision.asm
+        ; X = player's projectile Y = object index
+        asm
+          lda object_type,x
+          cmp #TYPE_FIREBALL
+          beq burnbush_set_bits
+          cmp #TYPE_LIGHTNING
+          beq burnbush_set_bits
+          jmp .magic_damage_immune
+burnbush_set_bits
+          ; set flag to remove bush
+          lda #FLAG_BURNBUSH_BURN
+          sta object_flags,y 
+          jmp .magic_damage_immune
+end
 
 ;==============================================================================
 ; WOLF AI
@@ -789,13 +810,82 @@ obj_raven_stats
         object_flags[obj_index] = 0
         asm
           ldx obj_index
-          lda #<.plot_forest_160a
+          lda #<.plot_firebat
           sta object_spr_ptr_lo,x
-          lda #>.plot_forest_160a
+          lda #>.plot_firebat
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
 
+; mini trees that block progression to force player to try magic
+burnbush_ai
+        asm
+          lda object_flags,x
+          cmp #FLAG_BURNBUSH_BURN
+          bne burnbush_block
+
+burnbush_burn
+          beq burnbush_unblock
+          dec object_timer,x
+          bmi burnbush_timer
+          beq burnbush_unblock
+          lda #F_FLAME
+          sta object_frame,x
+          lda animation_frame
+          beq burnbush_block
+          inc object_frame,x
+
+burnbush_block
+          ; just run this every frame because of menu access
+          jsr .get_object_pos
+          jmp .torch_tile_block_forest
+
+burnbush_unblock
+          lda #0
+          sta object_type,x
+          jsr .get_object_pos
+          jmp .torch_tile_unblock_forest
+
+burnbush_timer
+          ldx index
+          lda #FIRE_PAL
+          sta object_pal,x
+          lda #<.plot_food
+          sta object_spr_ptr_lo,x
+          lda #>.plot_food
+          sta object_spr_ptr_hi,x
+          lda #F_FLAME
+          sta object_frame,x
+          lda #BURNBUSH_BURN_TIME
+          sta object_timer,x
+          rts
+end
+
+obj_burnbush_stats
+        asm
+          ldx obj_index
+          lda #1
+          sta object_hp,x
+          lda #255
+          sta object_def,x
+          sta object_mdef,x
+          lda #0
+          sta object_timer,x
+          lda #BURNBUSH_PAL
+          sta object_pal,x
+          lda #F_BURNBUSH
+          sta object_frame,x
+          lda #<.plot_forest_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_forest_160a
+          sta object_spr_ptr_hi,x
+          jmp .obj_next_stats
+end
+
 plot_forest_160a
         plotsprite wolf0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_firebat
+        plotsprite firebat0 2 Xposition Yposition animation_frame
         goto plot_next

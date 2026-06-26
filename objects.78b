@@ -36,6 +36,9 @@
         const TYPE_TENTACLE     = 34
         const TYPE_BLOCKFLAME   = 35
         const TYPE_HROSE        = 36
+        const TYPE_BURNBUSH     = 37
+        const TYPE_FIREBAT      = 38
+        const TYPE_FOREST_BOSS  = 39
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -226,6 +229,13 @@
         const RAVEN_SPEED_LO = 0
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
+
+        ; BURN BUSH
+        const FLAG_BURNBUSH_BURN = #%01000000
+        const BURNBUSH_PAL = 4
+        const F_BURNBUSH   = 8
+        const BURNBUSH_BURN_TIME = 60
+        const FIRE_PAL = 2
 
         ; DARK PRIEST
         const PRIEST_HP          =  4
