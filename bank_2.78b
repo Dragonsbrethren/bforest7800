@@ -387,7 +387,7 @@ end
 end
 
         data forest_room_10_obj
-        TYPE_BURNBUSH, 13*8, $A0
+        TYPE_BURNBUSH, 11*8, $A0
         $00
 end
 
@@ -531,8 +531,8 @@ burnbush_check
           jmp .magic_damage_immune
 burnbush_set_bits
           ; set flag to remove bush
-          lda #FLAG_BURNBUSH_BURN
-          sta object_flags,y 
+          lda #STATE_BURNBUSH_BURN
+          sta object_state,y 
           jmp .magic_damage_immune
 end
 
@@ -820,12 +820,12 @@ end
 ; mini trees that block progression to force player to try magic
 burnbush_ai
         asm
-          lda object_flags,x
-          cmp #FLAG_BURNBUSH_BURN
+          ; use state instead of flags because torch tile block resets flags
+          lda object_state,x
+          cmp #STATE_BURNBUSH_BURN
           bne burnbush_block
 
 burnbush_burn
-          beq burnbush_unblock
           dec object_timer,x
           bmi burnbush_timer
           beq burnbush_unblock
@@ -847,7 +847,8 @@ burnbush_unblock
           jmp .torch_tile_unblock_forest
 
 burnbush_timer
-          ldx index
+          lda #BURNBUSH_BURN_TIME
+          sta object_timer,x
           lda #FIRE_PAL
           sta object_pal,x
           lda #<.plot_food
@@ -856,8 +857,6 @@ burnbush_timer
           sta object_spr_ptr_hi,x
           lda #F_FLAME
           sta object_frame,x
-          lda #BURNBUSH_BURN_TIME
-          sta object_timer,x
           rts
 end
 
@@ -869,8 +868,6 @@ obj_burnbush_stats
           lda #255
           sta object_def,x
           sta object_mdef,x
-          lda #0
-          sta object_timer,x
           lda #BURNBUSH_PAL
           sta object_pal,x
           lda #F_BURNBUSH

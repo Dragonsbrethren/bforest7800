@@ -231,10 +231,10 @@
         const RAVEN_MDEF = 0
 
         ; BURN BUSH
-        const FLAG_BURNBUSH_BURN = #%01000000
+        const STATE_BURNBUSH_BURN = #%01000000
         const BURNBUSH_PAL = 4
         const F_BURNBUSH   = 8
-        const BURNBUSH_BURN_TIME = 60
+        const BURNBUSH_BURN_TIME = 30
         const FIRE_PAL = 2
 
         ; DARK PRIEST
