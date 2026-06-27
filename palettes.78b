@@ -34,6 +34,15 @@
         const PAL_F_LTBRN = $23
         const PAL_F_HOUSE = $3C
 
+        const PAL_FIREBAT_DK = $20
+        const PAL_FIREBAT_MD = $33
+        const PAL_FIREBAT_LT = $35
+        const PAL_W_DKCARP   = $61
+        const PAL_W_LTCARP   = $75
+        const PAL_W_DKBRN    = $B0
+        const PAL_W_LTBRN    = $A2
+        const PAL_W_HOUSE    = $8C
+
 ;------------------------------------------------------------------------------
 ; CATHEDRAL
 ;------------------------------------------------------------------------------

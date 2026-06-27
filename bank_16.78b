@@ -4,61 +4,14 @@
 ; Contains forest tileset graphics, maps, and enemy AI
 ;==============================================================================
         bank 16
-        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
-        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
-        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/forest_carpet.png 160A 0 1 2 3 4
-        incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
-        incgraphic gfx/tiles/forest_walls.png 160A 1 1 2 3 5
-        incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
-        incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/burnbush.png 160A 1 0 2 3
-        incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
-        incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
-        incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
-
-        incmapfile tiled/forest.tmx
-        incmapfile tiled/forest_room_1.tmx
-        incmapfile tiled/forest_room_2.tmx
-        incmapfile tiled/forest_room_3.tmx
-        incmapfile tiled/forest_room_4.tmx
-        incmapfile tiled/forest_room_5.tmx
-        incmapfile tiled/forest_room_6.tmx
-        incmapfile tiled/forest_room_7.tmx
-        incmapfile tiled/forest_room_8.tmx
-        incmapfile tiled/forest_room_9.tmx
-        incmapfile tiled/forest_room_10.tmx
-        incmapfile tiled/forest_room_11.tmx
-        incmapfile tiled/forest_room_12.tmx
-        incmapfile tiled/forest_room_13.tmx
-        incmapfile tiled/forest_room_14.tmx
-        incmapfile tiled/forest_room_15.tmx
-        incmapfile tiled/forest_room_16.tmx
-        incmapfile tiled/forest_room_17.tmx
-        incmapfile tiled/forest_room_18.tmx
-        incmapfile tiled/forest_room_19.tmx
-        incmapfile tiled/forest_room_20.tmx
-        incmapfile tiled/forest_room_21.tmx
-        incmapfile tiled/forest_room_22.tmx
+        incbasic forest.78b
 
         data forest_map_b16_lo
         plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
         plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
-        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo
+        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo
 end
 
         data forest_map_b16_hi
@@ -66,7 +19,7 @@ end
         plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
-        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi
+        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi
 end
 
 forest_room_bank_16
@@ -153,6 +106,16 @@ plot_forest_room_22
         alt_palette = 1
         exit_tileset = T_FOREST
         exit_Xpos = 7*8
+        exit_Ypos = $B0
+        exit_room_index = F_FOREST_INN_EXIT_I
+        return otherbank
+
+plot_forest_room_23
+        plotmapfile tiled/forest_room_23.tmx forest_room_23 0 1 20 12
+        memcpy map12 forest_room_23 240
+        alt_palette = 1
+        exit_tileset = T_FOREST
+        exit_Xpos = 9*8
         exit_Ypos = $B0
         exit_room_index = F_FOREST_INN_EXIT_I
         return otherbank

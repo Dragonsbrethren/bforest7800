@@ -4,108 +4,14 @@
 ; Contains forest tileset graphics, maps, and enemy AI
 ;==============================================================================
         bank 2
-        incgraphic gfx/tiles/forest_trees.png 160A 1 0 2 3 4
-        incgraphic gfx/tiles/forest_rocks.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/forest_water.png 160A 1 2 0 3 6
-        incgraphic gfx/tiles/forest_ledges.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/forest_carpet.png 160A 0 1 2 3 4
-        incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
-        incgraphic gfx/tiles/forest_walls.png 160A 1 1 2 3 5
-        incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
-        incgraphic gfx/sprites/wolf3.png 160A 0 2 3 1
-        incgraphic gfx/sprites/slime0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/slime1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/minislime0.png 160A 0 2 3 1
-        incgraphic gfx/sprites/minislime1.png 160A 0 2 3 1
-        incgraphic gfx/sprites/burnbush.png 160A 1 0 2 3
-        incgraphic gfx/sprites/raven0.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven1.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven2.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
-        incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
-        incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
-        incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
-
-        incmapfile tiled/forest.tmx
-        incmapfile tiled/forest_room_1.tmx
-        incmapfile tiled/forest_room_2.tmx
-        incmapfile tiled/forest_room_3.tmx
-        incmapfile tiled/forest_room_4.tmx
-        incmapfile tiled/forest_room_5.tmx
-        incmapfile tiled/forest_room_6.tmx
-        incmapfile tiled/forest_room_7.tmx
-        incmapfile tiled/forest_room_8.tmx
-        incmapfile tiled/forest_room_9.tmx
-        incmapfile tiled/forest_room_10.tmx
-        incmapfile tiled/forest_room_11.tmx
-        incmapfile tiled/forest_room_12.tmx
-        incmapfile tiled/forest_room_13.tmx
-        incmapfile tiled/forest_room_14.tmx
-        incmapfile tiled/forest_room_15.tmx
-        incmapfile tiled/forest_room_16.tmx
-        incmapfile tiled/forest_room_17.tmx
-        incmapfile tiled/forest_room_18.tmx
-        incmapfile tiled/forest_room_19.tmx
-        incmapfile tiled/forest_room_20.tmx
-        incmapfile tiled/forest_room_21.tmx
-        incmapfile tiled/forest_room_22.tmx
-
-        const plot_forest_room_0_lo = #<.plot_forest_room_0
-        const plot_forest_room_0_hi = #>.plot_forest_room_0
-        const plot_forest_room_1_lo = #<.plot_forest_room_1
-        const plot_forest_room_1_hi = #>.plot_forest_room_1
-        const plot_forest_room_2_lo = #<.plot_forest_room_2
-        const plot_forest_room_2_hi = #>.plot_forest_room_2
-        const plot_forest_room_3_lo = #<.plot_forest_room_3
-        const plot_forest_room_3_hi = #>.plot_forest_room_3
-        const plot_forest_room_4_lo = #<.plot_forest_room_4
-        const plot_forest_room_4_hi = #>.plot_forest_room_4
-        const plot_forest_room_5_lo = #<.plot_forest_room_5
-        const plot_forest_room_5_hi = #>.plot_forest_room_5
-        const plot_forest_room_6_lo = #<.plot_forest_room_6
-        const plot_forest_room_6_hi = #>.plot_forest_room_6
-        const plot_forest_room_7_lo = #<.plot_forest_room_7
-        const plot_forest_room_7_hi = #>.plot_forest_room_7
-        const plot_forest_room_8_lo = #<.plot_forest_room_8
-        const plot_forest_room_8_hi = #>.plot_forest_room_8
-        const plot_forest_room_9_lo = #<.plot_forest_room_9
-        const plot_forest_room_9_hi = #>.plot_forest_room_9
-        const plot_forest_room_10_lo = #<.plot_forest_room_10
-        const plot_forest_room_10_hi = #>.plot_forest_room_10
-        const plot_forest_room_11_lo = #<.plot_forest_room_11
-        const plot_forest_room_11_hi = #>.plot_forest_room_11
-        const plot_forest_room_12_lo = #<.plot_forest_room_12
-        const plot_forest_room_12_hi = #>.plot_forest_room_12
-        const plot_forest_room_13_lo = #<.plot_forest_room_13
-        const plot_forest_room_13_hi = #>.plot_forest_room_13
-        const plot_forest_room_14_lo = #<.plot_forest_room_14
-        const plot_forest_room_14_hi = #>.plot_forest_room_14
-        const plot_forest_room_15_lo = #<.plot_forest_room_15
-        const plot_forest_room_15_hi = #>.plot_forest_room_15
-        const plot_forest_room_16_lo = #<.plot_forest_room_16
-        const plot_forest_room_16_hi = #>.plot_forest_room_16
-        const plot_forest_room_17_lo = #<.plot_forest_room_17
-        const plot_forest_room_17_hi = #>.plot_forest_room_17
-        const plot_forest_room_18_lo = #<.plot_forest_room_18
-        const plot_forest_room_18_hi = #>.plot_forest_room_18
-        const plot_forest_room_19_lo = #<.plot_forest_room_19
-        const plot_forest_room_19_hi = #>.plot_forest_room_19
-        const plot_forest_room_20_lo = #<.plot_forest_room_20
-        const plot_forest_room_20_hi = #>.plot_forest_room_20
-        const plot_forest_room_21_lo = #<.plot_forest_room_21
-        const plot_forest_room_21_hi = #>.plot_forest_room_21
-        const plot_forest_room_22_lo = #<.plot_forest_room_22
-        const plot_forest_room_22_hi = #>.plot_forest_room_22
+        incbasic forest.78b
 
         data forest_map_lo
         plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
         plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
-        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo
+        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo
 end
 
         data forest_map_hi
@@ -113,7 +19,7 @@ end
         plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
-        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi
+        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi
 end
 
         data forest_obj_lo
@@ -121,7 +27,7 @@ end
         forest_room_5_obj_lo, forest_room_6_obj_lo, forest_room_7_obj_lo, forest_room_8_obj_lo, forest_room_9_obj_lo,
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
-        forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo
+        forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo
 end
 
         data forest_obj_hi
@@ -129,7 +35,7 @@ end
         forest_room_5_obj_hi, forest_room_6_obj_hi, forest_room_7_obj_hi, forest_room_8_obj_hi, forest_room_9_obj_hi,
         forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
-        forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi
+        forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi
 end
 
 load_forest
@@ -215,27 +121,43 @@ forest_room_bank_2
 end
 
 forest_pals
-        bg_color = getfade(PAL_F_GRND, black)                          ; brown
         asm
-          lda #PAL_BLACK
+          lda flash_color
           sta P4C1
           sta P5C1
-          sta P6C1
           sta P7C1
 end
-        if alt_palette = 1 then forest_interior
-        P4C2 = PAL_F_DKGRN : P4C3 = PAL_F_LTGRN    ; greens used by trees and slimes
+        if alt_palette  then forest_interior
+        P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade(PAL_F_LTGRN)    ; greens used by trees and slimes
+        P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_LTWTR)    ; blue and gray used by water
 forest_shared
+        ; include "house" palette
+        bg_color = getfade(PAL_F_GRND, black)
+        P7C2 = getfade(PAL_F_LTBRN) : P7C3 = getfade(PAL_F_HOUSE, black)    ; ledges, beige and light browns
+forest_shared_2
         incbasic shared_pals.78b
-        P5C2 = PAL_F_DKGRY : P5C3 = PAL_F_LTGRY    ; grays used by rocks and wolves
-        P6C2 = PAL_F_WATER : P6C3 = PAL_F_LTWTR    ; blue and gray used by water
-        P7C2 = PAL_F_LTBRN : P7C3 = PAL_F_HOUSE    ; ledges, beige and light browns
+        P5C2 = getfade(PAL_F_DKGRY)
+        ; handle fade for rocks and wolves - gray always fades to black and makes them invisible with darkness
+        if !fade then P5C3 = $01 else P5C3 = getfade(PAL_F_LTGRY)
+        
         goto palette_done
 
 forest_interior
-        P4C3 = PAL_C_LTCARP
-        P4C2 = PAL_C_DKCARP 
+        if alt_palette = 2 then forest_witch
+        P4C3 = getfade(PAL_C_LTCARP, black)
+        P4C2 = getfade(PAL_C_DKCARP, black)
         goto forest_shared
+
+forest_witch
+        P4C3 = PAL_W_LTCARP
+        P4C2 = PAL_W_DKCARP
+        P6C1 = PAL_FIREBAT_DK
+        P6C2 = PAL_FIREBAT_MD
+        P6C3 = PAL_FIREBAT_LT
+        P7C2 = getfade(PAL_W_LTBRN)
+        P7C3 = getfade(PAL_W_HOUSE, black)
+        bg_color = getfade(PAL_W_DKBRN, black)
+        goto forest_shared_2
 
 plot_forest_room_0
 plot_forest_room_1
@@ -446,6 +368,10 @@ end
         $00
 end
 
+        data forest_room_23_obj
+        $00
+end
+
         data forest_rooms
         00, 00,  8, 07,  8, 00, 00,
         00, 10,  9, 11, 06, 11, 00,
@@ -453,7 +379,7 @@ end
         00, 10, 01, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
-        21, 22, 20, 19, 00, 00, 00
+        21, 22, 20, 19, 23, 00, 00
 end
 
 test_walkable_forest
