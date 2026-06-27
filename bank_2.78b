@@ -44,6 +44,9 @@ load_forest
         if save_room_index = 1 then forest_save_1
         if exit_room_index = F_FOREST_INN_I then forest_inn
         if exit_room_index = F_FOREST_INN_EXIT_I then forest_inn_exit
+        if exit_room_index = F_FOREST_WITCH_I then forest_witch
+        if exit_room_index = F_FOREST_WITCH_EXIT_I then forest_witch_exit
+
 
 ; Initial player location on game start
         room_index = 38
@@ -74,6 +77,20 @@ forest_inn_exit
         room_index    = F_FOREST_INN_EXIT_I
         player_Xpos   = F_FOREST_INN_EXIT_X
         player_Ypos   = F_FOREST_INN_EXIT_Y
+        player_facing = DIR_DOWN
+        goto forest_set_room
+
+forest_witch
+        room_index = F_FOREST_WITCH_I
+        player_Xpos = F_FOREST_WITCH_X
+        player_Ypos = F_FOREST_WITCH_Y
+        player_facing = DIR_UP
+        goto forest_set_room
+
+forest_witch_exit
+        room_index    = F_FOREST_WITCH_EXIT_I
+        player_Xpos   = F_FOREST_WITCH_EXIT_X
+        player_Ypos   = F_FOREST_WITCH_EXIT_Y
         player_facing = DIR_DOWN
         goto forest_set_room
 
@@ -139,16 +156,15 @@ forest_shared_2
         P5C2 = getfade(PAL_F_DKGRY)
         ; handle fade for rocks and wolves - gray always fades to black and makes them invisible with darkness
         if !fade then P5C3 = $01 else P5C3 = getfade(PAL_F_LTGRY)
-        
         goto palette_done
 
 forest_interior
-        if alt_palette = 2 then forest_witch
+        if alt_palette = 2 then forest_witch_pal
         P4C3 = getfade(PAL_C_LTCARP, black)
         P4C2 = getfade(PAL_C_DKCARP, black)
         goto forest_shared
 
-forest_witch
+forest_witch_pal
         P4C3 = PAL_W_LTCARP
         P4C2 = PAL_W_DKCARP
         P6C1 = PAL_FIREBAT_DK
@@ -223,8 +239,13 @@ plot_forest_room_9
         menu_map_room[menu_map_index_2] = ROOMR_D
         plotmapfile tiled/forest_room_9.tmx forest_room_9 0 1 20 12
         memcpy map12 forest_room_9 240
+        exit_tileset = T_FOREST
+        exit_Xpos = 9*8
+        exit_Ypos = $70
+        exit_room_index = F_FOREST_WITCH_I
         return thisbank
 
+        dmahole 0
 plot_forest_room_10
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_UR
@@ -232,7 +253,6 @@ plot_forest_room_10
         memcpy map12 forest_room_10 240
         return thisbank
 
-        dmahole 0
 plot_forest_room_11
         if !pw_success then in_save_room = 1
         pw_success = 0
@@ -305,6 +325,7 @@ end
 end
 
         data forest_room_9_obj
+        TYPE_DOOR, 9*8, $70
         $00
 end
 

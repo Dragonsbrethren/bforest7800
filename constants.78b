@@ -185,6 +185,16 @@
         const F_FOREST_INN_EXIT_X = 116
         const F_FOREST_INN_EXIT_Y = $80
 
+        const F_FOREST_WITCH_I = 46
+        const F_FOREST_WITCH_X = 76
+        const F_FOREST_WITCH_Y = $A0
+        const F_FOREST_WITCH_D = DIR_UP
+        const M_FOREST_WITCH_EXIT_X = 78
+        const M_FOREST_WITCH_EXIT_Y = 144
+        const F_FOREST_WITCH_EXIT_I = 15
+        const F_FOREST_WITCH_EXIT_X = 76
+        const F_FOREST_WITCH_EXIT_Y = $80
+
 ; CASTLE ENTRANCE
         const M_CASTLE_ENT_X =  70
         const M_CASTLE_ENT_Y = 160

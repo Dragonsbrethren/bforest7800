@@ -98,24 +98,24 @@ plot_forest_room_21
         plotmapfile tiled/forest_room_21.tmx forest_room_21 0 1 20 12
         memcpy map12 forest_room_21 240
         alt_palette = 1
-        return otherbank
-
-plot_forest_room_22
-        plotmapfile tiled/forest_room_22.tmx forest_room_22 0 1 20 12
-        memcpy map12 forest_room_22 240
-        alt_palette = 1
         exit_tileset = T_FOREST
         exit_Xpos = 7*8
         exit_Ypos = $B0
         exit_room_index = F_FOREST_INN_EXIT_I
         return otherbank
 
+plot_forest_room_22
+        plotmapfile tiled/forest_room_22.tmx forest_room_22 0 1 20 12
+        memcpy map12 forest_room_22 240
+        alt_palette = 1
+        return otherbank
+
 plot_forest_room_23
         plotmapfile tiled/forest_room_23.tmx forest_room_23 0 1 20 12
         memcpy map12 forest_room_23 240
-        alt_palette = 1
+        alt_palette = 2
         exit_tileset = T_FOREST
         exit_Xpos = 9*8
         exit_Ypos = $B0
-        exit_room_index = F_FOREST_INN_EXIT_I
+        exit_room_index = F_FOREST_WITCH_EXIT_I
         return otherbank
