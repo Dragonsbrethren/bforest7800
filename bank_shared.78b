@@ -562,7 +562,7 @@ pos_swd_left
         ghost_ai_lo, rghost_ai_lo, harpy_ai_lo, spider_ai_lo, spider_ai_lo, hslime_ai_lo, mhslime_ai_lo
         hghost_ai_lo, harpy_queen_ai_lo, hills_boss_ai_lo, <.bat_spawner_ai, <.bat_ai, <.rose_ai, <.cave_spider_ai
         <.pudding_ai, <.mpudding_ai, <.cghost_ai, <.cardinal_ai, <.castle_boss, <.octokraken_ai, <.river_boss, <.tentacle_ai
-        <.blockflame_ai, <.hrose_ai, <.burnbush_ai
+        <.blockflame_ai, <.hrose_ai, <.burnbush_ai, <.firebat_ai, <.forest_boss_ai
 end
 
         data object_ai_hi
@@ -571,7 +571,7 @@ end
         ghost_ai_hi, rghost_ai_hi, harpy_ai_hi, spider_ai_hi, spider_ai_hi, hslime_ai_hi, mhslime_ai_hi
         hghost_ai_hi, harpy_queen_ai_hi, hills_boss_ai_hi, >.bat_spawner_ai, >.bat_ai, >.rose_ai, >.cave_spider_ai
         >.pudding_ai, >.mpudding_ai, >.cghost_ai, >.cardinal_ai, >.castle_boss, >.octokraken_ai, >.river_boss, >.tentacle_ai
-        >.blockflame_ai, >.hrose_ai, >.burnbush_ai
+        >.blockflame_ai, >.hrose_ai, >.burnbush_ai, >.firebat_ai, >.forest_boss_ai
 end
 
         data projectile_ai_lo
@@ -842,6 +842,7 @@ end
         if joy0right then player_Xdir = DIR_RIGHT : player_facing = DIR_RIGHT : player_Xvel = player_Xvel + object_speed : player_state = STATE_MOVING : test_joy_done
 
 test_joy_done
+        if demoplay then return thisbank
         if menu_debounce then test_joy_pause
         if joy0fire0 && action_button = 1 then goto open_menu
         if joy0fire1 && action_button = 0 then goto open_menu
@@ -904,6 +905,7 @@ sword_done
 player_attack_return
         player_state = STATE_ATTACK
         player_timer = ATTACK_FRAMES
+        if demoplay then return thisbank
         goto player_handler_done
 
 retract_sword
@@ -913,10 +915,11 @@ retract_sword
         if player_facing = DIR_RIGHT then sword_Xpos = sword_Xpos - 2
 
 retract_step_done
-        retract_counter = retract_counter + 1
+        retract_counter++
         if retract_counter < 3 then test_joy_done
 
 retract_stand
+        if demoplay then player_state = STATE_STAND : player_timer = 0 : return thisbank
         if !joy0fire0 && action_button = 0 then player_state = STATE_STAND : goto test_joy_done
         if !joy0fire1 && action_button = 1 then player_state = STATE_STAND : goto test_joy_done
         ; retract finished and button still held - code runs into player_chant_start

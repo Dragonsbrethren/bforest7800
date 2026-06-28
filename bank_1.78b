@@ -547,7 +547,7 @@ remove_duplicates_next
         <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats, <.obj_cave_spider_stats
         <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
         <.obj_octokraken_stats, <.obj_boss_stats, <.obj_tentacle_stats
-        <.obj_boss_stats, <.obj_hrose_stats, <.obj_burnbush_stats
+        <.obj_boss_stats, <.obj_hrose_stats, <.obj_burnbush_stats, <.obj_firebat_stats, <.obj_forest_boss_stats
 end
 
         data object_stats_hi
@@ -559,7 +559,7 @@ end
         >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats, >.obj_cave_spider_stats
         >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
         >.obj_octokraken_stats, >.obj_boss_stats, >.obj_tentacle_stats
-        >.obj_boss_stats, >.obj_hrose_stats, >.obj_burnbush_stats
+        >.obj_boss_stats, >.obj_hrose_stats, >.obj_burnbush_stats, >.obj_firebat_stats, >.obj_forest_boss_stats
 end
 
 check_map_bits
@@ -1608,10 +1608,10 @@ end
 ; Johanna AI for demo purposes - TODO: unify this with a tileset's 4-directional enemy
 demo_jo
         asm
-;         lda player_flags
-;         and #%01000000
-;         beq demo_jo_dir
-;         jmp demo_jo_atk
+          lda player_state
+          cmp #STATE_ATTACK
+          bne demo_jo_dir
+          jmp .retract_sword
 demo_jo_dir
           lda object_timer
           beq demo_jo_init_walk
@@ -1657,9 +1657,12 @@ demo_jo_walk
           dec player_timer
           ldx MAX_MAP_OBJECTS
 demo_jo_melee_loop
+          lda object_type,x
+          beq demo_jo_melee_next
           jsr .test_melee
           lda melee_valid
           bne demo_jo_attack
+demo_jo_melee_next
           dex
           bne demo_jo_melee_loop
 
@@ -1668,7 +1671,7 @@ demo_jo_walk_dir
           bne demo_jo_walk_y
 
 demo_jo_walk_x
-          jsr .test_melee
+;          jsr .test_melee
 demo_jo_walk_x_2
           lda player_Xvel_lo
           clc
@@ -1704,7 +1707,8 @@ demo_jo_walk_anim_done
           jmp .move_object
 
 demo_jo_attack
-          jmp .move_object
+          jmp .player_attack
+
 end
 
         data demo_jo_walk_frames

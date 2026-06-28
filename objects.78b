@@ -237,6 +237,10 @@
         const BURNBUSH_BURN_TIME = 30
         const FIRE_PAL = 2
 
+        ; CRYSTAL BALL
+        const F_ORB = 9
+        const ORB_PAL = 6
+
         ; DARK PRIEST
         const PRIEST_HP          =  4
         const PRIEST_VEL_CAP_HI  =  2

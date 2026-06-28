@@ -165,11 +165,11 @@ forest_interior
         goto forest_shared
 
 forest_witch_pal
-        P4C3 = PAL_W_LTCARP
-        P4C2 = PAL_W_DKCARP
-        P6C1 = PAL_FIREBAT_DK
-        P6C2 = PAL_FIREBAT_MD
-        P6C3 = PAL_FIREBAT_LT
+        P4C3 = getfade(PAL_W_LTCARP, black)
+        P4C2 = getfade(PAL_W_DKCARP, black)
+        P6C1 = getfade(PAL_FIREBAT_DK, black)
+        P6C2 = getfade(PAL_FIREBAT_MD)
+        P6C3 = getfade(PAL_FIREBAT_LT)
         P7C2 = getfade(PAL_W_LTBRN)
         P7C3 = getfade(PAL_W_HOUSE, black)
         bg_color = getfade(PAL_W_DKBRN, black)
@@ -390,6 +390,8 @@ end
 end
 
         data forest_room_23_obj
+        TYPE_FIREBAT, 72, $30
+        TYPE_FOREST_BOSS, 76, $68
         $00
 end
 
@@ -596,12 +598,8 @@ obj_slime_stats
           ldx obj_index
           lda #SLIME_PAL
           sta object_pal,x
-          lda #<.plot_forest_160a
-          sta object_spr_ptr_lo,x
-          lda #>.plot_forest_160a
-          sta object_spr_ptr_hi,x
 end
-        goto obj_next_stats
+        goto obj_forest_160a
 
 split_slime
         ; replace slime mobj with mini slime
@@ -755,14 +753,13 @@ obj_raven_stats
         object_speed_hi[obj_index] = RAVEN_SPEED_HI
         object_speed_lo[obj_index] = RAVEN_SPEED_LO
         object_flags[obj_index] = 0
+        goto obj_forest_160a
+
+firebat_ai
+forest_boss_ai
         asm
-          ldx obj_index
-          lda #<.plot_firebat
-          sta object_spr_ptr_lo,x
-          lda #>.plot_firebat
-          sta object_spr_ptr_hi,x
+          rts
 end
-        goto obj_next_stats
 
 ; mini trees that block progression to force player to try magic
 burnbush_ai
@@ -819,6 +816,10 @@ obj_burnbush_stats
           sta object_pal,x
           lda #F_BURNBUSH
           sta object_frame,x
+end
+
+obj_forest_160a
+        asm
           lda #<.plot_forest_160a
           sta object_spr_ptr_lo,x
           lda #>.plot_forest_160a
@@ -826,10 +827,34 @@ obj_burnbush_stats
           jmp .obj_next_stats
 end
 
+obj_firebat_stats
+        asm
+          ldx obj_index
+          lda #<.plot_firebat
+          sta object_spr_ptr_lo,x
+          lda #>.plot_firebat
+          sta object_spr_ptr_hi,x
+          jmp .obj_next_stats
+end
+
+obj_forest_boss_stats
+        asm
+          ldx obj_index
+          lda #255
+          sta object_hp,x
+          sta object_def,x
+          sta object_mdef,x
+          lda #F_ORB
+          sta object_frame,x
+          lda #ORB_PAL
+          sta object_pal,x
+          jmp .obj_forest_160a
+end
+
 plot_forest_160a
         plotsprite wolf0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_firebat
-        plotsprite firebat0 2 Xposition Yposition animation_frame
+        plotsprite firebat0 6 Xposition Yposition animation_frame
         goto plot_next
