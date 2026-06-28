@@ -82,7 +82,7 @@ end
         goto menu_init bank11
 
 title_new_game
-        tileset = T_HILLS
+        tileset = T_FOREST
         fade = FADE_NORMAL
         player_sword = 1
         player_shield = 0
@@ -124,7 +124,7 @@ init_field
         player_hp = 48
         player_mp = 48
         player_max_mp = 48
-        demoplay = 1
+        demoplay = 0
         ; make sure all toggled items have a quantity
         if m_item_bits_1{0} then m_item_qty[1] = 1
         if m_item_bits_1{1} then m_item_qty[2] = 1

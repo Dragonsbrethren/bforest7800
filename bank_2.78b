@@ -11,7 +11,8 @@
         plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
-        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo
+        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo, plot_forest_room_24_lo,
+        plot_forest_room_25_lo, plot_forest_room_26_lo
 end
 
         data forest_map_hi
@@ -19,7 +20,8 @@ end
         plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
-        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi
+        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi, plot_forest_room_24_hi,
+        plot_forest_room_25_hi, plot_forest_room_26_hi
 end
 
         data forest_obj_lo
@@ -27,7 +29,8 @@ end
         forest_room_5_obj_lo, forest_room_6_obj_lo, forest_room_7_obj_lo, forest_room_8_obj_lo, forest_room_9_obj_lo,
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
-        forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo
+        forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo, forest_room_24_obj_lo,
+        forest_room_25_obj_lo, forest_room_26_obj_lo
 end
 
         data forest_obj_hi
@@ -35,7 +38,8 @@ end
         forest_room_5_obj_hi, forest_room_6_obj_hi, forest_room_7_obj_hi, forest_room_8_obj_hi, forest_room_9_obj_hi,
         forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
-        forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi
+        forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi, forest_room_24_obj_hi,
+        forest_room_25_obj_hi, forest_room_26_obj_hi
 end
 
 load_forest
@@ -122,7 +126,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #12
+          cpx #13
           bcc .forest_room_bank_2
 end
         gosub forest_room_bank_16 bank16
@@ -191,10 +195,11 @@ plot_forest_room_2
         memcpy map12 forest_room_2 240
         return thisbank
 
+        dmahole 0
 plot_forest_room_3
         pw_success = 0
-        menu_map_room[menu_map_index] = $0E
-        menu_map_room[menu_map_index_2] = $09
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_3.tmx forest_room_3 0 1 20 12
         memcpy map12 forest_room_3 240
         return thisbank
@@ -221,15 +226,15 @@ plot_forest_room_6
         return thisbank
 
 plot_forest_room_7
-        menu_map_room[menu_map_index] = 6
-        menu_map_room[menu_map_index_2] = 7
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_7.tmx forest_room_7 0 1 20 12
         memcpy map12 forest_room_7 240
         return thisbank
 
 plot_forest_room_8
-        menu_map_room[menu_map_index] = $10
-        menu_map_room[menu_map_index_2] = 5
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/forest_room_8.tmx forest_room_8 0 1 20 12
         memcpy map12 forest_room_8 240
         return thisbank
@@ -245,7 +250,6 @@ plot_forest_room_9
         exit_room_index = F_FOREST_WITCH_I
         return thisbank
 
-        dmahole 0
 plot_forest_room_10
         menu_map_room[menu_map_index] = ROOML_U
         menu_map_room[menu_map_index_2] = ROOMR_UR
@@ -258,15 +262,15 @@ plot_forest_room_11
         pw_success = 0
         save_room_index = 1
         entered_save_room{0} = 1
-        menu_map_room[menu_map_index]   = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index]   = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 1 20 12
         memcpy map12 forest_room_11 240
         return thisbank
 
 plot_forest_room_12
-        menu_map_room[menu_map_index] = $08
-        menu_map_room[menu_map_index_2] = $0F
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR 
         plotmapfile tiled/forest_room_12.tmx forest_room_12 0 1 20 12
         memcpy map12 forest_room_12 240
         return thisbank
@@ -395,10 +399,22 @@ end
         $00
 end
 
+        data forest_room_24_obj
+        $00
+end
+
+        data forest_room_25_obj
+        $00
+end
+
+        data forest_room_26_obj
+        $00
+end
+
         data forest_rooms
-        00, 00,  8, 07,  8, 00, 00,
-        00, 10,  9, 11, 06, 11, 00,
-        00,  9, 03, 07, 02, 12, 00,
+        00, 00, 25, 26,  8, 00, 00,
+        00, 11, 12, 03, 06, 11, 00,
+        00,  9, 11, 07, 02, 12, 00,
         00, 10, 01, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,

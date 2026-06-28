@@ -153,6 +153,20 @@
             "width": 160,
             "x": 1280,
             "y": 864
+        },
+        {
+            "fileName": "forest_room_23.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1600,
+            "y": 864
+        },
+        {
+            "fileName": "forest_room_24.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 960,
+            "y": 288
         }
     ],
     "onlyShowAdjacentMaps": false,
