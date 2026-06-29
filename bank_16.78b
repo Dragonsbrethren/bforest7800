@@ -34,6 +34,8 @@ forest_room_bank_16
 end
 
 plot_forest_room_13
+        ; use this map for toggling the "S" save marker
+        entered_save_room{2} = 1
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_13.tmx forest_room_13 0 1 20 12
@@ -59,8 +61,8 @@ plot_forest_room_15
         return otherbank
 
 plot_forest_room_16
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
         plotmapfile tiled/forest_room_16.tmx forest_room_16 0 1 20 12
         memcpy map12 forest_room_16 240
         return otherbank
@@ -98,6 +100,12 @@ plot_forest_room_20
 
         dmahole 0
 plot_forest_room_21
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 3
+        ; inn room toggles on its normal map square
+        menu_map_room[76] = ROOML_UDL
+        menu_map_room[77] = ROOMR_UDR
         plotmapfile tiled/forest_room_21.tmx forest_room_21 0 1 20 12
         memcpy map12 forest_room_21 240
         alt_palette = 1
@@ -108,6 +116,12 @@ plot_forest_room_21
         return otherbank
 
 plot_forest_room_22
+        if !pw_success then in_save_room = 1
+        pw_success = 0
+        save_room_index = 3
+        ; inn room toggles on its normal map square
+        menu_map_room[78] = ROOML_UL
+        menu_map_room[79] = ROOMR_U
         plotmapfile tiled/forest_room_22.tmx forest_room_22 0 1 20 12
         memcpy map12 forest_room_22 240
         alt_palette = 1

@@ -44,10 +44,13 @@ init
         goto title_init bank10
 
 tileset_transition
+        save_room_index = 0
+        old_tileset = tileset
         tileset = exit_tileset
         first_load = 1
         ; handle the possibility of continuing a track across tilesets
         if music_change then music_playing = 0
+        if old_tileset = tileset then return thisbank
 clear_menu_map
         asm
           ldx #100       ; menu_map_room array + 2 to clear menu_map_revealed and exit_tileset as well

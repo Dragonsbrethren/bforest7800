@@ -209,6 +209,13 @@
         const F_FOREST_SAVE2_Y = $80
         const F_FOREST_SAVE2_D = DIR_DOWN
 
+        const M_FOREST_SAVE3_X = 86
+        const M_FOREST_SAVE3_Y = 144
+        const F_FOREST_SAVE3_I = 43
+        const F_FOREST_SAVE3_X = 70
+        const F_FOREST_SAVE3_Y = $88
+        const F_FOREST_SAVE3_D = DIR_LEFT
+
 ; CASTLE ENTRANCE
         const M_CASTLE_ENT_X =  70
         const M_CASTLE_ENT_Y = 160
