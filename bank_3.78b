@@ -726,9 +726,8 @@ gen_forest_map
         return thisbank
 
 gen_forest_s
-        Xposition = 94
-        Yposition = 80
-        goto plot_map_s
+        if entered_save_room{0} then Xposition = M_FOREST_SAVE1_X : Yposition = M_FOREST_SAVE1_Y : gosub plot_map_s
+        if entered_save_room{1} then Xposition = M_FOREST_SAVE2_X : Yposition = M_FOREST_SAVE2_Y : goto plot_map_s
 
 gen_castle_s
         if entered_save_room{0} then Xposition = 86 : Yposition = 96 : gosub plot_map_s

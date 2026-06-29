@@ -45,8 +45,8 @@ plot_forest_room_13
         return otherbank
 
 plot_forest_room_14
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_U
         plotmapfile tiled/forest_room_14.tmx forest_room_14 0 1 20 12
         memcpy map12 forest_room_14 240
         return otherbank
@@ -74,14 +74,14 @@ plot_forest_room_17
 
 plot_forest_room_18
         menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index_2] = ROOMR_UD
         plotmapfile tiled/forest_room_18.tmx forest_room_18 0 1 20 12
         memcpy map12 forest_room_18 240
         return otherbank
 
 plot_forest_room_19
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_U
         plotmapfile tiled/forest_room_19.tmx forest_room_19 0 1 20 12
         memcpy map12 forest_room_19 240
         return otherbank
