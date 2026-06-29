@@ -692,9 +692,9 @@ unlock_door
         goto object_done
 
 torch_animation
-        temp1 = animation_frame
-        if tileset = T_CASTLE then temp1 = temp1 + 2
-        object_frame[index] = temp1
+        frame = animation_frame
+        if alt_torch then frame = frame + 2
+        object_frame[index] = frame
         goto torch_flag_check
 
 spawn_object

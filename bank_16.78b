@@ -108,7 +108,11 @@ plot_forest_room_21
         menu_map_room[77] = ROOMR_UDR
         plotmapfile tiled/forest_room_21.tmx forest_room_21 0 1 20 12
         memcpy map12 forest_room_21 240
-        alt_palette = 1
+        asm
+          lda #1
+          sta alt_palette
+          sta alt_torch
+end
         exit_tileset = T_FOREST
         exit_Xpos = 7*8
         exit_Ypos = $B0
@@ -124,7 +128,11 @@ plot_forest_room_22
         menu_map_room[79] = ROOMR_U
         plotmapfile tiled/forest_room_22.tmx forest_room_22 0 1 20 12
         memcpy map12 forest_room_22 240
-        alt_palette = 1
+        asm
+          lda #1
+          sta alt_palette
+          sta alt_torch
+end
         return otherbank
 
 plot_forest_room_23

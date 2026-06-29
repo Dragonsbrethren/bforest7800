@@ -124,15 +124,16 @@ forest_set_room
         music_playing = 1
 forest_init
         asm
-          lda #0
-          sta no_flash
-          sta alt_palette
-          sta pal_animation
-          sta exit_room_index
-          sta save_room_index
-          sta obscure_player
-          lda #$FF
-          sta locked_zone
+          ldx #0
+          stx no_flash
+          stx alt_palette
+          stx pal_animation
+          stx exit_room_index
+          stx save_room_index
+          stx obscure_player
+          stx alt_torch
+          dex   ; $FF
+          stx locked_zone
           ldx room_index
           lda forest_rooms,x
           tax

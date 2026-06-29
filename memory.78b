@@ -279,7 +279,7 @@
 
         ; ROOM HEADER
         autodim byte first_load
-        autodim byte room
+        autodim byte alt_torch
         autodim byte tileset
         autodim byte old_tileset
         autodim byte exit_dir
