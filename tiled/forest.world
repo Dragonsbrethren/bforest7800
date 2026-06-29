@@ -53,8 +53,8 @@
             "fileName": "forest_room_3.tmx",
             "height": 192,
             "width": 160,
-            "x": 1280,
-            "y": 96
+            "x": 1440,
+            "y": -96
         },
         {
             "fileName": "forest_room_2.tmx",
@@ -74,15 +74,15 @@
             "fileName": "forest_room_12.tmx",
             "height": 192,
             "width": 160,
-            "x": 1440,
-            "y": -288
+            "x": 1280,
+            "y": -96
         },
         {
             "fileName": "forest_room_11.tmx",
             "height": 192,
             "width": 160,
-            "x": 1440,
-            "y": -96
+            "x": 1280,
+            "y": 96
         },
         {
             "fileName": "forest_room_13.tmx",
@@ -167,6 +167,27 @@
             "width": 160,
             "x": 960,
             "y": 288
+        },
+        {
+            "fileName": "forest_room_25.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1280,
+            "y": -288
+        },
+        {
+            "fileName": "forest_room_26.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1440,
+            "y": -288
+        },
+        {
+            "fileName": "forest_room_27.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1120,
+            "y": -96
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -5,6 +5,7 @@
         incgraphic gfx/tiles/forest_carpet.png 160A 0 1 2 3 4
         incgraphic gfx/tiles/forest_house.png 160A 1 0 2 3 7
         incgraphic gfx/tiles/forest_walls.png 160A 1 1 2 3 5
+        incgraphic gfx/tiles/forest_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/sprites/wolf0.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf1.png 160A 0 2 3 1
         incgraphic gfx/sprites/wolf2.png 160A 0 2 3 1
@@ -106,3 +107,4 @@
         const plot_forest_room_25_hi = #>.plot_forest_room_25
         const plot_forest_room_26_lo = #<.plot_forest_room_26
         const plot_forest_room_26_hi = #>.plot_forest_room_26
+

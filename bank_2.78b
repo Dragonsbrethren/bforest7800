@@ -46,6 +46,7 @@ load_forest
         if !first_load then forest_set_room
         first_load = 0
         if save_room_index = 1 then forest_save_1
+        if save_room_index = 2 then forest_save_2
         if exit_room_index = F_FOREST_INN_I then forest_inn
         if exit_room_index = F_FOREST_INN_EXIT_I then forest_inn_exit
         if exit_room_index = F_FOREST_WITCH_I then forest_witch
@@ -62,11 +63,20 @@ load_forest
         goto forest_set_room
 
 forest_save_1
-        room_index = 12
-        menu_map_Xpos = 94
-        menu_map_Ypos = 80
-        player_Xpos = 24
-        player_Ypos = 60
+        room_index    = F_FOREST_SAVE1_I 
+        menu_map_Xpos = M_FOREST_SAVE1_X
+        menu_map_Ypos = M_FOREST_SAVE1_Y
+        player_Xpos   = F_FOREST_SAVE1_X
+        player_Ypos   = F_FOREST_SAVE1_Y
+        player_facing = DIR_DOWN
+        goto forest_set_room
+
+forest_save_2
+        room_index    = F_FOREST_SAVE2_I 
+        menu_map_Xpos = M_FOREST_SAVE2_X
+        menu_map_Ypos = M_FOREST_SAVE2_Y
+        player_Xpos   = F_FOREST_SAVE2_X
+        player_Ypos   = F_FOREST_SAVE2_Y
         player_facing = DIR_DOWN
         goto forest_set_room
 
@@ -146,15 +156,18 @@ forest_pals
           lda flash_color
           sta P4C1
           sta P5C1
-          sta P7C1
 end
-        if alt_palette  then forest_interior
+        if alt_palette then forest_interior
         P4C2 = getfade(PAL_F_DKGRN, black) : P4C3 = getfade(PAL_F_LTGRN)    ; greens used by trees and slimes
         P6C1 = flash_color : P6C2 = getfade(PAL_F_WATER, black) : P6C3 = getfade(PAL_F_LTWTR)    ; blue and gray used by water
 forest_shared
-        ; include "house" palette
         bg_color = getfade(PAL_F_GRND, black)
-        P7C2 = getfade(PAL_F_LTBRN) : P7C3 = getfade(PAL_F_HOUSE, black)    ; ledges, beige and light browns
+        ; bypass setting soft animated palette registers when pal_animation enabled so they don't reset
+        if pal_animation then forest_shared_2
+        sP7C1 = getfade(PAL_WFALL1) : sP7C2 = getfade(PAL_WFALL2) : sP7C3 = getfade(PAL_WFALL3)
+forest_house
+        ; include "house" palette
+        P7C1 = flash_color : P7C2 = getfade(PAL_F_LTBRN) : P7C3 = getfade(PAL_F_HOUSE, black)    ; ledges, beige and light browns
 forest_shared_2
         incbasic shared_pals.78b
         P5C2 = getfade(PAL_F_DKGRY)
@@ -246,7 +259,7 @@ plot_forest_room_9
         memcpy map12 forest_room_9 240
         exit_tileset = T_FOREST
         exit_Xpos = 9*8
-        exit_Ypos = $70
+        exit_Ypos = $80
         exit_room_index = F_FOREST_WITCH_I
         return thisbank
 
@@ -260,8 +273,7 @@ plot_forest_room_10
 plot_forest_room_11
         if !pw_success then in_save_room = 1
         pw_success = 0
-        save_room_index = 1
-        entered_save_room{0} = 1
+        if room_index = F_FOREST_SAVE1_I then save_room_index = 1 : entered_save_room{0} = 1 else save_room_index = 2 : entered_save_room{1} = 1
         menu_map_room[menu_map_index]   = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 1 20 12
@@ -329,7 +341,7 @@ end
 end
 
         data forest_room_9_obj
-        TYPE_DOOR, 9*8, $70
+        TYPE_DOOR, 9*8, $80
         $00
 end
 
@@ -415,7 +427,7 @@ end
         00, 00, 25, 26,  8, 00, 00,
         00, 11, 12, 03, 06, 11, 00,
         00,  9, 11, 07, 02, 12, 00,
-        00, 10, 01, 04, 05, 00, 00,
+        24, 10, 01, 04, 05, 00, 00,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
         21, 22, 20, 19, 23, 00, 00
@@ -874,3 +886,9 @@ plot_forest_160a
 plot_firebat
         plotsprite firebat0 6 Xposition Yposition animation_frame
         goto plot_next
+
+forest_waterfall
+        ; prevent blacked out waterfalls when loading pal_animation rooms
+        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        pal_animation = 1
+        return

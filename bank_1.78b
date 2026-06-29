@@ -237,6 +237,7 @@ black_flash
         P6C1     = flash_color
         ; can't flash the animated palette
         if pal_animation then goto main
+        if tileset = T_FOREST && alt_palette = 2 then goto main
         P7C1     = flash_color
         goto main
 

@@ -12,6 +12,9 @@
  <tileset firstgid="41" name="forest_ledges" tilewidth="8" tileheight="16" tilecount="12" columns="12">
   <image source="../gfx/tiles/forest_ledges.png" width="96" height="16"/>
  </tileset>
+ <tileset firstgid="53" name="forest_waterf" tilewidth="8" tileheight="16" tilecount="1" columns="1">
+  <image source="../gfx/tiles/forest_waterf.png" width="8" height="16"/>
+ </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="12">
   <data>
    <tile gid="50"/>
@@ -22,7 +25,7 @@
    <tile gid="31"/>
    <tile gid="31"/>
    <tile gid="31"/>
-   <tile gid="31"/>
+   <tile gid="32"/>
    <tile gid="52"/>
    <tile gid="50"/>
    <tile gid="50"/>
@@ -38,11 +41,11 @@
    <tile gid="50"/>
    <tile gid="50"/>
    <tile gid="51"/>
-   <tile gid="30"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
    <tile gid="52"/>
    <tile gid="50"/>
    <tile gid="50"/>
@@ -58,11 +61,11 @@
    <tile gid="50"/>
    <tile gid="50"/>
    <tile gid="51"/>
-   <tile gid="30"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
-   <tile gid="31"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
+   <tile gid="53"/>
    <tile gid="52"/>
    <tile gid="50"/>
    <tile gid="50"/>
@@ -78,7 +81,7 @@
    <tile gid="44"/>
    <tile gid="44"/>
    <tile gid="45"/>
-   <tile gid="31"/>
+   <tile gid="30"/>
    <tile gid="31"/>
    <tile gid="31"/>
    <tile gid="31"/>
@@ -94,10 +97,10 @@
    <tile gid="44"/>
    <tile gid="44"/>
    <tile gid="45"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="30"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
+   <tile gid="36"/>
    <tile gid="31"/>
    <tile gid="31"/>
    <tile gid="31"/>
@@ -144,7 +147,7 @@
    <tile gid="32"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="23"/>
+   <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
