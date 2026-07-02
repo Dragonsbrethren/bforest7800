@@ -52,6 +52,10 @@
         incmapfile tiled/forest_room_24.tmx
         incmapfile tiled/forest_room_25.tmx
         incmapfile tiled/forest_room_26.tmx
+        incmapfile tiled/forest_room_28.tmx
+        incmapfile tiled/forest_room_29.tmx
+        incmapfile tiled/forest_room_30.tmx
+        incmapfile tiled/forest_room_31.tmx
 
         const plot_forest_room_0_lo = #<.plot_forest_room_0
         const plot_forest_room_0_hi = #>.plot_forest_room_0
@@ -107,4 +111,11 @@
         const plot_forest_room_25_hi = #>.plot_forest_room_25
         const plot_forest_room_26_lo = #<.plot_forest_room_26
         const plot_forest_room_26_hi = #>.plot_forest_room_26
-
+        const plot_forest_room_28_lo = #<.plot_forest_room_28
+        const plot_forest_room_28_hi = #>.plot_forest_room_28
+        const plot_forest_room_29_lo = #<.plot_forest_room_29
+        const plot_forest_room_29_hi = #>.plot_forest_room_29
+        const plot_forest_room_30_lo = #<.plot_forest_room_30
+        const plot_forest_room_30_hi = #>.plot_forest_room_30
+        const plot_forest_room_31_lo = #<.plot_forest_room_31
+        const plot_forest_room_31_hi = #>.plot_forest_room_31

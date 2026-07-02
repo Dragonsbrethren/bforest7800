@@ -188,6 +188,34 @@
             "width": 160,
             "x": 1120,
             "y": -96
+        },
+        {
+            "fileName": "forest_room_28.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1944,
+            "y": -112
+        },
+        {
+            "fileName": "forest_room_29.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1760,
+            "y": -96
+        },
+        {
+            "fileName": "forest_room_30.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1984,
+            "y": 288
+        },
+        {
+            "fileName": "forest_room_31.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 1760,
+            "y": 288
         }
     ],
     "onlyShowAdjacentMaps": false,
