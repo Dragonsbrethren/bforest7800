@@ -12,8 +12,8 @@
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
         plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo, plot_forest_room_24_lo,
-        plot_forest_room_25_lo, plot_forest_room_26_lo, plot_forest_room_28_lo, plot_forest_room_29_lo, plot_forest_room_30_lo,
-        plot_forest_room_31_lo
+        plot_forest_room_25_lo, plot_forest_room_26_lo, plot_forest_room_27_lo, plot_forest_room_28_lo, plot_forest_room_29_lo,
+        plot_forest_room_30_lo, plot_forest_room_31_lo
 end
 
         data forest_map_hi
@@ -22,8 +22,8 @@ end
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
         plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi, plot_forest_room_24_hi,
-        plot_forest_room_25_hi, plot_forest_room_26_hi, plot_forest_room_28_hi, plot_forest_room_29_hi, plot_forest_room_30_hi,
-        plot_forest_room_31_hi
+        plot_forest_room_25_hi, plot_forest_room_26_hi, plot_forest_room_27_hi, plot_forest_room_28_hi, plot_forest_room_29_hi,
+        plot_forest_room_30_hi, plot_forest_room_31_hi
 end
 
         data forest_obj_lo
@@ -32,8 +32,8 @@ end
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
         forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo, forest_room_24_obj_lo,
-        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo, forest_room_30_obj_lo,
-        forest_room_31_obj_lo
+        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_27_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo,
+        forest_room_30_obj_lo, forest_room_31_obj_lo
 end
 
         data forest_obj_hi
@@ -42,8 +42,8 @@ end
         forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
         forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi, forest_room_24_obj_hi,
-        forest_room_25_obj_hi, forest_room_26_obj_hi, forest_room_28_obj_hi, forest_room_29_obj_hi, forest_room_30_obj_hi,
-        forest_room_31_obj_hi
+        forest_room_25_obj_hi, forest_room_26_obj_hi, forest_room_27_obj_hi, forest_room_28_obj_hi, forest_room_29_obj_hi,
+        forest_room_30_obj_hi, forest_room_31_obj_hi
 end
 
 load_forest
@@ -426,6 +426,10 @@ end
         $00
 end
 
+        data forest_room_27_obj
+        $00
+end
+
         data forest_room_28_obj
         $00
 end
@@ -444,9 +448,9 @@ end
 
         data forest_rooms
         00, 00, 25, 26,  8, 00, 00,
-        00, 11, 12, 03, 06, 28, 29,
+        00, 11, 12, 03, 06, 29, 29,
         00,  9, 11, 07, 02, 12, 00,
-        24, 10, 01, 04, 05, 30, 31,
+        24, 10, 01, 04, 05, 31, 31,
         00, 00, 17, 15, 18, 00, 00,
         00, 00, 16, 13, 14, 00, 00,
         21, 22, 20, 19, 23, 00, 00

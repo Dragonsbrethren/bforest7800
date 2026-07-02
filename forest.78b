@@ -111,6 +111,8 @@
         const plot_forest_room_25_hi = #>.plot_forest_room_25
         const plot_forest_room_26_lo = #<.plot_forest_room_26
         const plot_forest_room_26_hi = #>.plot_forest_room_26
+        const plot_forest_room_27_lo = #<.plot_forest_room_27
+        const plot_forest_room_27_hi = #>.plot_forest_room_27
         const plot_forest_room_28_lo = #<.plot_forest_room_28
         const plot_forest_room_28_hi = #>.plot_forest_room_28
         const plot_forest_room_29_lo = #<.plot_forest_room_29
