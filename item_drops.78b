@@ -36,6 +36,10 @@
         0               ; tentacle
         0               ; flame
         TYPE_LIFEAPPLE  ; stone rose hills
+        0               ; burn bush
+        0               ; firebat
+        0               ; crystal ball
+        TYPE_ETHER      ; forest ghost
 end
 
         data common_drops
@@ -76,4 +80,8 @@ end
         0               ; tentacle
         0               ; flame
         TYPE_SOFT       ; stone rose hills
+        0               ; burn bush
+        0               ; firebat
+        0               ; crystal ball
+        TYPE_UNCURSE    ; forest ghost
 end

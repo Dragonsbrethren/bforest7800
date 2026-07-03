@@ -36,6 +36,24 @@ forest_room_bank_16
 end
 
         dmahole 0
+plot_forest_room_9
+        menu_map_room[menu_map_index] = ROOML_UD
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 1 20 12
+        memcpy map12 forest_room_9 240
+        exit_tileset = T_FOREST
+        exit_Xpos = 9*8
+        exit_Ypos = $80
+        exit_room_index = F_FOREST_WITCH_I
+        return otherbank
+
+plot_forest_room_10
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 1 20 12
+        memcpy map12 forest_room_10 240
+        return otherbank
+
 plot_forest_room_27
 plot_forest_room_11
         if !pw_success then in_save_room = 1
@@ -45,14 +63,14 @@ plot_forest_room_11
         menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/forest_room_11.tmx forest_room_11 0 1 20 12
         memcpy map12 forest_room_11 240
-        return thisbank
+        return otherbank
 
 plot_forest_room_12
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR 
         plotmapfile tiled/forest_room_12.tmx forest_room_12 0 1 20 12
         memcpy map12 forest_room_12 240
-        return thisbank
+        return otherbank
 
 plot_forest_room_13
         ; use this map for toggling the "S" save marker

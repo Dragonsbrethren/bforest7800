@@ -39,6 +39,7 @@
         const TYPE_BURNBUSH     = 37
         const TYPE_FIREBAT      = 38
         const TYPE_FOREST_BOSS  = 39
+        const TYPE_FGHOST   =  40
         const TYPE_SPAWNER  = 128
         const TYPE_SKELSWORD = 129
         const TYPE_PROJECTILE = TYPE_SKELSWORD
@@ -229,6 +230,24 @@
         const RAVEN_SPEED_LO = 0
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
+
+        ; FOREST GHOST
+        const FGHOST_HP = 2
+        const FGHOST_VEL_CAP_HI = 2
+        const FGHOST_VEL_CAP_LO = 0
+        const FGHOST_DAMAGE = 4
+        const FGHOST_DEF = 2
+        const FGHOST_MDEF = 0
+        const FGHOST_FRICTION_HI = 0
+        const FGHOST_FRICTION_LO = 0
+        const FGHOST_SPEED_HI = 1
+        const FGHOST_SPEED_LO = 0
+        const FGHOST_FLAGS = %00000100
+        const F_FGHOST_1 = 16
+        const F_FGHOST_2 = 17
+        const FGHOST_PAL_1 = 3
+        const FGHOST_PAL_2 = 0
+        const FGHOST_ANIM_TIMER = 4
 
         ; BURN BUSH
         const STATE_BURNBUSH_BURN = #%01000000

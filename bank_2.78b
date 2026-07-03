@@ -152,7 +152,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #11
+          cpx #9
           bcs .forest_room_b16
           jmp .forest_room_bank_2
 end
@@ -271,34 +271,22 @@ plot_forest_room_8
         memcpy map12 forest_room_8 240
         return thisbank
 
-plot_forest_room_9
-        menu_map_room[menu_map_index] = ROOML_UD
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        plotmapfile tiled/forest_room_9.tmx forest_room_9 0 1 20 12
-        memcpy map12 forest_room_9 240
-        exit_tileset = T_FOREST
-        exit_Xpos = 9*8
-        exit_Ypos = $80
-        exit_room_index = F_FOREST_WITCH_I
-        return thisbank
-
-plot_forest_room_10
-        menu_map_room[menu_map_index] = ROOML_UL
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        plotmapfile tiled/forest_room_10.tmx forest_room_10 0 1 20 12
-        memcpy map12 forest_room_10 240
-        return thisbank
-
         data forest_room_0_obj
         $00
 end
 
         data forest_room_1_obj
+        TYPE_WOLF, 6*8, $50, TYPE_WOLF, 10*8, $70
+        TYPE_WOLF, 13*8, $60, TYPE_WOLF, 12*8, $90
+        TYPE_BURNBUSH, 3*8, $A0
+        TYPE_TORCH, 12*8, $40, TYPE_TORCH, 5*8, $90
         $00
 end
 
         data forest_room_2_obj
-        TYPE_TORCH, $28, $9D,  TYPE_TORCH, $6F, $9D,  TYPE_RAVEN, $1E, $28,  TYPE_SLIME, $51, $58,
+        TYPE_SLIME, 72, $40, TYPE_FGHOST, 16*8, $40
+        TYPE_WOLF, 5*8, $80, TYPE_WOLF, 7*8, $90
+        TYPE_TORCH, 100, $60, TYPE_TORCH, 3*8, $60
         $00
 end
 
@@ -307,11 +295,19 @@ end
 end
 
         data forest_room_4_obj
-        TYPE_WOLF, $54, $79,  TYPE_TORCH, $2A, $30,  $00
+        TYPE_WOLF,  4*8, $50, TYPE_WOLF, 12*8, $70
+        TYPE_WOLF, 14*8, $60, TYPE_WOLF, 15*8, $80
+        TYPE_WOLF, 10*8, $80
+        TYPE_BESTIARY, 5*8, $40
+        TYPE_TORCH, 8*8, $80, TYPE_TORCH, 135, $50
+        $00
 end
 
         data forest_room_5_obj
-        TYPE_TORCH, $38, $30,  TYPE_TORCH, $68, $30,  TYPE_WOLF, $49, $63,  $00
+        TYPE_WOLF, 5*8, $30, TYPE_WOLF, 7*8, $80
+        TYPE_WOLF, 10*8, $70
+        TYPE_TORCH, 7*8, $60, TYPE_TORCH, 12*8, $90
+        $00
 end
 
         data forest_room_6_obj
@@ -334,8 +330,12 @@ end
 end
 
         data forest_room_7_obj
+        TYPE_SLIME, 10*8, $80,  TYPE_SLIME, 4*8, $90
+        TYPE_CHARM1, 56, $40
         TYPE_BURNBUSH, 12*8, $50
-        TYPE_SLIME, $45, $7F,  TYPE_SLIME, $36, $A0,  $00
+        TYPE_TORCH, 16*8, $50, TYPE_TORCH, 5*8, $80
+        TYPE_TORCH, 11*8, $20
+        $00
 end
 
         data forest_room_8_obj
@@ -348,7 +348,6 @@ end
 end
 
         data forest_room_10_obj
-        TYPE_BURNBUSH, 11*8, $A0
         $00
 end
 
@@ -821,6 +820,63 @@ obj_raven_stats
         object_speed_lo[obj_index] = RAVEN_SPEED_LO
         object_flags[obj_index] = 0
         goto obj_forest_160a
+
+;==============================================================================
+; FOREST GHOST AI
+;------------------------------------------------------------------------------
+; Floats through walls to attack player
+;==============================================================================
+fghost_ai
+        asm
+          lda #FGHOST_PAL_1
+          sta object_pal,x
+          lda #F_FGHOST_1
+          sta object_frame,x
+          lda animation_frame
+          bne fghost_follow
+          lda #FGHOST_PAL_2
+          sta object_pal,x
+          inc object_frame,x
+fghost_follow
+          jmp .test_follow_box
+end
+
+obj_fghost_stats
+        asm
+          ldx obj_index
+          lda #FGHOST_HP
+          sta object_hp,x
+          lda #FGHOST_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #FGHOST_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #FGHOST_DAMAGE
+          sta object_damage,x
+          lda #FGHOST_DEF
+          sta object_def,x
+          lda #FGHOST_MDEF
+          sta object_mdef,x
+          lda #FGHOST_FRICTION_HI
+          sta object_friction_hi,x
+          lda #FGHOST_FRICTION_LO
+          sta object_friction_lo,x
+          lda #FGHOST_SPEED_HI
+          sta object_speed_hi,x
+          lda #FGHOST_SPEED_LO
+          sta object_speed_lo,x
+          lda #FGHOST_FLAGS
+          sta object_flags,x
+          lda #FGHOST_PAL_1
+          sta object_pal,x
+          lda #F_FGHOST_1
+          sta object_frame,x
+          lda #FGHOST_PAL_1
+          lda #<.plot_forest_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_forest_160a
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
 
 firebat_ai
 forest_boss_ai

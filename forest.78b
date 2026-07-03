@@ -22,6 +22,8 @@
         incgraphic gfx/sprites/raven3.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven4.png 160A 0 1 3 2
         incgraphic gfx/sprites/raven5.png 160A 0 1 3 2
+        incgraphic gfx/sprites/fghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/fghost1.png 160A 0 1 2 3
         incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
         incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
 
