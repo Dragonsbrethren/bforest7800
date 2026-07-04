@@ -896,10 +896,10 @@ end
         if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
         if player_sword then temp1 = PLAYER_WIDTH : temp2 = PLAYER_HEIGHT else temp1 = 4 : temp2 = 4 
-        if player_facing = DIR_DOWN then player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0 : goto sword_done
         if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos + SWORD_OFFSET_UP_X   : sword_Ypos = player_Ypos + SWORD_OFFSET_UP_Y   : sword_width = 3 : sword_height = temp2 : sword_frame = 1 : goto sword_done
         if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_LEFT_Y : sword_width = temp1 : sword_height = 3 :sword_frame = 3 : goto sword_done
-        player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_RIGHT_Y : sword_width = temp1 : sword_height = 3 : sword_frame = 2
+        if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_RIGHT_Y : sword_width = temp1 : sword_height = 3 : sword_frame = 2 : goto sword_done
+        player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0
 sword_done
 
 player_attack_return
@@ -2352,5 +2352,5 @@ proj_die  lda temp1
 end
 
         data player_facing_frames
-        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT
+        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
 end

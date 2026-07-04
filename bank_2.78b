@@ -348,6 +348,7 @@ end
 end
 
         data forest_room_10_obj
+        TYPE_RAVEN, 3*8, $50
         $00
 end
 
@@ -745,43 +746,32 @@ end
 ; Flies without testing walkability and perches on trees
 ;==============================================================================
 raven_ai
-        if debug_time = 1 then BACKGRND = $A0
-        flags{2} = 1
-        temp1 = 0
-        temp2 = 0
-        ; flags{7} = not perched
-        if flags{7} then goto raven_change_pos
-        frame = 0
-        Xvelocity = 0.0
-        Yvelocity = 0.0
+        asm
+          lda object_flags,x
+          ora #%00000001
+          and #%10000000
+          bne .raven_change_pos
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs raven_face_right
+raven_face_left
+          lda #DIR_LEFT
+          sta object_facing,x
+          lda #F_RAVEN_PIRCH_L
+          sta object_frame,x
+          jmp test_dist_to_player
+raven_face_right
+          lda #DIR_RIGHT
+          sta object_facing,x
+          lda #F_RAVEN_PIRCH_R
+          sta object_frame,x
 
 test_dist_to_player
-        if Xposition > player_Xpos then wake_raven_right
-        if Xposition < player_Xpos then wake_raven_left
-        if Yposition > player_Ypos then wake_raven_down
-        if Yposition < player_Ypos then wake_raven_up
-        ; raven and player occupy same space, handle this
-
-wake_raven_right
-        temp1 = Xposition - player_Xpos
-        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
-        goto raven_return
-
-wake_raven_left
-        temp1 = Xposition + player_Xpos
-        if temp1 < RAVEN_CHASE_DIST then raven_change_pos
-        goto raven_return
-
-wake_raven_up
-        temp2 = Yposition + player_Ypos
-        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
-        goto raven_return
-
-wake_raven_down
-        temp2 = Yposition - player_Ypos
-        if temp2 < RAVEN_CHASE_DIST then raven_change_pos
-        goto raven_return
-
+          jsr .calculate_distance
+          lda temp1
+          cmp #RAVEN_CHASE_DIST
+          bcc .raven_change_pos
+end
 
 raven_change_pos
         flags{7} = 1
@@ -808,18 +798,34 @@ raven_return
         return
 
 obj_raven_stats
-        object_hp[obj_index] = RAVEN_HP
-        object_vel_cap_hi[obj_index] = RAVEN_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = RAVEN_VEL_CAP_LO
-        object_damage[obj_index] = RAVEN_DAMAGE
-        object_def[obj_index] = RAVEN_DEF
-        object_mdef[obj_index] = RAVEN_MDEF
-        object_friction_hi[obj_index] = RAVEN_FRICTION_HI
-        object_friction_lo[obj_index] = RAVEN_FRICTION_LO
-        object_speed_hi[obj_index] = RAVEN_SPEED_HI
-        object_speed_lo[obj_index] = RAVEN_SPEED_LO
-        object_flags[obj_index] = 0
-        goto obj_forest_160a
+        asm
+          ldx obj_index
+          lda #RAVEN_HP
+          sta object_hp,x
+          lda #RAVEN_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #RAVEN_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #RAVEN_DAMAGE
+          sta object_damage,x
+          lda #RAVEN_DEF
+          sta object_def,x
+          lda #RAVEN_MDEF
+          sta object_mdef,x
+          lda #RAVEN_FRICTION_HI
+          sta object_friction_hi,x
+          lda #RAVEN_FRICTION_LO
+          sta object_friction_lo,x
+          lda #RAVEN_SPEED_HI
+          sta object_speed_hi,x
+          lda #RAVEN_SPEED_LO
+          sta object_speed_lo,x
+          lda #0
+          sta object_flags,x
+          lda #RAVEN_PAL
+          sta object_pal,x
+          jmp .obj_forest_160a
+end
 
 ;==============================================================================
 ; FOREST GHOST AI

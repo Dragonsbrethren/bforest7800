@@ -195,7 +195,7 @@ castle_save_1
         menu_map_Ypos = 96
         player_Xpos = $48
         player_Ypos = $80
-        player_facing = DIR_DOWN
+        player_facing = F_CASTLE_SAVE1_D
         goto castle_rooms
 
 castle_save_2
@@ -204,7 +204,7 @@ castle_save_2
         menu_map_Ypos = 80
         player_Xpos = $48
         player_Ypos = $70
-        player_facing = DIR_DOWN
+        player_facing = F_CASTLE_SAVE2_D
 
 castle_rooms
         characterset castle_stone

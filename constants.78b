@@ -25,6 +25,9 @@
         const DIR_DOWN  = 2
         const DIR_LEFT  = 3
         const DIR_RIGHT = 4
+        ; hacky "directions" for saves
+        const DIR_SLEEP = 5
+        const DIR_PRAY  = 6
 
         const EXIT_NONE  = 0
         const EXIT_NORTH = 1
@@ -200,21 +203,21 @@
         const M_FOREST_SAVE1_Y = 96
         const F_FOREST_SAVE1_X = 8*8
         const F_FOREST_SAVE1_Y = $80
-        const F_FOREST_SAVE1_D = DIR_DOWN
+        const F_FOREST_SAVE1_D = DIR_SLEEP
 
         const F_FOREST_SAVE2_I =  8
         const M_FOREST_SAVE2_X = 62
         const M_FOREST_SAVE2_Y = 80
         const F_FOREST_SAVE2_X = 8*8
         const F_FOREST_SAVE2_Y = $80
-        const F_FOREST_SAVE2_D = DIR_DOWN
+        const F_FOREST_SAVE2_D = DIR_SLEEP
 
         const M_FOREST_SAVE3_X = 86
         const M_FOREST_SAVE3_Y = 144
         const F_FOREST_SAVE3_I = 43
         const F_FOREST_SAVE3_X = 70
         const F_FOREST_SAVE3_Y = $88
-        const F_FOREST_SAVE3_D = DIR_LEFT
+        const F_FOREST_SAVE3_D = DIR_SLEEP
 
 ; CASTLE ENTRANCE
         const M_CASTLE_ENT_X =  70
@@ -230,6 +233,9 @@
         const F_CASTLE_ENT2_X =  76
         const F_CASTLE_ENT2_Y = $A0
         const F_CASTLE_ENT2_D = DIR_UP
+
+        const F_CASTLE_SAVE1_D = DIR_PRAY
+        const F_CASTLE_SAVE2_D = DIR_PRAY
 
 
 ; CASTLE CAVE
@@ -259,7 +265,7 @@
         const F_RIVER_SAVE1_I = 17      ; save room 1 index
         const F_RIVER_SAVE1_X = $50
         const F_RIVER_SAVE1_Y = $70
-        const F_RIVER_SAVE1_D = DIR_DOWN
+        const F_RIVER_SAVE1_D = DIR_SLEEP
 
         ; map positions
         const M_RIVER_SAVE2_X = 94
@@ -268,7 +274,7 @@
         const F_RIVER_SAVE2_I = 5      ; save room 2 index
         const F_RIVER_SAVE2_X = $72
         const F_RIVER_SAVE2_Y = $80
-        const F_RIVER_SAVE2_D = DIR_DOWN
+        const F_RIVER_SAVE2_D = DIR_SLEEP
 
         const M_RIVER_START2_X = 86
         const M_RIVER_START2_Y = 64
@@ -312,7 +318,7 @@
         const F_HILLS_SAVE1_I = 24     ; save room 1 index
         const F_HILLS_SAVE1_X = $50
         const F_HILLS_SAVE1_Y = $70
-        const F_HILLS_SAVE1_D = DIR_RIGHT
+        const F_HILLS_SAVE1_D = DIR_SLEEP
 
         ; map positions
         const M_HILLS_SAVE2_X = 70
@@ -321,7 +327,7 @@
         const F_HILLS_SAVE2_I = 23     ; save room 2 index
         const F_HILLS_SAVE2_X = (7*8)
         const F_HILLS_SAVE2_Y = $70
-        const F_HILLS_SAVE2_D = DIR_LEFT
+        const F_HILLS_SAVE2_D = DIR_SLEEP
 
 ; CAVE EXIT 1 (mountaintop)
         const M_HILLS_CAVE1_X = 70
@@ -371,13 +377,13 @@
         const F_CAVES_SAVE1_I = 2
         const F_CAVES_SAVE1_X = 72
         const F_CAVES_SAVE1_Y = $70
-        const F_CAVES_SAVE1_D = DIR_RIGHT
+        const F_CAVES_SAVE1_D = DIR_SLEEP
         const M_CAVES_SAVE2_X = 62
         const M_CAVES_SAVE2_Y = 112
         const F_CAVES_SAVE2_I = 22
         const F_CAVES_SAVE2_X = 72
         const F_CAVES_SAVE2_Y = $70
-        const F_CAVES_SAVE2_D = DIR_RIGHT
+        const F_CAVES_SAVE2_D = DIR_SLEEP
         ; mountaintop
         const M_CAVES_ENT_1_X = 78
         const M_CAVES_ENT_1_Y = 64

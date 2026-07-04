@@ -1880,30 +1880,35 @@ stone_done
 calculate_distance
         asm
           lda object_Xpos,x
-          cmp player_Xpos 
-          bcs cd_Xgreat
-cd_Xless  lda player_Xpos
           sec
-          sbc object_Xpos,x
-          jmp cd_Xstore
-cd_Xgreat sbc player_Xpos
-cd_Xstore sta temp1
+          sbc player_Xpos
+          bcc cd_Xpos
+          eor #$FF
+          clc
+          adc #1
+cd_Xpos
+          sta temp1
+
           lda object_Ypos,x
-          cmp player_Ypos
-          bcs cd_Ygreat
-cd_Yless  lda player_Ypos
           sec
-          sbc object_Ypos,x
-          jmp cd_Ystore
-cd_Ygreat sbc player_Ypos
-cd_Ystore sta temp2             ; is temp1 or temp2 greater?
-          cmp temp1
-          bcs cd_temp3Y
+          sbc player_Ypos
+          bcc cd_Ypos
+          eor #$FF
+          clc
+          adc #1
+cd_Ypos
+          sta temp2
+          sec
+          sbc temp1
+          bcs cd_Yfarther
+cd_Xfarther
           lda #0
-          sta temp3             ; temp3 0 = X greater
+          sta temp3
           rts
-cd_temp3Y lda #1
-          sta temp3             ; temp3 1 = Y greater
+
+cd_Yfarther
+          lda #1
+          sta temp3
           rts
 end
 
