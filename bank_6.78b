@@ -152,6 +152,10 @@ load_river
         if save_room_index = 2 then river_save_2
         if exit_room_index = F_RIVER_START2_I then river_entrance_2
         if exit_room_index = F_RIVER_START3_I then river_entrance_3
+        if exit_room_index = F_RIVER_START4_I then river_entrance_4
+        if exit_room_index = F_RIVER_START5_I then river_entrance_5
+
+
 
         room_index    = F_RIVER_START_I ; 21
         menu_map_Xpos = M_RIVER_START_X ; 54
@@ -195,7 +199,24 @@ river_entrance_3
         player_Xpos   = F_RIVER_START3_X ; 50
         player_Ypos   = F_RIVER_START3_Y ; 80
         player_facing = F_RIVER_START3_D ; DIR_UP
-;        goto river_set_room
+        goto river_set_room
+
+river_entrance_4
+        room_index    = F_RIVER_START4_I
+        menu_map_Xpos = M_RIVER_START4_X
+        menu_map_Ypos = M_RIVER_START4_Y
+        player_Xpos   = F_RIVER_START4_X
+;       player_Ypos   = F_RIVER_START4_Y
+;       player_facing = F_RIVER_START4_D
+        goto river_set_room
+
+river_entrance_5
+        room_index    = F_RIVER_START5_I
+        menu_map_Xpos = M_RIVER_START5_X
+        menu_map_Ypos = M_RIVER_START5_Y
+        player_Xpos   = F_RIVER_START5_X
+;       player_Ypos   = F_RIVER_START5_Y
+;       player_facing = F_RIVER_START5_D
 
 river_set_room
         characterset forest_trees
@@ -286,7 +307,6 @@ plot_river_room_0
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy map12 river_room_0 240
         plotmapfile tiled/river_room_0.tmx river_room_0 0 1 20 12
-        zone2_objects  = 2
         exit_tileset = T_CASTLE
         exit_Xpos = 72
         exit_Ypos = 64
@@ -303,7 +323,10 @@ plot_river_room_1
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 river_room_1 240
         plotmapfile tiled/river_room_1.tmx river_room_1 0 1 20 12
-        zone2_objects  = 2
+        exit_tileset = T_FOREST
+        exit_Xpos = 248
+        exit_Ypos = $68
+        exit_room_index = F_FOREST_START2_I
         alt_palette = 1
         return thisbank
 

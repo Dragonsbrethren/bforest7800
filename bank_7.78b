@@ -243,6 +243,8 @@ plot_river_room_21
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 river_room_21 240
         plotmapfile tiled/river_room_21.tmx river_room_21 0 1 20 12
-        zone2_objects = 4
-        alt_palette   = 1
+        exit_tileset = T_FOREST
+        exit_Xpos = 248
+        exit_Ypos = $78
+        exit_room_index = F_FOREST_START3_I
         return otherbank

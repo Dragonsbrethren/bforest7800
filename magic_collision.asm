@@ -71,7 +71,7 @@
 
 .magic_burnbush_check
         cmp #TYPE_BURNBUSH
-        bne .magic_damage_immune
+        bne .magic_damage_def
         jmp .burnbush_check
 
 .magic_damage_def

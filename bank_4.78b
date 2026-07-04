@@ -294,13 +294,11 @@ plot_castle_room_1
         menu_map_room[menu_map_index_2] = 3
         memcpy map12 castle_room_1 240
         plotmapfile tiled/castle_room_1.tmx castle_room_1 0 1 20 12
-        asm
-          lda #2
-          sta zone1_objects
-          sta zone2_objects
-end
-        zone14_objects = 0
         locked_zone = 0
+        exit_tileset = T_FOREST
+        exit_Xpos = 9*8
+        exit_Ypos = $C0
+        exit_room_index = F_FOREST_CATHEDRAL_I
 plot_castle_bank5_return
         return thisbank
 
@@ -311,7 +309,6 @@ plot_castle_room_2
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_2.tmx castle_room_2 0 1 20 12
         memcpy map12 castle_room_2 240
-        zone2_objects  = 4
         return thisbank
 
 plot_castle_room_3
@@ -319,7 +316,6 @@ plot_castle_room_3
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_3.tmx castle_room_3 0 3 20 8
         memcpy map8 castle_room_3 200
-        zone2_objects  = 2
         return thisbank
 
 plot_castle_room_4
@@ -327,7 +323,6 @@ plot_castle_room_4
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_4.tmx castle_room_4 0 1 20 12
         memcpy map12 castle_room_4 240
-        zone2_objects  = 2
         return thisbank
 
 plot_castle_room_5
@@ -336,7 +331,6 @@ plot_castle_room_5
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_5.tmx castle_room_5 0 1 20 12
         memcpy map12 castle_room_5 240
-        zone2_objects  = 2
         locked_zone = 0
         return thisbank
 
