@@ -1262,7 +1262,7 @@ end
         TYPE_SPIDER, (5*8), $20, TYPE_HSLIME, (9*8), $60
         TYPE_SPIDER, (15*8), $60, TYPE_HSLIME, (11*8), $A0
         TYPE_HSLIME, (12*8), $90
-        TYPE_TORCH, $28, $30, TYPE_CHARM3, (13*8), $40
+        TYPE_TORCH, $28, $30, TYPE_CHARM5, (13*8), $40
         $00
 end
 

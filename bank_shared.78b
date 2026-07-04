@@ -102,14 +102,17 @@ pickup_done
 check_status
 check_darkness
         ; bypass the status check for dead player
-        if player_state = STATE_DEATH then darkness_done
+        if player_state = STATE_DEATH then status_done
         if !player_status then status_done
         if animation_frame{0} then pal_update = 1
         ; TODO: save the normal fade value in a variable?
-        if player_status{1} then fade = FADE_DARKNESS
+        if !player_status{1} then darkness_done
+        if player_charm = CHARM_SPECTACLES then player_status{1} = 0 : fade = FADE_NORMAL : goto status_done
+        fade = FADE_DARKNESS
 
-status_done
 darkness_done
+status_done
+
 
         restorescreen
         if !lightning_timer then no_lightning
@@ -899,7 +902,7 @@ end
         if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos + SWORD_OFFSET_UP_X   : sword_Ypos = player_Ypos + SWORD_OFFSET_UP_Y   : sword_width = 3 : sword_height = temp2 : sword_frame = 1 : goto sword_done
         if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_LEFT_Y : sword_width = temp1 : sword_height = 3 :sword_frame = 3 : goto sword_done
         if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_RIGHT_Y : sword_width = temp1 : sword_height = 3 : sword_frame = 2 : goto sword_done
-        player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0
+        player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0 : player_facing = DIR_DOWN
 sword_done
 
 player_attack_return

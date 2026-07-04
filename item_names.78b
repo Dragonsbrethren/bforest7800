@@ -434,19 +434,19 @@ end
         'Dark Rosary*'
 end
         alphadata pickup_charm3 font_spr
-        'Ice Crystal*'
+        'Spectacles*'
 end
         alphadata pickup_charm4 font_spr
         'Harpy` Charm*'
 end
         alphadata pickup_charm5 font_spr
-        'Thunder Rock*'
+        'Ice Crystal*'
 end
         alphadata pickup_charm6 font_spr
-        'Flame Gem*'
+        'Thunder Rock*'
 end
         alphadata pickup_charm7 font_spr
-        'Charm 7     *'
+        'Flame Gem*'
 end
         alphadata pickup_charm8 font_spr
         'Charm 8     *'

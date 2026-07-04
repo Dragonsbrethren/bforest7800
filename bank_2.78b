@@ -315,8 +315,7 @@ end
         data forest_room_1_obj
         TYPE_WOLF, 6*8, $50, TYPE_WOLF, 10*8, $70
         TYPE_WOLF, 13*8, $60, TYPE_WOLF, 12*8, $90
-        TYPE_BURNBUSH, 3*8, $A0
-        TYPE_TORCH, 12*8, $40, TYPE_TORCH, 5*8, $90
+        TYPE_TORCH, 12*8, $40, TYPE_TORCH, 55, $90
         $00
 end
 
@@ -328,14 +327,14 @@ end
 end
 
         data forest_room_3_obj
-        TYPE_NIXTAIL, $4E, $40,  $00
+        $00
 end
 
         data forest_room_4_obj
         TYPE_WOLF,  4*8, $50, TYPE_WOLF, 12*8, $70
         TYPE_WOLF, 14*8, $60, TYPE_WOLF, 15*8, $80
         TYPE_WOLF, 10*8, $80
-        TYPE_BESTIARY, 5*8, $40
+        TYPE_BESTIARY, 44, $40
         TYPE_TORCH, 8*8, $80, TYPE_TORCH, 135, $50
         $00
 end
@@ -348,22 +347,9 @@ end
 end
 
         data forest_room_6_obj
-        TYPE_WOLF, $30, $30,
-        $00, $69, $20,
-        $00, $39, $20,
-        TYPE_TORCH, $5E, $AF,
-        TYPE_TORCH, $42, $AF,
-        TYPE_WOLF, $6B, $51,
-        TYPE_SLIME, $40, $67,
-        TYPE_SLIME, $80, $90,
-        $00, $90, $88,
-        $00, $40, $70,
-        $00, $30, $20,
-        $00, $80, $40,
-        $00, $b0, $c0,
-        $00, $77, $55,
-        $00, $44, $22,
-        $00, $33, $66,
+        TYPE_RAVEN, 20, $40
+        TYPE_NIXTAIL, 16*8, $40
+        $00
 end
 
         data forest_room_7_obj
@@ -386,6 +372,8 @@ end
 
         data forest_room_10_obj
         TYPE_RAVEN, 3*8, $50
+        TYPE_SLIME, 14*8, $A0, TYPE_SLIME, 12*8, $A0
+        TYPE_BURNBUSH, 16*8, $A0
         $00
 end
 
@@ -420,6 +408,7 @@ end
 end
 
         data forest_room_17_obj
+        TYPE_SPECTACLES, 24, $40
         $00
 end
 
@@ -448,6 +437,7 @@ end
         data forest_room_23_obj
         TYPE_FIREBAT, 72, $30
         TYPE_FOREST_BOSS, 76, $68
+        TYPE_SPELL1, 76, $90
         $00
 end
 

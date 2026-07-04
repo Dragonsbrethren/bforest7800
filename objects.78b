@@ -171,6 +171,10 @@
         const TYPE_CHARM8   = 247
         const TYPE_CHARM9   = 248
         const TYPE_CHARM10  = 249
+        const TYPE_PENDANT  = TYPE_CHARM1
+        const TYPE_ROSARY   = TYPE_CHARM2
+        const TYPE_SPECTACLES = TYPE_CHARM3
+        const CHARM_SPECTACLES = TYPE_CHARM3 - 239
 
         ; DROP RATES
         const RARE_DROP_RATE = 254
