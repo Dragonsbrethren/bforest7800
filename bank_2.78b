@@ -320,13 +320,16 @@ end
 end
 
         data forest_room_2_obj
-        TYPE_SLIME, 72, $40, TYPE_FGHOST, 16*8, $40
-        TYPE_WOLF, 5*8, $80, TYPE_WOLF, 7*8, $90
+        TYPE_SLIME, 72, $40,
+        TYPE_FGHOST, 16*8, $40, TYPE_FGHOST, 18*8, $60
         TYPE_TORCH, 100, $60, TYPE_TORCH, 3*8, $60
         $00
 end
 
         data forest_room_3_obj
+        TYPE_RAVEN, 31, $70, TYPE_SLIME, 4*8, $40
+        TYPE_TORCH, 12*8, $60, TYPE_TORCH, 16*8, $60
+        TYPE_TORCH, 3*8, $30
         $00
 end
 
@@ -347,8 +350,11 @@ end
 end
 
         data forest_room_6_obj
-        TYPE_RAVEN, 20, $40
+        TYPE_WOLF, 7*8, $50, TYPE_WOLF, 9*8, $60
+        TYPE_WOLF, 11*8, $70
         TYPE_NIXTAIL, 16*8, $40
+        TYPE_TORCH, 3*8, $40, TYPE_TORCH, 8*8, $A0
+        TYPE_TORCH, 17*8, $30, TYPE_TORCH, 17*8, $60
         $00
 end
 
@@ -362,11 +368,15 @@ end
 end
 
         data forest_room_8_obj
-        TYPE_RAVEN, $26, $28,  TYPE_RAVEN, $1E, $90,  $00
+        TYPE_RAVEN, 0*8, $80,  TYPE_RAVEN, 16*8, $40
+        TYPE_MAP1, 14*8, $40
+        TYPE_TORCH, 6*8, $A0, TYPE_TORCH, 11*8, $60
+        $00
 end
 
         data forest_room_9_obj
         TYPE_DOOR, 9*8, $80
+        TYPE_TORCH, 8*8, $90
         $00
 end
 
@@ -374,6 +384,7 @@ end
         TYPE_RAVEN, 3*8, $50
         TYPE_SLIME, 14*8, $A0, TYPE_SLIME, 12*8, $A0
         TYPE_BURNBUSH, 16*8, $A0
+        TYPE_TORCH, 13*8, $50, TYPE_TORCH, 8*8, $70
         $00
 end
 
@@ -383,6 +394,10 @@ end
 end
 
         data forest_room_12_obj
+        TYPE_WOLF, 7*8, $A0, TYPE_WOLF, 10*8, $90
+        TYPE_WOLF, 6*8, $70, TYPE_WOLF, 11*8, $70
+        TYPE_WOLF, 9*8, $80
+        TYPE_TORCH, 7*8, $60, TYPE_TORCH, 12*8, $60
         $00
 end
 
@@ -394,16 +409,20 @@ end
 end
 
         data forest_room_14_obj
+        TYPE_TORCH, 4*8, $80, TYPE_TORCH, 6*8, $80
         $00
 end
 
         data forest_room_15_obj
+        TYPE_TORCH, 4*8, $60
+        TYPE_TORCH, 7*8, $30, TYPE_TORCH, 11*8, $30
         TYPE_DOOR_LOCK, 2*8, $50
         $00
 end
 
         data forest_room_16_obj
         TYPE_DOOR_LOCK, 8*8, $80
+        TYPE_TORCH, 7*8, $90
         $00
 end
 
@@ -413,6 +432,7 @@ end
 end
 
         data forest_room_18_obj
+        TYPE_TORCH, 10*8, $70
         TYPE_DOOR_LOCK, 8*8, $60
         $00
 end
@@ -442,6 +462,9 @@ end
 end
 
         data forest_room_24_obj
+        TYPE_FGHOST, 6*8, $A0, TYPE_FGHOST, 5*8, $50
+        TYPE_FGHOST, 4*8, $80
+        TYPE_TORCH, 9*8, $60, TYPE_TORCH, 10*8, $90
         $00
 end
 
@@ -453,6 +476,9 @@ end
 end
 
         data forest_room_26_obj
+        TYPE_RAVEN, 5*8, $80, TYPE_RAVEN, 13*8, $A0
+        TYPE_SLIME, 11*8, $50, TYPE_SLIME, 9*8, $90
+        TYPE_TORCH, 8*8, $80
         $00
 end
 
