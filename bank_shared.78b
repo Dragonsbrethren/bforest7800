@@ -324,12 +324,9 @@ plot_armor
 
 plot_charms
         temp1 = object_type[index] - (TYPE_CHARM1 - 1)
-;        plotsprite charm0 sprite_pal Xposition Yposition 0
-;        goto plot_next
-
-plot_rosary
         sprite_pal = f_charm_pals[temp1]
-        plotsprite rosary sprite_pal Xposition Yposition 0
+        frame = f_charm_frames[temp1]
+        plotsprite charm0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_fireball

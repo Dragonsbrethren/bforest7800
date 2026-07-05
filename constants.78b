@@ -443,7 +443,7 @@
         const M_CAVES_ENT_3_Y = 128
         const F_CAVES_ENT_3_I = 29
         const F_CAVES_ENT_3_X = 40
-        const F_CAVES_ENT_3_Y = $A0
+        const F_CAVES_ENT_3_Y = $B0
         ; cathedral
         const M_CAVES_ENT_4_X = 78
         const M_CAVES_ENT_4_Y = 64

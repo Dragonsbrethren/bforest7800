@@ -19,7 +19,9 @@
         incgraphic gfx/sprites/potion1.png 160A 0 2 3 1
         incgraphic gfx/sprites/apple0.png 160A 0 2 1 3
         incgraphic gfx/sprites/armor0.png 160A 0 2 1
-        incgraphic gfx/sprites/rosary.png 160A 0 3 2 1
+        incgraphic gfx/sprites/charm0.png 160A 0 3 2 1
+        incgraphic gfx/sprites/charm1.png 160A 0 3 2 1
+        incgraphic gfx/sprites/charm2.png 160A 0 2 1 3
         incgraphic gfx/sprites/relic0.png 160A 0 2 3 1
         incgraphic gfx/sprites/relic1.png 160A 0 1 2 3
         incgraphic gfx/sprites/relic2.png 160A 0 3 2 1
@@ -1437,7 +1439,11 @@ end
 end
 
         data f_charm_pals
-        0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0
+        0, 2, 0, 6, 0, 2, 0, 0, 0, 0, 0
+end
+
+        data f_charm_frames
+        0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0
 end
 
 ledge_hop
