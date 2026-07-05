@@ -614,7 +614,7 @@ wolf_flags
           sta Xposition
           lda object_Ypos,x
           sec
-          sbc #WOLF_CHASE_DIST_Y
+          sbc #WOLF_CHASE_OFFSET_Y
           sta Yposition
 end
         if !boxcollision(player_Xpos, player_Ypos, PLAYER_WIDTH, PLAYER_HEIGHT, Xposition, Yposition, WOLF_CHASE_DIST_X, WOLF_CHASE_DIST_Y) then return thisbank
@@ -779,54 +779,129 @@ end
 raven_ai
         asm
           lda object_flags,x
-          ora #%00000001
           and #%10000000
-          bne .raven_change_pos
+          beq raven_set_face
+          jmp raven_move
+raven_set_face
           lda player_Xpos
           cmp object_Xpos,x
           bcs raven_face_right
 raven_face_left
           lda #DIR_LEFT
           sta object_facing,x
+          sta object_Xdir,x
           lda #F_RAVEN_PIRCH_L
           sta object_frame,x
           jmp test_dist_to_player
 raven_face_right
           lda #DIR_RIGHT
           sta object_facing,x
+          sta object_Xdir,x
           lda #F_RAVEN_PIRCH_R
           sta object_frame,x
 
 test_dist_to_player
-          jsr .calculate_distance
-          lda temp1
+          lda object_Xpos,x
+          sec
+          sbc player_Xpos
+          bvc raven_test_dist_to_player
+          ora #$FF
+          clc
+          adc #1
+raven_test_dist_to_player
           cmp #RAVEN_CHASE_DIST
-          bcc .raven_change_pos
-end
+          bcs raven_change_pos
+          rts
 
 raven_change_pos
-        flags{7} = 1
-        frame = 1
-        if animation_frame then frame = frame + 2
-        if !object_timer[index] then object_timer[index] = RAVEN_FLIGHT_TIME
-        if flags{3} then raven_move
-        if rand > 128 then gosub swoop_Y : raven_move
-        gosub swoop_X
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
+          lda #RAVEN_FLIGHT_TIME
+          sta object_timer,x
+          lda player_Ypos
+          cmp object_Ypos,x
+          bcc raven_swoop_up
+raven_swoop_down
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          bne raven_speed
+raven_swoop_up
+          lda #DIR_UP
+          sta object_Ydir,x
+raven_speed
+          lda object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda #0
+          sta object_Yvel_hi,x
+          lda #128
+          sta object_Yvel_lo,x
 raven_move
-        gosub go_to_destination
-
-raven_perch
-        temp1 = object_timer[index]
-        object_timer[index] = object_timer[index] - 1
-        if temp1 < object_timer[index] then object_timer[index] = 0
-        if object_timer[index] > 0 then raven_return
-        gosub test_walkable
-        if !tile_properties{0} then flags{7} = 0
-
-raven_return
-        if Xposition >= player_Xpos then frame = frame + 1
-        if debug_time = 1 then BACKGRND = bg_color
-        return
+raven_anim
+          lda object_Xdir,x
+          cmp #DIR_LEFT
+          beq raven_anim_left
+raven_anim_right
+          lda #F_RAVEN_FLY_R_1
+          jmp raven_anim_frame
+raven_anim_left
+          lda #F_RAVEN_FLY_L_1
+raven_anim_frame
+          sta object_frame,x
+          lda animation_frame
+          bne raven_timer
+          inc object_frame,x
+          inc object_frame,x
+raven_timer
+          dec object_timer,x
+          beq raven_flight_reverse
+          cmp #RAVEN_FLIGHT_TIME/2
+          bcc raven_swoop_up_speed
+raven_swoop_down_speed
+          lda object_Yvel_lo,x
+          clc
+          adc #RAVEN_SWOOP_SPEED
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc #0
+          sta object_Yvel_hi,x
+          rts
+raven_swoop_up_speed
+          lda object_Yvel_lo,x
+          sec
+          sbc #RAVEN_SWOOP_SPEED
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          sbc #0
+          sta object_Yvel_hi,x
+          rts
+raven_flight_reverse
+          lda #RAVEN_FLIGHT_TIME
+          sta object_timer,x
+          lda object_Xdir,x
+          cmp #DIR_LEFT
+          beq raven_fly_right
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          bne raven_flight_reverse_vert
+raven_fly_right
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+raven_flight_reverse_vert
+          lda object_Ydir,x
+          cmp #DIR_UP
+          beq raven_fly_down
+raven_fly_up
+          lda #DIR_UP
+          sta object_Ydir,x
+          rts
+raven_fly_down
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          rts
+end
 
 obj_raven_stats
         asm
@@ -851,7 +926,7 @@ obj_raven_stats
           sta object_speed_hi,x
           lda #RAVEN_SPEED_LO
           sta object_speed_lo,x
-          lda #0
+          lda #%00000100
           sta object_flags,x
           lda #RAVEN_PAL
           sta object_pal,x
@@ -990,6 +1065,28 @@ end
 obj_firebat_stats
         asm
           ldx obj_index
+          lda #FIREBAT_HP
+          sta object_hp,x
+          lda #FIREBAT_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #FIREBAT_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #FIREBAT_DAMAGE
+          sta object_damage,x
+          lda #FIREBAT_DEF
+          sta object_def,x
+          lda #FIREBAT_MDEF
+          sta object_mdef,x
+          lda #FIREBAT_FRICTION_HI
+          sta object_friction_hi,x
+          lda #FIREBAT_FRICTION_LO
+          sta object_friction_lo,x
+          lda #FIREBAT_SPEED_HI
+          sta object_speed_hi,x
+          lda #FIREBAT_SPEED_LO
+          sta object_speed_lo,x
+          lda #FIREBAT_FLAGS
+          sta object_flags,x
           lda #<.plot_firebat
           sta object_spr_ptr_lo,x
           lda #>.plot_firebat

@@ -193,8 +193,8 @@
         const WOLF_MDEF = 2
         const WOLF_DROP_RATE = 64       ; depreciated
         const WOLF_CHASE_DIST = 32
-        const WOLF_CHASE_DIST_X = 48
-        const WOLF_CHASE_DIST_Y = 64
+        const WOLF_CHASE_DIST_X = 72
+        const WOLF_CHASE_DIST_Y = 96
         const WOLF_CHASE_OFFSET_X = WOLF_CHASE_DIST_X / 2
         const WOLF_CHASE_OFFSET_Y = WOLF_CHASE_DIST_Y / 2
         const F_WOLF_LEFT_1  = 0
@@ -222,7 +222,7 @@
         const SLIME_PAL = 4
 
         const RAVEN_CHASE_DIST = 50
-        const RAVEN_FLIGHT_TIME = 10
+        const RAVEN_FLIGHT_TIME = 40
         const RAVEN_DROP_RATE = 128
         const RAVEN_HP = 4
         const RAVEN_VEL_CAP_HI = 2
@@ -231,7 +231,7 @@
         const RAVEN_FRICTION_HI = 0
         const RAVEN_FRICTION_LO = 0
         const RAVEN_SPEED_HI = 1
-        const RAVEN_SPEED_LO = 0
+        const RAVEN_SPEED_LO = 128
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0
         const F_RAVEN_PIRCH_L = 10
@@ -240,7 +240,8 @@
         const F_RAVEN_FLY_R_1 = 13
         const F_RAVEN_FLY_L_2 = 14
         const F_RAVEN_FLY_R_2 = 15
-        const RAVEN_PAL = 7
+        const RAVEN_PAL = 5
+        const RAVEN_SWOOP_SPEED = 32
 
         ; FOREST GHOST
         const FGHOST_HP = 2
@@ -266,6 +267,24 @@
         const F_BURNBUSH   = 8
         const BURNBUSH_BURN_TIME = 30
         const FIRE_PAL = 2
+
+        ; FIREBAT
+        const FIREBAT_FLIGHT_TIME = 40
+        const FIREBAT_HP = 4
+        const FIREBAT_VEL_CAP_HI = 2
+        const FIREBAT_VEL_CAP_LO = 0
+        const FIREBAT_DAMAGE = 4
+        const FIREBAT_FRICTION_HI = 0
+        const FIREBAT_FRICTION_LO = 0
+        const FIREBAT_SPEED_HI = 1
+        const FIREBAT_SPEED_LO = 32
+        const FIREBAT_DEF = 0
+        const FIREBAT_MDEF = 0
+        const FIREBAT_FLAGS = %00000100
+        const F_FIREBAT_1 = 0
+        const F_FIREBAT_2 = 1
+        const FIREBAT_PAL = 7
+        const FIREBAT_SWOOP_SPEED = 32
 
         ; CRYSTAL BALL
         const F_ORB = 9

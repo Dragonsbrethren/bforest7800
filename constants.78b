@@ -392,7 +392,7 @@
         const M_HILLS_CAVE3_Y = 144
         const F_HILLS_CAVE3_I = 35
         const F_HILLS_CAVE3_X = (8*4)
-        const F_HILLS_CAVE3_Y = $70
+        const F_HILLS_CAVE3_Y = $80
         const F_HILLS_CAVE3_D = DIR_DOWN
 
 ; WATERFALL 1
