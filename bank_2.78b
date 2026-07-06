@@ -523,7 +523,11 @@ test_walkable_forest
 walkable_water_forest
         ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
         if tile_properties_1{2} then tile_properties_1{0} = 1
+walkable_water_forest_tile_2
+        ; test if tile is a waterfall, which is never made walkable
+        if tile_properties_2{7} then walkable_water_forest_done
         if tile_properties_2{2} then tile_properties_2{0} = 1
+walkable_water_forest_done
 
         ; objects can call this part of the subroutine to test if they are in water
 test_water_forest
@@ -813,18 +817,25 @@ raven_set_face
           cmp object_Xpos,x
           bcs raven_face_right
 raven_face_left
-          lda #DIR_LEFT
-          sta object_facing,x
-          sta object_Xdir,x
           lda #F_RAVEN_PIRCH_L
           sta object_frame,x
-          jmp test_dist_to_player
+          jmp raven_set_dir
 raven_face_right
-          lda #DIR_RIGHT
-          sta object_facing,x
-          sta object_Xdir,x
           lda #F_RAVEN_PIRCH_R
           sta object_frame,x
+
+raven_set_dir
+          lda object_Xpos,x
+          cmp #80
+          bcs raven_move_left
+raven_move_right
+          lda #DIR_RIGHT
+          bne raven_Xdir
+raven_move_left
+          lda #DIR_LEFT
+raven_Xdir
+          sta object_facing,x
+          sta object_Xdir,x
 
 test_dist_to_player
           lda object_Xpos,x
