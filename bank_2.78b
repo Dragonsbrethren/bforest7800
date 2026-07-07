@@ -53,6 +53,8 @@ load_forest
         if save_room_index = 2 then forest_save_2
         if save_room_index = 3 then forest_save_3
         if save_room_index = 4 then forest_save_4
+        if exit_room_index = F_FOREST_ARMOR_I then forest_armor
+        if exit_room_index = F_FOREST_ARMOR_EXIT_I then forest_armor_exit
         if exit_room_index = F_FOREST_INN_I then forest_inn
         if exit_room_index = F_FOREST_INN_EXIT_I then forest_inn_exit
         if exit_room_index = F_FOREST_WITCH_I then forest_witch
@@ -126,11 +128,23 @@ forest_save_4
         player_facing = F_FOREST_SAVE4_D
         goto forest_set_room
 
+forest_armor
+        room_index = F_FOREST_ARMOR_I
+        player_Xpos = F_FOREST_ARMOR_X
+        player_Ypos = F_FOREST_ARMOR_Y
+        goto forest_set_room
+
+forest_armor_exit
+        room_index = F_FOREST_ARMOR_EXIT_I
+        player_Xpos = F_FOREST_ARMOR_EXIT_X
+        player_Ypos = F_FOREST_ARMOR_EXIT_Y
+        goto forest_set_room
+
+
 forest_inn
         room_index = F_FOREST_INN_I
-        player_Xpos = 9*8
-        player_Ypos = $A0
-        player_facing = DIR_UP
+        player_Xpos = F_FOREST_INN_X
+        player_Ypos = F_FOREST_INN_Y
         goto forest_set_room
 
 forest_inn_exit
@@ -154,6 +168,7 @@ forest_witch_exit
         player_facing = DIR_DOWN
         goto forest_set_room
 
+        dmahole 0
 forest_cathedral
         room_index    = F_FOREST_CATHEDRAL_I
         player_Xpos   = F_FOREST_CATHEDRAL_X
@@ -161,7 +176,6 @@ forest_cathedral
         player_facing = F_FOREST_CATHEDRAL_D
         goto forest_set_room
 
-        dmahole 0
 forest_set_room
         characterset forest_trees
         if music_playing then forest_init
@@ -416,7 +430,7 @@ end
         data forest_room_15_obj
         TYPE_TORCH, 4*8, $60
         TYPE_TORCH, 7*8, $30, TYPE_TORCH, 11*8, $30
-        TYPE_DOOR_LOCK, 2*8, $50
+        TYPE_DOOR, 2*8, $50
         $00
 end
 
@@ -443,6 +457,7 @@ end
 end
 
         data forest_room_20_obj
+        TYPE_SHIELD1, 7*8, $48
         $00
 end
 
@@ -1028,6 +1043,27 @@ end
         goto obj_next_stats
 
 firebat_ai
+        asm
+          jsr randomize
+          bmi firebat_move_right
+          lda object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_speed_lo,x
+          sta object_Xvel_lo,x
+
+firebat_move_right
+          rts
+          
+firebat_fireball
+          jsr .find_new_object
+          lda no_empty_slot
+          beq firebat_prep_ball
+          rts
+
+firebat_prep_ball
+          rts
+end
+
 forest_boss_ai
         asm
           rts

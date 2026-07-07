@@ -1427,7 +1427,7 @@ end
 end
 
         data f_sword_pals
-        0, 2, 0, 3, 0, 2, 2, 2, 2, 2, 2
+        0, 2, 0, 0, 3, 2, 2, 2, 2, 2, 2
 end
 
         data f_shield_pals
@@ -1629,6 +1629,7 @@ demo_jo_dir
           beq demo_jo_init_walk
           jmp demo_jo_walk
 demo_jo_init_walk
+          sta retract_counter
           lda #STATE_MOVING
           sta player_state
           lda #PRIEST_WALK_TIMER
@@ -1667,10 +1668,11 @@ demo_jo_vert_set
 
 demo_jo_walk
           dec player_timer
-          ldx MAX_MAP_OBJECTS
+          ldx #MAX_MAP_OBJECTS
 demo_jo_melee_loop
           lda object_type,x
           beq demo_jo_melee_next
+          bmi demo_jo_melee_next
           jsr .test_melee
           lda melee_valid
           bne demo_jo_attack
@@ -1707,24 +1709,16 @@ demo_jo_walk_y_2
           sta player_Yvel_hi
 
 demo_jo_walk_anim
-          lda player_facing
-          tay
-          lda demo_jo_walk_frames,y
-demo_jo_walk_store_frame
-          sta player_frame
-          lda animation_frame
-          beq demo_jo_walk_anim_done
-          inc player_frame
+          jsr .set_player_facing_frame
+;          lda animation_frame
+;          beq demo_jo_walk_anim_done
+;          inc player_frame
 demo_jo_walk_anim_done
           jmp .move_object
 
 demo_jo_attack
           jmp .player_attack
 
-end
-
-        data demo_jo_walk_frames
-        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT
 end
 
 

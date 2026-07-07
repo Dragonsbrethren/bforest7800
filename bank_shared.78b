@@ -885,10 +885,12 @@ player_save_input
 
 player_attack
         ; TODO: saving cutscene
+        if demoplay then player_attack_bypass_save
         asm
           lda in_save_room
           bne .player_save_input
 end
+player_attack_bypass_save
         ; workaround for wierdness of attacking while obscurred - TODO: detect if sword is on obscurred tile & hide?
         if obscure_player && player_obscure then goto player_handler_done
         sword_hit = 0
@@ -905,7 +907,7 @@ sword_done
 player_attack_return
         player_state = STATE_ATTACK
         player_timer = ATTACK_FRAMES
-        if demoplay then return thisbank
+        if demoplay then demoplay++ : return thisbank
         goto player_handler_done
 
 retract_sword

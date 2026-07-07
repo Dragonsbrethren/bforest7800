@@ -345,10 +345,10 @@ end
         'Bonesaber*'
 end
         alphadata pickup_sword3 font_spr
-        'Thunderblitz*'
+        'Cross Sword*'
 end
         alphadata pickup_sword4 font_spr
-        'Wind Blade*'
+        'Thunderblitz*'
 end
         alphadata pickup_sword5 font_spr
         'Firebrand*'

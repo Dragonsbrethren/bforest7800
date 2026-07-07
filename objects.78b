@@ -183,7 +183,7 @@
         ; STATS -- TODO: Move these to individual files for each object?
         const WOLF_SPEED_HI = 2
         const WOLF_SPEED_LO = 0
-        const WOLF_HP = 2
+        const WOLF_HP = 6
         const WOLF_VEL_CAP_HI = 2
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
@@ -202,7 +202,7 @@
         const WOLF_PAL = 5
 
         const SLIME_DROP_RATE = 128     ; depreciated
-        const SLIME_HP = 4
+        const SLIME_HP = 8
         const MSLIME_HP = SLIME_HP / 2
         const SLIME_VEL_CAP_HI = 1
         const SLIME_VEL_CAP_LO = 0
@@ -224,13 +224,13 @@
         const RAVEN_CHASE_DIST = 50
         const RAVEN_FLIGHT_TIME = 40
         const RAVEN_DROP_RATE = 128
-        const RAVEN_HP = 4
+        const RAVEN_HP = 6
         const RAVEN_VEL_CAP_HI = 2
         const RAVEN_VEL_CAP_LO = 0
         const RAVEN_DAMAGE = 4
         const RAVEN_FRICTION_HI = 0
         const RAVEN_FRICTION_LO = 0
-        const RAVEN_SPEED_HI = 1
+        const RAVEN_SPEED_HI = 2
         const RAVEN_SPEED_LO = 128
         const RAVEN_DEF = 0
         const RAVEN_MDEF = 0

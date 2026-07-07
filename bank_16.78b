@@ -97,6 +97,10 @@ plot_forest_room_15
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_15.tmx forest_room_15 0 1 20 12
         memcpy map12 forest_room_15 240
+        exit_tileset = T_FOREST
+        exit_Xpos = 2*8
+        exit_Ypos = $50
+        exit_room_index = F_FOREST_ARMOR_I
         return otherbank
 
 plot_forest_room_16
@@ -134,7 +138,7 @@ plot_forest_room_20
         exit_tileset = T_FOREST
         exit_Xpos = 9*8
         exit_Ypos = $B0
-        exit_room_index = F_FOREST_INN_EXIT_I
+        exit_room_index = F_FOREST_ARMOR_EXIT_I
         return otherbank
 
 plot_forest_room_21
