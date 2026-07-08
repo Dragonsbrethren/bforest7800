@@ -8,16 +8,18 @@
 
 title_init
         stoprmt
-        music_playing = 0
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
         asm
-        lda #1
-        sta menu_columns
-        sta menu_max
-        sta action_debounce
-        sta menu_debounce
+          ldx #0
+          stx music_playing
+          stx object_timer
+          inx
+          stx menu_columns
+          stx menu_max
+          stx action_debounce
+          stx menu_debounce
 end
         displaymode 320B
         bg_color = $71
@@ -32,6 +34,15 @@ end
 title_handler
         restorescreen
         adjustvisible 0 4
+        asm
+          inc object_timer
+          bne .title_check_menu_change
+          lda #1
+          sta demoplay
+          jmp .title_new_game
+end
+
+title_check_menu_change
         ; menu_change is set by title_flash, need to get 1 button input from player before drawing menu
         if !menu_change then title_flash
 
@@ -52,15 +63,21 @@ title_menu
         goto main
 
 title_selection
+        asm
+          lda #0
+          sta demoplay
+          sta object_timer
+end
         if menu_selection then title_continue
         goto title_new_game
 
 title_flash
-        plotchars 'ALPHA 07-05-2026' 0 48 10
+        plotchars 'ALPHA 07-07-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
         if animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
+        
         goto main
 
 title_continue
@@ -82,8 +99,18 @@ end
         goto menu_init bank11
 
 title_new_game
+        if !demoplay then title_new_game_normal
+        tileset = T_HILLS
+        player_sword = 4
+        player_shield = 3
+        player_armor = 3
+        player_charm = 3
+        player_spell = 3
+        toggled_familiar = 0
+        goto init_field
+
+title_new_game_normal
         tileset = T_FOREST
-        fade = FADE_NORMAL
         player_sword = 1
         player_shield = 0
         player_armor = 1
@@ -110,6 +137,7 @@ title_new_game
 
 init_field
         ; code shared by new game and continue options
+        fade = FADE_NORMAL
         game_state = STATE_FIELD
         reload_map = 1
         first_load = 1
@@ -124,7 +152,6 @@ init_field
         player_hp = 48
         player_mp = 48
         player_max_mp = 48
-        demoplay = 0
         ; make sure all toggled items have a quantity
         if m_item_bits_1{0} then m_item_qty[1] = 1
         if m_item_bits_1{1} then m_item_qty[2] = 1

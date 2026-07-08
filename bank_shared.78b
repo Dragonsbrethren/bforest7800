@@ -627,6 +627,10 @@ oh_torch  cmp #TYPE_TORCH
           beq .torch_tile_block
           cmp #TYPE_DOOR_LOCK
           beq .torch_tile_block
+          cmp #TYPE_BURNBUSH
+          bne oh_flame
+          jmp .burnbush_ai
+oh_flame
           cmp #TYPE_BOSS_FLAME
           beq .boss_flame
           cmp #TYPE_STATIC
@@ -881,7 +885,8 @@ check_room_exit
 
 player_save_input
         old_tileset = tileset
-        goto save_room_handler
+        player_state = STATE_DEATH
+        goto death_fade
 
 player_attack
         ; TODO: saving cutscene

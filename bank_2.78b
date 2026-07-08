@@ -161,6 +161,7 @@ forest_witch
         player_facing = DIR_UP
         goto forest_set_room
 
+        dmahole 0
 forest_witch_exit
         room_index    = F_FOREST_WITCH_EXIT_I
         player_Xpos   = F_FOREST_WITCH_EXIT_X
@@ -168,7 +169,6 @@ forest_witch_exit
         player_facing = DIR_DOWN
         goto forest_set_room
 
-        dmahole 0
 forest_cathedral
         room_index    = F_FOREST_CATHEDRAL_I
         player_Xpos   = F_FOREST_CATHEDRAL_X

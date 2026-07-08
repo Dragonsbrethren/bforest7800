@@ -188,9 +188,9 @@
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
-        const WOLF_DAMAGE = 1
+        const WOLF_DAMAGE = 4
         const WOLF_DEF = 0
-        const WOLF_MDEF = 2
+        const WOLF_MDEF = 0
         const WOLF_DROP_RATE = 64       ; depreciated
         const WOLF_CHASE_DIST = 32
         const WOLF_CHASE_DIST_X = 72
@@ -244,10 +244,10 @@
         const RAVEN_SWOOP_SPEED = 32
 
         ; FOREST GHOST
-        const FGHOST_HP = 2
+        const FGHOST_HP = 4
         const FGHOST_VEL_CAP_HI = 2
         const FGHOST_VEL_CAP_LO = 0
-        const FGHOST_DAMAGE = 4
+        const FGHOST_DAMAGE = 6
         const FGHOST_DEF = 2
         const FGHOST_MDEF = 0
         const FGHOST_FRICTION_HI = 0
@@ -709,13 +709,13 @@
 
         const FIREBALL_SPEED_HI = 4
         const FIREBALL_SPEED_LO = 0
-        const FIREBALL_DAMAGE = 4
+        const FIREBALL_DAMAGE = 8
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
 
         const ICEFLAKES_SPEED_HI = 4
         const ICEFLAKES_SPEED_LO = 0
-        const ICEFLAKES_DAMAGE = 3
+        const ICEFLAKES_DAMAGE = 5
         const ICEFLAKES_MP_COST = 12
 
         const LIGHTNING_DAMAGE = $10
