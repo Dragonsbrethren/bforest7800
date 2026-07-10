@@ -706,6 +706,7 @@
 
         const OWL_DELAY = 240
         const OWL_SPEED = 2
+        const OWL_DAMAGE = 6
 
         const FIREBALL_SPEED_HI = 4
         const FIREBALL_SPEED_LO = 0

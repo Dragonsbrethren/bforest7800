@@ -1285,6 +1285,8 @@ owl_start_timer
 owl_init
           lda #%00000100
           sta object_flags,x
+          lda #OWL_DAMAGE
+          sta object_damage,x
           lda #<.plot_owl
           sta object_spr_ptr_lo,x
           lda #>.plot_owl
