@@ -793,7 +793,7 @@ poison_damage
 
 player_handler
         index = 0
-        if player_state = STATE_DEATH then goto death_fade
+        if player_state = STATE_DEATH || player_state = STATE_SAVE then goto death_fade
         
         if player_status{0} || player_status{5} then gosub poison_damage
         if player_status{3} then goto stone_handler
@@ -885,7 +885,8 @@ check_room_exit
 
 player_save_input
         old_tileset = tileset
-        player_state = STATE_DEATH
+        player_state = STATE_SAVE
+        fade_count = 30
         goto death_fade
 
 player_attack

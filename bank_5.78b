@@ -280,7 +280,6 @@ plot_castle_room_23
         return otherbank
 
 plot_castle_room_24
-        adjustvisible 0 13
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 2
@@ -288,19 +287,18 @@ plot_castle_room_24
         alt_palette = 2
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 7
-        plotmapfile tiled/castle_room_24.tmx castle_room_24 0 0 20 13
-        memcpy map13 castle_room_24 260
+        plotmapfile tiled/castle_room_24.tmx castle_room_24 0 1 20 12
+        memcpy map12 castle_room_24 240
         zone1_objects  = 2
         zone2_objects  = 2
         return otherbank
 
 plot_castle_room_25
-        adjustvisible 0 13
         alt_palette = 2
         menu_map_room[menu_map_index] = 4
         menu_map_room[menu_map_index_2] = 17
-        plotmapfile tiled/castle_room_25.tmx castle_room_25 0 0 20 13
-        memcpy map13 castle_room_25 260
+        plotmapfile tiled/castle_room_25.tmx castle_room_25 0 1 20 12
+        memcpy map12 castle_room_25 240
         zone1_objects  = 2
         zone2_objects  = 4
         zone14_objects = 0

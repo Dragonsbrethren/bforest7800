@@ -314,11 +314,11 @@ death_fade
         fade = fade - 1
 fade_done
         fade_count = fade_count - 1
-        if !fade_count then password_display
+        if !fade_count then save_room_handler
         goto player_handler_done
 
 save_room_handler
-        drawwait
+        if player_state = STATE_DEATH then password_display
         gosub encode_password bank11
 password_display
         menu = MENU_GAMEOVER
