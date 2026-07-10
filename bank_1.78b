@@ -239,10 +239,11 @@ black_flash
         if tileset = T_CASTLE then goto main    ; Cathedral tileset uses black as BG, not C1
         P4C1     = flash_color
         P5C1     = flash_color
+        if tileset = T_FOREST && alt_palette = 2 then flash_P7
         P6C1     = flash_color
         ; can't flash the animated palette
         if pal_animation then goto main
-        if tileset = T_FOREST && alt_palette = 2 then goto main
+flash_P7
         P7C1     = flash_color
         goto main
 
