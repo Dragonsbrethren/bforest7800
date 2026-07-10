@@ -1586,6 +1586,7 @@ move_return
           rts
 
 move_test_vertical_deny
+          rts
           lda #0
           sta object_Yvel_hi,x
           sta object_Yvel_lo,x

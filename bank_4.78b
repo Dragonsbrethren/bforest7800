@@ -901,6 +901,10 @@ priest_cast_prep
           sta object_type,y
           lda #$E0
           sta object_Xpos,y
+          lda #<.plot_castle_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_castle_160a
+          sta object_spr_ptr_hi,y
           lda object_flags,x
           ora #%01000000
           sta object_flags,x

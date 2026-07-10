@@ -801,8 +801,8 @@ cast_fireball_up
         tay
         dey
         lda dlend,y
-        clc
-        adc #1
+        sec
+        sbc #1
         sta dlend,y
         ldy spawn_index
         cmp #ZONE_BUFFER_OBJS
