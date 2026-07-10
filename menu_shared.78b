@@ -265,6 +265,15 @@ calc_inv_array
           lda #>m_spell_inv
           sta jump2
           jsr .calc_inv_load
+          lda #<m_relic_bits_1
+          sta pointer
+          lda #>m_relic_bits_1
+          sta pointer_hi
+          lda #<m_relic_inv
+          sta jump1
+          lda #>m_relic_inv
+          sta jump2
+          jsr .calc_inv_load
 end
 
 calc_inv_remove_zeros
