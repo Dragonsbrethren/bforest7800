@@ -351,10 +351,10 @@ end
         'Thunderblitz*'
 end
         alphadata pickup_sword5 font_spr
-        'Firebrand*'
+        'Wing Edge*'
 end
         alphadata pickup_sword6 font_spr
-        'Sword 6     *'
+        'Firebrand*'
 end
         alphadata pickup_sword7 font_spr
         'Sword 7     *'

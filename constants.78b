@@ -369,8 +369,8 @@
         const M_HILLS_SAVE1_Y = 112
         ; field positions
         const F_HILLS_SAVE1_I = 24     ; save room 1 index
-        const F_HILLS_SAVE1_X = $50
-        const F_HILLS_SAVE1_Y = $70
+        const F_HILLS_SAVE1_X = 79
+        const F_HILLS_SAVE1_Y = $78
         const F_HILLS_SAVE1_D = DIR_SLEEP
 
         ; map positions
@@ -378,8 +378,8 @@
         const M_HILLS_SAVE2_Y = 112
         ; field positions
         const F_HILLS_SAVE2_I = 23     ; save room 2 index
-        const F_HILLS_SAVE2_X = (7*8)
-        const F_HILLS_SAVE2_Y = $70
+        const F_HILLS_SAVE2_X = 62
+        const F_HILLS_SAVE2_Y = $78
         const F_HILLS_SAVE2_D = DIR_SLEEP
 
 ; CAVE EXIT 1 (mountaintop)

@@ -1324,7 +1324,7 @@ end
 
         data hills_room_13_obj
         TYPE_HARPY, $28, $10, TYPE_HARPY, $50, $10
-        TYPE_SWORD4, $78, $A0
+        TYPE_SWORD5, $78, $A0
         TYPE_TORCH, $70, $40
         TYPE_HARPY_SH, $28, $20, TYPE_HARPY_SH, $50, $20
         $00
