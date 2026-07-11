@@ -152,6 +152,8 @@
         autodim byte hop_dir
         autodim 8.8  friction
         autodim byte demoplay
+        autodim byte demo_num
+        autodim byte demo_timer
         autodim byte zone_open 2
 
 ;------------------------------------------------------------------------------

@@ -810,7 +810,7 @@ handle_input_field
         gosub ledge_hop
         goto test_joy_done
 player_no_hop
-        if demoplay then gosub demo_jo : goto player_move_done
+        if demoplay then gosub demo_jo : goto test_joy_demo
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
         player_timer = player_timer - 1
@@ -858,6 +858,12 @@ test_joy_pause
         index = 0
         gosub move_object
 ;        gosub restore_player_props
+        goto player_move_done
+
+test_joy_demo
+        if joy0fire0 || joy0fire1 then action_debounce = 1 : goto title_init bank10
+        demo_timer++
+        if !demo_timer then goto title_init bank10
 
 player_move_done
 

@@ -157,6 +157,7 @@ end
 load_castle
         if !first_load then castle_rooms
         first_load = 0
+        if demoplay then castle_demo
         if save_room_index = 1 then castle_save_1
         if save_room_index = 2 then castle_save_2
         if exit_room_index = 48 then castle_entrance_2
@@ -205,6 +206,13 @@ castle_save_2
         player_Xpos = $48
         player_Ypos = $70
         player_facing = F_CASTLE_SAVE2_D
+        goto castle_rooms
+
+castle_demo
+        room_index = 42
+        player_Xpos = 14*8
+        player_Ypos = $68
+        player_facing = DIR_LEFT
 
 castle_rooms
         characterset castle_stone

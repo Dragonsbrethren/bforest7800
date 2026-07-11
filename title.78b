@@ -72,10 +72,10 @@ end
         goto title_new_game
 
 title_flash
-        plotchars 'ALPHA 07-07-2026' 0 48 10
+        plotchars 'ALPHA 07-11-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
-        if joy0fire0 then action_button = 0 : menu_change = 1 : action_debounce = 1
-        if joy0fire1 then action_button = 1 : menu_change = 1 : action_debounce = 1
+        if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
+        if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
         if animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
         
         goto main
@@ -100,17 +100,34 @@ end
 
 title_new_game
         if !demoplay then title_new_game_normal
-        tileset = T_HILLS
-        player_sword = 4
-        player_shield = 3
-        player_armor = 3
-        player_charm = 3
-        player_spell = 3
+        if demo_num = 2 then title_demo_2
+        tileset = T_CASTLE
+        player_sword = 1
+        player_shield = 1
+        player_armor = 1
+        player_charm = 1
+        player_spell = 1
         toggled_familiar = 0
+        m_relic_bits_1  = %00010000
+        m_relic_bits_2  = %00000000
+        demo_num = 2
+        goto init_field
+
+title_demo_2
+        tileset = T_RIVER
+        player_sword = 3
+        player_shield = 2
+        player_armor = 2
+        player_charm = 2
+        player_spell = 2
+        toggled_familiar = 0
+        m_relic_bits_1  = %00010000
+        m_relic_bits_2  = %00000001
+        demo_num = 3
         goto init_field
 
 title_new_game_normal
-        tileset = T_FOREST
+        tileset = T_CASTLE
         player_sword = 1
         player_shield = 0
         player_armor = 1

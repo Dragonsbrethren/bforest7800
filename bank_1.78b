@@ -1633,6 +1633,9 @@ demo_jo_dir
           jmp demo_jo_walk
 demo_jo_init_walk
           sta retract_counter
+          lda #%11111110
+          and object_flags
+          sta object_flags
           lda #STATE_MOVING
           sta player_state
           lda #PRIEST_WALK_TIMER

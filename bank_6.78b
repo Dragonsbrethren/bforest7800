@@ -148,6 +148,7 @@ river_waterfall
 load_river
         if !first_load then river_set_room
         first_load = 0
+        if demoplay then river_demo
         if save_room_index = 1 then river_save_1
         if save_room_index = 2 then river_save_2
         if exit_room_index = F_RIVER_START2_I then river_entrance_2
@@ -217,6 +218,12 @@ river_entrance_5
         player_Xpos   = F_RIVER_START5_X
 ;       player_Ypos   = F_RIVER_START5_Y
 ;       player_facing = F_RIVER_START5_D
+        goto river_set_room
+
+river_demo
+        room_index = 30
+        player_Xpos = 11*8
+        player_Ypos = $30
 
 river_set_room
         characterset forest_trees
