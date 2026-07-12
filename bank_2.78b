@@ -205,7 +205,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #8
+          cpx #7
           bcs .forest_room_b16
           jmp .forest_room_bank_2
 end
@@ -306,13 +306,6 @@ plot_forest_room_6
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_6.tmx forest_room_6 0 1 20 12
         memcpy map12 forest_room_6 240
-        return thisbank
-
-plot_forest_room_7
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        plotmapfile tiled/forest_room_7.tmx forest_room_7 0 1 20 12
-        memcpy map12 forest_room_7 240
         return thisbank
 
         data forest_room_0_obj
@@ -463,7 +456,7 @@ end
 end
 
         data forest_room_23_obj
-        TYPE_FIREBAT, 72, $30
+        TYPE_FIREBAT, 72, $E0
         TYPE_FOREST_BOSS, 76, $68
         $00
 end
@@ -1036,14 +1029,78 @@ end
 
 firebat_ai
         asm
+          lda object_flags+2
+          cmp #%10000000
+          beq firebat_init
+          rts
+
+firebat_init
+          lda object_Ypos+1
+          cmp #$80
+          bcc firebat_rise
+          lda #$68
+          sta object_Ypos+1
+
+firebat_rise
+          lda object_Ypos+1
+          cmp #$30
+          bcc firebat_attack
+          lda #INVULN_FRAMES
+          sta object_invuln+1
+          lda #DIR_UP
+          sta object_Ydir+1
+          lda #FIREBAT_SPEED_LO
+          sta object_Yvel_lo+1
+          lda #FIREBAT_SPEED_HI
+          sta object_Yvel_hi+1
+          rts
+
+firebat_attack
+          lda #%10000100
+          sta object_flags+1
+          lda #0
+          sta object_Yvel_lo+1
+          sta object_Yvel_hi+1
+          lda object_state+1
+          cmp #STATE_MOVING
+          beq firebat_cap_distance
           jsr randomize
           bmi firebat_move_right
-          lda object_speed_hi,x
-          sta object_Xvel_hi,x
-          lda object_speed_lo,x
-          sta object_Xvel_lo,x
 
 firebat_move_right
+          lda #DIR_DOWN
+          sta object_Ydir+1
+          lda #DIR_RIGHT
+          sta object_Xdir+1
+          lda #FIREBAT_SPEED_HI
+          sta object_Xvel_hi+1
+          sta object_Yvel_hi+1
+          lda #FIREBAT_SPEED_LO
+          sta object_Xvel_lo+1
+          sta object_Yvel_lo+1
+          lda #STATE_MOVING
+          sta object_state+1
+firebat_return
+          rts
+
+firebat_cap_distance
+          lda object_Ydir+1
+          cmp #DIR_RIGHT
+          beq firebat_cap_right
+firebat_cap_left
+          lda object_Ypos+1
+          cmp #40
+          bcs firebat_return
+firebat_cap_move
+          lda #0
+          sta object_Xvel_hi+1
+          sta object_Xvel_lo+1
+          sta object_Yvel_hi+1
+          sta object_Yvel_lo+1
+firebat_cap_right
+          lda object_Ypos+1
+          cmp #104
+          bcc firebat_cap_move
           rts
           
 firebat_fireball

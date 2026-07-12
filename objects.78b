@@ -270,7 +270,7 @@
 
         ; FIREBAT
         const FIREBAT_FLIGHT_TIME = 40
-        const FIREBAT_HP = 4
+        const FIREBAT_HP = 60
         const FIREBAT_VEL_CAP_HI = 2
         const FIREBAT_VEL_CAP_LO = 0
         const FIREBAT_DAMAGE = 4

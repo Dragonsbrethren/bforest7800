@@ -24,7 +24,7 @@ end
         displaymode 320B
         bg_color = $71
         clearscreen
-;        if demo_num = 2 then goto title_credits
+        if demo_num = 2 then goto title_credits
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
@@ -210,21 +210,35 @@ set_title_bottom_pal
 title_credits
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-.`'
         characterset font
-        plotchars 'BLACK FOREST'       0 36 2
-        plotchars 'GAME DESIGN'        0 12 4
+        bg_color = 0
+        P4C2 = $95
+        plotchars 'BLACK FOREST'       0 48 2
+        plotchars 'GAME DESIGN'        4 12 4
         plotchars 'Chris Wiese'        0 80 4
 ;       plotchars 'MUSIC'              0 12 5
 ;       plotchars '    '               0 80 5
 ;       plotchars 'PACKAGING ART'      0 12 6
 ;       plotchars 'William Thorup'     0 80 6
-        plotchars '7800BASIC'          0 12 5
+        plotchars '7800BASIC'          4 12 5
         plotchars 'Mike Saarna'        0 80 5
-        plotchars 'ATARI DEV STUDIO'   0 12 6
-        plotchars 'Matthew Smith'                   0 80 6
-        plotchars 'QA TESTING'         0 12 7
+        plotchars 'ATARI DEV STUDIO'   4 12 6
+        plotchars 'Matthew Smith'      0 80 6
+        plotchars 'QA TESTING'         4 12 7
         plotchars 'Nicole Blair'       0 80 7
         plotchars 'James Earl O`brien' 0 80 8
         plotchars 'Jesse Hardesty'     0 80 9
 
         savescreen
         goto main
+
+spell_tutorial
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-.`'
+        characterset font
+        bg_color = 0
+        plotchars 'Fireball Tome Obtained'     4 12 4
+        plotchars 'Hold Action Button'         4 12 6
+        plotchars 'until chanting begins.'     4 12 7
+        plotchars 'Press a direction to cast.' 4 12 8
+        plotchars 'Fireballs can burn bushes'  4 12 9
+        goto main
+        
