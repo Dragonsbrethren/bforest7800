@@ -36,6 +36,13 @@ forest_room_bank_16
 end
 
         dmahole 0
+plot_forest_room_8
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        plotmapfile tiled/forest_room_8.tmx forest_room_8 0 1 20 12
+        memcpy map12 forest_room_8 240
+        return otherbank
+
 plot_forest_room_9
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UD

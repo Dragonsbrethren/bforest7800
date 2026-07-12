@@ -205,7 +205,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #9
+          cpx #8
           bcs .forest_room_b16
           jmp .forest_room_bank_2
 end
@@ -313,13 +313,6 @@ plot_forest_room_7
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_7.tmx forest_room_7 0 1 20 12
         memcpy map12 forest_room_7 240
-        return thisbank
-
-plot_forest_room_8
-        menu_map_room[menu_map_index] = ROOML_DL
-        menu_map_room[menu_map_index_2] = ROOMR_DR
-        plotmapfile tiled/forest_room_8.tmx forest_room_8 0 1 20 12
-        memcpy map12 forest_room_8 240
         return thisbank
 
         data forest_room_0_obj
@@ -472,7 +465,6 @@ end
         data forest_room_23_obj
         TYPE_FIREBAT, 72, $30
         TYPE_FOREST_BOSS, 76, $68
-        TYPE_SPELL1, 76, $90
         $00
 end
 
@@ -1066,8 +1058,61 @@ end
 
 forest_boss_ai
         asm
+          lda m_spell_bits_1
+          and #%00000001
+          bne forest_boss_beat
+          lda object_flags,x
+          cmp #%10000000
+          beq forest_boss_check
+          lda player_Ypos
+          cmp #$90
+          bcs forest_boss_return
+          lda #TYPE_BOSS_FLAME
+          sta object_type+3
+          sta object_type+4
+          lda #72
+          sta object_Xpos+3
+          lda #80
+          sta object_Xpos+4
+          lda #$B0
+          sta object_Ypos+3
+          sta object_Ypos+4
+;         lda #F_FLAME
+;         sta object_frame+3
+;         sta object_frame+4
+;         lda #2
+;         sta object_pal+3
+;         sta object_pal+4
+          lda #%10000000
+          sta object_flags,x
+forest_boss_return
           rts
+
+forest_boss_beat
+          lda #0
+          sta object_type+1
+          sta object_type+2
+          beq forest_boss_dead
+
+forest_boss_check
+          lda object_type+1
+          bne forest_boss_return
+          lda #TYPE_SPELL1
+          sta object_type+2
+
+forest_boss_dead
+          lda #0
+          sta object_type+3
+          sta object_type+4
+          lda #$60
+          sta object_Ypos+2
 end
+forest_flame_unblock
+        pokechar current_map  9 11 20 14 0
+        pokechar current_map 10 11 20 14 0
+        pokechar current_map  9 10 20 14 0
+        pokechar current_map 10 10 20 14 0
+        return thisbank
 
 ; mini trees that block progression to force player to try magic
 burnbush_ai

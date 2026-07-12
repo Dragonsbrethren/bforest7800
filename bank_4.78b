@@ -668,6 +668,9 @@ castle_flame_on
           sta object_Ypos+2
           lda #$60
           sta object_Ypos+3
+          lda #0
+          sta object_pal+2
+          sta object_pal+3
           ldx #4
 
 spawn_castle_boss

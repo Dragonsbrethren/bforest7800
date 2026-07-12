@@ -11,11 +11,11 @@ field_handler
         exit_dir = EXIT_NONE
         ; essentially trigger a game over at end of demo
         if demo_end then goto password_display
-        goto player_handler
-player_handler_done
         gosub object_handler
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
+        goto player_handler
+player_handler_done
         gosub check_collisions
         ; check if spawned items are duplicates, remove/sub them
         if item_spawned then gosub remove_duplicates

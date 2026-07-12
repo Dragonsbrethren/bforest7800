@@ -24,6 +24,7 @@ end
         displaymode 320B
         bg_color = $71
         clearscreen
+;        if demo_num = 2 then goto title_credits
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
@@ -72,7 +73,7 @@ end
         goto title_new_game
 
 title_flash
-        plotchars 'ALPHA 07-11-2026' 0 48 10
+        if demo_num <> 2 then plotchars 'ALPHA 07-11-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -127,7 +128,7 @@ title_demo_2
         goto init_field
 
 title_new_game_normal
-        tileset = T_CASTLE
+        tileset = T_FOREST
         player_sword = 1
         player_shield = 0
         player_armor = 1
@@ -205,3 +206,25 @@ set_title_bottom_pal
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return thisbank
+
+title_credits
+        alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-.`'
+        characterset font
+        plotchars 'BLACK FOREST'       0 36 2
+        plotchars 'GAME DESIGN'        0 12 4
+        plotchars 'Chris Wiese'        0 80 4
+;       plotchars 'MUSIC'              0 12 5
+;       plotchars '    '               0 80 5
+;       plotchars 'PACKAGING ART'      0 12 6
+;       plotchars 'William Thorup'     0 80 6
+        plotchars '7800BASIC'          0 12 5
+        plotchars 'Mike Saarna'        0 80 5
+        plotchars 'ATARI DEV STUDIO'   0 12 6
+        plotchars 'Matthew Smith'                   0 80 6
+        plotchars 'QA TESTING'         0 12 7
+        plotchars 'Nicole Blair'       0 80 7
+        plotchars 'James Earl O`brien' 0 80 8
+        plotchars 'Jesse Hardesty'     0 80 9
+
+        savescreen
+        goto main
