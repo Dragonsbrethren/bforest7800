@@ -504,6 +504,9 @@ end
 end
 
         data forest_room_31_obj
+        TYPE_FGHOST, 5*8, $60, TYPE_FGHOST, 11*8, $80
+        TYPE_WOLF, 10*8, $A0, TYPE_WOLF, 13*8, $B0
+        TYPE_TORCH, 6*8, $30, TYPE_TORCH, 15*8, $A0
         $00
 end
 
