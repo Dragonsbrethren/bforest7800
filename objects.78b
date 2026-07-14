@@ -270,10 +270,10 @@
 
         ; FIREBAT
         const FIREBAT_FLIGHT_TIME = 40
-        const FIREBAT_HP = 60
+        const FIREBAT_HP = 50
         const FIREBAT_VEL_CAP_HI = 2
         const FIREBAT_VEL_CAP_LO = 0
-        const FIREBAT_DAMAGE = 4
+        const FIREBAT_DAMAGE = 10
         const FIREBAT_FRICTION_HI = 0
         const FIREBAT_FRICTION_LO = 0
         const FIREBAT_SPEED_HI = 1
@@ -284,7 +284,7 @@
         const F_FIREBAT_1 = 0
         const F_FIREBAT_2 = 1
         const FIREBAT_PAL = 7
-        const FIREBAT_SWOOP_SPEED = 32
+        const FIREBAT_SWOOP_FRAMES = 60
 
         ; CRYSTAL BALL
         const F_ORB = 9

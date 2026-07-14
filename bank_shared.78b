@@ -794,7 +794,9 @@ poison_damage
 player_handler
         index = 0
         if player_state = STATE_DEATH || player_state = STATE_SAVE then goto death_fade
-        
+        if !player_invuln then player_flags{0} = 0 : goto player_status_check
+        player_invuln--
+player_status_check
         if player_status{0} || player_status{5} then gosub poison_damage
         if player_status{3} then goto stone_handler
         gosub decelerate_player
@@ -813,12 +815,11 @@ player_no_hop
         if demoplay then gosub demo_jo : goto test_joy_demo
         ; player timer is set for knockback and attack timing
         if !player_timer then no_player_timer
-        player_timer = player_timer - 1
+        player_timer--
         if player_state = STATE_ATTACK then test_joy_done
         if player_flags{0} then player_test_state
 
 no_player_timer
-        player_flags{0} = 0     ; clear invulnerability flag
 
 ;------------------------------------------------------------------------------
         ; handles chanting and sword retracting. Zero if not doing these
@@ -2082,8 +2083,8 @@ tall_box
 pc_damage
         if player_flags{0} then return thisbank
         player_flags{0} = 1
-        player_state = STATE_KNOCKBACK
-        player_timer = INVULN_FRAMES
+        player_state  = STATE_KNOCKBACK
+        player_invuln = INVULN_FRAMES
 
         ; moved damage subroutine here to avoid a goto
 damage_player_hp

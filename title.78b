@@ -5,6 +5,8 @@
         incgraphic gfx/title/trees.png 320B 0 3 0 0 0
         incgraphic gfx/title/moon.png  320B 0 3 2 2 4
         incmapfile tiled/title_blackforest.tmx
+        incmapfile tiled/title_black.tmx
+        incmapfile tiled/title_forest.tmx
 
 title_init
         stoprmt
@@ -58,12 +60,14 @@ title_controls
         menu_cursor_Y = 160
 
 title_menu
+        if demo_num = 2 then goto main
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotchars 'New Game' 0 64 10
         plotchars 'Continue' 0 64 11        
         goto main
 
 title_selection
+        if demo_num = 2 then goto main
         asm
           lda #0
           sta demoplay
@@ -73,11 +77,12 @@ end
         goto title_new_game
 
 title_flash
-        if demo_num <> 2 then plotchars 'ALPHA 07-11-2026' 0 48 10
+;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
+        if demo_num <> 2 then plotchars 'CLASSIC GAME FEST DEMO' 0 36 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
-        if animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
+        if demo_num <>2 && animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
         
         goto main
 
@@ -199,7 +204,12 @@ init_field
 set_title_top_pal
         BACKGRND = bg_color
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
+        if demo_num = 2 then set_title_credits_pal
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
+        return thisbank
+
+set_title_credits_pal
+        P4C1 = $00 : P5C2 = $02 : P4C3 = $03
         return thisbank
 
 set_title_bottom_pal
@@ -208,25 +218,33 @@ set_title_bottom_pal
         return thisbank
 
 title_credits
+        P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-.`'
         characterset font
         bg_color = 0
-        P4C2 = $95
-        plotchars 'BLACK FOREST'       0 48 2
-        plotchars 'GAME DESIGN'        4 12 4
+        plotmap title_black  4  8 0 15 4
+        plotmap title_forest 4 80 0 18 4
+;        plotchars 'BLACK FOREST'       0 48 2
+        plotchars 'GAME DESIGN'        4  8 4
         plotchars 'Chris Wiese'        0 80 4
-;       plotchars 'MUSIC'              0 12 5
+;       plotchars 'MUSIC'              0  8 5
 ;       plotchars '    '               0 80 5
-;       plotchars 'PACKAGING ART'      0 12 6
+;       plotchars 'PACKAGING ART'      0  8 6
 ;       plotchars 'William Thorup'     0 80 6
-        plotchars '7800BASIC'          4 12 5
+        plotchars '7800BASIC'          4  8 5
         plotchars 'Mike Saarna'        0 80 5
-        plotchars 'ATARI DEV STUDIO'   4 12 6
+        plotchars 'ATARI DEV STUDIO'   4  8 6
         plotchars 'Matthew Smith'      0 80 6
-        plotchars 'QA TESTING'         4 12 7
+        plotchars 'QA TESTING'         4  8 7
         plotchars 'Nicole Blair'       0 80 7
         plotchars 'James Earl O`brien' 0 80 8
         plotchars 'Jesse Hardesty'     0 80 9
+        plotchars 'SPECIAL THANKS'     4  8 10
+        plotchars 'Steve Engelhardt'   0 80 10
+        plotchars 'ZeroPage Homebrew'  0 80 11
+        plotchars 'PROMOTION'          4  8 12
+        plotchars 'Albert Yarusso'     0 80 12
+        plotchars 'AtariAge'           0 80 13
 
         savescreen
         goto main

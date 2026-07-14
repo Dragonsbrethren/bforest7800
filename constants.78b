@@ -79,6 +79,7 @@
         const STATE_HOP         = 3
         const STATE_DEATH       = 7
         const STATE_SAVE        = 8
+        const STATE_RISE        = 9
 
         const FRAME_UP    = 2
         const FRAME_DOWN  = 0

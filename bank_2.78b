@@ -66,11 +66,11 @@ load_forest
 
 ; Initial player location on game start
 forest_start
-        room_index = 45
+        room_index = 22
         menu_map_Xpos = 78
         menu_map_Ypos = 160
         player_Xpos = 9*8
-        player_Ypos = $40
+        player_Ypos = $30
         player_facing = DIR_UP
         goto forest_set_room
 
@@ -1030,6 +1030,8 @@ end
 firebat_ai
         asm
           lda object_flags+1
+          cmp #%01000100
+          beq firebat_rise
           cmp #%10000100
           beq firebat_attack
           lda object_flags+2
@@ -1047,6 +1049,8 @@ firebat_init
           sta object_invuln+1
 
 firebat_rise
+          lda #%01000100
+          sta object_flags+1
           lda object_Ypos+1
           cmp #$30
           bcc firebat_attack
@@ -1061,18 +1065,26 @@ firebat_rise
           sta object_Xvel_hi+1
           rts
 
+firebat_timer_init
+          lda #FIREBAT_SWOOP_FRAMES
+          sta object_timer+1
+
 firebat_attack
           lda #%10000100
           sta object_flags+1
-          lda #0
-          sta object_Yvel_lo+1
-          sta object_Yvel_hi+1
+          lda object_Ypos+1
+          cmp #$80
+          bcs firebat_rise
+firebat_attack_timer
+          dec object_timer+1
+          bmi firebat_timer_init
+          bne firebat_return
           lda object_state+1
           cmp #STATE_MOVING
           beq firebat_cap_distance
           lda #DIR_DOWN
           sta object_Ydir+1
-          lda #FIREBAT_SPEED_HI
+          lda #2
           sta object_Xvel_hi+1
           sta object_Yvel_hi+1
           lda #FIREBAT_SPEED_LO
@@ -1084,20 +1096,23 @@ firebat_attack
           bmi firebat_move_right
 
 firebat_move_left
+          lda object_Ypos+1
+          cmp #40
+          bcc firebat_move_right
           lda #DIR_LEFT
           sta object_Xdir+1
           rts
 
 firebat_move_right
+          lda object_Ypos+1
+          cmp #104
+          bcs firebat_move_left
           lda #DIR_RIGHT
           sta object_Xdir+1
 firebat_return
           rts
 
 firebat_cap_distance
-          lda object_Ypos+1
-          cmp player_Ypos
-          bcc firebat_rise
           lda object_Xdir+1
           cmp #DIR_RIGHT
           beq firebat_cap_right
@@ -1109,10 +1124,8 @@ firebat_cap_move
           lda #0
           sta object_Xvel_hi+1
           sta object_Xvel_lo+1
-          sta object_Yvel_hi+1
-          sta object_Yvel_lo+1
-          lda #STATE_STAND
           sta object_state+1
+          sta object_Xdir+1
           rts
 firebat_cap_right
           lda object_Xpos+1
