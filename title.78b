@@ -26,7 +26,7 @@ end
         displaymode 320B
         bg_color = $71
         clearscreen
-        if demo_num = 2 then goto title_credits
+        if demo_num = 2 || demo_num = 4 then goto title_credits
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-'
@@ -60,14 +60,14 @@ title_controls
         menu_cursor_Y = 160
 
 title_menu
-        if demo_num = 2 then goto main
+        if demo_num = 2 || demo_num = 4 then goto main
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotchars 'New Game' 0 64 10
         plotchars 'Continue' 0 64 11        
         goto main
 
 title_selection
-        if demo_num = 2 then goto main
+        if demo_num = 2 || demo_num = 4 then goto main
         asm
           lda #0
           sta demoplay
@@ -78,11 +78,11 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 then plotchars 'CLASSIC GAME FEST DEMO' 0 36 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'CLASSIC GAME FEST DEMO 7-14' 0 28 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
-        if demo_num <>2 && animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
+        if demo_num <> 2 && demo_num <> 4 && animation_frame then plotchars 'Push Button 1 or 2' 0 44 11 17
         
         goto main
 
@@ -107,6 +107,8 @@ end
 title_new_game
         if !demoplay then title_new_game_normal
         if demo_num = 2 then title_demo_2
+        if demo_num = 3 then title_demo_3
+        if demo_num = 4 then title_demo_4
         tileset = T_CASTLE
         player_sword = 1
         player_shield = 1
@@ -126,10 +128,36 @@ title_demo_2
         player_armor = 2
         player_charm = 2
         player_spell = 2
-        toggled_familiar = 0
+        toggled_familiar = 1
         m_relic_bits_1  = %00010000
         m_relic_bits_2  = %00000001
         demo_num = 3
+        goto init_field
+
+title_demo_3
+        tileset = T_HILLS
+        player_sword = 3
+        player_shield = 2
+        player_armor = 3
+        player_charm = 3
+        player_spell = 4
+        toggled_familiar = 4
+        m_relic_bits_1  = %00010000
+        m_relic_bits_2  = %00000001
+        demo_num = 4
+        goto init_field
+
+title_demo_4
+        tileset = T_CAVES
+        player_sword = 5
+        player_shield = 4
+        player_armor = 5
+        player_charm = 5
+        player_spell = 4
+        toggled_familiar = 0
+        m_relic_bits_1  = %00010000
+        m_relic_bits_2  = %00000001
+        demo_num = 0
         goto init_field
 
 title_new_game_normal
@@ -204,7 +232,7 @@ init_field
 set_title_top_pal
         BACKGRND = bg_color
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
-        if demo_num = 2 then set_title_credits_pal
+        if demo_num = 2 || demo_num = 4 then set_title_credits_pal
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
         return thisbank
 

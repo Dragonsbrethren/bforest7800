@@ -41,6 +41,7 @@ load_caves
         first_load = 0
         player_facing = DIR_DOWN
 
+        if demoplay then caves_demo
         if save_room_index = 1 then caves_save_1
         if save_room_index = 2 then caves_save_2
         if exit_room_index = F_CAVES_ENT_2_I then caves_ent_2
@@ -55,6 +56,13 @@ caves_ent_1
         menu_map_Ypos   = M_CAVES_ENT_1_Y
         player_Xpos     = F_CAVES_ENT_1_X
         player_Ypos     = F_CAVES_ENT_1_Y
+        goto caves_set_room
+
+caves_demo
+        room_index      = 18
+        player_Xpos     = 88
+        player_Ypos     = $70
+        player_facing   = DIR_LEFT
         goto caves_set_room
 
 caves_save_1

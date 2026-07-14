@@ -322,6 +322,7 @@ save_room_handler
         if player_state = STATE_DEATH then password_display
         gosub encode_password bank11
 password_display
+        exit_room_index = 0
         menu = MENU_GAMEOVER
         menu_debounce = 1
         pause_debounce = 1
