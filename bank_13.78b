@@ -210,7 +210,7 @@ plot_caves_room_18
         plotmapfile tiled/caves_room_18.tmx caves_room_18 0 1 20 12
         exit_tileset = T_HILLS
         exit_Xpos = 40
-        exit_Ypos = $A0
+        exit_Ypos = $90
         exit_room_index = F_HILLS_CAVE3_I
         goto caves_waterfall bank12
 

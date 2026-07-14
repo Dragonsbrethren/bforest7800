@@ -230,6 +230,7 @@ init_castle
         stx save_room_index
         stx obscure_player
         stx pal_animation
+        stx player_elevation
         dex     ; $FF
         stx locked_zone
         ldx room_index

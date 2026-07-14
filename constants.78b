@@ -312,8 +312,8 @@
         const M_RIVER_SAVE2_Y = 64
         ; field positions
         const F_RIVER_SAVE2_I = 5      ; save room 2 index
-        const F_RIVER_SAVE2_X = $72
-        const F_RIVER_SAVE2_Y = $80
+        const F_RIVER_SAVE2_X = 70
+        const F_RIVER_SAVE2_Y = $70
         const F_RIVER_SAVE2_D = DIR_SLEEP
 
         const M_RIVER_START2_X = 86
@@ -388,7 +388,7 @@
         const M_HILLS_CAVE1_Y = 96
         const F_HILLS_CAVE1_I = 16
         const F_HILLS_CAVE1_X = 64
-        const F_HILLS_CAVE1_Y = $40
+        const F_HILLS_CAVE1_Y = $30
         const F_HILLS_CAVE1_D = DIR_DOWN
 
 ; CAVE EXIT 2 (over river)
@@ -396,7 +396,7 @@
         const M_HILLS_CAVE2_Y = 128
         const F_HILLS_CAVE2_I = 29
         const F_HILLS_CAVE2_X = (8*4)
-        const F_HILLS_CAVE2_Y = $C0
+        const F_HILLS_CAVE2_Y = $B0
         const F_HILLS_CAVE2_D = DIR_DOWN
 
 ; CAVE EXIT 3 (valley)
@@ -455,7 +455,7 @@
         const M_CAVES_ENT_3_Y = 128
         const F_CAVES_ENT_3_I = 29
         const F_CAVES_ENT_3_X = 40
-        const F_CAVES_ENT_3_Y = $B0
+        const F_CAVES_ENT_3_Y = $A0
         ; cathedral
         const M_CAVES_ENT_4_X = 78
         const M_CAVES_ENT_4_Y = 64
