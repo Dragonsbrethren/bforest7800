@@ -1598,8 +1598,10 @@ set_enemy_name
         ; if an item was collected, don't overwrite its string
         if item_pickup then return thisbank
         ; can't see enemy names without the fairy scroll
+        if index = TYPE_BURNBUSH then bypass_bestiary
         if !m_relic_bits_1{4} then return thisbank
         ; include only monsters
+bypass_bestiary
         asm
           ldx index
           lda object_type,x

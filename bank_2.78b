@@ -161,6 +161,20 @@ forest_witch
         player_facing = DIR_UP
         goto forest_set_room
 
+set_burnbush_name
+        asm
+          lda #<name_bush
+          sta pickup_ptr_lo
+          lda #>name_bush
+          sta pickup_ptr_hi
+          ldy #PICKUP_TIME
+          sty pickup_timer
+          ldy #1
+          sty new_pickup
+          sty item_pickup
+          jmp .cc_next
+end
+
         dmahole 0
 forest_witch_exit
         room_index    = F_FOREST_WITCH_EXIT_I
@@ -1030,9 +1044,9 @@ end
 firebat_ai
         asm
           lda object_flags+1
-          cmp #%01000100
+          cmp #%01010000
           beq firebat_rise
-          cmp #%10000100
+          cmp #%10010000
           beq firebat_attack
           lda object_flags+2
           cmp #%10000000
@@ -1049,7 +1063,7 @@ firebat_init
           sta object_invuln+1
 
 firebat_rise
-          lda #%01000100
+          lda #%01010000
           sta object_flags+1
           lda object_Ypos+1
           cmp #$30
@@ -1070,7 +1084,7 @@ firebat_timer_init
           sta object_timer+1
 
 firebat_attack
-          lda #%10000100
+          lda #%10010000
           sta object_flags+1
           lda object_Ypos+1
           cmp #$80

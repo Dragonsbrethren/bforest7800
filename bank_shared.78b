@@ -1722,8 +1722,6 @@ cc_player_contact
           beq .cc_next
           cmp #TYPE_CAMPFIRE
           beq .cc_next
-          cmp #TYPE_BURNBUSH
-          beq .cc_next
           lda object_damage,x
           sta hp_change
 end
@@ -2013,6 +2011,7 @@ end
 ;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
 ;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 
+        if object_type[index] = TYPE_BURNBUSH then set_burnbush_name
         ;  check player's shield and destroy projectile
         if object_type[index] >=  TYPE_DARKSPARK && object_type[index] < TYPE_DARKBOLT then shield_check
 player_knockback_status

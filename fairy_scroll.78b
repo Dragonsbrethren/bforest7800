@@ -8,7 +8,7 @@
         name_hillsboss_lo, name_bat_lo, name_bat_lo, name_rose_lo, name_cspider_lo
         name_pudding_lo, name_pudding_lo, name_cghost_lo, name_cardinal_lo, name_cardinal_lo
         <name_octokraken, <name_octokraken, <name_octokraken, <name_blank
-        <name_rose, <name_blank, <name_firebat, <name_blank, <name_fghost
+        <name_rose, <name_bush, <name_firebat, <name_blank, <name_fghost
 end
 
         data enemy_names_hi
@@ -21,7 +21,7 @@ end
         name_hillsboss_hi, name_bat_hi, name_bat_hi, name_rose_hi, name_cspider_hi
         name_pudding_hi, name_pudding_hi, name_cghost_hi, name_cardinal_hi, name_cardinal_hi
         >name_octokraken, >name_octokraken, >name_octokraken, >name_blank
-        >name_rose, >name_blank, >name_firebat, >name_blank, >name_fghost
+        >name_rose, >name_bush, >name_firebat, >name_blank, >name_fghost
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -40,6 +40,10 @@ end
         const door_sealed_hi = #>door_sealed
         alphadata door_sealed font_spr
         'Magic Seal*'
+end
+
+        alphadata name_bush font_spr
+        'Burnable*'
 end
 
         const name_wolf_lo = #<name_wolf
