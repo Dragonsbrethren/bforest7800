@@ -219,7 +219,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #7
+          cpx #5
           bcs .forest_room_b16
           jmp .forest_room_bank_2
 end
@@ -306,20 +306,6 @@ plot_forest_room_4
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         plotmapfile tiled/forest_room_4.tmx forest_room_4 0 1 20 12
         memcpy map12 forest_room_4 240
-        return thisbank
-
-plot_forest_room_5
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        plotmapfile tiled/forest_room_5.tmx forest_room_5 0 1 20 12
-        memcpy map12 forest_room_5 240
-        return thisbank
-
-plot_forest_room_6
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        plotmapfile tiled/forest_room_6.tmx forest_room_6 0 1 20 12
-        memcpy map12 forest_room_6 240
         return thisbank
 
         data forest_room_0_obj
@@ -1059,7 +1045,7 @@ firebat_init
           bcc firebat_rise
           lda #$68
           sta object_Ypos+1
-          lda #INVULN_FRAMES
+          lda #50
           sta object_invuln+1
           lda #%01010000
           sta object_flags+1
@@ -1087,7 +1073,7 @@ firebat_timer_init
 firebat_attack
           lda player_Ypos
           clc
-          adc #32
+          adc #16
           cmp object_Ypos+1
           bcs firebat_attack_timer
           ; if player is above bat, bat rises
@@ -1193,6 +1179,8 @@ forest_flame_unblock
         pokechar current_map 10 11 20 14 0
         pokechar current_map  9 10 20 14 0
         pokechar current_map 10 10 20 14 0
+        if m_spell_bits_1{0} then return thisbank
+        playsfx sfx_crystalchimes
         return thisbank
 
 ; mini trees that block progression to force player to try magic
@@ -1320,3 +1308,52 @@ forest_waterfall
         P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
         pal_animation = 1
         return
+
+        data sfx_crystalchimes
+        $10,$10,$00 ; version, priority, frames per chunk
+        $03,$04,$05 ; first chunk of freq,channel,volume
+        $03,$04,$0f
+        $0c,$04,$05
+        $0c,$04,$0d
+        $0c,$04,$0f
+        $0c,$04,$0b
+        $0c,$04,$0f
+        $0c,$04,$0f
+        $06,$04,$0b
+        $0c,$04,$0c
+        $0c,$04,$0b
+        $06,$04,$0a
+        $03,$0c,$0d
+        $03,$0c,$0b
+        $03,$0c,$0a
+        $03,$0c,$08
+        $06,$04,$09
+        $03,$0c,$0f
+        $03,$0c,$0d
+        $06,$04,$08
+        $03,$0c,$0c
+        $0a,$04,$07
+        $0a,$04,$0a
+        $0a,$04,$0d
+        $03,$0c,$04
+        $0a,$04,$07
+        $06,$04,$06
+        $0a,$04,$08
+        $0a,$04,$0c
+        $06,$04,$07
+        $0a,$04,$04
+        $0a,$04,$05
+        $06,$04,$06
+        $1e,$06,$02
+        $06,$04,$05
+        $0a,$04,$06
+        $0a,$04,$06
+        $06,$04,$05
+        $0a,$04,$07
+        $06,$04,$04
+        $0a,$04,$05
+        $0a,$04,$06
+        $06,$04,$05
+        $1e,$06,$01
+        $00,$00,$00
+end

@@ -1722,6 +1722,8 @@ cc_player_contact
           beq .cc_next
           cmp #TYPE_CAMPFIRE
           beq .cc_next
+          cmp #TYPE_FOREST_BOSS
+          beq .cc_next
           lda object_damage,x
           sta hp_change
 end
@@ -1853,6 +1855,8 @@ sword_sound
           cmp #TYPE_BLOCKFLAME
           beq .sword_damage
           cmp #TYPE_BURNBUSH
+          beq .sword_damage
+          cmp #TYPE_FOREST_BOSS
           beq .sword_damage
           cmp #TYPE_SKELSWORD
           bne .sword_poof
