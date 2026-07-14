@@ -284,7 +284,7 @@
         const F_FIREBAT_1 = 0
         const F_FIREBAT_2 = 1
         const FIREBAT_PAL = 7
-        const FIREBAT_SWOOP_FRAMES = 60
+        const FIREBAT_SWOOP_FRAMES = 30
 
         ; CRYSTAL BALL
         const F_ORB = 9

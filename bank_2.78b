@@ -590,7 +590,7 @@ end
                                                                %00000000, %00000000, %00000000,
         %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000011, %00000000, %00000000, %00000000, %00000000,
+        %00000011, %00000010, %00000010, %00000010, %00000010,
                                                                %00000011, %00000011, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
                                                                                      %10000100
@@ -1061,12 +1061,12 @@ firebat_init
           sta object_Ypos+1
           lda #INVULN_FRAMES
           sta object_invuln+1
-
-firebat_rise
           lda #%01010000
           sta object_flags+1
+
+firebat_rise
           lda object_Ypos+1
-          cmp #$30
+          cmp #$39
           bcc firebat_attack
           lda #DIR_UP
           sta object_Ydir+1
@@ -1077,6 +1077,7 @@ firebat_rise
           lda #0
           sta object_Xvel_lo+1
           sta object_Xvel_hi+1
+          sta object_timer+1
           rts
 
 firebat_timer_init
@@ -1084,18 +1085,21 @@ firebat_timer_init
           sta object_timer+1
 
 firebat_attack
+          lda player_Ypos
+          clc
+          adc #32
+          cmp object_Ypos+1
+          bcs firebat_attack_timer
+          ; if player is above bat, bat rises
+          lda #%01010000
+          sta object_flags+1
+          rts
+firebat_attack_timer
           lda #%10010000
           sta object_flags+1
-          lda object_Ypos+1
-          cmp #$80
-          bcs firebat_rise
-firebat_attack_timer
           dec object_timer+1
           bmi firebat_timer_init
           bne firebat_return
-          lda object_state+1
-          cmp #STATE_MOVING
-          beq firebat_cap_distance
           lda #DIR_DOWN
           sta object_Ydir+1
           lda #2
@@ -1107,44 +1111,20 @@ firebat_attack_timer
           lda #STATE_MOVING
           sta object_state+1
           jsr randomize
-          bmi firebat_move_right
+          cmp #85
+          bcc firebat_move_right
+          cmp #170
+          bcs firebat_return
 
 firebat_move_left
-          lda object_Ypos+1
-          cmp #40
-          bcc firebat_move_right
           lda #DIR_LEFT
           sta object_Xdir+1
           rts
 
 firebat_move_right
-          lda object_Ypos+1
-          cmp #104
-          bcs firebat_move_left
           lda #DIR_RIGHT
           sta object_Xdir+1
 firebat_return
-          rts
-
-firebat_cap_distance
-          lda object_Xdir+1
-          cmp #DIR_RIGHT
-          beq firebat_cap_right
-firebat_cap_left
-          lda object_Xpos+1
-          cmp #40
-          bcs firebat_return
-firebat_cap_move
-          lda #0
-          sta object_Xvel_hi+1
-          sta object_Xvel_lo+1
-          sta object_state+1
-          sta object_Xdir+1
-          rts
-firebat_cap_right
-          lda object_Xpos+1
-          cmp #104
-          bcs firebat_cap_move
           rts
           
 firebat_fireball
