@@ -162,7 +162,11 @@ plot_forest_room_19
 plot_forest_room_20
         plotmapfile tiled/forest_room_20.tmx forest_room_20 0 1 20 12
         memcpy map12 forest_room_20 240
-        alt_palette = 1
+        asm
+          lda #1
+          sta alt_palette
+          sta alt_torch
+end
         exit_tileset = T_FOREST
         exit_Xpos = 9*8
         exit_Ypos = $B0
@@ -170,9 +174,6 @@ plot_forest_room_20
         return otherbank
 
 plot_forest_room_21
-        if !pw_success then in_save_room = 1
-        pw_success = 0
-        save_room_index = 3
         ; inn room toggles on its normal map square
         menu_map_room[76] = ROOML_UDL
         menu_map_room[77] = ROOMR_UDR
@@ -213,6 +214,7 @@ plot_forest_room_23
         exit_Xpos = 9*8
         exit_Ypos = $B0
         exit_room_index = F_FOREST_WITCH_EXIT_I
+        alt_torch = 1
         return otherbank
 
 plot_forest_room_24

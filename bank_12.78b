@@ -126,17 +126,18 @@ caves_set_room
 
 caves_init
         asm
-          lda #0
-          sta no_flash
-          sta alt_palette
-          sta pal_animation
-          sta exit_room_index
-          sta save_room_index
-          lda #1
-          sta player_elevation
-          sta shadow_offset
-          lda #$FF
-          sta locked_zone
+          ldx #1
+          stx player_elevation
+          stx shadow_offset
+          dex ; 0
+          stx no_flash
+          stx alt_palette
+          stx alt_torch
+          stx pal_animation
+          stx exit_room_index
+          stx save_room_index
+          dex ; $FF
+          stx locked_zone
           ldx room_index
           lda caves_rooms,x
           tax
