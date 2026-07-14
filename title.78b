@@ -26,6 +26,7 @@ end
         displaymode 320B
         bg_color = $71
         clearscreen
+        if burn_tutorial then goto spell_tutorial
         if demo_num = 2 || demo_num = 4 then goto title_credits
         characterset logo
         plotmapfile tiled/title_blackforest.tmx title_blackforest 0 0 40 10
@@ -37,6 +38,7 @@ end
 title_handler
         restorescreen
         adjustvisible 0 4
+        if burn_tutorial then title_controls
         asm
           inc object_timer
           bne .title_check_menu_change
@@ -61,12 +63,14 @@ title_controls
 
 title_menu
         if demo_num = 2 || demo_num = 4 then goto main
+        if burn_tutorial then goto main
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotchars 'New Game' 0 64 10
         plotchars 'Continue' 0 64 11        
         goto main
 
 title_selection
+        if burn_tutorial then burn_tutorial = 0 : game_state = STATE_FIELD : reload_map = 1 : goto main bank2
         if demo_num = 2 || demo_num = 4 then goto main
         asm
           lda #0
@@ -179,7 +183,7 @@ title_new_game_normal
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
         m_relic_bits_1  = %00000000
-        m_relic_bits_2  = %00000001
+        m_relic_bits_2  = %00000000
         m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000
         m_key_bits = 0
@@ -278,13 +282,16 @@ title_credits
         goto main
 
 spell_tutorial
+
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz @-.`'
         characterset font
         bg_color = 0
-        plotchars 'Fireball Tome Obtained'     4 12 4
-        plotchars 'Hold Action Button'         4 12 6
-        plotchars 'until chanting begins.'     4 12 7
-        plotchars 'Press a direction to cast.' 4 12 8
-        plotchars 'Fireballs can burn bushes'  4 12 9
+        plotchars 'Fireball Tome Obtained'    0 36 3
+        plotchars 'Hold the Action Button'    0 36 5
+        plotchars 'until chanting begins'     0 36 6
+        plotchars 'then press a direction'    0 36 7
+        plotchars 'to cast the spell.'        0 44 8
+        plotchars 'Fireballs can burn bushes' 0 28 10
+        savescreen
         goto main
         

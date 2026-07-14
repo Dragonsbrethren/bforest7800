@@ -364,7 +364,7 @@ add_key
 
 pickup_spell
         pickup_index = pickup_index - TYPE_SPELL1
-        if !player_spell then player_spell = pickup_index+1
+        if !player_spell then player_spell = pickup_index+1 : burn_tutorial = 1
         pickup_ptr_lo = pickup_spells_lo[pickup_index]
         pickup_ptr_hi = pickup_spells_hi[pickup_index]
         gosub prep_inv_bits

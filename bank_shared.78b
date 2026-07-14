@@ -7,6 +7,7 @@
         incbasic shared_gfx.78b
 
 field_handler
+        if burn_tutorial = 1 then goto title_init bank10
         if reload_map = 1 then goto load_map
         exit_dir = EXIT_NONE
         ; essentially trigger a game over at end of demo

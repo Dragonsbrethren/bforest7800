@@ -155,6 +155,7 @@
         autodim byte demoplay
         autodim byte demo_num
         autodim byte demo_timer
+        autodim byte burn_tutorial
         autodim byte zone_open 2
 
 ;------------------------------------------------------------------------------
