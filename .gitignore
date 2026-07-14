@@ -22,3 +22,6 @@ bforest.78b.symbol.txt
 music/blackforest_indoorarea01.rmt
 bin/bforest_042826.a78
 bin/bforest_050726.78b.a78
+bin/bforest-cgf714.a78
+.gitignore
+bin/bforest-cgf714.bin

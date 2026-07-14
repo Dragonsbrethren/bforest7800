@@ -319,6 +319,7 @@ fade_done
         goto player_handler_done
 
 save_room_handler
+        if demoplay then goto title_init bank10
         if player_state = STATE_DEATH then password_display
         gosub encode_password bank11
 password_display

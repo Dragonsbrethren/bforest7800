@@ -348,6 +348,8 @@ plot_castle_room_5
 end
 
         data castle_room_1_obj
+        TYPE_SKELETON, 5*8, $50, TYPE_SKELETON, 13*8, $50
+        TYPE_SKELETON, 76, $60
         TYPE_DOOR, $48, $10
         TYPE_TORCH, $41, $B0,  TYPE_TORCH, $58, $B0,  TYPE_TORCH, $41, $20,  TYPE_TORCH, $58, $20,
         $00
