@@ -101,8 +101,7 @@ plot_castle_room_6
         menu_map_room[menu_map_index_2] = 3
         plotmapfile tiled/castle_room_6.tmx castle_room_6 0 1 20 12
         memcpy map12 castle_room_6 240
-        zone2_objects  = 2
-        locked_zone = 1
+        locked_zone = 0
         return otherbank
 
 plot_castle_room_7
@@ -111,7 +110,6 @@ plot_castle_room_7
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_7.tmx castle_room_7 0 1 20 12
         memcpy map12 castle_room_7 240
-        zone2_objects  = 2
         locked_zone = 6
         return otherbank
 
@@ -121,7 +119,6 @@ plot_castle_room_8
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_8.tmx castle_room_8 0 2 20 11
         memcpy map11 castle_room_8 220
-        zone2_objects  = 2
         locked_zone = 6
         exit_tileset = T_CAVES
         exit_Xpos = (12*8)
@@ -135,7 +132,6 @@ plot_castle_room_9
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_9.tmx castle_room_9 0 1 20 12
         memcpy map12 castle_room_9 240
-        zone2_objects  = 2
         locked_zone = 0
         return otherbank
 
@@ -157,7 +153,6 @@ plot_castle_room_11
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_11.tmx castle_room_11 0 1 20 12
         memcpy map12 castle_room_11 240
-        zone2_objects  = 2
         locked_zone = 0
         return otherbank
 
@@ -167,7 +162,6 @@ plot_castle_room_12
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_12.tmx castle_room_12 0 1 20 12
         memcpy map12 castle_room_12 240
-        zone2_objects  = 4
         return otherbank
 
         dmahole 0
@@ -190,7 +184,6 @@ plot_castle_room_14
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_14.tmx castle_room_14 0 2 20 11
         memcpy map11 castle_room_14 220
-        zone2_objects  = 2
         return otherbank
 
 plot_castle_room_15
@@ -198,7 +191,6 @@ plot_castle_room_15
         menu_map_room[menu_map_index_2] = 9
         plotmapfile tiled/castle_room_15.tmx castle_room_15 0 1 20 12
         memcpy map12 castle_room_15 240
-        zone2_objects  = 2
         locked_zone = 0
         return otherbank
 
@@ -215,7 +207,6 @@ plot_castle_room_17
         menu_map_room[menu_map_index_2] = 5
         plotmapfile tiled/castle_room_17.tmx castle_room_17 0 1 20 10
         memcpy map12 castle_room_17 220
-        zone2_objects  = 2
         locked_zone = 4
         return otherbank
 
@@ -224,7 +215,6 @@ plot_castle_room_18
         menu_map_room[menu_map_index_2] = ROOMR_DR
         plotmapfile tiled/castle_room_18.tmx castle_room_18 0 2 20 11
         memcpy map11 castle_room_18 220
-        zone2_objects  = 2
         alt_palette = 1
         return otherbank
 
@@ -233,7 +223,6 @@ plot_castle_room_19
         menu_map_room[menu_map_index_2] = 3
         plotmapfile tiled/castle_room_19.tmx castle_room_19 0 1 20 12
         memcpy map12 castle_room_19 240
-        zone2_objects  = 2
         locked_zone = 0
         return otherbank
 
@@ -242,7 +231,6 @@ plot_castle_room_20
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_20.tmx castle_room_20 0 0 20 14
         memcpy current_map castle_room_20 280
-        zone2_objects  = 2
         return otherbank
 
 plot_castle_room_21
@@ -250,8 +238,6 @@ plot_castle_room_21
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_21.tmx castle_room_21 0 1 20 12
         memcpy map12 castle_room_21 240
-        zone2_objects  = 4
-        zone14_objects = 0
         ; secret passage!
         obscure_player = 1
         pokechar current_map 13 6 20 12 $10
@@ -263,8 +249,6 @@ plot_castle_room_22
         menu_map_room[menu_map_index_2] = 15
         plotmapfile tiled/castle_room_22.tmx castle_room_22 0 1 20 12
         memcpy map12 castle_room_22 240
-        zone1_objects  = 2
-        zone2_objects  = 2
 
         locked_zone = 0
         return otherbank
@@ -274,7 +258,6 @@ plot_castle_room_23
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_23.tmx castle_room_23 0 1 20 12
         memcpy map12 castle_room_23 240
-        zone2_objects  = 2
 
         locked_zone = 0
         return otherbank
@@ -289,8 +272,6 @@ plot_castle_room_24
         menu_map_room[menu_map_index_2] = 7
         plotmapfile tiled/castle_room_24.tmx castle_room_24 0 1 20 12
         memcpy map12 castle_room_24 240
-        zone1_objects  = 2
-        zone2_objects  = 2
         return otherbank
 
 plot_castle_room_25
@@ -299,9 +280,6 @@ plot_castle_room_25
         menu_map_room[menu_map_index_2] = 17
         plotmapfile tiled/castle_room_25.tmx castle_room_25 0 1 20 12
         memcpy map12 castle_room_25 240
-        zone1_objects  = 2
-        zone2_objects  = 4
-        zone14_objects = 0
         return otherbank
 
 plot_castle_room_26
