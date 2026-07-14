@@ -1068,6 +1068,7 @@ firebat_rise
           lda #FIREBAT_SPEED_HI
           sta object_Yvel_hi+1
           lda #0
+          sta object_Xdir+1
           sta object_Xvel_lo+1
           sta object_Xvel_hi+1
           sta object_timer+1
@@ -1104,7 +1105,9 @@ firebat_attack_timer
           lda #STATE_MOVING
           sta object_state+1
           jsr randomize
-          cmp #85
+          cmp #64
+          bcc firebat_fireball
+          cmp #128
           bcc firebat_move_right
           cmp #170
           bcs firebat_return
@@ -1127,6 +1130,46 @@ firebat_fireball
           rts
 
 firebat_prep_ball
+          lda #TYPE_BATFIREBALL
+          sta object_type,y
+          sta object_hp,y
+          lda #BATFIREBALL_VEL_CAP_HI
+          sta object_vel_cap_hi,y
+          lda #BATFIREBALL_SPEED_HI
+          sta object_speed_hi,y
+          lda #BATFIREBALL_VEL_CAP_LO
+          sta object_vel_cap_lo,y
+          lda #BATFIREBALL_SPEED_LO
+          sta object_speed_lo,y
+          lda #BATFIREBALL_DAMAGE
+          sta object_damage,y
+          lda #%00010000
+          sta object_flags,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          sta object_frame,y
+          sta object_state,y
+          sta object_Xvel_lo,y
+          sta object_Xvel_hi,y
+          sta object_Xdir,y
+          lda #2
+          sta object_pal,y
+          lda #<.plot_fireball
+          sta object_spr_ptr_lo,y
+          lda #>.plot_fireball
+          sta object_spr_ptr_hi,y
+          lda object_Xpos+1
+          clc
+          adc #6
+          sta object_Xpos,y
+          lda object_Ypos+1
+          clc
+          adc #8
+          sta object_Ypos,y
+          lda #DIR_DOWN
+          sta object_Ydir,y
+          sta object_facing,y
           rts
 end
 

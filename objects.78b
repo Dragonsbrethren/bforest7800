@@ -50,6 +50,7 @@
         const TYPE_SEED     = 142
         const TYPE_HSEED    = 143
         const TYPE_DARKBOLT = 144
+        const TYPE_BATFIREBALL = 145
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
@@ -713,6 +714,12 @@
         const FIREBALL_DAMAGE = 8
         const FIREBALL_MP_COST = 8
         const FIREBALL_MAX_FRAMES = 4
+
+        const BATFIREBALL_VEL_CAP_HI = 4
+        const BATFIREBALL_VEL_CAP_LO = 0
+        const BATFIREBALL_SPEED_HI = 4
+        const BATFIREBALL_SPEED_LO = 0
+        const BATFIREBALL_DAMAGE = 44
 
         const ICEFLAKES_SPEED_HI = 4
         const ICEFLAKES_SPEED_LO = 0
