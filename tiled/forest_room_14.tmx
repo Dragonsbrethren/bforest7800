@@ -17,12 +17,12 @@
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="12">
   <data>
+   <tile gid="6"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
+   <tile gid="4"/>
    <tile gid="7"/>
    <tile gid="6"/>
    <tile gid="1"/>
@@ -37,8 +37,8 @@
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
-   <tile gid="6"/>
-   <tile gid="6"/>
+   <tile gid="16"/>
+   <tile gid="17"/>
    <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="6"/>
@@ -57,8 +57,8 @@
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
+   <tile gid="8"/>
+   <tile gid="2"/>
    <tile gid="16"/>
    <tile gid="16"/>
    <tile gid="16"/>
@@ -74,7 +74,7 @@
    <tile gid="31"/>
    <tile gid="31"/>
    <tile gid="32"/>
-   <tile gid="7"/>
+   <tile gid="9"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="47"/>
@@ -94,7 +94,7 @@
    <tile gid="31"/>
    <tile gid="31"/>
    <tile gid="32"/>
-   <tile gid="7"/>
+   <tile gid="4"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="42"/>
@@ -218,7 +218,7 @@
    <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
-   <tile gid="7"/>
+   <tile gid="9"/>
    <tile gid="4"/>
    <tile gid="4"/>
    <tile gid="4"/>
@@ -238,14 +238,14 @@
    <tile gid="4"/>
    <tile gid="7"/>
    <tile gid="7"/>
+   <tile gid="4"/>
+   <tile gid="7"/>
+   <tile gid="9"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
+   <tile gid="9"/>
    <tile gid="7"/>
    <tile gid="6"/>
    <tile gid="36"/>
