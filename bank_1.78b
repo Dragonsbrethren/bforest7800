@@ -131,11 +131,10 @@ main
         if joy0down then down_debounce = down_debounce + 1
         if switchselect && !select_debounce then gosub swap_action_button
 main_animation_timer
-        animation_timer = animation_timer + 1
+        animation_timer++
         if animation_timer > ANIM_TIME then animation_timer = 0
         ; Currently only two frames of animation supported. Needs to be changed if more than 2
-        animation_frame = 0
-        if animation_timer > (ANIM_TIME / 2) then animation_frame = 1
+        if animation_timer >= ANIM_UPDATE then animation_frame = 1 else animation_frame = 0
 
 main_lightning
     asm

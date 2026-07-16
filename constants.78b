@@ -35,7 +35,8 @@
         const EXIT_EAST  = 3
         const EXIT_WEST  = 4
         
-        const ANIM_TIME = 8
+        const ANIM_TIME = 7
+        const ANIM_UPDATE = 4
         const BUTTON_HOLD_FRAMES = 15
 
         const PLAYER_OBJS = (2*5)   ; player, sword, shield, 1 extra
