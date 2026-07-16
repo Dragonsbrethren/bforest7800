@@ -273,10 +273,10 @@ title_credits
         plotchars 'Jesse Hardesty'     0 80 9
         plotchars 'SPECIAL THANKS'     4  8 10
         plotchars 'Steve Engelhardt'   0 80 10
-        plotchars 'ZeroPage Homebrew'  0 80 11
-        plotchars 'PROMOTION'          4  8 12
-        plotchars 'Albert Yarusso'     0 80 12
-        plotchars 'AtariAge'           0 80 13
+        plotchars 'PROMOTION'          4  8 11
+        plotchars 'Albert Yarusso'     0 80 11
+        plotchars 'AtariAge'           0 80 12
+        plotchars 'ZeroPage Homebrew'  0 80 13
 
         savescreen
         goto main
