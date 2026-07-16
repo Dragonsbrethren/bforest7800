@@ -1455,19 +1455,19 @@ end
 end
 
         data f_sword_pals
-        0, 2, 0, 0, 3, 2, 2, 2, 2, 2, 2
+        0, 2, 0, 0, 3, 3, 2, 2, 2, 2, 2
 end
 
         data f_shield_pals
-        0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0
+        0, 1, 0, 2, 2, 1, 0, 0, 0, 0, 0
 end
 
         data f_armor_pals
-        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0
 end
 
         data f_charm_pals
-        0, 2, 0, 6, 0, 2, 0, 0, 0, 0, 0
+        0, 2, 0, 6, 2, 0, 0, 2, 2, 2, 2
 end
 
         data f_charm_frames
