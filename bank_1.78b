@@ -1395,15 +1395,39 @@ bottomscreenroutine
         return thisbank
 
 clear_palettes
-        BACKGRND = $00
-        P0C1 = $00 : P0C2 = $00 : P0C3 = $00
-        P1C1 = $00 : P1C2 = $00 : P1C3 = $00
-        P2C1 = $00 : P2C2 = $00 : P2C3 = $00
-        P3C1 = $00 : P3C2 = $00 : P3C3 = $00
-        P4C1 = $00 : P4C2 = $00 : P4C3 = $00
-        P5C1 = $00 : P5C2 = $00 : P5C3 = $00
-        P6C1 = $00 : P6C2 = $00 : P6C3 = $00
-        P7C1 = $00 : P7C2 = $00 : P7C3 = $00
+        asm
+          lda #0
+          sta BACKGRND
+          sta bg_color
+          sta bottom_bg
+          sta P0C1
+          sta P0C2
+          sta P0C3
+          sta P1C1
+          sta P1C2
+          sta P1C3
+          sta P2C1
+          sta P2C2
+          sta P2C3
+          sta P3C1
+          sta P3C2
+          sta P3C3
+          sta P3C1
+          sta P3C2
+          sta P3C3
+          sta P4C1
+          sta P4C2
+          sta P4C3
+          sta P5C1
+          sta P5C2
+          sta P5C3
+          sta P6C1
+          sta P6C2
+          sta P6C3
+          sta P7C1
+          sta P7C2
+          sta P7C3
+end
         return
 
         data f_key_pals

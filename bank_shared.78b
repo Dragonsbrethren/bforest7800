@@ -59,7 +59,7 @@ pickup_string_loop
           beq .pickup_done
 pickup_pad
           ; back up the value of Y for centering later
-          sty temp1
+          sty Xposition
           lda #0
 pickup_pad_loop
           sta pickup_string,y
@@ -71,14 +71,14 @@ pickup_center
         ; subtract however many chars were copied from max length
         lda #PICKUP_STRING_LENGTH
         sec
-        sbc temp1
+        sbc Xposition
         ; divide by 2 and add result to previous string length
         lsr
         pha     ; backup divided value
         clc
-        adc temp1
+        adc Xposition
         tay
-        ldx temp1
+        ldx Xposition
 pickup_center_loop
         ; advance the string on the buffer to its centered position
         lda pickup_string,x

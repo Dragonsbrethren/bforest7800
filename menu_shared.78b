@@ -33,10 +33,8 @@
 
 menu_init
         game_state = STATE_MENU
-        clearscreen
         displaymode 320B
         adjustvisible 0 14
-        drawwait
         asm
           lda #$10
           sta P0C2
@@ -46,6 +44,7 @@ menu_init
 end
         menu_change = 1
         gosub disable_double_wide_mode
+        clearscreen
         goto main
 
 menu_handler
@@ -151,6 +150,7 @@ close_menu
         sta pause_debounce
         sta torch_reblock
 end
+        clearscreen
         goto main ; shared palettes are now included in each tileset
 
 set_menu_top_pal
