@@ -914,6 +914,54 @@ cast_fireball_left_zone_open
         rts
 end
 
+cast_magic
+        asm
+          ldx index
+          bne set_magic_slot
+          lda spell_mp_cost,x
+          sta mp_change
+          jsr .test_spell_cost
+          bne set_magic_slot
+          ; should this still return to chanting with Tome-based magic?
+          jmp .set_state_chant
+
+set_magic_slot
+          ldx spell_index
+          ldy spawn_index
+
+load_magic_data
+          lda spell_type,x
+          sta object_type,y
+          lda spell_speed_hi,x
+          sta object_speed_hi,y
+          lda spell_speed_lo,x
+          sta object_speed_lo,y
+          lda spell_vel_cap_hi,x
+          sta object_vel_cap_hi,y
+          lda spell_vel_cap_lo,x
+          sta object_vel_cap_lo,y
+          lda spell_damage,x
+          ldy index
+          bne load_magic_damage_no_wis
+          clc
+          adc player_wisdom
+load_magic_damage_no_wis
+          ldy spawn_index
+          sta object_damage,y
+          lda spell_flags,x
+          sta object_flags,y
+          lda spell_spr_ptr_lo,x
+          sta object_spr_ptr_lo,y
+          lda spell_spr_ptr_hi,x
+          sta object_spr_ptr_hi,y
+          lda spell_frame,x
+          sta object_frame,y
+          lda spell_pal,x
+          sta object_pal,y
+          ldx index
+          jsr set_cast_direction
+end
+
 cast_iceflakes
         asm
         lda #ICEFLAKES_MP_COST
@@ -2143,3 +2191,41 @@ increase_hp
 decrease_hp
         temp_hp = temp_hp - hp_change
         return thisbank
+
+        data spell_type
+        TYPE_FIREBALL, TYPE_ICEFLAKE, TYPE_FIREBALL, TYPE_LIGHTNING
+end
+
+        data spell_mp_cost
+        8, 10, 12, 20
+end
+
+        data spell_speed_hi
+end
+
+        data spell_speed_lo
+end
+
+        data spell_vel_cap_hi
+end
+
+        data spell_vel_cap_lo
+end
+
+        data spell_damage
+end
+
+        data spell_flags
+end
+
+        data spell_spr_ptr_lo
+end
+
+        data spell_spr_ptr_hi
+end
+
+        data spell_frame
+end
+
+        data spell_pal
+end

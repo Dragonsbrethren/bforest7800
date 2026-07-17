@@ -341,6 +341,7 @@
         autodim byte demo_end
         autodim byte shadow_offset
         autodim byte chant_input
+        autodim byte spell_index
 
         autodim byte m_map_bits
         autodim byte m_key_bits
