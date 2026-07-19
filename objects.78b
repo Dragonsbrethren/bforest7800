@@ -710,9 +710,16 @@
         const OWL_DAMAGE = 6
 
         const FIREBALL_SPEED_HI = 4
+        const FIREBALL_VEL_CAP_HI = 4
         const FIREBALL_SPEED_LO = 0
+        const FIREBALL_VEL_CAP_LO = 0
         const FIREBALL_DAMAGE = 8
         const FIREBALL_MP_COST = 8
+        const FIREBALL_FLAGS = %00010000
+        const FIREBALL_SPR_PTR_LO = #<.plot_fireball
+        const FIREBALL_SPR_PTR_HI = #>.plot_fireball
+        const FIREBALL_FRAME = 2
+        const FIREBALL_PAL = 2
         const FIREBALL_MAX_FRAMES = 4
 
         const BATFIREBALL_VEL_CAP_HI = 4
