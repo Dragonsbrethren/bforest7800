@@ -95,6 +95,7 @@ map_loaded
         gosub update_mp_bar
         if !save_objects then gosub load_objects
         if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
+        if toggled_familiar = 2 then object_type[13] = TYPE_F_CAT
         if toggled_familiar = 4 then object_type[13] = TYPE_F_OWL
         asm
         lda #1
@@ -1197,6 +1198,54 @@ plot_owl
         plotsprite owl0 1 Xposition Yposition frame
         goto plot_next
 
+plot_cat
+        plotsprite cat0 0 Xposition Yposition frame
+        goto plot_next
+
+
+cat_ai
+        asm
+          lda object_flags,x
+          bne cat_face
+cat_init
+          lda #<.plot_cat
+          sta object_spr_ptr_lo,x
+          lda #>.plot_cat
+          sta object_spr_ptr_hi,x
+          lda player_Xpos
+          sec
+          sbc #12
+          sta object_Xpos,x
+          lda player_Ypos
+          clc
+          adc #16
+          sta object_Ypos,x
+          lda #5
+          clc
+          adc player_wisdom
+          sta object_damage,x
+          lda #%10000000
+          sta object_flags,x
+
+cat_face
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc cat_face_left
+cat_face_right
+          lda #0
+          sta object_frame,x
+          beq cat_animate
+cat_face_left
+          lda #2
+          sta object_frame,x
+cat_animate
+          lda animation_frame
+          beq cat_done
+          inc object_frame,x
+          bne cat_done
+cat_done
+end
+        goto test_follow_box
 
 owl_ai
         asm
@@ -1841,7 +1890,7 @@ stone_set
         stone_duration--
         if !stone_duration then stone_done
         ; continue checking invuln frames while stone
-        if !player_timer then player_flags{0} = 0
+        if !player_invuln then player_flags{0} = 0
         goto player_handler_done
 
 stone_done
