@@ -1226,6 +1226,15 @@ cat_init
           sta object_damage,x
           lda #%10000000
           sta object_flags,x
+          lda #2
+          sta object_speed_hi,x
+          sta object_vel_cap_hi,x
+          lda #1
+          sta object_friction_hi,x
+          lda #0
+          sta object_speed_lo,x
+          sta object_vel_cap_lo,x
+          sta object_friction_lo,x
 
 cat_face
           lda object_Xpos,x
