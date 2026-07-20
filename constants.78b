@@ -587,3 +587,47 @@
         const MP_BAR_END_OBJECT = 3
         const MP_BAR_OFFSET     = 99
         const BAR_END_OFFSET    = 48
+
+        const SWORD1_ELEM  = %00000000
+        const SWORD2_ELEM  = %00100000
+        const SWORD3_ELEM  = %01000000
+        const SWORD4_ELEM  = %00000100
+        const SWORD5_ELEM  = %00010000
+        const SWORD6_ELEM  = %00000001
+        const SWORD7_ELEM  = %00000010
+        const SWORD8_ELEM  = %00000000
+        const SWORD9_ELEM  = %00000000
+        const SWORD10_ELEM = %00000000
+
+        const SHIELD1_ELEM  = %00000000
+        const SHIELD2_ELEM  = %00100000
+        const SHIELD3_ELEM  = %00000000
+        const SHIELD4_ELEM  = %00000001
+        const SHIELD5_ELEM  = %00000000
+        const SHIELD6_ELEM  = %00000000
+        const SHIELD7_ELEM  = %00000000
+        const SHIELD8_ELEM  = %00000000
+        const SHIELD9_ELEM  = %00000000
+        const SHIELD10_ELEM = %00000000
+
+        const ARMOR1_ELEM  = %00000000
+        const ARMOR2_ELEM  = %00100000
+        const ARMOR3_ELEM  = %00000000
+        const ARMOR4_ELEM  = %00001000
+        const ARMOR5_ELEM  = %00000000
+        const ARMOR6_ELEM  = %00000000
+        const ARMOR7_ELEM  = %00000000
+        const ARMOR8_ELEM  = %00000000
+        const ARMOR9_ELEM  = %00000000
+        const ARMOR10_ELEM = %00000000
+
+        const CHARM1_ELEM  = %00000000
+        const CHARM2_ELEM  = %00000000
+        const CHARM3_ELEM  = %00000000
+        const CHARM4_ELEM  = %00000000
+        const CHARM5_ELEM  = %00000000
+        const CHARM6_ELEM  = %00000000
+        const CHARM7_ELEM  = %00000000
+        const CHARM8_ELEM  = %00000000
+        const CHARM9_ELEM  = %00000000
+        const CHARM10_ELEM = %00000000

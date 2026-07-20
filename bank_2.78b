@@ -5,6 +5,7 @@
 ;==============================================================================
         bank 2
         incbasic forest.78b
+        incmapfile tiled/forest_room_1.tmx
 
         data forest_map_lo
         plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
@@ -219,7 +220,7 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #5
+          cpx #2
           bcs .forest_room_b16
           jmp .forest_room_bank_2
 end
@@ -283,29 +284,6 @@ plot_forest_room_1
         menu_map_room[menu_map_index_2] = ROOMR_UR
         plotmapfile tiled/forest_room_1.tmx forest_room_1 0 1 20 12
         memcpy map12 forest_room_1 240
-        return thisbank
-
-
-plot_forest_room_2
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UD
-        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 1 20 12
-        memcpy map12 forest_room_2 240
-        return thisbank
-
-plot_forest_room_3
-        pw_success = 0
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 1 20 12
-        memcpy map12 forest_room_3 240
-        return thisbank
-
-plot_forest_room_4
-        menu_map_room[menu_map_index] = ROOML_UDL
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
-        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 1 20 12
-        memcpy map12 forest_room_4 240
         return thisbank
 
         data forest_room_0_obj

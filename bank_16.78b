@@ -35,6 +35,29 @@ forest_room_bank_16
           jmp (jump1)
 end
 
+plot_forest_room_2
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UD
+        plotmapfile tiled/forest_room_2.tmx forest_room_2 0 1 20 12
+        memcpy map12 forest_room_2 240
+        return otherbank
+
+plot_forest_room_3
+        pw_success = 0
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_3.tmx forest_room_3 0 1 20 12
+        memcpy map12 forest_room_3 240
+        return otherbank
+
+
+plot_forest_room_4
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        plotmapfile tiled/forest_room_4.tmx forest_room_4 0 1 20 12
+        memcpy map12 forest_room_4 240
+        return otherbank
+
 plot_forest_room_5
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UR

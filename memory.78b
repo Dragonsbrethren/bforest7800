@@ -75,6 +75,8 @@
         dim player_speed_lo     = object_speed_lo
         dim player_speed        = player_speed_hi
         dim player_invuln       = object_invuln
+        dim player_elem_atk     = object_elem_atk
+        dim player_elem_def     = object_elem_def
 
         autodim byte player_max_hp
         autodim byte player_mp

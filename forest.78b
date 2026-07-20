@@ -27,8 +27,6 @@
         incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
         incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
 
-        incmapfile tiled/forest.tmx
-        incmapfile tiled/forest_room_1.tmx
         incmapfile tiled/forest_room_2.tmx
         incmapfile tiled/forest_room_3.tmx
         incmapfile tiled/forest_room_4.tmx
