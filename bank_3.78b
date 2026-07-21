@@ -386,6 +386,14 @@ sub_update_player_stats
 update_equipment_pals
         asm
         ldx player_sword
+        lda sword_atk,x
+        sta player_atk
+        lda sword_def,x
+        sta player_def
+        lda sword_wis,x
+        sta player_wisdom
+        lda sword_elem,x
+        sta player_elem_atk
         lda pal_swords1,x
         sta m_sword_pal1
         lda pal_swords2,x
@@ -393,6 +401,20 @@ update_equipment_pals
         lda f_sword_pals,x
         sta sword_pal
         ldx player_shield
+        lda shield_atk,x
+        clc
+        adc player_atk
+        sta player_atk
+        lda shield_def,x
+        clc
+        adc player_def
+        sta player_def
+        lda shield_wis,x
+        clc
+        adc player_wisdom
+        sta player_wisdom
+        lda shield_elem,x
+        sta player_elem_def
         lda pal_shields1,x
         sta m_shield_pal1
         lda pal_shields2,x
@@ -400,26 +422,47 @@ update_equipment_pals
         lda f_shield_pals,x
         sta shield_pal
         ldx player_armor
+        lda armor_atk,x
+        clc
+        adc player_atk
+        sta player_atk
+        lda armor_def,x
+        clc
+        adc player_def
+        sta player_def
+        lda armor_wis,x
+        clc
+        adc player_wisdom
+        sta player_wisdom
+        lda armor_elem,x
+        ora player_elem_def
+        sta player_elem_def
         lda pal_armor1,x
         sta m_armor_pal1
         lda pal_armor2,x
         sta m_armor_pal2
         ldx player_charm
+        lda charm_atk,x
+        clc
+        adc player_atk
+        sta player_atk
+        lda charm_def,x
+        clc
+        adc player_def
+        sta player_def
+        lda charm_wis,x
+        clc
+        adc player_wisdom
+        sta player_wisdom
+        lda charm_elem,x
+        clc
+        adc player_elem_atk
+        sta player_elem_atk
         lda pal_charms1,x
         sta m_charm_pal1
         lda pal_charms2,x
         sta m_charm_pal2
 end
-        ; currently this just reads from an array for each type of equipment,
-        ; swords only do attack, shields/armor only defense, and charms wisdom
-        dec player_atk = sword_atk[player_sword]
-        dec player_atk = player_atk + player_str
-        player_elem_atk = sword_elem[player_sword]
-        dec player_def = shield_def[player_shield]
-        dec temp1 = player_def 
-        dec player_def = armor_def[player_armor] + temp1
-        player_elem_def = shield_elem[player_shield] | armor_elem[player_armor]
-        dec player_wisdom = charm_wis[player_charm]
         ; hack in status-causing equipment here
         if player_charm = CHARM_FURY then temp1 = BITS_FURY : gosub set_status
         ; this must stay a normal return command so title code can use
@@ -918,15 +961,47 @@ end
 end
 
         data sword_atk
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+end
+
+        data sword_def
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data sword_wis
+        0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data shield_atk
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data shield_def
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+end
+
+        data shield_wis
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data armor_atk
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data armor_def
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+end
+
+        data armor_wis
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data charm_atk
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
+        data charm_def
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data charm_wis
