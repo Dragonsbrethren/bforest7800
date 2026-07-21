@@ -2209,3 +2209,6 @@ end
         data sword_heights
         16, 16, 3, 3
 end
+
+        data object_elem_weak
+end
