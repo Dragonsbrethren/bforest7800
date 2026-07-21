@@ -707,6 +707,18 @@
         const FAIRY_CHASE_X = 40
         const FAIRY_CHASE_Y = 54
 
+        const SPIRIT_VEL_CAP_HI = 2
+        const SPIRIT_VEL_CAP_LO = 0
+        const SPIRIT_DAMAGE = 4
+        const SPIRIT_FRICTION_HI = 0
+        const SPIRIT_FRICTION_LO = 0
+        const SPIRIT_SPEED_HI = 1
+        const SPIRIT_SPEED_LO = 0
+        const SPIRIT_FLAGS = %00000100
+        const SPIRIT_PAL_1 = 0
+        const SPIRIT_PAL_2 = 3
+        const SPIRIT_ANIM_TIMER = 4
+
         const OWL_DELAY = 240
         const OWL_SPEED = 2
         const OWL_DAMAGE = 6

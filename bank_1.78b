@@ -1266,6 +1266,32 @@ cat_done
 end
         goto test_follow_box
 
+spirit_ai
+        asm
+          lda object_flags,x
+          beq spirit_init
+
+spirit_init
+          lda #SPIRIT_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #SPIRIT_DAMAGE
+          sta object_damage,x
+          lda #SPIRIT_SPEED_HI
+          sta object_speed_hi,x
+          lda #SPIRIT_FLAGS
+          sta object_flags,x
+          lda #SPIRIT_PAL_1
+          sta object_pal,x
+          ldy tileset
+          lda spirit_ptr_lo,y
+          sta object_spr_ptr_lo,x
+          lda spirit_ptr_hi,y
+          sta object_spr_ptr_hi,x
+          lda spirit_frame,y
+          sta object_frame,x
+          rts
+end
+
 owl_ai
         asm
           lda object_flags,x
@@ -1780,6 +1806,13 @@ end
         HROSE_ELEM_WEAK, 0, FIREBAT_ELEM_WEAK, 0, FGHOST_ELEM_WEAK,
 end
 
+        data spirit_ptr_lo
+        <.plot_next, #<.plot_forest_160a, #<.plot_castle_160a, #<.plot_rghost, #<.plot_hills_160a, #<.plot_caves_160a 
+end
+
+        data spirit_ptr_hi
+        >.plot_next, #>.plot_forest_160a, #>.plot_castle_160a, #>.plot_rghost, #>.plot_hills_160a, #>.plot_caves_160a
+end
 
         incbasic music.78b
         dmahole 0
@@ -1791,6 +1824,7 @@ update_pickup_objs
         ; unrolled for speed
         asm
         ldx #0
+update_pickup_objs_loop
         ldy #13
         SetObjectImageLo pickup_string
         inx
@@ -2228,4 +2262,8 @@ end
 
         data sword_heights
         16, 16, 3, 3
+end
+
+        data spirit_frame
+        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
 end
