@@ -94,17 +94,20 @@ map_loaded
         gosub update_hp_bar
         gosub update_mp_bar
         if !save_objects then gosub load_objects
-        if toggled_familiar = 1 then object_type[13] = TYPE_F_FAIRY
-        if toggled_familiar = 2 then object_type[13] = TYPE_F_CAT
-        if toggled_familiar = 4 then object_type[13] = TYPE_F_OWL
         asm
-        lda #1
-        sta pal_update
-        lda #0
-        sta reload_map
-        sta save_objects
-        sta player_obscure
-        sta pw_success
+          lda toggled_familiar
+          beq no_familiar
+          clc
+          adc #FAMILIAR_OBJ_START
+          sta object_type+13
+no_familiar
+          lda #1
+          sta pal_update
+          lda #0
+          sta reload_map
+          sta save_objects
+          sta player_obscure
+          sta pw_success
 end
         ; object 13 = familiars
         if exit_dir = EXIT_SOUTH then player_Ypos = 15  : player_Ydir = DIR_DOWN : object_Ypos[13] = 8

@@ -686,6 +686,8 @@
 
 
         ; FAMILIARS
+        const FAMILIAR_OBJ_START = 152
+
         const FAIRY_SPEED_HI = 1
         const FAIRY_SPEED_LO = 0
         const FAIRY_HP = 255
