@@ -698,6 +698,8 @@ load_lightning_data
           jsr .find_lightning_target
           lda #0
           sta object_Ypos,y
+          lda #%00000100
+          sta object_elem_atk,y
           lda #<.plot_lightning
           sta object_spr_ptr_lo,y
           lda #>.plot_lightning
@@ -745,6 +747,8 @@ load_fireball_data
         sta object_frame,y
         lda #FIREBALL_PAL
         sta object_pal,y
+        lda #%00000001
+        sta object_elem_atk,y
         jsr set_cast_direction
         jmp .chant_done
 
@@ -912,6 +916,9 @@ load_iceflake_data
         sta object_pal,y
         sta object_frame,x
         sta object_pal,x
+        lda #%00000010
+        sta object_elem_atk,x
+        sta object_elem_atk,y
         jsr set_iceflake_direction
         jmp .chant_done
 

@@ -85,6 +85,31 @@
         sta temp_hp
         lda object_damage,x
         sta temp2
+        tya
+        pha
+        lda object_type,y
+        tay
+        ; stored in ROM, need type as index
+        lda object_elem_weak,y
+        and object_elem_atk,x
+        beq .magic_damage_no_elem_weak
+        ; deal double damage when weak to element
+        lda temp2
+        asl
+        sta temp2
+.magic_damage_no_elem_weak
+        ; restore Y
+        pla
+        tay
+        lda object_elem_def,y
+        and object_elem_atk,x
+        beq .magic_damage_no_elem_def
+        ; half damage when defense against element
+        lda temp2
+        lsr
+        sta temp2
+.magic_damage_no_elem_def
+        lda temp2
         sec
         sbc object_mdef,y
         cmp temp2
