@@ -1950,14 +1950,6 @@ end
         if boxcollision(Xposition, Yposition, temp3, temp4, temp1, temp2, 9, 14) then goto pc_damage
         return thisbank
 
-        data sword_widths
-        3, 3, 12, 12
-end
-
-        data sword_heights
-        16, 16, 3, 3
-end
-
 
 player_knockback
         ; projectiles should always test box so they are destroyed even by invulnerable player
@@ -2098,6 +2090,14 @@ damage_player_hp
         temp3 = player_def
         ; players under fury have quarter defense
         if player_status{4} then temp3 = temp3 / 4
+        asm
+          ldx index
+          lda player_elem_def
+          and object_elem_atk,x
+          beq .damage_player_hp_no_elem
+end
+        hp_change = hp_change / 2
+damage_player_hp_no_elem
         hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
         if hp_change > temp2 then hp_change = 1
@@ -2371,6 +2371,3 @@ proj_die  lda temp1
           rts
 end
 
-        data player_facing_frames
-        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
-end

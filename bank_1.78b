@@ -2197,3 +2197,15 @@ end
         data spell_pal
         FIREBALL_PAL
 end
+
+        data player_facing_frames
+        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
+end
+
+        data sword_widths
+        3, 3, 12, 12
+end
+
+        data sword_heights
+        16, 16, 3, 3
+end
