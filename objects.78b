@@ -716,7 +716,7 @@
         const SPIRIT_SPEED_LO = 0
         const SPIRIT_FLAGS = %00000100
         const SPIRIT_PAL_1 = 0
-        const SPIRIT_PAL_2 = 3
+        const SPIRIT_PAL_2 = 1
         const SPIRIT_ANIM_TIMER = 4
 
         const OWL_DELAY = 240
@@ -746,6 +746,13 @@
         const ICEFLAKES_SPEED_LO = 0
         const ICEFLAKES_DAMAGE = 5
         const ICEFLAKES_MP_COST = 12
+        const ICEFLAKES_VEL_CAP_HI = 4
+        const ICEFLAKES_VEL_CAP_LO = 0
+        const ICEFLAKES_FLAGS = %00010000
+        const ICEFLAKES_SPR_PTR_LO = #<.plot_fireball
+        const ICEFLAKES_SPR_PTR_HI = #>.plot_fireball
+        const ICEFLAKES_FRAME = 0
+        const ICEFLAKES_PAL = 0
 
         const LIGHTNING_DAMAGE = $10
         const LIGHTNING_MP_COST = 20

@@ -712,47 +712,11 @@ end
 
 cast_fireball
         asm
-;       lda #0
-;       sta spell_index
-;       lda #14
-;       sta spawn_index
-;       jmp .cast_spell
-        lda #FIREBALL_MP_COST
-        sta mp_change
-        jsr .test_spell_cost
-        
-        bne .load_fireball_index
-        jmp .set_state_chant ; allow player to try a different input
-.load_fireball_index
-        ldy #14
-        sty spawn_index
-        ldx #0  ; player index
-load_fireball_data
-        lda #TYPE_FIREBALL
-        sta object_type,y
-        lda #FIREBALL_SPEED_HI
-        sta object_vel_cap_hi,y
-        sta object_speed_hi,y
-        lda #FIREBALL_SPEED_LO
-        sta object_vel_cap_lo,y
-        sta object_speed_lo,y
-        lda #FIREBALL_DAMAGE
-        clc
-        adc player_wisdom
-        sta object_damage,y
-        lda #FIREBALL_FLAGS
-        sta object_flags,y
-        lda #FIREBALL_SPR_PTR_LO
-        sta object_spr_ptr_lo,y
-        lda #FIREBALL_SPR_PTR_HI
-        sta object_spr_ptr_hi,y
-        lda #FIREBALL_FRAME
-        sta object_frame,y
-        lda #FIREBALL_PAL
-        sta object_pal,y
-        lda #%00000001
-        sta object_elem_atk,y
-        jsr set_cast_direction
+        lda #0
+        sta spell_index
+        lda #14
+        sta spawn_index
+        jsr .cast_magic
         jmp .chant_done
 
 set_cast_direction
@@ -781,6 +745,7 @@ cast_projectile_y
         sta object_Yvel_lo,y
         lda object_speed_hi,y
         sta object_Yvel_hi,y
+        lda object_type,y
         lda #0
         sta object_Xdir,y
         sta object_Xvel_hi,y
@@ -853,8 +818,8 @@ load_magic_data
           lda spell_vel_cap_lo,x
           sta object_vel_cap_lo,y
           lda spell_damage,x
-;         ldy index
-;         bne load_magic_damage_no_wis
+          ldy index
+          bne load_magic_damage_no_wis
           clc
           adc player_wisdom
 load_magic_damage_no_wis
@@ -871,202 +836,37 @@ load_magic_damage_no_wis
           lda spell_pal,x
           sta object_pal,y
           ldx index
-          jsr set_cast_direction
-          jmp .chant_done
+          jmp set_cast_direction
 end
 
 cast_iceflakes
         asm
-        lda #ICEFLAKES_MP_COST
-        sta mp_change
-        jsr .test_spell_cost
-        
-        bne .load_iceflake_index
-        jmp .set_state_chant ; allow player to try a different input
-.load_iceflake_index
-        ldy #14
-        ldx #15
-load_iceflake_data
-        lda #TYPE_ICEFLAKE
-        sta object_type,y
-        sta object_type,x
-        lda #ICEFLAKES_SPEED_HI
-        sta object_vel_cap_hi,y
-        sta object_vel_cap_hi,x
-        sta object_speed_hi,y
-        sta object_speed_hi,x
-        lda #ICEFLAKES_SPEED_LO
-        sta object_vel_cap_lo,y
-        sta object_vel_cap_lo,x
-        sta object_speed_lo,y
-        sta object_speed_lo,x
-        lda #ICEFLAKES_DAMAGE
-        clc
-        adc player_wisdom
-        sta object_damage,y
-        sta object_damage,x
-        lda #%00010000
-        sta object_flags,y
-        sta object_flags,x
-        lda #<.plot_fireball
-        sta object_spr_ptr_lo,y
-        sta object_spr_ptr_lo,x
-        lda #>.plot_fireball
-        sta object_spr_ptr_hi,y
-        sta object_spr_ptr_hi,x
-        lda #0
-        sta object_frame,y
-        sta object_pal,y
-        sta object_frame,x
-        sta object_pal,x
-        lda #%00000010
-        sta object_elem_atk,x
-        sta object_elem_atk,y
-        jsr set_iceflake_direction
+        lda #1
+        sta spell_index
+        lda #14
+        sta spawn_index
+        jsr .cast_magic
+        lda #15
+        sta spawn_index
+        jsr .cast_magic
+        lda object_facing,y
+        cmp #DIR_UP
+        beq cast_iceflakes_y
+        cmp #DIR_DOWN
+        beq cast_iceflakes_y
+cast_iceflakes_x
+        lda #DIR_UP
+        sta object_Ydir+14
+        lda #DIR_DOWN
+        sta object_Ydir+15
         jmp .chant_done
 
-set_iceflake_direction
-        lda player_elevation
-        sta object_elevation,y
-        sta object_elevation,x
-        lda player_facing
-        cmp #DIR_UP
-        beq cast_iceflakes_up
-        cmp #DIR_DOWN
-        bne iceflakes_test_left
-        jmp cast_iceflakes_down
-iceflakes_test_left
-        cmp #DIR_LEFT
-        bne cast_iceflakes_right
-        jmp cast_iceflakes_left  ; branch out of range
-cast_iceflakes_right
-        sta object_facing,y
-        sta object_facing,x
-        sta object_Xdir,y
-        sta object_Xdir,x
-        lda player_Xpos
-        clc
-        adc #14
-        sta object_Xpos,y
-        sta object_Xpos,x
-        lda player_Ypos
-        sta object_Ypos,y
-        sec
-        sbc #8
-        sta object_Ypos,x
-        lda #DIR_UP
-        sta object_Ydir,x
-        lda #DIR_DOWN
-        sta object_Ydir,y
-        lda #0
-        sta object_Yvel_hi,y
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,y
-        sta object_Yvel_lo,x
-        lda object_speed_lo,y
-        sta object_Xvel_lo,x
-        sta object_Xvel_lo,y
-        lda object_speed_hi,y
-        sta object_Xvel_hi,x
-        sta object_Xvel_hi,y
-        rts
-cast_iceflakes_up
-        sta object_facing,y
-        sta object_facing,x
-        sta object_Ydir,y
-        sta object_Ydir,x
-        lda player_Xpos
-        clc
-        adc #1
-        sta object_Xpos,y
-        clc
-        adc #4
-        sta object_Xpos,x
-        lda player_Ypos
-        sec
-        sbc #10
-        sta object_Ypos,y
-        sta object_Ypos,x
+cast_iceflakes_y
         lda #DIR_LEFT
-        sta object_Xdir,y
+        sta object_Xdir+14
         lda #DIR_RIGHT
-        sta object_Xdir,x
-        lda #0
-        sta object_Xvel_hi,y
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,y
-        sta object_Xvel_lo,x
-        lda object_speed_lo,y
-        sta object_Yvel_lo,x
-        sta object_Yvel_lo,y
-        lda object_speed_hi,y
-        sta object_Yvel_hi,x
-        sta object_Yvel_hi,y
-        rts
-cast_iceflakes_down
-        sta object_facing,y
-        sta object_facing,x
-        sta object_Ydir,y
-        sta object_Ydir,x
-        lda player_Xpos
-        clc
-        adc #1
-        sta object_Xpos,y
-        clc
-        adc #4
-        sta object_Xpos,x
-        lda player_Ypos
-        clc
-        adc #8
-        sta object_Ypos,y
-        sta object_Ypos,x
-        lda #DIR_LEFT
-        sta object_Xdir,y
-        lda #DIR_RIGHT
-        sta object_Xdir,x
-        lda #0
-        sta object_Xvel_hi,y
-        sta object_Xvel_hi,x
-        sta object_Xvel_lo,y
-        sta object_Xvel_lo,x
-        lda object_speed_lo,y
-        sta object_Yvel_lo,x
-        sta object_Yvel_lo,y
-        lda object_speed_hi,y
-        sta object_Yvel_hi,x
-        sta object_Yvel_hi,y
-        rts
-cast_iceflakes_left
-        sta object_facing,y
-        sta object_facing,x
-        sta object_Xdir,y
-        sta object_Xdir,x
-        lda player_Xpos
-        sec
-        sbc #4
-        sta object_Xpos,y
-        sta object_Xpos,x
-        lda player_Ypos
-        sta object_Ypos,y
-        sec
-        sbc #8
-        sta object_Ypos,x
-        lda #DIR_UP
-        sta object_Ydir,x
-        lda #DIR_DOWN
-        sta object_Ydir,y
-        lda #0
-        sta object_Yvel_hi,y
-        sta object_Yvel_hi,x
-        sta object_Yvel_lo,y
-        sta object_Yvel_lo,x
-        lda object_speed_lo,y
-        sta object_Xvel_lo,x
-        sta object_Xvel_lo,y
-        lda object_speed_hi,y
-        sta object_Xvel_hi,x
-        sta object_Xvel_hi,y
-        rts
+        sta object_Xdir+15
+        jmp .chant_done
 end
 
 ;==============================================================================
@@ -1270,6 +1070,18 @@ spirit_ai
         asm
           lda object_flags,x
           beq spirit_init
+          lda #SPIRIT_PAL_1
+          sta object_pal,x
+          ldy tileset
+          lda spirit_frame,y
+          sta object_frame,x
+          lda animation_frame
+          bne spirit_target
+          lda #SPIRIT_PAL_2
+          sta object_pal,x
+          inc object_frame,x
+spirit_target
+          jmp .test_follow_box
 
 spirit_init
           lda #SPIRIT_VEL_CAP_HI
@@ -1280,16 +1092,17 @@ spirit_init
           sta object_speed_hi,x
           lda #SPIRIT_FLAGS
           sta object_flags,x
-          lda #SPIRIT_PAL_1
-          sta object_pal,x
           ldy tileset
           lda spirit_ptr_lo,y
           sta object_spr_ptr_lo,x
           lda spirit_ptr_hi,y
           sta object_spr_ptr_hi,x
-          lda spirit_frame,y
-          sta object_frame,x
+
           rts
+end
+
+        data spirit_frame
+        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
 end
 
 owl_ai
@@ -2209,47 +2022,47 @@ decrease_hp
 end
 
         data spell_mp_cost
-        FIREBALL_MP_COST, 10, 12, 20
+        FIREBALL_MP_COST, ICEFLAKES_MP_COST, 12, 20
 end
 
         data spell_speed_hi
-        FIREBALL_SPEED_HI
+        FIREBALL_SPEED_HI, ICEFLAKES_SPEED_HI
 end
 
         data spell_speed_lo
-        FIREBALL_SPEED_LO
+        FIREBALL_SPEED_LO, ICEFLAKES_SPEED_LO
 end
 
         data spell_vel_cap_hi
-        FIREBALL_VEL_CAP_HI
+        FIREBALL_VEL_CAP_HI, ICEFLAKES_VEL_CAP_HI
 end
 
         data spell_vel_cap_lo
-        FIREBALL_VEL_CAP_LO
+        FIREBALL_VEL_CAP_LO, ICEFLAKES_VEL_CAP_LO
 end
 
         data spell_damage
-        FIREBALL_DAMAGE
+        FIREBALL_DAMAGE, ICEFLAKES_DAMAGE
 end
 
         data spell_flags
-        FIREBALL_FLAGS
+        FIREBALL_FLAGS, ICEFLAKES_FLAGS
 end
 
         data spell_spr_ptr_lo
-        FIREBALL_SPR_PTR_LO
+        FIREBALL_SPR_PTR_LO, ICEFLAKES_SPR_PTR_LO
 end
 
         data spell_spr_ptr_hi
-        FIREBALL_SPR_PTR_HI
+        FIREBALL_SPR_PTR_HI, ICEFLAKES_SPR_PTR_HI
 end
 
         data spell_frame
-        FIREBALL_FRAME
+        FIREBALL_FRAME, ICEFLAKES_FRAME
 end
 
         data spell_pal
-        FIREBALL_PAL
+        FIREBALL_PAL, ICEFLAKES_PAL
 end
 
         data player_facing_frames
@@ -2264,6 +2077,3 @@ end
         16, 16, 3, 3
 end
 
-        data spirit_frame
-        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
-end
