@@ -1041,14 +1041,13 @@ firebat_rise
           bcc firebat_attack
           lda #DIR_UP
           sta object_Ydir+1
-          lda #FIREBAT_SPEED_LO
-          sta object_Yvel_lo+1
-          lda #FIREBAT_SPEED_HI
-          sta object_Yvel_hi+1
+          dec object_Ypos+1
           lda #0
           sta object_Xdir+1
           sta object_Xvel_lo+1
           sta object_Xvel_hi+1
+          sta object_Yvel_lo+1
+          sta object_Yvel_hi+1
           sta object_timer+1
           rts
 
@@ -1186,21 +1185,18 @@ forest_boss_return
 forest_boss_beat
           lda #0
           sta object_type+1
-          sta object_type+2
-          beq forest_boss_dead
+          rts
 
 forest_boss_check
           lda object_type+1
           bne forest_boss_return
           lda #TYPE_SPELL1
-          sta object_type+2
+          sta object_type+1
 
 forest_boss_dead
           lda #0
           sta object_type+5
           sta object_type+6
-          lda #$60
-          sta object_Ypos+2
 end
 forest_flame_unblock
         pokechar current_map  9 11 20 14 0

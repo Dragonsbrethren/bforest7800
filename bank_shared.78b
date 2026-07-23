@@ -841,7 +841,6 @@ end
 
 ;------------------------------------------------------------------------------
         gosub set_player_facing_frame
-
         if joy0up    then player_Ydir = DIR_UP    : player_facing = DIR_UP    : player_Yvel = player_Yvel + object_speed : player_state = STATE_MOVING : test_joy_done
         if joy0down  then player_Ydir = DIR_DOWN  : player_facing = DIR_DOWN  : player_Yvel = player_Yvel + object_speed : player_state = STATE_MOVING : test_joy_done
         if joy0left  then player_Xdir = DIR_LEFT  : player_facing = DIR_LEFT  : player_Xvel = player_Xvel + object_speed : player_state = STATE_MOVING : test_joy_done
@@ -1098,6 +1097,10 @@ end
 ;==============================================================================
 move_object
         asm
+          lda object_invuln,x
+          cmp #STUN_FRAMES
+          bcc mo_Xcap
+          rts
           ; Cap the object's velocity TODO: separate X/Y cap?
 mo_Xcap   lda object_vel_cap_hi,x
           cmp object_Xvel_hi,x
@@ -1997,15 +2000,6 @@ end
 player_knockback
         ; projectiles should always test box so they are destroyed even by invulnerable player
         if object_type[index] >= TYPE_DARKSPARK then test_player_box
-        if player_flags{0}         then return thisbank ; player is invulnerable, bypass collision check to save cycles
-        asm
-          ldx index
-          lda object_flags,x
-          ; tests object invunerablility flag
-          lsr
-          bcc .test_player_box
-          rts
-end
 test_player_box
         ; enemies can only hit player when on same elevation unless flying
         asm
@@ -2046,18 +2040,22 @@ end
         temp3 = Xposition + 3
         temp4 = Yposition + 2
         if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 7, 12) then return
-;        if Yposition <= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_DOWN  : player_frame = FRAME_UP    : goto pc_damage
-;        if Yposition >= player_Ypos then player_Yvel = 10.0 : player_Ydir = DIR_UP    : player_frame = FRAME_DOWN  : goto pc_damage
-;        if Xposition >= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_LEFT  : player_frame = FRAME_RIGHT : goto pc_damage
-;        if Xposition <= player_Xpos then player_Xvel = 5.0 : player_Xdir = DIR_RIGHT : player_frame = FRAME_LEFT
 
-        if object_type[index] = TYPE_BURNBUSH then set_burnbush_name
-        ;  check player's shield and destroy projectile
-        if object_type[index] >=  TYPE_DARKSPARK && object_type[index] < TYPE_DARKBOLT then shield_check
-player_knockback_status
-        ; TODO: reorder objects to add ranges for inflicting status effects
         asm
           ldx index
+          lda object_type,x
+          cmp #TYPE_BURNBUSH
+          bne player_knockback_block
+          jmp .set_burnbush_name
+player_knockback_block
+          ;  check player's shield and destroy projectile
+          cmp #TYPE_DARKSPARK
+          bcc player_knockback_status
+          cmp #TYPE_DARKBOLT
+          bcs player_knockback_status
+          jmp .shield_check
+player_knockback_status
+        ; TODO: reorder objects to add ranges for inflicting status effects
           lda object_type,x
           cmp #TYPE_SLIME
           beq set_poison_status
