@@ -51,6 +51,7 @@
         const TYPE_HSEED    = 143
         const TYPE_DARKBOLT = 144
         const TYPE_BATFIREBALL = 145
+        const TYPE_WINDSLASH = 149
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
         const TYPE_LIGHTNING = 152
@@ -732,9 +733,10 @@
         const FIREBALL_FLAGS = %00010000
         const FIREBALL_SPR_PTR_LO = #<.plot_fireball
         const FIREBALL_SPR_PTR_HI = #>.plot_fireball
-        const FIREBALL_FRAME = 2
+        const FIREBALL_FRAME = 0
         const FIREBALL_PAL = 2
         const FIREBALL_MAX_FRAMES = 4
+        const FIREBALL_ELEM = %00000001
 
         const BATFIREBALL_VEL_CAP_HI = 4
         const BATFIREBALL_VEL_CAP_LO = 0
@@ -751,8 +753,28 @@
         const ICEFLAKES_FLAGS = %00010000
         const ICEFLAKES_SPR_PTR_LO = #<.plot_fireball
         const ICEFLAKES_SPR_PTR_HI = #>.plot_fireball
-        const ICEFLAKES_FRAME = 0
+        const ICEFLAKES_FRAME = 2
         const ICEFLAKES_PAL = 0
+        const ICEFLAKES_ELEM = %00000010
+
+        const WINDSLASH_SPEED_HI = 4
+        const WINDSLASH_SPEED_LO = 0
+        const WINDSLASH_DAMAGE = 12
+        const WINDSLASH_MP_COST = 12
+        const WINDSLASH_VEL_CAP_HI = 4
+        const WINDSLASH_VEL_CAP_LO = 0
+        const WINDSLASH_FLAGS = %00000100
+        const WINDSLASH_SPR_PTR_LO = #<.plot_fireball
+        const WINDSLASH_SPR_PTR_HI = #>.plot_fireball
+        const WINDSLASH_FRAME = 3
+        const WINDSLASH_UL = 5
+        const WINDSLASH_UR = 4
+        const WINDSLASH_DL = 6
+        const WINDSLASH_DR = 7
+        const WINDSLASH_PAL = 3
+        const WINDSLASH_SPREAD_X = 255
+        const WINDSLASH_SPREAD_Y = 1    ; written to hi vel
+        const WINDSLASH_ELEM = %00010000
 
         const LIGHTNING_DAMAGE = $10
         const LIGHTNING_MP_COST = 20

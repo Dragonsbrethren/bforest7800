@@ -825,6 +825,8 @@ load_magic_data
 load_magic_damage_no_wis
           ldy spawn_index
           sta object_damage,y
+          lda spell_elem,x
+          sta spell_elem,y
           lda spell_flags,x
           sta object_flags,y
           lda spell_spr_ptr_lo,x
@@ -843,6 +845,13 @@ cast_iceflakes
         asm
         lda #1
         sta spell_index
+        jmp cast_diagonal_spell
+
+.cast_windslash
+        lda #2
+        sta spell_index
+
+cast_diagonal_spell
         lda #14
         sta spawn_index
         jsr .cast_magic
@@ -851,23 +860,60 @@ cast_iceflakes
         jsr .cast_magic
         lda object_facing,y
         cmp #DIR_UP
-        beq cast_iceflakes_y
+        beq cast_diagonal_y
         cmp #DIR_DOWN
-        beq cast_iceflakes_y
-cast_iceflakes_x
+        beq cast_diagonal_y
+cast_diagonal_x
         lda #DIR_UP
         sta object_Ydir+14
         lda #DIR_DOWN
         sta object_Ydir+15
         jmp .chant_done
 
-cast_iceflakes_y
+cast_diagonal_y
         lda #DIR_LEFT
         sta object_Xdir+14
         lda #DIR_RIGHT
         sta object_Xdir+15
         jmp .chant_done
 end
+        data windslash_frame_1
+        0, WINDSLASH_UL, WINDSLASH_DL, WINDSLASH_UL, WINDSLASH_UR
+end
+
+        data windslash_frame_2
+        0, WINDSLASH_UR, WINDSLASH_DR, WINDSLASH_DL, WINDSLASH_DR
+end
+
+windslash_ai
+        asm
+          ldy object_facing,x
+          lda windslash_frame_1,y
+          sta object_frame+14
+          lda windslash_frame_2,y
+          sta object_frame+15
+          cpy #DIR_LEFT
+          beq windslash_Yspread
+          cpy #DIR_RIGHT
+          beq windslash_Yspread
+windslash_Xspread
+          lda #0
+          sta object_Xvel_hi,x
+          lda object_Xvel_lo,x
+          clc
+          adc #WINDSLASH_SPREAD_X
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc #0
+          sta object_Xvel_hi,x
+          jmp fireball_poof
+windslash_Yspread
+          lda object_Yvel_hi,x
+          adc #WINDSLASH_SPREAD_Y
+          sta object_Yvel_hi,x
+          jmp fireball_poof
+end
+
 
 ;==============================================================================
 ; FAIRY FAMILIAR
@@ -1087,6 +1133,8 @@ spirit_init
           lda #SPIRIT_VEL_CAP_HI
           sta object_vel_cap_hi,x
           lda #SPIRIT_DAMAGE
+          clc
+          adc player_wisdom
           sta object_damage,x
           lda #SPIRIT_SPEED_HI
           sta object_speed_hi,x
@@ -1097,7 +1145,6 @@ spirit_init
           sta object_spr_ptr_lo,x
           lda spirit_ptr_hi,y
           sta object_spr_ptr_hi,x
-
           rts
 end
 
@@ -1627,6 +1674,14 @@ end
         >.plot_next, #>.plot_forest_160a, #>.plot_castle_160a, #>.plot_rghost, #>.plot_hills_160a, #>.plot_caves_160a
 end
 
+        data sword_widths
+        3, 3, 12, 12
+end
+
+        data sword_heights
+        16, 16, 3, 3
+end
+
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
@@ -1920,11 +1975,11 @@ thunder_sound
 end
 
         data spell_ptrs_lo
-        <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_fireball, <.cast_lightning
+        <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_windslash, <.cast_lightning
 end
 
         data spell_ptrs_hi
-        >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_fireball, >.cast_lightning
+        >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_windslash, >.cast_lightning
 end
 
 campfire_ai
@@ -2018,62 +2073,57 @@ decrease_hp
         return thisbank
 
         data spell_type
-        TYPE_FIREBALL, TYPE_ICEFLAKE, TYPE_FIREBALL, TYPE_LIGHTNING
+        TYPE_FIREBALL, TYPE_ICEFLAKE, TYPE_WINDSLASH, TYPE_LIGHTNING
 end
 
         data spell_mp_cost
-        FIREBALL_MP_COST, ICEFLAKES_MP_COST, 12, 20
+        FIREBALL_MP_COST, ICEFLAKES_MP_COST, WINDSLASH_MP_COST, LIGHTNING_MP_COST
 end
 
         data spell_speed_hi
-        FIREBALL_SPEED_HI, ICEFLAKES_SPEED_HI
+        FIREBALL_SPEED_HI, ICEFLAKES_SPEED_HI, WINDSLASH_SPEED_HI
 end
 
         data spell_speed_lo
-        FIREBALL_SPEED_LO, ICEFLAKES_SPEED_LO
+        FIREBALL_SPEED_LO, ICEFLAKES_SPEED_LO, WINDSLASH_SPEED_LO
 end
 
         data spell_vel_cap_hi
-        FIREBALL_VEL_CAP_HI, ICEFLAKES_VEL_CAP_HI
+        FIREBALL_VEL_CAP_HI, ICEFLAKES_VEL_CAP_HI, WINDSLASH_VEL_CAP_HI
 end
 
         data spell_vel_cap_lo
-        FIREBALL_VEL_CAP_LO, ICEFLAKES_VEL_CAP_LO
+        FIREBALL_VEL_CAP_LO, ICEFLAKES_VEL_CAP_LO, WINDSLASH_VEL_CAP_LO
 end
 
         data spell_damage
-        FIREBALL_DAMAGE, ICEFLAKES_DAMAGE
+        FIREBALL_DAMAGE, ICEFLAKES_DAMAGE, WINDSLASH_DAMAGE
+end
+
+        data spell_elem
+        FIREBALL_ELEM, ICEFLAKES_ELEM, WINDSLASH_ELEM
 end
 
         data spell_flags
-        FIREBALL_FLAGS, ICEFLAKES_FLAGS
+        FIREBALL_FLAGS, ICEFLAKES_FLAGS, WINDSLASH_FLAGS
 end
 
         data spell_spr_ptr_lo
-        FIREBALL_SPR_PTR_LO, ICEFLAKES_SPR_PTR_LO
+        FIREBALL_SPR_PTR_LO, ICEFLAKES_SPR_PTR_LO, WINDSLASH_SPR_PTR_LO
 end
 
         data spell_spr_ptr_hi
-        FIREBALL_SPR_PTR_HI, ICEFLAKES_SPR_PTR_HI
+        FIREBALL_SPR_PTR_HI, ICEFLAKES_SPR_PTR_HI, WINDSLASH_SPR_PTR_HI
 end
 
         data spell_frame
-        FIREBALL_FRAME, ICEFLAKES_FRAME
+        FIREBALL_FRAME, ICEFLAKES_FRAME, WINDSLASH_FRAME
 end
 
         data spell_pal
-        FIREBALL_PAL, ICEFLAKES_PAL
+        FIREBALL_PAL, ICEFLAKES_PAL, WINDSLASH_PAL
 end
 
         data player_facing_frames
         0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
 end
-
-        data sword_widths
-        3, 3, 12, 12
-end
-
-        data sword_heights
-        16, 16, 3, 3
-end
-
