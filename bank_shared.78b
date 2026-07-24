@@ -1871,6 +1871,10 @@ damage_object
           lda player_atk
           sec
           sbc object_def,x
+          bpl damage_object_no_underflow
+          ; catch underflow and set to 1 damage
+          lda #1
+damage_object_no_underflow
           sta hp_change
           lda player_elem_atk
           and object_elem_def,x
@@ -1890,9 +1894,7 @@ sword_damage_no_e_def
 sword_damage_no_curse
           lda hp_change
           bne sword_damage_weak_check
-          cmp player_atk
-          bcs sword_damage_weak_check
-          ; catch overflows and set to minimum 1 damage
+          ; set to minimum 1 damage
           lda #1
           sta hp_change
 sword_damage_weak_check

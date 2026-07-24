@@ -484,6 +484,8 @@
         const OCTOKRAKEN_PAL    = 5
         const OCTOKRAKEN_ATTACK_TIME = 7
         const OCTOKRAKEN_WAIT_TIME = 4
+        const OCTOKRAKEN_ELEM_ATK = %00001000
+        const OCTOKRAKEN_ELEM_DEF = %00001000
         const TENTSHADOW_TIME   = 15
         const TENTACLE_SPEED = 3
 

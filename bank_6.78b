@@ -1017,6 +1017,7 @@ end
 spawn_river_boss
         playsfx sfx_roarroar
         asm
+          ldx index
           lda #%10000000
           sta object_flags+3
           sta object_flags+4
@@ -1029,13 +1030,13 @@ spawn_river_boss
           lda #$B0
           sta object_Ypos+6
 end
-        ; block the area with the rock graphics
-        pokechar current_map  9 12 20 14 8
-        pokechar current_map 10 12 20 14 8
 river_boss_return
         return thisbank
 
 river_boss_handler
+        ; block the area with the rock graphics
+        pokechar current_map  9 12 20 14 8
+        pokechar current_map 10 12 20 14 8
         asm
           lda object_type+4
           bne .river_boss_return
@@ -1268,19 +1269,20 @@ obj_octokraken_stats
           sta object_pal,x
           lda #0
           sta object_frame,x
+          lda #OCTOKRAKEN_ELEM_ATK
+          sta object_elem_atk,x
+          lda #OCTOKRAKEN_ELEM_DEF
+          sta object_elem_def,x
+          lda #OCTOKRAKEN_HP
+          sta object_hp,x
+          lda #OCTOKRAKEN_DAMAGE
+          sta object_damage,x
+          lda #OCTOKRAKEN_DEF
+          sta object_def,x
+          lda #OCTOKRAKEN_MDEF
+          sta object_mdef,x
+          jmp .obj_next_stats
 end
-        object_hp[obj_index] = OCTOKRAKEN_HP
-        object_vel_cap_hi[obj_index] = 0
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = OCTOKRAKEN_DAMAGE
-        object_def[obj_index] = OCTOKRAKEN_DEF
-        object_mdef[obj_index] = OCTOKRAKEN_MDEF
-        object_friction_hi[obj_index] = 0
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 0
-        object_flags[obj_index] = 0
-        goto obj_next_stats
 
 tentacle_ai
         asm
