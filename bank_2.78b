@@ -399,7 +399,8 @@ end
 end
 
         data forest_room_16_obj
-        TYPE_DOOR_LOCK, 8*8, $80
+        TYPE_DOOR_LOCK, 9*8, $80
+        TYPE_BURNBUSH, 3*8, $60
         TYPE_TORCH, 7*8, $90
         $00
 end
@@ -469,6 +470,9 @@ end
 end
 
         data forest_room_28_obj
+        TYPE_RAVEN, 1*8, $60
+        TYPE_WOLF, 13*8, $40, TYPE_WOLF, 7*8, $30
+        TYPE_CATCARD, 8*8, $70
         $00
 end
 
@@ -494,7 +498,7 @@ end
         30,  9, 11, 07, 02, 12, 00,
         24, 10, 01, 04, 05, 31, 31,
         00, 00, 17, 15, 18, 00, 00,
-        00, 00, 16, 13, 14, 00, 00,
+        00, 28, 16, 13, 14, 00, 00,
         21, 22, 20, 19, 23, 00, 00
 end
 

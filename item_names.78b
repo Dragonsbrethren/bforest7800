@@ -463,7 +463,7 @@ end
 end
 
         alphadata pickup_relic2 font_spr
-        'Katze Card*'
+        'Cat Card*'
 end
 
         alphadata pickup_relic3 font_spr
