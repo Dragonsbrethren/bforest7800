@@ -1058,29 +1058,18 @@ plot_cat
         plotsprite cat0 0 Xposition Yposition frame
         goto plot_next
 
-        data water_pointer_lo
-        0, <.test_water_forest, <.test_water_castle, <.test_water_river, <.test_water_hills, <.test_water_caves
-end
-
-        data water_pointer_hi
-        0, >.test_water_forest, >.test_water_castle, >.test_water_river, >.test_water_hills, >.test_water_caves
-end
-
-test_water
-        asm
-          ldy tileset
-          lda water_pointer_lo,y
-          sta pointer
-          lda water_pointer_hi,y
-          sta pointer_hi
-          jmp (pointer)
-end
-
 cat_ai
         asm
           lda object_flags,x
-          bne cat_water
+          bne cat_face
 cat_init
+          ; if player in water, despawn cat
+          lda player_flags
+          and #%00000010
+          beq cat_sprite
+          lda #0
+          sta object_type,x
+cat_sprite
           lda #<.plot_cat
           sta object_spr_ptr_lo,x
           lda #>.plot_cat
@@ -1105,16 +1094,6 @@ cat_init
           sta object_vel_cap_lo,x
           sta object_friction_lo,x
 
-cat_water
-          jsr .test_water
-          ; test for water flag
-          lda object_flags,x
-          and #%00000010
-          beq cat_face
-          lda #0
-          ; despawn the cat on this screen
-          sta object_type,x
-          rts
 cat_face
           ldy object_parent,x
           lda object_Xpos,x

@@ -455,8 +455,6 @@ test_melee
           beq melee_left
 melee_right
           lda object_Xpos,x
-          clc
-          adc #12
           sta Xposition
           lda object_Ypos,x
           sec
