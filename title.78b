@@ -167,12 +167,12 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_RIVER
+        tileset = T_FOREST
         player_sword = 1
         player_shield = 0
         player_armor = 1
         player_charm = 0
-        player_spell = 1
+        player_spell = 0
         toggled_familiar = 0
         m_item_bits_1   = %00000001
         m_item_bits_2   = %00000111
@@ -184,9 +184,9 @@ title_new_game_normal
         m_armor_bits_2  = %00000000
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
-        m_relic_bits_1  = %00001111
-        m_relic_bits_2  = %00000001
-        m_spell_bits_1  = %00001110
+        m_relic_bits_1  = %00000000
+        m_relic_bits_2  = %00000000
+        m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000
         m_key_bits = 0
         m_map_bits = 0
@@ -230,6 +230,7 @@ init_field
         if player_status{1} then fade = FADE_DARKNESS else fade = FADE_NORMAL
         ; if you die in a room with an exit, stop it from taking you to the new map
         exit_tileset = 0
+        exit_room_index = 0
         ; retains the map in save rooms, continuing in same tileset
         if old_tileset = tileset then goto main
         gosub clear_menu_map
