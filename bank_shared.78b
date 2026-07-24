@@ -435,31 +435,7 @@ follow_player_Yvel
         sta object_Yvel_hi,x
 follow_player_done
         rts
-end     
-
-get_player_pos
-        Xdestination = player_Xpos : Ydestination = player_Ypos
-        return
-
-get_player_dir
-        Xdirection = player_Xdir
-        Ydirection = player_Ydir
-        return
-
-go_to_destination
-        if Xposition > Xdestination then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_LEFT
-        if Xposition < Xdestination then Xvelocity = Xvelocity + move_speed : Xdirection = DIR_RIGHT
-        if Yposition > Ydestination then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_UP
-        if Yposition < Ydestination then Yvelocity = Yvelocity + move_speed : Ydirection = DIR_DOWN
-        if Xposition = Xdestination then flags{3} = 0
-        if Yposition = Ydestination then flags{3} = 0
-        return
-
-swoop_X
-        return
-
-swoop_Y
-        return
+end
 
 ;==============================================================================
 ; TEST MELEE
@@ -506,6 +482,8 @@ melee_down
 
 melee_left
           lda object_Xpos,x
+          sec
+          sbc #12
           sta Xposition
           lda object_Ypos,x
           sec
@@ -514,7 +492,7 @@ melee_left
 end
 
 melee_range
-        if boxcollision(Xposition, Yposition, 12, 32, player_Xpos, player_Ypos, 16, 12) then melee_valid = 1
+        if boxcollision(Xposition, Yposition, 24, 32, player_Xpos, player_Ypos, 16, 12) then melee_valid = 1
         return thisbank
 
 ;==============================================================================
