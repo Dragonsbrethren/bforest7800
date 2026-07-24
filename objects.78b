@@ -708,6 +708,13 @@
         const FAIRY_CHASE_X = 40
         const FAIRY_CHASE_Y = 54
 
+        const CAT_DAMAGE = 5
+        const CAT_FLAGS  = #%10000000
+        const CAT_SPEED_HI = 2
+        const CAT_SPEED_LO = 0
+        const CAT_FRICTION = 1
+
+
         const SPIRIT_VEL_CAP_HI = 2
         const SPIRIT_VEL_CAP_LO = 0
         const SPIRIT_DAMAGE = 4

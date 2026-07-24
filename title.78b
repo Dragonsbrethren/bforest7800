@@ -82,7 +82,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 07-23-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 07-24-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -167,7 +167,7 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_FOREST
+        tileset = T_RIVER
         player_sword = 1
         player_shield = 0
         player_armor = 1
@@ -185,7 +185,7 @@ title_new_game_normal
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
         m_relic_bits_1  = %00001111
-        m_relic_bits_2  = %00000000
+        m_relic_bits_2  = %00000001
         m_spell_bits_1  = %00001110
         m_spell_bits_2  = %00000000
         m_key_bits = 0

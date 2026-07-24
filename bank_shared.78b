@@ -383,12 +383,14 @@ end
 followplayer
 follow_player
         asm
+        ldy #0
         ; add a little randomness to stop a constant movement pattern from happening
+.follow_object
         jsr randomize
         cmp #240
         bcs follow_player_Y
 follow_player_X
-        lda player_Xpos
+        lda player_Xpos,y
         cmp object_Xpos,x
         bcs follow_player_X_right
         adc #7
@@ -414,7 +416,7 @@ follow_player_Y
         cmp #240
         bcs follow_player_done
         lda object_Ypos,x
-        cmp player_Ypos
+        cmp player_Ypos,y
         bcc follow_player_Y_down
 follow_player_Y_up
         lda #DIR_UP

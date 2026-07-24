@@ -1058,43 +1058,67 @@ plot_cat
         plotsprite cat0 0 Xposition Yposition frame
         goto plot_next
 
+        data water_pointer_lo
+        0, <.test_water_forest, <.test_water_castle, <.test_water_river, <.test_water_hills, <.test_water_caves
+end
+
+        data water_pointer_hi
+        0, >.test_water_forest, >.test_water_castle, >.test_water_river, >.test_water_hills, >.test_water_caves
+end
+
+test_water
+        asm
+          ldy tileset
+          lda water_pointer_lo,y
+          sta pointer
+          lda water_pointer_hi,y
+          sta pointer_hi
+          jmp (pointer)
+end
 
 cat_ai
         asm
           lda object_flags,x
-          bne cat_face
+          bne cat_water
 cat_init
           lda #<.plot_cat
           sta object_spr_ptr_lo,x
           lda #>.plot_cat
           sta object_spr_ptr_hi,x
           lda player_Xpos
-          sec
-          sbc #12
           sta object_Xpos,x
           lda player_Ypos
-          clc
-          adc #16
           sta object_Ypos,x
-          lda #5
+          lda #CAT_DAMAGE
           clc
           adc player_wisdom
           sta object_damage,x
-          lda #%10000000
+          lda #CAT_FLAGS
           sta object_flags,x
-          lda #2
+          lda #CAT_SPEED_HI
           sta object_speed_hi,x
           sta object_vel_cap_hi,x
-          lda #1
+          lda #CAT_FRICTION
           sta object_friction_hi,x
           lda #0
           sta object_speed_lo,x
           sta object_vel_cap_lo,x
           sta object_friction_lo,x
 
+cat_water
+          jsr .test_water
+          ; test for water flag
+          lda object_flags,x
+          and #%00000010
+          beq cat_face
+          lda #0
+          ; despawn the cat on this screen
+          sta object_type,x
+          rts
 cat_face
+          ldy object_parent,x
           lda object_Xpos,x
-          cmp player_Xpos
+          cmp player_Xpos,y
           bcc cat_face_left
 cat_face_right
           lda #0
@@ -1105,12 +1129,20 @@ cat_face_left
           sta object_frame,x
 cat_animate
           lda animation_frame
-          beq cat_done
+          beq cat_find_target
           inc object_frame,x
-          bne cat_done
-cat_done
+cat_find_target
+          jsr .find_target
+          ; used for facing code
+          beq cat_move
+          tya
+          sta object_parent,x
+          jmp .follow_object
+cat_move
+          lda #0
+          sta object_parent,x
+          jmp .test_follow_box
 end
-        goto test_follow_box
 
 spirit_ai
         asm
@@ -1127,6 +1159,10 @@ spirit_ai
           sta object_pal,x
           inc object_frame,x
 spirit_target
+          jsr .find_target
+          beq spirit_follow
+          jmp .follow_object
+spirit_follow
           jmp .test_follow_box
 
 spirit_init
@@ -1196,20 +1232,8 @@ owl_init
           lda #>.plot_owl
           sta object_spr_ptr_hi,x
 owl_find_target
-          ldy #0
-owl_loop
-          lda object_type,y
-          beq owl_next
-          bmi owl_next
-          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
-          cmp #TYPE_TORCH
-          beq owl_next
-          cmp #TYPE_CASTLE_BOSS
-          beq owl_next
-          cmp #TYPE_RIVERBOSS
-          beq owl_next
-          cmp #TYPE_BAT_SPAWNER
-          beq owl_next
+          jsr .find_target
+          beq owl_no_target
 owl_found_target
           lda object_Ypos,y
           ; owl needs to be zone-aligned
@@ -1232,19 +1256,47 @@ owl_found_target
           lda #%10000100
           sta object_flags,x
           rts
-
-owl_next
-          ; slightly less optimized, but means owl will prioritize monsters
-          iny
-          cpy #MAX_MAP_OBJECTS+1
-          bne owl_loop
 owl_no_target
           ; no targetable object found, hide owl off screen
-          lda #$F0
+          lda #$E0
           sta object_Xpos,x
           sta object_Ypos,x
-
 owl_return
+          rts
+end
+
+;==============================================================================
+; SUBROUTINE: FIND TARGET
+;------------------------------------------------------------------------------
+; Find a target for magic and familiars. Zero flag is set when no target found
+;==============================================================================
+find_target
+        asm
+          ldy #1
+find_target_loop
+          lda object_type,y
+          ; exclude zero objects and projectiles
+          beq find_target_next
+          bmi find_target_next
+          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
+          cmp #TYPE_TORCH
+          beq find_target_next
+          cmp #TYPE_FOREST_BOSS
+          beq find_target_next
+          cmp #TYPE_CASTLE_BOSS
+          beq find_target_next
+          cmp #TYPE_RIVERBOSS
+          beq find_target_next
+          cmp #TYPE_HILLS_BOSS
+          beq find_target_next
+          cmp #TYPE_BAT_SPAWNER
+          beq find_target_next
+          rts
+
+find_target_next
+          iny
+          cpy #MAX_MAP_OBJECTS+1
+          bne find_target_loop
           rts
 end
 
