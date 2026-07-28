@@ -56,11 +56,11 @@ encode_password
         lda m_relic_bits_2
         sta pw_relics_2
         lda m_map_bits
-        sta pw_index20
+        sta pw_maps
         lda m_key_bits
-        sta pw_index21
-        lda #0
-        sta pw_index22
+        sta pw_keys
+        lda player_spell
+        sta pw_spell
         jsr .calculate_pw_checksum
         sta pw_checksum
 
@@ -140,10 +140,12 @@ write_to_gamestate
         sta m_relic_bits_1
         lda pw_relics_2
         sta m_relic_bits_2
-        lda pw_index20
+        lda pw_maps
         sta m_map_bits
-        lda pw_index21
+        lda pw_keys
         sta m_key_bits
+        lda pw_spell
+        sta player_spell
         lda #1
         sta pw_success
         rts
@@ -172,9 +174,9 @@ calculate_pw_checksum
         adc pw_charms_2
         adc pw_relics_1
         adc pw_relics_2
-        adc pw_index20
-        adc pw_index21
-        adc pw_index22
+        adc pw_maps
+        adc pw_keys
+        adc pw_spell
         and #$1F
         rts
 end

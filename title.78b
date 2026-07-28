@@ -160,7 +160,7 @@ title_demo_4
         player_armor = 5
         player_charm = 5
         player_spell = 4
-        toggled_familiar = 0
+        toggled_familiar = 2
         m_relic_bits_1  = %00010000
         m_relic_bits_2  = %00000001
         demo_num = 0
@@ -184,7 +184,7 @@ title_new_game_normal
         m_armor_bits_2  = %00000000
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
-        m_relic_bits_1  = %00000000
+        m_relic_bits_1  = %00001111
         m_relic_bits_2  = %00000000
         m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000

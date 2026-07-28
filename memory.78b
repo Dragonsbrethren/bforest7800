@@ -159,6 +159,7 @@
         autodim byte demo_timer
         autodim byte burn_tutorial
         autodim byte zone_open 2
+        autodim byte familiar_timer
 
 ;------------------------------------------------------------------------------
 ; MOVING OBJECT ARRAYS
@@ -423,9 +424,9 @@
         dim pw_index18 = pw_relics_1
         autodim byte pw_relics_1
         autodim byte pw_relics_2
-        autodim byte pw_index20
-        autodim byte pw_index21
-        autodim byte pw_index22
+        autodim byte pw_maps
+        autodim byte pw_keys
+        autodim byte pw_spell
         autodim byte pw_checksum
         autodim byte pw_index
         autodim byte pw_buffer 32

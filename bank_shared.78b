@@ -764,7 +764,7 @@ _spawn_coin
 
         ; handles poison and regen
 poison_damage
-        poison_timer = poison_timer + 1
+        poison_timer++
         if poison_timer < POISON_FRAMES then return thisbank
         poison_timer = 0
         hp_change = POISON_DMG
@@ -773,6 +773,32 @@ poison_damage
 
 player_handler
         index = 0
+        asm
+          lda toggled_familiar
+          beq .player_handler_no_familiar
+          lda object_type+13
+          beq .player_handler_no_familiar
+familiar_dec_timer
+          dec familiar_timer
+          beq familiar_mp_drain
+          bpl .player_handler_no_familiar
+          lda #FAMILIAR_FRAMES
+          sta familiar_timer
+          bne .player_handler_no_familiar
+familiar_mp_drain
+          lda #FAMILIAR_MP
+          sta mp_change
+          jsr .decrease_player_mp
+          lda player_mp
+          bne familiar_timer_zero
+          ; despawn familiar when MP = 0
+          lda #0
+          sta object_type+13
+familiar_timer_zero
+          lda #0
+          sta familiar_timer
+end
+player_handler_no_familiar
         if player_state = STATE_DEATH || player_state = STATE_SAVE then goto death_fade
         if !player_invuln then player_flags{0} = 0 : goto player_status_check
         player_invuln--

@@ -97,6 +97,8 @@ map_loaded
         asm
           lda toggled_familiar
           beq no_familiar
+          ldy player_mp
+          beq no_familiar
           clc
           adc #FAMILIAR_OBJ_START
           sta object_type+13
