@@ -872,6 +872,7 @@ check_room_exit
 player_save_input
         old_tileset = tileset
         player_state = STATE_SAVE
+        player_frame = FRAME_CHANT
         fade_count = 30
         goto death_fade
 
