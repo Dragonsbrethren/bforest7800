@@ -552,6 +552,7 @@
         const MENU_ICON_ARMOR   = 6
         const MENU_ICON_PENDANT = 7
         const MENU_ICON_ROSARY  = 8
+        const MENU_ICON_SPECS   = 9
 
         ; equip menu palette offsets
         const pal_shields1 = pal_swords1 + 11
