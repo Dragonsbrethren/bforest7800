@@ -369,7 +369,7 @@
         autodim byte m_armor_inv  11
         autodim byte m_charm_inv  11
         autodim byte m_relic_inv  11
-        autodim byte m_spell_inv  11
+        autodim byte m_spell_inv  12
         autodim byte toggled_familiar
         autodim byte m_relic_toggle_2
         autodim byte m_inv_item_0
