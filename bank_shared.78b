@@ -625,6 +625,7 @@ oh_decel  jsr .decelerate_object
 .object_ai_loaded
           jsr .move_object
 .object_done
+          ldx index     ; reload index
           dex
           bne oh_loop
           rts
@@ -644,8 +645,8 @@ boss_flame_anim
 end
 
 torch_tile_block
-        ; flags are used to track if the tile has already been blocked
-        ; however, this fails when the map reloads after the menu is opened
+          ; flags are used to track if the tile has already been blocked
+          ; however, this fails when the map reloads after the menu is opened
         if torch_reblock then goto torch_tile_block_get_pos
         if object_type[index] = TYPE_TORCH then torch_animation
 torch_flag_check
