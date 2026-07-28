@@ -271,8 +271,11 @@ test_obscure_hills
 walkable_water_hills
         ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
         if tile_properties_1{2} then tile_properties_1{0} = 1
+        ; test if tile is a waterfall, which is never made walkable
+        if tile_properties_2{7} then walkable_water_hills_done
         if tile_properties_2{2} then tile_properties_2{0} = 1
-        
+walkable_water_hills_done
+
         ; objects can call this part of the subroutine to test if they are in water
 test_water_hills
         ; water is tested differently than other properties, it tests the tile directly under the object

@@ -535,7 +535,10 @@ test_walkable_river
 walkable_water_river
         ; non-shoreline water is always walkable, this tests unwalkable tiles flagged as water
         if tile_properties_1{2} then tile_properties_1{0} = 1
+        ; test if tile 2 is a waterfall, which is never made walkable
+        if tile_properties_2{7} then walkable_water_river_done
         if tile_properties_2{2} then tile_properties_2{0} = 1
+walkable_water_river_done
         
         ; objects can call this part of the subroutine to test if they are in water
 test_water_river
@@ -580,7 +583,7 @@ end
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %10000000, %00000110, %00000110, %00000110, %00000110, %00000001, %00000001, %00000000,
+        %10000100, %00000110, %00000110, %00000110, %00000110, %00000001, %00000001, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
 end
 
