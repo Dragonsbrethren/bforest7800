@@ -718,6 +718,9 @@ cast_fireball
         lda #14
         sta spawn_index
         jsr .cast_magic
+end
+        playsfx sfx_flameon
+        asm
         jmp .chant_done
 
 set_cast_direction

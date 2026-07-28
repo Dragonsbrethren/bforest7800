@@ -1151,6 +1151,10 @@ firebat_prep_ball
           lda #DIR_DOWN
           sta object_Ydir,y
           sta object_facing,y
+end
+        playsfx sfx_flameon
+        asm
+          ldx index
           rts
 end
 
@@ -1158,7 +1162,7 @@ forest_boss_ai
         asm
           lda m_spell_bits_1
           and #%00000001
-          bne forest_boss_beat
+          bne forest_boss_dead
           lda object_flags,x
           cmp #%10000000
           beq forest_boss_check
@@ -1186,19 +1190,20 @@ forest_boss_ai
 forest_boss_return
           rts
 
-forest_boss_beat
-          lda #0
-          sta object_type+1
-          rts
-
 forest_boss_check
           lda object_type+1
           bne forest_boss_return
           lda #TYPE_SPELL1
           sta object_type+1
+end
+        playsfx sfx_crystalchimes
+        asm
+          ldx index
+          rts
 
 forest_boss_dead
           lda #0
+          sta object_type+1
           sta object_type+5
           sta object_type+6
 end
@@ -1383,5 +1388,20 @@ forest_waterfall
         $0a,$04,$06
         $06,$04,$05
         $1e,$06,$01
+        $00,$00,$00
+end
+
+        data sfx_batfire
+        $10,$10,$00 ; version, priority, frames per chunk
+        $03,$06,$05 ; first chunk of freq,channel,volume
+        $0f,$06,$0f
+        $0f,$06,$0f
+        $07,$06,$0b
+        $07,$06,$0f
+        $0f,$06,$0f
+        $07,$06,$0e
+        $0f,$06,$0f
+        $0f,$06,$0a
+        $0f,$06,$08
         $00,$00,$00
 end
