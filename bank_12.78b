@@ -292,6 +292,7 @@ end
 
         data caves_room_4_obj
         TYPE_ROSE, (16*8), $30, TYPE_ROSE, (8*8), $60
+        TYPE_GHOSTCARD, 3*8, $80
         $00
 end
 

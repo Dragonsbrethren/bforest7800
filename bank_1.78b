@@ -302,6 +302,7 @@ end
 
 plot_player_shield
         if player_state = STATE_DEATH || player_state = STATE_CHANT then return thisbank
+        if player_frame = FRAME_CHANT then return thisbank
 
         if player_shield then plotsprite shield0 shield_pal shield_Xpos shield_Ypos shield_frame
         return thisbank
@@ -1368,7 +1369,7 @@ end
 end
 
         data f_spell_pals
-        0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 2, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
         data f_item_pals

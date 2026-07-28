@@ -390,7 +390,7 @@ end
         TYPE_RSLIME, 128, $50, TYPE_RSLIME, 56, $70
         TYPE_RSLIME, 32, $40
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80
-        TYPE_CHARM1, $7C, $30, TYPE_DOOR, $48, $10
+        TYPE_MAP2, $7C, $30, TYPE_DOOR, $48, $10
         $00
 end
         data castle_room_7_obj
@@ -428,7 +428,7 @@ end
         TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $40
         TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
-        TYPE_DOOR, $48, $10, TYPE_MAP2, $80, $A0
+        TYPE_DOOR, $48, $10
         $00
 end
 
@@ -442,7 +442,7 @@ end
         data castle_room_13_obj
         TYPE_PRIEST, 36, $40, TYPE_PRIEST, 116, $40
         TYPE_PRIEST, 76, $20
-        TYPE_SPELL1, 76, $30
+        TYPE_SPELL3, 76, $30
         TYPE_TORCH, $10, $20,
         TYPE_TORCH, $88, $20,
         TYPE_TORCH, $38, $40,
