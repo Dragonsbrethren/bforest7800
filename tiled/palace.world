@@ -6,6 +6,27 @@
             "width": 160,
             "x": 0,
             "y": 0
+        },
+        {
+            "fileName": "palace_room_1.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 0,
+            "y": -192
+        },
+        {
+            "fileName": "palace_room_2.tmx",
+            "height": 192,
+            "width": 160,
+            "x": -160,
+            "y": -192
+        },
+        {
+            "fileName": "palace_room_3.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 0,
+            "y": -384
         }
     ],
     "onlyShowAdjacentMaps": false,

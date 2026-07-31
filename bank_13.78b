@@ -231,4 +231,19 @@ plot_caves_room_20
         exit_Ypos = $20
         exit_room_index = F_CASTLE_CAVE_I
         return otherbank
+
+plot_caves_room_21
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        memcpy map12 caves_room_21 240
+        plotmapfile tiled/caves_room_21.tmx caves_room_21 0 1 20 12
+        return otherbank
+        
+
+plot_caves_room_22
+        menu_map_room[menu_map_index] = ROOML_L
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 caves_room_20 240
+        plotmapfile tiled/caves_room_22.tmx caves_room_22 0 1 20 12
+        return otherbank
         

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="8" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="palace_walls" tilewidth="8" tileheight="16" tilecount="20" columns="20">
+  <image source="../gfx/tiles/palace_walls.png" width="160" height="16"/>
+ </tileset>
+ <tileset firstgid="21" name="palace_tile" tilewidth="8" tileheight="16" tilecount="15" columns="15">
+  <image source="../gfx/tiles/palace_tile.png" width="120" height="16"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="20" height="12">
+  <data encoding="csv">
+9,9,9,9,9,9,9,4,2,12,13,2,1,2,1,2,1,2,5,9,
+9,9,9,9,9,9,9,4,22,23,23,23,23,23,23,23,23,23,5,9,
+9,9,9,9,9,9,9,4,25,21,21,21,21,21,21,21,21,21,5,9,
+9,9,9,9,9,9,9,10,7,7,7,7,7,8,25,21,21,21,5,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,4,25,21,21,21,5,9,
+1,2,1,1,2,1,5,9,9,9,9,9,9,4,25,21,21,21,1,1,
+23,23,23,23,23,23,5,9,9,9,9,9,9,4,25,21,21,21,23,23,
+21,21,21,21,21,21,5,9,9,9,9,9,9,4,25,21,21,21,21,21,
+7,7,8,25,21,21,1,2,1,1,1,2,5,10,7,7,7,7,7,7,
+9,9,4,25,21,21,23,23,23,23,23,23,5,9,9,9,9,9,9,9,
+9,9,4,25,21,21,21,21,21,21,21,21,5,9,9,9,9,9,9,9,
+9,9,10,7,7,7,7,7,8,25,21,6,11,9,9,9,9,9,9,9
+</data>
+ </layer>
+</map>

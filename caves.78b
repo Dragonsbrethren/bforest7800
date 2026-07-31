@@ -44,6 +44,8 @@
         incmapfile tiled/caves_room_18.tmx
         incmapfile tiled/caves_room_19.tmx
         incmapfile tiled/caves_room_20.tmx
+        incmapfile tiled/caves_room_21.tmx
+        incmapfile tiled/caves_room_22.tmx
 
         const plot_caves_room_0_lo = #<.plot_caves_room_0
         const plot_caves_room_0_hi = #>.plot_caves_room_0
