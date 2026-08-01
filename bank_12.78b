@@ -19,14 +19,14 @@ end
         caves_room_0_obj_lo, caves_room_1_obj_lo, caves_room_2_obj_lo, caves_room_3_obj_lo, caves_room_4_obj_lo, caves_room_5_obj_lo
         caves_room_6_obj_lo, caves_room_7_obj_lo, caves_room_8_obj_lo, caves_room_9_obj_lo, caves_room_10_obj_lo, caves_room_11_obj_lo
         caves_room_12_obj_lo, caves_room_13_obj_lo, caves_room_14_obj_lo, caves_room_15_obj_lo, caves_room_16_obj_lo, caves_room_17_obj_lo
-        caves_room_18_obj_lo, caves_room_19_obj_lo, caves_room_20_obj_lo
+        caves_room_18_obj_lo, caves_room_19_obj_lo, caves_room_20_obj_lo, caves_room_21_obj_lo, caves_room_22_obj_lo
 end
 
         data caves_obj_hi
         caves_room_0_obj_hi, caves_room_1_obj_hi, caves_room_2_obj_hi, caves_room_3_obj_hi, caves_room_4_obj_hi, caves_room_5_obj_hi
         caves_room_6_obj_hi, caves_room_7_obj_hi, caves_room_8_obj_hi, caves_room_9_obj_hi, caves_room_10_obj_hi, caves_room_11_obj_hi
         caves_room_12_obj_hi, caves_room_13_obj_hi, caves_room_14_obj_hi, caves_room_15_obj_hi, caves_room_16_obj_hi, caves_room_17_obj_hi
-        caves_room_18_obj_hi, caves_room_19_obj_hi, caves_room_20_obj_hi
+        caves_room_18_obj_hi, caves_room_19_obj_hi, caves_room_20_obj_hi, caves_room_21_obj_hi, caves_room_22_obj_hi
 end
 
 caves_waterfall
@@ -392,6 +392,15 @@ end
         data caves_room_20_obj
         TYPE_ROSE, (12*8), $80
         TYPE_TORCH, 18, $30, TYPE_TORCH, 46, $30
+        $00
+end
+
+        data caves_room_21_obj
+        TYPE_DRAGON, 16*8, $60
+        $00
+end
+
+        data caves_room_22_obj
         $00
 end
 
