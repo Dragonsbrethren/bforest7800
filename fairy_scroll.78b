@@ -9,6 +9,7 @@
         name_pudding_lo, name_pudding_lo, name_cghost_lo, name_cardinal_lo, name_cardinal_lo
         <name_octokraken, <name_octokraken, <name_octokraken, <name_blank
         <name_rose, <name_bush, <name_firebat, <name_blank, <name_fghost
+        <name_dragon
 end
 
         data enemy_names_hi
@@ -22,6 +23,7 @@ end
         name_pudding_hi, name_pudding_hi, name_cghost_hi, name_cardinal_hi, name_cardinal_hi
         >name_octokraken, >name_octokraken, >name_octokraken, >name_blank
         >name_rose, >name_bush, >name_firebat, >name_blank, >name_fghost
+        >name_dragon
 end
 
         alphachars '*0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz `'
@@ -181,4 +183,8 @@ end
 
         alphadata name_fghost font_spr
         'Wisp*'
+end
+
+        alphadata name_dragon font_spr
+        'Fell Dragon*'
 end

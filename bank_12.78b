@@ -269,6 +269,7 @@ torch_tile_unblock_caves
 end
 
         data caves_room_0_obj
+        TYPE_DRAGON, 7*8, $60
         TYPE_TORCH, (11*8), $80
         $00
 end
@@ -1040,7 +1041,31 @@ obj_cghost_stats
         object_speed_hi[obj_index] = CGHOST_SPEED_HI
         object_speed_lo[obj_index] = CGHOST_SPEED_LO
         object_flags[obj_index] = 0
-        goto caves_160a_sprite  
+        goto caves_160a_sprite
+
+dragon_ai
+        asm
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          beq dragon_return
+          lda #1
+          sta object_frame,x
+dragon_return
+          rts
+end
+
+obj_dragon_stats
+        asm
+          ldx obj_index
+          lda #200
+          sta object_hp,x
+          lda #<.plot_dragon
+          sta object_spr_ptr_lo,x
+          lda #>.plot_dragon
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
 
 caves_160a_sprite
         asm
@@ -1058,4 +1083,12 @@ plot_caves_160a
 
 plot_caves_160b
         plotsprite rose4 sprite_pal Xposition Yposition frame
+        goto plot_next
+
+plot_dragon
+        Xdestination  = Xposition + 6
+        shadow_offset = Yposition + 16
+        plotsprite dragon_eye  2 Xdestination Yposition 0
+        plotsprite dragon_top0 5 Xposition Yposition frame
+        plotsprite dragon_bot0 5 Xposition shadow_offset frame
         goto plot_next

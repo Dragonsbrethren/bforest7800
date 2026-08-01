@@ -563,7 +563,7 @@ remove_duplicates_next
         <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
         <.obj_octokraken_stats, <.obj_boss_stats, <.obj_tentacle_stats
         <.obj_boss_stats, <.obj_hrose_stats, <.obj_burnbush_stats, <.obj_firebat_stats, <.obj_forest_boss_stats
-        <.obj_fghost_stats
+        <.obj_fghost_stats, <.obj_dragon_stats
 end
 
         data object_stats_hi
@@ -576,7 +576,7 @@ end
         >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
         >.obj_octokraken_stats, >.obj_boss_stats, >.obj_tentacle_stats
         >.obj_boss_stats, >.obj_hrose_stats, >.obj_burnbush_stats, >.obj_firebat_stats, >.obj_forest_boss_stats
-        >.obj_fghost_stats
+        >.obj_fghost_stats, >.obj_dragon_stats
 end
 
 check_map_bits
@@ -1754,6 +1754,18 @@ end
         16, 16, 3, 3
 end
 
+        data player_facing_frames
+        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
+end
+
+increase_hp
+        temp_hp = temp_hp + hp_change
+        return thisbank
+
+decrease_hp
+        temp_hp = temp_hp - hp_change
+        return thisbank
+
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
@@ -2136,14 +2148,6 @@ test_open_zone_one
         beq test_open_zone_loop
 end
 
-increase_hp
-        temp_hp = temp_hp + hp_change
-        return thisbank
-
-decrease_hp
-        temp_hp = temp_hp - hp_change
-        return thisbank
-
         data spell_type
         TYPE_FIREBALL, TYPE_ICEFLAKE, TYPE_WINDSLASH, TYPE_LIGHTNING
 end
@@ -2196,6 +2200,3 @@ end
         FIREBALL_PAL, ICEFLAKES_PAL, WINDSLASH_PAL
 end
 
-        data player_facing_frames
-        0, FRAME_UP, FRAME_DOWN, FRAME_LEFT, FRAME_RIGHT, FRAME_DEATH, FRAME_CHANT
-end
