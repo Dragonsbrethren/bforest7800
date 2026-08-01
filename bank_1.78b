@@ -102,6 +102,8 @@ map_loaded
           clc
           adc #FAMILIAR_OBJ_START
           sta object_type+13
+          lda player_elevation
+          sta object_elevation+13
 no_familiar
           lda #1
           sta pal_update
