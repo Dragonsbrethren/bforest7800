@@ -27,6 +27,13 @@
             "width": 160,
             "x": 0,
             "y": -384
+        },
+        {
+            "fileName": "palace_room_4.tmx",
+            "height": 192,
+            "width": 160,
+            "x": -160,
+            "y": -384
         }
     ],
     "onlyShowAdjacentMaps": false,
