@@ -1416,7 +1416,7 @@ plot_castle_160a
         goto plot_next
 
 plot_skelsword
-        plotsprite sword0 0 Xposition Yposition frame
+        gosub plot_shared_160a
         goto plot_next
 
 cast_darkbolt

@@ -703,10 +703,10 @@
         const FAIRY_DEF = 255
         const FAIRY_MDEF = 255
 
-        const F_FAIRY_WING1 = 0
-        const F_FAIRY_WING2 = 1
-        const F_FAIRY_ITEM1 = 2
-        const F_FAIRY_ITEM2 = 3
+        const F_FAIRY_WING1 = 28
+        const F_FAIRY_WING2 = 29
+        const F_FAIRY_ITEM1 = 30
+        const F_FAIRY_ITEM2 = 31
 
         const FAIRY_CHASE_X = 40
         const FAIRY_CHASE_Y = 54
@@ -716,6 +716,10 @@
         const CAT_SPEED_HI = 2
         const CAT_SPEED_LO = 0
         const CAT_FRICTION = 1
+        const F_CAT_LEFT_1 = 4
+        const F_CAT_LEFT_2 = 5
+        const F_CAT_RIGHT_1 = 6
+        const F_CAT_RIGHT_2 = 7
 
 
         const SPIRIT_VEL_CAP_HI = 2

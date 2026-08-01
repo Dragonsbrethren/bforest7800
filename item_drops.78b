@@ -41,6 +41,7 @@
         0               ; crystal ball
         TYPE_ETHER      ; forest ghost
         0               ; dragon
+        0               ; caves boss
 end
 
         data common_drops
@@ -86,4 +87,5 @@ end
         0               ; crystal ball
         TYPE_UNCURSE    ; forest ghost
         0               ; dragon
+        0               ; caves boss
 end
