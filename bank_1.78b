@@ -1736,6 +1736,7 @@ end
         FIREBAT_ELEM_WEAK
         0
         FGHOST_ELEM_WEAK
+        DRAGON_ELEM_WEAK
 end
 
         data spirit_ptr_lo

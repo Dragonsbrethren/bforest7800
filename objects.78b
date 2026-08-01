@@ -882,3 +882,4 @@
         const HROSE_ELEM_WEAK    = %00000010
         const FIREBAT_ELEM_WEAK  = %01000010
         const FGHOST_ELEM_WEAK   = %01000000
+        const DRAGON_ELEM_WEAK   = %01000000
