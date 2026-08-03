@@ -1054,6 +1054,11 @@ obj_cghost_stats
 
 dragon_ai
         asm
+          lda object_parent,x
+          tay
+          lda object_type,y
+          beq dragon_fire
+dragon_anim
           lda #0
           sta object_frame,x
           lda animation_frame
@@ -1062,6 +1067,61 @@ dragon_ai
           sta object_frame,x
 dragon_return
           rts
+
+dragon_throw
+          lda #4
+          sta player_Xvel_hi
+          lda #0
+          sta player_Xvel_lo
+          sta player_Yvel_hi
+          sta player_Yvel_lo
+          sta player_friction_hi
+          sta player_friction_lo
+          lda #DIR_LEFT
+          sta player_Xdir
+          lda #DIR_RIGHT
+          sta player_facing
+          lda #STATE_KNOCKBACK
+          sta player_state
+          rts
+
+dragon_fire
+        jsr .find_new_object
+        ldy spawn_index
+        beq dragon_return
+        tya
+        sta object_parent,x
+        lda #TYPE_DRAGON_PSN
+        sta object_type,y
+        sta object_hp,y
+        lda object_Xpos,x
+        sta object_Xpos,y
+        lda object_Ypos,x
+        sta object_Ypos,y
+        lda #F_DRAGON_PSN
+        sta object_frame,y
+        lda #<.plot_caves_160a
+        sta object_spr_ptr_lo,y
+        lda #>.plot_caves_160a
+        sta object_spr_ptr_hi,y
+        lda #DRAGON_PSN_SPEED_HI
+        sta object_speed_hi,y
+        sta object_vel_cap_hi,y
+        lda #0
+        sta object_speed_lo,y
+        sta object_vel_cap_lo,y
+        sta object_friction_hi,y
+        sta object_friction_lo,y
+        lda #DRAGON_PSN_DAMAGE
+        sta object_damage,y
+        lda #DRAGON_PSN_PAL
+        sta object_pal,y
+        lda #DIR_LEFT
+        sta object_Xdir,y
+        sta object_facing,y
+        lda #DRAGON_PSN_FLAGS
+        sta object_flags,y
+        rts
 end
 
 obj_dragon_stats

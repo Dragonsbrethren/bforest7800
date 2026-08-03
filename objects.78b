@@ -52,6 +52,7 @@
         const TYPE_HSEED    = 143
         const TYPE_DARKBOLT = 144
         const TYPE_BATFIREBALL = 145
+        const TYPE_DRAGON_PSN = 146
         const TYPE_WINDSLASH = 149
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
@@ -687,6 +688,12 @@
         const CGHOST_PAL_A = 0
         const CGHOST_PAL_B = 3
         const CGHOST_ANIM_TIME = 4
+
+        const DRAGON_PSN_SPEED_HI = 4
+        const DRAGON_PSN_DAMAGE = 20
+        const DRAGON_PSN_PAL = 5
+        const DRAGON_PSN_FLAGS = %00010000
+        const F_DRAGON_PSN = 18
 
 
         ; FAMILIARS
