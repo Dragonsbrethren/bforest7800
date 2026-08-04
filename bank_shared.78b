@@ -1846,9 +1846,14 @@ spawner_done
           jmp .cc_next
 end
 
+dragon_sword_check
+        ; this hitbox is super generous for now
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 40, 32) then return thisbank
+        goto sword_poof
+
 big_sword_check
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 36, 16) then return thisbank
-        goto sword_sound
+        goto sword_poof
 
 sword_collision
         temp1 = object_flags[index]
@@ -1857,7 +1862,19 @@ test_sword_box
         if temp1{2} then sword_bypass_elevation
         if object_elevation <> object_elevation[index] then return thisbank
 sword_bypass_elevation
-        if object_type[index] = TYPE_OCTOKRAKEN then big_sword_check
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_OCTOKRAKEN
+          bne sword_test_dragon
+          jmp .big_sword_check
+sword_test_dragon
+          cmp #TYPE_DRAGON
+          bne sword_normal_check
+          ; dragon's body gets its own check, normal check used for head
+          jsr .dragon_sword_check
+sword_normal_check
+end
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
 sword_sound
         ; no sound on flames
@@ -2125,7 +2142,7 @@ dragon_box
         temp1 = player_Xpos + 2
         temp2 = player_Ypos + 1
         temp3 = Xposition + 10
-        temp4 = Yposition - 7
+        temp4 = Yposition + 7
         if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 40, 25) then return thisbank
         goto pc_damage
 
