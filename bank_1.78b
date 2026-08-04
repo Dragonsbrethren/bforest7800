@@ -1133,11 +1133,11 @@ cat_face
           ldy object_parent,x
           lda object_Xpos,x
           cmp player_Xpos,y
-          bcc cat_face_left
+          bcs cat_face_left
 cat_face_right
           lda #F_CAT_RIGHT_1
           sta object_frame,x
-          beq cat_animate
+          bne cat_animate
 cat_face_left
           lda #F_CAT_LEFT_1
           sta object_frame,x
