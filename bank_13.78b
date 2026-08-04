@@ -245,5 +245,6 @@ plot_caves_room_22
         menu_map_room[menu_map_index_2] = ROOMR_N
         memcpy map12 caves_room_22 240
         plotmapfile tiled/caves_room_22.tmx caves_room_22 0 1 20 12
+        demo_end = 1
         return otherbank
         

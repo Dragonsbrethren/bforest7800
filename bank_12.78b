@@ -269,7 +269,6 @@ torch_tile_unblock_caves
 end
 
         data caves_room_0_obj
-        TYPE_DRAGON, 7*8, $60
         TYPE_TORCH, (11*8), $80
         $00
 end
@@ -414,7 +413,6 @@ plot_caves_room_0
         exit_Xpos = 72
         exit_Ypos = $30
         exit_room_index = F_HILLS_CAVE1_I
-        if room_index >= 7 then demo_end = 1
         return thisbank
 
 ;==============================================================================
