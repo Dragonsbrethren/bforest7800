@@ -2042,8 +2042,12 @@ test_kraken
           jmp .big_box
 test_tentacle
           cmp #TYPE_TENTACLE
-          bne normal_box
+          bne test_dragon
           jmp .tall_box
+test_dragon
+          cmp #TYPE_DRAGON
+          bne normal_box
+          jsr .dragon_box
 normal_box
 end
         temp1 = player_Xpos + 2
@@ -2116,6 +2120,14 @@ set_status_temp
           jsr .set_status
           jmp .pc_damage
 end
+
+dragon_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition + 10
+        temp4 = Yposition - 7
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 40, 25) then return thisbank
+        goto pc_damage
 
 big_box
         temp1 = player_Xpos + 2
