@@ -2082,6 +2082,10 @@ player_knockback_status
           beq set_poison_status
           cmp #TYPE_SPIDER
           beq set_poison_status
+          cmp #TYPE_PSNCLOUD
+          beq set_poison_status
+          cmp #TYPE_DRAGON_PSN
+          beq set_poison_status
           cmp #TYPE_GHOST
           beq set_curse_status
           cmp #TYPE_RGHOST

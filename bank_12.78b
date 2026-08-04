@@ -1121,6 +1121,8 @@ dragon_fire
         sta object_facing,y
         lda #DRAGON_PSN_FLAGS
         sta object_flags,y
+        lda #1
+        sta object_elevation,x
         rts
 end
 
@@ -1155,6 +1157,8 @@ obj_dragon_stats
           sta object_spr_ptr_lo,x
           lda #>.plot_dragon
           sta object_spr_ptr_hi,x
+          lda #1
+          sta object_elevation,x
 end
         goto obj_next_stats
 
@@ -1192,6 +1196,8 @@ psncloud_init
 ;          sta object_spr_ptr_lo,x
 ;          lda #>.plot_bank1_160a
 ;          sta object_spr_ptr_hi,x
+          lda #1
+          sta object_elevation,x
           rts
 end
 
