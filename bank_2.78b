@@ -155,6 +155,10 @@ forest_inn_exit
         player_facing = DIR_DOWN
         goto forest_set_room
 
+
+        incrmtfile castle.rmta
+        dmahole 0
+
 forest_witch
         room_index = F_FOREST_WITCH_I
         player_Xpos = F_FOREST_WITCH_X
@@ -176,7 +180,7 @@ set_burnbush_name
           jmp .cc_next
 end
 
-        dmahole 0
+
 forest_witch_exit
         room_index    = F_FOREST_WITCH_EXIT_I
         player_Xpos   = F_FOREST_WITCH_EXIT_X
@@ -195,6 +199,7 @@ forest_set_room
         characterset forest_trees
         if music_playing then forest_init
         music_playing = 1
+;       playrmt castle
 forest_init
         asm
           ldx #0
@@ -353,7 +358,7 @@ end
 end
 
         data forest_room_9_obj
-        TYPE_DOOR, 9*8, $80
+        TYPE_DOOR, 73, $80
         TYPE_TORCH, 8*8, $90
         $00
 end
@@ -382,7 +387,7 @@ end
         data forest_room_13_obj
         TYPE_TORCH, 5*8, $60
         TYPE_TORCH, 13*8, $80, TYPE_TORCH, 16*8, $80
-        TYPE_DOOR, 14*8, $70
+        TYPE_DOOR, 113, $70
         $00
 end
 
@@ -394,12 +399,12 @@ end
         data forest_room_15_obj
         TYPE_TORCH, 4*8, $60
         TYPE_TORCH, 7*8, $30, TYPE_TORCH, 11*8, $30
-        TYPE_DOOR, 2*8, $50
+        TYPE_DOOR, 17, $50
         $00
 end
 
         data forest_room_16_obj
-        TYPE_DOOR_LOCK, 9*8, $80
+        TYPE_DOOR_LOCK, 73, $80
         TYPE_BURNBUSH, 3*8, $60
         TYPE_TORCH, 7*8, $90
         $00
@@ -412,7 +417,7 @@ end
 
         data forest_room_18_obj
         TYPE_TORCH, 10*8, $70
-        TYPE_DOOR_LOCK, 8*8, $60
+        TYPE_DOOR_LOCK, 65, $60
         $00
 end
 
@@ -454,7 +459,7 @@ end
         data forest_room_25_obj
         TYPE_RAVEN, 5*8, $90, TYPE_RAVEN, 15*8, $70
         TYPE_TORCH, 8*8, $40, TYPE_TORCH, 11*8, $40
-        TYPE_DOOR, 9*8, $30
+        TYPE_DOOR, 73, $30
         $00
 end
 

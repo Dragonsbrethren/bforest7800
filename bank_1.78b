@@ -202,7 +202,7 @@ plot_player_dir_check
 plot_johanna
         Xposition = player_Xpos : Yposition = player_Ypos
         if player_flags{1} then frame = 1 else frame = 0
-        if stone_duration then plotsprite jostone0 5 player_Xpos player_Ypos frame : goto plot_joshield
+        if stone_duration then frame = frame + JO_STONE_FRAME : sprite_pal = 5 : gosub plot_bank1_160a : goto plot_joshield
         if player_flags{1} then frame = player_frame + SWIM_OFFSET else frame = player_frame
         gosub plot_shared_160b
 plot_joshield
@@ -272,6 +272,10 @@ plot_shared_160a
 
 plot_shared_160a_4
         plotsprite shield0 sprite_pal Xposition Yposition frame
+        return thisbank
+
+plot_bank1_160a
+        plotsprite door0 sprite_pal Xposition Yposition frame
         return thisbank
 
 update_hud
@@ -1082,7 +1086,7 @@ plot_fairy
         goto plot_next
 
 plot_owl
-        plotsprite owl0 1 Xposition Yposition frame
+        gosub plot_bank1_160a
         goto plot_next
 
 plot_cat
@@ -1205,7 +1209,7 @@ owl_ai
           and #%10000000
           beq owl_find_target
 owl_move
-          lda #0
+          lda #OWL_FRAME
           sta object_frame,x
           lda animation_frame
           beq owl_testX
@@ -1237,6 +1241,10 @@ owl_init
           sta object_flags,x
           lda #OWL_DAMAGE
           sta object_damage,x
+          lda #OWL_PAL
+          sta object_pal,x
+          lda #OWL_FRAME
+          sta object_frame,x
           lda #<.plot_owl
           sta object_spr_ptr_lo,x
           lda #>.plot_owl

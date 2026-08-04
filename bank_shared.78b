@@ -250,7 +250,8 @@ end
         goto plot_player
 
 plot_door
-        plotsprite door0 1 Xposition Yposition frame
+        sprite_pal = 1
+        gosub plot_bank1_160a
         goto plot_next
 
 plot_torch
@@ -556,13 +557,13 @@ end
 end
 
         data projectile_ai_lo
-        skelsword_ai_lo, <.tentshadow_ai, <.campfire_ai, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_lo, <.tentshadow_ai, <.campfire_ai, <.dragon_psn_ai, <.psncloud_ai, <.fireball_ai, <.lightning_ai, 0, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, <.seed_ai, <.hseed_ai, <.lightning_ai, <.fireball_ai, <.dragon_psn_ai, 0, 0, <.windslash_ai,
         fireball_ai_lo, <.iceflake_ai, <.lightning_ai, fairy_ai_lo, <.cat_ai, <.spirit_ai, <.owl_ai, 0
 end
 
         data projectile_ai_hi
-        skelsword_ai_hi, >.tentshadow_ai, >.campfire_ai, 0, 0, 0, 0, 0, 0, 0, 0,
+        skelsword_ai_hi, >.tentshadow_ai, >.campfire_ai, >.dragon_psn_ai, >.psncloud_ai, >.fireball_ai, >.lightning_ai, 0, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, >.seed_ai, >.hseed_ai, >.lightning_ai, >.fireball_ai, >.dragon_psn_ai, 0, 0, >.windslash_ai,
         fireball_ai_hi, >.iceflake_ai, >.lightning_ai, fairy_ai_hi, >.cat_ai, >.spirit_ai, >.owl_ai, 0
 end
@@ -1711,7 +1712,7 @@ cc_loop
           bcc cc_fireball
           jmp .cc_door
 cc_fireball
-          cmp #TYPE_WINDSLASH
+          cmp #TYPE_PLAYERSPELL
           bcc cc_player_state
           jsr .magic_collision
           jmp .cc_next
@@ -2387,7 +2388,6 @@ fireball_animate
 fireball_poof
 .seed_ai                        ; stone rose seeds share this code
 .hseed_ai
-.dragon_psn_ai
           lda #0
 proj_move_check
           sta temp1             ; object to replace projectile with

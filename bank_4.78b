@@ -459,7 +459,7 @@ end
         TYPE_SKELETON, $20, $A0, TYPE_SKELETON, $28, $B0
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
-        TYPE_DOOR, $48, $10, TYPE_SHIELD1, $20, $70
+        TYPE_DOOR, $49, $10, TYPE_SHIELD1, $20, $70
         $00
 end
 
@@ -471,7 +471,7 @@ end
         TYPE_GHOST, $6C, $28
         TYPE_PRIEST, 48, $60, TYPE_PRIEST, 96,$70
         TYPE_TORCH, $18, $60, TYPE_TORCH, $80, $60
-        TYPE_DOOR, $28, $50, TYPE_DOOR, $68, $50
+        TYPE_DOOR, $29, $50, TYPE_DOOR, $69, $50
         TYPE_BESTIARY, $2C, $20, 
         $00
 end
@@ -488,7 +488,7 @@ end
         TYPE_SKELETON, $30, $80, TYPE_SKELETON, $68, $90
         TYPE_SKELETON, $40, $70, TYPE_SKELETON, $58, $70
         TYPE_BLOOD, $50, $20, TYPE_ARMOR2, $28, $80
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         $00
 end
 
@@ -508,14 +508,14 @@ end
         TYPE_TORCH, $18, $20, TYPE_TORCH, $80, $20
         TYPE_TORCH, $18, $90, TYPE_TORCH, $80, $90
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $70, $B0
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         $00
 end
 
         data castle_room_23_obj
         TYPE_TORCH, $38, $90, TYPE_TORCH, $60, $90,
         TYPE_BLOOD, $58, $20, TYPE_BLOOD, $60, $A0
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         $00
 end
 

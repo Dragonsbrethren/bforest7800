@@ -46,13 +46,15 @@
         const TYPE_PROJECTILE = TYPE_SKELSWORD
         const TYPE_TENTSHADOW   = 130
         const TYPE_CAMPFIRE     = 131
+        const TYPE_DRAGON_PSN = 132
+        const TYPE_PSNCLOUD   = 133
+        const TYPE_BATFIREBALL = 134
+        const TYPE_DARKBOLT = 135
         const TYPE_DARKSPARK = 140
         const TYPE_OCTOINK  = 141
         const TYPE_SEED     = 142
         const TYPE_HSEED    = 143
-        const TYPE_DARKBOLT = 144
-        const TYPE_BATFIREBALL = 145
-        const TYPE_DRAGON_PSN = 146
+        const TYPE_PLAYERSPELL = TYPE_WINDSLASH
         const TYPE_WINDSLASH = 149
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
@@ -689,11 +691,26 @@
         const CGHOST_PAL_B = 3
         const CGHOST_ANIM_TIME = 4
 
-        const DRAGON_PSN_SPEED_HI = 4
+        const DRAGON_HP = 200
+        const DRAGON_DAMAGE = 20
+        const DRAGON_SPEED_HI = 1
+        const DRAGON_SPEED_LO = 0
+        const DRAGON_VEL_CAP_HI = 1
+        const DRAGON_VEL_CAP_LO = 0
+        const DRAGON_FRICTION_HI = 1
+        const DRAGON_FRICTION_LO = 0
+        const DRAGON_DEF = 10
+        const DRAGON_MDEF = 50
+
+        const DRAGON_PSN_SPEED_HI = 3
         const DRAGON_PSN_DAMAGE = 20
         const DRAGON_PSN_PAL = 5
         const DRAGON_PSN_FLAGS = %00010000
         const F_DRAGON_PSN = 18
+
+        const PSNCLOUD_TIME = 120
+        const PSNCLOUD_DAMAGE = 5
+        const F_PSNCLOUD = 19
 
 
         ; FAMILIARS
@@ -744,6 +761,8 @@
         const OWL_DELAY = 240
         const OWL_SPEED = 2
         const OWL_DAMAGE = 6
+        const OWL_PAL = 1
+        const OWL_FRAME = 4
 
         const FIREBALL_SPEED_HI = 4
         const FIREBALL_VEL_CAP_HI = 4

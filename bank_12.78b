@@ -1124,17 +1124,76 @@ dragon_fire
         rts
 end
 
+dragon_psn_ai
+        ; TODO: Timer to automatically replace poison blob with cloud
+        asm
+          lda #TYPE_PSNCLOUD
+          sta temp1
+          jmp proj_move_check
+end
+
 obj_dragon_stats
         asm
           ldx obj_index
-          lda #200
+          lda #DRAGON_HP
           sta object_hp,x
+          lda #DRAGON_DAMAGE
+          sta object_damage,x
+          lda #DRAGON_DEF
+          sta object_def,x
+          lda #DRAGON_MDEF
+          sta object_mdef,x
+          lda #DRAGON_SPEED_HI
+          sta object_speed_hi,x
+          sta object_friction_hi,x
+          sta object_vel_cap_hi,x
+          lda #0
+          sta object_speed_lo,x
+          sta object_friction_lo,x
+          sta object_vel_cap_lo,x
           lda #<.plot_dragon
           sta object_spr_ptr_lo,x
           lda #>.plot_dragon
           sta object_spr_ptr_hi,x
 end
         goto obj_next_stats
+
+psncloud_ai
+        asm
+          dec object_timer,x
+          bmi psncloud_init
+          beq psncloud_done
+          lda #F_PSNCLOUD
+          sta object_frame,x
+          lda animation_frame
+          beq psncloud_return
+          inc object_frame,x
+psncloud_return
+          rts
+psncloud_done
+          lda #0
+          sta object_type,x
+          rts
+
+psncloud_init
+          lda #PSNCLOUD_TIME
+          sta object_timer,x
+          lda #PSNCLOUD_DAMAGE
+          sta object_damage,x
+          sta object_hp,x
+          ; zero speed variables so the cloud doesn't inherit from despawned objects
+          lda #0
+          sta object_speed_hi,x
+          sta object_Xvel_hi,x
+          sta object_Yvel_hi,x
+          lda #F_PSNCLOUD
+          sta object_frame,x
+;          lda #<.plot_bank1_160a
+;          sta object_spr_ptr_lo,x
+;          lda #>.plot_bank1_160a
+;          sta object_spr_ptr_hi,x
+          rts
+end
 
 caves_160a_sprite
         asm
