@@ -364,7 +364,7 @@ open_menu
         ; TODO: Should previously opened submenu be remembered?
         menu = MENU_MAIN
         menu_debounce = 1
-        pause_debounce = 1
+;       pause_debounce = 1
         goto menu_init bank3
 
 test_follow_box
@@ -861,7 +861,7 @@ test_joy_done
         if joy0fire1 && action_button = 0 then goto open_menu
         if joy1fire0 || joy1fire1 then goto open_menu
 test_joy_pause
-        if !pause_debounce && switchpause then goto open_menu
+;       if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
         if player_flags{5} then player_move_done
         index = 0
