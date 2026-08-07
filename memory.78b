@@ -10,6 +10,7 @@
 
         autodim init a z
         autodim byte index
+        autodim byte int_index
         autodim byte game_state
         dim pointer = pointer_lo
         autodim byte pointer_lo

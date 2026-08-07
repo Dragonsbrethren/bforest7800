@@ -134,11 +134,11 @@ main
         if !joy0up then up_debounce = 0
         if !joy0down then down_debounce = 0
         ; menu code prevents these from overflowing
-        if joy0left then left_debounce = left_debounce + 1
-        if joy0right then right_debounce = right_debounce + 1 
-        if joy0up then up_debounce = up_debounce + 1
-        if joy0down then down_debounce = down_debounce + 1
-        if switchselect && !select_debounce then gosub swap_action_button
+        if joy0left then left_debounce++
+        if joy0right then right_debounce++
+        if joy0up then up_debounce++
+        if joy0down then down_debounce++
+        if switchselect && !select_debounce then gosub clear_menu_debounce
 main_animation_timer
         animation_timer++
         if animation_timer > ANIM_TIME then animation_timer = 0
@@ -1332,14 +1332,18 @@ check_item_qtys
         if !m_item_qty[10] then m_item_bits_2{4} = 0
         return thisbank
 
+clear_menu_debounce
+        select_debounce = 1
+        menu_debounce = 0
+        return thisbank
 
 swap_action_button
         select_debounce = 1
         ; if the player is actively using the action button, don't swap
         ; (shouldn't happen often since it's a console switch)
         if player_state >= STATE_ATTACK then return thisbank
-        if action_button then action_button = 0 : return thisbank
-        action_button = 1 : return thisbank
+        if action_button then action_button = 0 else action_button = 1
+        return thisbank
 
 topscreenroutine
         setfade fade

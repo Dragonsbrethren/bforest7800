@@ -1495,9 +1495,13 @@ move_left
           lda object_Xpos,x
           sec
           sbc object_Xvel_hi,x
-;         cmp #160
-;         bcc mo_lf_s
-;         lda #0
+          cmp #160
+          bcc mo_lf_s
+          ; the Owl can always move off the left edge
+          ldy object_type,x
+          cpy #TYPE_F_OWL
+          beq mo_lf_s
+          lda #0
 mo_lf_s   sta object_Xpos,x
           rts
 end

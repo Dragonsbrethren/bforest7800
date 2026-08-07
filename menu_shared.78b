@@ -161,21 +161,21 @@ set_menu_top_pal
 menu_colors
         P0C3 = PAL_LTPURP
         P4C3 = PAL_LTRED
-        for index = 0 to 46
+        for int_index = 0 to 46
         WSYNC = 1
         next 
         P0C1 = m_relic_pal1
         P0C3 = m_relic_pal2
         P4C1 = m_relic2_pal1
         P4C3 = m_relic2_pal2
-        for index = 0 to 30
+        for int_index = 0 to 30
         WSYNC = 1
         next 
         P0C1 = m_sword_pal1
         P0C3 = m_sword_pal2
         P4C1 = m_inv0_pal1
         P4C3 = m_inv0_pal2
-        for index = 0 to 30
+        for int_index = 0 to 30
         WSYNC = 1
         next
         ; kludge for relics toggling
@@ -185,7 +185,7 @@ menu_colors
         P0C3 = m_shield_pal2
         P4C1 = m_inv1_pal1
         P4C3 = m_inv1_pal2
-        for index = 0 to 30
+        for int_index = 0 to 30
         WSYNC = 1
         next
         ; palettes used for inv 2 and armor
@@ -193,7 +193,7 @@ menu_colors
         P0C3 = m_armor_pal2
         P4C1 = m_inv2_pal1
         P4C3 = m_inv2_pal2
-        for index = 0 to 30
+        for int_index = 0 to 30
         WSYNC = 1
         next
         ; palettes used for inv 3 and charm
