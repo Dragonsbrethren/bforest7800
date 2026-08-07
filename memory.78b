@@ -16,16 +16,12 @@
         autodim byte pointer_hi
         autodim byte Xposition
         autodim byte Yposition
-        dim jump1 = Xdestination
-        autodim byte Xdestination
-        dim jump2 = Ydestination
-        autodim byte Ydestination
+        dim jump1 = Xoffset
+        autodim byte Xoffset
+        dim jump2 = Yoffset
+        autodim byte Yoffset
         autodim byte Xdirection
         autodim byte Ydirection
-        autodim 8.8  Xvelocity
-        autodim 8.8  Yvelocity
-        autodim 8.8  move_speed
-        autodim 8.8  vel_cap
         dim pickup_ptr = pickup_ptr_lo
         autodim byte pickup_ptr_lo
         autodim byte pickup_ptr_hi
@@ -369,7 +365,7 @@
         autodim byte m_armor_inv  11
         autodim byte m_charm_inv  11
         autodim byte m_relic_inv  11
-        autodim byte m_spell_inv  12
+        autodim byte m_spell_inv  11
         autodim byte toggled_familiar
         autodim byte m_relic_toggle_2
         autodim byte m_inv_item_0

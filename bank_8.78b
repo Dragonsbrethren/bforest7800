@@ -617,8 +617,6 @@ harpy_dive_arc
         ; jmp harpy_fly_up
 
 harpy_dive_vel
-;        if temp1 > temp2 then Xvelocity = Xvelocity + move_speed
-;        Xvelocity = Xvelocity + move_speed
           lda object_Xvel_lo,x
           clc
           adc object_speed_lo,x

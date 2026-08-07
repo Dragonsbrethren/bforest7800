@@ -918,10 +918,10 @@ octo_spawn_ink
           lda octo_shoot_frames,y
           sta object_frame,x
           lda #0
-          sta Xvelocity_hi
-          sta Xvelocity_lo
-          sta Yvelocity_hi
-          sta Yvelocity_lo
+          sta object_Xvel_hi,x
+          sta object_Xvel_lo,x
+          sta object_Yvel_hi,x
+          sta object_Yvel_lo,x
           lda #OCTOPUS_SHOOT_FRAMES
           sta object_timer,x
           rts

@@ -1462,10 +1462,6 @@ end
           jmp move_left
 test_walkable_left
         ; test for leftward ledge, set hopping flag
-        ; if tile_properties{6} then Xdirection = DIR_LEFT : flags{5} = 1
-        ; test if Harpy's Claw is available, allow hopping up ledge
-        ; if m_relic_bits_2{2} && tile_properties{5} then Xdirection = DIR_LEFT : flags{5} = 1
-        ; if !tile_properties{0} then Xvelocity = 0 : return
           lda tile_properties
           and #%01000000
           bne test_walkable_left_hop
@@ -1559,13 +1555,6 @@ end
           beq test_walkable_right
           jmp move_right
 test_walkable_right
-        ; test for rightward ledge, set hopping flag
-        ; if tile_properties{5} then Xdirection = DIR_RIGHT : flags{5} = 1
-        ; test if Harpy's Claw is available, allow hopping up ledge
-end
-        if m_relic_bits_2{2} && tile_properties{6} then Xdirection = DIR_RIGHT : flags{5} = 1
-        asm
-        ; if !tile_properties{0} then Xvelocity = 0 : return
           lda tile_properties
           and #%00100000
           bne test_walkable_right_hop

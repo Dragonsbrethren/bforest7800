@@ -251,7 +251,7 @@ equip_menu_dirs_done
         menu_cursor_Y = equip_menu_cursor_y[menu_selection]
         ; continue showing the inventory of the previously selected option
         m_inv_offset = equip_menu_inv_offsets[menu_selection]
-        if prev_menu_selection = 3 then m_inv_offset = 33
+        if prev_menu_selection >= 3 then m_inv_offset = 33
 
 equip_menu_sword_inv
         m_inv_index = m_inv_scroll + m_inv_offset

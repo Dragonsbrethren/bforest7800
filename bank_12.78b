@@ -1218,9 +1218,9 @@ plot_caves_160b
         goto plot_next
 
 plot_dragon
-        Xdestination  = Xposition + 6
-        shadow_offset = Yposition + 16
-        plotsprite dragon_eye  2 Xdestination Yposition 0
+        Xoffset  = Xposition + 6
+        Yoffset = Yposition + 16
+        plotsprite dragon_eye  2 Xoffset Yposition 0
         plotsprite dragon_top0 5 Xposition Yposition frame
-        plotsprite dragon_bot0 5 Xposition shadow_offset frame
+        plotsprite dragon_bot0 5 Xposition Yoffset frame
         goto plot_next
