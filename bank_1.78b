@@ -47,6 +47,7 @@ init
 
 tileset_transition
         save_room_index = 0
+        save_objects = 0
         old_tileset = tileset
         tileset = exit_tileset
         first_load = 1
