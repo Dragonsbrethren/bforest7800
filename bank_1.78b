@@ -70,14 +70,6 @@ load_map
         clearscreen
         gosub clear_palettes
         displaymode 160A
-        adjustvisible 1 13
-        if exit_tileset then gosub tileset_transition
-        in_save_room = 0
-        if tileset = T_FOREST then gosub load_forest bank2
-        if tileset = T_CASTLE then gosub load_castle bank4
-        if tileset = T_RIVER  then gosub load_river bank6
-        if tileset = T_HILLS  then gosub load_hills bank8
-        if tileset = T_CAVES  then gosub load_caves bank12
         gosub draw_hud
         plotsprite  hp HP_LABEL_PAL HP_LABEL_POS HP_BAR_ZONE ; HP is 160B
         plotsprite  mp MP_LABEL_PAL MP_LABEL_POS MP_BAR_ZONE
@@ -89,6 +81,14 @@ draw_pickup_hud
         Xposition = Xposition + 6              
         plotsprite font_spr 0 Xposition 208 0
         next
+        adjustvisible 1 13
+        if exit_tileset then gosub tileset_transition
+        in_save_room = 0
+        if tileset = T_FOREST then gosub load_forest bank2
+        if tileset = T_CASTLE then gosub load_castle bank4
+        if tileset = T_RIVER  then gosub load_river bank6
+        if tileset = T_HILLS  then gosub load_hills bank8
+        if tileset = T_CAVES  then gosub load_caves bank12
 
 map_loaded
         savescreen
