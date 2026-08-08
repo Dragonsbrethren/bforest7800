@@ -68,11 +68,10 @@ end
 
 load_map
         clearscreen
-        gosub clear_palettes
         displaymode 160A
         gosub draw_hud
-        plotsprite  hp HP_LABEL_PAL HP_LABEL_POS HP_BAR_ZONE ; HP is 160B
-        plotsprite  mp MP_LABEL_PAL MP_LABEL_POS MP_BAR_ZONE
+        plotsprite  hp HP_LABEL_PAL HP_LABEL_POS 0 ; HP is 160B
+        plotsprite  mp MP_LABEL_PAL MP_LABEL_POS 0
         ; update the bars before saving the screen so they don't jump
         gosub update_hud
 draw_pickup_hud
@@ -124,7 +123,7 @@ main
         doublebuffer flip
         if switchreset then goto title_init bank10
         if !switchselect then select_debounce = 0
-        if !switchpause then pause_debounce = 0
+;       if !switchpause then pause_debounce = 0
         if !joy0fire0 && action_button = 0 then action_debounce = 0
         if !joy0fire0 && action_button = 1 then menu_debounce = 0
         if !joy0fire1 && action_button = 1 then action_debounce = 0
@@ -1584,8 +1583,10 @@ hop_done
 
 waterfall_down
         ; move down waterfall and do a specialized map peek for non-waterfall tile
-        inc object_Ypos,x
-        inc object_Ypos,x
+        lda object_Ypos,x
+        clc
+        adc #4
+        sta object_Ypos,x
         jmp move_test_down_no_fly
 
 waterfall_up
@@ -1611,7 +1612,6 @@ bypass_bestiary
           bcc set_name_ptr
           rts
 set_name_ptr
-          lda object_type,x
           tax
           lda enemy_names_lo,x
           sta pickup_ptr_lo
@@ -1642,6 +1642,7 @@ demo_jo_init_walk
           sta object_flags
           lda #STATE_MOVING
           sta player_state
+demo_jo_walk_timer
           lda #PRIEST_WALK_TIMER
           sta player_timer
           jsr randomize

@@ -114,6 +114,7 @@ check_darkness
 darkness_done
 status_done
 
+        gosub update_pickup_objs
 
         restorescreen
         if !lightning_timer then no_lightning
@@ -128,7 +129,6 @@ no_lightning
 
 palette_done
         pal_update = 0
-        gosub update_pickup_objs
 
 plot_objects
         ; Iterates through all objects and determines which sprites need to be plotted by type
@@ -817,6 +817,7 @@ player_status_check
 ;==============================================================================
 handle_input_field
         if !player_flags{5} then player_no_hop
+        if demoplay then goto test_joy_demo
         gosub set_player_facing_frame
         gosub ledge_hop
         goto test_joy_done
