@@ -860,7 +860,6 @@ test_joy_done
         if menu_debounce then test_joy_pause
         if joy0fire0 && action_button = 1 then goto open_menu
         if joy0fire1 && action_button = 0 then goto open_menu
-        if joy1fire0 || joy1fire1 then goto open_menu
 test_joy_pause
 ;       if !pause_debounce && switchpause then goto open_menu
         if player_state = STATE_STAND || player_state = STATE_ATTACK then player_move_done
