@@ -1252,7 +1252,6 @@ end
 end
 
         data hills_room_1_obj
-        TYPE_HROSE, 4*8, $40
         TYPE_SHIELD3, $80, $60
         TYPE_SPELL2, 28, $90
         $00

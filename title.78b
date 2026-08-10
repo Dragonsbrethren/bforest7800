@@ -82,7 +82,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 08-09-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 08-10-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -167,29 +167,29 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_FOREST
-        player_sword = 1
-        player_shield = 0
-        player_armor = 1
-        player_charm = 0
-        player_spell = 0
+        tileset = T_RIVER
+        player_sword = 4
+        player_shield = 2
+        player_armor = 2
+        player_charm = 6
+        player_spell = 2
         toggled_familiar = 0
         m_item_bits_1   = %00000001
-        m_item_bits_2   = %00000111
-        m_sword_bits_1  = %00000001
+        m_item_bits_2   = %00001111
+        m_sword_bits_1  = %00000101
         m_sword_bits_2  = %00000000
-        m_shield_bits_1 = %00000000
+        m_shield_bits_1 = %00000011
         m_shield_bits_2 = %00000000
-        m_armor_bits_1  = %00000001
+        m_armor_bits_1  = %00000011
         m_armor_bits_2  = %00000000
-        m_charm_bits_1  = %00000000
-        m_charm_bits_2  = %00000000
-        m_relic_bits_1  = %00000000
-        m_relic_bits_2  = %00000000
-        m_spell_bits_1  = %00000000
+        m_charm_bits_1  = %00000111
+        m_charm_bits_2  = %00000001
+        m_relic_bits_1  = %00010010
+        m_relic_bits_2  = %00000001
+        m_spell_bits_1  = %00001101
         m_spell_bits_2  = %00000000
-        m_key_bits = 0
-        m_map_bits = 0
+        m_key_bits = %00000001
+        m_map_bits = %00000011
         save_room_index = 0
 
 init_field
