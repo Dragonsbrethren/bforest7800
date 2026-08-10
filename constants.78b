@@ -250,14 +250,14 @@
         const F_FOREST_SAVE4_Y = $6B
         const F_FOREST_SAVE4_D = DIR_SLEEP
 
-        const M_FOREST_START2_X = 94
+        const M_FOREST_START2_X = 86
         const M_FOREST_START2_Y = 80
         const F_FOREST_START2_I = 12
         const F_FOREST_START2_X = 140
         const F_FOREST_START2_Y = $68
         const F_FOREST_START2_D = DIR_LEFT
 
-        const M_FOREST_START3_X = 94
+        const M_FOREST_START3_X = 86
         const M_FOREST_START3_Y = 112
         const F_FOREST_START3_I = 26
         const F_FOREST_START3_X = 140
