@@ -1800,7 +1800,9 @@ pumap     cmp #TYPE_MAP1
           bcc pudoorl
           jmp .pickup_map
 pudoorl   jmp .set_locked_string
-pudoor    cmp #TYPE_DOOR
+pudoor    ldy #0
+          sty new_pickup
+          cmp #TYPE_DOOR
           bne pufood
           lda #TYPE_DOOR_OPEN
           sta object_type,x
