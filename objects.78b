@@ -158,6 +158,10 @@
         const TYPE_SHIELD8  = 227
         const TYPE_SHIELD9  = 228
         const TYPE_SHIELD10 = 229
+        const TYPE_BUCKLER     = TYPE_SHIELD1
+        const TYPE_KITESHIELD  = TYPE_SHIELD2
+        const TYPE_SKULLSHIELD = TYPE_SHIELD3
+        const TYPE_TURTLESHELL = TYPE_SHIELD4
         const TYPE_ARMOR1   = 230
         const TYPE_ARMOR2   = 231
         const TYPE_ARMOR3   = 232

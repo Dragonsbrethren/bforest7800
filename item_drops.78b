@@ -3,7 +3,7 @@
         0               ; torch (handled separately)
         TYPE_POTION     ; wolf
         TYPE_HIPOTION   ; warg
-        TYPE_LIFEAPPLE  ; merman
+        TYPE_TURTLESHELL ; merman
         TYPE_HIPOTION   ; octopus
         TYPE_HIETHER    ; slime
         0               ; mini-slime

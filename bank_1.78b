@@ -662,9 +662,9 @@ check_sword_bits
 
 check_shield_bits
         if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = TYPE_POTION ; Skull Shield
-        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
+        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = TYPE_POTION    ; Skull Shield
+        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = TYPE_LIFEAPPLE ; Turtle Shell
         if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
@@ -1001,6 +1001,7 @@ fairy_item_done
 
 fairy_move
         asm
+          ldx index
           lda #F_FAIRY_WING1
           sta object_frame,x
           lda animation_frame

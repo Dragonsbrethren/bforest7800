@@ -61,13 +61,16 @@
         incmapfile tiled/river_room_19.tmx
         incmapfile tiled/river_room_20.tmx
         incmapfile tiled/river_room_21.tmx
+        incmapfile tiled/river_room_22.tmx
+        incmapfile tiled/river_room_23.tmx
+        incmapfile tiled/river_room_24.tmx
 
         data river_map_b7_lo
         plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_lo, plot_river_room_4_lo,
         plot_river_room_5_lo, plot_river_room_6_lo, plot_river_room_7_lo, plot_river_room_8_lo, plot_river_room_9_lo,
         plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo, plot_river_room_14_lo,
         plot_river_room_15_lo, plot_river_room_16_lo, plot_river_room_17_lo, plot_river_room_18_lo, plot_river_room_19_lo,
-        plot_river_room_20_lo, plot_river_room_21_lo
+        plot_river_room_20_lo, plot_river_room_21_lo, plot_river_room_22_lo, plot_river_room_23_lo, plot_river_room_24_lo
 end
 
         data river_map_b7_hi
@@ -75,7 +78,7 @@ end
         plot_river_room_5_hi, plot_river_room_6_hi, plot_river_room_7_hi, plot_river_room_8_hi, plot_river_room_9_hi,
         plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi, plot_river_room_14_hi,
         plot_river_room_15_hi, plot_river_room_16_hi, plot_river_room_17_hi, plot_river_room_18_hi, plot_river_room_19_hi,
-        plot_river_room_20_hi, plot_river_room_21_hi
+        plot_river_room_20_hi, plot_river_room_21_hi, plot_river_room_22_hi, plot_river_room_23_hi, plot_river_room_24_hi
 end
 
 river_room_bank_7
@@ -97,8 +100,8 @@ plot_river_room_6
 
 
 plot_river_room_7
-        menu_map_room[menu_map_index] = ROOML_D
-        menu_map_room[menu_map_index_2] = ROOMR_DR
+        menu_map_room[menu_map_index] = ROOML_UDL
+        menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 river_room_7 240
         plotmapfile tiled/river_room_7.tmx river_room_7 0 1 20 12
         zone2_objects  = 2
@@ -247,3 +250,27 @@ plot_river_room_21
         exit_Ypos = $78
         exit_room_index = F_FOREST_START3_I
         return otherbank
+
+plot_river_room_22
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_UR
+        memcpy map12 river_room_22 240
+        plotmapfile tiled/river_room_22.tmx river_room_22 0 1 20 12
+        alt_palette   = 1
+        goto river_waterfall bank6
+
+plot_river_room_23
+        menu_map_room[menu_map_index] = ROOML_DL
+        menu_map_room[menu_map_index_2] = ROOMR_DR
+        memcpy map12 river_room_23 240
+        plotmapfile tiled/river_room_23.tmx river_room_23 0 1 20 12
+        alt_palette   = 1
+        goto river_waterfall bank6
+
+plot_river_room_24
+        menu_map_room[menu_map_index] = ROOML_UL
+        menu_map_room[menu_map_index_2] = ROOMR_D
+        memcpy map12 river_room_24 240
+        plotmapfile tiled/river_room_24.tmx river_room_24 0 1 20 12
+        alt_palette   = 1
+        goto river_waterfall bank6

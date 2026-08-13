@@ -61,6 +61,9 @@
         incmapfile tiled/river_room_19.tmx
         incmapfile tiled/river_room_20.tmx
         incmapfile tiled/river_room_21.tmx
+        incmapfile tiled/river_room_22.tmx
+        incmapfile tiled/river_room_23.tmx
+        incmapfile tiled/river_room_24.tmx
 
         const plot_river_room_0_lo = #<.plot_river_room_0
         const plot_river_room_0_hi = #>.plot_river_room_0
@@ -106,13 +109,20 @@
         const plot_river_room_20_hi = #>.plot_river_room_20
         const plot_river_room_21_lo = #<.plot_river_room_21
         const plot_river_room_21_hi = #>.plot_river_room_21
+        const plot_river_room_22_lo = #<.plot_river_room_22
+        const plot_river_room_22_hi = #>.plot_river_room_22
+        const plot_river_room_23_lo = #<.plot_river_room_23
+        const plot_river_room_23_hi = #>.plot_river_room_23
+        const plot_river_room_24_lo = #<.plot_river_room_24
+        const plot_river_room_24_hi = #>.plot_river_room_24
+
 
         data river_map_lo
         plot_river_room_0_lo, plot_river_room_1_lo, plot_river_room_2_lo, plot_river_room_3_lo, plot_river_room_4_lo,
         plot_river_room_5_lo, plot_river_room_6_lo, plot_river_room_7_lo, plot_river_room_8_lo, plot_river_room_9_lo,
         plot_river_room_10_lo, plot_river_room_11_lo, plot_river_room_12_lo, plot_river_room_13_lo, plot_river_room_14_lo,
         plot_river_room_15_lo, plot_river_room_16_lo, plot_river_room_17_lo, plot_river_room_18_lo, plot_river_room_19_lo,
-        plot_river_room_20_lo, plot_river_room_21_lo
+        plot_river_room_20_lo, plot_river_room_21_lo, plot_river_room_22_lo, plot_river_room_23_lo, plot_river_room_24_lo
 end
 
         data river_map_hi
@@ -120,7 +130,7 @@ end
         plot_river_room_5_hi, plot_river_room_6_hi, plot_river_room_7_hi, plot_river_room_8_hi, plot_river_room_9_hi,
         plot_river_room_10_hi, plot_river_room_11_hi, plot_river_room_12_hi, plot_river_room_13_hi, plot_river_room_14_hi,
         plot_river_room_15_hi, plot_river_room_16_hi, plot_river_room_17_hi, plot_river_room_18_hi, plot_river_room_19_hi,
-        plot_river_room_20_hi, plot_river_room_21_hi
+        plot_river_room_20_hi, plot_river_room_21_hi, plot_river_room_22_hi, plot_river_room_23_hi, plot_river_room_24_hi
 end
 
         data river_obj_lo
@@ -128,7 +138,7 @@ end
         river_room_5_obj_lo, river_room_6_obj_lo, river_room_7_obj_lo, river_room_8_obj_lo, river_room_9_obj_lo,
         river_room_10_obj_lo, river_room_11_obj_lo, river_room_12_obj_lo, river_room_13_obj_lo, river_room_14_obj_lo,
         river_room_15_obj_lo, river_room_16_obj_lo, river_room_17_obj_lo, river_room_18_obj_lo, river_room_19_obj_lo,
-        river_room_20_obj_lo, river_room_21_obj_lo
+        river_room_20_obj_lo, river_room_21_obj_lo, river_room_22_obj_lo, river_room_23_obj_lo, river_room_24_obj_lo
 end
 
         data river_obj_hi
@@ -136,7 +146,7 @@ end
         river_room_5_obj_hi, river_room_6_obj_hi, river_room_7_obj_hi, river_room_8_obj_hi, river_room_9_obj_hi,
         river_room_10_obj_hi, river_room_11_obj_hi, river_room_12_obj_hi, river_room_13_obj_hi, river_room_14_obj_hi,
         river_room_15_obj_hi, river_room_16_obj_hi, river_room_17_obj_hi, river_room_18_obj_hi, river_room_19_obj_hi,
-        river_room_20_obj_hi, river_room_21_obj_hi
+        river_room_20_obj_hi, river_room_21_obj_hi, river_room_22_obj_hi, river_room_23_obj_hi, river_room_24_obj_hi
 end
 
 river_waterfall
@@ -391,8 +401,8 @@ plot_river_room_4
 end
 
         data river_rooms
-        00, 00, 00, 13, 17, 16, 00
-        00, 00, 07,  8,  9, 15, 00
+        00, 23, 24, 13, 17, 16, 00
+        00, 22, 07,  8,  9, 15, 00
         00, 00, 06, 05, 10, 14, 00
         00, 00, 03, 04, 11, 00, 00
         00, 01, 02, 00, 12, 00, 00
@@ -524,6 +534,22 @@ end
         TYPE_TORCH, $30, $20, TYPE_TORCH, $60, $20
         $00
 end
+
+        data river_room_22_obj
+        TYPE_RGHOST, 44, $88, TYPE_RGHOST, 9*8, $78
+        TYPE_RGHOST, 13*8, $80
+        TYPE_ARMOR3, 4*8, $50
+        $00
+end
+
+        data river_room_23_obj
+        $00
+end
+
+        data river_room_24_obj
+        $00
+end
+
 
 test_walkable_river
         tile_properties_1 = river_tile_properties[move_tile_1]
