@@ -20,6 +20,8 @@
         incgraphic gfx/menu/menu_shield1.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_shield2.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_armor0.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor1.png 320B 0 2 3 1
+        incgraphic gfx/menu/menu_armor2.png 320B 0 2 3 1
         incgraphic gfx/menu/menu_charm0.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm1.png 320B 0 2 1 3
         incgraphic gfx/menu/menu_charm2.png 320B 0 2 1 3
