@@ -83,6 +83,9 @@
         autodim byte player_str
         autodim byte player_atk ; str + wpn atk
         autodim byte player_wisdom
+        autodim byte player_atk_dec
+        autodim byte player_def_dec
+        autodim byte player_wisdom_dec
         autodim byte player_sword
         autodim byte player_shield
         autodim byte player_armor

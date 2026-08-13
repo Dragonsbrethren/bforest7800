@@ -879,7 +879,7 @@ obj_cave_spider_stats
         object_speed_hi[obj_index] = CSPIDER_SPEED_HI
         object_speed_lo[obj_index] = CSPIDER_SPEED_LO
         object_flags[obj_index] = 0
-        object_elevation[obj_index] = 1
+        object_elevation[obj_index] = player_elevation
         asm
           ldx obj_index
           lda #F_CSPIDER_DOWN
@@ -970,6 +970,8 @@ end
           sta object_speed_lo,y
           lda #F_MPUDDING_1
           sta object_frame,y
+          lda object_elevation,x
+          sta object_elevation,y
           lda #0
           sta object_invuln,y
           sta object_flags,y
@@ -999,7 +1001,7 @@ obj_pudding_stats
         object_speed_hi[obj_index] = PUDDING_SPEED_HI
         object_speed_lo[obj_index] = PUDDING_SPEED_LO
         object_flags[obj_index] = 0
-        object_elevation[obj_index] = 1
+        object_elevation[obj_index] = player_elevation
         goto caves_160a_sprite
 
 ;=========================================================
@@ -1119,7 +1121,7 @@ dragon_fire
         sta object_facing,y
         lda #DRAGON_PSN_FLAGS
         sta object_flags,y
-        lda #1
+        lda player_elevation
         sta object_elevation,x
         rts
 end

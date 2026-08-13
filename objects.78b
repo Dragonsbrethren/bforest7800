@@ -46,6 +46,7 @@
         const TYPE_PROJECTILE = TYPE_SKELSWORD
         const TYPE_TENTSHADOW   = 130
         const TYPE_CAMPFIRE     = 131
+        const TYPE_ENEMY_PROJ = TYPE_DRAGON_PSN
         const TYPE_DRAGON_PSN = 132
         const TYPE_PSNCLOUD   = 133
         const TYPE_BATFIREBALL = 134

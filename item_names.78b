@@ -342,7 +342,7 @@ end
         alphadata pickup_sword1 font_spr
 end
         alphadata pickup_sword2 font_spr
-        'Bonesaber*'
+        'Bone Saber*'
 end
         alphadata pickup_sword3 font_spr
         'Cross Sword*'
@@ -372,60 +372,61 @@ end
         'Buckler*'
 end
         alphadata pickup_shield2 font_spr
-        'Skull Shield*'
-end
-        alphadata pickup_shield3 font_spr
         'Kite Shield*'
 end
+        alphadata pickup_shield3 font_spr
+        'Skull Shield'
+end
         alphadata pickup_shield4 font_spr
-        'Heater*'
+        'Turtle Shell*'
 end
         alphadata pickup_shield5 font_spr
-        'Dusk Shield*'
+        'Heater*'
 end
         alphadata pickup_shield6 font_spr
-        'Shield 6    *'
+        'Frost Shield*'
 end
         alphadata pickup_shield7 font_spr
-        'Shield 7    *'
+        'Shock Targe*'
 end
         alphadata pickup_shield8 font_spr
-        'Shield 8    *'
+        'Tempest Kite*'
 end
         alphadata pickup_shield9 font_spr
-        'Shield 9    *'
+        'Dusk Shield*'
 end
         alphadata pickup_shield10 font_spr
-        'Shield 10   *'
+        'Pearl Shield*'
 end
+
         alphadata pickup_armor1 font_spr
 end
         alphadata pickup_armor2 font_spr
         'Bronze Plate*'
 end
         alphadata pickup_armor3 font_spr
-        'Steel Plate*'
+        'Scale Mail*'
 end
         alphadata pickup_armor4 font_spr
-        'Silver Plate*'
-end
-        alphadata pickup_armor5 font_spr
-        'Maiden Armor*'
-end
-        alphadata pickup_armor6 font_spr
         'Relica Armor*'
 end
+        alphadata pickup_armor5 font_spr
+        'Mirror Mail*'
+end
+        alphadata pickup_armor6 font_spr
+        'Heavy Armor6*'
+end
         alphadata pickup_armor7 font_spr
-        'Armor 7    *'
+        'Harpy` Top*'
 end
         alphadata pickup_armor8 font_spr
-        'Armor 8    *'
+        'Witch` Dress*'
 end
         alphadata pickup_armor9 font_spr
-        'Armor 9    *'
+        'Wizard Robe*'
 end
         alphadata pickup_armor10 font_spr
-        'Armor 10   *'
+        'Light Armor3*'
 end
         alphadata pickup_charm1 font_spr
         'Pendant*'
@@ -440,22 +441,22 @@ end
         'Harpy` Charm*'
 end
         alphadata pickup_charm5 font_spr
-        'Ice Crystal*'
+        'Flame Orb*'
 end
         alphadata pickup_charm6 font_spr
-        'Thunder Rock*'
+        'Ice Crystal*'
 end
         alphadata pickup_charm7 font_spr
-        'Flame Gem*'
+        'Thunder Rock*'
 end
         alphadata pickup_charm8 font_spr
-        'Charm 8     *'
+        'Wind Amulet*'
 end
         alphadata pickup_charm9 font_spr
-        'Charm 9     *'
+        'Toxic Scale*'
 end
         alphadata pickup_charm10 font_spr
-        'Charm 10    *'
+        'Divine Ring*'
 end
 
         alphadata pickup_relic1 font_spr

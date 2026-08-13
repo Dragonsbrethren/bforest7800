@@ -2076,9 +2076,10 @@ end
           jmp .set_burnbush_name
 player_knockback_block
           ;  check player's shield and destroy projectile
-          cmp #TYPE_DARKSPARK
+          lda object_type,x
+          cmp #TYPE_ENEMY_PROJ
           bcc player_knockback_status
-          cmp #TYPE_DARKBOLT
+          cmp #TYPE_PLAYERSPELL
           bcs player_knockback_status
           jmp .shield_check
 player_knockback_status
@@ -2220,17 +2221,24 @@ update_hp_bar
         return
 
 shield_check
-        ; copy the projectile's type to its flags for status effects
-        flags = object_type[index]
-        ; TODO: projectile properties, maybe some shouldn't be destroyed on contact?
-        object_type[index] = 0
-        ; if the player doesn't have a shield or they aren't standing still, damage the player
-        if !player_shield || player_state <> STATE_STAND then goto projectile_status
-        ; TODO: different shield properties
-        if player_facing = DIR_UP && object_facing[index]    = DIR_DOWN  then deflect_projectile
-        if player_facing = DIR_DOWN && object_facing[index]  = DIR_UP    then deflect_projectile
-        if player_facing = DIR_LEFT && object_facing[index]  = DIR_RIGHT then deflect_projectile
-        if player_facing = DIR_RIGHT && object_facing[index] = DIR_LEFT  then deflect_projectile
+        asm
+          ; copy the projectile's type to its flags for status effects
+          lda object_type,x
+          sta flags
+          lda #0
+          sta object_type,x
+          ; if the player doesn't have a shield or they aren't standing still, damage the player
+          lda player_shield
+          beq .projectile_status
+          lda player_state
+          cmp #STATE_STAND
+          bne .projectile_status
+          lda object_facing,x
+          tay
+          lda facing_opposite,y
+          cmp object_facing,x
+          beq .deflect_projectile
+end
 
 projectile_status
         ; hardcode Octoink to set dark status for now
@@ -2452,3 +2460,6 @@ proj_die  lda temp1
           rts
 end
 
+        data facing_opposite
+        0, DIR_DOWN, DIR_UP, DIR_RIGHT, DIR_LEFT
+end

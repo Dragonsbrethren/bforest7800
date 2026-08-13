@@ -307,9 +307,9 @@ equip_menu_draw_atk
         sta	valueX
         lda	#1
         sta	valueY
-        lda	#<player_atk
+        lda	#<player_atk_dec
         sta	value_ptr_lo
-        lda	#>player_atk
+        lda	#>player_atk_dec
         sta	value_ptr_hi
         jsr	plotvaluesw
         ; plotvalue menu_font 0 player_def 2 136 1
@@ -317,9 +317,9 @@ equip_menu_draw_atk
         sta	valueX
         lda	#1
         sta	valueY
-        lda	#<player_def
+        lda	#<player_def_dec
         sta	value_ptr_lo
-        lda	#>player_def
+        lda	#>player_def_dec
         sta	value_ptr_hi
         jsr	plotvaluesw
         ; Wisdom
@@ -327,9 +327,9 @@ equip_menu_draw_atk
         sta	valueX
         lda	#1
         sta	valueY
-        lda	#<player_wisdom
+        lda	#<player_wisdom_dec
         sta	value_ptr_lo
-        lda	#>player_wisdom
+        lda	#>player_wisdom_dec
         sta	value_ptr_hi
         jsr	plotvaluesw
 end
@@ -463,6 +463,10 @@ update_equipment_pals
         lda pal_charms2,x
         sta m_charm_pal2
 end
+        ; update decimal copies of stats
+        player_atk_dec = converttobcd(player_atk)
+        player_def_dec = converttobcd(player_def)
+        player_wisdom_dec = converttobcd(player_wisdom)
         ; hack in status-causing equipment here
         if player_charm = CHARM_FURY then temp1 = BITS_FURY : gosub set_status
         ; this must stay a normal return command so title code can use
@@ -879,7 +883,7 @@ end
         alphadata sword_names menu_font singlewide
         'Unarmed      '
         'Rapier       '
-        'Bonesaber    '
+        'Bone Saber   '
         'Cross Sword  '
         'Thunderblitz '
         'Wing Edge    '
@@ -890,38 +894,36 @@ end
         'Sword Num 10 '
         '             '
         'Buckler      '
-        'Skull Shield '
         'Kite Shield  '
+        'Skull Shield '
+        'Turtle Shell '
         'Heater       '
+        'Frost Shield '
+        'Shock Targe  '
+        'Tempest Kite '
         'Dusk Shield  '
-        'Shield Num 6 '
-        'Shield Num 7 '
-        'Shield Num 8 '
-        'Shield Num 9 '
-        'Shield Num 10'
+        'Pearl Shield '
         '             '
         'Leather Armor'
         'Bronze Plate '
-        'Steel Plate  '
-        'Silver Plate '
-        'Maiden Armor '
+        'Scale Mail   '
         'Relica Armor '
-        'Armor Num 7  '
-        'Armor Num 8  '
-        'Armor Num 9  '
-        'Armor Num 10 '
+        'Mirror Mail  '
+        'Heavy Armor 6'
+        'Witch` Dress '
+        'Wizard Robe  '
+        'Light Armor 3'
         '             '
         'Pendant      '
         'Dark Rosary  '
         'Spectacles   '
         'Harpy` Charm '
+        'Flame Orb    '
         'Ice Crystal  '
         'Thunder Rock '
-        'Flame Gem    '
-        'Charm Num 7  '
-        'Charm Num 8  '
-        'Charm Num 9  '
-        'Charm Num 10 '
+        'Wind Amulet  '
+        'Toxic Scale  '
+        'Divine Ring  '
 end
 
         alphadata relic_names menu_font singlewide
