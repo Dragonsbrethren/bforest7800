@@ -55,7 +55,7 @@ end
         0               ; mini-slime
         TYPE_FOOD       ; raven
         TYPE_ETHER      ; priest
-        TYPE_SHIELD2    ; skeleton
+        TYPE_SHIELD3    ; skeleton
         TYPE_ANTIDOTE   ; red slime
         0               ; mini red slime
         TYPE_UNCURSE    ; ghost
