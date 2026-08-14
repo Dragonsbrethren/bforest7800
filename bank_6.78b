@@ -810,6 +810,10 @@ obj_nix_stats
         object_frame[obj_index] = F_NIX_BLANK
         asm
           ldx obj_index
+          lda #NIX_ELEM_ATK
+          sta object_elem_atk,x
+          lda #NIX_ELEM_DEF
+          sta object_elem_def,x
           lda #<.plot_nix
           sta object_spr_ptr_lo,x
           lda #>.plot_nix
@@ -979,6 +983,8 @@ load_octoink
           lda #0
           sta object_friction_hi,y
           sta object_friction_lo,y
+          lda #OCTOINK_ELEM_ATK
+          sta object_elem_atk,y
           lda #F_OCTOINK
           sta object_frame,y
           lda #OCTOINK_PAL
@@ -1008,6 +1014,10 @@ end
 obj_octo_stats
         asm
           ldx obj_index
+          lda #OCTO_ELEM_ATK
+          sta object_elem_atk,x
+          lda #OCTO_ELEM_DEF
+          sta object_elem_def,x
           lda #<.plot_octopus
           sta object_spr_ptr_lo,x
           lda #>.plot_octopus
@@ -1310,6 +1320,10 @@ obj_octokraken_stats
           sta object_def,x
           lda #OCTOKRAKEN_MDEF
           sta object_mdef,x
+          lda #OCTOKRAKEN_ELEM_ATK
+          sta object_elem_atk,x
+          lda #OCTOKRAKEN_ELEM_DEF
+          sta object_elem_def,x
           jmp .obj_next_stats
 end
 
@@ -1348,6 +1362,10 @@ end
 obj_tentacle_stats
         asm
           ldx obj_index
+          lda #TENTACLE_ELEM_ATK
+          sta object_elem_atk,x
+          lda #TENTACLE_ELEM_DEF
+          sta object_elem_def,x
           lda #<.plot_tentacle
           sta object_spr_ptr_lo,x
           lda #>.plot_tentacle
@@ -1415,6 +1433,10 @@ obj_rghost_stats
           sta object_speed_lo,x
           lda #GHOST_FLAGS
           sta object_flags,x
+          lda #RGHOST_ELEM_ATK,x
+          sta object_elem_atk,x
+          lda #RGHOST_ELEM_DEF,x
+          sta object_elem_def,x
           lda #GHOST_PAL_1
           sta object_pal,x
           lda #F_GHOST_1

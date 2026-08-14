@@ -1007,6 +1007,8 @@ load_darkspark
         sta object_damage,y
         lda #%00010000
         sta object_flags,y
+        lda #DARKSPARK_ELEM_ATK
+        sta object_elem_atk,y
         lda #0
         sta object_friction_hi,y
         sta object_friction_lo,y
@@ -1174,6 +1176,10 @@ obj_priest_shared
           sta object_speed_lo,x
           lda #PRIEST_FLAGS
           sta object_flags,x
+          lda #PRIEST_ELEM_ATK
+          sta object_elem_atk,x
+          lda #PRIEST_ELEM_DEF
+          sta object_elem_def,x
           rts
 end
 
@@ -1205,6 +1211,10 @@ obj_skel_stats
           sta object_speed_lo,x
           lda #SKEL_FLAGS
           sta object_flags,x
+          lda #SKEL_ELEM_ATK
+          sta object_elem_atk,x
+          lda #SKEL_ELEM_DEF
+          sta object_elem_def,x
           lda #plot_castle_160a_lo
           sta object_spr_ptr_lo,x
           lda #plot_castle_160a_hi
@@ -1261,6 +1271,10 @@ obj_ghost_stats
           sta object_speed_lo,x
           lda #GHOST_FLAGS
           sta object_flags,x
+          lda #GHOST_ELEM_ATK
+          sta object_elem_atk,x
+          lda #GHOST_ELEM_DEF
+          sta object_elem_def,x
           lda #GHOST_PAL_1
           sta object_pal,x
           lda #F_GHOST_1

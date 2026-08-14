@@ -2237,7 +2237,7 @@ shield_check
           lda object_facing,x
           tay
           lda facing_opposite,y
-          cmp object_facing,x
+          cmp player_facing
           beq .deflect_projectile
 end
 
@@ -2248,8 +2248,24 @@ projectile_status
         goto pc_damage
 
 deflect_projectile
+        asm
+          lda object_elem_atk,x
+          sta temp1
+          ldy player_shield
+          lda shield_elem,y
+          and temp1
+          bne .absorb_projectile
+end
         playsfx sfx_gotthecoin
         return thisbank
+
+absorb_projectile
+        asm
+          lda object_damage,x
+          sta hp_change
+          jsr .increase_player_hp
+          rts
+end
 
 set_status
         asm

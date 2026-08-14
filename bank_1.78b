@@ -1460,6 +1460,10 @@ end
         0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0
 end
 
+        data shield_elem
+        0, SHIELD1_ELEM, SHIELD2_ELEM, SHIELD3_ELEM, SHIELD4_ELEM, SHIELD5_ELEM, SHIELD6_ELEM, SHIELD7_ELEM, SHIELD8_ELEM, SHIELD9_ELEM, SHIELD10_ELEM
+end
+
 ledge_hop
         asm
         ldx index
