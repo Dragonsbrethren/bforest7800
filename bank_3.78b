@@ -422,6 +422,20 @@ update_equipment_pals
         lda f_shield_pals,x
         sta shield_pal
         ldx player_armor
+        cpx #LIGHT_ARMOR_START
+        bcs light_armor_chant
+heavy_armor_chant
+        lda #CHANT_START_TIME
+        sta chant_start
+        lda #CHANT_CAST_TIME
+        sta chant_delay
+        bne update_armor_atk
+light_armor_chant
+        lda #CHANT_START_TIME_LIGHT
+        sta chant_start
+        lda #CHANT_CAST_TIME_LIGHT
+        sta chant_delay
+update_armor_atk
         lda armor_atk,x
         clc
         adc player_atk
@@ -516,15 +530,15 @@ end
         MENU_ICON_SWORD
         MENU_ICON_BLANK         ; No Shield
         MENU_ICON_BUCKLER       ; BUCKLER
-        MENU_ICON_HEATER        ; SKULL SHIELD
-        MENU_ICON_HEATER        ; KITE SHIELD
-        MENU_ICON_HEATER        ; HEATER
-        MENU_ICON_BUCKLER       ; DUSK SHIELD
-        MENU_ICON_BUCKLER
-        MENU_ICON_BUCKLER
-        MENU_ICON_BUCKLER
-        MENU_ICON_BUCKLER
-        MENU_ICON_BUCKLER
+        MENU_ICON_KITE          ; Kite Shield
+        MENU_ICON_SHIELD        ; Skull Shield
+        MENU_ICON_BUCKLER       ; Turtle Shell
+        MENU_ICON_HEATER        ; Heater Shield
+        MENU_ICON_KITE          ; Frost Shield
+        MENU_ICON_SHIELD        ; Shock Targe
+        MENU_ICON_KITE          ; Tempest Kite
+        MENU_ICON_SHIELD        ; Dusk Shield
+        MENU_ICON_HEATER        ; Pearl Shield
         MENU_ICON_BLANK         ; NO ARMOR
         MENU_ICON_ARMOR         ; LEATHER ARMOR
         MENU_ICON_ARMOR         ; BRONZE PLATE
@@ -551,13 +565,13 @@ end
 
         data pal_swords1
         $00, $44, $74, $96, $C3, $D3, $36, $36, $36, $36, $36
-        $00, $24, $0C, $44, $35, $A1, $A1, $A1, $A1, $A1, $A1
+        $00, $42, $43, $0C, $D2, $34, $A9, $02, $B4, $A1, $43
         $00, $12, $F2, $C2, $03, $E1, $95, $66, $A2, $61, $7C
         $00, $98, $60, $08, $22, $99, $03, $35, $35, $35, $35
 end
         data pal_swords2
         $00, $FE, $0F, $0D, $AD, $B6, $34, $34, $34, $34, $34
-        $00, $44, $0F, $37, $26, $E3, $E3, $E3, $E3, $E3, $E3
+        $00, $24, $1A, $0F, $E4, $27, $8E, $75, $3D, $E3, $0C
         $00, $24, $F4, $D4, $06, $E3, $9D, $6A, $B6, $1A, $0F
         $00, $0F, $62, $0D, $25, $AF, $AB, $37, $37, $37, $37
 end
@@ -913,7 +927,7 @@ end
         'Harpy` Top   '
         'Witch` Dress '
         'Wizard Robe  '
-        'Maiden Dress '
+        'Mystic Dress '
         '             '
         'Pendant      '
         'Dark Rosary  '

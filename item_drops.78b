@@ -5,28 +5,28 @@
         TYPE_HIPOTION   ; warg
         TYPE_TURTLESHELL ; merman
         TYPE_HIPOTION   ; octopus
-        TYPE_HIETHER    ; slime
+        TYPE_CHARM9     ; slime
         0               ; mini-slime
-        TYPE_POTION     ; raven
+        TYPE_ARMOR8     ; raven
         TYPE_CHARM2     ; priest
         TYPE_SWORD2     ; skeleton
-        TYPE_HIETHER    ; red slime
+        TYPE_CHARM9     ; red slime
         0               ; mini red slime
         TYPE_HIETHER    ; ghost
         TYPE_HIETHER    ; river ghost
-        TYPE_LIFEAPPLE  ; harpy
-        TYPE_LIFEAPPLE  ; spider
-        TYPE_LIFEAPPLE  ; vertical spider
-        TYPE_ELIXIR     ; ochre jelly
+        TYPE_ARMOR7     ; harpy
+        TYPE_CHARM9     ; spider
+        TYPE_CHARM9     ; vertical spider
+        TYPE_CHARM9     ; ochre jelly
         0               ; mini ochre jelly
-        TYPE_SHIELD4    ; feuermann
+        TYPE_SHIELD5    ; feuermann
         0               ; harpy queen
         0               ; hills boss
         0               ; bat spawner
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
-        TYPE_ELIXIR     ; cave spider
-        TYPE_ELIXIR     ; pudding
+        TYPE_CHARM9     ; cave spider
+        TYPE_CHARM9     ; pudding
         0               ; mini pudding
         TYPE_HIETHER    ; caves ghost
         0               ; cardinal

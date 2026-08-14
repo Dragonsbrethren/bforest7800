@@ -459,7 +459,7 @@ end
         TYPE_SKELETON, $20, $A0, TYPE_SKELETON, $28, $B0
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
-        TYPE_DOOR, $49, $10, TYPE_SHIELD1, $20, $70
+        TYPE_DOOR, $49, $10, TYPE_SHIELD2, $20, $70
         $00
 end
 
@@ -472,7 +472,7 @@ end
         TYPE_PRIEST, 48, $60, TYPE_PRIEST, 96,$70
         TYPE_TORCH, $18, $60, TYPE_TORCH, $80, $60
         TYPE_DOOR, $29, $50, TYPE_DOOR, $69, $50
-        TYPE_BESTIARY, $2C, $20, 
+        TYPE_ARMOR8, $2C, $20, TYPE_BESTIARY, 108, $20,
         $00
 end
 

@@ -133,6 +133,8 @@
         autodim byte mp_bar_end
         autodim byte mp_change
         autodim byte chant_timer
+        autodim byte chant_start
+        autodim byte chant_delay
         autodim byte flash_color
         autodim byte player_exiting_chant
         autodim byte sword_hit
@@ -345,6 +347,7 @@
         autodim byte shadow_offset
         autodim byte chant_input
         autodim byte spell_index
+        autodim byte spell_failed
 
         autodim byte m_map_bits
         autodim byte m_key_bits

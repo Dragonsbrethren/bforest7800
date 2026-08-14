@@ -426,7 +426,7 @@ end
         'Wizard Robe*'
 end
         alphadata pickup_armor10 font_spr
-        'Maiden Dress*'
+        'Mystic Dress*'
 end
         alphadata pickup_charm1 font_spr
         'Pendant*'

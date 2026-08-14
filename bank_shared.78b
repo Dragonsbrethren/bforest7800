@@ -846,6 +846,7 @@ player_test_state
         sta player_state        ; STATE_STAND
         sta player_exiting_chant
         sta sword_hit
+        sta spell_failed
 end
 
 ;------------------------------------------------------------------------------
@@ -949,7 +950,7 @@ retract_stand
         ; retract finished and button still held - code runs into player_chant_start
 
 player_chant_start
-        if chant_timer > CHANT_START_TIME then set_state_chant
+        if chant_timer > chant_start then set_state_chant
         player_state = STATE_CHANT_START
         chant_timer++
         gosub set_player_facing_frame
@@ -969,7 +970,7 @@ chant_handler
         if !joy0fire1 && action_button = 1 then chant_done_no_hold
 
         ; must wait a few frames before spell can be cast
-        if chant_timer < CHANT_CAST_TIME then goto test_joy_done
+        if chant_timer < chant_delay then goto test_joy_done
 
         ; parse the most recent directional entered and test for combos
         if chant_input = DIR_UP    then set_spell_up

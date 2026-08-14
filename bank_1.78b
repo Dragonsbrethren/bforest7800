@@ -665,7 +665,7 @@ check_shield_bits
         if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
         if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = TYPE_POTION    ; Skull Shield
         if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = TYPE_LIFEAPPLE ; Turtle Shell
-        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = 0 
+        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = TYPE_ELIXIR    ; Heater
         if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
         if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
@@ -680,7 +680,7 @@ check_armor_bits
         if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
         if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
         if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = 0 
+        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = TYPE_LIFEAPPLE ; Harpy's Top
         if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
         if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
         if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
@@ -695,7 +695,7 @@ check_charm_bits
         if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
         if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
         if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = 0 
+        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = TYPE_LIFEAPPLE ; Toxic Scale
         if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
         goto remove_duplicates_next
 
@@ -749,9 +749,12 @@ cast_fireball
         lda #14
         sta spawn_index
         jsr .cast_magic
+        lda spell_failed
+        beq cast_fireball_done
 end
         playsfx sfx_flameon
         asm
+cast_fireball_done
         jmp .chant_done
 
 set_cast_direction
@@ -835,7 +838,8 @@ cast_magic
           jsr .test_spell_cost
           bne set_magic_slot
           ; should this still return to chanting with Tome-based magic?
-          jmp .set_state_chant
+          stx spell_failed
+          rts
 
 set_magic_slot
           ldy spawn_index
@@ -890,9 +894,13 @@ cast_diagonal_spell
         lda #14
         sta spawn_index
         jsr .cast_magic
+        lda spell_failed
+        bne cast_diagonal_done
         lda #15
         sta spawn_index
         jsr .cast_magic
+        lda spell_failed
+        bne cast_diagonal_done
         lda object_facing,y
         cmp #DIR_UP
         beq cast_diagonal_y
@@ -903,6 +911,7 @@ cast_diagonal_x
         sta object_Ydir+14
         lda #DIR_DOWN
         sta object_Ydir+15
+cast_diagonal_done
         jmp .chant_done
 
 cast_diagonal_y
@@ -1436,11 +1445,11 @@ end
 end
 
         data f_shield_pals
-        0, 1, 0, 2, 2, 1, 0, 0, 0, 0, 0
+        0, 1, 2, 0, 3, 2, 0, 0, 3, 1, 2
 end
 
         data f_armor_pals
-        0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0
+        0, 0, 1, 3, 0, 1, 0, 2, 3, 3, 0
 end
 
         data f_charm_pals

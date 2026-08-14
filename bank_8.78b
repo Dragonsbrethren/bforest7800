@@ -1252,7 +1252,7 @@ end
 end
 
         data hills_room_1_obj
-        TYPE_SHIELD3, $80, $60
+        TYPE_SHIELD8, $80, $60
         TYPE_SPELL2, 28, $90
         $00
 end
@@ -1271,7 +1271,7 @@ end
         TYPE_SPIDER, (5*8), $20, TYPE_HSLIME, (9*8), $60
         TYPE_SPIDER, (15*8), $60, TYPE_HSLIME, (11*8), $A0
         TYPE_HSLIME, (12*8), $90
-        TYPE_TORCH, $28, $30, TYPE_CHARM5, (13*8), $40
+        TYPE_TORCH, $28, $30, TYPE_CHARM6, (13*8), $40
         $00
 end
 
@@ -1301,7 +1301,7 @@ end
         data hills_room_8_obj
         TYPE_SPIDER, $18, $30, TYPE_SPIDER, $70, $30
         TYPE_HSLIME, $38, $A0, TYPE_HSLIME, $58, $A0
-        TYPE_ARMOR3, $64, $60
+        TYPE_ARMOR4, $64, $60
         TYPE_TORCH, $60, $80
         $00
 end
