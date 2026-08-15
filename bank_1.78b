@@ -834,12 +834,25 @@ cast_magic
           lda index
           bne set_magic_slot
           lda spell_mp_cost,x
+          sec
+          sbc player_wisdom
+          bmi cast_magic_mp_underflow
+cast_magic_mp_armor
+          ldy player_armor
+          cpy #LIGHT_ARMOR_START
+          bcc cast_magic_test_cost
+          lsr
+cast_magic_test_cost
           sta mp_change
           jsr .test_spell_cost
           bne set_magic_slot
           ; should this still return to chanting with Tome-based magic?
           stx spell_failed
           rts
+
+cast_magic_mp_underflow
+          lda #1
+          bne cast_magic_test_cost
 
 set_magic_slot
           ldy spawn_index
