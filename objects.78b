@@ -292,10 +292,20 @@
         const FIREBAT_DEF = 0
         const FIREBAT_MDEF = 0
         const FIREBAT_FLAGS = %00000100
+        const FIREBAT_ELEM_ATK = %00000001
+        const FIREBAT_ELEM_DEF = %00100001
         const F_FIREBAT_1 = 0
         const F_FIREBAT_2 = 1
         const FIREBAT_PAL = 7
         const FIREBAT_SWOOP_FRAMES = 30
+
+        const BATFIREBALL_VEL_CAP_HI = 4
+        const BATFIREBALL_VEL_CAP_LO = 0
+        const BATFIREBALL_SPEED_HI = 4
+        const BATFIREBALL_SPEED_LO = 0
+        const BATFIREBALL_DAMAGE = 44
+        const BATFIREBALL_FLAGS = %00010000
+        const BATFIREBALL_ELEM_ATK = %00000001
 
         ; CRYSTAL BALL
         const F_ORB = 9
@@ -531,6 +541,7 @@
         const HARPY_DEF = 0
         const HARPY_MDEF = 0
         const HARPY_FLAGS = %00000100
+        const HARPY_ELEM_ATK = %00010000
         const HARPY_DIVE_TIME = 20
         const F_HARPY_FLY_0 = 0
         const F_HARPY_FLY_1 = 1
@@ -598,6 +609,8 @@
         const HGHOST_DAMAGE = 3
         const HGHOST_DEF = 5
         const HGHOST_MDEF = 0
+        const HGHOST_ELEM_ATK = %00000001
+        const HGHOST_ELEM_DEF = %00000001
         const F_HGHOST_1 = 10
         const F_HGHOST_2 = 11
         const HGHOST_PAL_A = 6
@@ -707,6 +720,8 @@
         const CGHOST_DAMAGE = 3
         const CGHOST_DEF = 5
         const CGHOST_MDEF = 0
+        const CGHOST_ELEM_ATK = %00100010
+        const CGHOST_ELEM_DEF = %00100010
         const F_CGHOST_1 = 14
         const F_CGHOST_2 = 15
         const CGHOST_PAL_A = 0
@@ -723,6 +738,8 @@
         const DRAGON_FRICTION_LO = 0
         const DRAGON_DEF = 10
         const DRAGON_MDEF = 50
+        const DRAGON_ELEM_ATK = %00100000
+        const DRAGON_ELEM_DEF = %00110111
 
         const DRAGON_PSN_SPEED_HI = 3
         const DRAGON_PSN_DAMAGE = 20
@@ -799,12 +816,6 @@
         const FIREBALL_PAL = 2
         const FIREBALL_MAX_FRAMES = 4
         const FIREBALL_ELEM = %00000001
-
-        const BATFIREBALL_VEL_CAP_HI = 4
-        const BATFIREBALL_VEL_CAP_LO = 0
-        const BATFIREBALL_SPEED_HI = 4
-        const BATFIREBALL_SPEED_LO = 0
-        const BATFIREBALL_DAMAGE = 44
 
         const ICEFLAKES_SPEED_HI = 4
         const ICEFLAKES_SPEED_LO = 0

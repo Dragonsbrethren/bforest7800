@@ -989,6 +989,8 @@ obj_harpy_stats
           sta object_speed_lo,x
           lda #HARPY_FLAGS
           sta object_flags,x
+          lda #HARPY_ELEM_ATK
+          sta object_elem_atk,x
           jmp .hills_160b_sprite
 end
 
@@ -1032,6 +1034,13 @@ obj_hghost_stats
         object_speed_hi[obj_index] = HGHOST_SPEED_HI
         object_speed_lo[obj_index] = HGHOST_SPEED_LO
         object_flags[obj_index] = 0
+        asm
+          ldx obj_index
+          lda #HGHOST_ELEM_ATK
+          sta object_elem_atk,x
+;         lda #HGHOST_ELEM_DEF
+          sta object_elem_def,x
+end
         goto hills_160a_sprite    
 
 hills_160a_sprite
