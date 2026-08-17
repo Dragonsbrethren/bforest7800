@@ -1502,6 +1502,8 @@ move_left
           ldy object_type,x
           cpy #TYPE_F_OWL
           beq mo_lf_s
+          cpy #TYPE_BAT
+          beq mo_lf_s
           lda #0
 mo_lf_s   sta object_Xpos,x
           rts

@@ -158,7 +158,7 @@ use_item
         if using_item = 6 then temp1 = MASK_POISON : goto use_heal
         if using_item = 7 then temp1 = MASK_DARK   : fade = FADE_NORMAL : goto use_heal
         if using_item = 8 then temp1 = MASK_CURSE  : goto use_heal
-        if using_item = 9 then temp1 = MASK_STONE  : goto use_heal
+        if using_item = 9 then stone_duration = 0 : temp1 = MASK_STONE  : goto use_heal
 
 use_potion
         gosub increase_player_hp

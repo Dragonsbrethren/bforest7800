@@ -894,20 +894,18 @@ end
 ;=========================================================
 mpudding_ai
         asm
-          lda #PUDDING_PAL
-          sta object_pal,x
           lda #F_MPUDDING_1
           sta object_frame,x
-          jmp pudding_anim
+          bne pudding_anim
 end
 
 pudding_ai
         asm
-          lda #PUDDING_PAL
-          sta object_pal,x
           lda #F_PUDDING_1
           sta object_frame,x
 pudding_anim
+          lda #PUDDING_PAL
+          sta object_pal,x
           lda animation_frame
           beq pudding_ooze
           inc object_frame,x
@@ -944,7 +942,6 @@ end
           sta object_Xpos,x
           lda object_Ypos,x
         ; initialize the new mini slime object
-          ldx spawn_index
           sta object_Ypos,y
           lda #TYPE_MPUDDING
           sta object_type,y
@@ -980,7 +977,7 @@ end
           clc
           adc #9
           sta object_Xpos,y
-          lda #6
+          lda #PUDDING_PAL
           sta object_pal,y
           lda #<.plot_caves_160a
           sta object_spr_ptr_lo,y

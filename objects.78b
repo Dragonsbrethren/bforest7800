@@ -660,7 +660,7 @@
         const SEED_VEL_CAP_HI = 4
         const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
-        const F_SEED = 18
+        const F_SEED = 21
         const SEED_PAL = 5
 
         ; HILLS
