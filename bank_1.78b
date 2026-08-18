@@ -67,7 +67,8 @@ tranloop  sta exit_tileset,x
 end
 
 load_map
-        clearscreen
+        bg_color = 0
+        gosub clear_palettes
         displaymode 160A
         gosub draw_hud
         plotsprite  hp HP_LABEL_PAL HP_LABEL_POS 0 ; HP is 160B
@@ -354,6 +355,7 @@ fade_done
         goto player_handler_done
 
 save_room_handler
+        gosub clear_palettes
         if demoplay then goto title_init bank10
         if player_state = STATE_DEATH then password_display
         gosub encode_password bank11
@@ -1394,10 +1396,10 @@ bottomscreenroutine
         return thisbank
 
 clear_palettes
+        clearscreen
         asm
-          lda #0
+          lda bg_color
           sta BACKGRND
-          sta bg_color
           sta bottom_bg
           sta P0C1
           sta P0C2
@@ -1427,6 +1429,7 @@ clear_palettes
           sta P7C2
           sta P7C3
 end
+        doublebuffer flip
         return
 
         data f_key_pals
@@ -2012,14 +2015,8 @@ cd_Ypos
           sta temp2
           sec
           sbc temp1
-          bcs cd_Yfarther
-cd_Xfarther
           lda #0
-          sta temp3
-          rts
-
-cd_Yfarther
-          lda #1
+          adc #0        ; carry clear, X farther, carry set Y farther
           sta temp3
           rts
 end

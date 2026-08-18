@@ -12,7 +12,6 @@ plot_main_menu
         P4C3 = PAL_LTRED
         if !menu_change then goto main_menu_updater
         gosub copy_menu_map bank11
-        clearscreen
         gosub plot_menu_border
         characterset menu_font
         alphachars '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -!&[$#]{}(_*)`'
@@ -73,7 +72,6 @@ plot_items_menu
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_ITEMS
         if !menu_change then goto items_menu_updater
-        clearscreen
         gosub plot_menu_border
         menu_change = 0
         m_inv_scroll = 0
@@ -189,7 +187,6 @@ plot_equip_menu
         menu = MENU_EQUIP
         gosub calc_inv_array
         if !menu_change then goto equip_menu_updater
-        clearscreen
         menu_change = 0
         menu_selection = 0
         equip_inv_sel = 0
@@ -601,7 +598,6 @@ plot_relics_menu
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_RELICS
         if !menu_change then goto relic_menu_updater
-        clearscreen
         menu_change = 0
         menu_selection = 0
         m_inv_scroll = 0

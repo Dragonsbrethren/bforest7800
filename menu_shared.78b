@@ -47,10 +47,12 @@ menu_init
 end
         menu_change = 1
         gosub disable_double_wide_mode
-        clearscreen
+        bg_color = $10
+        gosub clear_palettes
         goto main
 
 menu_handler
+        if menu_change then gosub clear_palettes
         if menu = MENU_GAMEOVER then goto plot_gameover bank11
         if menu = MENU_ITEMS then goto plot_items_menu bank3
         if menu = MENU_MAGIC then goto plot_magic_menu bank11
@@ -142,8 +144,8 @@ open_main_menu
         goto main
 
 close_menu
-        gosub enable_double_wide_mode
         gosub clear_palettes
+        gosub enable_double_wide_mode
         game_state = STATE_FIELD
         asm
         lda #1
@@ -153,11 +155,11 @@ close_menu
         sta pause_debounce
         sta torch_reblock
 end
-        clearscreen
         goto main ; shared palettes are now included in each tileset
 
 set_menu_top_pal
-        WSYNC = 1 : BACKGRND = $2D
+        WSYNC = 1
+        if menu_change then BACKGRND = $10 else BACKGRND = $2D
         if menu = MENU_MAIN || menu = MENU_PASSWORD then return thisbank
         if menu = MENU_GAMEOVER then return thisbank
         if menu = MENU_RELICS then P4C2 = PAL_DISABLED_3

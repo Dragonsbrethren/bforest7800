@@ -70,6 +70,7 @@ title_menu
         goto main
 
 title_selection
+        gosub clear_palettes
         if burn_tutorial then burn_tutorial = 0 : game_state = STATE_FIELD : reload_map = 1 : goto main bank2
         if demo_num = 2 || demo_num = 4 then demo_num++ : goto title_init
         asm
@@ -82,7 +83,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 08-16-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 08-18-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -91,8 +92,6 @@ title_flash
         goto main
 
 title_continue
-        gosub clear_palettes
-        clearscreen
         if pw_index0 then pw_index = 24 : goto title_no_clear
         pw_index = 0
         ; password starts as all dashes
@@ -167,7 +166,7 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_FOREST
+        tileset = T_CAVES
         player_sword = 1
         player_shield = 0
         player_armor = 1

@@ -206,7 +206,6 @@ end
 plot_gameover
         sCTRL{2} = 1 : CTRL = sCTRL
         if !menu_change then goto gameover_updater
-        clearscreen
         gosub plot_menu_border
         menu_change = 0
         menu_selection = 0
@@ -242,6 +241,7 @@ gameover_controls
         goto main
 
 gameover_input
+        gosub clear_palettes
         if menu_selection then menu_selection = 0 : demo_end = 0 : menu_change = 1 : goto title_init bank10
         gosub decode_password
         in_save_room = 0
@@ -263,7 +263,6 @@ plot_password_menu
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_PASSWORD
         if !menu_change then goto password_menu_updater
-        clearscreen
         gosub calc_inv_array
         gosub password_to_buffer
         gosub plot_menu_border
@@ -350,7 +349,6 @@ plot_magic_menu
         sCTRL{2} = 1 : CTRL = sCTRL
         menu = MENU_MAGIC
         if !menu_change then goto magic_menu_updater
-        clearscreen
         menu_change = 0
         menu_selection = 0
         m_inv_scroll = 0
