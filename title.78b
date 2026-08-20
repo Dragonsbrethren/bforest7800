@@ -17,13 +17,13 @@ title_init
           ldx #0
           stx music_playing
           stx object_timer
+          stx bg_color
           inx
           stx menu_columns
           stx menu_max
           stx action_debounce
           stx menu_debounce
 end
-        bg_color = 0
         gosub clear_palettes
         displaymode 320B
         bg_color = $71
@@ -71,6 +71,7 @@ title_menu
         goto main
 
 title_selection
+        bg_color = 0
         gosub clear_palettes
         if burn_tutorial then burn_tutorial = 0 : game_state = STATE_FIELD : reload_map = 1 : goto main bank2
         if demo_num = 2 || demo_num = 4 then demo_num++ : goto title_init
@@ -167,14 +168,14 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_CAVES
+        tileset = T_FOREST
         player_sword = 1
         player_shield = 0
         player_armor = 1
         player_charm = 0
         player_spell = 0
         toggled_familiar = 0
-        m_item_bits_1   = %00000001
+        m_item_bits_1   = %00000101
         m_item_bits_2   = %00001111
         m_sword_bits_1  = %00000001
         m_sword_bits_2  = %00000000
@@ -191,6 +192,10 @@ title_new_game_normal
         m_key_bits = %00000000
         m_map_bits = %00000000
         save_room_index = 0
+        ; zero out the item quantity array so items can't be smuggled into new game
+        for index = 1 to 10
+            m_item_qty[index] = 0
+        next
 
 init_field
         ; code shared by new game and continue options

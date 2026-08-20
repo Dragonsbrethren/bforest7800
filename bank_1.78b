@@ -1383,9 +1383,9 @@ top_pal_animation
         sP7C3  = sP7C2
         sP7C2  = sP7C1
         sP7C1  = inttemp1
-        P7C1 = sP7C1
-        P7C2 = sP7C2
-        P7C3 = sP7C3
+        P7C1 = getfade(sP7C1)
+        P7C2 = getfade(sP7C2)
+        P7C3 = getfade(sP7C3)
 top_pal_done
         return thisbank
 
@@ -1429,6 +1429,7 @@ clear_palettes
           sta P7C2
           sta P7C3
 end
+        savescreen
         doublebuffer flip
         return
 

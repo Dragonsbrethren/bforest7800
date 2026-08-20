@@ -151,7 +151,8 @@ end
 
 river_waterfall
         ; prevent blacked out waterfalls when loading pal_animation rooms
-        P7C1 = getfade(PAL_WFALL1) : P7C2 = getfade(PAL_WFALL2) : P7C3 = getfade(PAL_WFALL3)
+        sP7C1 = PAL_WFALL1 : sP7C2 = PAL_WFALL2 : sP7C3 = PAL_WFALL3
+        P7C1 = getfade(sP7C1) : P7C2 = getfade(sP7C2) : P7C3 = getfade(sP7C3)
         pal_animation = 1
         return
 
