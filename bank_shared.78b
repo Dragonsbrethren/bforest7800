@@ -7,7 +7,11 @@
         incbasic shared_gfx.78b
 
 field_handler
-        if burn_tutorial = 1 then goto title_init bank10
+        if !burn_tutorial then field_check_reload
+field_goto_title
+        gosub clear_palettes
+        goto title_init bank10
+field_check_reload
         if reload_map = 1 then goto load_map
         exit_dir = EXIT_NONE
         ; essentially trigger a game over at end of demo
@@ -871,9 +875,12 @@ test_joy_pause
         goto player_move_done
 
 test_joy_demo
-        if joy0fire0 || joy0fire1 then action_debounce = 1 : goto title_init bank10
+        if joy0fire0 || joy0fire1 then action_debounce = 1 : goto test_joy_pal_clear
         demo_timer++
-        if !demo_timer then goto title_init bank10
+        if demo_timer then player_move_done
+test_joy_pal_clear
+        gosub clear_palettes
+        goto title_init bank10
 
 player_move_done
 

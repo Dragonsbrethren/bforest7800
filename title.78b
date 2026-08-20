@@ -23,9 +23,10 @@ title_init
           stx action_debounce
           stx menu_debounce
 end
+        bg_color = 0
+        gosub clear_palettes
         displaymode 320B
         bg_color = $71
-        clearscreen
         if burn_tutorial then goto spell_tutorial
         if demo_num = 2 || demo_num = 4 then goto title_credits
         characterset logo
@@ -236,7 +237,7 @@ init_field
         goto main
 
 set_title_top_pal
-        BACKGRND = bg_color
+        if demo_num = 2 || demo_num = 4  then bg_color = 0 else bg_color = $71
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         if demo_num = 2 || demo_num = 4 then set_title_credits_pal
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
@@ -247,6 +248,7 @@ set_title_credits_pal
         return thisbank
 
 set_title_bottom_pal
+        BACKGRND = 0
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         P4C1 = $00 : P4C2 = $02 : P4C3 = $03
         return thisbank

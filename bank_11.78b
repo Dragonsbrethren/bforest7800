@@ -242,10 +242,11 @@ gameover_controls
 
 gameover_input
         gosub clear_palettes
-        if menu_selection then menu_selection = 0 : demo_end = 0 : menu_change = 1 : goto title_init bank10
+        if menu_selection then menu_selection = 0 : demo_end = 0 : menu_change = 1 : goto exit_pw_menu
         gosub decode_password
         in_save_room = 0
         menu = MENU_MAIN
+        gosub clear_palettes
         goto title_continue bank10
 
 demo_end_text
@@ -321,21 +322,26 @@ encode_sel_to_pw
         if menu_selection > 10 then temp1 = PW_A        ; "Erase" spans 3 colums, font offset needs to change
         if menu_selection = 10 then pw_backspace                        ; Erase
         if menu_selection = 39 then gosub decode_password : goto main   ; Confirm
-        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto title_init bank10 ; Exit
+        if menu_selection = 40 then menu_selection = 0 : menu_change = 1 : goto exit_pw_menu
         ; don't allow entering the 24th character since it corrupts pw_index
         if pw_index >= 24 then goto password_menu_dirs_done
         pw_index0[pw_index] = menu_selection + temp1
         pw_index = pw_index + 1
         goto password_menu_dirs_done
 
+exit_pw_menu
+        gosub clear_palettes
+        goto title_init bank10 ; Exit
+
 pw_backspace
         pw_error = 0
         menu_debounce = 1
         if pw_index >= 24 then pw_index = 24
-        pw_index = pw_index - 1
+        pw_index--
         ; replace with dash character
         pw_index0[pw_index] = 82
         if pw_index > 23 then pw_index = 0
+        if pw_index0[0] = 82 then pw_index = 0
         goto main
 
 plot_password
