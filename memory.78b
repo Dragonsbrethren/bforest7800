@@ -145,6 +145,7 @@
         autodim byte stone_duration
         autodim byte fury_duration 2
         autodim byte player_obscure
+        autodim byte earthquake_active
 
 ;------------------------------------------------------------------------------
 ; MISC movement vars

@@ -712,8 +712,82 @@ obj_torch_stats
 end
         goto obj_next_stats
 
+earthquake_handler
+        asm
+          dec earthquake_active
+          bne .earthquake_shake
+end
+        shakescreen off
+        goto field_player_handler
+earthquake_shake
+        shakescreen hi
+        goto field_player_handler
+
 magic_collision
         inline magic_collision.asm
+
+cast_earthquake
+        asm
+          lda #EARTHQUAKE_MP_COST
+          jsr .test_spell_cost
+          bne set_earthquake_time
+          jmp .set_state_chant
+set_earthquake_time
+          lda #EARTHQUAKE_TIME
+          sta earthquake_active
+          ldx #MAX_MAP_OBJECTS
+earthquake_loop
+          lda object_type,x
+          beq earthquake_next
+          bmi earthquake_next
+          lda object_invuln,x
+          bne earthquake_next
+          ; special exception for spiders to take damage while clinging
+          cmp #TYPE_SPIDER
+          beq earthquake_set_damage
+          cmp #TYPE_CSPIDER
+          beq earthquake_set_damage
+          ; 255 mdef enemies are immune
+          lda object_mdef,x
+          cmp #255
+          beq earthquake_next
+
+          ; test if the object is floating or flying
+          lda object_flags,x
+          and #%00010100
+          bne earthquake_next
+earthquake_set_damage
+          lda #EARTHQUAKE_DAMAGE
+          sec
+          sbc object_mdef,x
+          bpl earthquake_damage
+          lda #1
+earthquake_damage
+          sta hp_change
+          jsr .decrease_hp
+          lda temp_hp
+          cmp temp1
+          bcc earthquake_damage_hp
+          lda #0
+earthquake_damage_hp
+          sta object_hp,x
+          lda #INVULN_FRAMES
+          sta object_invuln,x
+earthquake_damage_set_name
+          jsr .set_enemy_name
+          ldx index
+          lda object_hp,x
+          bne earthquake_next
+          lda object_type,y
+          sta object_flags,y
+          lda #TYPE_SPAWNER
+          sta object_type,x
+
+earthquake_next
+          dex
+          bpl earthquake_loop
+          jmp .chant_done
+end
 
 cast_lightning
         mp_change = #LIGHTNING_MP_COST
@@ -2125,10 +2199,12 @@ end
 
         data spell_ptrs_lo
         <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_windslash, <.cast_lightning
+        <.cast_earthquake, <.cast_earthquake, <.cast_fireball, <.cast_fireball
 end
 
         data spell_ptrs_hi
         >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_windslash, >.cast_lightning
+        >.cast_earthquake, >.cast_earthquake, >.cast_fireball, >.cast_fireball
 end
 
 campfire_ai

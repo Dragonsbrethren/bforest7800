@@ -19,6 +19,8 @@ field_check_reload
         gosub object_handler
         ; set by close menu, needed to make torches block movement after menu access
         torch_reblock = 0
+        if earthquake_active then goto earthquake_handler
+field_player_handler
         goto player_handler
 player_handler_done
         gosub check_collisions

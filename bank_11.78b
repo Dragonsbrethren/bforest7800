@@ -457,7 +457,7 @@ magic_inventory
 plot_magic_names
         if item_name = player_spell then m_palette = 0
         plotsprite menu_tome0 m_palette m_spriteX m_spriteY
-        plotmap magic_names m_palette m_textX m_textY 11 1 0 item_name 11
+        plotmap magic_names m_palette m_textX m_textY 12 1 0 item_name 12
         if item_name <> player_spell then magic_left
 ;       m_textX = m_textX + 48
 ;       plotchars 'On' 0 m_textX m_textY singlewide
@@ -538,15 +538,15 @@ equip_spell
 
         dmahole 0
         alphadata magic_names menu_font singlewide
-        '           '
-        'Fireball   '
-        'Ice Flakes '
-        'Wind Slash '
-        'Thunderbolt'
-        'Spell 5    '
-        'Spell 6    '
-        'Spell 7    '
-        'Spell 8    '
+        '            '
+        'Fireball    '
+        'Ice Flakes  '
+        'Wind Slash  '
+        'Thunderbolt '
+        'Poison Bomb '
+        'Earthquake  '
+        'Divine Light'
+        'Blessing    '
 end
 
         alphadata magic_desc menu_font singlewide
@@ -555,10 +555,10 @@ end
         'Spread Ice Attack  '
         'Diagonal Wind Slash'
         'Call Down Lightning'
-        'Learn Monster Names'
-        'Traverse Water     '
-        'Ascend Waterfalls  '
-        'Scale Ledges       '
+        'Form a Poison Cloud'
+        'Start an Earthquake'
+        'Heals HP and Status'
+        'Regen and Immunity '
 end
 
         data magic_mp

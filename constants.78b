@@ -99,7 +99,7 @@
         const CHANT_CAST_TIME  = 12
         const CHANT_START_TIME_LIGHT = 4
         const CHANT_CAST_TIME_LIGHT  = 4
-        const INVULN_FRAMES = 8
+        const INVULN_FRAMES = 12
         const STUN_FRAMES = 5
 
         const PLAYER_HP_MAX = 48
@@ -578,6 +578,10 @@
         const FLAME_BOSS_DELAY = 255
 
         const JO_STONE_FRAME = 2
+
+        const EARTHQUAKE_MP_COST = 30
+        const EARTHQUAKE_DAMAGE = 10
+        const EARTHQUAKE_TIME = 12
 
 ;------------------------------------------------------------------------------
 ; HUD
