@@ -55,7 +55,8 @@
         const TYPE_OCTOINK  = 141
         const TYPE_SEED     = 142
         const TYPE_HSEED    = 143
-        const TYPE_PLAYERSPELL = TYPE_WINDSLASH
+        const TYPE_PLAYERSPELL = TYPE_POISON
+        const TYPE_POISON    = 148
         const TYPE_WINDSLASH = 149
         const TYPE_FIREBALL = 150
         const TYPE_ICEFLAKE = 151
@@ -852,6 +853,11 @@
         const LIGHTNING_DAMAGE = $10
         const LIGHTNING_MP_COST = 20
         const LIGHTNING_DURATION = 5
+
+        const POISON_PAL = 3
+        const POISON_DAMAGE = 2
+        const POISON_ELEM_ATK = %00100000
+        const F_POISON = 8
 
         const DARKBOLT_DURATION = 5
         const DARKBOLT_DAMAGE = 8

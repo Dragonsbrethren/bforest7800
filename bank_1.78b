@@ -40,7 +40,8 @@
         incgraphic gfx/sprites/owl1.png 160A 0 2 1 3
         incgraphic gfx/sprites/owl2.png 160A 0 1 2 3
         incgraphic gfx/sprites/owl3.png 160A 0 3 2 1
-
+        incgraphic gfx/sprites/psn0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/psn1.png 160A 0 1 2 3
 init
         doublebuffer on 2
         goto title_init bank10
@@ -1184,6 +1185,7 @@ plot_fairy
         gosub plot_shared_160b
         goto plot_next
 
+plot_poison
 plot_owl
         gosub plot_bank1_160a
         goto plot_next
@@ -2199,12 +2201,12 @@ end
 
         data spell_ptrs_lo
         <.set_state_chant, <.cast_fireball, <.cast_iceflakes, <.cast_windslash, <.cast_lightning
-        <.cast_earthquake, <.cast_earthquake, <.cast_fireball, <.cast_fireball
+        <.cast_poison, <.cast_earthquake, <.cast_fireball, <.cast_fireball
 end
 
         data spell_ptrs_hi
         >.set_state_chant, >.cast_fireball, >.cast_iceflakes, >.cast_windslash, >.cast_lightning
-        >.cast_earthquake, >.cast_earthquake, >.cast_fireball, >.cast_fireball
+        >.cast_poison, >.cast_earthquake, >.cast_fireball, >.cast_fireball
 end
 
 campfire_ai
