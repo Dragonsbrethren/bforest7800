@@ -566,11 +566,11 @@ end
 end
 
         data pal_magic1
-        $00, $42, $9A, $B3, $A9, $0F, $0F, $0F, $0F, $0F, $34
+        $00, $42, $9A, $B3, $A9, $B5, $22, $7A, $B9
 end
 
         data pal_magic2
-        $00, $45, $9F, $B6, $AC, $97, $45, $76, $06, $1C, $27
+        $00, $45, $9F, $B6, $AC, $64, $14, $6C, $9B
 end
 
 copy_menu_map

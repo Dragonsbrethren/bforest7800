@@ -148,20 +148,32 @@ main_animation_timer
 
 main_lightning
     asm
-        lda lightning_timer
-        beq lightning_flash
+        lda no_flash            ; if we're in a room with no windows, don't flash
+        bne lightning_done
+        lda player_status       ; if the player has darkness, don't flash
+        and #%00000010
+        bne lightning_done
+        lda lightning_timer     ; lightning last 8 frames, after this, try to flash
+        beq lightning_flash     ; jump before dec to make sure flash lasts 8 frames
         dec lightning_timer
         bne lightning_done
 lightning_flash
-        lda #1
-        sta pal_update
-        dec lightning_delay
-        lda lightning_delay
-        bne lightning_done
-        jsr randomize
-        bmi lightning_done
+        dec lightning_delay     ; check the delay value and set palette
+        bne lightning_normal    ; to normal if not ready to flash yet
+ ;      jsr .thunder_sound        this is ANNOYING! need a new sound
+        lda #LIGHTNING_DELAY
+        sta lightning_delay
+        jsr randomize           ; randomly decide if a flash should
+        bmi lightning_normal    ; happen this delay cycle
         lda #LIGHTNING_FRAMES
         sta lightning_timer
+        lda #FADE_LIGHTNING
+        bne lightning_fade
+lightning_normal
+        lda #FADE_NORMAL
+lightning_fade
+        sta fade
+        sta pal_update
 lightning_done
 end
 
@@ -727,6 +739,13 @@ earthquake_shake
 magic_collision
         inline magic_collision.asm
 
+cast_heal
+        asm
+;         lda #SPARKLE_TIME
+;         sta sparkle_active
+
+end
+
 cast_earthquake
         asm
           lda #EARTHQUAKE_MP_COST
@@ -743,6 +762,9 @@ earthquake_loop
           bmi earthquake_next
           lda object_invuln,x
           bne earthquake_next
+          ; earthquake can hit torches
+          cmp #TYPE_TORCH
+          beq earthquake_set_damage
           ; special exception for spiders to take damage while clinging
           cmp #TYPE_SPIDER
           beq earthquake_set_damage
@@ -752,19 +774,22 @@ earthquake_loop
           lda object_mdef,x
           cmp #255
           beq earthquake_next
-
           ; test if the object is floating or flying
           lda object_flags,x
           and #%00010100
           bne earthquake_next
 earthquake_set_damage
           lda #EARTHQUAKE_DAMAGE
+          clc
+          adc player_wisdom
           sec
           sbc object_mdef,x
           bpl earthquake_damage
           lda #1
 earthquake_damage
           sta hp_change
+          lda object_hp,x
+          sta temp1
           jsr .decrease_hp
           lda temp_hp
           cmp temp1
@@ -775,18 +800,23 @@ earthquake_damage_hp
           lda #INVULN_FRAMES
           sta object_invuln,x
 earthquake_damage_set_name
+          ; need X in index for enemy name code
+          stx index
           jsr .set_enemy_name
           ldx index
           lda object_hp,x
           bne earthquake_next
-          lda object_type,y
-          sta object_flags,y
+          lda object_type,x
+          sta object_flags,x
           lda #TYPE_SPAWNER
           sta object_type,x
 
 earthquake_next
           dex
           bpl earthquake_loop
+          ; should be safe to not reload player index
+;         ldx #0
+;         stx index
           jmp .chant_done
 end
 
@@ -1299,9 +1329,7 @@ spirit_init
           rts
 end
 
-        data spirit_frame
-        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
-end
+
 
 owl_ai
         asm
@@ -1514,7 +1542,7 @@ end
 end
 
         data f_spell_pals
-        0, 2, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 2, 3, 3, 0, 3, 1, 0, 0
 end
 
         data f_item_pals

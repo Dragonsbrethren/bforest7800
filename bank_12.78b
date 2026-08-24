@@ -129,8 +129,8 @@ caves_init
           ldx #1
           stx player_elevation
           stx shadow_offset
-          dex ; 0
           stx no_flash
+          dex ; 0
           stx alt_palette
           stx alt_torch
           stx pal_animation

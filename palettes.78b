@@ -2,18 +2,18 @@
 ; SHARED PALETTES
 ;------------------------------------------------------------------------------
         const PAL_BLACK  = $00
-        const PAL_DKPURP = $60
-        const PAL_LTPURP = $76
+        const PAL_DKPURP = $61
+        const PAL_LTPURP = $77
         const PAL_WHITE  = $0F
-        const PAL_DKBRWN = $10
-        const PAL_LTBRWN = $23
-        const PAL_SKIN   = $3B
-        const PAL_DKRED  = $30
-        const PAL_LTRED  = $45
-        const PAL_GOLD   = $19
-        const PAL_DKBLUE = $91
-        const PAL_LTBLUE = $A3
-        const PAL_COPPER = $D5
+        const PAL_DKBRWN = $11
+        const PAL_LTBRWN = $24
+        const PAL_SKIN   = $3D
+        const PAL_DKRED  = $31
+        const PAL_LTRED  = $46
+        const PAL_GOLD   = $1A
+        const PAL_DKBLUE = $92
+        const PAL_LTBLUE = $A4
+        const PAL_COPPER = $D6
 
         const HAIR_COLOR = PAL_DKBRWN
         const CHANT_COLOR = $60
@@ -23,82 +23,82 @@
 ;------------------------------------------------------------------------------
 ; FOREST
 ;------------------------------------------------------------------------------
-        const PAL_F_GRND  = $11 ; ground/shorelines
+        const PAL_F_GRND  = $12 ; ground/shorelines
         const PAL_F_DKGRN = $C0 ; trees and slimes
-        const PAL_F_LTGRN = $C3
-        const PAL_F_DKGRY = $03 ; rocks and wolves
-        const PAL_F_LTGRY = $06
-        const PAL_F_WATER = $A1 ; water blue
-        const PAL_F_LTWTR = $06 ; duplicate gray
+        const PAL_F_LTGRN = $C4
+        const PAL_F_DKGRY = $04 ; rocks and wolves
+        const PAL_F_LTGRY = $07
+        const PAL_F_WATER = $A2 ; water blue
+        const PAL_F_LTWTR = $07 ; duplicate gray
         const PAL_F_DKBRN = $F0 ; scrapped browns (for now)
-        const PAL_F_LTBRN = $23
-        const PAL_F_HOUSE = $3C
+        const PAL_F_LTBRN = $24
+        const PAL_F_HOUSE = $3D
 
         const PAL_FIREBAT_DK = $20
         const PAL_FIREBAT_MD = $33
         const PAL_FIREBAT_LT = $35
-        const PAL_W_DKCARP   = $61
-        const PAL_W_LTCARP   = $75
-        const PAL_W_DKBRN    = $B0
-        const PAL_W_LTBRN    = $A2
-        const PAL_W_HOUSE    = $8C
+        const PAL_W_DKCARP   = $63
+        const PAL_W_LTCARP   = $77
+        const PAL_W_DKBRN    = $B2
+        const PAL_W_LTBRN    = $A4
+        const PAL_W_HOUSE    = $8E
 
 ;------------------------------------------------------------------------------
 ; CATHEDRAL
 ;------------------------------------------------------------------------------
         const PAL_C_SKY    = $90
         const PAL_C_LIGHTN = $AA        ; lightning flash
-        const PAL_C_DKWALL = $02
-        const PAL_C_MDWALL = $03
-        const PAL_C_LTWALL = $04
-        const PAL_C_BRWALL = $05        ; walls during lightning flash
-        const PAL_C_DKCARP = $40
-        const PAL_C_LTCARP = $41
-        const PAL_C_BRCARP = $42        ; window light on carpets
-        const PAL_C_DKTILE = $A0
-        const PAL_C_LTTILE = $A1
-        const PAL_C_BRTILE = $A2        ; window light on tiles
+        const PAL_C_DKWALL = $03
+        const PAL_C_MDWALL = $04
+        const PAL_C_LTWALL = $05
+        const PAL_C_BRWALL = $06        ; walls during lightning flash
+        const PAL_C_DKCARP = $41
+        const PAL_C_LTCARP = $42
+        const PAL_C_BRCARP = $43        ; window light on carpets
+        const PAL_C_DKTILE = $A1
+        const PAL_C_LTTILE = $A2
+        const PAL_C_BRTILE = $A3        ; window light on tiles
         const PAL_C_SKELBL = $00        ; skeleton black
-        const PAL_C_SKELAR = $33        ; skeleton armor
+        const PAL_C_SKELAR = $34        ; skeleton armor
         const PAL_C_SKELWH = $0F        ; skeleton white
-        const PAL_C_DKGOLD = $23
-        const PAL_C_LTGOLD = $27
+        const PAL_C_DKGOLD = $24
+        const PAL_C_LTGOLD = $28
 
 ;------------------------------------------------------------------------------
 ; RIVER
 ;------------------------------------------------------------------------------
-        const PAL_WFALL1 = $A1
-        const PAL_WFALL2 = $A3
+        const PAL_WFALL1 = $A3
+        const PAL_WFALL2 = $A5
         const PAL_WFALL3 = $0F
 
-        const PAL_K_DKPINK = $44
-        const PAL_K_LTPINK = $47
+        const PAL_K_DKPINK = $46
+        const PAL_K_LTPINK = $49
 
 ;------------------------------------------------------------------------------
 ; HILLS
 ;------------------------------------------------------------------------------
-        const PAL_H_GRND  = $06         ; medium gray
-        const PAL_H_DKGRY = $03
-        const PAL_H_LTGRY = $08
-        const PAL_H_DIRT  = $11         ; brown
-        const PAL_H_VEG   = $C0         ; dark green
-        const PAL_H_WATER = $A1         ; murky blue
+        const PAL_H_GRND  = $07         ; medium gray
+        const PAL_H_DKGRY = $04
+        const PAL_H_LTGRY = $09
+        const PAL_H_DIRT  = $12         ; brown
+        const PAL_H_VEG   = $C1         ; dark green
+        const PAL_H_WATER = $A2         ; murky blue
 
-        const PAL_H_SLIME_DK = $34
-        const PAL_H_SLIME_LT = $37
+        const PAL_H_SLIME_DK = $35
+        const PAL_H_SLIME_LT = $38
 
 ;------------------------------------------------------------------------------
 ; CAVES
 ;------------------------------------------------------------------------------
-        const PAL_CV_GRND  = $11
-        const PAL_CV_DKGRN = $B1
-        const PAL_CV_LTGRN = $B4
-        const PAL_CV_DKBRN = $10
-        const PAL_CV_WATER = $A1
-        const PAL_CV_EYES  = $33        ; bat's eyes/wings
+        const PAL_CV_GRND  = $12
+        const PAL_CV_DKGRN = $B2
+        const PAL_CV_LTGRN = $B5
+        const PAL_CV_DKBRN = $11
+        const PAL_CV_WATER = $A2
+        const PAL_CV_EYES  = $34        ; bat's eyes/wings
 
-        const PAL_PUDDING_DK = $70
-        const PAL_PUDDING_LT = $60
+        const PAL_PUDDING_DK = $71
+        const PAL_PUDDING_LT = $61
 
 ;
 

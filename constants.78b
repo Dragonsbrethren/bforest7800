@@ -140,8 +140,9 @@
         const POISON_DMG = 1
         const POISON_FRAMES = 60
 
-        const FADE_DARKNESS = 0
-        const FADE_NORMAL   = 15
+        const FADE_DARKNESS  = 0
+        const FADE_NORMAL    = 13
+        const FADE_LIGHTNING = 15
         const WHITE_DARKNESS = $50
 
         const CHARM_FURY = 4
@@ -164,7 +165,7 @@
         const MAX_OBJECTS = 15
 
         const LIGHTNING_FRAMES = 8
-        const LIGHTNING_DELAY = 120
+        const LIGHTNING_DELAY = 160
 
         ; menu map room exit values
         const ROOML_B   = 0

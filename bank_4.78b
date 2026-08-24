@@ -261,26 +261,22 @@ castle_room_bank_4
 end
 
 castle_pals
-        P4C1 = PAL_C_SKY    : P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
-        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_BRCARP  : P7C3 = getfade(PAL_C_LTCARP) ; carpets
-        P7C2 = getfade(PAL_C_DKCARP, black)
+        if lightning_timer then goto castle_lightning
+castle_normal
+        P4C1 = PAL_C_SKY
         if alt_palette=1 then P5C1 = getfade(PAL_C_DKCARP, black) : goto castle_maroon_pal   ; chapel
-        P6C1 = PAL_C_BRTILE : P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
         if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
-        P5C1 = PAL_C_SKELBL : P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
+        P6C1 = PAL_C_BRTILE
+        P5C1 = PAL_C_SKELBL
         goto castle_shared_pals
 
 castle_lightning
-        ; TODO: lightning can be partially handled by palette fade
-        if no_flash then goto castle_pals
-        P4C1 = PAL_C_LIGHTN : P4C2 = PAL_C_MDWALL : P4C3 = PAL_C_BRWALL ; walls
-        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_LIGHTN: P7C3 = PAL_C_BRCARP ; carpets
-        P7C2 = PAL_C_LTCARP 
-        if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal   ; chapel
-        P6C1 = PAL_C_LIGHTN : P6C2 = PAL_C_BRTILE : P6C3 = PAL_C_LTTILE ; blue-green tiles    
+        P4C1 = PAL_C_LIGHTN
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL else P7C1 = PAL_C_LIGHTN      ; carpets
+        if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal      ; chapel
+        P6C1 = PAL_C_LIGHTN                                                     ; blue-green tiles    
         if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
         P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
-        lightning_delay = LIGHTNING_DELAY
         goto castle_shared_pals
         
 castle_maroon_pal
@@ -290,12 +286,19 @@ castle_maroon_pal
 castle_gold_pal
         ; override skeleton colors with golds
         P5C2 = getfade(PAL_C_DKGOLD, black) : P5C3 = getfade(PAL_C_LTGOLD)
-        if !lightning_delay then lightning_delay = LIGHTNING_DELAY
-
+        
 castle_shared_pals
+        P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
+        if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_BRCARP  : P7C3 = getfade(PAL_C_LTCARP) ; carpets
+        P7C2 = getfade(PAL_C_DKCARP, black)
+
+        P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
+        
+        P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
         bg_color = flash_color
         incbasic shared_pals.78b
         goto palette_done
+
 
 plot_castle_room_0
 plot_castle_room_1
