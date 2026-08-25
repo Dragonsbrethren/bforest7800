@@ -624,17 +624,61 @@ end
 end
 
 check_map_bits
-        if object_type[index] = TYPE_KEY1 && m_key_bits{0} then object_type[index] = 0
-        if object_type[index] = TYPE_KEY2 && m_key_bits{1} then object_type[index] = 0
-        if object_type[index] = TYPE_KEY3 && m_key_bits{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_KEY4 && m_key_bits{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_KEY5 && m_key_bits{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_MAP1 && m_map_bits{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_MAP2 && m_map_bits{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_MAP3 && m_map_bits{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_MAP4 && m_map_bits{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_MAP5 && m_map_bits{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_KEY1
+          beq check_key_bits
+          iny
+          cmp TYPE_KEY2
+          beq check_key_bits
+          iny
+          cmp #TYPE_KEY3
+          beq check_key_bits
+          iny
+          cmp #TYPE_KEY4
+          beq check_key_bits
+          iny
+          cmp #TYPE_KEY5
+          beq check_key_bits
+          ldy #0
+          cmp #TYPE_MAP1
+          beq check_map_bits
+          iny
+          cmp #TYPE_MAP2
+          beq check_map_bits
+          iny
+          cmp #TYPE_MAP3
+          beq check_map_bits
+          iny
+          cmp #TYPE_MAP4
+          beq check_map_bits
+          iny
+          cmp #TYPE_MAP5
+          beq check_map_bits
+check_map_bits_done
+          jmp .remove_duplicates_next
+
+check_key_bits
+          lda m_key_bits
+          and item_bits,y
+          beq check_map_bits_done
+          lda #0
+          sta object_type,x
+          beq check_map_bits_done
+
+check_map_bits
+          lda m_map_bits
+          and item_bits,y
+          beq check_map_bits_done
+          lda #0
+          sta object_type,x
+          beq check_map_bits_done
+end
+
+        data item_bits
+        %00000001, %00000010, %00000100, %00001000, %00010000
+end
 
 check_spell_bits
         if object_type[index] = TYPE_SPELL1 && m_spell_bits_1{0} then object_type[index] = 0
