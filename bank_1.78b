@@ -626,6 +626,7 @@ end
 check_map_bits
         asm
           ldx index
+          ldy #0
           lda object_type,x
           cmp #TYPE_KEY1
           beq check_key_bits
@@ -681,82 +682,328 @@ end
 end
 
 check_spell_bits
-        if object_type[index] = TYPE_SPELL1 && m_spell_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SPELL2 && m_spell_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_SPELL3 && m_spell_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL4 && m_spell_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL5 && m_spell_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL6 && m_spell_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL7 && m_spell_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL8 && m_spell_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL9 && m_spell_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SPELL10 && m_spell_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_SPELL1
+          beq check_spell_bits_1
+          iny
+          cmp TYPE_SPELL2
+          beq check_spell_bits_1
+          iny
+          cmp #TYPE_SPELL3
+          beq check_spell_bits_1
+          iny
+          cmp #TYPE_SPELL4
+          beq check_spell_bits_1
+          iny
+          cmp #TYPE_SPELL5
+          beq check_spell_bits_1
+          ldy #0
+          cmp #TYPE_SPELL6
+          beq check_spell_bits_2
+          iny
+          cmp #TYPE_SPELL7
+          beq check_spell_bits_2
+          iny
+          cmp #TYPE_SPELL8
+          beq check_spell_bits_2
+          iny
+          cmp #TYPE_SPELL9
+          beq check_spell_bits_2
+          iny
+          cmp #TYPE_SPELL10
+          beq check_spell_bits_2
+check_spell_bits_done
+          jmp .remove_duplicates_next
+
+check_spell_bits_1
+          lda m_spell_bits_1
+          and item_bits,y
+          beq check_spell_bits_done
+          lda #0
+          sta object_type,x
+          beq check_spell_bits_done
+
+check_spell_bits_2
+          lda m_spell_bits_2
+          and item_bits,y
+          beq check_spell_bits_done
+          lda #0
+          sta object_type,x
+          beq check_spell_bits_done
+end
 
 check_relic_bits
-        if object_type[index] = TYPE_RELIC1 && m_relic_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_RELIC2 && m_relic_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_RELIC3 && m_relic_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC4 && m_relic_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC5 && m_relic_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC6 && m_relic_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC7 && m_relic_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC8 && m_relic_bits_2{2} then object_type[index] = 0
-        if object_type[index] = TYPE_RELIC9 && m_relic_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_RELIC10 && m_relic_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_RELIC1
+          beq check_relic_bits_1
+          iny
+          cmp TYPE_RELIC2
+          beq check_relic_bits_1
+          iny
+          cmp #TYPE_RELIC3
+          beq check_relic_bits_1
+          iny
+          cmp #TYPE_RELIC4
+          beq check_relic_bits_1
+          iny
+          cmp #TYPE_RELIC5
+          beq check_relic_bits_1
+          ldy #0
+          cmp #TYPE_RELIC6
+          beq check_relic_bits_2
+          iny
+          cmp #TYPE_RELIC7
+          beq check_relic_bits_2
+          iny
+          cmp #TYPE_RELIC8
+          beq check_relic_bits_2
+          iny
+          cmp #TYPE_RELIC9
+          beq check_relic_bits_2
+          iny
+          cmp #TYPE_RELIC10
+          beq check_relic_bits_2
+check_relic_bits_done
+          jmp .remove_duplicates_next
+
+check_relic_bits_1
+          lda m_relic_bits_1
+          and item_bits,y
+          beq check_relic_bits_done
+          lda #0
+          sta object_type,x
+          beq check_relic_bits_done
+
+check_relic_bits_2
+          lda m_relic_bits_2
+          and item_bits,y
+          beq check_relic_bits_done
+          lda #0
+          sta object_type,x
+          beq check_relic_bits_done
+end
 
 check_sword_bits
-        if object_type[index] = TYPE_SWORD1 && m_sword_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SWORD2 && m_sword_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Bone Scimitar
-        if object_type[index] = TYPE_SWORD3 && m_sword_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD4 && m_sword_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD5 && m_sword_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD6 && m_sword_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD7 && m_sword_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD8 && m_sword_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD9 && m_sword_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SWORD10 && m_sword_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_SWORD1
+          beq check_sword_bits_1
+          iny
+          cmp TYPE_SWORD2
+          beq check_sword_bits_1
+          iny
+          cmp #TYPE_SWORD3
+          beq check_sword_bits_1
+          iny
+          cmp #TYPE_SWORD4
+          beq check_sword_bits_1
+          iny
+          cmp #TYPE_SWORD5
+          beq check_sword_bits_1
+          ldy #0
+          cmp #TYPE_SWORD6
+          beq check_sword_bits_2
+          iny
+          cmp #TYPE_SWORD7
+          beq check_sword_bits_2
+          iny
+          cmp #TYPE_SWORD8
+          beq check_sword_bits_2
+          iny
+          cmp #TYPE_SWORD9
+          beq check_sword_bits_2
+          iny
+          cmp #TYPE_SWORD10
+          beq check_sword_bits_2
+check_sword_bits_done
+          jmp .remove_duplicates_next
+
+check_sword_bits_1
+          lda m_sword_bits_1
+          and item_bits,y
+          beq check_sword_bits_done
+          lda #0
+          sta object_type,x
+          beq check_sword_bits_done
+
+check_sword_bits_2
+          lda m_sword_bits_2
+          and item_bits,y
+          beq check_sword_bits_done
+          lda #0
+          sta object_type,x
+          beq check_sword_bits_done
+end
 
 check_shield_bits
-        if object_type[index] = TYPE_SHIELD1 && m_shield_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_SHIELD2 && m_shield_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_SHIELD3 && m_shield_bits_1{2} then object_type[index] = TYPE_POTION    ; Skull Shield
-        if object_type[index] = TYPE_SHIELD4 && m_shield_bits_1{3} then object_type[index] = TYPE_LIFEAPPLE ; Turtle Shell
-        if object_type[index] = TYPE_SHIELD5 && m_shield_bits_1{4} then object_type[index] = TYPE_ELIXIR    ; Heater
-        if object_type[index] = TYPE_SHIELD6 && m_shield_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD7 && m_shield_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD8 && m_shield_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD9 && m_shield_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_SHIELD10 && m_shield_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_SHIELD1
+          beq check_shield_bits_1
+          iny
+          cmp TYPE_SHIELD2
+          beq check_shield_bits_1
+          iny
+          cmp #TYPE_SHIELD3
+          beq check_shield_bits_1
+          iny
+          cmp #TYPE_SHIELD4
+          beq check_shield_bits_1
+          iny
+          cmp #TYPE_SHIELD5
+          beq check_shield_bits_1
+          ldy #0
+          cmp #TYPE_SHIELD6
+          beq check_shield_bits_2
+          iny
+          cmp #TYPE_SHIELD7
+          beq check_shield_bits_2
+          iny
+          cmp #TYPE_SHIELD8
+          beq check_shield_bits_2
+          iny
+          cmp #TYPE_SHIELD9
+          beq check_shield_bits_2
+          iny
+          cmp #TYPE_SHIELD10
+          beq check_shield_bits_2
+check_shield_bits_done
+          jmp .remove_duplicates_next
+
+check_shield_bits_1
+          lda m_shield_bits_1
+          and item_bits,y
+          beq check_shield_bits_done
+          lda #0
+          sta object_type,x
+          beq check_shield_bits_done
+
+check_shield_bits_2
+          lda m_shield_bits_2
+          and item_bits,y
+          beq check_shield_bits_done
+          lda #0
+          sta object_type,x
+          beq check_shield_bits_done
+end
 
 check_armor_bits
-        if object_type[index] = TYPE_ARMOR1 && m_armor_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_ARMOR2 && m_armor_bits_1{1} then object_type[index] = 0
-        if object_type[index] = TYPE_ARMOR3 && m_armor_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR4 && m_armor_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR5 && m_armor_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR6 && m_armor_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR7 && m_armor_bits_2{1} then object_type[index] = TYPE_LIFEAPPLE ; Harpy's Top
-        if object_type[index] = TYPE_ARMOR8 && m_armor_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR9 && m_armor_bits_2{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_ARMOR10 && m_armor_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_ARMOR1
+          beq check_armor_bits_1
+          iny
+          cmp TYPE_ARMOR2
+          beq check_armor_bits_1
+          iny
+          cmp #TYPE_ARMOR3
+          beq check_armor_bits_1
+          iny
+          cmp #TYPE_ARMOR4
+          beq check_armor_bits_1
+          iny
+          cmp #TYPE_ARMOR5
+          beq check_armor_bits_1
+          ldy #0
+          cmp #TYPE_ARMOR6
+          beq check_armor_bits_2
+          iny
+          cmp #TYPE_ARMOR7
+          beq check_armor_bits_2
+          iny
+          cmp #TYPE_ARMOR8
+          beq check_armor_bits_2
+          iny
+          cmp #TYPE_ARMOR9
+          beq check_armor_bits_2
+          iny
+          cmp #TYPE_ARMOR10
+          beq check_armor_bits_2
+check_armor_bits_done
+          jmp .remove_duplicates_next
+
+check_armor_bits_1
+          lda m_armor_bits_1
+          and item_bits,y
+          beq check_armor_bits_done
+          lda #0
+          sta object_type,x
+          beq check_armor_bits_done
+
+check_armor_bits_2
+          lda m_armor_bits_2
+          and item_bits,y
+          beq check_armor_bits_done
+          lda #0
+          sta object_type,x
+          beq check_armor_bits_done
+end
 
 check_charm_bits
-        if object_type[index] = TYPE_CHARM1 && m_charm_bits_1{0} then object_type[index] = 0
-        if object_type[index] = TYPE_CHARM2 && m_charm_bits_1{1} then object_type[index] = TYPE_ELIXIR ; Dark Talisman
-        if object_type[index] = TYPE_CHARM3 && m_charm_bits_1{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM4 && m_charm_bits_1{3} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM5 && m_charm_bits_1{4} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM6 && m_charm_bits_2{0} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM7 && m_charm_bits_2{1} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM8 && m_charm_bits_2{2} then object_type[index] = 0 
-        if object_type[index] = TYPE_CHARM9 && m_charm_bits_2{3} then object_type[index] = TYPE_LIFEAPPLE ; Toxic Scale
-        if object_type[index] = TYPE_CHARM10 && m_charm_bits_2{4} then object_type[index] = 0 
-        goto remove_duplicates_next
+        asm
+          ldx index
+          ldy #0
+          lda object_type,x
+          cmp #TYPE_CHARM1
+          beq check_charm_bits_1
+          iny
+          cmp TYPE_CHARM2
+          beq check_charm_bits_1
+          iny
+          cmp #TYPE_CHARM3
+          beq check_charm_bits_1
+          iny
+          cmp #TYPE_CHARM4
+          beq check_charm_bits_1
+          iny
+          cmp #TYPE_CHARM5
+          beq check_charm_bits_1
+          ldy #0
+          cmp #TYPE_CHARM6
+          beq check_charm_bits_2
+          iny
+          cmp #TYPE_CHARM7
+          beq check_charm_bits_2
+          iny
+          cmp #TYPE_CHARM8
+          beq check_charm_bits_2
+          iny
+          cmp #TYPE_CHARM9
+          beq check_charm_bits_2
+          iny
+          cmp #TYPE_CHARM10
+          beq check_charm_bits_2
+check_charm_bits_done
+          jmp .remove_duplicates_next
+
+check_charm_bits_1
+          lda m_charm_bits_1
+          and item_bits,y
+          beq check_charm_bits_done
+          lda #0
+          sta object_type,x
+          beq check_charm_bits_done
+
+check_charm_bits_2
+          lda m_charm_bits_2
+          and item_bits,y
+          beq check_charm_bits_done
+          lda #0
+          sta object_type,x
+          beq check_charm_bits_done
+end
 
 obj_torch_stats
         object_hp[obj_index] = 1
