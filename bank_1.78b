@@ -1025,6 +1025,7 @@ end
         goto field_player_handler
 earthquake_shake
         shakescreen hi
+        playsfx sfx_explosion
         goto field_player_handler
 
 magic_collision
@@ -2231,6 +2232,45 @@ increase_hp
 decrease_hp
         temp_hp = temp_hp - hp_change
         return thisbank
+
+        data sfx_rubbermallet
+        $10,$10,$00 ; version, priority, frames per chunk
+        $1c, $07, $0f
+        $1b, $07, $0f
+        $1c, $07, $0f
+        $1a, $0c, $0f
+        $12, $0c, $0f
+        $1e, $07, $0e
+        $17, $0c, $0e
+        $1d, $07, $08
+        $12, $0c, $08
+        $18, $07, $09
+        $17, $0c, $08
+        $12, $0c, $07
+        $1b, $0c, $04
+        $14, $0c, $01
+        $13, $01, $01
+        $00,$00,$00
+end
+
+        data sfx_explosion
+        $10,$10,$00 ; version, priority, frames per chunk
+        $0f,$06,$03
+        $04,$0e,$08
+        $0c,$06,$03
+        $0f,$06,$03
+        $0c,$06,$06
+        $0f,$06,$04
+        $0f,$06,$05
+        $0f,$06,$03
+        $0a,$06,$04
+        $0f,$06,$03
+        $08,$06,$03
+        $0c,$06,$03
+        $0e,$06,$03
+        $08,$06,$03
+        0,0,0
+end
 
         incbasic music.78b
         dmahole 0

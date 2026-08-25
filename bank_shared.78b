@@ -2539,8 +2539,9 @@ cast_poison_zone_align
           sta object_spr_ptr_lo,y
           lda #>.plot_poison
           sta object_spr_ptr_hi,y
-          jmp .chant_done
 end
+        playsfx sfx_rubbermallet
+        goto chant_done
 
         data spirit_frame
         0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1

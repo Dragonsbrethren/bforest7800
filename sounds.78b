@@ -309,4 +309,5 @@ end
         $0f,$0e,$01
         $00,$00,$00
 end
+
         inline pokeysound.asm
