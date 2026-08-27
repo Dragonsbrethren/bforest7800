@@ -2233,8 +2233,12 @@ shield_check
           ; copy the projectile's type to its flags for status effects
           lda object_type,x
           sta flags
+          ; special check to prevent dark bolt from being destroyed
+          cmp #TYPE_DARKBOLT
+          beq player_shield_check
           lda #0
           sta object_type,x
+player_shield_check
           ; if the player doesn't have a shield or they aren't standing still, damage the player
           lda player_shield
           beq .projectile_status
