@@ -148,6 +148,8 @@ main_animation_timer
 
 main_lightning
     asm
+        lda lightning_segs      ; if a lightning spell is cast, brighten for duration
+        bne lightning_bright
         lda no_flash            ; if we're in a room with no windows, don't flash
         bne lightning_done
         lda player_status       ; if the player has darkness, don't flash
@@ -165,6 +167,7 @@ lightning_flash
         sta lightning_delay
         jsr randomize           ; randomly decide if a flash should
         bmi lightning_normal    ; happen this delay cycle
+lightning_bright
         lda #LIGHTNING_FRAMES
         sta lightning_timer
         lda #FADE_LIGHTNING

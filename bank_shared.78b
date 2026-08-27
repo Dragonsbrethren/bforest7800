@@ -2380,6 +2380,7 @@ lightning_return
 lightning_die
           lda #0
           sta object_type,x
+          sta lightning_segs
           rts
 
 lightning_init

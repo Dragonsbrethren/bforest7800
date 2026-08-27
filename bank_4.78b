@@ -262,21 +262,21 @@ end
 
 castle_pals
         if lightning_timer then goto castle_lightning
-castle_normal
+castle_sky
         P4C1 = PAL_C_SKY
-        if alt_palette=1 then P5C1 = getfade(PAL_C_DKCARP, black) : goto castle_maroon_pal   ; chapel
-        if alt_palette=2 then P5C1 = PAL_C_SKY    : goto castle_gold_pal  ; belltower
-        P6C1 = PAL_C_BRTILE
-        P5C1 = PAL_C_SKELBL
-        goto castle_shared_pals
+        if alt_palette=2 then P5C1 = PAL_C_SKY else P5C1 = PAL_C_SKELBL
+        goto castle_normal_pal
 
 castle_lightning
         P4C1 = PAL_C_LIGHTN
-        if alt_palette=2 then P7C1 = PAL_C_SKELBL else P7C1 = PAL_C_LIGHTN      ; carpets
-        if alt_palette=1 then P5C1 = PAL_C_LTCARP : goto castle_maroon_pal      ; chapel
-        P6C1 = PAL_C_LIGHTN                                                     ; blue-green tiles    
-        if alt_palette=2 then P5C1 = PAL_C_LIGHTN : goto castle_gold_pal     ; belltower
-        P5C1 = PAL_C_SKELBL : P5C2 = PAL_C_SKELAR : P5C3 = PAL_C_SKELWH ; skeletons
+        if alt_palette=2 then P5C1 = PAL_C_LIGHTN else P5C1 = PAL_C_SKELBL
+
+castle_normal_pal
+        P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
+        if alt_palette=1 then goto castle_maroon_pal
+        P6C1 = getfade(PAL_C_BRTILE) : P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
+        if alt_palette=2 then goto castle_gold_pal
+        P5C2 = getfade(PAL_C_SKELAR) : P5C3 = white_value ; skeletons
         goto castle_shared_pals
         
 castle_maroon_pal
@@ -288,13 +288,8 @@ castle_gold_pal
         P5C2 = getfade(PAL_C_DKGOLD, black) : P5C3 = getfade(PAL_C_LTGOLD)
         
 castle_shared_pals
-        P4C2 = getfade(PAL_C_DKWALL, black) : P4C3 = getfade(PAL_C_LTWALL) ; walls
         if alt_palette=2 then P7C1 = PAL_C_SKELBL : P7C3 = PAL_LTBRWN else P7C1 = PAL_C_BRCARP  : P7C3 = getfade(PAL_C_LTCARP) ; carpets
         P7C2 = getfade(PAL_C_DKCARP, black)
-
-        P6C2 = getfade(PAL_C_LTTILE) : P6C3 = getfade(PAL_C_DKTILE, black) ; tiled floors
-        
-        P5C2 = getfade(PAL_C_SKELAR) : P5C3 = getfade(white_value) ; skeletons
         bg_color = flash_color
         incbasic shared_pals.78b
         goto palette_done
