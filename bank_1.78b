@@ -1698,19 +1698,11 @@ find_target_loop
           ; exclude zero objects and projectiles
           beq find_target_next
           bmi find_target_next
-          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
+          ; exclude monster spawners and boss handlers
           cmp #TYPE_TORCH
           beq find_target_next
-          cmp #TYPE_FOREST_BOSS
-          beq find_target_next
-          cmp #TYPE_CASTLE_BOSS
-          beq find_target_next
-          cmp #TYPE_RIVERBOSS
-          beq find_target_next
-          cmp #TYPE_HILLS_BOSS
-          beq find_target_next
-          cmp #TYPE_BAT_SPAWNER
-          beq find_target_next
+          cmp #TYPE_MOBSPAWNER
+          bcs find_target_next
           rts
 
 find_target_next
@@ -2406,11 +2398,8 @@ find_lighting_target_loop
           lda object_type,x
           beq lightning_target_inc      ; exclude zero and projectiles
           bmi lightning_target_inc
-          ; EXCLUSIONS: TODO all exclusions to end of object types < 128
-          cmp #TYPE_CASTLE_BOSS         ; TODO: range
-          beq lightning_target_inc      ; don't kill the boss controllers...
-          cmp #TYPE_RIVERBOSS
-          beq lightning_target_inc
+          cmp #TYPE_MOBSPAWNER          ; exclude spawners and boss controllers
+          bcs lightning_target_inc
           lda player_facing
           cmp #DIR_UP
           beq lightning_target_up
