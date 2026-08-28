@@ -68,6 +68,7 @@ tranloop  sta exit_tileset,x
 end
 
 load_map
+        mutesfx tia
         bg_color = 0
         gosub clear_palettes
         displaymode 160A
@@ -371,6 +372,7 @@ fade_done
         goto player_handler_done
 
 save_room_handler
+        mutesfx tia
         gosub clear_palettes
         if demoplay then goto title_init bank10
         if player_state = STATE_DEATH then password_display

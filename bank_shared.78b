@@ -360,6 +360,7 @@ plot_bar
         return thisbank
 
 open_menu
+        mutesfx tia
         gosub clear_palettes
         ; prevent menu access from loading wrong tileset on exit
         exit_tileset = 0
@@ -2525,7 +2526,7 @@ cast_poison_zone_align
           lda #TYPE_POISON
           sta object_type,y
           sta object_hp,y
-          lda #0
+          txa ; 0
           sta object_Xvel_hi,y
           sta object_Xvel_lo,y
           sta object_Yvel_hi,y
