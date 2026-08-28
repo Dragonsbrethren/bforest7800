@@ -20,28 +20,14 @@
         TYPE_CHARM9     ; ochre jelly
         0               ; mini ochre jelly
         TYPE_SHIELD5    ; feuermann
-        0               ; harpy queen
-        0               ; hills boss
-        0               ; bat spawner
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
         TYPE_CHARM9     ; cave spider
         TYPE_CHARM9     ; pudding
         0               ; mini pudding
         TYPE_HIETHER    ; caves ghost
-        0               ; cardinal
-        0               ; cathedral boss
-        0               ; octokraken
-        0               ; kraken's eye
-        0               ; tentacle
-        0               ; flame
         TYPE_LIFEAPPLE  ; stone rose hills
-        0               ; burn bush
-        0               ; firebat
-        0               ; crystal ball
-        TYPE_ETHER      ; forest ghost
-        0               ; dragon
-        0               ; caves boss
+        TYPE_ETHER      ; forest ghost    
 end
 
         data common_drops
@@ -66,26 +52,12 @@ end
         TYPE_ANTIDOTE   ; ochre jelly
         0               ; mini ochre jelly
         TYPE_UNCURSE    ; feuermann
-        0               ; harpy queen
-        0               ; hills boss
-        0               ; bat spawner
         TYPE_POTION     ; bat
         TYPE_SOFT       ; stone rose
         TYPE_SOFT       ; cave spider
         TYPE_ANTIDOTE   ; pudding
         0               ; mini pudding
         TYPE_UNCURSE    ; caves ghost
-        0               ; cardinal
-        0               ; cathedral boss
-        0               ; octokraken
-        0               ; kraken's eye
-        0               ; tentacle
-        0               ; flame
         TYPE_SOFT       ; stone rose hills
-        0               ; burn bush
-        0               ; firebat
-        0               ; crystal ball
         TYPE_UNCURSE    ; forest ghost
-        0               ; dragon
-        0               ; caves boss
 end

@@ -1,0 +1,89 @@
+        data object_ai_lo
+        0       ; player
+        0       ; torch
+        wolf_ai_lo
+        warg_ai_lo
+        nix_ai_lo
+        octopus_ai_lo   ; river beast
+        slime_ai_lo
+        mslime_ai_lo 
+        raven_ai_lo
+        priest_ai_lo
+        priest_ai_lo    ; skeleton
+        redslime_ai_lo
+        mredslime_ai_lo
+        ghost_ai_lo     ; cathedral ghost
+        rghost_ai_lo
+        harpy_ai_lo
+        spider_ai_lo
+        spider_ai_lo    ; vertical spider, currently unused
+        hslime_ai_lo
+        mhslime_ai_lo
+        hghost_ai_lo
+        <.bat_ai
+        <.rose_ai
+        <.cave_spider_ai
+        <.pudding_ai
+        <.mpudding_ai
+        <.cghost_ai
+        <.hrose_ai
+        <.fghost_ai
+        <.firebat_ai
+        <.cardinal_ai
+        <.octokraken_ai
+        <.tentacle_ai
+        harpy_queen_ai_lo
+        <.dragon_ai
+        <.burnbush_ai
+        <.bat_spawner_ai
+        <.blockflame_ai
+        <.forest_boss_ai
+        <.castle_boss
+        <.river_boss, 
+        hills_boss_ai_lo, 
+end
+
+        data object_ai_hi
+        0       ; player
+        0       ; torch
+        wolf_ai_hi
+        warg_ai_hi
+        nix_ai_hi
+        octopus_ai_hi   ; river beast
+        slime_ai_hi
+        mslime_ai_hi 
+        raven_ai_hi
+        priest_ai_hi
+        priest_ai_hi    ; skeleton
+        redslime_ai_hi
+        mredslime_ai_hi
+        ghost_ai_hi     ; cathedral ghost
+        rghost_ai_hi
+        harpy_ai_hi
+        spider_ai_hi
+        spider_ai_hi    ; vertical spider, currently unused
+        hslime_ai_hi
+        mhslime_ai_hi
+        hghost_ai_hi
+        >.bat_ai
+        >.rose_ai
+        >.cave_spider_ai
+        >.pudding_ai
+        >.mpudding_ai
+        >.cghost_ai
+        >.hrose_ai
+        >.fghost_ai
+        >.firebat_ai
+        >.cardinal_ai
+        >.octokraken_ai
+        >.tentacle_ai
+        harpy_queen_ai_hi
+        >.dragon_ai
+        >.burnbush_ai
+        >.bat_spawner_ai
+        >.blockflame_ai
+        >.forest_boss_ai
+        >.castle_boss
+        >.river_boss, 
+        hills_boss_ai_hi, 
+end

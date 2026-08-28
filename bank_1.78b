@@ -602,31 +602,7 @@ remove_duplicates_next
         next
         return thisbank
 
-        data object_stats_lo
-        0, obj_torch_stats_lo, obj_wolf_stats_lo, obj_warg_stats_lo, obj_nix_stats_lo
-        obj_octo_stats_lo, obj_slime_stats_lo, obj_slime_stats_lo, obj_raven_stats_lo
-        obj_priest_stats_lo, obj_skel_stats_lo, obj_redslime_stats_lo, obj_redslime_stats_lo
-        obj_ghost_stats_lo, obj_rghost_stats_lo, obj_harpy_stats_lo, obj_spider_stats_lo, obj_spider_stats_lo
-        obj_hslime_stats_lo, obj_hslime_stats_lo, obj_hghost_stats_lo, obj_harpy_stats_lo, obj_boss_stats_lo
-        <.obj_bat_spawner_stats, <.obj_bat_spawner_stats, <.obj_rose_stats, <.obj_cave_spider_stats
-        <.obj_pudding_stats, <.obj_pudding_stats, <.obj_cghost_stats, <.obj_cardinal_stats, <.obj_boss_stats
-        <.obj_octokraken_stats, <.obj_boss_stats, <.obj_tentacle_stats
-        <.obj_boss_stats, <.obj_hrose_stats, <.obj_burnbush_stats, <.obj_firebat_stats, <.obj_forest_boss_stats
-        <.obj_fghost_stats, <.obj_dragon_stats
-end
-
-        data object_stats_hi
-        0, obj_torch_stats_hi, obj_wolf_stats_hi, obj_warg_stats_hi, obj_nix_stats_hi
-        obj_octo_stats_hi, obj_slime_stats_hi, obj_slime_stats_hi, obj_raven_stats_hi
-        obj_priest_stats_hi, obj_skel_stats_hi, obj_redslime_stats_hi, obj_redslime_stats_hi
-        obj_ghost_stats_hi, obj_rghost_stats_hi, obj_harpy_stats_hi, obj_spider_stats_hi, obj_spider_stats_hi
-        obj_hslime_stats_hi, obj_hslime_stats_hi, obj_hghost_stats_hi, obj_harpy_stats_hi, obj_boss_stats_hi
-        >.obj_bat_spawner_stats, >.obj_bat_spawner_stats, >.obj_rose_stats, >.obj_cave_spider_stats
-        >.obj_pudding_stats, >.obj_pudding_stats, >.obj_cghost_stats, >.obj_cardinal_stats, >.obj_boss_stats
-        >.obj_octokraken_stats, >.obj_boss_stats, >.obj_tentacle_stats
-        >.obj_boss_stats, >.obj_hrose_stats, >.obj_burnbush_stats, >.obj_firebat_stats, >.obj_forest_boss_stats
-        >.obj_fghost_stats, >.obj_dragon_stats
-end
+        incbasic obj_stats.78b
 
 check_map_bits
         asm
