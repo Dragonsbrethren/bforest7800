@@ -68,7 +68,6 @@ tranloop  sta exit_tileset,x
 end
 
 load_map
-        mutesfx tia
         bg_color = 0
         gosub clear_palettes
         displaymode 160A
