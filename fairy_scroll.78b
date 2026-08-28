@@ -5,28 +5,28 @@
         name_warg_lo
         name_merman_lo
         name_octopus_lo
-        name_slime_lo
-        name_slime_lo
         name_raven_lo
         name_priest_lo
         name_skeleton_lo
-        name_rslime_lo
-        name_rslime_lo
-        name_ghost_lo
-        name_ghost_lo
         name_harpy_lo
-        name_spider_lo
-        name_spider_lo
-        name_hslime_lo
-        name_hslime_lo
-        name_hghost_lo
         name_bat_lo
         name_rose_lo
-        name_cspider_lo
-        name_pudding_lo
-        name_pudding_lo
-        name_cghost_lo
         <name_rose
+        name_spider_lo
+        name_spider_lo
+        name_cspider_lo
+        name_slime_lo
+        name_slime_lo
+        name_rslime_lo
+        name_rslime_lo
+        name_hslime_lo
+        name_hslime_lo
+        name_pudding_lo
+        name_pudding_lo
+        name_ghost_lo
+        name_ghost_lo
+        name_hghost_lo
+        name_cghost_lo
         <name_fghost
         <name_firebat
         name_cardinal_lo
@@ -46,28 +46,28 @@ end
         name_warg_hi
         name_merman_hi
         name_octopus_hi
-        name_slime_hi
-        name_slime_hi
         name_raven_hi
         name_priest_hi
         name_skeleton_hi
-        name_rslime_hi
-        name_rslime_hi
-        name_ghost_hi
-        name_ghost_hi
         name_harpy_hi
-        name_spider_hi
-        name_spider_hi
-        name_hslime_hi
-        name_hslime_hi
-        name_hghost_hi
         name_bat_hi
         name_rose_hi
-        name_cspider_hi
-        name_pudding_hi
-        name_pudding_hi
-        name_cghost_hi
         >name_rose
+        name_spider_hi
+        name_spider_hi
+        name_cspider_hi
+        name_slime_hi
+        name_slime_hi
+        name_rslime_hi
+        name_rslime_hi
+        name_hslime_hi
+        name_hslime_hi
+        name_pudding_hi
+        name_pudding_hi
+        name_ghost_hi
+        name_ghost_hi
+        name_hghost_hi
+        name_cghost_hi
         >name_fghost
         >name_firebat
         name_cardinal_hi

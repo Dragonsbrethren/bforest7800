@@ -560,8 +560,10 @@ end
 obj_bat_spawner_stats
         asm
           ldx obj_index
-          lda #1
+          lda #255
           sta object_hp,x
+          sta object_def,x
+          sta object_mdef,x
           lda #<.plot_caves_160a
           sta object_spr_ptr_lo,x
           lda #>.plot_caves_160a

@@ -2081,38 +2081,19 @@ player_knockback_block
           bcs player_knockback_status
           jmp .shield_check
 player_knockback_status
-        ; TODO: reorder objects to add ranges for inflicting status effects
           lda object_type,x
-          cmp #TYPE_SLIME
-          beq set_poison_status
-          cmp #TYPE_MSLIME
-          beq set_poison_status
-          cmp #TYPE_RSLIME
-          beq set_poison_status
-          cmp #TYPE_MRSLIME
-          beq set_poison_status
-          cmp #TYPE_HSLIME
-          beq set_poison_status
-          cmp #TYPE_MHSLIME
-          beq set_poison_status
-          cmp #TYPE_SPIDER
-          beq set_poison_status
-          cmp #TYPE_PSNCLOUD
-          beq set_poison_status
-          cmp #TYPE_DRAGON_PSN
-          beq set_poison_status
-          cmp #TYPE_GHOST
-          beq set_curse_status
-          cmp #TYPE_RGHOST
-          beq set_curse_status
-          cmp #TYPE_HGHOST
-          beq set_curse_status
-          cmp #TYPE_CGHOST
-          beq set_curse_status
-          cmp #TYPE_HARPY_QUEEN
-          beq set_fury_status
-          cmp #TYPE_PUDDING
-          beq set_poison_status
+          cmp #TYPE_POISONMOB
+          bcs pk_curse_test
+          ; index lower than poison range, just do damage
+          jmp .pc_damage
+pk_curse_test
+          cmp #TYPE_CURSEMOB
+          ; in poison range
+          bcc set_poison_status
+          ; test curse range
+pk_boss_test
+          cmp #TYPE_BOSSMONSTER
+          bcc set_curse_status
           jmp .pc_damage
 
 set_poison_status

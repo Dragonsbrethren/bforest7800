@@ -5,28 +5,28 @@
         TYPE_HIPOTION   ; warg
         TYPE_TURTLESHELL ; merman
         TYPE_HIPOTION   ; octopus
-        TYPE_CHARM9     ; slime
-        0               ; mini-slime
         TYPE_ARMOR8     ; raven
         TYPE_CHARM2     ; priest
         TYPE_SWORD2     ; skeleton
-        TYPE_CHARM9     ; red slime
-        0               ; mini red slime
-        TYPE_HIETHER    ; ghost
-        TYPE_HIETHER    ; river ghost
         TYPE_ARMOR7     ; harpy
-        TYPE_CHARM9     ; spider
-        TYPE_CHARM9     ; vertical spider
-        TYPE_CHARM9     ; ochre jelly
-        0               ; mini ochre jelly
-        TYPE_SHIELD5    ; feuermann
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
+        TYPE_LIFEAPPLE  ; stone rose hills
+        TYPE_CHARM9     ; spider
+        TYPE_CHARM9     ; vertical spider
         TYPE_CHARM9     ; cave spider
+        TYPE_CHARM9     ; slime
+        0               ; mini-slime
+        TYPE_CHARM9     ; red slime
+        0               ; mini red slime
+        TYPE_CHARM9     ; ochre jelly
+        0               ; mini ochre jelly
         TYPE_CHARM9     ; pudding
         0               ; mini pudding
+        TYPE_HIETHER    ; ghost
+        TYPE_HIETHER    ; river ghost
+        TYPE_SHIELD5    ; feuermann
         TYPE_HIETHER    ; caves ghost
-        TYPE_LIFEAPPLE  ; stone rose hills
         TYPE_ETHER      ; forest ghost    
 end
 
@@ -37,27 +37,27 @@ end
         TYPE_EYEDROP    ; warg
         TYPE_EYEDROP    ; merman
         TYPE_EYEDROP    ; octopus
-        TYPE_ANTIDOTE   ; slime
-        0               ; mini-slime
         TYPE_FOOD       ; raven
         TYPE_ETHER      ; priest
         TYPE_SHIELD3    ; skeleton
-        TYPE_ANTIDOTE   ; red slime
-        0               ; mini red slime
-        TYPE_UNCURSE    ; ghost
-        TYPE_UNCURSE    ; river ghost
         TYPE_CHARM4     ; harpy
-        TYPE_ANTIDOTE   ; spider
-        TYPE_ANTIDOTE   ; vertical spider
-        TYPE_ANTIDOTE   ; ochre jelly
-        0               ; mini ochre jelly
-        TYPE_UNCURSE    ; feuermann
         TYPE_POTION     ; bat
         TYPE_SOFT       ; stone rose
+        TYPE_SOFT       ; stone rose hills
+        TYPE_ANTIDOTE   ; spider
+        TYPE_ANTIDOTE   ; vertical spider
         TYPE_SOFT       ; cave spider
+        TYPE_ANTIDOTE   ; slime
+        0               ; mini-slime
+        TYPE_ANTIDOTE   ; red slime
+        0               ; mini red slime
+        TYPE_ANTIDOTE   ; ochre jelly
+        0               ; mini ochre jelly
         TYPE_ANTIDOTE   ; pudding
         0               ; mini pudding
+        TYPE_UNCURSE    ; ghost
+        TYPE_UNCURSE    ; river ghost
+        TYPE_UNCURSE    ; feuermann
         TYPE_UNCURSE    ; caves ghost
-        TYPE_SOFT       ; stone rose hills
         TYPE_UNCURSE    ; forest ghost
 end
