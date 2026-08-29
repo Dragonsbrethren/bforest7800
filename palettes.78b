@@ -78,8 +78,8 @@
 ; HILLS
 ;------------------------------------------------------------------------------
         const PAL_H_GRND  = $07         ; medium gray
-        const PAL_H_DKGRY = $04
-        const PAL_H_LTGRY = $09
+        const PAL_H_DKGRY = $03
+        const PAL_H_LTGRY = $0A
         const PAL_H_DIRT  = $12         ; brown
         const PAL_H_VEG   = $C1         ; dark green
         const PAL_H_WATER = $A2         ; murky blue
