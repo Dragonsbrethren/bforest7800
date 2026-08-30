@@ -41,6 +41,7 @@
         <.obj_boss_stats
         <.obj_boss_stats
         obj_boss_stats_lo
+        <.obj_boss_stats
 end
 
         data object_stats_hi
@@ -86,4 +87,5 @@ end
         >.obj_boss_stats
         >.obj_boss_stats
         obj_boss_stats_hi
+        >.obj_boss_stats
 end

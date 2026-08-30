@@ -49,6 +49,7 @@
         const TYPE_CASTLE_BOSS  =  39
         const TYPE_RIVERBOSS    =  40
         const TYPE_HILLS_BOSS   =  41
+        const TYPE_CAVES_BOSS   =  42
         const TYPE_SPAWNER      = 128
         const TYPE_SKELSWORD    = 129
         const TYPE_PROJECTILE   = TYPE_SKELSWORD

@@ -1236,12 +1236,6 @@ forest_boss_ai
           lda #$B0
           sta object_Ypos+5
           sta object_Ypos+6
-;         lda #F_FLAME
-;         sta object_frame+5
-;         sta object_frame+6
-;         lda #2
-;         sta object_pal+5
-;         sta object_pal+6
           lda #%10000000
           sta object_flags,x
 forest_boss_return

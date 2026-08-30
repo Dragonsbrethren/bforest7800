@@ -395,7 +395,7 @@ end
 end
 
         data caves_room_21_obj
-        TYPE_DRAGON, 16*8, $60
+        TYPE_DRAGON, $D0, $D0, TYPE_CAVES_BOSS, $C0, $C0
         $00
 end
 
@@ -1058,12 +1058,61 @@ obj_cghost_stats
 end
         goto caves_160a_sprite
 
+caves_boss_ai
+        asm
+          lda object_flags,x
+          cmp #%10000000
+          beq caves_boss_check
+          lda player_Ypos
+          cmp #$60
+          bcc caves_boss_return
+          lda #150
+          sta object_Xpos+1
+          lda #$60
+          sta object_Ypos+1
+          lda #%10000000
+          sta object_flags,x
+          sta object_state+1
+          lda #TYPE_BOSS_FLAME
+          sta object_type+3
+          sta object_type+4
+          lda #48
+          sta object_Xpos+3
+          lda #56
+          sta object_Xpos+4
+          lda #$10
+          sta object_Ypos+3
+          sta object_Ypos+4
+
+caves_boss_check
+          lda object_type+1
+          bne caves_boss_return
+          sta object_type+3
+          sta object_type+4
+          ; TODO: Poke char stuff
+
+caves_boss_return
+          rts
+end
+
 dragon_ai
         asm
-          lda object_parent,x
-          tay
-          lda object_type,y
-          beq dragon_fire
+          lda object_state,x
+          and #%10000000
+          beq dragon_return
+dragon_walk_forward
+          lda object_Xpos,x
+          cmp #88
+          bcc dragon_fire_check
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          sta object_facing,x
+          lda object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda #0
+          sta object_Xvel_lo,x
+
+
 dragon_anim
           lda #0
           sta object_frame,x
@@ -1071,6 +1120,9 @@ dragon_anim
           beq dragon_return
           lda #1
           sta object_frame,x
+end
+          shakescreen lo
+          asm
 dragon_return
           rts
 
@@ -1090,6 +1142,13 @@ dragon_throw
           lda #STATE_KNOCKBACK
           sta player_state
           rts
+
+dragon_fire_check
+          lda object_parent,x
+          tay
+          lda object_type,y
+          bne dragon_return
+
 
 dragon_fire
         jsr .find_new_object

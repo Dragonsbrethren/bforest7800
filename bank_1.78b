@@ -2002,6 +2002,8 @@ set_enemy_name
         ; can't see enemy names without the fairy scroll
         if index = TYPE_BURNBUSH then bypass_bestiary
         if !m_relic_bits_1{4} then return thisbank
+        ; exclude boss controllers
+        if index >= TYPE_FOREST_BOSS then return
         ; include only monsters
 bypass_bestiary
         asm

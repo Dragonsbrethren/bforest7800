@@ -32,7 +32,6 @@
         name_cardinal_lo
         <name_octokraken
         <name_octokraken        ; tentacle
-        name_cardinal_lo
         name_harpyqueen_lo
         <name_dragon
         <name_bush
@@ -73,7 +72,6 @@ end
         name_cardinal_hi
         >name_octokraken
         >name_octokraken        ; tentacle
-        name_cardinal_hi
         name_harpyqueen_hi
         >name_dragon
         >name_bush
