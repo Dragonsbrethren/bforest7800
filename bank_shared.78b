@@ -360,6 +360,12 @@ plot_bar
         return thisbank
 
 open_menu
+        asm
+          lda in_save_room
+          beq open_menu_no_save
+          jmp .player_save_input
+open_menu_no_save
+end
         mutesfx tia
         gosub clear_palettes
         ; prevent menu access from loading wrong tileset on exit
@@ -681,6 +687,8 @@ spawn_object
           lda object_flags,x
         ; exclude projectiles and collectible objects
           bmi spawn_nothing
+          cmp #TYPE_BOSSMONSTER
+          bcs spawn_nothing
         ; save old type in y for drop indexing
           tay
         ; torches have special logic for changing drops
