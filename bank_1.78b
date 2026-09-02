@@ -148,6 +148,11 @@ main_animation_timer
 
 main_lightning
     asm
+        lda player_state        ; check if the player is dead or saving
+        cmp #STATE_DEATH        ; bypass lightning flash so the screen fades correctly
+        beq lightning_done
+        cmp #STATE_SAVE
+        beq lightning_done
         lda lightning_segs      ; if a lightning spell is cast, brighten for duration
         bne lightning_bright
         lda no_flash            ; if we're in a room with no windows, don't flash
