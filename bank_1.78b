@@ -669,7 +669,7 @@ check_spell_bits
           cmp #TYPE_SPELL1
           beq check_spell_bits_1
           iny
-          cmp TYPE_SPELL2
+          cmp #TYPE_SPELL2
           beq check_spell_bits_1
           iny
           cmp #TYPE_SPELL3
@@ -723,7 +723,7 @@ check_relic_bits
           cmp #TYPE_RELIC1
           beq check_relic_bits_1
           iny
-          cmp TYPE_RELIC2
+          cmp #TYPE_RELIC2
           beq check_relic_bits_1
           iny
           cmp #TYPE_RELIC3
@@ -777,7 +777,7 @@ check_sword_bits
           cmp #TYPE_SWORD1
           beq check_sword_bits_1
           iny
-          cmp TYPE_SWORD2
+          cmp #TYPE_SWORD2
           beq check_sword_bits_1
           iny
           cmp #TYPE_SWORD3
@@ -831,7 +831,7 @@ check_shield_bits
           cmp #TYPE_SHIELD1
           beq check_shield_bits_1
           iny
-          cmp TYPE_SHIELD2
+          cmp #TYPE_SHIELD2
           beq check_shield_bits_1
           iny
           cmp #TYPE_SHIELD3
@@ -885,7 +885,7 @@ check_armor_bits
           cmp #TYPE_ARMOR1
           beq check_armor_bits_1
           iny
-          cmp TYPE_ARMOR2
+          cmp #TYPE_ARMOR2
           beq check_armor_bits_1
           iny
           cmp #TYPE_ARMOR3
@@ -939,7 +939,7 @@ check_charm_bits
           cmp #TYPE_CHARM1
           beq check_charm_bits_1
           iny
-          cmp TYPE_CHARM2
+          cmp #TYPE_CHARM2
           beq check_charm_bits_1
           iny
           cmp #TYPE_CHARM3
