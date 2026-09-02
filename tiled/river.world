@@ -174,6 +174,20 @@
             "width": 160,
             "x": 160,
             "y": -800
+        },
+        {
+            "fileName": "river_room_25.tmx",
+            "height": 192,
+            "width": 160,
+            "x": -160,
+            "y": -32
+        },
+        {
+            "fileName": "river_room_26.tmx",
+            "height": 192,
+            "width": 160,
+            "x": -160,
+            "y": 352
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -5,27 +5,6 @@
 ;==============================================================================
         bank 2
         incbasic forest.78b
-        incmapfile tiled/forest_room_1.tmx
-
-        data forest_map_lo
-        plot_forest_room_0_lo, plot_forest_room_1_lo, plot_forest_room_2_lo, plot_forest_room_3_lo, plot_forest_room_4_lo,
-        plot_forest_room_5_lo, plot_forest_room_6_lo, plot_forest_room_7_lo, plot_forest_room_8_lo, plot_forest_room_9_lo,
-        plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
-        plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
-        plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo, plot_forest_room_24_lo,
-        plot_forest_room_25_lo, plot_forest_room_26_lo, plot_forest_room_27_lo, plot_forest_room_28_lo, plot_forest_room_29_lo,
-        plot_forest_room_30_lo, plot_forest_room_31_lo
-end
-
-        data forest_map_hi
-        plot_forest_room_0_hi, plot_forest_room_1_hi, plot_forest_room_2_hi, plot_forest_room_3_hi, plot_forest_room_4_hi,
-        plot_forest_room_5_hi, plot_forest_room_6_hi, plot_forest_room_7_hi, plot_forest_room_8_hi, plot_forest_room_9_hi,
-        plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
-        plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
-        plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi, plot_forest_room_24_hi,
-        plot_forest_room_25_hi, plot_forest_room_26_hi, plot_forest_room_27_hi, plot_forest_room_28_hi, plot_forest_room_29_hi,
-        plot_forest_room_30_hi, plot_forest_room_31_hi
-end
 
         data forest_obj_lo
         forest_room_0_obj_lo, forest_room_1_obj_lo, forest_room_2_obj_lo, forest_room_3_obj_lo, forest_room_4_obj_lo,
@@ -33,8 +12,7 @@ end
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
         forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo, forest_room_24_obj_lo,
-        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_27_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo,
-        forest_room_30_obj_lo, forest_room_31_obj_lo
+        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_27_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo
 end
 
         data forest_obj_hi
@@ -43,8 +21,7 @@ end
         forest_room_10_obj_hi, forest_room_11_obj_hi, forest_room_12_obj_hi, forest_room_13_obj_hi, forest_room_14_obj_hi,
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
         forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi, forest_room_24_obj_hi,
-        forest_room_25_obj_hi, forest_room_26_obj_hi, forest_room_27_obj_hi, forest_room_28_obj_hi, forest_room_29_obj_hi,
-        forest_room_30_obj_hi, forest_room_31_obj_hi
+        forest_room_25_obj_hi, forest_room_26_obj_hi, forest_room_27_obj_hi, forest_room_28_obj_hi, forest_room_29_obj_hi
 end
 
 load_forest
@@ -225,22 +202,10 @@ forest_init
           clc
           adc #1
           sta menu_map_index_2
-          cpx #2
-          bcs .forest_room_b16
-          jmp .forest_room_bank_2
 end
 forest_room_b16
         gosub forest_room_bank_16 bank16
         return thisbank
-
-forest_room_bank_2
-        asm
-          lda forest_map_lo,x
-          sta jump1
-          lda forest_map_hi,x
-          sta jump2
-          jmp (jump1)
-end
 
 forest_pals
         asm
@@ -282,14 +247,6 @@ forest_witch_pal
         P7C3 = getfade(PAL_W_HOUSE, black)
         bg_color = getfade(PAL_W_DKBRN, black)
         goto forest_shared_2
-
-plot_forest_room_0
-plot_forest_room_1
-        menu_map_room[menu_map_index] = ROOML_UL
-        menu_map_room[menu_map_index_2] = ROOMR_UR
-        plotmapfile tiled/forest_room_1.tmx forest_room_1 0 1 20 12
-        memcpy map12 forest_room_1 240
-        return thisbank
 
         data forest_room_0_obj
         $00
@@ -482,25 +439,13 @@ end
 end
 
         data forest_room_29_obj
-        TYPE_CAMPFIRE, 9*8, $60
-        $00
-end
-
-        data forest_room_30_obj
-        $00
-end
-
-        data forest_room_31_obj
-        TYPE_FGHOST, 5*8, $60, TYPE_FGHOST, 11*8, $80
-        TYPE_WOLF, 10*8, $A0, TYPE_WOLF, 13*8, $B0
-        TYPE_TORCH, 6*8, $30, TYPE_TORCH, 15*8, $A0
         $00
 end
 
         data forest_rooms
         00, 00, 25, 26,  8, 00, 00,
         00, 11, 12, 03, 06, 29, 29,
-        30,  9, 11, 07, 02, 12, 00,
+        29,  9, 11, 07, 02, 12, 00,
         24, 10, 01, 04, 05, 31, 31,
         00, 00, 17, 15, 18, 00, 00,
         00, 28, 16, 13, 14, 00, 00,
@@ -652,20 +597,30 @@ wolf_chase
 end
 
 obj_wolf_stats
-; TODO: Make this implementation suck less
-        object_hp[obj_index] = WOLF_HP
-        object_vel_cap_hi[obj_index] = WOLF_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = WOLF_VEL_CAP_LO
-        object_damage[obj_index] = WOLF_DAMAGE
-        object_def[obj_index] = WOLF_DEF
-        object_mdef[obj_index] = WOLF_MDEF
-        object_friction_hi[obj_index] = WOLF_FRICTION_HI
-        object_friction_lo[obj_index] = WOLF_FRICTION_LO
-        object_speed_hi[obj_index] = WOLF_SPEED_HI
-        object_speed_lo[obj_index] = WOLF_SPEED_LO
-        object_flags[obj_index] = 0
         asm
           ldx obj_index
+          lda #WOLF_HP
+          sta object_hp,x
+          lda #WOLF_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #WOLF_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #WOLF_DAMAGE
+          sta object_damage,x
+          lda #WOLF_DEF
+          sta object_def,x
+          lda #WOLF_MDEF
+          sta object_mdef,x
+          lda #WOLF_FRICTION_HI
+          sta object_friction_hi,x
+          lda #WOLF_FRICTION_LO
+          sta object_friction_lo,x
+          lda #WOLF_SPEED_HI
+          sta object_speed_hi,x
+          lda #WOLF_SPEED_LO
+          sta object_speed_lo,x
+          lda #0
+          sta object_flags,x
           lda #WOLF_PAL
           sta object_pal,x
           lda #<.plot_forest_160a
@@ -705,19 +660,30 @@ slime_chase
 end
 
 obj_slime_stats
-        object_hp[obj_index] = SLIME_HP
-        object_vel_cap_hi[obj_index] = SLIME_VEL_CAP_HI
-        object_vel_cap_lo[obj_index] = SLIME_VEL_CAP_LO
-        object_damage[obj_index] = SLIME_DAMAGE
-        object_def[obj_index] = SLIME_DEF
-        object_mdef[obj_index] = SLIME_MDEF
-        object_friction_hi[obj_index] = SLIME_FRICTION_HI
-        object_friction_lo[obj_index] = SLIME_FRICTION_LO
-        object_speed_hi[obj_index] = SLIME_SPEED_HI
-        object_speed_lo[obj_index] = SLIME_SPEED_LO
-        object_flags[obj_index] = 0
         asm
           ldx obj_index
+          lda #SLIME_HP
+          sta object_hp,x
+          lda #SLIME_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #SLIME_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #SLIME_DAMAGE
+          sta object_damage,x
+          lda #SLIME_DEF
+          sta object_def,x
+          lda #SLIME_MDEF
+          sta object_mdef,x
+          lda #SLIME_FRICTION_HI
+          sta object_friction_hi,x
+          lda #SLIME_FRICTION_LO
+          sta object_friction_lo,x
+          lda #SLIME_SPEED_HI
+          sta object_speed_hi,x
+          lda #SLIME_SPEED_LO
+          sta object_speed_lo,x
+          lda #0
+          sta object_flags,x
           lda #SLIME_PAL
           sta object_pal,x
 end

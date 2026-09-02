@@ -27,6 +27,7 @@
         incgraphic gfx/sprites/firebat0.png 160A 0 1 3 2
         incgraphic gfx/sprites/firebat1.png 160A 0 1 3 2
 
+        incmapfile tiled/forest_room_1.tmx
         incmapfile tiled/forest_room_2.tmx
         incmapfile tiled/forest_room_3.tmx
         incmapfile tiled/forest_room_4.tmx
@@ -54,8 +55,6 @@
         incmapfile tiled/forest_room_26.tmx
         incmapfile tiled/forest_room_28.tmx
         incmapfile tiled/forest_room_29.tmx
-        incmapfile tiled/forest_room_30.tmx
-        incmapfile tiled/forest_room_31.tmx
 
         const plot_forest_room_0_lo = #<.plot_forest_room_0
         const plot_forest_room_0_hi = #>.plot_forest_room_0
@@ -117,7 +116,3 @@
         const plot_forest_room_28_hi = #>.plot_forest_room_28
         const plot_forest_room_29_lo = #<.plot_forest_room_29
         const plot_forest_room_29_hi = #>.plot_forest_room_29
-        const plot_forest_room_30_lo = #<.plot_forest_room_30
-        const plot_forest_room_30_hi = #>.plot_forest_room_30
-        const plot_forest_room_31_lo = #<.plot_forest_room_31
-        const plot_forest_room_31_hi = #>.plot_forest_room_31
