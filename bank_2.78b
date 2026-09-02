@@ -30,7 +30,6 @@ load_forest
         if save_room_index = 1 then forest_save_1
         if save_room_index = 2 then forest_save_2
         if save_room_index = 3 then forest_save_3
-        if save_room_index = 4 then forest_save_4
         if exit_room_index = F_FOREST_ARMOR_I then forest_armor
         if exit_room_index = F_FOREST_ARMOR_EXIT_I then forest_armor_exit
         if exit_room_index = F_FOREST_INN_I then forest_inn
@@ -97,15 +96,6 @@ forest_save_3
         player_facing = F_FOREST_SAVE3_D
         goto forest_set_room
 
-forest_save_4
-        room_index    = F_FOREST_SAVE4_I 
-        menu_map_Xpos = M_FOREST_SAVE4_X
-        menu_map_Ypos = M_FOREST_SAVE4_Y
-        player_Xpos   = F_FOREST_SAVE4_X
-        player_Ypos   = F_FOREST_SAVE4_Y
-        player_facing = F_FOREST_SAVE4_D
-        goto forest_set_room
-
 forest_armor
         room_index = F_FOREST_ARMOR_I
         player_Xpos = F_FOREST_ARMOR_X
@@ -134,7 +124,7 @@ forest_inn_exit
 
 
         incrmtfile castle.rmta
-        dmahole 0
+        dmahole 0 noflow
 
 forest_witch
         room_index = F_FOREST_WITCH_I
@@ -292,9 +282,9 @@ end
         data forest_room_6_obj
         TYPE_WOLF, 7*8, $50, TYPE_WOLF, 9*8, $60
         TYPE_WOLF, 11*8, $70
-        TYPE_NIXTAIL, 16*8, $40
+        TYPE_NIXTAIL, 16*8, $50
         TYPE_TORCH, 3*8, $40, TYPE_TORCH, 8*8, $A0
-        TYPE_TORCH, 17*8, $30, TYPE_TORCH, 17*8, $60
+        TYPE_TORCH, 17*8, $40, TYPE_TORCH, 17*8, $70
         $00
 end
 

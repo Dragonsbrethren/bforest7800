@@ -153,6 +153,7 @@ load_river
         if demoplay then river_demo
         if save_room_index = 1 then river_save_1
         if save_room_index = 2 then river_save_2
+        if save_room_index = 3 then river_save_3
         if exit_room_index = F_RIVER_START2_I then river_entrance_2
         if exit_room_index = F_RIVER_START3_I then river_entrance_3
         if exit_room_index = F_RIVER_START4_I then river_entrance_4
@@ -184,6 +185,15 @@ river_save_2
         player_Xpos   = F_RIVER_SAVE2_X
         player_Ypos   = F_RIVER_SAVE2_Y
         player_facing = F_RIVER_SAVE2_D
+        goto river_set_room
+
+river_save_3
+        room_index    = F_RIVER_SAVE3_I
+        menu_map_Xpos = M_RIVER_SAVE3_X
+        menu_map_Ypos = M_RIVER_SAVE3_Y
+        player_Xpos   = F_RIVER_SAVE3_X
+        player_Ypos   = F_RIVER_SAVE3_Y
+        player_facing = F_RIVER_SAVE3_D
         goto river_set_room
 
 river_entrance_2
@@ -299,7 +309,7 @@ octokraken_pal
         P5C2 = getfade(PAL_K_DKPINK, black) : P5C3 = getfade(PAL_K_LTPINK)
         goto river_pal_6
 
-        dmahole 0
+        dmahole 0 noflow
         data river_rooms
         00, 23, 24, 13, 17, 16, 00
         00, 22, 07,  8,  9, 15, 00
@@ -476,7 +486,7 @@ end
         data river_room_26_obj
         TYPE_NIX, 5*8, $60, TYPE_NIX, 11*8, $80
         TYPE_WARG, 10*8, $A0, TYPE_WARG, 13*8, $B0
-        TYPE_TORCH, 6*8, $30, TYPE_TORCH, 15*8, $A0
+        TYPE_TORCH, 8*8, $30, TYPE_TORCH, 15*8, $A0
         $00
 end
 

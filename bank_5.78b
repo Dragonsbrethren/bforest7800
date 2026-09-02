@@ -164,7 +164,7 @@ plot_castle_room_12
         memcpy map12 castle_room_12 240
         return otherbank
 
-        dmahole 0
+        dmahole 0 noflow
 plot_castle_room_13
         alt_palette = 1
         menu_map_room[menu_map_index] = 6

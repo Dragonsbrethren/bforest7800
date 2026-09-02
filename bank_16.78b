@@ -72,7 +72,7 @@ plot_forest_room_5
         exit_tileset = T_RIVER
         exit_Xpos = 19*8
         exit_Ypos = $68
-        exit_room_index = F_RIVER_START4_I
+        exit_room_index = F_RIVER_START5_I
         return otherbank
 
 plot_forest_room_6
@@ -82,8 +82,8 @@ plot_forest_room_6
         memcpy map12 forest_room_6 240
         exit_tileset = T_RIVER
         exit_Xpos = 19*8
-        exit_Ypos = $78
-        exit_room_index = F_RIVER_START5_I
+        exit_Ypos = $58
+        exit_room_index = F_RIVER_START4_I
         return otherbank
 
 plot_forest_room_7
@@ -93,7 +93,7 @@ plot_forest_room_7
         memcpy map12 forest_room_7 240
         return otherbank
 
-        dmahole 0
+        dmahole 0 noflow
 plot_forest_room_8
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_D

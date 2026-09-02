@@ -309,7 +309,7 @@ plot_castle_room_1
 plot_castle_bank5_return
         return thisbank
 
-      dmahole 0
+      dmahole 0 noflow
 
 plot_castle_room_2
         menu_map_room[menu_map_index] = 10

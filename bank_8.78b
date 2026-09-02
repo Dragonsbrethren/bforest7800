@@ -427,7 +427,7 @@ obj_hrose_stats
           jmp .obj_next_stats
 end
 
-        dmahole 0
+        dmahole 0 noflow
 ;=========================================================
 ; HILLS BOSS HANDLER
 ;---------------------------------------------------------

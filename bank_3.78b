@@ -772,7 +772,7 @@ item_cursor_set
         goto plot_menu_cursor
 
 
-        dmahole 0
+        dmahole 0 noflow
 gen_forest_map
         alphachars '0123456789ABCDEF'
         characterset menu_map
@@ -796,10 +796,12 @@ gen_castle_s
 
 gen_river_s
         if entered_save_room{0} then Xposition = 78 : Yposition = 96 : gosub plot_map_s
-        if entered_save_room{1} then Xposition = 94 : Yposition = 64 : goto plot_map_s
+        if entered_save_room{1} then Xposition = 94 : Yposition = 64 : gosub plot_map_s
+        if entered_save_room{2} then Xposition = M_RIVER_SAVE3_X : Yposition = M_RIVER_SAVE3_Y : goto plot_map_s
 
 gen_hills_s
-        if entered_save_room{0} then Xposition = 78 : Yposition = 112 : goto plot_map_s
+        if entered_save_room{0} then Xposition = 78 : Yposition = 112 : gosub plot_map_s
+        if entered_save_room{1} then Xposition = M_HILLS_SAVE2_X : Yposition = M_HILLS_SAVE2_Y : goto plot_map_s
 
 gen_caves_s
         if entered_save_room{0} then Xposition = 70 : Yposition = 64 : gosub plot_map_s

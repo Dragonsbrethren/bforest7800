@@ -92,7 +92,7 @@ plot_caves_room_6
 plot_caves_room_6_done
         goto caves_waterfall bank12
 
-        dmahole 0
+        dmahole 0 noflow
 plot_caves_room_7
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR

@@ -246,23 +246,16 @@
         const F_FOREST_SAVE3_Y = $88
         const F_FOREST_SAVE3_D = DIR_LEFT
 
-        const M_FOREST_SAVE4_X = 86
-        const M_FOREST_SAVE4_Y = 80
-        const F_FOREST_SAVE4_I = 12
-        const F_FOREST_SAVE4_X = 70
-        const F_FOREST_SAVE4_Y = $6B
-        const F_FOREST_SAVE4_D = DIR_SLEEP
-
         const M_FOREST_START2_X = 86
         const M_FOREST_START2_Y = 80
-        const F_FOREST_START2_I = 12
+        const F_FOREST_START2_I = 11
         const F_FOREST_START2_X = 140
         const F_FOREST_START2_Y = $68
         const F_FOREST_START2_D = DIR_LEFT
 
         const M_FOREST_START3_X = 86
         const M_FOREST_START3_Y = 112
-        const F_FOREST_START3_I = 26
+        const F_FOREST_START3_I = 25
         const F_FOREST_START3_X = 140
         const F_FOREST_START3_Y = $88
         const F_FOREST_START3_D = DIR_LEFT
@@ -324,6 +317,13 @@
         const F_RIVER_SAVE2_Y = $70
         const F_RIVER_SAVE2_D = DIR_SLEEP
 
+        const M_RIVER_SAVE3_X = 54
+        const M_RIVER_SAVE3_Y = 128
+        const F_RIVER_SAVE3_I = 28
+        const F_RIVER_SAVE3_X = 70
+        const F_RIVER_SAVE3_Y = $6B
+        const F_RIVER_SAVE3_D = DIR_SLEEP
+
         const M_RIVER_START2_X = 86
         const M_RIVER_START2_Y = 64
         const F_RIVER_START2_I = 4
@@ -338,16 +338,16 @@
         const F_RIVER_START3_Y = $30
         const F_RIVER_START3_D = DIR_DOWN
 
-        const M_RIVER_START4_X = 62
+        const M_RIVER_START4_X = 54
         const M_RIVER_START4_Y = 128
-        const F_RIVER_START4_I = 29
+        const F_RIVER_START4_I = 28
         const F_RIVER_START4_X = 9
         const F_RIVER_START4_Y = $68
         const F_RIVER_START4_D = DIR_RIGHT
 
-        const M_RIVER_START5_X = 62
+        const M_RIVER_START5_X = 54
         const M_RIVER_START5_Y = 160
-        const F_RIVER_START5_I = 43
+        const F_RIVER_START5_I = 42
         const F_RIVER_START5_X = 9
         const F_RIVER_START5_Y = $88
         const F_RIVER_START5_D = DIR_RIGHT

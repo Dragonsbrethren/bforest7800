@@ -96,7 +96,7 @@ plot_hills_room_20
         shadow_offset  = 4
         return otherbank
 
-        dmahole 0
+        dmahole 0 noflow
 plot_hills_room_12
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
