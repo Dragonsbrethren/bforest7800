@@ -748,8 +748,8 @@
 
         const DRAGON_HP = 200
         const DRAGON_DAMAGE = 20
-        const DRAGON_SPEED_HI = 1
-        const DRAGON_SPEED_LO = 0
+        const DRAGON_SPEED_HI = 0
+        const DRAGON_SPEED_LO = 192
         const DRAGON_VEL_CAP_HI = 1
         const DRAGON_VEL_CAP_LO = 0
         const DRAGON_FRICTION_HI = 1

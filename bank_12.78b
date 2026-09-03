@@ -1117,8 +1117,13 @@ dragon_walk_forward
           sta object_facing,x
           lda object_speed_hi,x
           sta object_Xvel_hi,x
-          lda #0
+          lda #object_speed_lo,x
+          clc
+          adc object_Xvel_lo,x
           sta object_Xvel_lo,x
+          lda object_speed_hi,x
+          adc object_Xvel_hi,x
+          sta object_Xvel_hi,x
 
 
 dragon_anim
@@ -1220,10 +1225,12 @@ obj_dragon_stats
           sta object_mdef,x
           lda #DRAGON_SPEED_HI
           sta object_speed_hi,x
+          lda #DRAGON_VEL_CAP_HI
           sta object_friction_hi,x
           sta object_vel_cap_hi,x
-          lda #0
+          lda #DRAGON_SPEED_LO
           sta object_speed_lo,x
+          lda #0
           sta object_friction_lo,x
           sta object_vel_cap_lo,x
           lda #DRAGON_ELEM_ATK
