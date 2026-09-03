@@ -1108,15 +1108,26 @@ dragon_ai
           lda object_state,x
           and #%10000000
           beq dragon_return
+          lda object_state,x
+          and #%01000000
+          bne dragon_think
 dragon_walk_forward
           lda object_Xpos,x
           cmp #88
-          bcc dragon_fire_check
+          bne dragon_set_dir_forward
+          lda #%01000000
+          ora object_state,x
+          jmp dragon_think
+
+dragon_walk_back
+dragon_set_dir_back
+          lda #DIR_RIGHT
+          bne dragon_set_speed
+dragon_set_dir_forward
           lda #DIR_LEFT
+dragon_set_speed
           sta object_Xdir,x
           sta object_facing,x
-          lda object_speed_hi,x
-          sta object_Xvel_hi,x
           lda #object_speed_lo,x
           clc
           adc object_Xvel_lo,x
@@ -1124,7 +1135,6 @@ dragon_walk_forward
           lda object_speed_hi,x
           adc object_Xvel_hi,x
           sta object_Xvel_hi,x
-
 
 dragon_anim
           lda #0
@@ -1139,29 +1149,17 @@ end
 dragon_return
           rts
 
-dragon_throw
-          lda #4
-          sta player_Xvel_hi
-          lda #0
-          sta player_Xvel_lo
-          sta player_Yvel_hi
-          sta player_Yvel_lo
-          sta player_friction_hi
-          sta player_friction_lo
-          lda #DIR_LEFT
-          sta player_Xdir
-          lda #DIR_RIGHT
-          sta player_facing
-          lda #STATE_KNOCKBACK
-          sta player_state
-          rts
+        ; the dragon's intro is over, now it decides how to behave
+dragon_think
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs dragon_walk_back
 
 dragon_fire_check
           lda object_parent,x
           tay
           lda object_type,y
           bne dragon_return
-
 
 dragon_fire
         jsr .find_new_object
@@ -1171,7 +1169,10 @@ dragon_fire
         sta object_parent,x
         lda #TYPE_DRAGON_PSN
         sta object_type,y
-        sta object_hp,y
+        lda #255
+        sta object_hp,x
+        sta object_def,x
+        sta object_mdef,x
         lda object_Xpos,x
         sta object_Xpos,y
         lda object_Ypos,x
@@ -1202,6 +1203,23 @@ dragon_fire
         lda player_elevation
         sta object_elevation,x
         rts
+
+dragon_throw
+          lda #4
+          sta player_Xvel_hi
+          lda #0
+          sta player_Xvel_lo
+          sta player_Yvel_hi
+          sta player_Yvel_lo
+          sta player_friction_hi
+          sta player_friction_lo
+          lda #DIR_LEFT
+          sta player_Xdir
+          lda #DIR_RIGHT
+          sta player_facing
+          lda #STATE_KNOCKBACK
+          sta player_state
+          rts
 end
 
 dragon_psn_ai
@@ -1268,7 +1286,10 @@ psncloud_init
           sta object_timer,x
           lda #PSNCLOUD_DAMAGE
           sta object_damage,x
+          lda #255
           sta object_hp,x
+          sta object_def,x
+          sta object_mdef,x
           ; zero speed variables so the cloud doesn't inherit from despawned objects
           lda #0
           sta object_speed_hi,x
