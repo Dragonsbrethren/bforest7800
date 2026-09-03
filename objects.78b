@@ -670,7 +670,7 @@
         const SEED_VEL_CAP_HI = 4
         const SEED_VEL_CAP_LO = 0
         const SEED_DAMAGE = 4
-        const F_SEED = 21
+        const F_SEED = 27
         const SEED_PAL = 5
 
         ; HILLS
@@ -714,8 +714,8 @@
         const MPUDDING_MDEF = 0
         const F_PUDDING_1 = 12
         const F_PUDDING_2 = 13
-        const F_MPUDDING_1 = 16
-        const F_MPUDDING_2 = 17
+        const F_MPUDDING_1 = 22
+        const F_MPUDDING_2 = 23
         const PUDDING_PAL = 7
         const MPUDDING_PAL = 7
 
@@ -738,6 +738,14 @@
         const CGHOST_PAL_B = 3
         const CGHOST_ANIM_TIME = 4
 
+        ; CAVE NIX
+        const F_CNIX_EMERGE = 16
+        const F_CNIX_ATTACK = 17
+        const F_CNIX_TAIL   = 18
+        const F_CNIX_TAIL2  = 19
+        const F_CNIX_SHADOW = 20
+        const F_CNIX_BLANK  = 21
+
         const DRAGON_HP = 200
         const DRAGON_DAMAGE = 20
         const DRAGON_SPEED_HI = 1
@@ -755,11 +763,11 @@
         const DRAGON_PSN_DAMAGE = 20
         const DRAGON_PSN_PAL = 5
         const DRAGON_PSN_FLAGS = %00010000
-        const F_DRAGON_PSN = 18
+        const F_DRAGON_PSN = 24
 
         const PSNCLOUD_TIME = 120
         const PSNCLOUD_DAMAGE = 5
-        const F_PSNCLOUD = 19
+        const F_PSNCLOUD = 25
 
 
         ; FAMILIARS
@@ -872,8 +880,8 @@
         const DARKBOLT_DAMAGE = 8
 
         ; BOSS FLAME AND BLOCK FLAME
-        const F_FLAME = 20
-        const F_BLANK = 22
+        const F_FLAME = 22
+        const F_BLANK = 24
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block
