@@ -325,7 +325,8 @@ plot_shields
 plot_armor
         temp1 = object_type[index] - (TYPE_ARMOR1 - 1)
         sprite_pal = f_armor_pals[temp1]
-        plotsprite armor0 sprite_pal Xposition Yposition 0
+        frame = f_armor_frames[temp1]
+        plotsprite armor0 sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_charms
