@@ -1306,6 +1306,44 @@ psncloud_init
           rts
 end
 
+rock_ai
+        asm
+          lda object_state,x
+          beq rock_init
+          rts
+
+rock_init
+          lda #ROCK_HP
+          sta object_hp,x
+          lda #ROCK_DAMAGE
+          sta object_damage,x
+          lda #0
+          sta object_def,x
+          sta object_mdef,x
+          sta object_Xdir,x
+          sta object_Xvel_hi,x
+          sta object_Xvel_lo,x
+          sta object_Yvel_lo,x
+          sta object_friction_hi,x
+          sta object_friction_lo,x
+          lda #DIR_DOWN
+          sta object_Ydir,x
+          lda #ROCK_SPEED_HI
+          sta object_Yvel_hi,x
+          sta object_state,x
+          lda #ROCK_FLAGS
+          sta object_flags,x
+          lda #ROCK_PAL
+          sta object_pal,x
+          lda #F_ROCK
+          sta object_frame,x
+          lda #<.plot_caves_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_caves_160a
+          sta object_spr_ptr_hi,y
+          rts
+end
+
 caves_160a_sprite
         asm
           ldx obj_index

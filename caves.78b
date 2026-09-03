@@ -30,6 +30,7 @@
         incgraphic gfx/dragon/psncloud0.png 160A 0 1 2 3
         incgraphic gfx/dragon/psncloud1.png 160A 0 1 2 3
         incgraphic gfx/sprites/seed.png 160A 0 2 3 1
+        incgraphic gfx/sprites/rock0.png 160A 0 2 3 1
         incgraphic gfx/dragon/dragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/dragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/dragon_bot0.png 160A 0 1 2 3

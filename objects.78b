@@ -61,6 +61,7 @@
         const TYPE_DARKBOLT     = 134
         const TYPE_DESTRUCTIBLE = TYPE_BATFIREBALL
         const TYPE_BATFIREBALL  = 135
+        const TYPE_ROCK         = 136
         const TYPE_DARKSPARK    = 140
         const TYPE_OCTOINK      = 141
         const TYPE_SEED         = 142
@@ -769,6 +770,14 @@
         const PSNCLOUD_TIME = 120
         const PSNCLOUD_DAMAGE = 5
         const F_PSNCLOUD = 25
+
+        ; ROCK
+        const ROCK_HP = 6
+        const ROCK_DAMAGE = 20
+        const ROCK_SPEED_HI = 4
+        const ROCK_FLAGS = %00000100
+        const ROCK_PAL = 5
+        const F_ROCK = 28
 
 
         ; FAMILIARS
