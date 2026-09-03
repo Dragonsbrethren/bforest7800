@@ -1155,6 +1155,39 @@ dragon_think
           cmp object_Xpos,x
           bcs dragon_walk_back
 
+dragon_quake
+          lda #object_parent,x
+          cmp #MAX_ROCKS
+          bcs dragon_return
+          jsr .find_new_object
+          ldy spawn_index
+          bne dragon_spawn_rock
+          lda #MAX_ROCKS
+          sta object_parent,x
+          rts
+dragon_spawn_rock
+end
+        shakescreen hi
+        playsfx sfx_explosion
+        asm
+          ldx index
+          ldy spawn_index
+          lda #TYPE_ROCK
+          sta object_type,y
+rock_rand_loop
+          jsr randomize
+          cmp #160
+          bcs rock_rand_loop
+          sta object_Xpos,y
+          jsr .rock_init
+          lda object_parent,x
+          clc
+          adc #1
+          sta object_parent,x
+          cmp #MAX_ROCKS
+          bcc dragon_quake
+          rts
+
 dragon_fire_check
           lda object_parent,x
           tay
@@ -1306,41 +1339,41 @@ psncloud_init
           rts
 end
 
-rock_ai
-        asm
-          lda object_state,x
-          beq rock_init
-          rts
-
 rock_init
+        asm
           lda #ROCK_HP
-          sta object_hp,x
+          sta object_hp,y
           lda #ROCK_DAMAGE
-          sta object_damage,x
+          sta object_damage,y
           lda #0
-          sta object_def,x
-          sta object_mdef,x
-          sta object_Xdir,x
-          sta object_Xvel_hi,x
-          sta object_Xvel_lo,x
-          sta object_Yvel_lo,x
-          sta object_friction_hi,x
-          sta object_friction_lo,x
+          sta object_def,y
+          sta object_mdef,y
+          sta object_Xdir,y
+          sta object_Xvel_hi,y
+          sta object_Xvel_lo,y
+          sta object_Yvel_lo,y
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          sta object_Ypos,y
+          sta object_Xdir,y
           lda #DIR_DOWN
-          sta object_Ydir,x
+          sta object_Ydir,y
+          sta object_facing,y
           lda #ROCK_SPEED_HI
-          sta object_Yvel_hi,x
-          sta object_state,x
+          sta object_Yvel_hi,y
+          sta object_vel_cap_hi,y
+          sta object_state,y
           lda #ROCK_FLAGS
-          sta object_flags,x
+          sta object_flags,y
           lda #ROCK_PAL
-          sta object_pal,x
+          sta object_pal,y
           lda #F_ROCK
-          sta object_frame,x
+          sta object_frame,y
           lda #<.plot_caves_160a
           sta object_spr_ptr_lo,y
           lda #>.plot_caves_160a
           sta object_spr_ptr_hi,y
+.rock_ai
           rts
 end
 

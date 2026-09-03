@@ -95,6 +95,7 @@ draw_pickup_hud
 
 map_loaded
         savescreen
+        lockzone 0
         gosub update_hp_bar
         gosub update_mp_bar
         if !save_objects then gosub load_objects

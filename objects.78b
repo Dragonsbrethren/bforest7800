@@ -778,6 +778,7 @@
         const ROCK_FLAGS = %00000100
         const ROCK_PAL = 5
         const F_ROCK = 28
+        const MAX_ROCKS = 5
 
 
         ; FAMILIARS
