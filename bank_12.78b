@@ -199,7 +199,9 @@ caves_shared_pals
 caves_dragon_pal
         P6C2 = getfade(PAL_DRAGON_DK, black)
         P6C3 = getfade(PAL_DRAGON_LT)
-        goto caves_pal_animation
+        P7C2 = getfade(PAL_CV_PSN_DK, black)
+        P7C3 = getfade(PAL_CV_PSN_LT)
+        goto caves_shared_pals
 
 test_walkable_caves
         tile_properties_1 = caves_tile_properties[move_tile_1]

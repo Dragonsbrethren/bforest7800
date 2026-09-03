@@ -103,6 +103,9 @@
         const PAL_DRAGON_DK  = $A0
         const PAL_DRAGON_LT  = $73
 
+        const PAL_CV_PSN_DK  = $D6
+        const PAL_CV_PSN_LT  = $D8
+
 
         const PAL_DISABLED_1 = $2B
         const PAL_DISABLED_2 = $29

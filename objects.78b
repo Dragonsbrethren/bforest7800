@@ -761,7 +761,7 @@
 
         const DRAGON_PSN_SPEED_HI = 3
         const DRAGON_PSN_DAMAGE = 20
-        const DRAGON_PSN_PAL = 5
+        const DRAGON_PSN_PAL = 7
         const DRAGON_PSN_FLAGS = %00010000
         const F_DRAGON_PSN = 24
 
