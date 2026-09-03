@@ -85,7 +85,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 08-29-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-02-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -185,8 +185,8 @@ title_new_game_normal
         m_armor_bits_2  = %00000000
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
-        m_relic_bits_1  = %00010000
-        m_relic_bits_2  = %00000001
+        m_relic_bits_1  = %00000000
+        m_relic_bits_2  = %00000000
         m_spell_bits_1  = %00010000
         m_spell_bits_2  = %00000001
         m_key_bits = %00000000
