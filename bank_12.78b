@@ -179,9 +179,10 @@ end
         P4C3 = getfade(PAL_CV_DKGRN, black)
         P5C2 = getfade(PAL_CV_DKGRN, black)
         P5C3 = getfade(PAL_CV_LTGRN)
+        if alt_palette then caves_dragon_pal
         P6C2 = getfade(PAL_CV_WATER, black)
         P6C3 = getfade(PAL_CV_EYES)
-        P4C3 = getfade(PAL_CV_DKGRN, black)
+caves_pal_animation
         if pal_animation then caves_shared_pals
 ;       P7C2 = getfade(PAL_PUDDING_DK, black)
         asm
@@ -194,6 +195,11 @@ end
 caves_shared_pals
         incbasic shared_pals.78b
         goto palette_done
+
+caves_dragon_pal
+        P6C2 = getfade(PAL_DRAGON_DK, black)
+        P6C3 = getfade(PAL_DRAGON_LT)
+        goto caves_pal_animation
 
 test_walkable_caves
         tile_properties_1 = caves_tile_properties[move_tile_1]
@@ -1292,6 +1298,6 @@ plot_dragon
         Xoffset  = Xposition + 6
         Yoffset = Yposition + 16
         plotsprite dragon_eye  2 Xoffset Yposition 0
-        plotsprite dragon_top0 5 Xposition Yposition frame
-        plotsprite dragon_bot0 5 Xposition Yoffset frame
+        plotsprite dragon_top0 6 Xposition Yposition frame
+        plotsprite dragon_bot0 6 Xposition Yoffset frame
         goto plot_next

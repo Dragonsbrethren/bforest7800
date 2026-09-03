@@ -100,7 +100,8 @@
         const PAL_PUDDING_DK = $71
         const PAL_PUDDING_LT = $61
 
-;
+        const PAL_DRAGON_DK  = $A0
+        const PAL_DRAGON_LT  = $73
 
 
         const PAL_DISABLED_1 = $2B

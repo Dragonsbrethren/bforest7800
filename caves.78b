@@ -34,7 +34,7 @@
         incgraphic gfx/dragon/dragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/dragon_bot0.png 160A 0 1 2 3
         incgraphic gfx/dragon/dragon_bot1.png 160A 0 1 2 3
-        incgraphic gfx/dragon/dragon_eye.png 160A 0 3 
+        incgraphic gfx/dragon/dragon_eye.png 160A 0 2 
         incgraphic gfx/sprites/rose4.png 160B 0 6 4 5
         incgraphic gfx/sprites/rose5.png 160B 0 9 4 2 6 5
 
