@@ -2214,9 +2214,15 @@ shield_check
           ; copy the projectile's type to its flags for status effects
           lda object_type,x
           sta flags
-          ; special check to prevent dark bolt from being destroyed
-          cmp #TYPE_DARKBOLT
-          beq player_shield_check
+          ; special case for poison blob to turn into poison cloud
+          cmp #TYPE_DRAGON_PSN
+          bne shield_check_destructible
+          lda #TYPE_PSNCLOUD
+          sta object_type,x
+shield_check_destructible
+          ; exclude non-destructibles projectiles from being zeroed
+          cmp #TYPE_DESTRUCTIBLE
+          bcc player_shield_check
           lda #0
           sta object_type,x
 player_shield_check
@@ -2237,6 +2243,7 @@ projectile_status
         ; hardcode Octoink to set dark status for now
         if flags = TYPE_OCTOINK then temp1 = BITS_DARK : gosub set_status
         if flags = TYPE_SEED || flags = TYPE_HSEED then temp1 = BITS_STONE : gosub set_status
+        if flags = TYPE_PSNCLOUD || flags = TYPE_DRAGON_PSN then temp1 = BITS_POISON: gosub set_status
         goto pc_damage
 
 deflect_projectile
