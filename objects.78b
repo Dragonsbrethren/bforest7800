@@ -762,6 +762,7 @@
         const DRAGON_ELEM_DEF = %00110111
 
         const DRAGON_PSN_SPEED_HI = 3
+        const DRAGON_PSN_VERT_SPEED = 2
         const DRAGON_PSN_DAMAGE = 20
         const DRAGON_PSN_PAL = 7
         const DRAGON_PSN_FLAGS = %00010000
@@ -771,10 +772,14 @@
         const PSNCLOUD_DAMAGE = 5
         const F_PSNCLOUD = 25
 
+        const DRAGON_QUAKE_FRAMES = 3
+        const DRAGON_QUAKE_CHANCE = 32
+        const DRAGON_DELAY_FRAMES = 39
+
         ; ROCK
         const ROCK_HP = 6
         const ROCK_DAMAGE = 20
-        const ROCK_SPEED_HI = 4
+        const ROCK_SPEED_HI = 7
         const ROCK_FLAGS = %00000100
         const ROCK_PAL = 5
         const F_ROCK = 28
@@ -803,7 +808,7 @@
         const FAIRY_CHASE_X = 40
         const FAIRY_CHASE_Y = 54
 
-        const CAT_DAMAGE = 5
+        const CAT_DAMAGE = 1
         const CAT_FLAGS  = #%10000000
         const CAT_SPEED_HI = 2
         const CAT_SPEED_LO = 0

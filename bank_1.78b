@@ -1524,9 +1524,10 @@ cat_sprite
           sta object_Xpos,x
           lda player_Ypos
           sta object_Ypos,x
-          lda #CAT_DAMAGE
+          lda player_wisdom
+          asl
           clc
-          adc player_wisdom
+          adc #CAT_DAMAGE
           sta object_damage,x
           lda #CAT_FLAGS
           sta object_flags,x

@@ -1117,6 +1117,7 @@ dragon_walk_forward
           bne dragon_set_dir_forward
           lda #%01000000
           ora object_state,x
+          sta object_state,x
           jmp dragon_think
 
 dragon_walk_back
@@ -1151,14 +1152,77 @@ dragon_return
 
         ; the dragon's intro is over, now it decides how to behave
 dragon_think
+          ; behavior flags
+          ; %10000000 : Quake
+          ; %01000000 : Moving
+          lda object_flags,x
+          and #%11000000
+          beq dragon_think_randomize
+          lda object_flags,x
+          and #%10000000
+          bne dragon_quake
+          ; we know the move flag is set
+          jmp dragon_fire
+
+dragon_think_randomize
+          dec object_timer,x
+          bmi dragon_think_ready
+          rts
+dragon_think_ready
           lda player_Xpos
           cmp object_Xpos,x
           bcs dragon_walk_back
+          jsr randomize
+          bmi dragon_move
+          cmp #DRAGON_QUAKE_CHANCE
+          bcc dragon_quake_init
+          jmp dragon_fire_check
 
+dragon_move
+          rts
+
+dragon_quake_init
+          ; clear the parent variable so rocks spawn properly
+          lda #0
+          sta object_parent,x
 dragon_quake
+end
+        shakescreen med
+        playsfx sfx_explosion
+        asm
+          ldx index
+          ldy spawn_index
+          dec object_timer,x
+          bmi dragon_quake_rock
+          rts
+
+dragon_quake_done
+          lda #0
+          sta object_parent,x
+          lda #%01111111
+          and object_flags,x
+          sta object_flags,x
+end
+        shakescreen off
+        asm
+          ldx index
+          lda #DRAGON_DELAY_FRAMES
+          sta object_timer,x
+dragon_quake_return
+          rts
+
+dragon_quake_rock
+          lda object_parent,x
+          cmp #MAX_ROCKS
+          beq dragon_quake_done
+          lda #%10000000
+          ora object_flags,x
+          sta object_flags,x
+          lda #DRAGON_QUAKE_FRAMES
+          sta object_timer,x
           lda #object_parent,x
           cmp #MAX_ROCKS
-          bcs dragon_return
+          bcs dragon_quake_return
           jsr .find_new_object
           ldy spawn_index
           bne dragon_spawn_rock
@@ -1166,12 +1230,6 @@ dragon_quake
           sta object_parent,x
           rts
 dragon_spawn_rock
-end
-        shakescreen hi
-        playsfx sfx_explosion
-        asm
-          ldx index
-          ldy spawn_index
           lda #TYPE_ROCK
           sta object_type,y
 rock_rand_loop
@@ -1180,24 +1238,19 @@ rock_rand_loop
           bcs rock_rand_loop
           sta object_Xpos,y
           jsr .rock_init
-          lda object_parent,x
-          clc
-          adc #1
-          sta object_parent,x
-          cmp #MAX_ROCKS
-          bcc dragon_quake
+          inc object_parent,x
           rts
 
 dragon_fire_check
           lda object_parent,x
           tay
           lda object_type,y
-          bne dragon_return
+          bne dragon_fire_return
 
 dragon_fire
         jsr .find_new_object
         ldy spawn_index
-        beq dragon_return
+        beq dragon_fire_return
         tya
         sta object_parent,x
         lda #TYPE_DRAGON_PSN
@@ -1234,8 +1287,32 @@ dragon_fire
         lda #DRAGON_PSN_FLAGS
         sta object_flags,y
         lda player_elevation
-        sta object_elevation,x
+        sta object_elevation,y
+        lda player_Ypos
+        cmp #$58
+        bcc dragon_fire_up
+        cmp #$70
+        bcs dragon_fire_down
+        lda #0
+        sta object_Ydir,y
+dragon_fire_return
+        lda #DRAGON_DELAY_FRAMES
+        sta object_timer,x
         rts
+
+dragon_fire_up
+        lda #DIR_UP
+        sta object_Ydir,y
+        lda #DRAGON_PSN_VERT_SPEED
+        sta object_Yvel,y
+        bne dragon_fire_return
+
+dragon_fire_down
+        lda #DIR_DOWN
+        sta object_Ydir,y
+        lda #DRAGON_PSN_VERT_SPEED
+        sta object_Yvel,y
+        bne dragon_fire_return
 
 dragon_throw
           lda #4
@@ -1343,8 +1420,10 @@ rock_init
         asm
           lda #ROCK_HP
           sta object_hp,y
+          sta object_Xdest,y
           lda #ROCK_DAMAGE
           sta object_damage,y
+          sta object_Ydest,y
           lda #0
           sta object_def,y
           sta object_mdef,y
@@ -1354,12 +1433,14 @@ rock_init
           sta object_Yvel_lo,y
           sta object_friction_hi,y
           sta object_friction_lo,y
+          sta object_speed_lo,y
           sta object_Ypos,y
           sta object_Xdir,y
           lda #DIR_DOWN
           sta object_Ydir,y
           sta object_facing,y
           lda #ROCK_SPEED_HI
+          sta object_speed_hi,y
           sta object_Yvel_hi,y
           sta object_vel_cap_hi,y
           sta object_state,y
@@ -1373,8 +1454,11 @@ rock_init
           sta object_spr_ptr_lo,y
           lda #>.plot_caves_160a
           sta object_spr_ptr_hi,y
-.rock_ai
           rts
+.rock_ai
+          lda #0
+          sta temp1
+          jmp proj_move_check
 end
 
 caves_160a_sprite
