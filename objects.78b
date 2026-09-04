@@ -748,7 +748,7 @@
         const F_CNIX_SHADOW = 20
         const F_CNIX_BLANK  = 21
 
-        const DRAGON_HP = 200
+        const DRAGON_HP = 100
         const DRAGON_DAMAGE = 20
         const DRAGON_SPEED_HI = 0
         const DRAGON_SPEED_LO = 192
@@ -756,8 +756,8 @@
         const DRAGON_VEL_CAP_LO = 0
         const DRAGON_FRICTION_HI = 1
         const DRAGON_FRICTION_LO = 0
-        const DRAGON_DEF = 10
-        const DRAGON_MDEF = 50
+        const DRAGON_DEF = 5
+        const DRAGON_MDEF = 10
         const DRAGON_ELEM_ATK = %00100000
         const DRAGON_ELEM_DEF = %00110111
 
@@ -773,8 +773,9 @@
         const F_PSNCLOUD = 25
 
         const DRAGON_QUAKE_FRAMES = 3
-        const DRAGON_QUAKE_CHANCE = 32
-        const DRAGON_DELAY_FRAMES = 39
+        const DRAGON_QUAKE_CHANCE = 16
+        const DRAGON_DELAY_FRAMES = 10
+        const DRAGON_WALK_TIME = 15
 
         ; ROCK
         const ROCK_HP = 6

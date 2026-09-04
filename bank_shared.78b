@@ -1850,8 +1850,9 @@ spawner_done
 end
 
 dragon_sword_check
+        Xoffset = Xposition + 12
         ; this hitbox is super generous for now
-        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 40, 32) then return thisbank
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xoffset, Yposition, 40, 32) then return thisbank
         goto sword_poof
 
 big_sword_check
@@ -2222,7 +2223,9 @@ shield_check
 shield_check_destructible
           ; exclude non-destructibles projectiles from being zeroed
           cmp #TYPE_DESTRUCTIBLE
-          bcc player_shield_check
+          bcs shield_check_destroy
+          jmp .pc_damage
+shield_check_destroy
           lda #0
           sta object_type,x
 player_shield_check
@@ -2535,7 +2538,3 @@ cast_poison_zone_align
 end
         playsfx sfx_rubbermallet
         goto chant_done
-
-        data spirit_frame
-        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
-end

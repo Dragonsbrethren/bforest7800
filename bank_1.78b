@@ -1073,7 +1073,7 @@ earthquake_damage
           jsr .decrease_hp
           lda temp_hp
           cmp temp1
-          bcc earthquake_damage_hp
+          bcs earthquake_damage_hp
           lda #0
 earthquake_damage_hp
           sta object_hp,x
@@ -1525,7 +1525,6 @@ cat_sprite
           lda player_Ypos
           sta object_Ypos,x
           lda player_wisdom
-          asl
           clc
           adc #CAT_DAMAGE
           sta object_damage,x
@@ -2637,3 +2636,6 @@ end
         FIREBALL_PAL, ICEFLAKES_PAL, WINDSLASH_PAL
 end
 
+        data spirit_frame
+        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
+end

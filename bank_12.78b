@@ -51,11 +51,11 @@ load_caves
         if exit_room_index = F_CAVES_WF2_I then caves_wf_2
 
 caves_ent_1
-        room_index      = F_CAVES_ENT_1_I
+        room_index      = 32 ; F_CAVES_ENT_1_I
         menu_map_Xpos   = M_CAVES_ENT_1_X
         menu_map_Ypos   = M_CAVES_ENT_1_Y
         player_Xpos     = F_CAVES_ENT_1_X
-        player_Ypos     = F_CAVES_ENT_1_Y
+        player_Ypos     = $70 ; F_CAVES_ENT_1_Y
         goto caves_set_room
 
 caves_demo
@@ -1073,7 +1073,9 @@ caves_boss_ai
           beq caves_boss_check
           lda player_Ypos
           cmp #$60
-          bcc caves_boss_return
+          bcs caves_boss_init
+          jmp caves_boss_return
+caves_boss_init
           lda #150
           sta object_Xpos+1
           lda #$60
@@ -1094,12 +1096,28 @@ caves_boss_ai
 
 caves_boss_check
           lda object_type+1
-          bne caves_boss_return
+          bne caves_boss_check_right
           sta object_type+3
           sta object_type+4
-          ; TODO: Poke char stuff
+end
+        pokechar current_map 6 1 20 14 6
+        pokechar current_map 7 1 20 14 6
+        pokechar current_map 19 6 20 14 6
+        pokechar current_map 19 7 20 14 6
+        asm
 
 caves_boss_return
+          rts
+
+caves_boss_check_right
+          lda object_Xpos+1
+          cmp #144
+          bcs caves_boss_return
+end
+        ; block the right exit
+        pokechar current_map 19 6 20 14 0
+        pokechar current_map 19 7 20 14 0
+        asm
           rts
 end
 
@@ -1107,11 +1125,13 @@ dragon_ai
         asm
           lda object_state,x
           and #%10000000
-          beq dragon_return
+          bne dragon_check_think
+          rts
+dragon_check_think
           lda object_state,x
           and #%01000000
           bne dragon_think
-dragon_walk_forward
+dragon_walk_forward_intro
           lda object_Xpos,x
           cmp #88
           bne dragon_set_dir_forward
@@ -1122,9 +1142,15 @@ dragon_walk_forward
 
 dragon_walk_back
 dragon_set_dir_back
+          lda object_Xpos,x
+          cmp #128
+          bcs dragon_set_dir_forward
           lda #DIR_RIGHT
           bne dragon_set_speed
 dragon_set_dir_forward
+          lda object_Xpos,x
+          cmp #72
+          bcc dragon_set_dir_back
           lda #DIR_LEFT
 dragon_set_speed
           sta object_Xdir,x
@@ -1145,6 +1171,7 @@ dragon_anim
           lda #1
           sta object_frame,x
 end
+          playsfx sfx_bassbump
           shakescreen lo
           asm
 dragon_return
@@ -1162,7 +1189,7 @@ dragon_think
           and #%10000000
           bne dragon_quake
           ; we know the move flag is set
-          jmp dragon_fire
+          jmp dragon_move
 
 dragon_think_randomize
           dec object_timer,x
@@ -1171,7 +1198,9 @@ dragon_think_randomize
 dragon_think_ready
           lda player_Xpos
           cmp object_Xpos,x
-          bcs dragon_walk_back
+          bcc dragon_in_front
+          jmp dragon_walk_back
+dragon_in_front
           jsr randomize
           bmi dragon_move
           cmp #DRAGON_QUAKE_CHANCE
@@ -1179,7 +1208,34 @@ dragon_think_ready
           jmp dragon_fire_check
 
 dragon_move
+          dec object_timer,x
+          bmi dragon_move_set_timer
+          beq dragon_move_done
+          lda object_facing,x
+          cmp #DIR_RIGHT
+          beq dragon_move_back
+          jmp dragon_set_dir_forward
+dragon_move_back
+          jmp dragon_set_dir_back
+
+dragon_move_done
+          lda #%10111111
+          and object_flags,x
+          sta object_flags,x
           rts
+
+dragon_move_set_timer
+          lda #%01000000
+          ora object_flags,x
+          sta object_flags,x
+          lda #DRAGON_WALK_TIME
+          sta object_timer,x
+dragon_move_rand
+          jsr randomize
+          bmi dragon_move_set_back
+          jmp dragon_set_dir_forward
+dragon_move_set_back
+          jmp dragon_set_dir_back
 
 dragon_quake_init
           ; clear the parent variable so rocks spawn properly
@@ -1291,7 +1347,7 @@ dragon_fire
         lda player_Ypos
         cmp #$58
         bcc dragon_fire_up
-        cmp #$70
+        cmp #$68
         bcs dragon_fire_down
         lda #0
         sta object_Ydir,y
@@ -1313,23 +1369,6 @@ dragon_fire_down
         lda #DRAGON_PSN_VERT_SPEED
         sta object_Yvel,y
         bne dragon_fire_return
-
-dragon_throw
-          lda #4
-          sta player_Xvel_hi
-          lda #0
-          sta player_Xvel_lo
-          sta player_Yvel_hi
-          sta player_Yvel_lo
-          sta player_friction_hi
-          sta player_friction_lo
-          lda #DIR_LEFT
-          sta player_Xdir
-          lda #DIR_RIGHT
-          sta player_facing
-          lda #STATE_KNOCKBACK
-          sta player_state
-          rts
 end
 
 dragon_psn_ai
@@ -1486,3 +1525,13 @@ plot_dragon
         plotsprite dragon_top0 6 Xposition Yposition frame
         plotsprite dragon_bot0 6 Xposition Yoffset frame
         goto plot_next
+
+        data sfx_bassbump
+        $10,$10,$00 ; version, priority, frames per chunk
+        $07,$06,$05
+        $0b,$06,$06
+        $0b,$06,$06
+        $0b,$06,$06
+        $07,$06,$02
+        $00,$00,$00
+end
