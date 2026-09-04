@@ -8,7 +8,6 @@
         incgraphic gfx/tiles/castle_tile.png  160A 1 0 2 3 6
         incgraphic gfx/tiles/castle_carpet.png  160A 1 0 2 3 7
         incgraphic gfx/tiles/castle_tables.png 160A 1 0 2 3 5
-        incgraphic gfx/tiles/castle_hud.png 160A 0 3 1 2
         incgraphic gfx/sprites/blood.png 160A 0 1
         incgraphic gfx/sprites/darkspark0.png 160A 0 2 1 3
         incgraphic gfx/sprites/darkspark1.png 160A 2 0 1 3
@@ -571,7 +570,8 @@ test_water_castle
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000001,
         %00000001, %00000001, %00000001, %00000001, %00000001, %00000001, %00000000, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000
 end
 
 torch_tile_block_castle
