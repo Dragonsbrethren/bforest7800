@@ -2223,8 +2223,7 @@ shield_check
 shield_check_destructible
           ; exclude non-destructibles projectiles from being zeroed
           cmp #TYPE_DESTRUCTIBLE
-          bcs shield_check_destroy
-          jmp .pc_damage
+          bcc .projectile_status
 shield_check_destroy
           lda #0
           sta object_type,x
