@@ -1104,6 +1104,7 @@ end
         pokechar current_map 7 1 20 14 6
         pokechar current_map 19 6 20 14 6
         pokechar current_map 19 7 20 14 6
+        shakescreen off
         asm
 
 caves_boss_return
@@ -1196,21 +1197,22 @@ dragon_think_randomize
           bmi dragon_think_ready
           rts
 dragon_think_ready
-          lda player_Xpos
-          cmp object_Xpos,x
-          bcc dragon_in_front
-          jmp dragon_walk_back
-dragon_in_front
           jsr randomize
           bmi dragon_move
           cmp #DRAGON_QUAKE_CHANCE
           bcc dragon_quake_init
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs dragon_quake_init
           jmp dragon_fire_check
 
 dragon_move
           dec object_timer,x
           bmi dragon_move_set_timer
           beq dragon_move_done
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs dragon_move_back
           lda object_facing,x
           cmp #DIR_RIGHT
           beq dragon_move_back
