@@ -781,12 +781,17 @@ check_sword_bits
         asm
           ldx index
           ldy #0
+          sty item_sub
           lda object_type,x
           cmp #TYPE_SWORD1
           beq check_sword_bits_1
           iny
           cmp #TYPE_SWORD2
-          beq check_sword_bits_1
+          bne check_sword3
+          lda #TYPE_ELIXIR
+          sta item_sub
+          bne check_sword_bits_1
+check_sword3
           iny
           cmp #TYPE_SWORD3
           beq check_sword_bits_1
@@ -818,7 +823,7 @@ check_sword_bits_1
           lda m_sword_bits_1
           and item_bits,y
           beq check_sword_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_sword_bits_done
 
@@ -826,7 +831,7 @@ check_sword_bits_2
           lda m_sword_bits_2
           and item_bits,y
           beq check_sword_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_sword_bits_done
 end
@@ -835,6 +840,7 @@ check_shield_bits
         asm
           ldx index
           ldy #0
+          sty item_sub
           lda object_type,x
           cmp #TYPE_SHIELD1
           beq check_shield_bits_1
@@ -843,13 +849,25 @@ check_shield_bits
           beq check_shield_bits_1
           iny
           cmp #TYPE_SHIELD3
-          beq check_shield_bits_1
+          bne check_shield4
+          lda #TYPE_POTION
+          sta item_sub
+          bne check_shield_bits_1
+check_shield4
           iny
           cmp #TYPE_SHIELD4
-          beq check_shield_bits_1
+          bne check_shield5
+          lda #TYPE_LIFEAPPLE
+          sta item_sub
+          bne check_shield_bits_1
+check_shield5
           iny
           cmp #TYPE_SHIELD5
-          beq check_shield_bits_1
+          bne check_shield6
+          lda #TYPE_ELIXIR
+          sta item_sub
+          bne check_shield_bits_1
+check_shield6
           ldy #0
           cmp #TYPE_SHIELD6
           beq check_shield_bits_2
@@ -872,7 +890,7 @@ check_shield_bits_1
           lda m_shield_bits_1
           and item_bits,y
           beq check_shield_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_shield_bits_done
 
@@ -880,7 +898,7 @@ check_shield_bits_2
           lda m_shield_bits_2
           and item_bits,y
           beq check_shield_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_shield_bits_done
 end
@@ -909,10 +927,18 @@ check_armor_bits
           beq check_armor_bits_2
           iny
           cmp #TYPE_ARMOR7
-          beq check_armor_bits_2
+          bne check_armor8
+          lda #TYPE_ELIXIR
+          sta item_sub
+          bne check_armor_bits_2
+check_armor8
           iny
           cmp #TYPE_ARMOR8
-          beq check_armor_bits_2
+          bne check_armor9
+          lda #TYPE_HIPOTION
+          sta item_sub
+          bne check_armor_bits_2
+check_armor9
           iny
           cmp #TYPE_ARMOR9
           beq check_armor_bits_2
@@ -954,7 +980,11 @@ check_charm_bits
           beq check_charm_bits_1
           iny
           cmp #TYPE_CHARM4
-          beq check_charm_bits_1
+          bne check_charm5
+          lda #TYPE_HIPOTION
+          sta item_sub
+          bne check_charm_bits_1
+check_charm5
           iny
           cmp #TYPE_CHARM5
           beq check_charm_bits_1
@@ -969,7 +999,11 @@ check_charm_bits
           beq check_charm_bits_2
           iny
           cmp #TYPE_CHARM9
-          beq check_charm_bits_2
+          bne check_charm10
+          lda #TYPE_HIETHER
+          sta item_sub
+          bne check_charm_bits_2
+check_charm10
           iny
           cmp #TYPE_CHARM10
           beq check_charm_bits_2

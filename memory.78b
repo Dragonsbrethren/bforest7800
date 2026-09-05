@@ -224,6 +224,7 @@
         autodim byte frame_index
         autodim byte plot_index
         autodim byte item_spawned
+        autodim byte item_sub
         autodim byte lightning_segs
         autodim byte lightningX_offset
         autodim byte lightningY_offset
@@ -316,27 +317,6 @@
         autodim byte zone14_objects     ; used by pickup string
         autodim byte locked_zone        ; doors and bridges
         autodim byte obscure_player     ; secret passages
-        autodim byte sP0C1
-        autodim byte sP0C2
-        autodim byte sP0C3
-        autodim byte sP1C1
-        autodim byte sP1C2
-        autodim byte sP1C3
-        autodim byte sP2C1
-        autodim byte sP2C2
-        autodim byte sP2C3
-        autodim byte sP3C1
-        autodim byte sP3C2
-        autodim byte sP3C3
-        autodim byte sP4C1
-        autodim byte sP4C2
-        autodim byte sP4C3
-        autodim byte sP5C1
-        autodim byte sP5C2
-        autodim byte sP5C3
-        autodim byte sP6C1
-        autodim byte sP6C2
-        autodim byte sP6C3
         autodim byte sP7C1
         autodim byte sP7C2
         autodim byte sP7C3
