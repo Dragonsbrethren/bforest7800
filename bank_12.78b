@@ -1068,13 +1068,20 @@ end
 
 caves_boss_ai
         asm
+          lda m_key_bits
+          and #%00001000
+          beq caves_boss_flags
+          lda #0
+          sta object_type+1
+          rts
+caves_boss_flags
           lda object_flags,x
           cmp #%10000000
           beq caves_boss_check
           lda player_Ypos
-          cmp #$60
+          cmp #$20
           bcs caves_boss_init
-          jmp caves_boss_return
+          rts
 caves_boss_init
           lda #150
           sta object_Xpos+1
@@ -1099,6 +1106,9 @@ caves_boss_check
           bne caves_boss_check_right
           sta object_type+3
           sta object_type+4
+          lda m_key_bits
+          ora #%00001000        ; use key4 to track boss defeat
+          sta m_key_bits
 end
         pokechar current_map 6 1 20 14 6
         pokechar current_map 7 1 20 14 6
