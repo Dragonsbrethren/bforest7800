@@ -1235,10 +1235,8 @@ forest_boss_dead
           sta object_type+6
 end
 forest_flame_unblock
-        pokechar current_map  9 11 20 14 0
-        pokechar current_map 10 11 20 14 0
-        pokechar current_map  9 10 20 14 0
-        pokechar current_map 10 10 20 14 0
+        pokechar current_map  9 11 20 14 160
+        pokechar current_map 10 11 20 14 160
         if m_spell_bits_1{0} then return thisbank
         playsfx sfx_crystalchimes
         return thisbank
