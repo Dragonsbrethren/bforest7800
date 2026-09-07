@@ -1911,7 +1911,9 @@ hop_direction
         cmp #DIR_LEFT
         beq hop_left
         cmp #DIR_RIGHT
-        beq hop_right
+        bne hop_dir_up
+        jmp hop_right
+hop_dir_up
         lda object_Ydir,x
         sta object_facing,x
         cmp #DIR_UP
@@ -1948,6 +1950,14 @@ hop_down_done
         rts
 
 hop_left
+        lda object_flags,x
+        and #%11111011
+        beq hop_left_timer
+        lda #%11011111
+        and object_flags,x
+        sta object_flags,x
+        rts
+hop_left_timer
         lda object_timer,x
         bne hop_left_up
         lda #8
@@ -1971,6 +1981,14 @@ hop_left_down
         rts
 
 hop_right
+        lda object_flags,x
+        and #%11111011
+        beq hop_right_timer
+        lda #%11011111
+        and object_flags,x
+        sta object_flags,x
+        rts
+hop_right_timer
         lda object_timer,x
         bne hop_right_up
         lda #8
