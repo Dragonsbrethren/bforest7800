@@ -495,7 +495,7 @@ end
         %00000000, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011, %00000011,
         %00000011, %00000011,
                               %00010010, %00010010, %00010010, %00000000, %00000010, %00100010,
-        %00100010, %00100010, %01000010, %01000010, %01000010,
+        %00000010, %00100010, %01000010, %01000010, %00000010,
                                                                %00000110, %00000111, %00000110,
         %00000000, %00000110, %00000110, %00000110, %00000110, %00000110, %00000110, %00000000,
         %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
@@ -504,16 +504,29 @@ end
         %00000011, %00000011, %00000011, %00000011, %00000011,
                                                                %00000000, %00000000, %00000000,
         %00000001, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
-        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000010,
         %00000011, %00000010, %00000010, %00000010, %00000010,
-                                                               %00000011, %00000011, %00000000,
-        %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000,
+                                                               %00000001, %00000001, %00000000,
+        %00000000, %00000000, %00000010, %00000010, %00000010, %00000000, %00000010,
                                                                                      %10000100
 end
 
 torch_tile_block_forest
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 $2C
+        torch_tile = peekchar(current_map, peekX, peekY, 20, 14)
+        ; default blank ground tile
+        block_tile = 48
+        ; shadowed top right
+        if torch_tile =  24 then block_tile = 180
+        ; shadowed right
+        if torch_tile =  26 then block_tile = 184
+        ; shadowed top
+        if torch_tile =  30 then block_tile = 56
+        ; shadowed top left
+        if torch_tile =  32 then block_tile = 182
+        ; floor boards
+        if torch_tile = 160 then block_tile = 188
+        pokechar current_map peekX peekY 20 14 block_tile
         if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
         ; doors need to block a second tile to the right of the first
         peekX = peekX + 1
@@ -521,8 +534,14 @@ torch_tile_block_forest
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_forest
-        ; the poked tile doesn't affect visuals since those are plotted from ROM
-        pokechar current_map peekX peekY 20 14 0
+        block_tile = peekchar(current_map, peekX, peekY, 20, 14)
+        if block_tile =  48 then torch_tile = 2
+        if block_tile =  56 then torch_tile = 30
+        if block_tile = 180 then torch_tile = 24
+        if block_tile = 182 then torch_tile = 32
+        if block_tile = 184 then torch_tile = 26
+        if block_tile = 188 then torch_tile = 160
+        pokechar current_map peekX peekY 20 14 torch_tile
         goto kill_torch_done
 
 burnbush_check

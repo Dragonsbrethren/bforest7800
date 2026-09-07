@@ -207,6 +207,8 @@
         autodim byte map_width
         autodim byte peekX
         autodim byte peekY
+        autodim byte torch_tile
+        autodim byte block_tile
         autodim byte move_tile_1
         autodim byte move_tile_2
         autodim byte move_tile_1_old
