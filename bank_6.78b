@@ -732,7 +732,16 @@ reposY
           bcs reposY
           sta object_Ypos,x
           ; make sure the new position is in water, also handles return
-          jmp .test_water_river
+          jsr .test_water_river
+          ; make sure the new position is walkable
+          lda temp1
+          and #%00000001
+          beq nix_repos
+          ; make sure the new position isn't a waterfall
+          lda temp1
+          and #%10000000
+          bne nix_repos
+          rts
 end
 
 obj_nix_stats

@@ -1900,7 +1900,7 @@ ledge_hop
         ldx index
         lda object_timer,x
         bne hop_direction
-        lda #0
+;       lda #0
         sta object_Xvel_lo,x
         sta object_Xvel_hi,x
         sta object_Yvel_lo,x
