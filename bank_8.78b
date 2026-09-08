@@ -1187,9 +1187,11 @@ end
           sta object_speed_lo,y
           lda #F_MHSLIME_1
           sta object_frame,y
-          lda #0
-          sta object_invuln,y
+          lda #SLIME_FLAGS
           sta object_flags,y
+          lda #INVULN_FRAMES
+          sta object_invuln,x
+          sta object_invuln,y
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc

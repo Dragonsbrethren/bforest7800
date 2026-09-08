@@ -1380,42 +1380,47 @@ end
           sta object_Xpos,x
           lda object_Ypos,x
         ; initialize the new mini slime object
-          ldx spawn_index
-          sta object_Ypos,x
+          ldy spawn_index
+          sta object_Ypos,y
           lda #TYPE_MRSLIME
-          sta object_type,x
+          sta object_type,y
           lda #MRSLIME_HP
-          sta object_hp,x
+          sta object_hp,y
           lda #RSLIME_VEL_CAP_HI
-          sta object_vel_cap_hi,x
+          sta object_vel_cap_hi,y
           lda #RSLIME_VEL_CAP_LO
-          sta object_vel_cap_lo,x
+          sta object_vel_cap_lo,y
           lda #RSLIME_DAMAGE
-          sta object_damage,x
+          sta object_damage,y
           lda #MRSLIME_DEF
-          sta object_def,x
+          sta object_def,y
           lda #MRSLIME_MDEF
-          sta object_mdef,x
+          sta object_mdef,y
           lda #RSLIME_FRICTION_HI
-          sta object_friction_hi,x
+          sta object_friction_hi,y
           lda #RSLIME_FRICTION_LO
-          sta object_friction_lo,x
+          sta object_friction_lo,y
           lda #RSLIME_SPEED_HI
-          sta object_speed_hi,x
+          sta object_speed_hi,y
           lda #RSLIME_SPEED_LO
-          sta object_speed_lo,x
+          sta object_speed_lo,y
           lda #F_MRSLIME_1
-          sta object_frame,x
+          sta object_frame,y
           lda #RSLIME_PAL
-          sta object_pal,x
+          sta object_pal,y
           lda #0
+          lda object_invuln,x
+          sta object_invuln,y
+          lda #SLIME_FLAGS
+          sta object_flags,y
+          lda #INVULN_FRAMES
           sta object_invuln,x
-          sta object_flags,x
+          sta object_invuln,y
           ; pull parent X position from stack and move spawned slime to the right
           pla
           clc
           adc #9
-          sta object_Xpos,x
+          sta object_Xpos,y
           lda #<.plot_castle_160a
           sta object_spr_ptr_lo,x
           lda #>.plot_castle_160a

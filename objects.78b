@@ -225,7 +225,7 @@
         const WOLF_PAL = 5
 
         const SLIME_DROP_RATE = 128     ; depreciated
-        const SLIME_HP = 8
+        const SLIME_HP = 4
         const MSLIME_HP = SLIME_HP / 2
         const SLIME_VEL_CAP_HI = 1
         const SLIME_VEL_CAP_LO = 0
@@ -243,6 +243,7 @@
         const F_MSLIME_1 = 6
         const F_MSLIME_2 = 7
         const SLIME_PAL = 4
+        const SLIME_FLAGS = 0
 
         const RAVEN_CHASE_DIST = 50
         const RAVEN_FLIGHT_TIME = 40
