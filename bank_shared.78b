@@ -741,26 +741,32 @@ end
 
 
 spawns_torch
-        if player_hp = player_max_hp then torch_mp_check
-        if rand > 128 then _spawn_food
-torch_mp_check
-        if player_mp = player_max_mp then _spawn_coin
-        goto _spawn_mana
-
-_spawn_food
-        object_type[index] = TYPE_FOOD
-        object_hp[index] = 1
-        goto object_done
-
-_spawn_mana
-        object_type[index] = TYPE_PRISM
-        object_hp[index] = 1
-        goto object_done
-
-_spawn_coin
-        object_type[index] = TYPE_COIN
-        object_hp[index] = 1
-        goto object_done
+        asm
+          lda player_hp
+          cmp player_max_hp
+          beq spawns_torch_mp
+          lda #TYPE_FOOD
+          bne spawns_torch_store
+spawns_torch_mp
+          lda player_mp
+          cmp player_max_mp
+          beq spawns_torch_random
+          lda #TYPE_MANA
+          beq spawns_torch_store
+spawns_torch_random
+          jsr randomize
+          ; divide by 32 for an index to 8-byte table
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          tay
+          lda torch_drops,y
+spawns_torch_store
+          sta object_type,x
+          jmp .object_done
+end
 
         ; handles poison and regen
 poison_damage

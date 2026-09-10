@@ -1,7 +1,7 @@
         data rare_drops
         0               ; player
         0               ; torch (handled separately)
-        TYPE_POTION     ; wolf
+        TYPE_HIPOTION   ; wolf
         TYPE_HIPOTION   ; warg
         TYPE_TURTLESHELL ; merman
         TYPE_HIPOTION   ; octopus
@@ -34,8 +34,8 @@ end
         0               ; player
         0               ; torch (handled separately)
         TYPE_FOOD       ; wolf
-        TYPE_EYEDROP    ; warg
-        TYPE_EYEDROP    ; merman
+        TYPE_FOOD       ; warg
+        TYPE_POTION     ; merman
         TYPE_EYEDROP    ; octopus
         TYPE_FOOD       ; raven
         TYPE_ETHER      ; priest
@@ -46,7 +46,7 @@ end
         TYPE_SOFT       ; stone rose hills
         TYPE_ANTIDOTE   ; spider
         TYPE_ANTIDOTE   ; vertical spider
-        TYPE_SOFT       ; cave spider
+        TYPE_ANTIDOTE   ; cave spider
         TYPE_ANTIDOTE   ; slime
         0               ; mini-slime
         TYPE_ANTIDOTE   ; red slime
@@ -60,4 +60,10 @@ end
         TYPE_UNCURSE    ; feuermann
         TYPE_UNCURSE    ; caves ghost
         TYPE_UNCURSE    ; forest ghost
+end
+
+
+        data torch_drops
+        TYPE_PRISM, TYPE_PRISM, TYPE_POTION, TYPE_ANTIDOTE
+        TYPE_EYEDROP, TYPE_UNCURSE, TYPE_SOFT, TYPE_ETHER
 end
