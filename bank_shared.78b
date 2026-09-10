@@ -751,7 +751,7 @@ spawns_torch_mp
           lda player_mp
           cmp player_max_mp
           beq spawns_torch_random
-          lda #TYPE_MANA
+          lda #TYPE_PRISM
           beq spawns_torch_store
 spawns_torch_random
           jsr randomize
