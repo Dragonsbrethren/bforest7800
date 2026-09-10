@@ -1124,8 +1124,12 @@ octokraken_respawn_tent_1
           sta object_timer,x
           lda #TYPE_TENTACLE
           sta object_type,x
-          lda #OCTOPUS_HP
+          lda #TENTACLE_HP
           sta object_hp,x
+          lda #<.plot_tentacle
+          sta object_spr_ptr_lo,x
+          lda #>.plot_tentacle
+          sta object_spr_ptr_hi,x
 octokraken_tent_check_2
           lda object_type,y
           beq octokraken_tent_check_3
@@ -1139,8 +1143,12 @@ octokraken_tent_check_3
           sta object_flags,y
           lda #TYPE_TENTACLE
           sta object_type,y
-          lda #OCTOPUS_HP
+          lda #TENTACLE_HP
           sta object_hp,y
+          lda #<.plot_tentacle
+          sta object_spr_ptr_lo,y
+          lda #>.plot_tentacle
+          sta object_spr_ptr_hi,y
           ldx index
           lda #%10000000
           sta object_flags,x
@@ -1323,19 +1331,28 @@ obj_tentacle_stats
           sta object_pal,x
           lda #0
           sta object_frame,x
+          lda #TENTACLE_HP
+          sta object_hp,x
+          lda #TENTACLE_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #TENTACLE_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #TENTACLE_DAMAGE
+          sta object_damage,x
+          lda #TENTACLE_DEF
+          sta object_def,x
+          lda #TENTACLE_MDEF
+          sta object_mdef,x
+          lda #0
+          sta object_friction_hi,x
+          sta object_friction_lo,x
+          sta object_speed_hi,x
+          lda #TENTACLE_SPEED_LO
+          sta object_speed_lo,x
+          lda #TENTACLE_FLAGS
+          sta object_flags,x
+          jmp .obj_next_stats
 end
-        object_hp[obj_index] = 10
-        object_vel_cap_hi[obj_index] = 2
-        object_vel_cap_lo[obj_index] = 0
-        object_damage[obj_index] = 4
-        object_def[obj_index] = 0
-        object_mdef[obj_index] = 2
-        object_friction_hi[obj_index] = 0
-        object_friction_lo[obj_index] = 0
-        object_speed_hi[obj_index] = 0
-        object_speed_lo[obj_index] = 10
-        object_flags[obj_index] = #%00010000
-        goto obj_next_stats
 
 ;==============================================================================
 ; RIVER GHOST AI

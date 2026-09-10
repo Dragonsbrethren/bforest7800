@@ -534,9 +534,21 @@
         const OCTOKRAKEN_ELEM_ATK = %00001000
         const OCTOKRAKEN_ELEM_DEF = %00001000
         const TENTSHADOW_TIME   = 15
+
+        const TENTACLE_HP = 4
         const TENTACLE_SPEED = 3
         const TENTACLE_ELEM_ATK = %00001000
         const TENTACLE_ELEM_DEF = %00001000
+        const TENTACLE_VEL_CAP_HI = 2
+        const TENTACLE_VEL_CAP_LO = 0
+        const TENTACLE_DAMAGE = 4
+        const TENTACLE_DEF = 0
+        const TENTACLE_MDEF = 2
+        const TENTACLE_FRICTION_HI = 0
+        const TENTACLE_FRICTION_LO = 0
+        const TENTACLE_SPEED_HI = 0
+        const TENTACLE_SPEED_LO = 10
+        const TENTACLE_FLAGS = #%00010000
 
         ; WARG
         const F_WARG_LEFT_1  = 0
