@@ -206,12 +206,12 @@
         ; STATS -- TODO: Move these to individual files for each object?
         const WOLF_SPEED_HI = 2
         const WOLF_SPEED_LO = 0
-        const WOLF_HP = 6
+        const WOLF_HP = 4
         const WOLF_VEL_CAP_HI = 2
         const WOLF_VEL_CAP_LO = 0
         const WOLF_FRICTION_HI = 1
         const WOLF_FRICTION_LO = 0
-        const WOLF_DAMAGE = 4
+        const WOLF_DAMAGE = 8
         const WOLF_DEF = 0
         const WOLF_MDEF = 0
         const WOLF_DROP_RATE = 64       ; depreciated
@@ -225,12 +225,12 @@
         const WOLF_PAL = 5
 
         const SLIME_DROP_RATE = 128     ; depreciated
-        const SLIME_HP = 4
+        const SLIME_HP = 2
         const MSLIME_HP = SLIME_HP / 2
         const SLIME_VEL_CAP_HI = 1
         const SLIME_VEL_CAP_LO = 0
-        const SLIME_DAMAGE = 4
-        const SLIME_DEF = 255
+        const SLIME_DAMAGE = 6
+        const SLIME_DEF = 2
         const SLIME_MDEF = 0
         const MSLIME_DEF = 0
         const MSLIME_MDEF = 0
@@ -248,10 +248,10 @@
         const RAVEN_CHASE_DIST = 50
         const RAVEN_FLIGHT_TIME = 40
         const RAVEN_DROP_RATE = 128
-        const RAVEN_HP = 6
+        const RAVEN_HP = 4
         const RAVEN_VEL_CAP_HI = 2
         const RAVEN_VEL_CAP_LO = 0
-        const RAVEN_DAMAGE = 4
+        const RAVEN_DAMAGE = 10
         const RAVEN_FRICTION_HI = 0
         const RAVEN_FRICTION_LO = 0
         const RAVEN_SPEED_HI = 2
@@ -268,17 +268,19 @@
         const RAVEN_SWOOP_SPEED = 32
 
         ; FOREST GHOST
-        const FGHOST_HP = 4
+        const FGHOST_HP = 2
         const FGHOST_VEL_CAP_HI = 2
         const FGHOST_VEL_CAP_LO = 0
-        const FGHOST_DAMAGE = 6
-        const FGHOST_DEF = 2
+        const FGHOST_DAMAGE = 4
+        const FGHOST_DEF = 1
         const FGHOST_MDEF = 0
         const FGHOST_FRICTION_HI = 0
         const FGHOST_FRICTION_LO = 0
         const FGHOST_SPEED_HI = 1
         const FGHOST_SPEED_LO = 0
         const FGHOST_FLAGS = %00000100
+        const FGHOST_ELEM_ATK = %01010000
+        const FGHOST_ELEM_DEF = %01010000
         const F_FGHOST_1 = 16
         const F_FGHOST_2 = 17
         const FGHOST_PAL_1 = 3
@@ -294,10 +296,10 @@
 
         ; FIREBAT
         const FIREBAT_FLIGHT_TIME = 40
-        const FIREBAT_HP = 50
+        const FIREBAT_HP = 20
         const FIREBAT_VEL_CAP_HI = 2
         const FIREBAT_VEL_CAP_LO = 0
-        const FIREBAT_DAMAGE = 10
+        const FIREBAT_DAMAGE = 8
         const FIREBAT_FRICTION_HI = 0
         const FIREBAT_FRICTION_LO = 0
         const FIREBAT_SPEED_HI = 1
@@ -316,7 +318,7 @@
         const BATFIREBALL_VEL_CAP_LO = 0
         const BATFIREBALL_SPEED_HI = 4
         const BATFIREBALL_SPEED_LO = 0
-        const BATFIREBALL_DAMAGE = 44
+        const BATFIREBALL_DAMAGE = 12
         const BATFIREBALL_FLAGS = %00010000
         const BATFIREBALL_ELEM_ATK = %00000001
 

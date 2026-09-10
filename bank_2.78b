@@ -629,6 +629,8 @@ obj_wolf_stats
           lda #WOLF_SPEED_LO
           sta object_speed_lo,x
           lda #0
+          sta object_elem_atk,x
+          sta object_elem_def,x
           sta object_flags,x
           lda #WOLF_PAL
           sta object_pal,x
@@ -655,13 +657,13 @@ mslime_ai
 .slime_ai
           lda #F_SLIME_1
           sta object_frame,x
-          lda #SLIME_DEF
+          lda #255
 
 slime_anim
           sta object_def,x
           lda animation_frame
           beq slime_chase
-          lda #0
+          lda #SLIME_DEF
           sta object_def,x
           inc object_frame,x
 slime_chase
@@ -692,6 +694,8 @@ obj_slime_stats
           lda #SLIME_SPEED_LO
           sta object_speed_lo,x
           lda #0
+          sta object_elem_atk,x
+          sta object_elem_def,x
           sta object_flags,x
           lda #SLIME_PAL
           sta object_pal,x
@@ -759,6 +763,9 @@ end
           sta object_invuln,y
           lda #SLIME_FLAGS
           sta object_flags,y
+          lda #0
+          sta object_elem_atk,x
+          sta object_elem_def,x
           lda #INVULN_FRAMES
           sta object_invuln,x
           sta object_invuln,y
@@ -921,17 +928,16 @@ obj_raven_stats
           lda #RAVEN_VEL_CAP_HI
           sta object_vel_cap_hi,x
           lda #RAVEN_VEL_CAP_LO
-          sta object_vel_cap_lo,x
           lda #RAVEN_DAMAGE
           sta object_damage,x
-          lda #RAVEN_DEF
+          lda #0
+          sta object_vel_cap_lo,x
           sta object_def,x
-          lda #RAVEN_MDEF
           sta object_mdef,x
-          lda #RAVEN_FRICTION_HI
           sta object_friction_hi,x
-          lda #RAVEN_FRICTION_LO
           sta object_friction_lo,x
+          sta object_elem_atk,x
+          sta object_elem_def,x
           lda #RAVEN_SPEED_HI
           sta object_speed_hi,x
           lda #RAVEN_SPEED_LO
@@ -988,6 +994,10 @@ obj_fghost_stats
           sta object_speed_lo,x
           lda #FGHOST_FLAGS
           sta object_flags,x
+          lda #FGHOST_ELEM_ATK
+          sta object_elem_atk,x
+          lda #FGHOST_ELEM_DEF
+          sta object_elem_def,x
           lda #FGHOST_PAL_1
           sta object_pal,x
           lda #F_FGHOST_1

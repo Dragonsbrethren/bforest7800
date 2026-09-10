@@ -1951,7 +1951,7 @@ hop_down_done
 
 hop_left
         lda object_flags,x
-        and #%11111011
+        and #%00000010
         beq hop_left_timer
         lda #%11011111
         and object_flags,x
@@ -1982,7 +1982,7 @@ hop_left_down
 
 hop_right
         lda object_flags,x
-        and #%11111011
+        and #%00000010
         beq hop_right_timer
         lda #%11011111
         and object_flags,x
