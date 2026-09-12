@@ -351,20 +351,21 @@ end
 end
 
         data forest_room_16_obj
-        TYPE_DOOR_LOCK, 73, $80
+        TYPE_DOOR, 73, $80
         TYPE_BURNBUSH, 3*8, $60
         TYPE_TORCH, 7*8, $90
         $00
 end
 
         data forest_room_17_obj
+        TYPE_RAVEN, 2, $50
         TYPE_SPECTACLES, 24, $40
         $00
 end
 
         data forest_room_18_obj
         TYPE_TORCH, 10*8, $70
-        TYPE_DOOR_LOCK, 65, $60
+        TYPE_DOOR, 65, $60
         $00
 end
 

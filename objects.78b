@@ -57,13 +57,14 @@
         const TYPE_PROJECTILE   = TYPE_SKELSWORD
         const TYPE_TENTSHADOW   = 130
         const TYPE_CAMPFIRE     = 131
+        const TYPE_PUSHROCK     = 132
         const TYPE_ENEMY_PROJ   = TYPE_DRAGON_PSN
-        const TYPE_DRAGON_PSN   = 132
-        const TYPE_PSNCLOUD     = 133
-        const TYPE_DARKBOLT     = 134
+        const TYPE_DRAGON_PSN   = 133
+        const TYPE_PSNCLOUD     = 134
+        const TYPE_DARKBOLT     = 135
         const TYPE_DESTRUCTIBLE = TYPE_BATFIREBALL
-        const TYPE_BATFIREBALL  = 135
-        const TYPE_ROCK         = 136
+        const TYPE_BATFIREBALL  = 136
+        const TYPE_ROCK         = 137
         const TYPE_DARKSPARK    = 140
         const TYPE_OCTOINK      = 141
         const TYPE_SEED         = 142
@@ -204,6 +205,7 @@
         ; DROP RATES
         const RARE_DROP_RATE = 254
         const COMMON_DROP_RATE = 192
+        const TORCH_DROP_RATE = 224
 
         ; STATS -- TODO: Move these to individual files for each object?
         const WOLF_SPEED_HI = 2

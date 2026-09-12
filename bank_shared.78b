@@ -552,13 +552,13 @@ pos_swd_left
         incbasic ai_pointers.78b
 
         data projectile_ai_lo
-        skelsword_ai_lo, <.tentshadow_ai, <.campfire_ai, <.dragon_psn_ai, <.psncloud_ai, <.lightning_ai, <.fireball_ai, <.rock_ai, 0, 0, 0,
+        skelsword_ai_lo, <.tentshadow_ai, <.campfire_ai, <.campfire_ai, <.dragon_psn_ai, <.psncloud_ai, <.lightning_ai, <.fireball_ai, <.rock_ai, 0, 0, 0,
         darkspark_ai_lo, octoink_ai_lo, <.seed_ai, <.hseed_ai, <.lightning_ai, <.batfireball_ai, <.dragon_psn_ai, 0, <.poison_ai, <.windslash_ai,
         fireball_ai_lo, <.iceflake_ai, <.lightning_ai, fairy_ai_lo, <.cat_ai, <.spirit_ai, <.owl_ai, 0
 end
 
         data projectile_ai_hi
-        skelsword_ai_hi, >.tentshadow_ai, >.campfire_ai, >.dragon_psn_ai, >.psncloud_ai, >.lightning_ai, >.fireball_ai, >.rock_ai, 0, 0, 0,
+        skelsword_ai_hi, >.tentshadow_ai, >.campfire_ai, >.campfire_ai, >.dragon_psn_ai, >.psncloud_ai, >.lightning_ai, >.fireball_ai, >.rock_ai, 0, 0, 0,
         darkspark_ai_hi, octoink_ai_hi, >.seed_ai, >.hseed_ai, >.lightning_ai, >.batfireball_ai, >.dragon_psn_ai, 0, >.poison_ai, >.windslash_ai,
         fireball_ai_hi, >.iceflake_ai, >.lightning_ai, fairy_ai_hi, >.cat_ai, >.spirit_ai, >.owl_ai, 0
 end
@@ -751,9 +751,13 @@ spawns_torch_mp
           lda player_mp
           cmp player_max_mp
           beq spawns_torch_random
+spawn_torch_prism
           lda #TYPE_PRISM
-          beq spawns_torch_store
+          bne spawns_torch_store
 spawns_torch_random
+          jsr randomize
+          cmp #TORCH_DROP_RATE
+          bcc spawn_torch_prism
           jsr randomize
           ; divide by 32 for an index to 8-byte table
           lsr
@@ -1760,8 +1764,15 @@ cc_return
 
 cc_door
         ; exclude static decorations so they don't get killed on collision
-        if object_type[index] < TYPE_DOOR then cc_next
-        if object_type[index] >=TYPE_COIN then cc_pickup
+        asm
+          ldx index
+          lda object_type,x
+          cmp #TYPE_DOOR
+          bcc .cc_next
+
+          cmp #TYPE_COIN
+          bcs .cc_pickup
+end
         temp1 = Xposition - 4
         if temp1 < player_Xpos && (temp1 + 16) >= player_Xpos && Yposition < player_Ypos && (Yposition + 16) >= player_Ypos then pickup_object
         goto cc_next
@@ -2289,15 +2300,34 @@ set_status
 end
 
 increase_player_hp
-        player_hp = player_hp + hp_change
-        if player_hp > player_max_hp then player_hp = player_max_hp
-        hp_change = 0
-        goto update_hp_bar
+        asm
+          lda player_hp
+          clc
+          adc hp_change
+          cmp player_max_hp
+          bcc increase_player_hp_store_change
+          lda player_max_hp
+increase_player_hp_store_change
+          sta player_hp
+          lda #0
+          sta hp_change
+          jmp .update_hp_bar
+end
 
 increase_player_mp
-        player_mp = player_mp + mp_change
-        if player_mp > player_max_mp then player_mp = player_max_mp
-        goto update_mp_bar
+        asm
+          lda player_mp
+          clc
+          adc mp_change
+          cmp player_max_mp
+          bcc increase_player_mp_store_change
+          lda player_max_mp
+increase_player_mp_store_change
+          sta player_mp
+          lda #0
+          sta mp_change
+          jmp .update_mp_bar
+end
 
 decrease_player_mp
         ; TODO: This currently can't scale, only works with max HP 48...
