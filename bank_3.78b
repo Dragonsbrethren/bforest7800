@@ -578,7 +578,7 @@ plot_relic_names
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
         goto items_left
 
-bank3overflow
+relic_highlight
         if item_name >= 4 then m_palette = 0
         if item_name + 1 = toggled_familiar then m_palette = 0
         return thisbank
@@ -708,7 +708,7 @@ end
 items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
         m_palette = 4
-        if menu = MENU_RELICS then gosub bank3overflow
+        if menu = MENU_RELICS then gosub relic_highlight
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
