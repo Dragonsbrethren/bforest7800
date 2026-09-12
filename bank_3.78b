@@ -579,7 +579,7 @@ plot_relic_names
         goto items_left
 
 relic_highlight
-        if item_name >= 4 then m_palette = 0
+        if item_name >= 5 then m_palette = 0
         if item_name + 1 = toggled_familiar then m_palette = 0
         return thisbank
 
@@ -588,7 +588,7 @@ toggle_familiar
         if menu_selection = 11 then open_main_menu
         temp1 = m_relic_inv[menu_selection]
         if temp1 >= 5 then goto main
-        if toggled_familiar = temp1 then toggled_familiar = 0 else toggled_familiar = temp1
+        if toggled_familiar = temp1 then toggled_familiar = 0 : object_type[13] = 0 else toggled_familiar = temp1
         ; zero familiar flags so it reinitializes itself
         object_flags[13] = 0
         goto main
@@ -657,7 +657,8 @@ relic_inventory
         m_spriteY = 48
         m_textX = 24
         m_textY = 3
-        m_palette = 4
+        if toggled_familiar = 1 then m_palette = 0 else m_palette = 4
+        if m_relic_inv[0] >= 5 then m_palette = 0
         pointer = m_relic_inv_lo
         pointer_hi = m_relic_inv_hi
         gosub plot_item_inv
@@ -712,8 +713,11 @@ items_left
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
+        goto items_next
 items_right
-        if menu = MENU_RELICS && item_name < 4 && item_name+1 <> toggled_familiar then m_palette = 4
+        if menu = MENU_ITEMS then items_next
+        if item_name < 5 && item_name + 1 <> toggled_familiar then m_palette = 4
+items_next
         next
         
         ; bypass item description if on Exit

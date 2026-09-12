@@ -1555,6 +1555,7 @@ cat_init
           beq cat_sprite
           lda #0
           sta object_type,x
+          sta object_pal,x
 cat_sprite
           lda #<.plot_cat
           sta object_spr_ptr_lo,x
@@ -1700,7 +1701,9 @@ owl_init
           sta object_spr_ptr_hi,x
 owl_find_target
           jsr .find_target
-          beq owl_no_target
+          bne owl_found_target
+          ; no targetable object found, use Johanna's coordinate
+          ldy #0
 owl_found_target
           lda object_Ypos,y
           ; owl needs to be zone-aligned
@@ -1723,11 +1726,7 @@ owl_found_target
           lda #%10000100
           sta object_flags,x
           rts
-owl_no_target
-          ; no targetable object found, hide owl off screen
-          lda #$E0
-          sta object_Xpos,x
-          sta object_Ypos,x
+
 owl_return
           rts
 end
