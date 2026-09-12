@@ -12,6 +12,8 @@
         name_bat_lo
         name_rose_lo
         <name_rose
+        <name_devout
+        <name_redbone
         name_spider_lo
         name_spider_lo
         name_cspider_lo
@@ -52,6 +54,8 @@ end
         name_bat_hi
         name_rose_hi
         >name_rose
+        >name_devout
+        >name_redbone
         name_spider_hi
         name_spider_hi
         name_cspider_hi
@@ -241,4 +245,12 @@ end
 
         alphadata name_dragon font_spr
         'Fell Dragon*'
+end
+
+        alphadata name_devout font_spr
+        'Devout*'
+end
+
+        alphadata name_redbone font_spr
+        'Red Bone*'
 end

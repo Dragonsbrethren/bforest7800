@@ -976,7 +976,7 @@ end
 end
 
         data sword_atk
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+        1, 2, 3, 3, 2, 4, 4, 4, 9, 10, 11
 end
 
         data sword_def
@@ -992,7 +992,7 @@ end
 end
 
         data shield_def
-        0, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        0, 1, 2, 1, 2, 3, 3, 3, 3, 3, 4
 end
 
         data shield_wis
@@ -1004,11 +1004,11 @@ end
 end
 
         data armor_def
-        1, 2, 3, 4, 5, 6, 6, 1, 1, 2, 3
+        1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3
 end
 
         data armor_wis
-        0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 6
+        1, 1, 1, 1, 1, 1, 1, 0, 2, 4, 6
 end
 
         data charm_atk
@@ -1020,7 +1020,7 @@ end
 end
 
         data charm_wis
-        1, 2, 1, 1, 3, 4, 5, 6, 7, 8, 9
+        0, 1, 2, 0, 0, 2, 2, 2, 2, 3, 4
 end
 
 enable_double_wide_mode

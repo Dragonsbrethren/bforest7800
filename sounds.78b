@@ -310,4 +310,17 @@ end
         $00,$00,$00
 end
 
+        data sfx_twinkle
+        $10,$10,$00 ; version, priority, frames per chunk
+        $10,$04,$0d
+        $02,$0c,$02
+        $1b,$04,$07
+        $1b,$04,$06
+        $0c,$04,$08
+        $02,$0c,$08
+        $0a,$04,$0b
+        $00,$06,$09
+        $00,$00,$00
+        end
+
         inline pokeysound.asm

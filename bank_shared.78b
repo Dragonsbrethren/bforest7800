@@ -793,6 +793,11 @@ familiar_dec_timer
           bne .player_handler_no_familiar
 familiar_mp_drain
           lda #FAMILIAR_MP
+          sec
+          sbc player_wisdom
+          bpl familiar_mp_nov
+          lda #1
+familiar_mp_nov
           sta mp_change
           jsr .decrease_player_mp
           lda player_mp
@@ -2267,6 +2272,7 @@ end
         return thisbank
 
 absorb_projectile
+        playsfx sfx_twinkle
         asm
           lda object_damage,x
           sta hp_change

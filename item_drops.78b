@@ -12,6 +12,8 @@
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
         TYPE_LIFEAPPLE  ; stone rose hills
+        TYPE_SPELL2     ; devout
+        TYPE_SWORD2     ; red bone
         TYPE_CHARM9     ; spider
         TYPE_CHARM9     ; vertical spider
         TYPE_CHARM9     ; cave spider
@@ -44,6 +46,8 @@ end
         TYPE_POTION     ; bat
         TYPE_SOFT       ; stone rose
         TYPE_SOFT       ; stone rose hills
+        TYPE_ETHER      ; devout
+        TYPE_SHIELD3    ; red bone
         TYPE_ANTIDOTE   ; spider
         TYPE_ANTIDOTE   ; vertical spider
         TYPE_ANTIDOTE   ; cave spider

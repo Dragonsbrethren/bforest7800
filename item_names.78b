@@ -333,10 +333,10 @@ end
         'Spell 8     *'
 end
         alphadata pickup_spell9 font_spr
-        'Spell 9     *'
+        '*'
 end
         alphadata pickup_spell10 font_spr
-        'Spell 10    *'
+        '*'
 end
 
         alphadata pickup_sword1 font_spr
@@ -357,7 +357,7 @@ end
         'Firebrand*'
 end
         alphadata pickup_sword7 font_spr
-        'Sword 7     *'
+        'Icebrand*'
 end
         alphadata pickup_sword8 font_spr
         'Sword 8     *'

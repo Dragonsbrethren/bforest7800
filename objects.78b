@@ -12,44 +12,46 @@
         const TYPE_BAT          =  10
         const TYPE_ROSE         =  11
         const TYPE_HROSE        =  12
+        const TYPE_DEVOUT       =  13
+        const TYPE_REDBONE      =  14
         const TYPE_POISONMOB    = TYPE_SPIDER
-        const TYPE_SPIDER       =  13
-        const TYPE_SPIDER_V     =  14
-        const TYPE_CSPIDER      =  15
+        const TYPE_SPIDER       =  15
+        const TYPE_SPIDER_V     =  16
+        const TYPE_CSPIDER      =  17
         const TYPE_SLIMEMOB     = TYPE_SLIME
-        const TYPE_SLIME        =  16
-        const TYPE_MSLIME       =  17
-        const TYPE_RSLIME       =  18
-        const TYPE_MRSLIME      =  19       ; Mr. Slime lol
-        const TYPE_HSLIME       =  20
-        const TYPE_MHSLIME      =  21
-        const TYPE_PUDDING      =  22
-        const TYPE_MPUDDING     =  23
+        const TYPE_SLIME        =  18
+        const TYPE_MSLIME       =  19
+        const TYPE_RSLIME       =  20
+        const TYPE_MRSLIME      =  21       ; Mr. Slime lol
+        const TYPE_HSLIME       =  22
+        const TYPE_MHSLIME      =  23
+        const TYPE_PUDDING      =  24
+        const TYPE_MPUDDING     =  25
         const TYPE_SLIMEEND     = TYPE_GHOST
         const TYPE_CURSEMOB     = TYPE_GHOST
-        const TYPE_GHOST        =  24
-        const TYPE_RGHOST       =  25
-        const TYPE_HGHOST       =  26
-        const TYPE_CGHOST       =  27
-        const TYPE_FGHOST       =  28
+        const TYPE_GHOST        =  26
+        const TYPE_RGHOST       =  27
+        const TYPE_HGHOST       =  28
+        const TYPE_CGHOST       =  29
+        const TYPE_FGHOST       =  30
         const TYPE_BOSSMONSTER  = TYPE_FIREBAT
-        const TYPE_FIREBAT      =  29
-        const TYPE_CARDINAL     =  30
-        const TYPE_OCTOKRAKEN   =  31
-        const TYPE_TENTACLE     =  32
-        const TYPE_HARPY_QUEEN  =  33
-        const TYPE_DRAGON       =  34
+        const TYPE_FIREBAT      =  31
+        const TYPE_CARDINAL     =  32
+        const TYPE_OCTOKRAKEN   =  33
+        const TYPE_TENTACLE     =  34
+        const TYPE_HARPY_QUEEN  =  35
+        const TYPE_DRAGON       =  36
         const TYPE_OBSTACLE     = TYPE_BURNBUSH
-        const TYPE_BURNBUSH     =  35
-        const TYPE_BLOCKFLAME   =  36
+        const TYPE_BURNBUSH     =  37
+        const TYPE_BLOCKFLAME   =  38
         const TYPE_MOBSPAWNER   = TYPE_BAT_SPAWNER
-        const TYPE_BAT_SPAWNER  =  37
+        const TYPE_BAT_SPAWNER  =  39
         const TYPE_BOSSHANDLER  = TYPE_FOREST_BOSS
-        const TYPE_FOREST_BOSS  =  38
-        const TYPE_CASTLE_BOSS  =  39
-        const TYPE_RIVERBOSS    =  40
-        const TYPE_HILLS_BOSS   =  41
-        const TYPE_CAVES_BOSS   =  42
+        const TYPE_FOREST_BOSS  =  40
+        const TYPE_CASTLE_BOSS  =  41
+        const TYPE_RIVERBOSS    =  42
+        const TYPE_HILLS_BOSS   =  43
+        const TYPE_CAVES_BOSS   =  44
         const TYPE_SPAWNER      = 128
         const TYPE_SKELSWORD    = 129
         const TYPE_PROJECTILE   = TYPE_SKELSWORD
@@ -248,7 +250,7 @@
         const RAVEN_CHASE_DIST = 50
         const RAVEN_FLIGHT_TIME = 40
         const RAVEN_DROP_RATE = 128
-        const RAVEN_HP = 4
+        const RAVEN_HP = 6
         const RAVEN_VEL_CAP_HI = 2
         const RAVEN_VEL_CAP_LO = 0
         const RAVEN_DAMAGE = 10
@@ -299,7 +301,7 @@
         const FIREBAT_HP = 20
         const FIREBAT_VEL_CAP_HI = 2
         const FIREBAT_VEL_CAP_LO = 0
-        const FIREBAT_DAMAGE = 8
+        const FIREBAT_DAMAGE = 10
         const FIREBAT_FRICTION_HI = 0
         const FIREBAT_FRICTION_LO = 0
         const FIREBAT_SPEED_HI = 1
@@ -330,7 +332,7 @@
         const PRIEST_HP          =  4
         const PRIEST_VEL_CAP_HI  =  2
         const PRIEST_VEL_CAP_LO  =  0
-        const PRIEST_DAMAGE      =  4
+        const PRIEST_DAMAGE      =  6
         const PRIEST_DEF         =  0
         const PRIEST_MDEF        =  2
         const PRIEST_FRICTION_HI =  1
@@ -356,11 +358,13 @@
         const F_PRIEST_CAST_RIGHT = 17
         const PRIEST_PAL = (1 * 32)
 
+        ; CARDINAL
         const CARDINAL_PAL = (7 * 32)
         const CARDINAL_HP  = 40
         const CARDINAL_TELE_DELAY = 60
 
 
+        ; DARK SPARK
         const DARKSPARK_SPEED_HI = 4
         const DARKSPARK_SPEED_LO = 0
         const DARKSPARK_VEL_CAP_HI = 4
@@ -403,7 +407,7 @@
         const SKEL_PAL = (5 * 32)
 
 
-        const SKELSWORD_DAMAGE = 3
+        const SKELSWORD_DAMAGE = 5
         const SKELSWORD_ELEM_ATK = %00100000
         const RETRACT_FRAMES = 4
 
@@ -427,13 +431,6 @@
         const GHOST_PAL_2 = (2 * 32)
         const GHOST_ANIM_TIMER = 4
 
-        const F_RGHOST_1   = 0
-        const F_RGHOST_2   = 1
-        const RGHOST_PAL_1 = 0
-        const RGHOST_PAL_2 = 2
-        const RGHOST_ELEM_ATK = %00100100
-        const RGHOST_ELEM_DEF = %00100100
-
         ; RED SLIME
         const RSLIME_DROP_RATE = 128
         const RSLIME_HP = 4
@@ -454,6 +451,11 @@
         const F_MRSLIME_1 = 32
         const F_MRSLIME_2 = 33
         const RSLIME_PAL = (7 * 32)
+
+        ; DEVOUT
+        const DEVOUT_PAL = (7 * 32)
+        const DEVOUT_DAMAGE = 8
+        const DEVOUT_HP = 6
 
         ; Nix (Merman) frames
         const F_NIX_EMERGE = 0
@@ -489,6 +491,7 @@
         const NIX_ELEM_ATK = %00001000
         const NIX_ELEM_DEF = %00001001
 
+        ; RIVER BEAST
         const OCTOPUS_HP = 4
         const OCTOPUS_VEL_CAP_HI = 2
         const OCTOPUS_VEL_CAP_LO = 0
@@ -526,6 +529,7 @@
         const OCTOINK_PAL = (6 * 32)
         const OCTOINK_ELEM_ATK = %00001000
 
+        ; THE OCTOKRAKEN
         const OCTOKRAKEN_HP     = 40
         const OCTOKRAKEN_DAMAGE = 7
         const OCTOKRAKEN_DEF    = 4
@@ -537,6 +541,7 @@
         const OCTOKRAKEN_ELEM_DEF = %00001000
         const TENTSHADOW_TIME   = 15
 
+        ; KRAKEN's TENTACLES
         const TENTACLE_HP = 4
         const TENTACLE_SPEED = 3
         const TENTACLE_ELEM_ATK = %00001000
@@ -555,6 +560,14 @@
         ; WARG
         const F_WARG_LEFT_1  = 0
         const F_WARG_RIGHT_1 = 2
+
+        ; RIVER GHOST
+        const F_RGHOST_1   = 0
+        const F_RGHOST_2   = 1
+        const RGHOST_PAL_1 = 0
+        const RGHOST_PAL_2 = 2
+        const RGHOST_ELEM_ATK = %00100100
+        const RGHOST_ELEM_DEF = %00100100
 
         ; HARPY
         const HARPY_HP = 6
@@ -1001,3 +1014,5 @@
         const FIREBAT_ELEM_WEAK  = %01000010
         const FGHOST_ELEM_WEAK   = %01000000
         const DRAGON_ELEM_WEAK   = %01000000
+        const DEVOUT_ELEM_WEAK   = %00100000
+        const REDBONE_ELEM_WEAK  = %01000001

@@ -673,6 +673,7 @@ check_spell_bits
         asm
           ldx index
           ldy #0
+          sty item_sub
           lda object_type,x
           cmp #TYPE_SPELL1
           beq check_spell_bits_1
@@ -680,8 +681,13 @@ check_spell_bits
           cmp #TYPE_SPELL2
           beq check_spell_bits_1
           iny
+
           cmp #TYPE_SPELL3
-          beq check_spell_bits_1
+          bne check_spell_4
+          lda #TYPE_CHARM2
+          sta item_sub
+          bne check_spell_bits_1
+check_spell_4
           iny
           cmp #TYPE_SPELL4
           beq check_spell_bits_1
@@ -710,7 +716,7 @@ check_spell_bits_1
           lda m_spell_bits_1
           and item_bits,y
           beq check_spell_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_spell_bits_done
 
@@ -718,7 +724,7 @@ check_spell_bits_2
           lda m_spell_bits_2
           and item_bits,y
           beq check_spell_bits_done
-          lda #0
+          lda item_sub
           sta object_type,x
           beq check_spell_bits_done
 end
@@ -2261,6 +2267,11 @@ end
         0,0,0
 end
 
+        data torch_tileset_lo
+        0, torch_tile_block_forest_lo, torch_tile_block_castle_lo, torch_tile_block_river_lo, torch_tile_block_hills_lo, <.torch_tile_block_caves
+end
+
+
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
@@ -2312,10 +2323,6 @@ end
 
         incbasic fairy_scroll.78b
         incbasic item_names.78b
-
-        data torch_tileset_lo
-        0, torch_tile_block_forest_lo, torch_tile_block_castle_lo, torch_tile_block_river_lo, torch_tile_block_hills_lo, <.torch_tile_block_caves
-end
 
         data torch_tileset_hi
         0, torch_tile_block_forest_hi, torch_tile_block_castle_hi, torch_tile_block_river_hi, torch_tile_block_hills_hi, >.torch_tile_block_caves

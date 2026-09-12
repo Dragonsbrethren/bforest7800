@@ -134,7 +134,7 @@
         const STATUS_FURY   = 5
         const STATUS_REGEN  = 6
 
-        const FAMILIAR_MP = 1
+        const FAMILIAR_MP = 6
         const FAMILIAR_FRAMES = 30
 
         const POISON_DMG = 1

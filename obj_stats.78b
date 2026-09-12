@@ -12,6 +12,8 @@
         <.obj_bat_spawner_stats ; bat
         <.obj_rose_stats
         <.obj_hrose_stats
+        <.obj_devout_stats
+        <.obj_redbone_stats
         obj_spider_stats_lo
         obj_spider_stats_lo     ; vertical
         <.obj_cave_spider_stats
@@ -58,6 +60,8 @@ end
         >.obj_bat_spawner_stats ; bat
         >.obj_rose_stats
         >.obj_hrose_stats
+        >.obj_devout_stats
+        >.obj_redbone_stats
         obj_spider_stats_hi
         obj_spider_stats_hi     ; vertical
         >.obj_cave_spider_stats

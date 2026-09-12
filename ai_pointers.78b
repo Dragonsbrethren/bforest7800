@@ -12,6 +12,8 @@
         <.bat_ai
         <.rose_ai
         <.hrose_ai
+        <.devout_ai
+        <.redbone_ai
         spider_ai_lo
         spider_ai_lo    ; vertical spider, currently unused
         <.cave_spider_ai
@@ -58,6 +60,8 @@ end
         >.bat_ai
         >.rose_ai
         >.hrose_ai
+        >.devout_ai
+        >.redbone_ai
         spider_ai_hi
         spider_ai_hi    ; vertical spider, currently unused
         >.cave_spider_ai
