@@ -375,7 +375,9 @@ end
 end
 
         data forest_room_20_obj
-        TYPE_SHIELD1, 7*8, $48
+        TYPE_SHIELD1, 12*8, $58
+        TYPE_ARMOR1, 6*8, $40
+        TYPE_TORCH, 10*8, $40, TYPE_TORCH, 14*8, $40
         TYPE_TORCH, 5*8, $A0, TYPE_TORCH, 14*8, $A0
         $00
 end

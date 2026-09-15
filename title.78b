@@ -85,7 +85,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-10-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-14-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -269,23 +269,23 @@ title_credits
 ;        plotchars 'BLACK FOREST'       0 48 2
         plotchars 'GAME DESIGN'        4  8 4
         plotchars 'Chris Wiese'        0 80 4
-;       plotchars 'MUSIC'              0  8 5
-;       plotchars '    '               0 80 5
-;       plotchars 'PACKAGING ART'      0  8 6
-;       plotchars 'William Thorup'     0 80 6
-        plotchars '7800BASIC'          4  8 5
-        plotchars 'Mike Saarna'        0 80 5
-        plotchars 'ATARI DEV STUDIO'   4  8 6
-        plotchars 'Matthew Smith'      0 80 6
-        plotchars 'QA TESTING'         4  8 7
-        plotchars 'Nicole Blair'       0 80 7
-        plotchars 'James Earl O`brien' 0 80 8
-        plotchars 'Jesse Hardesty'     0 80 9
-        plotchars 'SPECIAL THANKS'     4  8 10
-        plotchars 'Steve Engelhardt'   0 80 10
-        plotchars 'PROMOTION'          4  8 11
-        plotchars 'Albert Yarusso'     0 80 11
+        plotchars 'MUSIC'              4  8 5
+        plotchars 'Michael R. Myers'   0 80 5
+        plotchars 'PACKAGING ART'      4  8 6
+        plotchars 'William Thorup'     0 80 6
+        plotchars '7800BASIC'          4  8 7
+        plotchars 'Mike Saarna'        0 80 7
+        plotchars 'ATARI DEV STUDIO'   4  8 8
+        plotchars 'Matthew Smith'      0 80 8
+        plotchars 'QA TESTING'         4  8 9
+        plotchars 'Nicole Blair'       0 80 9
+        plotchars 'James Earl O`brien' 0 80 10
+        plotchars 'Jesse Hardesty'     0 80 11
+;       plotchars 'SPECIAL THANKS'     4  8 12
+;       plotchars 'Steve Engelhardt'   0 80 12
+        plotchars 'PUBLISHING'         4  8 12
         plotchars 'AtariAge'           0 80 12
+        plotchars 'PROMOTION'          4  8 13
         plotchars 'ZeroPage Homebrew'  0 80 13
 
         savescreen
