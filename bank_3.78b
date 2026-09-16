@@ -980,7 +980,7 @@ end
 end
 
         data sword_atk
-        1, 2, 3, 3, 2, 4, 4, 4, 9, 10, 11
+        1, 2, 3, 3, 3, 4, 4, 4, 9, 10, 11
 end
 
         data sword_def

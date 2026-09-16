@@ -498,7 +498,7 @@
         const OCTOPUS_VEL_CAP_HI = 2
         const OCTOPUS_VEL_CAP_LO = 0
         const OCTOPUS_DAMAGE = 8
-        const OCTOPUS_DEF = 13
+        const OCTOPUS_DEF = 0
         const OCTOPUS_MDEF = 2
         const OCTOPUS_FRICTION_HI = 1
         const OCTOPUS_FRICTION_LO = 0
@@ -533,7 +533,7 @@
 
         ; THE OCTOKRAKEN
         const OCTOKRAKEN_HP     = 40
-        const OCTOKRAKEN_DAMAGE = 7
+        const OCTOKRAKEN_DAMAGE = 15
         const OCTOKRAKEN_DEF    = 1
         const OCTOKRAKEN_MDEF   = 2
         const OCTOKRAKEN_PAL    = 5
@@ -937,8 +937,8 @@
         const DARKBOLT_DAMAGE = 8
 
         ; BOSS FLAME AND BLOCK FLAME
-        const F_FLAME = 24
-        const F_BLANK = 26
+        const F_FLAME = 28
+        const F_BLANK = 30
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block
