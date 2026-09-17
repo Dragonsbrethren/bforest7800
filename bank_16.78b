@@ -90,6 +90,7 @@ plot_forest_room_4
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 forest_room_4 240
         plotmapfile tiled/forest_room_4.tmx map12 0 1 20 12
+        play_music = 1
         return otherbank
 
 plot_forest_room_5
@@ -101,6 +102,7 @@ plot_forest_room_5
         exit_Xpos = 19*8
         exit_Ypos = $68
         exit_room_index = F_RIVER_START5_I
+        play_music = 1
         return otherbank
 
 plot_forest_room_6
@@ -112,6 +114,7 @@ plot_forest_room_6
         exit_Xpos = 19*8
         exit_Ypos = $58
         exit_room_index = F_RIVER_START4_I
+        play_music = 1
         return otherbank
 
 plot_forest_room_7
@@ -138,6 +141,7 @@ plot_forest_room_9
         exit_Xpos = 9*8
         exit_Ypos = $80
         exit_room_index = F_FOREST_WITCH_I
+        play_music = 1
         return otherbank
 
 plot_forest_room_10
@@ -194,6 +198,7 @@ plot_forest_room_15
         exit_Xpos = 2*8
         exit_Ypos = $50
         exit_room_index = F_FOREST_ARMOR_I
+        play_music = 0
         return otherbank
 
 plot_forest_room_16
@@ -280,6 +285,7 @@ plot_forest_room_23
         exit_Ypos = $B0
         exit_room_index = F_FOREST_WITCH_EXIT_I
         alt_torch = 1
+        play_music = 0
         return otherbank
 
 plot_forest_room_24
@@ -298,6 +304,7 @@ plot_forest_room_25
         exit_Xpos = 9*8
         exit_Ypos = $30
         exit_room_index = F_CASTLE_ENT_I
+        play_music = 1
         return otherbank
 
 plot_forest_room_26

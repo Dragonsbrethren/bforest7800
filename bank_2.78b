@@ -5,6 +5,8 @@
 ;==============================================================================
         bank 2
         incbasic forest.78b
+        incrmtfile forest.rmta
+        incrmtfile forest_battle.rmta
 
         data forest_obj_lo
         forest_room_0_obj_lo, forest_room_1_obj_lo, forest_room_2_obj_lo, forest_room_3_obj_lo, forest_room_4_obj_lo,
@@ -164,9 +166,6 @@ forest_cathedral
 
 forest_set_room
         characterset forest_trees
-        if music_playing then forest_init
-        music_playing = 1
-;       playrmt castle
 forest_init
         asm
           ldx #0
@@ -195,7 +194,16 @@ forest_init
 end
 forest_room_b16
         gosub forest_room_bank_16 bank16
+        if !play_music then forest_stop_rmt
+        if music_playing then forest_loaded
+        music_playing = 1
+        playrmt forest
+forest_loaded
         return thisbank
+
+forest_stop_rmt
+        stoprmt
+        goto forest_loaded
 
 forest_pals
         asm
@@ -1219,6 +1227,13 @@ forest_boss_ai
           lda player_Ypos
           cmp #$90
           bcs forest_boss_return
+end
+          playrmt forest_battle
+          asm
+          lda #1
+          sta play_music
+          sta music_playing
+          ldx index
           lda #TYPE_BOSS_FLAME
           sta object_type+5
           sta object_type+6
@@ -1246,6 +1261,9 @@ end
           rts
 
 forest_boss_dead
+end
+        stoprmt
+        asm
           lda #0
           sta object_type+1
           sta object_type+5
@@ -1256,6 +1274,8 @@ forest_flame_unblock
         pokechar current_map 10 11 20 14 160
         if m_spell_bits_1{0} then return thisbank
         playsfx sfx_crystalchimes
+        music_playing = 0
+        play_music = 1
         return thisbank
 
 ; mini trees that block progression to force player to try magic

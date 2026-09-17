@@ -70,6 +70,8 @@
         incmapfile tiled/castle_room_3.tmx
         incmapfile tiled/castle_room_4.tmx
         incmapfile tiled/castle_room_5.tmx
+
+;       incrmtfile cathedral.rmta
         const plot_castle_room_0_lo = #<.plot_castle_room_0
         const plot_castle_room_0_hi = #>.plot_castle_room_0
         const plot_castle_room_1_lo = #<.plot_castle_room_1

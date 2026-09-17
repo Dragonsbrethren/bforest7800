@@ -574,7 +574,7 @@ end
 end
 
 plot_relic_names
-;       plotsprite menu_potion0 m_palette m_spriteX m_spriteY
+        plotsprite menu_relic0 m_palette m_spriteX m_spriteY frame
         plotmap relic_names m_palette m_textX m_textY 12 1 0 item_name 12
         goto items_left
 
@@ -707,6 +707,7 @@ end
 ; TODO: Plot on/off toggles
 
 items_left
+        frame = m_relic_icons[item_name]
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
         m_palette = 4
         if menu = MENU_RELICS then gosub relic_highlight
@@ -1033,6 +1034,10 @@ enable_double_wide_mode
 
         data m_item_icons
         0, 0, 0, 1, 1, 2, 0, 1, 0, 1, 3
+end
+
+        data m_relic_icons
+        0, 0, 0, 0, 0, 1, 3, 2, 0, 0, 0
 end
 
         data sword_elem

@@ -1,0 +1,89 @@
+;RMTA - This line is required for 7800basic autodetection. Don't remove.
+;#### mountains.rmta - converted by 7800rmt2asm 0.1 Nov  4 2025 19:35:26
+
+.RMTSTART SET .
+
+
+ ; #### RMT header...
+   .byte "RMT4"              ; magic
+   .byte $2c                 ; tracklen
+   .byte $10                 ; song speed
+   .byte $01                 ; player freq
+   .byte $01                 ; format version number
+   .word (.RMTSTART+$0010)   ; pointer to instrument pointers
+   .word (.RMTSTART+$0018)   ; pointer to track pointers, lo
+   .word (.RMTSTART+$0021)   ; pointer to track pointers, hi
+   .word (.RMTSTART+$0216)   ; pointer to song
+
+ ; #### Instrument Pointer Table...
+   .word (.RMTSTART+$002a)
+   .word (.RMTSTART+$003a)
+   .word (.RMTSTART+$0059)
+   .word (.RMTSTART+$008a)
+
+
+ ; #### Track Pointer Table, Lo...
+ .byte <(.RMTSTART+$00b2)
+ .byte <(.RMTSTART+$00d4)
+ .byte <(.RMTSTART+$00f6)
+ .byte <(.RMTSTART+$013c)
+ .byte <(.RMTSTART+$0160)
+ .byte <(.RMTSTART+$019a)
+ .byte <(.RMTSTART+$01bc)
+ .byte $00
+ .byte <(.RMTSTART+$01f6)
+
+ ; #### Track Pointer Table, Hi...
+ .byte >(.RMTSTART+$00b2)
+ .byte >(.RMTSTART+$00d4)
+ .byte >(.RMTSTART+$00f6)
+ .byte >(.RMTSTART+$013c)
+ .byte >(.RMTSTART+$0160)
+ .byte >(.RMTSTART+$019a)
+ .byte >(.RMTSTART+$01bc)
+ .byte $00
+ .byte >(.RMTSTART+$01f6)
+
+ ; #### Track+Instrument Data...
+   .byte $0c,$0c,$0d,$0d,$00,$00,$80,$50,$08,$02,$00,$00,$00,$ff,$0a,$00
+   .byte $0c,$0c,$1c,$1c,$00,$00,$40,$40,$00,$00,$00,$00,$f4,$66,$18,$03
+   .byte $dd,$0c,$00,$aa,$0c,$00,$77,$0c,$00,$55,$0c,$00,$33,$0c,$00,$0c
+   .byte $0c,$2e,$2e,$00,$00,$00,$00,$00,$00,$00,$00,$00,$11,$18,$02,$00
+   .byte $18,$00,$00,$18,$01,$11,$10,$00,$22,$10,$00,$33,$10,$00,$33,$10
+   .byte $00,$22,$10,$00,$22,$10,$00,$11,$10,$00,$11,$10,$00,$00,$10,$00
+   .byte $0c,$0c,$25,$25,$00,$00,$00,$00,$00,$00,$00,$00,$00,$aa,$10,$03
+   .byte $aa,$1a,$80,$aa,$1a,$90,$aa,$1a,$a0,$77,$1a,$a8,$44,$10,$04,$33
+   .byte $10,$04,$33,$10,$04,$00,$10,$00,$55,$01,$fe,$59,$01,$3e,$05,$57
+   .byte $01,$3e,$05,$54,$01,$fe,$58,$01,$7e,$55,$01,$fe,$59,$01,$3e,$05
+   .byte $57,$01,$3e,$05,$54,$01,$fe,$58,$01,$7e,$4d,$01,$fe,$52,$01,$3e
+   .byte $05,$50,$01,$3e,$05,$4b,$01,$fe,$51,$01,$7e,$4d,$01,$fe,$52,$01
+   .byte $3e,$05,$50,$01,$3e,$05,$4b,$01,$fe,$51,$01,$7e,$c4,$09,$7e,$d0
+   .byte $0d,$d0,$0d,$d0,$0d,$7e,$c4,$09,$7e,$d0,$0d,$7e,$c4,$09,$7e,$c4
+   .byte $09,$7e,$d0,$0d,$d0,$0d,$d0,$0d,$7e,$c4,$09,$7e,$d0,$0d,$7e,$c4
+   .byte $09,$7e,$d0,$0d,$d0,$0d,$d0,$0d,$7e,$c4,$09,$7e,$d0,$0d,$7e,$c4
+   .byte $09,$7e,$c4,$09,$7e,$d0,$0d,$d0,$0d,$d0,$0d,$7e,$c4,$09,$7e,$d0
+   .byte $0d,$7e,$52,$06,$3e,$05,$55,$06,$3e,$05,$50,$06,$3e,$05,$54,$06
+   .byte $7e,$55,$06,$7e,$52,$06,$3e,$05,$55,$06,$3e,$05,$50,$06,$3e,$05
+   .byte $54,$06,$7e,$55,$06,$7e,$d5,$01,$be,$d4,$01,$d2,$01,$be,$d0,$01
+   .byte $cb,$01,$be,$cf,$01,$d0,$01,$be,$cb,$01,$c8,$01,$7e,$c9,$01,$7e
+   .byte $cb,$01,$7e,$d5,$01,$be,$d4,$01,$d2,$01,$be,$d0,$01,$cb,$01,$be
+   .byte $cf,$01,$d0,$01,$be,$cb,$01,$c8,$01,$7e,$c9,$01,$7e,$cb,$01,$7e
+   .byte $00,$00,$3e,$15,$8e,$01,$be,$8d,$01,$8b,$01,$be,$89,$01,$84,$01
+   .byte $be,$88,$01,$89,$01,$be,$84,$01,$8b,$01,$7e,$83,$01,$7e,$84,$01
+   .byte $10,$00,$ca,$01,$7e,$c9,$01,$7e,$c7,$01,$7e,$ca,$01,$cf,$01,$be
+   .byte $ce,$01,$ca,$01,$be,$cf,$01,$d1,$01,$be,$d3,$01,$d5,$01,$be,$ca
+   .byte $01,$7e,$c9,$01,$7e,$c7,$01,$7e,$ca,$01,$cf,$01,$be,$ce,$01,$ca
+   .byte $01,$be,$cf,$01,$d1,$01,$be,$d3,$01,$d5,$01,$be,$4c,$06,$3e,$05
+   .byte $4f,$06,$fe,$56,$06,$fe,$4e,$06,$fe,$55,$06,$fe,$4c,$06,$3e,$05
+   .byte $50,$06,$fe,$56,$06,$fe,$4e,$06,$fe,$55,$06,$fe
+
+ ; #### Song Data...
+   .byte $00,$01,$02,$03,$04,$05,$02,$03,$06,$ff,$02,$08
+   .word $00FE,(.RMTSTART+$0216) ; GOTO
+   .byte $26,$42,$7e,$42,$42,$4c,$41,$43,$4b,$20,$46,$4f,$52,$45,$53,$54
+   .byte $3a,$20,$4d,$6f,$75,$6e,$74,$61,$69,$6e,$73,$20,$31,$31,$2f,$38
+   .byte $00,$50,$75,$72,$65,$20,$74,$6f,$6e,$65,$20,$33,$20,$2b,$20,$76
+   .byte $69,$62,$72,$61,$74,$6f,$00,$73,$6f,$66,$74,$62,$61,$73,$73,$31
+   .byte $00,$49,$6e,$73,$74,$72,$75,$6d,$65,$6e,$74,$20,$30,$36,$00,$49
+   .byte $6e,$73,$74,$72,$75
+

@@ -1,0 +1,537 @@
+;RMTA - This line is required for 7800basic autodetection. Don't remove.
+;#### cathedral.rmta - converted by 7800rmt2asm 0.1 Nov  4 2025 19:35:26
+
+.RMTSTART SET .
+
+
+ ; #### RMT header...
+   .byte "RMT4"              ; magic
+   .byte $18                 ; tracklen
+   .byte $10                 ; song speed
+   .byte $01                 ; player freq
+   .byte $01                 ; format version number
+   .word (.RMTSTART+$0010)   ; pointer to instrument pointers
+   .word (.RMTSTART+$005a)   ; pointer to track pointers, lo
+   .word (.RMTSTART+$0127)   ; pointer to track pointers, hi
+   .word (.RMTSTART+$0531)   ; pointer to song
+
+ ; #### Instrument Pointer Table...
+   .word (.RMTSTART+$01f4)
+   .word (.RMTSTART+$0285)
+   .word (.RMTSTART+$02b0)
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (     $0000     )
+   .word (.RMTSTART+$0341)
+
+
+ ; #### Track Pointer Table, Lo...
+ .byte <(.RMTSTART+$0351)
+ .byte <(.RMTSTART+$0381)
+ .byte <(.RMTSTART+$03b1)
+ .byte <(.RMTSTART+$03b3)
+ .byte <(.RMTSTART+$03c3)
+ .byte <(.RMTSTART+$03f3)
+ .byte <(.RMTSTART+$0423)
+ .byte <(.RMTSTART+$043a)
+ .byte <(.RMTSTART+$0454)
+ .byte <(.RMTSTART+$046e)
+ .byte <(.RMTSTART+$048e)
+ .byte <(.RMTSTART+$04be)
+ .byte <(.RMTSTART+$04ee)
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte <(.RMTSTART+$051e)
+
+ ; #### Track Pointer Table, Hi...
+ .byte >(.RMTSTART+$0351)
+ .byte >(.RMTSTART+$0381)
+ .byte >(.RMTSTART+$03b1)
+ .byte >(.RMTSTART+$03b3)
+ .byte >(.RMTSTART+$03c3)
+ .byte >(.RMTSTART+$03f3)
+ .byte >(.RMTSTART+$0423)
+ .byte >(.RMTSTART+$043a)
+ .byte >(.RMTSTART+$0454)
+ .byte >(.RMTSTART+$046e)
+ .byte >(.RMTSTART+$048e)
+ .byte >(.RMTSTART+$04be)
+ .byte >(.RMTSTART+$04ee)
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte $00
+ .byte >(.RMTSTART+$051e)
+
+ ; #### Track+Instrument Data...
+   .byte $0c,$0c,$8e,$8e,$00,$00,$00,$00,$12,$02,$00,$00,$00,$66,$5a,$00
+   .byte $77,$0a,$00,$88,$0a,$00,$88,$0a,$00,$88,$0a,$00,$aa,$0a,$00,$bb
+   .byte $0a,$00,$bb,$0a,$00,$bb,$0a,$00,$bb,$0a,$00,$bb,$0a,$00,$cc,$0a
+   .byte $00,$cc,$0a,$00,$cc,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00
+   .byte $aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa
+   .byte $0a,$00,$aa,$0a,$00,$aa,$0a,$00,$99,$0a,$00,$99,$0a,$00,$99,$0a
+   .byte $00,$88,$0a,$00,$88,$0a,$00,$88,$0a,$00,$77,$0a,$00,$77,$0a,$00
+   .byte $77,$0a,$00,$77,$0a,$00,$66,$0a,$00,$66,$0a,$00,$66,$0a,$00,$66
+   .byte $0a,$00,$55,$0a,$00,$55,$0a,$00,$55,$0a,$00,$55,$0a,$00,$44,$0a
+   .byte $00,$0c,$0c,$28,$28,$00,$00,$20,$00,$00,$01,$01,$00,$00,$88,$18
+   .byte $00,$ee,$0c,$00,$dd,$0c,$00,$bb,$0c,$00,$aa,$0c,$00,$99,$0c,$00
+   .byte $88,$0c,$00,$66,$0c,$00,$66,$0c,$00,$33,$0c,$00,$0c,$0c,$8e,$8e
+   .byte $00,$00,$00,$00,$34,$02,$00,$00,$00,$00,$5a,$00,$00,$0a,$00,$22
+   .byte $0a,$00,$55,$0a,$00,$77,$0a,$00,$77,$0a,$00,$99,$0a,$00,$99,$0a
+   .byte $00,$99,$0a,$00,$99,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00
+   .byte $aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa
+   .byte $0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a,$00,$aa,$0a
+   .byte $00,$aa,$0a,$00,$99,$0a,$00,$99,$0a,$00,$99,$0a,$00,$88,$0a,$00
+   .byte $88,$0a,$00,$88,$0a,$00,$77,$0a,$00,$77,$0a,$00,$77,$0a,$00,$77
+   .byte $0a,$00,$66,$0a,$00,$66,$0a,$00,$66,$0a,$00,$66,$0a,$00,$55,$0a
+   .byte $00,$55,$0a,$00,$55,$0a,$00,$55,$0a,$00,$44,$0a,$00,$0c,$0c,$0d
+   .byte $0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$00,$08
+   .byte $01,$11,$01,$14,$01,$11,$01,$0c,$01,$0c,$00,$07,$01,$0c,$01,$0f
+   .byte $01,$0c,$01,$07,$01,$07,$00,$05,$01,$08,$01,$0d,$01,$08,$01,$05
+   .byte $01,$10,$01,$0c,$01,$07,$01,$10,$01,$0c,$01,$07,$01,$05,$08,$05
+   .byte $09,$0c,$09,$11,$09,$0c,$09,$08,$09,$08,$08,$03,$09,$07,$09,$0c
+   .byte $09,$07,$09,$03,$09,$03,$90,$01,$09,$05,$09,$08,$09,$05,$09,$01
+   .byte $09,$0c,$09,$07,$09,$04,$09,$0c,$09,$07,$09,$04,$09,$3e,$18,$91
+   .byte $05,$3e,$05,$8c,$05,$3e,$05,$81,$05,$3e,$05,$8c,$05,$3e,$05,$0a
+   .byte $00,$4a,$01,$4d,$01,$51,$01,$4d,$01,$4a,$01,$0a,$00,$4d,$01,$51
+   .byte $01,$56,$01,$51,$01,$4d,$01,$0d,$00,$48,$01,$4c,$01,$51,$01,$4c
+   .byte $01,$48,$01,$08,$00,$4c,$01,$51,$01,$54,$01,$51,$01,$4c,$01,$11
+   .byte $08,$45,$09,$4a,$09,$4d,$09,$4a,$09,$45,$09,$05,$08,$4a,$09,$4d
+   .byte $09,$51,$09,$4d,$09,$4a,$09,$0a,$08,$45,$09,$48,$09,$4c,$09,$48
+   .byte $09,$45,$09,$05,$08,$48,$09,$4c,$09,$51,$09,$4c,$09,$48,$09,$4a
+   .byte $05,$3e,$04,$4a,$05,$3e,$04,$54,$05,$53,$05,$51,$05,$3e,$05,$45
+   .byte $05,$fe,$45,$05,$48,$05,$0a,$00,$4a,$01,$4d,$01,$52,$01,$4d,$01
+   .byte $4a,$01,$4d,$01,$3e,$05,$4c,$01,$3e,$05,$50,$01,$be,$4a,$01,$be
+   .byte $06,$08,$46,$09,$4a,$09,$4d,$09,$4a,$09,$46,$09,$4a,$09,$3e,$05
+   .byte $47,$09,$3e,$05,$47,$09,$be,$47,$09,$be,$46,$05,$3e,$06,$4a,$05
+   .byte $4d,$05,$4a,$05,$4d,$05,$51,$05,$50,$05,$4c,$05,$47,$05,$4c,$05
+   .byte $47,$05,$44,$05,$4c,$05,$be,$50,$05,$be,$0d,$01,$0d,$01,$50,$01
+   .byte $50,$01,$93,$01,$93,$01,$10,$01,$10,$01,$53,$01,$53,$01,$96,$01
+   .byte $96,$01,$13,$01,$13,$01,$56,$01,$56,$01,$99,$01,$99,$01,$18,$01
+   .byte $13,$01,$50,$01,$53,$01,$90,$01,$8c,$01,$0a,$01,$0a,$01,$4d,$01
+   .byte $4d,$01,$90,$01,$90,$01,$0d,$01,$0d,$01,$50,$01,$50,$01,$93,$01
+   .byte $93,$01,$10,$01,$10,$01,$53,$01,$53,$01,$96,$01,$96,$01,$13,$01
+   .byte $10,$01,$4c,$01,$50,$01,$8c,$01,$87,$01,$07,$05,$07,$05,$4a,$05
+   .byte $4a,$05,$8d,$05,$8d,$05,$0a,$05,$0a,$05,$4d,$05,$4d,$05,$90,$05
+   .byte $90,$05,$0d,$05,$0d,$05,$50,$05,$50,$05,$93,$05,$93,$05,$8c,$05
+   .byte $7d,$01,$3d,$01,$fd,$00,$bd,$00,$7d,$00,$85,$05,$3e,$05,$8c,$05
+   .byte $3e,$05,$81,$05,$3e,$05,$8c,$05,$fe,$8c,$05,$8b,$05
+
+ ; #### Song Data...
+   .byte $00,$01,$02,$03,$00,$01,$ff,$cc,$04,$05,$ff,$06,$07,$08,$ff,$09
+   .byte $00,$01,$02,$03,$00,$01,$ff,$cc,$04,$05,$ff,$06,$07,$08,$ff,$09
+   .byte $0a,$0b,$ff,$0c
+   .word $00FE,(.RMTSTART+$0531) ; GOTO
+   .byte $59,$45,$b9,$45,$54,$68,$65,$20,$43,$61,$74,$68,$65,$64,$72,$61
+   .byte $6c,$00,$4d,$61,$69,$6e,$20,$53,$6f,$66,$74,$20,$50,$6f,$72,$74
+   .byte $20,$73,$74,$61,$72,$74,$00,$42,$61,$73,$73,$20,$74,$6f,$6e,$65
+   .byte $20,$32,$20,$28,$62,$61,$73,$73,$20,$74,$61,$62,$6c,$65,$20,$32
+   .byte $29,$00,$4d,$61,$69,$6e,$20,$53,$6f,$66,$74,$20,$50,$6f,$72,$74
+   .byte $20,$73,$74,$61,$72,$74,$00,$49,$6e,$73,$74,$72,$75
+
