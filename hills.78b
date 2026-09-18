@@ -3,6 +3,7 @@
         incgraphic gfx/tiles/hills_water.png 160A 1 2 3 0 6
         incgraphic gfx/tiles/hills_waterf.png 160A 0 2 3 1 7
         incgraphic gfx/tiles/hills_veg.png 160A 1 2 3 0 7
+        incgraphic gfx/tiles/hills_block.png 160A 1 2 0 3 4
         incgraphic gfx/sprites/harpy0.png 160B 0 4 6 8 3 5 2 1
         incgraphic gfx/sprites/harpy1.png 160B 0 4 3 6 8 5 2 1
         incgraphic gfx/sprites/queen_harpy0.png 160B 0 1 9 8 6 12 3 4 5 7
@@ -26,29 +27,6 @@
         incgraphic gfx/sprites/mhslime1.png 160A 0 2 3 1
         incgraphic gfx/sprites/harpy_talon0.png 160A 0 3 2 1
         incgraphic gfx/sprites/hseed0.png 160A 0 2 3 1
-
-        incmapfile tiled/hills_room_5.tmx
-        incmapfile tiled/hills_room_6.tmx
-        incmapfile tiled/hills_room_7.tmx
-        incmapfile tiled/hills_room_8.tmx
-        incmapfile tiled/hills_room_9.tmx
-        incmapfile tiled/hills_room_10.tmx
-        incmapfile tiled/hills_room_11.tmx
-        incmapfile tiled/hills_room_12.tmx
-        incmapfile tiled/hills_room_13.tmx
-        incmapfile tiled/hills_room_14.tmx
-        incmapfile tiled/hills_room_15.tmx
-        incmapfile tiled/hills_room_16.tmx
-        incmapfile tiled/hills_room_17.tmx
-        incmapfile tiled/hills_room_18.tmx
-        incmapfile tiled/hills_room_19.tmx
-        incmapfile tiled/hills_room_20.tmx
-        incmapfile tiled/hills_room_21.tmx
-        incmapfile tiled/hills_room_22.tmx
-        incmapfile tiled/hills_room_23.tmx
-        incmapfile tiled/hills_room_24.tmx
-        incmapfile tiled/hills_room_25.tmx
-        incmapfile tiled/hills_room_26.tmx
 
         const plot_hills_room_0_lo = #<.plot_hills_room_0
         const plot_hills_room_0_hi = #>.plot_hills_room_0

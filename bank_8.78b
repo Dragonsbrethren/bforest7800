@@ -5,19 +5,22 @@
 ;==============================================================================
         bank 8
         incbasic hills.78b
-
+        ; needed for waterfall bridges
+        incmapfile tiled/hills_room_14.tmx
+        incmapfile tiled/hills_room_16.tmx
         incmapfile tiled/hills_room_0.tmx
         incmapfile tiled/hills_room_1.tmx
         incmapfile tiled/hills_room_2.tmx
         incmapfile tiled/hills_room_3.tmx
-        incmapfile tiled/hills_room_4.tmx
+
+        incrmtfile mountains.rmta
 
         data hills_map_lo
-        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo
+        plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo
 end
 
         data hills_map_hi
-        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi, plot_hills_room_4_hi
+        plot_hills_room_0_hi, plot_hills_room_1_hi, plot_hills_room_2_hi, plot_hills_room_3_hi
 end
 
         data hills_obj_lo
@@ -151,9 +154,6 @@ hills_wf_2
 
 hills_set_room
         characterset hills_ledges
-        if music_playing then hills_init
-;       playrmt blackforest_indoorarea01
-        music_playing = 1
 hills_init
         asm
         ldx #1
@@ -180,19 +180,37 @@ hills_init
         clc
         adc #1
         sta menu_map_index_2
-        cpx #5
+        cpx #4
         bcc .hills_room_bank_8
 end
+        stoprmt
         gosub hills_room_bank_9 bank9
-        return thisbank
+        goto hills_start_music
 
 hills_room_bank_8
+        gosub hills_room_bank_8_load
+
+hills_start_music
+        startrmt
+        if !play_music then hills_stop_rmt
+        if music_playing then hills_loaded
+        music_playing = 1
+        playrmt mountains
+hills_loaded
+        return thisbank
+
+hills_stop_rmt
+        stoprmt
+        music_playing = 0
+        goto hills_loaded
+
+hills_room_bank_8_load
         asm
         lda hills_map_lo,x
-        sta temp1
+        sta jump1
         lda hills_map_hi,x
-        sta temp2
-        jmp (temp1)
+        sta jump2
+        jmp (jump1)
 end
 
 hills_pals
@@ -924,6 +942,7 @@ plot_hills_room_0
         exit_Xpos = 96
         exit_Ypos = 192
         exit_room_index = F_RIVER_START2_I
+        play_music = 1
         return thisbank
 
 plot_hills_room_1
@@ -949,21 +968,13 @@ plot_hills_room_3
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_3 240
-        plotmapfile tiled/hills_room_3.tmx hills_room_3 0 1 20 12
+        plotmapfile tiled/hills_room_3.tmx map12 0 1 20 12
         locked_zone  = 5
         exit_tileset = T_CAVES
         exit_Xpos = 32
         exit_Ypos = $A0
         exit_room_index = F_CAVES_ENT_2_I
         goto hills_waterfall
-
-plot_hills_room_4
-        menu_map_room[menu_map_index] = ROOML_L
-        menu_map_room[menu_map_index_2] = ROOMR_R
-        memcpy map12 hills_room_4 240
-        plotmapfile tiled/hills_room_4.tmx hills_room_4 0 1 20 12
-        alt_palette = 1
-        return thisbank
 
 obj_harpy_stats
         asm

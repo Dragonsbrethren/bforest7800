@@ -1467,6 +1467,8 @@ cast_darkbolt
           sta object_parent,y   ; lightning uses "parent" slot for target
           lda #DARKBOLT_DAMAGE
           sta object_damage,y
+          lda #F_DARKBOLT
+          sta object_frame,y
           lda #<.plot_lightning
           sta object_spr_ptr_lo,y
           lda #>.plot_lightning

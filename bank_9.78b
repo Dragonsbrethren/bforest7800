@@ -5,6 +5,29 @@
 ;==============================================================================
         bank 9
         incbasic hills.78b
+        incmapfile tiled/hills_room_14.tmx
+        incmapfile tiled/hills_room_16.tmx
+        incmapfile tiled/hills_room_4.tmx
+        incmapfile tiled/hills_room_5.tmx
+        incmapfile tiled/hills_room_6.tmx
+        incmapfile tiled/hills_room_7.tmx
+        incmapfile tiled/hills_room_8.tmx
+        incmapfile tiled/hills_room_9.tmx
+        incmapfile tiled/hills_room_10.tmx
+        incmapfile tiled/hills_room_11.tmx
+        incmapfile tiled/hills_room_12.tmx
+        incmapfile tiled/hills_room_13.tmx
+        incmapfile tiled/hills_room_15.tmx
+        incmapfile tiled/hills_room_17.tmx
+        incmapfile tiled/hills_room_18.tmx
+        incmapfile tiled/hills_room_19.tmx
+        incmapfile tiled/hills_room_20.tmx
+        incmapfile tiled/hills_room_21.tmx
+        incmapfile tiled/hills_room_22.tmx
+        incmapfile tiled/hills_room_23.tmx
+        incmapfile tiled/hills_room_24.tmx
+        incmapfile tiled/hills_room_25.tmx
+        incmapfile tiled/hills_room_26.tmx
 
         data hills_map_b9_lo
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo, plot_hills_room_4_lo, plot_hills_room_5_lo
@@ -25,17 +48,25 @@ end
 hills_room_bank_9
         asm
         lda hills_map_b9_lo,x
-        sta temp1
+        sta jump1
         lda hills_map_b9_hi,x
-        sta temp2
-        jmp (temp1)
+        sta jump2
+        jmp (jump1)
 end
+
+plot_hills_room_4
+        menu_map_room[menu_map_index] = ROOML_L
+        menu_map_room[menu_map_index_2] = ROOMR_R
+        memcpy map12 hills_room_4 240
+        plotmapfile tiled/hills_room_4.tmx map12 0 1 20 12
+        alt_palette = 1
+        return otherbank
 
 plot_hills_room_5
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy map12 hills_room_5 240
-        plotmapfile tiled/hills_room_5.tmx hills_room_5 0 1 20 12
+        plotmapfile tiled/hills_room_5.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -43,7 +74,7 @@ plot_hills_room_6
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_6 240
-        plotmapfile tiled/hills_room_6.tmx hills_room_6 0 1 20 12
+        plotmapfile tiled/hills_room_6.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -51,7 +82,7 @@ plot_hills_room_7
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 hills_room_7 240
-        plotmapfile tiled/hills_room_7.tmx hills_room_7 0 1 20 12
+        plotmapfile tiled/hills_room_7.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -59,7 +90,7 @@ plot_hills_room_8
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 hills_room_8 240
-        plotmapfile tiled/hills_room_8.tmx hills_room_8 0 1 20 12
+        plotmapfile tiled/hills_room_8.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -67,7 +98,7 @@ plot_hills_room_9
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_9 240
-        plotmapfile tiled/hills_room_9.tmx hills_room_9 0 1 20 12
+        plotmapfile tiled/hills_room_9.tmx map12 0 1 20 12
         shadow_offset  = 2
         locked_zone    = 6
         return otherbank
@@ -76,7 +107,7 @@ plot_hills_room_10
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_10 240
-        plotmapfile tiled/hills_room_10.tmx hills_room_10 0 1 20 12
+        plotmapfile tiled/hills_room_10.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -84,24 +115,24 @@ plot_hills_room_11
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy map12 hills_room_11 280
-        plotmapfile tiled/hills_room_11.tmx hills_room_11 0 1 20 12
+        plotmapfile tiled/hills_room_11.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
+        dmahole 0 noflow
 plot_hills_room_20
         menu_map_room[menu_map_index] = ROOML_L
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy map12 hills_room_20 240
-        plotmapfile tiled/hills_room_20.tmx hills_room_20 0 1 20 12
+        plotmapfile tiled/hills_room_20.tmx map12 0 1 20 12
         shadow_offset  = 4
         return otherbank
 
-        dmahole 0 noflow
 plot_hills_room_12
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy map12 hills_room_12 240
-        plotmapfile tiled/hills_room_12.tmx hills_room_12 0 1 20 12
+        plotmapfile tiled/hills_room_12.tmx map12 0 1 20 12
         alt_palette    = 1
         locked_zone    = 4
         return otherbank
@@ -110,7 +141,7 @@ plot_hills_room_13
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_D
         memcpy map12 hills_room_13 240
-        plotmapfile tiled/hills_room_13.tmx hills_room_13 0 1 20 12
+        plotmapfile tiled/hills_room_13.tmx map12 0 1 20 12
         shadow_offset  = 4
         return otherbank
 
@@ -140,7 +171,7 @@ plot_hills_room_15
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_15 240
-        plotmapfile tiled/hills_room_15.tmx hills_room_15 0 1 20 12
+        plotmapfile tiled/hills_room_15.tmx map12 0 1 20 12
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 1
@@ -175,7 +206,7 @@ plot_hills_room_17
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_17 280
-        plotmapfile tiled/hills_room_17.tmx hills_room_17 0 1 20 12
+        plotmapfile tiled/hills_room_17.tmx map12 0 1 20 12
         exit_tileset = T_CAVES
         exit_Xpos = 64
         exit_Ypos = 28
@@ -186,14 +217,14 @@ plot_hills_room_18
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_18 240
-        plotmapfile tiled/hills_room_18.tmx hills_room_18 0 1 20 12
+        plotmapfile tiled/hills_room_18.tmx map12 0 1 20 12
         goto hills_waterfall bank8
 
 plot_hills_room_19
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_19 240
-        plotmapfile tiled/hills_room_19.tmx hills_room_19 0 1 20 12
+        plotmapfile tiled/hills_room_19.tmx map12 0 1 20 12
         shadow_offset  = 4
         return otherbank
 
@@ -201,7 +232,7 @@ plot_hills_room_21
         menu_map_room[menu_map_index] = ROOML_L
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy map12 hills_room_21 240
-        plotmapfile tiled/hills_room_21.tmx hills_room_21 0 1 20 12
+        plotmapfile tiled/hills_room_21.tmx map12 0 1 20 12
         pal_animation  = 1
         locked_zone    = 7
         shadow_offset  = 3
@@ -211,7 +242,7 @@ plot_hills_room_22
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy map12 hills_room_22 280
-        plotmapfile tiled/hills_room_22.tmx hills_room_22 0 1 20 12
+        plotmapfile tiled/hills_room_22.tmx map12 0 1 20 12
         pal_animation  = 1
         shadow_offset  = 1
         locked_zone    = 7
@@ -221,7 +252,7 @@ plot_hills_room_23
         menu_map_room[menu_map_index] = ROOML_UD
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_23 240
-        plotmapfile tiled/hills_room_23.tmx hills_room_23 0 1 20 12
+        plotmapfile tiled/hills_room_23.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
 
@@ -229,7 +260,7 @@ plot_hills_room_24
         menu_map_room[menu_map_index] = ROOML_U 
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 hills_room_24 240
-        plotmapfile tiled/hills_room_24.tmx hills_room_24 0 1 20 12
+        plotmapfile tiled/hills_room_24.tmx map12 0 1 20 12
         alt_palette    = 1
         exit_tileset = T_CAVES
         exit_Xpos = 32
@@ -241,7 +272,7 @@ plot_hills_room_25
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_U
         memcpy map12 hills_room_25 240
-        plotmapfile tiled/hills_room_25.tmx hills_room_25 0 1 20 12
+        plotmapfile tiled/hills_room_25.tmx map12 0 1 20 12
         if !pw_success then in_save_room = 1
         pw_success = 0
         save_room_index = 2
@@ -252,5 +283,5 @@ plot_hills_room_26
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_26 240
-        plotmapfile tiled/hills_room_26.tmx hills_room_26 0 1 20 12
+        plotmapfile tiled/hills_room_26.tmx map12 0 1 20 12
         return otherbank

@@ -935,10 +935,11 @@
 
         const DARKBOLT_DURATION = 5
         const DARKBOLT_DAMAGE = 8
+        const F_DARKBOLT = 0
 
         ; BOSS FLAME AND BLOCK FLAME
-        const F_FLAME = 28
-        const F_BLANK = 30
+        const F_FLAME = 31
+        const F_BLANK = 33
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block
