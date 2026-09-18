@@ -85,7 +85,7 @@ end
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-14-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-17-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -113,6 +113,7 @@ end
 
 title_new_game
         if !demoplay then title_new_game_normal
+        play_music = 1
         if demo_num = 2 then title_demo_2
         if demo_num = 3 then title_demo_3
         if demo_num = 4 then title_demo_4

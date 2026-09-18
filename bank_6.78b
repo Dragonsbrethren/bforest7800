@@ -65,6 +65,8 @@
         incmapfile tiled/river_room_25.tmx
         incmapfile tiled/river_room_26.tmx
 
+        incrmtfile river.rmta
+
         const plot_river_room_0_lo = #<.plot_river_room_0
         const plot_river_room_0_hi = #>.plot_river_room_0
         const plot_river_room_1_lo = #<.plot_river_room_1
@@ -237,9 +239,6 @@ river_demo
 
 river_set_room
         characterset forest_trees
-        if music_playing then river_init
-;       playrmt blackforest_indoorarea01
-        music_playing = 1
 river_init
         asm
           ldx #0
@@ -266,8 +265,20 @@ river_init
           adc #1
           sta menu_map_index_2
 end
+        stoprmt
         gosub river_room_bank_7 bank7
+        startrmt
+        if !play_music then river_stop_rmt
+        if music_playing then river_loaded
+        music_playing = 1
+        playrmt river
+river_loaded
         return thisbank
+
+river_stop_rmt
+        stoprmt
+        music_playing = 0
+        goto river_loaded
 
 river_pals
         asm

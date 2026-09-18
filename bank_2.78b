@@ -192,8 +192,10 @@ forest_init
           adc #1
           sta menu_map_index_2
 end
+        stoprmt
 forest_room_b16
         gosub forest_room_bank_16 bank16
+        startrmt
         if !play_music then forest_stop_rmt
         if music_playing then forest_loaded
         music_playing = 1
@@ -203,6 +205,7 @@ forest_loaded
 
 forest_stop_rmt
         stoprmt
+        music_playing = 0
         goto forest_loaded
 
 forest_pals
@@ -1265,6 +1268,7 @@ end
         stoprmt
         asm
           lda #0
+          sta music_playing
           sta object_type+1
           sta object_type+5
           sta object_type+6

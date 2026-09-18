@@ -160,6 +160,7 @@ plot_forest_room_11
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 forest_room_11 240
         plotmapfile tiled/forest_room_11.tmx map12 0 1 20 12
+        play_music = 1
         return otherbank
 
 plot_forest_room_12
@@ -198,7 +199,6 @@ plot_forest_room_15
         exit_Xpos = 2*8
         exit_Ypos = $50
         exit_room_index = F_FOREST_ARMOR_I
-        play_music = 0
         return otherbank
 
 plot_forest_room_16
@@ -273,6 +273,7 @@ plot_forest_room_22
           lda #1
           sta alt_palette
           sta alt_torch
+          sta music_playing
 end
         return otherbank
 
