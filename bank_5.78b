@@ -43,6 +43,9 @@
         incgraphic gfx/sprites/c_minislime0.png 160A 0 2 1 3
         incgraphic gfx/sprites/c_minislime1.png 160A 0 2 1 3
 
+        incmapfile tiled/castle_room_3.tmx
+        incmapfile tiled/castle_room_4.tmx
+        incmapfile tiled/castle_room_5.tmx
         incmapfile tiled/castle_room_6.tmx
         incmapfile tiled/castle_room_7.tmx
         incmapfile tiled/castle_room_8.tmx
@@ -93,6 +96,29 @@ castle_room_bank_5
         sta temp2
         jmp (temp1)
 end
+
+plot_castle_room_3
+        menu_map_room[menu_map_index] = 4
+        menu_map_room[menu_map_index_2] = 5
+        plotmapfile tiled/castle_room_3.tmx castle_room_3 0 3 20 8
+        memcpy map8 castle_room_3 200
+        return otherbank
+
+plot_castle_room_4
+        menu_map_room[menu_map_index] = 8
+        menu_map_room[menu_map_index_2] = 15
+        plotmapfile tiled/castle_room_4.tmx castle_room_4 0 1 20 12
+        memcpy map12 castle_room_4 240
+        return otherbank
+
+plot_castle_room_5
+        no_flash = 1
+        menu_map_room[menu_map_index] = 10
+        menu_map_room[menu_map_index_2] = 11
+        plotmapfile tiled/castle_room_5.tmx castle_room_5 0 1 20 12
+        memcpy map12 castle_room_5 240
+        locked_zone = 0
+        return otherbank
 
 plot_castle_room_6
         no_flash = 1
@@ -155,6 +181,7 @@ plot_castle_room_11
         locked_zone = 0
         return otherbank
 
+        dmahole 0 noflow
 plot_castle_room_12
         alt_palette = 1
         menu_map_room[menu_map_index] = 10
@@ -163,7 +190,6 @@ plot_castle_room_12
         memcpy map12 castle_room_12 240
         return otherbank
 
-        dmahole 0 noflow
 plot_castle_room_13
         alt_palette = 1
         menu_map_room[menu_map_index] = 6
