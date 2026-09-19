@@ -1110,17 +1110,28 @@ plot_hills_160b8
 
 torch_tile_block_hills
         ; block with a floatable tile so projectiles can hit torch
-        pokechar current_map peekX peekY 20 14 $50
-        if object_type[index] <> TYPE_DOOR_LOCK then goto torch_tile_block_set_flag
-        ; doors need to block a second tile to the right of the first
-        peekX = peekX + 1
-        pokechar current_map peekX peekY 20 14 $50
+        torch_tile = peekchar(current_map, peekX, peekY, 20, 14)
+        ; default blank ground tile
+        block_tile = 160
+        if torch_tile =   0 then block_tile = 158
+        if torch_tile =   4 then block_tile = 162
+        if torch_tile =  50 then block_tile = 164
+        if torch_tile =  62 then block_tile = 166
+        if torch_tile =  90 then block_tile = 168
+        if torch_tile =  92 then block_tile = 170
+        pokechar current_map peekX peekY 20 14 block_tile
         goto torch_tile_block_set_flag
 
 torch_tile_unblock_hills
-        ; the poked tile doesn't affect visuals since those are plotted from ROM
-        ; $25 is a bridge tile that is walkable at all elevations
-        pokechar current_map peekX peekY 20 14 $4A
+        block_tile = peekchar(current_map, peekX, peekY, 20, 14)
+        if block_tile = 158 then torch_tile =  0
+        if block_tile = 160 then torch_tile =  2
+        if block_tile = 162 then torch_tile =  4
+        if block_tile = 164 then torch_tile = 50
+        if block_tile = 166 then torch_tile = 62
+        if block_tile = 168 then torch_tile = 90
+        if block_tile = 170 then torch_tile = 92
+        pokechar current_map peekX peekY 20 14 torch_tile
         goto kill_torch_done
 
 remove_harpy_shadow
@@ -1239,6 +1250,8 @@ end
         %00000100, %00000100, %00000100, %00000101
         %10000100
         %00000001, %00000001, %00000001, %00000001, %00000001
+                                                               %00000010, %00000010, %00000010
+        %00000000, %00000000, %00000000, %00000000
 end
 
         data hills_tile_properties_2
@@ -1255,6 +1268,8 @@ end
         %00000010, %00000010, %00000010, %00000010
         %00000000
         %00000010, %00000010, %00000010, %00000010, %00000010
+                                                               %00000010, %00000010, %00000010
+        %00000010, %00000010, %00000010, %00000010
 end
 
         data hills_rooms

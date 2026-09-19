@@ -1772,8 +1772,29 @@ check_item_qtys
         return thisbank
 
 clear_menu_debounce
-        select_debounce = 1
-        menu_debounce = 0
+debug_jo_tile
+        index = 0
+        gosub get_object_pos
+        move_tile_1 = peekchar(current_map, peekX, peekY, 20, 14)
+        asm
+          lda move_tile_1
+          lsr
+          lsr
+          lsr
+          lsr
+          asl
+          clc
+          adc #2
+          sta pickup_string
+          lda move_tile_1
+          asl
+          and #$0F
+          clc
+          adc #2
+          sta pickup_string+1
+end
+        pickup_timer = PICKUP_TIME
+        new_pickup = 0
         return thisbank
 
 swap_action_button
