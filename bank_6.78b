@@ -150,6 +150,7 @@ river_waterfall
 load_river
         if !first_load then river_set_room
         first_load = 0
+        play_music = 1
         if demoplay then river_demo
         if save_room_index = 1 then river_save_1
         if save_room_index = 2 then river_save_2

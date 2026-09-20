@@ -160,6 +160,7 @@ end
 load_castle
         if !first_load then castle_rooms
         first_load = 0
+        play_music = 1
         if demoplay then castle_demo
         if save_room_index = 1 then castle_save_1
         if save_room_index = 2 then castle_save_2

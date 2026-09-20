@@ -49,6 +49,7 @@ hills_waterfall
 load_hills
         if !first_load then hills_set_room
         first_load = 0
+        play_music = 1
         if demoplay then hills_demo
         if save_room_index = 1 then hills_save_1
         if save_room_index = 2 then hills_save_2

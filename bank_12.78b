@@ -6,6 +6,7 @@
         bank 12
         incbasic caves.78b
         incmapfile tiled/caves_room_0.tmx
+        incrmtfile caves.rmta
 
         data caves_map_lo
         plot_caves_room_0_lo
@@ -40,6 +41,7 @@ load_caves
         if !first_load then goto caves_set_room
         first_load = 0
         player_facing = DIR_DOWN
+        play_music = 1
 
         if demoplay then caves_demo
         if save_room_index = 1 then caves_save_1
@@ -154,10 +156,28 @@ caves_init
           cpx #0
           beq .caves_room_bank_12
 end
+        stoprmt
         gosub caves_room_bank_13 bank13
-        return thisbank
+        goto caves_start_music
 
 caves_room_bank_12
+        gosub caves_room_bank_12_load
+
+caves_start_music
+        startrmt
+        if !play_music then caves_stop_rmt
+        if music_playing then caves_loaded
+        music_playing = 1
+        playrmt caves
+caves_loaded
+        return thisbank
+
+caves_stop_rmt
+        stoprmt
+        music_playing = 0
+        goto caves_loaded
+
+caves_room_bank_12_load
         asm
           lda caves_map_lo,x
           sta temp1
@@ -365,7 +385,7 @@ end
 
         data caves_room_15_obj
         TYPE_CSPIDER, (11*8), $60, TYPE_CSPIDER, (5*8), $70
-        TYPE_ARMOR6, (9*8), $30
+        TYPE_ARMOR5, (9*8), $30
         TYPE_TORCH, (8*8), $70, TYPE_TORCH, (7*8), $30, TYPE_TORCH, (11*8), $30
         $00
 end
@@ -579,6 +599,8 @@ obj_bat_spawner_stats
           jmp .obj_next_stats
 end
 
+
+        dmahole 0 noflow
 obj_rose_stats
         asm
           ldx obj_index
@@ -596,7 +618,6 @@ obj_rose_stats
           sta object_pal,x
           jmp .obj_next_stats
 end
-
 
 ;==============================================================================
 ; STONE ROSE
@@ -695,7 +716,6 @@ rodam     lda #SEED_DAMAGE
           rts
 end
 
-        dmahole 0 noflow
 ;=========================================================
 ; CAVE SPIDER
 ;---------------------------------------------------------
