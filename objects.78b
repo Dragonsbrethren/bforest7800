@@ -52,6 +52,15 @@
         const TYPE_RIVERBOSS    =  42
         const TYPE_HILLS_BOSS   =  43
         const TYPE_CAVES_BOSS   =  44
+        const TYPE_NECRO_BOSS   =  45
+        const OBJ_STAT_END =  TYPE_NECRO_BOSS
+        const TYPE_SPAWN_START = TYPE_FOREST_SPAWN
+        const TYPE_FOREST_SPAWN =  46
+        const TYPE_CASTLE_SPAWN =  47
+        const TYPE_RIVER_SPAWN  =  48
+        const TYPE_HILLS_SPAWN  =  49
+        const TYPE_CAVES_SPAWN  =  50
+        const TYPE_NECRO_SPAWN  =  51
         const TYPE_SPAWNER      = 128
         const TYPE_SKELSWORD    = 129
         const TYPE_PROJECTILE   = TYPE_SKELSWORD

@@ -580,7 +580,7 @@ object_stats
         for obj_index = 1 to MAX_OBJECTS
         index = object_type[obj_index]
         if !index then obj_next_stats
-        if index >= 128 then obj_next_stats
+        if index >= OBJ_STAT_END then obj_next_stats
         pointer = object_stats_lo[index]
         pointer_hi = object_stats_hi[index]
         asm
@@ -2085,6 +2085,17 @@ waterfall_up
         jmp move_test_up_no_fly
 end
 
+poison_ai
+        asm
+          lda #F_POISON
+          sta object_frame,x
+          lda animation_frame
+          beq poison_ai_return
+          inc object_frame,x
+poison_ai_return
+          rts
+end
+
 
 set_enemy_name
         ; if an item was collected, don't overwrite its string
@@ -2291,6 +2302,54 @@ end
         0, torch_tile_block_forest_lo, torch_tile_block_castle_lo, torch_tile_block_river_lo, torch_tile_block_hills_lo, <.torch_tile_block_caves
 end
 
+        data sfx_crystalchimes
+        $10,$10,$00 ; version, priority, frames per chunk
+        $03,$04,$05 ; first chunk of freq,channel,volume
+        $03,$04,$0f
+        $0c,$04,$05
+        $0c,$04,$0d
+        $0c,$04,$0f
+        $0c,$04,$0b
+        $0c,$04,$0f
+        $0c,$04,$0f
+        $06,$04,$0b
+        $0c,$04,$0c
+        $0c,$04,$0b
+        $06,$04,$0a
+        $03,$0c,$0d
+        $03,$0c,$0b
+        $03,$0c,$0a
+        $03,$0c,$08
+        $06,$04,$09
+        $03,$0c,$0f
+        $03,$0c,$0d
+        $06,$04,$08
+        $03,$0c,$0c
+        $0a,$04,$07
+        $0a,$04,$0a
+        $0a,$04,$0d
+        $03,$0c,$04
+        $0a,$04,$07
+        $06,$04,$06
+        $0a,$04,$08
+        $0a,$04,$0c
+        $06,$04,$07
+        $0a,$04,$04
+        $0a,$04,$05
+        $06,$04,$06
+        $1e,$06,$02
+        $06,$04,$05
+        $0a,$04,$06
+        $0a,$04,$06
+        $06,$04,$05
+        $0a,$04,$07
+        $06,$04,$04
+        $0a,$04,$05
+        $0a,$04,$06
+        $06,$04,$05
+        $1e,$06,$01
+        $00,$00,$00
+end
 
         incbasic music.78b
         dmahole 0

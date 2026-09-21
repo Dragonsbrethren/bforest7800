@@ -157,6 +157,38 @@ end
         castle_room_26_obj_hi
 end
 
+castle_spawner_ai
+        asm
+          lda #1
+          sta object_hp,x
+          lda #<.plot_next
+          sta object_spr_ptr_lo,x
+          lda #>.plot_next
+          sta object_spr_ptr_hi,x
+          ldy #MAX_OBJECTS
+castle_spawner_ai_loop
+          lda object_type,y
+          beq castle_spawner_next
+          cmp #TYPE_SPAWN_START
+          bcs castle_spawner_next
+          cmp #TYPE_TORCH
+          beq castle_spawner_next
+          cmp index
+          beq castle_spawner_next
+          rts
+castle_spawner_next
+          dey
+          bne castle_spawner_ai_loop
+castle_spawner_spawn
+end
+        playsfx sfx_crystalchimes
+        asm
+          ldx index
+          lda room_item_spawn
+          sta object_type,x
+          rts
+end
+
 load_castle
         if !first_load then castle_rooms
         first_load = 0
@@ -452,7 +484,7 @@ end
         TYPE_SKELETON, $20, $A0, TYPE_SKELETON, $28, $B0
         TYPE_TORCH, $10, $40, TYPE_TORCH, $88, $40,
         TYPE_TORCH, $10, $90, TYPE_TORCH, $88, $90,
-        TYPE_DOOR, $49, $10, TYPE_SHIELD2, $20, $70
+        TYPE_DOOR, $49, $10, TYPE_CASTLE_SPAWN, $20, $70
         $00
 end
 

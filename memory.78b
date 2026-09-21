@@ -329,6 +329,8 @@
         autodim byte exit_room_index
         autodim byte demo_end
         autodim byte shadow_offset
+        autodim byte room_item_spawn
+
         autodim byte chant_input
         autodim byte spell_index
         autodim byte spell_failed

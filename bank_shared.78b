@@ -1769,6 +1769,11 @@ cc_loop
           lda object_Ypos,x
           sta Yposition
           lda object_type,x
+          cmp #TYPE_FOREST_SPAWN
+          bcc cc_static
+          cmp #TYPE_NECRO_SPAWN+1
+          bcc .cc_next
+cc_static
           cmp #TYPE_STATIC
           bcc cc_fireball
           jmp .cc_door
@@ -2573,17 +2578,6 @@ end
 
         data facing_opposite
         0, DIR_DOWN, DIR_UP, DIR_RIGHT, DIR_LEFT
-end
-
-poison_ai
-        asm
-          lda #F_POISON
-          sta object_frame,x
-          lda animation_frame
-          beq poison_ai_return
-          inc object_frame,x
-poison_ai_return
-          rts
 end
 
 cast_poison

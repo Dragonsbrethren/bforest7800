@@ -44,6 +44,9 @@
         <.river_boss, 
         hills_boss_ai_lo, 
         <.caves_boss_ai
+        0
+        0
+        <.castle_spawner_ai
 end
 
         data object_ai_hi
@@ -92,4 +95,7 @@ end
         >.river_boss 
         hills_boss_ai_hi
         >.caves_boss_ai
+        0
+        0
+        >.castle_spawner_ai
 end

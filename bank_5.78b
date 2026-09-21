@@ -217,6 +217,7 @@ plot_castle_room_15
         plotmapfile tiled/castle_room_15.tmx castle_room_15 0 1 20 12
         memcpy map12 castle_room_15 240
         locked_zone = 0
+        room_item_spawn = TYPE_SHIELD2
         return otherbank
 
 plot_castle_room_16
