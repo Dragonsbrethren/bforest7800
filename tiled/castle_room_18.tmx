@@ -9,8 +9,8 @@
  <tileset firstgid="36" name="castle_carpet" tilewidth="8" tileheight="16" tilecount="11" columns="11">
   <image source="../gfx/tiles/castle_carpet.png" width="88" height="16"/>
  </tileset>
- <tileset firstgid="47" name="castle_tables" tilewidth="8" tileheight="16" tilecount="14" columns="14">
-  <image source="../gfx/tiles/castle_tables.png" width="112" height="16"/>
+ <tileset firstgid="47" name="castle_tables" tilewidth="8" tileheight="16" tilecount="16" columns="16">
+  <image source="../gfx/tiles/castle_tables.png" width="128" height="16"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="11">
   <data>
@@ -114,7 +114,7 @@
    <tile gid="41"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="38"/>
+   <tile gid="37"/>
    <tile gid="38"/>
    <tile gid="36"/>
    <tile gid="36"/>
@@ -133,8 +133,8 @@
    <tile gid="36"/>
    <tile gid="36"/>
    <tile gid="38"/>
-   <tile gid="38"/>
-   <tile gid="43"/>
+   <tile gid="39"/>
+   <tile gid="42"/>
    <tile gid="43"/>
    <tile gid="43"/>
    <tile gid="43"/>
@@ -153,7 +153,7 @@
    <tile gid="43"/>
    <tile gid="43"/>
    <tile gid="43"/>
-   <tile gid="43"/>
+   <tile gid="44"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
