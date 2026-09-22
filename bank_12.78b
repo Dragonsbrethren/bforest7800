@@ -428,6 +428,7 @@ end
 end
 
         data caves_room_22_obj
+        TYPE_TORCH, 8*8, $20, TYPE_TORCH, 11*8, $20
         $00
 end
 

@@ -169,7 +169,7 @@ title_demo_4
         goto init_field
 
 title_new_game_normal
-        tileset = T_HILLS
+        tileset = T_CAVES
         player_sword = 3
         player_shield = 3
         player_armor = 3
