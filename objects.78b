@@ -940,7 +940,7 @@
         const POISON_PAL = 3
         const POISON_DAMAGE = 2
         const POISON_ELEM_ATK = %00100000
-        const F_POISON = 8
+        const F_POISON = 6
 
         const DARKBOLT_DURATION = 5
         const DARKBOLT_DAMAGE = 8

@@ -1347,13 +1347,13 @@ end
 
         data hills_room_9_obj
         TYPE_HARPY, $38, $80, TYPE_HARPY, $60, $90, TYPE_HARPY_SH, $38, $80, TYPE_HARPY_SH, $60, $90
-        TYPE_TORCH, $20, $50, TYPE_TORCH, $20, $70, TYPE_TORCH, $70, $50, TYPE_TORCH, $70, $70
+        TYPE_TORCH, $20, $50, TYPE_TORCH, $20, $70, TYPE_TORCH, $74, $50, TYPE_TORCH, $74, $70
         $00
 end
 
         data hills_room_10_obj
         TYPE_HGHOST, $38, $70, TYPE_HGHOST, $18, $C0, TYPE_HGHOST, $88, $10
-        TYPE_TORCH, $28, $80, TYPE_TORCH, $48, $50
+        TYPE_TORCH, $23, $80, TYPE_TORCH, $4C, $50
         $00
 end
 
@@ -1401,6 +1401,8 @@ end
 end
 
         data hills_room_18_obj
+        TYPE_SPIDER, 14*8, $50, TYPE_HROSE, 4*8, $50
+        TYPE_SPELL5, 3*8, $50
         $00
 end
 
@@ -1455,6 +1457,8 @@ end
 end
 
         data hills_room_26_obj
+        TYPE_HROSE, 6*8, $50, TYPE_HROSE, 14*8, $40
+        TYPE_HSLIME, 9*8, $80
         $00
 end
 

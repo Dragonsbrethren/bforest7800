@@ -284,4 +284,5 @@ plot_hills_room_26
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_26 240
         plotmapfile tiled/hills_room_26.tmx map12 0 1 20 12
+        alt_palette    = 1
         return otherbank
