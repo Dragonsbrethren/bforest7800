@@ -226,7 +226,6 @@ plot_castle_room_16
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_16.tmx castle_room_16 0 0 20 14
         memcpy current_map castle_room_16 280
-        zone2_objects  = 2
         return otherbank
 
 plot_castle_room_17
@@ -315,4 +314,5 @@ plot_castle_room_26
         menu_map_room[menu_map_index_2] = ROOMR_D
         plotmapfile tiled/castle_room_26.tmx castle_room_26 0 2 20 11
         memcpy map10 castle_room_26 220
+        room_item_spawn = TYPE_WATERFALL
         return otherbank

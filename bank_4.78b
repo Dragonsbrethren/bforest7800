@@ -555,7 +555,7 @@ end
 
         data castle_room_26_obj
         TYPE_CARDINAL, (8*9+4), $40
-        TYPE_WATERFALL, (8*9+4), $50
+        TYPE_CASTLE_SPAWN, (8*9+4), $50
         TYPE_TORCH, (8*8), $30, TYPE_TORCH, (11*8), $30
         TYPE_TORCH, (6*8), $40, TYPE_TORCH, (13*8), $40
         TYPE_TORCH, (4*8), $50, TYPE_TORCH, (15*8), $50
