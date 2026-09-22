@@ -321,10 +321,10 @@ end
         'Thunderbolt*'
 end
         alphadata pickup_spell5 font_spr
-        'Spell 5     *'
+        'Poison Bomb*'
 end
         alphadata pickup_spell6 font_spr
-        'Spell 6     *'
+        'Earthquake*'
 end
         alphadata pickup_spell7 font_spr
         'Spell 7     *'
