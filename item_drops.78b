@@ -12,7 +12,7 @@
         TYPE_HIPOTION   ; bat
         TYPE_LIFEAPPLE  ; stone rose
         TYPE_LIFEAPPLE  ; stone rose hills
-        TYPE_SPELL2     ; devout
+        TYPE_CHARM2     ; devout
         TYPE_SWORD2     ; red bone
         TYPE_CHARM9     ; spider
         TYPE_CHARM9     ; vertical spider
@@ -28,7 +28,7 @@
         TYPE_HIETHER    ; ghost
         TYPE_HIETHER    ; river ghost
         TYPE_SHIELD5    ; feuermann
-        TYPE_HIETHER    ; caves ghost
+        TYPE_SHIELD7    ; caves ghost
         TYPE_ETHER      ; forest ghost    
 end
 

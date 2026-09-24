@@ -880,7 +880,11 @@ check_shield6
           beq check_shield_bits_2
           iny
           cmp #TYPE_SHIELD7
-          beq check_shield_bits_2
+          bne check_shield8
+          lda #TYPE_ELIXIR
+          sta item_sub
+          bne check_shield_bits_2
+check_shield8
           iny
           cmp #TYPE_SHIELD8
           beq check_shield_bits_2
@@ -980,7 +984,11 @@ check_charm_bits
           beq check_charm_bits_1
           iny
           cmp #TYPE_CHARM2
-          beq check_charm_bits_1
+          bne check_charm3
+          lda #TYPE_HIETHER
+          sta item_sub
+          bne check_charm_bits_1
+check_charm3
           iny
           cmp #TYPE_CHARM3
           beq check_charm_bits_1

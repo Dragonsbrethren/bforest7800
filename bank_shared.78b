@@ -864,11 +864,12 @@ familiar_timer_zero
           sta familiar_timer
 end
 player_handler_no_familiar
+        if player_status{0} then gosub poison_damage
         if player_state = STATE_DEATH || player_state = STATE_SAVE then goto death_fade
         if !player_invuln then player_flags{0} = 0 : goto player_status_check
         player_invuln--
 player_status_check
-        if player_status{0} || player_status{5} then gosub poison_damage
+        if player_status{5} then gosub poison_damage
         if player_status{3} then goto stone_handler
         gosub decelerate_player
 

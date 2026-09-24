@@ -160,6 +160,13 @@
             "width": 160,
             "x": 320,
             "y": 960
+        },
+        {
+            "fileName": "caves_room_23.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 480,
+            "y": 384
         }
     ],
     "onlyShowAdjacentMaps": false,
