@@ -18,6 +18,7 @@ title_init
           stx music_playing
           stx object_timer
           stx bg_color
+          stx demo_menu_open
           inx
           stx menu_columns
           stx menu_max
@@ -65,27 +66,35 @@ title_controls
 title_menu
         if demo_num = 2 || demo_num = 4 then goto main
         if burn_tutorial then goto main
+        if demo_menu_open then title_demo_menu
         plotsprite menu_cursor0 0 menu_cursor_X menu_cursor_Y
         plotchars 'New Game' 0 64 10
         plotchars 'Continue' 0 64 11        
         goto main
 
 title_selection
-        bg_color = 0
-        gosub clear_palettes
-        if burn_tutorial then burn_tutorial = 0 : game_state = STATE_FIELD : reload_map = 1 : goto main bank2
+        action_debounce = 1
+        if burn_tutorial then clear_tutorial
         if demo_num = 2 || demo_num = 4 then demo_num++ : goto title_init
         asm
           lda #0
           sta demoplay
           sta object_timer
 end
+        if demo_menu_open then title_selection_demo
         if menu_selection then title_continue
-        goto title_new_game
+        demo_menu_open = 1
+        goto main
+
+title_demo_menu
+        plotsprite menu_cursor0 0 52 menu_cursor_Y
+        plotchars 'Normal Start' 0 56 10
+        plotchars 'Special Start' 0 56 11        
+        goto main
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-19-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-24-2026' 0 48 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -111,9 +120,14 @@ title_no_clear
 end
         goto menu_init bank11
 
+
+title_selection_demo
+        if menu_selection then title_new_game_special
+
 title_new_game
         if !demoplay then title_new_game_normal
         play_music = 1
+        demo_menu_open = 0
         if demo_num = 2 then title_demo_2
         if demo_num = 3 then title_demo_3
         if demo_num = 4 then title_demo_4
@@ -168,12 +182,39 @@ title_demo_4
         demo_num = 0
         goto init_field
 
+title_new_game_special
+        tileset = T_CAVES
+        player_sword = 5
+        player_shield = 5
+        player_armor = 4
+        player_charm = 8
+        player_spell = 2
+        toggled_familiar = 1
+        m_item_bits_1   = %00011111
+        m_item_bits_2   = %00011111
+        m_sword_bits_1  = %00011101
+        m_sword_bits_2  = %00000000
+        m_shield_bits_1 = %00011011
+        m_shield_bits_2 = %00000000
+        m_armor_bits_1  = %00001011
+        m_armor_bits_2  = %00001110
+        m_charm_bits_1  = %00011001
+        m_charm_bits_2  = %00000101
+        m_relic_bits_1  = %00011111
+        m_relic_bits_2  = %00000101
+        m_spell_bits_1  = %00011111
+        m_spell_bits_2  = %00000000
+        m_key_bits = %00000111
+        m_map_bits = %00001111
+        goto title_new_game_qtys
+
 title_new_game_normal
-        tileset = T_CASTLE
-        player_sword = 3
-        player_shield = 3
-        player_armor = 3
-        player_charm = 3
+        play_music = 0
+        tileset = T_FOREST
+        player_sword = 1
+        player_shield = 0
+        player_armor = 1
+        player_charm = 0
         player_spell = 0
         toggled_familiar = 0
         m_item_bits_1   = %00000101
@@ -186,12 +227,13 @@ title_new_game_normal
         m_armor_bits_2  = %00000000
         m_charm_bits_1  = %00000000
         m_charm_bits_2  = %00000000
-        m_relic_bits_1  = %00011111
-        m_relic_bits_2  = %00011111
+        m_relic_bits_1  = %00000000
+        m_relic_bits_2  = %00000000
         m_spell_bits_1  = %00000000
         m_spell_bits_2  = %00000000
         m_key_bits = %00000000
         m_map_bits = %00000000
+title_new_game_qtys
         save_room_index = 0
         ; zero out the item quantity array so items can't be smuggled into new game
         for index = 1 to 10
@@ -306,3 +348,10 @@ spell_tutorial
         savescreen
         goto main
         
+clear_tutorial
+        burn_tutorial = 0
+        bg_color = 0
+        gosub clear_palettes
+        game_state = STATE_FIELD
+        reload_map = 1
+        goto main bank2
