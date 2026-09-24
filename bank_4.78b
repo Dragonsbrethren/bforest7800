@@ -1109,6 +1109,8 @@ skel_sword_pos
         sta object_facing,y
         lda #1
         sta object_timer,y
+        lda #SKELSWORD_PAL
+        sta object_pal,y
         lda #<.plot_skelsword
         sta object_spr_ptr_lo,y
         lda #>.plot_skelsword
@@ -1477,7 +1479,7 @@ end
         goto set_enemy_name
 
 plot_castle_160a
-        PLOTSPRITE blood sprite_pal Xposition Yposition frame
+        plotsprite blood sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_skelsword

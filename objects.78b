@@ -367,10 +367,10 @@
         const F_PRIEST_CAST_UP    = 15
         const F_PRIEST_CAST_LEFT  = 16
         const F_PRIEST_CAST_RIGHT = 17
-        const PRIEST_PAL = (1 * 32)
+        const PRIEST_PAL = 1
 
         ; CARDINAL
-        const CARDINAL_PAL = (7 * 32)
+        const CARDINAL_PAL = 7
         const CARDINAL_HP  = 40
         const CARDINAL_TELE_DELAY = 60
 
@@ -385,7 +385,7 @@
         const F_DARKSPARK_1 = 1
         const F_DARKSPARK_2 = 2
         const F_DARKSPARK_3 = 3
-        const DARKSPARK_PAL = (0 * 32)
+        const DARKSPARK_PAL = 0
 
         ; SKELETAL KNIGHT
         const SKEL_HP          =  8
@@ -415,11 +415,12 @@
         const F_SKEL_CAST_UP    = 27
         const F_SKEL_CAST_LEFT  = 28
         const F_SKEL_CAST_RIGHT = 29
-        const SKEL_PAL = (5 * 32)
+        const SKEL_PAL = 5
 
 
         const SKELSWORD_DAMAGE = 12
         const SKELSWORD_ELEM_ATK = %00100000
+        const SKELSWORD_PAL = 0
         const RETRACT_FRAMES = 4
 
         ; GHOST
@@ -438,8 +439,8 @@
         const GHOST_ELEM_DEF = %00100000
         const F_GHOST_1 = 4
         const F_GHOST_2 = 5
-        const GHOST_PAL_1 = (0 * 32)
-        const GHOST_PAL_2 = (2 * 32)
+        const GHOST_PAL_1 = 0
+        const GHOST_PAL_2 = 2
         const GHOST_ANIM_TIMER = 4
 
         ; RED SLIME
@@ -461,10 +462,10 @@
         const F_RSLIME_2 = 31
         const F_MRSLIME_1 = 32
         const F_MRSLIME_2 = 33
-        const RSLIME_PAL = (7 * 32)
+        const RSLIME_PAL = 7
 
         ; DEVOUT
-        const DEVOUT_PAL = (7 * 32)
+        const DEVOUT_PAL = 7
         const DEVOUT_DAMAGE = 8
         const DEVOUT_HP = 6
 
