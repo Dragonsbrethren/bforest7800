@@ -1445,7 +1445,7 @@ end
         data hills_room_24_obj
         TYPE_HROSE, 9*8, $40, TYPE_HROSE, 15*8, $40
         TYPE_SPIDER, 100, $20
-        TYPE_TORCH, 10*8, $20, TYPE_TORCH, 16*8, $20
+        TYPE_TORCH, 10*8, $20, TYPE_TORCH, 132, $20
         TYPE_OWLCARD, 128, $A0
         $00
 end

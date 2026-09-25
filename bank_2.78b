@@ -438,6 +438,7 @@ end
         data forest_room_28_obj
         TYPE_RAVEN, 1*8, $60
         TYPE_WOLF, 13*8, $40, TYPE_WOLF, 7*8, $30
+        TYPE_TORCH, 3*8, $50, TYPE_TORCH, 14*8, $90
         TYPE_CATCARD, 8*8, $70
         $00
 end
