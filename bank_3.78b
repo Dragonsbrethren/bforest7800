@@ -147,6 +147,7 @@ use_item
         if menu_selection = 11 then open_main_menu
         using_item = m_item_inv[menu_selection]
         ; TODO: Prevent item use if full HP/MP or normal status
+        if using_item = 10 then use_item_done
         m_item_qty[using_item] = m_item_qty[using_item] - 1
         if using_item = 1 then hp_change = HP_CHANGE_POTION : goto use_potion
         if using_item = 2 then hp_change = HP_CHANGE_HIPOTION : goto use_potion
@@ -613,53 +614,68 @@ plot_relics_menu
 relic_menu_updater
         restorescreen
 
-        ; set first four slots to disabled for cards
-        asm
-          lda #PAL_DISABLED_1
-          sta m_relic2_pal1
-          sta m_relic_pal1
-          sta m_inv0_pal1
-          sta m_sword_pal1
-          lda #PAL_DISABLED_2
-          sta m_relic2_pal2
-          sta m_relic_pal2
-          sta m_inv0_pal2
-          sta m_sword_pal2
-end
-        P4C2 = PAL_DISABLED_3
-
-relic_pal_1
+relics_pals
+        ; reuses palette variables from equip menu
         temp1 = m_relic_inv[0]
-        if temp1 >= 5 then relic_inventory
-        if temp1 <> toggled_familiar then relic_pal_2
-        m_relic_pal1 = pal_items1[temp1]
-        m_relic_pal2 = pal_items2[temp1]
-relic_pal_2
+        if temp1 < 5 && temp1 <> toggled_familiar then relic_0_disabled
+        m_relic2_pal1 = pal_relics1[temp1]
+        m_relic2_pal2 = pal_relics2[temp1]
+        goto relic_1_colors
+relic_0_disabled
+        m_relic2_pal1 = #PAL_DISABLED_1
+        m_relic2_pal2 = #PAL_DISABLED_2
+relic_1_colors
         temp1 = m_relic_inv[1]
-        if temp1 >= 5 then relic_inventory
-        if temp1 <> toggled_familiar then relic_pal_3
-        m_relic_pal1 = pal_items1[temp1]
-        m_relic_pal2 = pal_items2[temp1]
-relic_pal_3
+        if temp1 < 5 && temp1 <> toggled_familiar then relic_1_disabled
+        m_relic_pal1 = pal_relics1[temp1]
+        m_relic_pal2 = pal_relics2[temp1]
+        goto relic_2_colors
+relic_1_disabled
+        m_relic_pal1 = #PAL_DISABLED_1
+        m_relic_pal2 = #PAL_DISABLED_2
+relic_2_colors
         temp1 = m_relic_inv[2]
-        if temp1 >= 5 then relic_inventory
-        if temp1 <> toggled_familiar then relic_pal_4
-        m_sword_pal1 = pal_items1[temp1]
-        m_sword_pal2 = pal_items2[temp1]
-relic_pal_4
+        if temp1 < 5 && temp1 <> toggled_familiar then relic_2_disabled
+        m_inv0_pal1 = pal_relics1[temp1]
+        m_inv0_pal2 = pal_relics2[temp1]
+        goto relic_3_colors
+relic_2_disabled
+        m_inv0_pal1 = #PAL_DISABLED_1
+        m_inv0_pal2 = #PAL_DISABLED_2
+relic_3_colors
         temp1 = m_relic_inv[3]
-        if temp1 >= 5 then relic_inventory
-        if temp1 <> toggled_familiar then relic_inventory
-        m_sword_pal1 = pal_items1[temp1]
-        m_sword_pal2 = pal_items2[temp1]
+        if temp1 < 5 && temp1 <> toggled_familiar then relic_3_disabled
+        m_sword_pal1 = pal_relics1[temp1]
+        m_sword_pal2 = pal_relics2[temp1]
+        goto relic_4_colors
+relic_3_disabled
+        m_sword_pal1 = #PAL_DISABLED_1
+        m_sword_pal2 = #PAL_DISABLED_2
+relic_4_colors
+        temp1 = m_relic_inv[4]
+        m_inv1_pal1 = pal_relics1[temp1]
+        m_inv1_pal2 = pal_relics2[temp1]
+        temp1 = m_relic_inv[5]
+        m_shield_pal1 = pal_relics1[temp1]
+        m_shield_pal2 = pal_relics2[temp1]
+        temp1 = m_relic_inv[6]
+        m_inv2_pal1 = pal_relics1[temp1]
+        m_inv2_pal2 = pal_relics2[temp1]
+        temp1 = m_relic_inv[7]
+        m_armor_pal1 = pal_relics1[temp1]
+        m_armor_pal2 = pal_relics2[temp1]
+        temp1 = m_relic_inv[8]
+        m_inv3_pal1 = pal_relics1[temp1]
+        m_inv3_pal2 = pal_relics2[temp1]
+        temp1 = m_relic_inv[9]
+        m_charm_pal1 = pal_relics1[temp1]
+        m_charm_pal2 = pal_relics2[temp1]
 
 relic_inventory
         m_spriteX = 16
         m_spriteY = 48
         m_textX = 24
         m_textY = 3
-        if toggled_familiar = 1 then m_palette = 0 else m_palette = 4
-        if m_relic_inv[0] >= 5 then m_palette = 0
         pointer = m_relic_inv_lo
         pointer_hi = m_relic_inv_hi
         gosub plot_item_inv
@@ -710,15 +726,10 @@ end
 items_left
         if m_spriteX = 16 then m_palette = 0 : m_spriteX = 84 : m_textX = 92 : goto items_right
         m_palette = 4
-        if menu = MENU_RELICS then gosub relic_highlight
         m_spriteX = 16 : m_textX = 24
         m_spriteY = m_spriteY + 32
         m_textY = m_textY + 2
-        goto items_next
 items_right
-        if menu = MENU_ITEMS then items_next
-        if item_name < 5 && item_name + 1 <> toggled_familiar then m_palette = 4
-items_next
         next
         
         ; bypass item description if on Exit
@@ -978,6 +989,14 @@ end
 
         data pal_items2
         $00, $83, $84, $74, $75, $97, $45, $76, $06, $1C, $27
+end
+
+        data pal_relics1
+        $00, $0F, $0F, $0F, $0F, $13, $C3, $92, $1A, $0F, $0F
+end
+
+        data pal_relics2
+        $00, $57, $65, $B9, $22, $24, $C6, $94, $1F, $08, $08
 end
 
         data sword_atk
