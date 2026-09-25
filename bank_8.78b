@@ -962,7 +962,6 @@ plot_hills_room_2
         menu_map_room[menu_map_index_2] = ROOMR_UDR
         memcpy map12 hills_room_2 240
         plotmapfile tiled/hills_room_2.tmx hills_room_2 0 1 20 12
-        zone2_objects  = 6
         return thisbank
 
 plot_hills_room_3

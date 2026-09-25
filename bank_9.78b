@@ -150,7 +150,6 @@ plot_hills_room_14
         menu_map_room[menu_map_index_2] = ROOMR_DR
         memcpy map12 hills_room_14 240
         plotmapfile tiled/hills_room_14.tmx hills_room_14 0 1 20 12
-        zone2_objects  = 4
         pal_animation  = 1
         locked_zone    = 5
         ; elevation set to zero when in waterfall
