@@ -1242,28 +1242,7 @@ move_test_up_no_fly
         adc #8
         sec
         sbc object_Yvel_hi,x
-        sta temp1
-        ldx index
-        ; player can always move
-        beq move_test_up_peekY
-        ; don't want projectiles to stop suddenly
-        bmi move_test_up_peekY
-        ; figure out which zone object is in after move
-        and #$F0
-        lsr
-        lsr
-        lsr
-        lsr
-        ; load dlend for this zone
-        tay
-        lda dlend,y
-        ; buffer for player, shield, sword, projectiles, familiar
-        cmp #ZONE_BUFFER_OBJS
-        bcc move_test_up_peekY
-        ; deny move if too many objects in zone
-        jmp move_test_vertical_deny
 move_test_up_peekY
-        lda temp1
         lsr
         lsr
         lsr
@@ -1290,7 +1269,7 @@ end
           and #%00010000
           beq test_walkable_up
           lda tile_properties
-          and #%00000010
+          and #%00000011
           beq test_walkable_up
           jmp move_up
 test_walkable_up
@@ -1375,28 +1354,7 @@ move_test_down_no_fly
           adc #15
           clc
           adc object_Yvel_hi,x
-          sta temp1
-          ldx index
-          ; player can always move
-          beq move_test_down_peekY
-          ; don't want projectiles to stop suddenly
-          bmi move_test_down_peekY
-          ; figure out which zone object is in after move
-          and #$F0
-          lsr
-          lsr
-          lsr
-          lsr
-          ; load dlend for this zone
-          tay
-          lda dlend,y
-          ; buffer for player, shield, sword, projectiles, familiar
-          cmp #ZONE_BUFFER_OBJS
-          bcc move_test_down_peekY
-          ; deny move if too many objects in zone
-          rts
 move_test_down_peekY
-          lda temp1
           lsr
           lsr
           lsr
@@ -1424,7 +1382,7 @@ end
           and #%00010000
           beq test_walkable_down
           lda tile_properties
-          and #%00000010
+          and #%00000011
           beq test_walkable_down
           jmp move_down
 test_walkable_down
@@ -1524,7 +1482,7 @@ end
           and #%00010000
           beq test_walkable_left
           lda tile_properties
-          and #%00000010
+          and #%00000011
           beq test_walkable_left
           jmp move_left
 test_walkable_left
@@ -1624,7 +1582,7 @@ end
           and #%00010000
           beq test_walkable_right
           lda tile_properties
-          and #%00000010
+          and #%00000011
           beq test_walkable_right
           jmp move_right
 test_walkable_right
