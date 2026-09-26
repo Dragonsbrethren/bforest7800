@@ -1942,7 +1942,7 @@ sword_collision
         if temp1{0} then return thisbank
 test_sword_box
         if temp1{2} then sword_bypass_elevation
-        if object_elevation <> object_elevation[index] then return thisbank
+        if object_elevation > object_elevation[index] then return thisbank
 sword_bypass_elevation
         asm
           ldx index
@@ -2555,11 +2555,6 @@ projX     lda object_Xdest,x
           lda object_speed_hi,x
           sta object_Xvel_hi,x
           lda object_Ydir,x
-          beq proj_done
-          lda object_facing,x
-          cmp #DIR_LEFT
-          beq proj_done
-          cmp #DIR_RIGHT
           beq proj_done
 projY
           lda object_Ydest,x
