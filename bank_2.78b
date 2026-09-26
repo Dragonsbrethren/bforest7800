@@ -197,7 +197,10 @@ forest_room_b16
         gosub forest_room_bank_16 bank16
         startrmt
         if !play_music then forest_stop_rmt
+        if music_change then forest_play_music
         if music_playing then forest_loaded
+forest_play_music
+        music_change = 0
         music_playing = 1
         playrmt forest
 forest_loaded
@@ -1237,6 +1240,7 @@ end
           lda #1
           sta play_music
           sta music_playing
+          sta music_change
           ldx index
           lda #TYPE_BOSS_FLAME
           sta object_type+5
