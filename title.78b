@@ -280,6 +280,10 @@ init_field
         ; if you die in a room with an exit, stop it from taking you to the new map
         exit_tileset = 0
         exit_room_index = 0
+        if toggled_familiar = 1 && !m_relic_bits_1[0] then toggled_familiar = 0
+        if toggled_familiar = 2 && !m_relic_bits_1[1] then toggled_familiar = 0
+        if toggled_familiar = 3 && !m_relic_bits_1[2] then toggled_familiar = 0
+        if toggled_familiar = 4 && !m_relic_bits_1[3] then toggled_familiar = 0
         ; retains the map in save rooms, continuing in same tileset
         if old_tileset = tileset then goto main
         gosub clear_menu_map
