@@ -101,8 +101,11 @@ decode_font_offset
 
 write_to_gamestate
         lda pw_tileset
+        ; only worry about values 1-6
+        and #%00000111
         sta tileset
         lda pw_saveroom
+        and #%00000111
         sta save_room_index
         lda pw_sword
         sta player_sword

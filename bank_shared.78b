@@ -749,7 +749,7 @@ spawn_object
         ; hack - if type was Harpy, remove its shadow
           cmp #TYPE_HARPY
           bne spawn_zero_nibble
-          jmp .remove_harpy_shadow
+          jsr .remove_harpy_shadow
 harpy_shadow_removed
 spawn_zero_nibble
           lda object_Ypos,x
@@ -774,6 +774,10 @@ spawn_Y_ok
           cmp #COMMON_DROP_RATE
           bcs spawn_common
 spawn_nothing
+          cmp #TYPE_HARPY_QUEEN
+          bne spawn_zero
+          jsr .remove_harpy_shadow
+spawn_zero
           lda #0
           sta object_type,x
           jmp .object_done
@@ -2207,6 +2211,7 @@ end
 damage_player_hp_no_elem
         hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
+        if !hp_change then hp_change = 1
         if hp_change > temp2 then hp_change = 1
         player_hp = player_hp - hp_change
         if player_hp > temp1 then player_hp = 0

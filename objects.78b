@@ -599,7 +599,7 @@
         const HARPY_VEL_CAP_LO = 128
         const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
-        const HARPY_DAMAGE = 8
+        const HARPY_DAMAGE = 14
         const HARPY_DEF = 0
         const HARPY_MDEF = 0
         const HARPY_FLAGS = %00000100
@@ -612,7 +612,7 @@
         const F_HARPY_TALON = 15
 
         ; HARPY QUEEN
-        const HARPY_QUEEN_HP = 15
+        const HARPY_QUEEN_HP = 45
         const HARPY_QUEEN_FLAGS = %10000100
         const F_HARPY_QUEEN = 2
         const F_HARPY_QUEEN_DIVE = 3

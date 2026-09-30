@@ -42,7 +42,7 @@
         <.obj_forest_boss_stats
         <.obj_boss_stats
         <.obj_boss_stats
-        obj_boss_stats_lo
+        <.obj_boss_stats
         <.obj_boss_stats
 end
 
@@ -90,6 +90,6 @@ end
         >.obj_forest_boss_stats
         >.obj_boss_stats
         >.obj_boss_stats
-        obj_boss_stats_hi
+        >.obj_boss_stats
         >.obj_boss_stats
 end

@@ -14,6 +14,7 @@
         incmapfile tiled/hills_room_3.tmx
 
         incrmtfile mountains.rmta
+        incrmtfile hills_battle.rmta
 
         data hills_map_lo
         plot_hills_room_0_lo, plot_hills_room_1_lo, plot_hills_room_2_lo, plot_hills_room_3_lo
@@ -194,7 +195,10 @@ hills_room_bank_8
 hills_start_music
         startrmt
         if !play_music then hills_stop_rmt
+        if music_change then hills_play_music
         if music_playing then hills_loaded
+hills_play_music
+        music_change = 0
         music_playing = 1
         playrmt mountains
 hills_loaded
@@ -454,16 +458,17 @@ end
 ;=========================================================
 hills_boss_ai
         asm
-          lda m_relic_bits_2
-          and #%00000100
+          lda m_key_bits
+          and #%00010000
           beq hills_boss_flags
-          jmp hills_despawn_flames
+          jmp .hills_boss_dead
 hills_boss_flags
           lda object_flags,x
           and #%10000000
           bne .hills_boss_handler
+hills_boss_test_player_x
 end
-        if player_Xpos < 56 then return thisbank
+        if player_Xpos < 64 then return thisbank
         playsfx sfx_flameon
 hills_flame_on
         asm
@@ -471,35 +476,51 @@ hills_flame_on
           lda #%10000000
           sta object_flags,x
           lda #TYPE_BOSS_FLAME
-          sta object_type+4
+          sta object_type+5
           lda #48
-          sta object_Xpos+4
-          lda #$80
-          sta object_Ypos+4
+          sta object_Xpos+5
+          lda #$70
+          sta object_Ypos+5
+          lda #%10000000
+          sta object_state+1
 
 spawn_hills_boss
-          lda #$4C
-          sta object_Xpos+3
+end
+        playrmt hills_battle
+        asm
+          lda #76
+          sta object_Xpos+1
           lda #0
-          sta object_Ypos+3
+          sta object_Ypos+1
           ldx index     ; restore index for object handler
           rts
 end
 
 hills_boss_handler
         asm
-          lda object_type+3
+hills_talon_handler
+          lda object_type+1
           beq hills_move_talon
           rts
 hills_move_talon
+          lda #%00010000
+          ora m_key_bits
+          sta m_key_bits
 hills_despawn_flames
           lda #0
-          sta object_type+3
-          ; remove the boss handler
-          sta object_type+1
+          sta object_type+5
 end
         ; hardcode the unblock instead of trying to reuse torch code
-        pokechar current_map 6 8 20 14 $4A
+        pokechar current_map 6 7 20 14 $4A
+        stoprmt
+        music_playing = 0
+        music_change = 1
+
+hills_boss_dead
+        if !music_change then return thisbank
+        startrmt
+        playrmt mountains
+        music_change = 0
         return thisbank
 
 ;=========================================================
@@ -515,13 +536,19 @@ end
 ; HARPY QUEEN
 harpy_queen_ai
         asm
-          lda object_flags,x
-          and #%01000000
-          bne .harpy_ai
+          lda object_state,x
+          and #%10000000
+          bne harpy_queen_active
           lda #HARPY_QUEEN_HP
           sta object_hp,x
           lda #HARPY_QUEEN_FLAGS
           sta object_flags,x
+          rts
+
+harpy_queen_active
+          and #%01000000
+          bne .harpy_ai
+
 ;         rts
 end
 harpy_ai
@@ -1117,6 +1144,7 @@ torch_tile_block_hills
         if torch_tile =   4 then block_tile = 162
         if torch_tile =  50 then block_tile = 164
         if torch_tile =  62 then block_tile = 166
+        if torch_tile =  74 then block_tile =  30
         if torch_tile =  90 then block_tile = 168
         if torch_tile =  92 then block_tile = 170
         pokechar current_map peekX peekY 20 14 block_tile
@@ -1150,7 +1178,7 @@ remove_harpy_shadow
           ldx temp1
           ; store the new Xpos and resume spawner code
           sta object_Xpos,x
-          jmp harpy_shadow_removed
+          rts
 end
 
 split_hslime
@@ -1430,8 +1458,10 @@ end
 end
 
         data hills_room_22_obj
-        TYPE_HARPY_QUEEN, $4C, $10
-        TYPE_HTALON, $4C, $80, 
+        TYPE_HARPY_QUEEN, 76, $D0
+        TYPE_HARPY_SH, 76, $D0
+        TYPE_HTALON, 72, $70,
+        TYPE_HILLS_BOSS, $E0, $E0
         $00
 end
 
