@@ -94,7 +94,8 @@ title_demo_menu
 
 title_flash
 ;       if demo_num <> 2 then plotchars 'ALPHA 07-13-2026' 0 48 10
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'ALPHA 09-25-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'PORTLAND RETRO GAMING EXPO' 0 8 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars '2026 DEMO' 0 116 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button
         if joy0fire0 && !action_debounce then action_button = 0 : menu_change = 1 : action_debounce = 1
         if joy0fire1 && !action_debounce then action_button = 1 : menu_change = 1 : action_debounce = 1
@@ -183,7 +184,7 @@ title_demo_4
         goto init_field
 
 title_new_game_special
-        tileset = T_HILLS
+        tileset = T_CAVES
         player_sword = 5
         player_shield = 5
         player_armor = 4
@@ -198,10 +199,10 @@ title_new_game_special
         m_shield_bits_2 = %00000000
         m_armor_bits_1  = %00001011
         m_armor_bits_2  = %00001110
-        m_charm_bits_1  = %00011111
-        m_charm_bits_2  = %00011111
+        m_charm_bits_1  = %00011001
+        m_charm_bits_2  = %00000101
         m_relic_bits_1  = %00010011
-        m_relic_bits_2  = %00000011
+        m_relic_bits_2  = %00000001
         m_spell_bits_1  = %00011111
         m_spell_bits_2  = %00000000
         m_key_bits = %00001111
