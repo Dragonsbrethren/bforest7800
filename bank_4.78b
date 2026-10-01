@@ -507,6 +507,7 @@ end
         TYPE_TORCH, $38, $40,
         TYPE_TORCH, $60, $40,
         TYPE_BARRIER, 76, $10
+        TYPE_DOOR_OPEN, $49, $10
         $00
 end
 

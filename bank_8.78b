@@ -971,6 +971,7 @@ plot_hills_room_0
         exit_Ypos = 192
         exit_room_index = F_RIVER_START2_I
         play_music = 1
+        if room_index < 8 then demo_end = 1
         return thisbank
 
 plot_hills_room_1
