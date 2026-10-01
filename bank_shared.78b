@@ -741,8 +741,8 @@ spawn_object
           bmi spawn_nothing
           cmp #TYPE_BOSSMONSTER
           bcs spawn_nothing
-        ; save old type in y for drop indexing
-          tay
+        ; save old type for drop indexing
+          sta spawn_index
         ; torches have special logic for changing drops
           cmp #TYPE_TORCH
           beq .spawns_torch
@@ -766,7 +766,19 @@ spawn_Y_ok
           lda object_Ypos,x
           and #$F0
           sta object_Ypos,x
+          jsr .get_object_pos
+end
+        move_tile_1 = peekchar(current_map, peekX, peekY, 20, 14)
+        move_tile_2 = move_tile_1
+        asm
+          ; if the tile is non-walkable, spawn nothing
+          jsr .test_walkable
+          lda tile_properties
+          and #%00000001
+          beq spawn_zero
           jsr randomize
+          ldx index
+          ldy spawn_index
           ; for remove duplicates logic
           stx item_spawned
           cmp #RARE_DROP_RATE
