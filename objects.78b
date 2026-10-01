@@ -837,6 +837,8 @@
         const F_ROCK = 28
         const MAX_ROCKS = 5
 
+        ; RUNE
+        const F_RUNE = 29
 
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
