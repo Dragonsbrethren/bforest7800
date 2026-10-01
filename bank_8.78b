@@ -459,6 +459,10 @@ end
 ;=========================================================
 hills_boss_ai
         asm
+          lda #<.plot_hills_160b
+          sta object_spr_ptr_lo,x
+          lda #>.plot_hills_160b
+          sta object_spr_ptr_hi,x
           lda m_key_bits
           and #%00010000
           beq hills_boss_flags
