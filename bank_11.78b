@@ -565,7 +565,7 @@ end
 end
 
         data magic_mp
-        0, 8, $12, $16, $20
+        0, 8, $12, $16, $20, $10, $30
 end
 
         data pal_magic1

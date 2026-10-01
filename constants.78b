@@ -584,6 +584,7 @@
 
         const JO_STONE_FRAME = 2
 
+        const POISON_MP_COST = 10
         const EARTHQUAKE_MP_COST = 30
         const EARTHQUAKE_DAMAGE = 10
         const EARTHQUAKE_TIME = 12

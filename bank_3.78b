@@ -1044,7 +1044,7 @@ end
 end
 
         data charm_wis
-        0, 1, 2, 0, 0, 2, 2, 2, 2, 3, 4
+        0, 2, 4, 0, 0, 6, 6, 6, 6, 7, 8
 end
 
 enable_double_wide_mode

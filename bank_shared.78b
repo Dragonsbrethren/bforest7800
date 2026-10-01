@@ -2345,6 +2345,11 @@ end
 decrease_player_mp
         ; TODO: This currently can't scale, only works with max HP 48...
         temp1 = player_mp        ; temp1 used to detect underflow
+        temp2 = mp_change
+        mp_change = mp_change - player_wisdom
+        if mp_change >= temp2 then mp_change = 1
+        if player_armor >= LIGHT_ARMOR_START then mp_change = mp_change / 2
+        if !mp_change || mp_change > temp2 then mp_change = 1
         player_mp = player_mp - mp_change
         if player_mp > temp1 then player_mp = 0
 
@@ -2535,6 +2540,12 @@ end
 
 cast_poison
         asm
+          lda #POISON_MP_COST
+          sta mp_change
+          jsr .test_spell_cost
+          bne set_poison_slot
+          jmp .set_state_chant
+set_poison_slot
           ldx #0
           ldy #14
           jsr set_cast_direction
