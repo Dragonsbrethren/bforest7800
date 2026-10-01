@@ -187,13 +187,9 @@ hills_init
 end
         stoprmt
         gosub hills_room_bank_9 bank9
-        goto hills_start_music
-
-hills_room_bank_8
-        gosub hills_room_bank_8_load
-
-hills_start_music
         startrmt
+
+hills_test_music
         if !play_music then hills_stop_rmt
         if music_change then hills_play_music
         if music_playing then hills_loaded
@@ -203,6 +199,10 @@ hills_play_music
         playrmt mountains
 hills_loaded
         return thisbank
+
+hills_room_bank_8
+        gosub hills_room_bank_8_load
+        goto hills_test_music
 
 hills_stop_rmt
         stoprmt

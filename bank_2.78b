@@ -125,7 +125,6 @@ forest_inn_exit
         goto forest_set_room
 
 
-        incrmtfile castle.rmta
         dmahole 0 noflow
 
 forest_witch

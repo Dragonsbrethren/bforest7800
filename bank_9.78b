@@ -114,7 +114,7 @@ plot_hills_room_10
 plot_hills_room_11
         menu_map_room[menu_map_index] = ROOML_UDL
         menu_map_room[menu_map_index_2] = ROOMR_UD
-        memcpy map12 hills_room_11 280
+        memcpy map12 hills_room_11 240
         plotmapfile tiled/hills_room_11.tmx map12 0 1 20 12
         alt_palette    = 1
         return otherbank
@@ -204,7 +204,7 @@ plot_hills_room_16_done
 plot_hills_room_17
         menu_map_room[menu_map_index] = ROOML_DL
         menu_map_room[menu_map_index_2] = ROOMR_DR
-        memcpy map12 hills_room_17 280
+        memcpy map12 hills_room_17 240
         plotmapfile tiled/hills_room_17.tmx map12 0 1 20 12
         exit_tileset = T_CAVES
         exit_Xpos = 64
@@ -240,7 +240,7 @@ plot_hills_room_21
 plot_hills_room_22
         menu_map_room[menu_map_index] = ROOML_UL
         menu_map_room[menu_map_index_2] = ROOMR_U
-        memcpy map12 hills_room_22 280
+        memcpy map12 hills_room_22 240
         plotmapfile tiled/hills_room_22.tmx map12 0 1 20 12
         pal_animation  = 1
         shadow_offset  = 1
