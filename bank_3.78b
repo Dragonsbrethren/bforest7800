@@ -552,26 +552,26 @@ end
         MENU_ICON_PENDANT       ; PENDANT
         MENU_ICON_ROSARY        ; DARK ROSARY
         MENU_ICON_SPECS         ; SPECTACLES
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
-        MENU_ICON_PENDANT
+        MENU_ICON_PENDANT       ; HARPY's CHARM
+        MENU_ICON_ORB           ; FLAME ORB
+        MENU_ICON_CRYSTAL       ; ICE CRYSTAL
+        MENU_ICON_CRYSTAL       ; THUNDER ROCK
+        MENU_ICON_PENDANT       ; WIND AMULET
+        MENU_ICON_SCALE         ; TOXIC SCALE
+        MENU_ICON_PENDANT       ; DIVINE RING
 end
 
         data pal_swords1
         $00, $44, $74, $96, $C3, $D3, $36, $36, $36, $36, $36
         $00, $42, $43, $0C, $D2, $34, $A9, $02, $B4, $A1, $43
         $00, $12, $F2, $C2, $03, $E1, $95, $66, $A2, $61, $7C
-        $00, $98, $60, $08, $22, $99, $03, $35, $35, $35, $35
+        $00, $98, $60, $0D, $54, $33, $9B, $78, $A3, $62, $08
 end
         data pal_swords2
         $00, $FE, $0F, $0D, $AD, $B6, $34, $34, $34, $34, $34
         $00, $24, $1A, $0F, $E4, $27, $8E, $75, $3D, $E3, $0C
         $00, $24, $F4, $D4, $06, $E3, $9D, $6A, $B6, $1A, $0F
-        $00, $0F, $62, $0D, $25, $AF, $AB, $37, $37, $37, $37
+        $00, $0F, $62, $0B, $46, $35, $95, $61, $B6, $B3, $0F
 end
 
 plot_relic_names

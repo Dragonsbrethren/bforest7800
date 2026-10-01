@@ -559,6 +559,10 @@
         const MENU_ICON_PENDANT = 10
         const MENU_ICON_ROSARY  = 11
         const MENU_ICON_SPECS   = 12
+        const MENU_ICON_CRYSTAL = 13
+        const MENU_ICON_SCALE   = 14
+        const MENU_ICON_ORB     = 24
+
 
         ; equip menu palette offsets
         const pal_shields1 = pal_swords1 + 11
