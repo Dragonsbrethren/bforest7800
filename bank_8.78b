@@ -50,6 +50,7 @@ hills_waterfall
 load_hills
         if !first_load then hills_set_room
         first_load = 0
+        music_change = 1
         play_music = 1
         if demoplay then hills_demo
         if save_room_index = 1 then hills_save_1
@@ -463,6 +464,8 @@ hills_boss_ai
           beq hills_boss_flags
           jmp .hills_boss_dead
 hills_boss_flags
+          lda player_elevation
+          beq hills_boss_return
           lda object_flags,x
           and #%10000000
           bne .hills_boss_handler
@@ -493,13 +496,14 @@ end
           lda #0
           sta object_Ypos+1
           ldx index     ; restore index for object handler
+hills_boss_return
           rts
 end
 
 hills_boss_handler
         asm
 hills_talon_handler
-          lda object_type+1
+          lda object_type+2
           beq hills_move_talon
           rts
 hills_move_talon
