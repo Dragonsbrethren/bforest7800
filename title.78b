@@ -290,7 +290,7 @@ init_field
         goto main
 
 set_title_top_pal
-        if demo_num = 2 || demo_num = 4  then bg_color = 0 else bg_color = $71
+        if demo_num = 2 || demo_num = 4 || burn_tutorial then bg_color = 0 else bg_color = $71
         P0C1 = $80 : P0C2 = $0F : P0C3 = $90
         if demo_num = 2 || demo_num = 4 then set_title_credits_pal
         P4C1 = $80 : P4C2 = $0F : P4C3 = $08
