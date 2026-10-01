@@ -1925,15 +1925,12 @@ sword_sound
         asm
           ldx index
           lda object_type,x
-          bmi .sword_damage
-          cmp #TYPE_BLOCKFLAME
-          beq .sword_damage
-          cmp #TYPE_BURNBUSH
-          beq .sword_damage
-          cmp #TYPE_FOREST_BOSS
-          beq .sword_damage
           cmp #TYPE_SKELSWORD
-          bne .sword_poof
+          beq .sword_coin
+          cmp #TYPE_BURNBUSH
+          bcs .sword_damage
+          bcc .sword_poof
+          
 end
 
 sword_coin
@@ -2121,8 +2118,12 @@ end
           ldx index
           lda object_type,x
           cmp #TYPE_BURNBUSH
-          bne player_knockback_block
+          bne player_knockback_barrier
           jmp .set_burnbush_name
+player_knockback_barrier
+          cmp #TYPE_BARRIER
+          bne player_knockback_block
+          jmp .set_barrier_name
 player_knockback_block
           ;  check player's shield and destroy projectile
           lda object_type,x

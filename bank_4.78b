@@ -42,7 +42,8 @@
         incgraphic gfx/sprites/c_slime1.png 160A 0 3 1 2
         incgraphic gfx/sprites/c_minislime0.png 160A 0 3 1 2
         incgraphic gfx/sprites/c_minislime1.png 160A 0 3 1 2
-        incgraphic gfx/sprites/castle_blocker.png 160A 0 3 2
+        incgraphic gfx/sprites/lightning2.png 160A 0 3 2 1
+        incgraphic gfx/sprites/lightning3.png 160A 0 3 2 1
 
         incmapfile tiled/castle_room_3.tmx
         incmapfile tiled/castle_room_4.tmx
@@ -188,6 +189,39 @@ end
           sta object_type,x
           rts
 end
+
+set_barrier_name
+        asm
+          lda #<door_sealed
+          sta pickup_ptr_lo
+          lda #>door_sealed
+          sta pickup_ptr_hi
+          ldy #PICKUP_TIME
+          sty pickup_timer
+          ldy #1
+          sty new_pickup
+          sty item_pickup
+          jmp .cc_next
+end
+
+barrier_ai
+        asm
+          lda m_relic_bits_2
+          and #%00001000
+          beq barrier_sprite
+          lda #0
+          sta object_type,x
+          rts
+barrier_sprite
+          lda #<.plot_castle_barrier
+          sta object_spr_ptr_lo,x
+          lda #>.plot_castle_barrier
+          sta object_spr_ptr_hi,x
+end
+        ; just hardcode this for simplicity
+        pokechar current_map 9 1 20 14 $70
+        pokechar current_map 10 1 20 14 $70
+        return thisbank
 
 load_castle
         if !first_load then castle_rooms
@@ -472,6 +506,7 @@ end
         TYPE_TORCH, $88, $20,
         TYPE_TORCH, $38, $40,
         TYPE_TORCH, $60, $40,
+        TYPE_BARRIER, 76, $10
         $00
 end
 
@@ -564,8 +599,8 @@ end
 
         data castle_rooms
         00, 00, 00, 00, 00, 00, 00,
-        24, 25, 00, 00, 00, 00, 00,
-        23, 00, 26, 00, 14, 00, 00,
+        24, 25, 26, 00, 00, 00, 00,
+        23, 00, 02, 00, 14, 00, 00,
         19, 18, 13, 17, 11, 00, 00,
         21, 22, 12, 00, 06,  7,  8,
         02, 00, 02, 00, 05, 00,  9,
@@ -621,6 +656,10 @@ torch_tile_unblock_castle
         ; the poked tile doesn't affect visuals since those are plotted from ROM
         pokechar current_map peekX peekY 20 14 $28
         goto kill_torch_done
+
+plot_castle_barrier
+        plotsprite lightning2 3 Xposition Yposition animation_frame
+        goto plot_next
 
 cardinal_ai
         asm

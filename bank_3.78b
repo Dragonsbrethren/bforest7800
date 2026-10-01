@@ -965,7 +965,7 @@ end
         'Nix` Tail   '
         'Miracle Gem '
         'Harpy` Talon'
-        'Relic Num 9 '
+        'Dispel Rune '
         'Relic Num 10'
 end
 
@@ -979,7 +979,7 @@ end
         'Traverse Water     '
         'Ascend Waterfalls  '
         'Scale Ledges       '
-        'Description 9      '
+        'Remove Magic Seals '
         'Description 10     '
 end
 
@@ -992,11 +992,11 @@ end
 end
 
         data pal_relics1
-        $00, $0F, $0F, $0F, $0F, $13, $C3, $92, $1A, $0F, $0F
+        $00, $0F, $0F, $0F, $0F, $13, $C3, $93, $1A, $05, $0F
 end
 
         data pal_relics2
-        $00, $57, $65, $B9, $22, $24, $C6, $94, $1F, $08, $08
+        $00, $57, $65, $B9, $22, $24, $C6, $95, $1F, $B7, $08
 end
 
         data sword_atk
@@ -1056,7 +1056,7 @@ enable_double_wide_mode
 end
 
         data m_relic_icons
-        0, 0, 0, 0, 0, 1, 2, 4, 3, 0, 0
+        0, 0, 0, 0, 0, 1, 2, 4, 3, 5, 0
 end
 
         data sword_elem

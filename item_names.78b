@@ -492,7 +492,7 @@ end
 end
 
         alphadata pickup_relic9 font_spr
-        'Relic 9     *'
+        'Dispel Rune*'
 end
 
         alphadata pickup_relic10 font_spr

@@ -42,7 +42,9 @@
         incgraphic gfx/sprites/c_slime1.png 160A 0 2 1 3
         incgraphic gfx/sprites/c_minislime0.png 160A 0 2 1 3
         incgraphic gfx/sprites/c_minislime1.png 160A 0 2 1 3
-
+        incgraphic gfx/sprites/lightning2.png 160A 0 3 2 1
+        incgraphic gfx/sprites/lightning3.png 160A 0 3 2 1
+        
         incmapfile tiled/castle_room_3.tmx
         incmapfile tiled/castle_room_4.tmx
         incmapfile tiled/castle_room_5.tmx
