@@ -1184,6 +1184,12 @@ load_lightning_data
           lda #LIGHTNING_DAMAGE
           clc
           adc player_wisdom
+          ldx player_charm
+          cpx #TYPE_CHARM7
+          bne load_lightning_data_no_double
+          asl
+load_lightning_data_no_double
+          ldx #0
           sta object_damage,y
           jsr .find_lightning_target
           lda #0
@@ -1203,6 +1209,11 @@ cast_fireball
         sta spell_index
         lda #14
         sta spawn_index
+        lda player_charm
+        cmp #TYPE_CHARM5
+        bne cast_fireball_cast_magic
+        sta double_damage
+cast_fireball_cast_magic
         jsr .cast_magic
         lda spell_failed
         beq cast_fireball_done
@@ -1317,6 +1328,11 @@ load_magic_data
           clc
           adc player_wisdom
 load_magic_damage_no_wis
+          ldx double_damage
+          bne load_magic_damage_no_double
+          asl
+load_magic_damage_no_double
+          ldx spell_index
           ldy spawn_index
           sta object_damage,y
           lda spell_elem,x
@@ -1337,11 +1353,21 @@ end
 
 cast_iceflakes
         asm
+        lda player_charm
+        cmp #TYPE_CHARM6
+        bne cast_iceflakes_cast_magic
+        sta double_damage
+cast_iceflakes_cast_magic
         lda #1
         sta spell_index
         jmp cast_diagonal_spell
 
 .cast_windslash
+        lda player_charm
+        cmp #TYPE_CHARM8
+        bne cast_windslash_cast_magic
+        sta double_damage
+cast_windslash_cast_magic
         lda #2
         sta spell_index
 

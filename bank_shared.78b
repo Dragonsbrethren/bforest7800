@@ -1081,6 +1081,7 @@ chant_done_no_hold
           sta player_state        ; STATE_STAND
           sta chant_timer
           sta chant_input
+          sta double_damage
 end
         gosub set_player_facing_frame
         if !mp_change then goto test_joy_done
@@ -2573,6 +2574,12 @@ cast_poison_zone_align
           lda #POISON_DAMAGE
           clc
           adc player_wisdom
+          ldx player_charm
+          cpy #TYPE_CHARM9
+          bne cast_poison_no_double
+          asl
+cast_poison_no_double
+          ldx #0
           sta object_damage,y
           lda #POISON_ELEM_ATK
           sta object_elem_atk,y

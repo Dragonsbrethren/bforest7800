@@ -332,6 +332,7 @@
         autodim byte chant_input
         autodim byte spell_index
         autodim byte spell_failed
+        autodim byte double_damage
 
         autodim byte m_map_bits
         autodim byte m_key_bits
