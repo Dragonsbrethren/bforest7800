@@ -1360,7 +1360,7 @@ end
         data hills_room_7_obj
         TYPE_HROSE, 8*8, $60
         TYPE_SPIDER, $28, $90, TYPE_HSLIME, $60, $90, TYPE_SPIDER, $78, $30
-        TYPE_TORCH, $28, $30, TYPE_TORCH, $60, $30, TYPE_TORCH, $40, $80
+        TYPE_TORCH, $2C, $30, TYPE_TORCH, $60, $30, TYPE_TORCH, $40, $80
         $00
 end
 

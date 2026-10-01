@@ -183,7 +183,7 @@ title_demo_4
         goto init_field
 
 title_new_game_special
-        tileset = T_RIVER
+        tileset = T_HILLS
         player_sword = 5
         player_shield = 5
         player_armor = 4
@@ -201,7 +201,7 @@ title_new_game_special
         m_charm_bits_1  = %00011001
         m_charm_bits_2  = %00000101
         m_relic_bits_1  = %00010011
-        m_relic_bits_2  = %00001001
+        m_relic_bits_2  = %00001101
         m_spell_bits_1  = %00011111
         m_spell_bits_2  = %00000000
         m_key_bits = %00000000
