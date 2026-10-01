@@ -2498,6 +2498,8 @@ stone_set
         goto player_handler_done
 
 stone_done
+        ; clear ledge hopping flag
+        player_flags{5} = 0
         player_status{3} = 0
         shield_pal = f_shield_pals[player_shield]
         goto player_handler_done
