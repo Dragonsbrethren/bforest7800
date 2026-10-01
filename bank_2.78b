@@ -1227,7 +1227,9 @@ forest_boss_ai
         asm
           lda m_spell_bits_1
           and #%00000001
-          bne forest_boss_dead
+          beq forest_boss_check_flags
+          jmp forest_boss_dead
+forest_boss_check_flags
           lda object_flags,x
           cmp #%10000000
           beq forest_boss_check
@@ -1262,6 +1264,19 @@ forest_boss_check
           bne forest_boss_return
           lda #TYPE_SPELL1
           sta object_type+1
+          lda object_Ypos+1
+          and #$0F
+          cmp #8
+          bcc forest_boss_load_Y
+          lda object_Ypos+1
+          clc
+          adc #16
+          bne forest_boss_zone_align
+forest_boss_load_Y
+          lda object_Ypos+1
+forest_boss_zone_align
+          and #$F0
+          sta object_Ypos+1
 end
         playsfx sfx_crystalchimes
         asm

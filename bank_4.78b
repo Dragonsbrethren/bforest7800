@@ -409,7 +409,7 @@ end
         data castle_room_1_obj
         TYPE_SKELETON, 5*8, $50, TYPE_SKELETON, 13*8, $50
         TYPE_SKELETON, 76, $60
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         TYPE_TORCH, $41, $B0,  TYPE_TORCH, $58, $B0,  TYPE_TORCH, $41, $20,  TYPE_TORCH, $58, $20,
         $00
 end
@@ -432,7 +432,7 @@ end
         data castle_room_4_obj
         TYPE_SKELETON, $50, $50, TYPE_SKELETON, $40, $60,
         TYPE_SKELETON, $50, $40, TYPE_SKELETON, $40, $80,
-        TYPE_DOOR, (5*8), $10, TYPE_DOOR_LOCK, $68, $10
+        TYPE_DOOR, 41, $10, TYPE_DOOR_LOCK, $69, $10
         TYPE_TORCH, $28, $B0, TYPE_TORCH, $38, $B0, TYPE_TORCH, $4C, $B0, TYPE_TORCH, $60, $B0, TYPE_TORCH, $70, $B0
         $00
 end
@@ -440,7 +440,7 @@ end
         data castle_room_5_obj
         TYPE_GHOST, $2B, $60, TYPE_RSLIME, $60, $50, TYPE_RSLIME, $60, $30
         TYPE_BLOOD, $80, $20
-        TYPE_DOOR, (5*8), $10, TYPE_DOOR, $68, $10
+        TYPE_DOOR, 41, $10, TYPE_DOOR, $69, $10
         $00
 end
 
@@ -449,20 +449,20 @@ end
         TYPE_RSLIME, 128, $50, TYPE_RSLIME, 56, $70
         TYPE_RSLIME, 32, $40
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20, TYPE_TORCH, $58, $80
-        TYPE_CASTLE_SPAWN, $7C, $30, TYPE_DOOR, $48, $10
+        TYPE_CASTLE_SPAWN, $7C, $30, TYPE_DOOR, $49, $10
         $00
 end
         data castle_room_7_obj
         TYPE_RSLIME, $58, $A0,
         TYPE_TORCH, $38, $80, TYPE_TORCH, $60, $80,
         TYPE_SWORD3, $4C, $40, TYPE_GHOST, $70, $40
-        TYPE_DOOR, $48, $70
+        TYPE_DOOR, $49, $70
         $00
 end
 
         data castle_room_8_obj
         TYPE_RSLIME, $48, $90, TYPE_BLOOD, $78, $90
-        TYPE_DOOR, 40, $70
+        TYPE_DOOR, 41, $70
         TYPE_TORCH, 8*8, $80, TYPE_TORCH, 4*8, $30
         $00
 end
@@ -472,7 +472,7 @@ end
         TYPE_SKELETON, $48, $90, TYPE_SKELETON, $58, $70,
         TYPE_TORCH, $38, $20, TYPE_TORCH, $60, $20,
         TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         $00
 end
 
@@ -487,7 +487,7 @@ end
         TYPE_PRIEST, $40, $50, TYPE_PRIEST, $58, $40
         TYPE_TORCH, $40, $B0, TYPE_TORCH, $58, $B0
         TYPE_TORCH, $40, $20, TYPE_TORCH, $58, $20
-        TYPE_DOOR, $48, $10
+        TYPE_DOOR, $49, $10
         $00
 end
 
@@ -766,6 +766,13 @@ castle_boss_handler
 spawn_key
           lda #TYPE_KEY1
           sta object_type+4
+          lda #$60
+          sta object_Ypos+4
+          lda #78
+          sta object_Xpos+4
+end
+        playsfx sfx_crystalchimes
+        asm
           rts
 
 despawn_flames
