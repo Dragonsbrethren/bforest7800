@@ -145,7 +145,7 @@ plot_river_room_9
 plot_river_room_5
         menu_map_room[menu_map_index] = ROOML_D
         menu_map_room[menu_map_index_2] = ROOMR_D
-        memcpy map12 river_room_5 280
+        memcpy map12 river_room_5 240
         plotmapfile tiled/river_room_5.tmx river_room_5 0 1 20 12
         if !pw_success then in_save_room = 1
         pw_success = 0

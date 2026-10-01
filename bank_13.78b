@@ -32,7 +32,7 @@ end
 plot_caves_room_1
         menu_map_room[menu_map_index] = ROOML_N
         menu_map_room[menu_map_index_2] = ROOMR_R
-        memcpy map12 caves_room_1 280
+        memcpy map12 caves_room_1 240
         plotmapfile tiled/caves_room_1.tmx caves_room_1 0 1 20 12
         if !pw_success then in_save_room = 1
         pw_success = 0

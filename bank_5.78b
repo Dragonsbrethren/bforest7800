@@ -226,7 +226,7 @@ plot_castle_room_16
         menu_map_room[menu_map_index] = 12
         menu_map_room[menu_map_index_2] = 13
         plotmapfile tiled/castle_room_16.tmx castle_room_16 0 0 20 14
-        memcpy current_map castle_room_16 280
+        memcpy current_map castle_room_16 240
         return otherbank
 
 plot_castle_room_17
@@ -257,7 +257,7 @@ plot_castle_room_20
         menu_map_room[menu_map_index] = 10
         menu_map_room[menu_map_index_2] = 11
         plotmapfile tiled/castle_room_20.tmx castle_room_20 0 0 20 14
-        memcpy current_map castle_room_20 280
+        memcpy current_map castle_room_20 240
         return otherbank
 
 plot_castle_room_21
