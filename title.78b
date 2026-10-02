@@ -56,10 +56,10 @@ title_check_menu_change
 title_controls
         if !action_debounce && joy0fire0 && action_button = 0 then title_selection
         if !action_debounce && joy0fire1 && action_button = 1 then title_selection
-        if up_debounce >= MENU_TAP_FRAMES || up_debounce = 1 then gosub menu_selection_up bank3
-        if !up_debounce && joy0up then gosub menu_selection_up bank3
-        if down_debounce >= MENU_TAP_FRAMES || down_debounce = 1 then gosub menu_selection_down bank3
-        if !down_debounce && joy0down then gosub menu_selection_down bank3
+        if up_debounce >= MENU_TAP_FRAMES || up_debounce = 1 then object_timer = 1 : gosub menu_selection_up bank3
+        if !up_debounce && joy0up then object_timer = 1 : gosub menu_selection_up bank3
+        if down_debounce >= MENU_TAP_FRAMES || down_debounce = 1 then object_timer = 1 : gosub menu_selection_down bank3
+        if !down_debounce && joy0down then object_timer = 1 : gosub menu_selection_down bank3
         if menu_selection then menu_cursor_Y = 176 : goto title_menu
         menu_cursor_Y = 160
 
@@ -73,6 +73,7 @@ title_menu
         goto main
 
 title_selection
+        object_timer = 1
         action_debounce = 1
         if burn_tutorial then clear_tutorial
         if demo_num = 2 || demo_num = 4 then demo_num++ : goto title_init
@@ -127,6 +128,7 @@ title_selection_demo
 
 title_new_game
         if !demoplay then title_new_game_normal
+        demo_timer = 0
         play_music = 1
         demo_menu_open = 0
         if demo_num = 2 then title_demo_2
@@ -331,7 +333,7 @@ title_credits
         plotchars 'Jesse Hardesty'     0 80 11
 ;       plotchars 'SPECIAL THANKS'     4  8 12
 ;       plotchars 'Steve Engelhardt'   0 80 12
-        plotchars 'PUBLISHING'         4  8 12
+        plotchars 'PUBLISHED BY'       4  8 12
         plotchars 'AtariAge'           0 80 12
         plotchars 'PROMOTION'          4  8 13
         plotchars 'ZeroPage Homebrew'  0 80 13
