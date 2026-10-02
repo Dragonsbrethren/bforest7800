@@ -1598,6 +1598,7 @@ cat_init
           lda player_flags
           and #%00000010
           beq cat_sprite
+          lda #0
           sta object_type,x
 cat_sprite
           lda #0
