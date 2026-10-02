@@ -172,6 +172,7 @@ plot_caves_room_15
         locked_zone = 5
         pokechar current_map 9 5 20 14 6
         player_elevation = 0
+        alt_torch = 1
         return otherbank
 
 plot_caves_room_16

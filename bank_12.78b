@@ -375,11 +375,13 @@ end
 end
 
         data caves_room_13_obj
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 
         data caves_room_14_obj
         TYPE_ROSE, (6*8), $60
+        TYPE_BAT_SPAWNER, $01, $F0
         $00
 end
 

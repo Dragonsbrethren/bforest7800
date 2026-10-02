@@ -800,7 +800,7 @@
         const F_CNIX_SHADOW = 20
         const F_CNIX_BLANK  = 21
 
-        const DRAGON_HP = 40
+        const DRAGON_HP = 30
         const DRAGON_DAMAGE = 20
         const DRAGON_SPEED_HI = 0
         const DRAGON_SPEED_LO = 192

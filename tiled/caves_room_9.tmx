@@ -120,7 +120,7 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="43"/>
+   <tile gid="2"/>
    <tile gid="50"/>
    <tile gid="49"/>
    <tile gid="46"/>
@@ -139,7 +139,7 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="43"/>
    <tile gid="50"/>
    <tile gid="46"/>
    <tile gid="46"/>
