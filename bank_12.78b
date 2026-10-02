@@ -405,7 +405,7 @@ end
         data caves_room_18_obj
         TYPE_CSPIDER, (7*8), $30
         TYPE_ROSE, (11*8), $90
-        TYPE_CHARM6, (14*8), $60
+        TYPE_CHARM7, (14*8), $60
         $00
 end
 

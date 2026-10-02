@@ -199,7 +199,7 @@ title_new_game_special
         m_shield_bits_2 = %00000000
         m_armor_bits_1  = %00001011
         m_armor_bits_2  = %00001110
-        m_charm_bits_1  = %00001001
+        m_charm_bits_1  = %00011001
         m_charm_bits_2  = %00000100
         m_relic_bits_1  = %00010011
         m_relic_bits_2  = %00000001

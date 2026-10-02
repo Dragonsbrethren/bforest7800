@@ -1961,7 +1961,7 @@ end
 end
 
         data f_charm_pals
-        0, 2, 0, 6, 2, 2, 5, 3, 3, 3, 1
+        0, 2, 0, 6, 2, 2, 3, 6, 3, 3, 1
 end
 
         data f_charm_frames
