@@ -446,6 +446,7 @@ end
 end
 
         data forest_room_29_obj
+        TYPE_SWORD6, 116, $50
         $00
 end
 

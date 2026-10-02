@@ -481,10 +481,14 @@ end
 end
 
         data river_room_23_obj
+        TYPE_NIX, 5*8, $60, TYPE_NIX, 11*8, $70
+        TYPE_OCTOPUS, 9*8, $50
+        TYPE_TORCH, 88, $20, TYPE_TORCH, 16, $A0
         $00
 end
 
         data river_room_24_obj
+        TYPE_SWORD7, 76, $40
         $00
 end
 

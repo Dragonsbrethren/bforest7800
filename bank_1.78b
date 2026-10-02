@@ -170,13 +170,16 @@ main_lightning
 lightning_flash
         dec lightning_delay     ; check the delay value and set palette
         bne lightning_normal    ; to normal if not ready to flash yet
-end
-        playsfx sfx_thunder
-        asm
         lda #LIGHTNING_DELAY
         sta lightning_delay
         jsr randomize           ; randomly decide if a flash should
         bmi lightning_normal    ; happen this delay cycle
+end
+        if game_state = STATE_MENU then lightning_check_windows
+        if tileset = T_CAVES then lightning_check_windows
+        playsfx sfx_thunder
+lightning_check_windows
+        asm
         lda no_flash            ; if we're in a room with no windows, don't flash
         bne lightning_normal
 lightning_bright
@@ -1942,7 +1945,7 @@ end
 end
 
         data f_sword_pals
-        0, 2, 0, 0, 3, 3, 2, 2, 2, 2, 2
+        0, 2, 0, 0, 3, 3, 2, 0, 2, 2, 2
 end
 
         data f_shield_pals
