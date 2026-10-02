@@ -170,7 +170,7 @@ castle_spawner_ai
 castle_spawner_ai_loop
           lda object_type,y
           beq castle_spawner_next
-          cmp #TYPE_SPAWN_START
+          cmp #TYPE_OBSTACLE
           bcs castle_spawner_next
           cmp #TYPE_TORCH
           beq castle_spawner_next
