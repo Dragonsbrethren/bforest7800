@@ -1955,11 +1955,11 @@ end
 end
 
         data f_charm_pals
-        0, 2, 0, 6, 2, 0, 0, 2, 2, 2, 2
+        0, 2, 0, 6, 2, 2, 5, 3, 3, 3, 1
 end
 
         data f_charm_frames
-        0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0
+        0, 26, 26, 27, 26, 1, 1, 1, 26, 1, 26
 end
 
         data shield_elem

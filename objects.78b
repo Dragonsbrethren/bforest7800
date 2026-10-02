@@ -593,14 +593,14 @@
         const RGHOST_ELEM_DEF = %00100100
 
         ; HARPY
-        const HARPY_HP = 6
+        const HARPY_HP = 7
         const HARPY_SPEED_HI = 2
         const HARPY_SPEED_LO = 16
         const HARPY_VEL_CAP_HI = 2
         const HARPY_VEL_CAP_LO = 128
         const HARPY_FRICTION_HI = 0
         const HARPY_FRICTION_LO = 0
-        const HARPY_DAMAGE = 14
+        const HARPY_DAMAGE = 10
         const HARPY_DEF = 0
         const HARPY_MDEF = 0
         const HARPY_FLAGS = %00000100
@@ -627,7 +627,7 @@
         const SPIDER_VEL_CAP_LO = 0
         const SPIDER_FRICTION_HI = 2
         const SPIDER_FRICTION_LO = 0
-        const SPIDER_DAMAGE = 3
+        const SPIDER_DAMAGE = 6
         const SPIDER_DEF = 0
         const SPIDER_MDEF = 0
         const SPIDER_DROP_TIME = 16
@@ -641,7 +641,7 @@
         const SPIDER_PAL = 6
 
         ; HILL SLIME
-        const HSLIME_HP = 6
+        const HSLIME_HP = 7
         const MHSLIME_HP = (HSLIME_HP / 2)
         const HSLIME_SPEED_HI = 0
         const HSLIME_SPEED_LO = 128
@@ -669,7 +669,7 @@
         const HGHOST_VEL_CAP_LO = 0
         const HGHOST_FRICTION_HI = 0
         const HGHOST_FRICTION_LO = 0
-        const HGHOST_DAMAGE = 3
+        const HGHOST_DAMAGE = 6
         const HGHOST_DEF = 5
         const HGHOST_MDEF = 0
         const HGHOST_ELEM_ATK = %00000001
@@ -731,14 +731,14 @@
         const HSEED_PAL = 5
 
         ; CAVE SPIDER
-        const CSPIDER_HP = 6
+        const CSPIDER_HP = 8
         const CSPIDER_SPEED_HI = 2
         const CSPIDER_SPEED_LO = 0
         const CSPIDER_VEL_CAP_HI = 2
         const CSPIDER_VEL_CAP_LO = 0
         const CSPIDER_FRICTION_HI = 2
         const CSPIDER_FRICTION_LO = 0
-        const CSPIDER_DAMAGE = 3
+        const CSPIDER_DAMAGE = 8
         const CSPIDER_DEF = 0
         const CSPIDER_MDEF = 0
         const CSPIDER_DROP_TIME = 16
@@ -752,7 +752,7 @@
         const CSPIDER_PAL = 6
 
         ; PUDDING
-        const PUDDING_HP = 6
+        const PUDDING_HP = 9
         const MPUDDING_HP = (PUDDING_HP / 2)
         const PUDDING_SPEED_HI = 0
         const PUDDING_SPEED_LO = 128
@@ -773,14 +773,14 @@
         const MPUDDING_PAL = 7
 
         ; CAVE GHOST
-        const CGHOST_HP = 6
+        const CGHOST_HP = 8
         const CGHOST_SPEED_HI = 0
         const CGHOST_SPEED_LO = 128
         const CGHOST_VEL_CAP_HI = 2
         const CGHOST_VEL_CAP_LO = 0
         const CGHOST_FRICTION_HI = 0
         const CGHOST_FRICTION_LO = 0
-        const CGHOST_DAMAGE = 3
+        const CGHOST_DAMAGE = 7
         const CGHOST_DEF = 5
         const CGHOST_MDEF = 0
         const CGHOST_ELEM_ATK = %00100010
@@ -799,7 +799,7 @@
         const F_CNIX_SHADOW = 20
         const F_CNIX_BLANK  = 21
 
-        const DRAGON_HP = 10
+        const DRAGON_HP = 20
         const DRAGON_DAMAGE = 20
         const DRAGON_SPEED_HI = 0
         const DRAGON_SPEED_LO = 192
