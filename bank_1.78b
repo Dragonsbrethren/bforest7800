@@ -175,7 +175,7 @@ lightning_flash
         jsr randomize           ; randomly decide if a flash should
         bmi lightning_normal    ; happen this delay cycle
 end
-        if game_state = STATE_MENU then lightning_check_windows
+        if game_state <> STATE_FIELD then lightning_check_windows
         if tileset = T_CAVES then lightning_check_windows
         playsfx sfx_thunder
 lightning_check_windows
