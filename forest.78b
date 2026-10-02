@@ -87,3 +87,11 @@
         const plot_forest_room_28_hi = #>.plot_forest_room_28
         const plot_forest_room_29_lo = #<.plot_forest_room_29
         const plot_forest_room_29_hi = #>.plot_forest_room_29
+        const plot_forest_room_30_lo = #<.plot_forest_room_30
+        const plot_forest_room_30_hi = #>.plot_forest_room_30
+        const plot_forest_room_31_lo = #<.plot_forest_room_31
+        const plot_forest_room_31_hi = #>.plot_forest_room_31
+        const plot_forest_room_32_lo = #<.plot_forest_room_32
+        const plot_forest_room_32_hi = #>.plot_forest_room_32
+        const plot_forest_room_33_lo = #<.plot_forest_room_33
+        const plot_forest_room_33_hi = #>.plot_forest_room_33

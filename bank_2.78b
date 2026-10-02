@@ -14,7 +14,8 @@
         forest_room_10_obj_lo, forest_room_11_obj_lo, forest_room_12_obj_lo, forest_room_13_obj_lo, forest_room_14_obj_lo,
         forest_room_15_obj_lo, forest_room_16_obj_lo, forest_room_17_obj_lo, forest_room_18_obj_lo, forest_room_19_obj_lo,
         forest_room_20_obj_lo, forest_room_21_obj_lo, forest_room_22_obj_lo, forest_room_23_obj_lo, forest_room_24_obj_lo,
-        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_27_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo
+        forest_room_25_obj_lo, forest_room_26_obj_lo, forest_room_27_obj_lo, forest_room_28_obj_lo, forest_room_29_obj_lo,
+        forest_room_30_obj_lo, forest_room_31_obj_lo, forest_room_32_obj_lo, forest_room_33_obj_lo
 end
 
         data forest_obj_hi
@@ -24,6 +25,7 @@ end
         forest_room_15_obj_hi, forest_room_16_obj_hi, forest_room_17_obj_hi, forest_room_18_obj_hi, forest_room_19_obj_hi,
         forest_room_20_obj_hi, forest_room_21_obj_hi, forest_room_22_obj_hi, forest_room_23_obj_hi, forest_room_24_obj_hi,
         forest_room_25_obj_hi, forest_room_26_obj_hi, forest_room_27_obj_hi, forest_room_28_obj_hi, forest_room_29_obj_hi
+        forest_room_30_obj_hi, forest_room_31_obj_hi, forest_room_32_obj_hi, forest_room_33_obj_hi
 end
 
 load_forest
@@ -34,6 +36,10 @@ load_forest
         if save_room_index = 3 then forest_save_3
         if exit_room_index = F_FOREST_ARMOR_I then forest_armor
         if exit_room_index = F_FOREST_ARMOR_EXIT_I then forest_armor_exit
+        if exit_room_index = F_FOREST_WEAPON_I then forest_weapon
+        if exit_room_index = F_FOREST_WEAPON_EXIT_I then forest_weapon_exit
+        if exit_room_index = F_FOREST_ITEM_I then forest_item
+        if exit_room_index = F_FOREST_ITEM_EXIT_I then forest_item_exit
         if exit_room_index = F_FOREST_INN_I then forest_inn
         if exit_room_index = F_FOREST_INN_EXIT_I then forest_inn_exit
         if exit_room_index = F_FOREST_WITCH_I then forest_witch
@@ -108,6 +114,30 @@ forest_armor_exit
         room_index = F_FOREST_ARMOR_EXIT_I
         player_Xpos = F_FOREST_ARMOR_EXIT_X
         player_Ypos = F_FOREST_ARMOR_EXIT_Y
+        goto forest_set_room
+
+forest_weapon
+        room_index = F_FOREST_WEAPON_I
+        player_Xpos = F_FOREST_WEAPON_X
+        player_Ypos = F_FOREST_WEAPON_Y
+        goto forest_set_room
+
+forest_weapon_exit
+        room_index = F_FOREST_WEAPON_EXIT_I
+        player_Xpos = F_FOREST_WEAPON_EXIT_X
+        player_Ypos = F_FOREST_WEAPON_EXIT_Y
+        goto forest_set_room
+
+forest_item
+        room_index = F_FOREST_ITEM_I
+        player_Xpos = F_FOREST_ITEM_X
+        player_Ypos = F_FOREST_ITEM_Y
+        goto forest_set_room
+
+forest_item_exit
+        room_index = F_FOREST_ITEM_EXIT_I
+        player_Xpos = F_FOREST_ITEM_EXIT_X
+        player_Ypos = F_FOREST_ITEM_EXIT_Y
         goto forest_set_room
 
 
@@ -389,7 +419,6 @@ end
 
         data forest_room_20_obj
         TYPE_SHIELD1, 12*8, $58
-        TYPE_ARMOR1, 6*8, $40
         TYPE_TORCH, 10*8, $40, TYPE_TORCH, 14*8, $40
         TYPE_TORCH, 5*8, $A0, TYPE_TORCH, 14*8, $A0
         $00
@@ -450,6 +479,22 @@ end
         $00
 end
 
+        data forest_room_30_obj
+        $00
+end
+        data forest_room_31_obj
+        $00
+end
+        data forest_room_32_obj
+        TYPE_TORCH, 5*8, $A0, TYPE_TORCH, 13*8, $A0
+        $00
+end
+        data forest_room_33_obj
+        TYPE_POTION, 12*8, $50
+        TYPE_TORCH, 8*8, $A0, TYPE_TORCH, 11*8, $A0
+        $00
+end
+
         data forest_rooms
         00, 00, 25, 26,  8, 00, 00,
         00, 11, 12, 03, 06, 29, 29,
@@ -457,7 +502,7 @@ end
         24, 10, 01, 04, 05, 31, 31,
         00, 00, 17, 15, 18, 00, 00,
         00, 28, 16, 13, 14, 00, 00,
-        21, 22, 20, 19, 23, 00, 00
+        21, 22, 20, 19, 23, 32, 33
 end
 
 test_walkable_forest

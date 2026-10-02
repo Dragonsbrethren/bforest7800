@@ -40,7 +40,8 @@
         plot_forest_room_10_lo, plot_forest_room_11_lo, plot_forest_room_12_lo, plot_forest_room_13_lo, plot_forest_room_14_lo,
         plot_forest_room_15_lo, plot_forest_room_16_lo, plot_forest_room_17_lo, plot_forest_room_18_lo, plot_forest_room_19_lo,
         plot_forest_room_20_lo, plot_forest_room_21_lo, plot_forest_room_22_lo, plot_forest_room_23_lo, plot_forest_room_24_lo,
-        plot_forest_room_25_lo, plot_forest_room_26_lo, plot_forest_room_27_lo, plot_forest_room_28_lo, plot_forest_room_29_lo
+        plot_forest_room_25_lo, plot_forest_room_26_lo, plot_forest_room_27_lo, plot_forest_room_28_lo, plot_forest_room_29_lo,
+        plot_forest_room_30_lo, plot_forest_room_31_lo, plot_forest_room_32_lo, plot_forest_room_33_lo
 end
 
         data forest_map_b16_hi
@@ -49,7 +50,8 @@ end
         plot_forest_room_10_hi, plot_forest_room_11_hi, plot_forest_room_12_hi, plot_forest_room_13_hi, plot_forest_room_14_hi,
         plot_forest_room_15_hi, plot_forest_room_16_hi, plot_forest_room_17_hi, plot_forest_room_18_hi, plot_forest_room_19_hi,
         plot_forest_room_20_hi, plot_forest_room_21_hi, plot_forest_room_22_hi, plot_forest_room_23_hi, plot_forest_room_24_hi,
-        plot_forest_room_25_hi, plot_forest_room_26_hi, plot_forest_room_27_hi, plot_forest_room_28_hi, plot_forest_room_29_hi
+        plot_forest_room_25_hi, plot_forest_room_26_hi, plot_forest_room_27_hi, plot_forest_room_28_hi, plot_forest_room_29_hi,
+        plot_forest_room_30_hi, plot_forest_room_31_hi, plot_forest_room_32_hi, plot_forest_room_33_hi
 end
 
 forest_room_bank_16
@@ -206,6 +208,10 @@ plot_forest_room_16
         menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 forest_room_16 240
         plotmapfile tiled/forest_room_16.tmx map12 0 1 20 12
+        exit_tileset = T_FOREST
+        exit_Xpos = 9*8
+        exit_Ypos = $80
+        exit_room_index = F_FOREST_WEAPON_I
         return otherbank
 
 plot_forest_room_17
@@ -220,6 +226,10 @@ plot_forest_room_18
         menu_map_room[menu_map_index_2] = ROOMR_UD
         memcpy map12 forest_room_18 240
         plotmapfile tiled/forest_room_18.tmx map12 0 1 20 12
+        exit_tileset = T_FOREST
+        exit_Xpos = 8*8
+        exit_Ypos = $60
+        exit_room_index = F_FOREST_ITEM_I
         return otherbank
 
 plot_forest_room_19
@@ -230,6 +240,8 @@ plot_forest_room_19
         return otherbank
 
 plot_forest_room_20
+plot_forest_room_32
+plot_forest_room_33
         memcpy map12 forest_room_20 240
         plotmapfile tiled/forest_room_20.tmx map12 0 1 20 12
         asm
@@ -240,7 +252,19 @@ end
         exit_tileset = T_FOREST
         exit_Xpos = 9*8
         exit_Ypos = $B0
+        if room_index = F_FOREST_WEAPON_I then weapon_shop_exit
+        if room_index = F_FOREST_ITEM_I then item_shop_exit
+
+armor_shop_exit
         exit_room_index = F_FOREST_ARMOR_EXIT_I
+        return otherbank
+
+weapon_shop_exit
+        exit_room_index = F_FOREST_WEAPON_EXIT_I
+        return otherbank
+
+item_shop_exit
+        exit_room_index = F_FOREST_ITEM_EXIT_I
         return otherbank
 
 plot_forest_room_21
@@ -253,6 +277,7 @@ plot_forest_room_21
           lda #1
           sta alt_palette
           sta alt_torch
+          sta music_playing
 end
         exit_tileset = T_FOREST
         exit_Xpos = 7*8
@@ -324,6 +349,8 @@ plot_forest_room_28
         return otherbank
 
 plot_forest_room_29
+plot_forest_room_30
+plot_forest_room_31
         menu_map_room[menu_map_index] = ROOML_L
         menu_map_room[menu_map_index_2] = ROOMR_R
         memcpy map12 forest_room_29 240

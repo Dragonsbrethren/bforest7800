@@ -188,6 +188,16 @@
         const ROOMR_N   = 17
 
 ; FOREST TILESET
+        const F_FOREST_WEAPON_I = 47
+        const F_FOREST_WEAPON_X = 76
+        const F_FOREST_WEAPON_Y = $A0
+        const F_FOREST_WEAPON_D = DIR_UP
+        const M_FOREST_WEAPON_EXIT_X = 70
+        const M_FOREST_WEAPON_EXIT_Y = 144
+        const F_FOREST_WEAPON_EXIT_I = 37
+        const F_FOREST_WEAPON_EXIT_X = 76
+        const F_FOREST_WEAPON_EXIT_Y = $90
+
         const F_FOREST_ARMOR_I = 44
         const F_FOREST_ARMOR_X = 76
         const F_FOREST_ARMOR_Y = $A0
@@ -197,6 +207,16 @@
         const F_FOREST_ARMOR_EXIT_I = 31
         const F_FOREST_ARMOR_EXIT_X = 20
         const F_FOREST_ARMOR_EXIT_Y = $60
+
+        const F_FOREST_ITEM_I = 48
+        const F_FOREST_ITEM_X = 76
+        const F_FOREST_ITEM_Y = $A0
+        const F_FOREST_ITEM_D = DIR_UP
+        const M_FOREST_ITEM_EXIT_X = 86
+        const M_FOREST_ITEM_EXIT_Y = 128
+        const F_FOREST_ITEM_EXIT_I = 32
+        const F_FOREST_ITEM_EXIT_X = 68
+        const F_FOREST_ITEM_EXIT_Y = $70
 
         const F_FOREST_INN_I = 42
         const F_FOREST_INN_X = 60
