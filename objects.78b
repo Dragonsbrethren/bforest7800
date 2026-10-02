@@ -216,6 +216,7 @@
         const RARE_DROP_RATE = 254
         const COMMON_DROP_RATE = 192
         const TORCH_DROP_RATE = 224
+        const TORCH_DROP_HURT = 224
 
         ; STATS -- TODO: Move these to individual files for each object?
         const WOLF_SPEED_HI = 2
@@ -286,7 +287,7 @@
         const FGHOST_VEL_CAP_HI = 2
         const FGHOST_VEL_CAP_LO = 0
         const FGHOST_DAMAGE = 4
-        const FGHOST_DEF = 1
+        const FGHOST_DEF = 0
         const FGHOST_MDEF = 0
         const FGHOST_FRICTION_HI = 0
         const FGHOST_FRICTION_LO = 0
@@ -425,7 +426,7 @@
         const RETRACT_FRAMES = 4
 
         ; GHOST
-        const GHOST_HP = 6
+        const GHOST_HP = 2
         const GHOST_VEL_CAP_HI = 2
         const GHOST_VEL_CAP_LO = 0
         const GHOST_DAMAGE = 6
@@ -773,7 +774,7 @@
         const MPUDDING_PAL = 7
 
         ; CAVE GHOST
-        const CGHOST_HP = 8
+        const CGHOST_HP = 4
         const CGHOST_SPEED_HI = 0
         const CGHOST_SPEED_LO = 128
         const CGHOST_VEL_CAP_HI = 2
@@ -799,7 +800,7 @@
         const F_CNIX_SHADOW = 20
         const F_CNIX_BLANK  = 21
 
-        const DRAGON_HP = 20
+        const DRAGON_HP = 40
         const DRAGON_DAMAGE = 20
         const DRAGON_SPEED_HI = 0
         const DRAGON_SPEED_LO = 192
@@ -808,7 +809,7 @@
         const DRAGON_FRICTION_HI = 1
         const DRAGON_FRICTION_LO = 0
         const DRAGON_DEF = 5
-        const DRAGON_MDEF = 10
+        const DRAGON_MDEF = 5
         const DRAGON_ELEM_ATK = %00100000
         const DRAGON_ELEM_DEF = %00110111
 

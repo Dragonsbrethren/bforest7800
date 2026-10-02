@@ -261,7 +261,7 @@ plot_torch
         goto plot_next
 
 plot_coin
-        plotsprite coin 3 Xposition Yposition 0
+        plotsprite coin sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_prism
@@ -287,8 +287,7 @@ plot_relics
         if temp2 = TYPE_HTALON then frame = F_HARPY_TALON : goto plot_hills_160a
         if temp2 = TYPE_RELIC9 then frame = F_RUNE : goto plot_caves_160a
         frame = f_relic_frames[temp1]
-        plotsprite coin sprite_pal Xposition Yposition frame
-        goto plot_next
+        goto plot_coin
 
 plot_spells
         temp1 = object_type[index] - (TYPE_SPELL1 - 1)
@@ -334,8 +333,7 @@ plot_charms
         temp1 = object_type[index] - (TYPE_CHARM1 - 1)
         sprite_pal = f_charm_pals[temp1]
         frame = f_charm_frames[temp1]
-        plotsprite coin sprite_pal Xposition Yposition frame
-        goto plot_next
+        goto plot_coin
 
 plot_fireball
         plotsprite fireball0 sprite_pal Xposition Yposition frame
@@ -792,6 +790,9 @@ spawns_torch
           lda player_hp
           cmp player_max_hp
           beq spawns_torch_mp
+          jsr randomize
+          cmp #TORCH_DROP_HURT
+          bcs spawns_torch_table
           lda #TYPE_FOOD
           bne spawns_torch_store
 spawns_torch_mp
@@ -799,12 +800,16 @@ spawns_torch_mp
           cmp player_max_mp
           beq spawns_torch_random
 spawn_torch_prism
+          jsr randomize
+          cmp #TORCH_DROP_HURT
+          bcs spawns_torch_table
           lda #TYPE_PRISM
           bne spawns_torch_store
 spawns_torch_random
           jsr randomize
           cmp #TORCH_DROP_RATE
           bcc spawn_torch_prism
+spawns_torch_table
           jsr randomize
           ; divide by 32 for an index to 8-byte table
           lsr
