@@ -1932,11 +1932,11 @@ end
 end
 
         data f_relic_pals
-        0, 0, 0, 0, 0, 1, 3, 2, 2, 5, 2
+        0, 0, 0, 0, 0, 1, 3, 3, 2, 5, 2
 end
 
         data f_relic_frames
-        0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0
+        0, 29, 29, 29, 29, 30, 31, 1, 0, 0, 0
 end
 
         data f_sword_pals
@@ -1960,7 +1960,7 @@ end
 end
 
         data f_charm_frames
-        0, 26, 26, 27, 26, 1, 1, 1, 26, 1, 26
+        0, 26, 27, 28, 26, 1, 1, 1, 26, 1, 26
 end
 
         data shield_elem

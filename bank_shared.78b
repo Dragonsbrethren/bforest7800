@@ -287,7 +287,7 @@ plot_relics
         if temp2 = TYPE_HTALON then frame = F_HARPY_TALON : goto plot_hills_160a
         if temp2 = TYPE_RELIC9 then frame = F_RUNE : goto plot_caves_160a
         frame = f_relic_frames[temp1]
-        plotsprite relic0 sprite_pal Xposition Yposition frame
+        plotsprite coin sprite_pal Xposition Yposition frame
         goto plot_next
 
 plot_spells
@@ -685,7 +685,7 @@ torch_flag_check
 locked_door_block
         ; KISS: keys are tied to one tileset so multiple lock types or object flags aren't needed
         ;     - side effect of this is key shouldn't be in the same room as a locked door
-        if tileset = T_CASTLE && m_key_bits = %00000001 then goto unlock_door
+        if tileset = T_CASTLE && m_key_bits{0} then goto unlock_door
 
 torch_tile_block_get_pos
         gosub get_torch_pos

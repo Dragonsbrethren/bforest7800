@@ -341,7 +341,7 @@
         const ORB_PAL = 6
 
         ; DARK PRIEST
-        const PRIEST_HP          =  6
+        const PRIEST_HP          =  3
         const PRIEST_VEL_CAP_HI  =  2
         const PRIEST_VEL_CAP_LO  =  0
         const PRIEST_DAMAGE      =  9
@@ -389,7 +389,7 @@
         const DARKSPARK_PAL = 0
 
         ; SKELETAL KNIGHT
-        const SKEL_HP          =  8
+        const SKEL_HP          =  5
         const SKEL_VEL_CAP_HI  =  2
         const SKEL_VEL_CAP_LO  =  0
         const SKEL_DAMAGE      =  9

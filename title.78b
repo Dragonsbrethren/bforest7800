@@ -205,7 +205,7 @@ title_new_game_special
         m_relic_bits_2  = %00000001
         m_spell_bits_1  = %00011111
         m_spell_bits_2  = %00000000
-        m_key_bits = %00001111
+        m_key_bits = %00000111
         m_map_bits = %00001111
         goto title_new_game_qtys
 
