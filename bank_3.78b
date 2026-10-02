@@ -804,24 +804,28 @@ gen_forest_map
 gen_forest_s
         if entered_save_room{0} then Xposition = M_FOREST_SAVE1_X : Yposition = M_FOREST_SAVE1_Y : gosub plot_map_s
         if entered_save_room{1} then Xposition = M_FOREST_SAVE2_X : Yposition = M_FOREST_SAVE2_Y : gosub plot_map_s
-        if entered_save_room{2} then Xposition = M_FOREST_INN_EXIT_X : Yposition = M_FOREST_INN_EXIT_Y : goto plot_map_s
+        if entered_save_room{2} then Xposition = M_FOREST_INN_EXIT_X : Yposition = M_FOREST_INN_EXIT_Y : gosub plot_map_s
+        return thisbank
 
 gen_castle_s
         if entered_save_room{0} then Xposition = 86 : Yposition = 96 : gosub plot_map_s
-        if entered_save_room{1} then Xposition = 54 : Yposition = 80 : goto plot_map_s
+        if entered_save_room{1} then Xposition = 54 : Yposition = 80 : gosub plot_map_s
+        return thisbank
 
 gen_river_s
         if entered_save_room{0} then Xposition = 78 : Yposition = 96 : gosub plot_map_s
         if entered_save_room{1} then Xposition = 94 : Yposition = 64 : gosub plot_map_s
-        if entered_save_room{2} then Xposition = M_RIVER_SAVE3_X : Yposition = M_RIVER_SAVE3_Y : goto plot_map_s
+        if entered_save_room{2} then Xposition = M_RIVER_SAVE3_X : Yposition = M_RIVER_SAVE3_Y : gosub plot_map_s
+        return thisbank
 
 gen_hills_s
         if entered_save_room{0} then Xposition = 78 : Yposition = 112 : gosub plot_map_s
-        if entered_save_room{1} then Xposition = M_HILLS_SAVE2_X : Yposition = M_HILLS_SAVE2_Y : goto plot_map_s
+        if entered_save_room{1} then Xposition = M_HILLS_SAVE2_X : Yposition = M_HILLS_SAVE2_Y : gosub plot_map_s
+        return thisbank
 
 gen_caves_s
         if entered_save_room{0} then Xposition = 70 : Yposition = 64 : gosub plot_map_s
-        if entered_save_room{1} then Xposition = 62 : Yposition = 112 : goto plot_map_s
+        if entered_save_room{1} then Xposition = 62 : Yposition = 112 : gosub plot_map_s
         return thisbank
 
 plot_map_s

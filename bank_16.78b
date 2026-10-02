@@ -315,8 +315,8 @@ plot_forest_room_23
         return otherbank
 
 plot_forest_room_24
-        menu_map_room[menu_map_index] = ROOML_UD
-        menu_map_room[menu_map_index_2] = ROOMR_UDR
+        menu_map_room[menu_map_index] = ROOML_U
+        menu_map_room[menu_map_index_2] = ROOMR_UR
         memcpy map12 forest_room_24 240
         plotmapfile tiled/forest_room_24.tmx map12 0 1 20 12
         goto forest_waterfall bank2
