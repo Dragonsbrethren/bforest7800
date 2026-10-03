@@ -2587,11 +2587,11 @@ obj_boss_stats
           lda #255
           sta object_def,x
           sta object_mdef,x
-          jmp .obj_next_stats
           lda #<.plot_next
           sta object_spr_ptr_lo,x
           lda #>.plot_next
           sta object_spr_ptr_hi,x
+          jmp .obj_next_stats
 end
 
 stone_handler

@@ -39,6 +39,7 @@
         <.obj_burnbush_stats
         <.obj_boss_stats
         <.obj_boss_stats
+        <.obj_boss_stats
         <.obj_bat_spawner_stats
         <.obj_forest_boss_stats
         <.obj_boss_stats
@@ -86,6 +87,7 @@ end
         obj_harpy_stats_hi      ; harpy queen
         >.obj_dragon_stats
         >.obj_burnbush_stats
+        >.obj_boss_stats
         >.obj_boss_stats
         >.obj_boss_stats
         >.obj_bat_spawner_stats

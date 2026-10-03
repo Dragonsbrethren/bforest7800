@@ -39,6 +39,7 @@
         <.burnbush_ai
         <.blockflame_ai
         <.barrier_ai
+        <.cbarrier_ai
         <.bat_spawner_ai
         <.forest_boss_ai
         <.castle_boss
@@ -91,6 +92,7 @@ end
         >.burnbush_ai
         >.blockflame_ai
         >.barrier_ai
+        >.cbarrier_ai
         >.bat_spawner_ai
         >.forest_boss_ai
         >.castle_boss

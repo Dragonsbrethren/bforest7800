@@ -285,7 +285,7 @@ plot_relics
         sprite_pal = f_relic_pals[temp1]
         object_elevation[index] = 1
         if temp2 = TYPE_HTALON then frame = F_HARPY_TALON : goto plot_hills_160a
-        if temp2 = TYPE_RELIC9 then frame = F_RUNE : goto plot_caves_160a
+        if temp2 = TYPE_RELIC9 then frame = F_RUNE : goto plot_caves_160a_8
         frame = f_relic_frames[temp1]
         goto plot_coin
 

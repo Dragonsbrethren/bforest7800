@@ -45,23 +45,24 @@
         const TYPE_BURNBUSH     =  37
         const TYPE_BLOCKFLAME   =  38
         const TYPE_BARRIER      =  39
+        const TYPE_CBARRIER     =  40
         const TYPE_MOBSPAWNER   = TYPE_BAT_SPAWNER
-        const TYPE_BAT_SPAWNER  =  40
+        const TYPE_BAT_SPAWNER  =  41
         const TYPE_BOSSHANDLER  = TYPE_FOREST_BOSS
-        const TYPE_FOREST_BOSS  =  41
-        const TYPE_CASTLE_BOSS  =  42
-        const TYPE_RIVERBOSS    =  43
-        const TYPE_HILLS_BOSS   =  44
-        const TYPE_CAVES_BOSS   =  45
-        const TYPE_NECRO_BOSS   =  46
+        const TYPE_FOREST_BOSS  =  42
+        const TYPE_CASTLE_BOSS  =  43
+        const TYPE_RIVERBOSS    =  44
+        const TYPE_HILLS_BOSS   =  45
+        const TYPE_CAVES_BOSS   =  46
+        const TYPE_NECRO_BOSS   =  47
         const OBJ_STAT_END =  TYPE_NECRO_BOSS
         const TYPE_SPAWN_START = TYPE_FOREST_SPAWN
-        const TYPE_FOREST_SPAWN =  47
-        const TYPE_CASTLE_SPAWN =  48
-        const TYPE_RIVER_SPAWN  =  49
-        const TYPE_HILLS_SPAWN  =  50
-        const TYPE_CAVES_SPAWN  =  51
-        const TYPE_NECRO_SPAWN  =  52
+        const TYPE_FOREST_SPAWN =  48
+        const TYPE_CASTLE_SPAWN =  49
+        const TYPE_RIVER_SPAWN  =  50
+        const TYPE_HILLS_SPAWN  =  51
+        const TYPE_CAVES_SPAWN  =  52
+        const TYPE_NECRO_SPAWN  =  53
         const TYPE_SPAWNER      = 128
         const TYPE_SKELSWORD    = 129
         const TYPE_PROJECTILE   = TYPE_SKELSWORD
@@ -839,7 +840,11 @@
         const MAX_ROCKS = 5
 
         ; RUNE
-        const F_RUNE = 29
+        const F_RUNE = 0
+
+        ; CAVES MAGIC BARRIER
+        const F_CBARRIER = 1
+        const CBARRIER_PAL = 3
 
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1

@@ -387,6 +387,7 @@ end
 
         data caves_room_15_obj
         TYPE_CSPIDER, (11*8), $60, TYPE_CSPIDER, (5*8), $70
+        TYPE_CBARRIER, (9*8), $60
         TYPE_ARMOR5, (9*8), $30
         TYPE_TORCH, (8*8), $70, TYPE_TORCH, (7*8), $30, TYPE_TORCH, (11*8), $30
         $00
@@ -439,6 +440,7 @@ end
         TYPE_ROSE, 2*8, $80
         TYPE_PUDDING, 4*8, $80, TYPE_PUDDING, 7*8, $90
         TYPE_SPELL6, 12*8, $20
+        TYPE_CBARRIER, (6*8), $70
         TYPE_TORCH, 11*8, $20, TYPE_TORCH, 13*8, $20
         $00
 end
@@ -1558,6 +1560,10 @@ plot_caves_160a
         plotsprite bat0 sprite_pal Xposition Yposition frame
         goto plot_next
 
+plot_caves_160a_8
+        plotsprite rune0 sprite_pal Xposition Yposition frame
+        goto plot_next
+
 plot_caves_160b
         plotsprite rose4 sprite_pal Xposition Yposition frame
         goto plot_next
@@ -1578,4 +1584,29 @@ plot_dragon
         $0b,$06,$06
         $07,$06,$02
         $00,$00,$00
+end
+
+cbarrier_ai
+        asm
+          lda m_relic_bits_2
+          and #%00001000
+          beq cbarrier_sprite
+          lda #0
+          sta object_type,x
+          rts
+cbarrier_sprite
+          lda #F_CBARRIER
+          sta object_frame,x
+          lda #CBARRIER_PAL
+          sta object_pal,x
+          lda animation_frame
+          bne cbarrier_spr_ptr
+          inc object_frame,x
+cbarrier_spr_ptr
+          lda #<.plot_caves_160a_8
+          sta object_spr_ptr_lo,x
+          lda #>.plot_caves_160a_8
+          sta object_spr_ptr_hi,x
+          jsr .get_object_pos
+          jmp .torch_tile_block_caves
 end
