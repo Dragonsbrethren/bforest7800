@@ -1903,6 +1903,7 @@ sword_collision
         if temp1{0} then return thisbank
 test_sword_box
         if temp1{2} then sword_bypass_elevation
+        ; player can hit enemies on higher elevations, but not lower
         if object_elevation > object_elevation[index] then return thisbank
 sword_bypass_elevation
         asm
@@ -1910,6 +1911,7 @@ sword_bypass_elevation
           lda object_type,x
           cmp #TYPE_OCTOKRAKEN
           bne sword_test_dragon
+          ; check the octokraken's ginormous hitbox
           jmp .big_sword_check
 sword_test_dragon
           cmp #TYPE_DRAGON
@@ -2120,14 +2122,24 @@ end
           bne player_knockback_barrier
           jmp .set_burnbush_name
 player_knockback_barrier
-          cmp #TYPE_BARRIER
-          bne player_knockback_block
-          jmp .set_barrier_name
-player_knockback_block
-          ;  check player's shield and destroy projectile
-          lda object_type,x
           cmp #TYPE_ENEMY_PROJ
+          bcs player_knockback_spell
+          ;  check player's shield and destroy projectile
+          cmp #TYPE_BARRIER
           bcc player_knockback_status
+          cmp #TYPE_CBARRIER
+          bcs player_knockback_status
+          lda #<door_sealed
+          sta pickup_ptr_lo
+          lda #>door_sealed
+          sta pickup_ptr_hi
+          ldy #PICKUP_TIME
+          sty pickup_timer
+          ldy #1
+          sty new_pickup
+          sty item_pickup
+          jmp .cc_next
+player_knockback_spell
           cmp #TYPE_PLAYERSPELL
           bcs player_knockback_status
           jmp .shield_check

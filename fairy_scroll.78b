@@ -39,6 +39,7 @@
         <name_bush
         <name_blank             ; blocking flame
         <door_sealed
+        <door_sealed
 end
 
         data enemy_names_hi
@@ -81,6 +82,7 @@ end
         >name_dragon
         >name_bush
         >name_blank             ; blocking flame
+        >door_sealed
         >door_sealed
 end
 

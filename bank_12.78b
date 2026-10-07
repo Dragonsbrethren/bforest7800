@@ -297,7 +297,7 @@ torch_tile_unblock_caves
 end
 
         data caves_room_0_obj
-        TYPE_TORCH, (11*8), $80
+        TYPE_CBARRIER, (11*8), $80
         $00
 end
 
@@ -1584,6 +1584,20 @@ plot_dragon
         $0b,$06,$06
         $07,$06,$02
         $00,$00,$00
+end
+
+set_cbarrier_name
+        asm
+          lda #<door_sealed
+          sta pickup_ptr_lo
+          lda #>door_sealed
+          sta pickup_ptr_hi
+          ldy #PICKUP_TIME
+          sty pickup_timer
+          ldy #1
+          sty new_pickup
+          sty item_pickup
+          jmp .cc_next
 end
 
 cbarrier_ai
