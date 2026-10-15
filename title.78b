@@ -10,6 +10,13 @@
 
 title_init
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
         game_state = STATE_TITLE
         gosub clear_palettes
         menu_cursor_X = 60
@@ -94,7 +101,7 @@ title_demo_menu
         goto main
 
 title_flash
-        if demo_num <> 2 && demo_num <> 4 then plotchars 'BETA 10-14-2026' 0 48 10
+        if demo_num <> 2 && demo_num <> 4 then plotchars 'BETA  10-15-2026' 0 48 10
 ;       if demo_num <> 2 && demo_num <> 4 then plotchars 'PORTLAND RETRO GAMING EXPO' 0 8 10
 ;       if demo_num <> 2 && demo_num <> 4 then plotchars '2026 DEMO' 0 116 10
         ; Whether the player pushes 1 or 2 determine's the game's default action button

@@ -62,6 +62,10 @@ clear_menu_map
         asm
           ldx #100       ; menu_map_room array + 2 to clear menu_map_revealed and exit_tileset as well
           lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
           sta music_playing
           sta entered_save_room
           sta old_tileset
@@ -407,6 +411,13 @@ fade_done
 save_room_handler
         mutesfx tia
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
         gosub clear_palettes
         if demoplay then goto title_init bank10
         if player_state = STATE_DEATH then password_display

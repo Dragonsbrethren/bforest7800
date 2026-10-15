@@ -222,6 +222,13 @@ forest_init
           sta menu_map_index_2
 end
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
 forest_room_b16
         gosub forest_room_bank_16 bank16
         startrmt
@@ -237,7 +244,14 @@ forest_loaded
 
 forest_stop_rmt
         stoprmt
-        music_playing = 0
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+          sta music_playing
+end
         goto forest_loaded
 
 forest_pals
@@ -1333,6 +1347,10 @@ end
         stoprmt
         asm
           lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
           sta music_playing
           sta object_type+1
           sta object_type+5

@@ -251,6 +251,13 @@ castle_entrance_2
         player_facing = F_CASTLE_ENT2_D
         goto castle_rooms
 
+castle_demo
+        room_index = 42
+        player_Xpos = 14*8
+        player_Ypos = $68
+        player_facing = DIR_LEFT
+        goto castle_rooms
+
         dmahole 0 noflow
 castle_cave
         room_index    = F_CASTLE_CAVE_I 
@@ -278,12 +285,6 @@ castle_save_2
         player_Ypos = $70
         player_facing = F_CASTLE_SAVE2_D
         goto castle_rooms
-
-castle_demo
-        room_index = 42
-        player_Xpos = 14*8
-        player_Ypos = $68
-        player_facing = DIR_LEFT
 
 castle_rooms
         characterset castle_stone
@@ -318,6 +319,13 @@ init_castle
         bcc .castle_room_bank_4
 end
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
         gosub castle_room_bank_5 bank5
         goto castle_start_music
 
@@ -335,7 +343,14 @@ castle_loaded
 
 castle_stop_rmt
         stoprmt
-        music_playing = 0
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+          sta music_playing
+end
         goto castle_loaded
 
 castle_room_bank_4_load

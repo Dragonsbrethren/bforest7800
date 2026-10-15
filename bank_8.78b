@@ -187,6 +187,13 @@ hills_init
         bcc .hills_room_bank_8
 end
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
         gosub hills_room_bank_9 bank9
         startrmt
 
@@ -207,7 +214,14 @@ hills_room_bank_8
 
 hills_stop_rmt
         stoprmt
-        music_playing = 0
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+          sta music_playing
+end
         goto hills_loaded
 
 hills_room_bank_8_load
@@ -521,7 +535,14 @@ end
         ; hardcode the unblock instead of trying to reuse torch code
         pokechar current_map 6 7 20 14 $4A
         stoprmt
-        music_playing = 0
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+          sta music_playing
+end
         music_change = 1
 
 hills_boss_dead

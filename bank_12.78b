@@ -157,6 +157,13 @@ caves_init
           beq .caves_room_bank_12
 end
         stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+end
         gosub caves_room_bank_13 bank13
         goto caves_start_music
 
@@ -174,7 +181,14 @@ caves_loaded
 
 caves_stop_rmt
         stoprmt
-        music_playing = 0
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0457
+          sta music_playing
+end
         goto caves_loaded
 
 caves_room_bank_12_load
