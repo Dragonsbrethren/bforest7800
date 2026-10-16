@@ -1,0 +1,163 @@
+;==============================================================================
+; BANK 14
+;------------------------------------------------------------------------------
+; The Necromancer's Fortress
+;==============================================================================
+        bank 14
+        incgraphic gfx/tiles/palace_tile.png 160A 1 0 3 2 5
+        incgraphic gfx/tiles/palace_walls.png 160A 1 0 2 3 4
+        incgraphic gfx/tiles/palace_bridge.png 160A 1 0 2 3 6
+        incrmtfile necromancer_theme.rmta
+
+        data palace_obj_lo
+        palace_room_0_obj_lo
+        palace_room_1_obj_lo
+        palace_room_2_obj_lo
+        palace_room_3_obj_lo
+        palace_room_4_obj_lo
+        palace_room_5_obj_lo
+end
+
+        data palace_obj_hi
+        palace_room_0_obj_hi
+        palace_room_1_obj_hi
+        palace_room_2_obj_hi
+        palace_room_3_obj_hi
+        palace_room_4_obj_hi
+        palace_room_5_obj_hi
+end
+
+load_palace
+        if !first_load then goto palace_set_room
+        first_load = 0
+        play_music = 1
+
+        ; handle entrances and save rooms
+
+palace_set_room
+        characterset palace_tile
+
+palace_init
+        asm
+          ldx #1
+          stx shadow_offset
+          stx alt_torch
+          dex   ; 0
+          stx no_flash
+          stx alt_palette
+          stx pal_animation
+          stx exit_room_index
+          stx save_room_index
+          stx player_elevation
+          dex   ; $FF
+          stx locked_zone
+          ldx room_index
+          lda palace_rooms,x
+          tax
+          lda palace_obj_lo,x
+          sta pointer
+          lda palace_obj_hi,x
+          sta pointer_hi
+          lda room_index
+          asl
+          sta menu_map_index
+          clc
+          adc #1
+          sta menu_map_index_2
+end
+        stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0557
+end
+        gosub palace_room_bank_15 bank15
+        goto palace_start_music
+
+palace_start_music
+        startrmt
+        if !play_music then palace_stop_rmt
+        if music_playing then palace_loaded
+        music_playing = 1
+        playrmt necromancer_theme
+palace_loaded
+        return thisbank
+
+palace_stop_rmt
+        stoprmt
+        asm
+          lda #0
+          sta $0451
+          sta $0453
+          sta $0455
+          sta $0557
+          sta music_playing
+end
+        goto palace_loaded
+
+palace_pals
+        if lightning_timer then goto palace_lightning
+palace_sky
+        P4C1 = PAL_P_SKY
+        goto palace_normal_pal
+
+palace_lightning
+        P4C1 = PAL_P_LIGHTN
+
+palace_normal_pal
+        P4C2 = getfade(PAL_P_DKWALL, black)
+        P4C3 = getfade(PAL_P_LTWALL)
+        P5C1 = getfade(PAL_P_BRTILE)
+        P5C2 = getfade(PAL_P_DKTILE, black)
+        P5C3 = getfade(PAL_P_LTTILE, black)
+        goto  palace_shared_pals
+
+palace_shared_pals
+        bg_color = flash_color
+        incbasic shared_pals.78b
+        goto palette_done
+
+test_walkable_palace
+        tile_properties_1 = palace_tile_properties[move_tile_1]
+        tile_properties_2 = palace_tile_properties[move_tile_2]
+        goto walkable_return
+
+        data palace_tile_properties
+        %00000011, %00000011, %00000011
+end
+
+        data palace_rooms
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+        00, 00, 04, 03, 00, 00, 00
+        00, 04, 02, 01, 00, 00, 00
+        00, 00, 00, 00, 00, 00, 00
+end
+
+        data palace_room_0_obj
+        $00
+end
+
+        data palace_room_1_obj
+        $00
+end
+
+        data palace_room_2_obj
+        $00
+end
+
+        data palace_room_3_obj
+        $00
+end
+
+        data palace_room_4_obj
+        $00
+end
+
+        data palace_room_5_obj
+        $00
+end

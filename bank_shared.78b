@@ -128,6 +128,7 @@ status_done
         if tileset = T_RIVER then goto river_pals
         if tileset = T_HILLS then goto hills_pals
         if tileset = T_CAVES then goto caves_pals
+        goto palace_pals
 
 palette_done
         pal_update = 0
@@ -1709,12 +1710,12 @@ end
 
         data walkable_jump_lo
         walkable_return_lo, test_walkable_forest_lo, test_walkable_castle_lo, test_walkable_river_lo, test_walkable_hills_lo
-        <.test_walkable_caves
+        <.test_walkable_caves, <.test_walkable_palace
 end
 
         data walkable_jump_hi
         walkable_return_hi, test_walkable_forest_hi, test_walkable_castle_hi, test_walkable_river_hi, test_walkable_hills_hi
-        >.test_walkable_caves
+        >.test_walkable_caves, >.test_walkable_palace
 end
 
 check_collisions

@@ -158,7 +158,7 @@
         const T_RIVER   = 3
         const T_HILLS   = 4
         const T_CAVES   = 5
-        const T_CASTLE2 = 6
+        const T_PALACE  = 6
 
         const ROOMS_PER_ROW = 7
         const MAX_MAP_OBJECTS = 12

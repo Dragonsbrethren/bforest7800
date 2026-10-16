@@ -55,6 +55,10 @@
         incbasic bank_12.78b
         incbasic bank_13.78b
 
+        ; palace tileset
+        incbasic bank_14.78b
+        incbasic bank_15.78b
+
         ; forest tileset overflow
         incbasic bank_16.78b
         

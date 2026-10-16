@@ -98,6 +98,7 @@ draw_pickup_hud
         if tileset = T_RIVER  then gosub load_river bank6
         if tileset = T_HILLS  then gosub load_hills bank8
         if tileset = T_CAVES  then gosub load_caves bank12
+        if tileset = T_PALACE then gosub load_palace bank14
 
 map_loaded
         savescreen
@@ -203,7 +204,6 @@ main_state_handler
         if game_state = STATE_TITLE then goto title_handler
         if game_state = STATE_FIELD then goto field_handler
         if game_state = STATE_MENU  then goto menu_handler
-        goto main
 
 plot_player
         if player_flags{0} && animation_timer{0} then plot_hud
@@ -287,9 +287,12 @@ hair_flash
         if !white_value then white_value = WHITE_DARKNESS
 black_flash
         ; flash the screen border
-        if tileset = T_CASTLE then goto main    ; Cathedral tileset uses black as BG, not C1
-        P4C1     = flash_color
-        P5C1     = flash_color
+        if tileset = T_CASTLE || tileset = T_PALACE then goto main    ; Cathedral tileset uses black as BG, not C1
+        asm
+          lda flash_color
+          sta P4C1
+          sta P5C1
+end
         if tileset = T_FOREST && alt_palette = 2 then flash_P7
         P6C1     = flash_color
         ; can't flash the animated palette
@@ -385,8 +388,7 @@ end
 
 plot_player_shield
         if !player_shield then return thisbank
-        if player_state = STATE_DEATH || player_state = STATE_CHANT then return thisbank
-        if player_frame = FRAME_CHANT then return thisbank        
+        if player_state = STATE_DEATH || player_frame = FRAME_CHANT then return thisbank    
         sprite_pal = shield_pal
         Xposition = shield_Xpos
         Yposition = shield_Ypos
@@ -402,9 +404,9 @@ kill_player
 death_fade
         pal_update = 1
         if !fade then fade_done
-        fade = fade - 1
+        fade--
 fade_done
-        fade_count = fade_count - 1
+        fade_count--
         if !fade_count then save_room_handler
         goto player_handler_done
 
@@ -596,9 +598,9 @@ clear_obj_loop
         bne clear_obj_loop
         sta temp1
         ; failsafe for objects without sprite pointer
-        lda #<.plot_next
+        lda #<.plot_shared_160a
         sta object_spr_ptr_lo,x
-        lda #>.plot_next
+        lda #>.plot_shared_160a
         sta object_spr_ptr_hi,x
 end
         for obj_index = 1 to MAX_MAP_OBJECTS

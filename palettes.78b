@@ -106,6 +106,17 @@
         const PAL_CV_PSN_DK  = $D6
         const PAL_CV_PSN_LT  = $D8
 
+;------------------------------------------------------------------------------
+; PALACE
+;------------------------------------------------------------------------------
+        const PAL_P_SKY    = $90
+        const PAL_P_LIGHTN = $AA        ; lightning flash
+        const PAL_P_DKWALL = $69
+        const PAL_P_LTWALL = $7D
+        const PAL_P_DKTILE = $E4
+        const PAL_P_LTTILE = $E8
+        const PAL_P_BRTILE = $DB        ; window light on tiles
+
 
         const PAL_DISABLED_1 = $2B
         const PAL_DISABLED_2 = $29

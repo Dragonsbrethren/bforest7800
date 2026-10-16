@@ -1,0 +1,81 @@
+;==============================================================================
+; BANK 15
+;------------------------------------------------------------------------------
+; Necromancer's Fortress Maps
+;==============================================================================
+        bank 15
+        incmapfile tiled/palace_room_0.tmx
+        incmapfile tiled/palace_room_1.tmx
+        incmapfile tiled/palace_room_2.tmx
+        incmapfile tiled/palace_room_3.tmx
+        incmapfile tiled/palace_room_4.tmx
+        incmapfile tiled/palace_room_5.tmx
+
+        data palace_map_b15_lo
+        <.plot_palace_room_0
+        <.plot_palace_room_1
+        <.plot_palace_room_2
+        <.plot_palace_room_3
+        <.plot_palace_room_4
+        <.plot_palace_room_5
+end
+
+        data palace_map_b15_hi
+        >.plot_palace_room_0
+        >.plot_palace_room_1
+        >.plot_palace_room_2
+        >.plot_palace_room_3
+        >.plot_palace_room_4
+        >.plot_palace_room_5
+end
+
+palace_room_bank_15
+        asm
+          lda palace_map_b15_lo,x
+          sta jump1
+          lda palace_map_b15_hi,x
+          sta jump2
+          jmp (jump1)
+end
+
+plot_palace_room_0
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_0 240
+        plotmapfile tiled/palace_room_0.tmx map12 0 1 20 12
+        return otherbank
+
+plot_palace_room_1
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_1 240
+        plotmapfile tiled/palace_room_1.tmx map12 0 1 20 12
+        return otherbank
+
+plot_palace_room_2
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_2 240
+        plotmapfile tiled/palace_room_2.tmx map12 0 1 20 12
+        return otherbank
+
+plot_palace_room_3
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_3 240
+        plotmapfile tiled/palace_room_3.tmx map12 0 1 20 12
+        return otherbank
+
+plot_palace_room_4
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_4 240
+        plotmapfile tiled/palace_room_4.tmx map12 0 1 20 12
+        return otherbank
+
+plot_palace_room_5
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_5 240
+        plotmapfile tiled/palace_room_5.tmx map12 0 1 20 12
+        return otherbank
