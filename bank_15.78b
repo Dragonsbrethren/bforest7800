@@ -57,6 +57,7 @@ plot_palace_room_2
         menu_map_room[menu_map_index_2] = ROOMR_N
         memcpy map12 palace_room_2 240
         plotmapfile tiled/palace_room_2.tmx map12 0 1 20 12
+        alt_palette = 1
         return otherbank
 
 plot_palace_room_3
@@ -78,4 +79,5 @@ plot_palace_room_5
         menu_map_room[menu_map_index_2] = ROOMR_N
         memcpy map12 palace_room_5 240
         plotmapfile tiled/palace_room_5.tmx map12 0 1 20 12
+        alt_palette = 1
         return otherbank

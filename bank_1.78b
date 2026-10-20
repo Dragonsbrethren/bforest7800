@@ -2364,6 +2364,7 @@ end
 
         data torch_tileset_lo
         0, torch_tile_block_forest_lo, torch_tile_block_castle_lo, torch_tile_block_river_lo, torch_tile_block_hills_lo, <.torch_tile_block_caves
+        <.torch_tile_block_palace
 end
 
         data sfx_crystalchimes
@@ -2559,14 +2560,17 @@ end
 
         data torch_tileset_hi
         0, torch_tile_block_forest_hi, torch_tile_block_castle_hi, torch_tile_block_river_hi, torch_tile_block_hills_hi, >.torch_tile_block_caves
+        >.torch_tile_block_palace
 end
 
         data torch_unblock_tileset_lo
         0, torch_tile_unblock_forest_lo, torch_tile_unblock_castle_lo, torch_tile_unblock_river_lo, torch_tile_unblock_hills_lo, <.torch_tile_unblock_caves
+        <.torch_tile_unblock_palace
 end
 
         data torch_unblock_tileset_hi
         0, torch_tile_unblock_forest_hi, torch_tile_unblock_castle_hi, torch_tile_unblock_river_hi, torch_tile_unblock_hills_hi, >.torch_tile_unblock_caves
+        >.torch_tile_unblock_palace
 end
 
 ;==============================================================================
@@ -2616,7 +2620,11 @@ stone_handler
         ; align Johanna to her zone
         player_Ypos = player_Ypos && $F0
         ; face her downward
-        player_facing = DIR_DOWN : player_Ydir = DIR_DOWN
+        asm
+          lda #DIR_DOWN
+          sta player_facing
+          sta player_Ydir
+end
         ; set her to moving so shield doesn't work
         player_state = STATE_MOVING
         ; fix shield position and palette
@@ -2821,61 +2829,6 @@ campfire_animate
           inc object_frame,x
 campfire_return
           rts
-end
-
-;========================================================
-; SUBROUTINE: TEST OPEN ZONE
-;--------------------------------------------------------
-; Takes an object's Y position and determines which zone
-; it will be in when plotted. Tests this zone against the
-; maximum number of objects per zone and denies the move
-; if it would cause display corruption
-;========================================================
-        asm
-test_open_zone
-        lda object_Ypos,x
-        pha             ; save on stack for later
-        ldy object_Ydir,x
-        cpy #DIR_UP
-;        beq test_open_zone_up
-        cpy #DIR_DOWN
-;        beq test_open_zone_down
-
-test_open_zone_current
-        and #$0F        ; check if object zone-aligned
-        bne test_open_zone_one
-        lda object_Ypos,x
-        clc
-        adc #16
-        pha             ; second copy of Y position on stack
-        ldx #1
-
-test_open_zone_loop
-        pla             ; pull Y position from stack so X is preserved
-        and #$F0        ; get zone number and shift to right
-        lsr
-        lsr
-        lsr
-        lsr
-        tay
-        lda dlend,y     ; object count for zone Y
-        cmp #ZONE_BUFFER_OBJS
-        bcc test_open_zone_open
-        lda #0
-        beq test_open_zone_next
-
-test_open_zone_open
-        lda #1
-test_open_zone_next
-        sta zone_open,x
-        dex
-        bpl test_open_zone_loop
-test_open_zone_return
-        rts
-
-test_open_zone_one
-        ldx #0
-        beq test_open_zone_loop
 end
 
         data spell_type

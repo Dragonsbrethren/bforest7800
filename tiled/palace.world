@@ -4,8 +4,8 @@
             "fileName": "palace_room_0.tmx",
             "height": 192,
             "width": 160,
-            "x": 0,
-            "y": 0
+            "x": 208,
+            "y": -32
         },
         {
             "fileName": "palace_room_1.tmx",
@@ -39,8 +39,8 @@
             "fileName": "palace_room_5.tmx",
             "height": 192,
             "width": 160,
-            "x": -320,
-            "y": -384
+            "x": 0,
+            "y": 0
         }
     ],
     "onlyShowAdjacentMaps": false,
