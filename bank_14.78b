@@ -8,6 +8,8 @@
         incgraphic gfx/tiles/palace_walls.png 160A 1 0 2 3 4
         incgraphic gfx/tiles/palace_bridge.png 160A 1 0 2 3 4
         incgraphic gfx/tiles/palace_moon.png 160A 1 0 2 3 6
+        incgraphic gfx/sprites/pghost0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/pghost1.png 160A 0 1 2 3
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -213,3 +215,83 @@ end
         TYPE_DOOR_LOCK, (9*8)+1, $70
         $00
 end
+
+;=========================================================
+; PALACE GHOST
+;---------------------------------------------------------
+; Palace variant of Ghost, follows player across any ledges
+;=========================================================
+pghost_ai
+        asm
+          lda #F_PGHOST_1
+          sta object_frame,x
+          lda #%00000100
+          sta object_flags,x
+          lda animation_frame
+          bne pghost_timer
+          inc object_frame,x
+pghost_timer
+          lda object_timer,x
+          bne pghost_follow
+          lda #PGHOST_ANIM_TIME
+          sta object_timer,x
+          lda object_pal,x
+          cmp #PGHOST_PAL_A
+          bne pghost_set_pal_a
+          lda #PGHOST_PAL_B
+          sta object_pal,x
+          bne pghost_follow
+
+pghost_set_pal_a
+          lda #PGHOST_PAL_A
+          sta object_pal,x
+pghost_follow
+          dec object_timer,x
+          jmp .test_follow_box
+end
+
+obj_pghost_stats
+        asm
+          ldx obj_index
+          lda #PGHOST_HP
+          sta object_hp,x
+          lda #PGHOST_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #PGHOST_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #PGHOST_DAMAGE
+          sta object_damage,x
+          lda #PGHOST_DEF
+          sta object_def,x
+          lda #PGHOST_MDEF
+          sta object_mdef,x
+          lda #PGHOST_FRICTION_HI
+          sta object_friction_hi,x
+          lda #PGHOST_FRICTION_LO
+          sta object_friction_lo,x
+          lda #PGHOST_SPEED_HI
+          sta object_speed_hi,x
+          lda #PGHOST_SPEED_LO
+          sta object_speed_lo,x
+;         lda #PGHOST_FLAGS
+;         sta object_flags,x
+          lda #PGHOST_ELEM_ATK
+          sta object_elem_atk,x
+          lda #PGHOST_ELEM_DEF
+          sta object_elem_def,x
+end
+        goto palace_160a_sprite
+
+palace_160a_sprite
+        asm
+          ldx obj_index
+          lda #<.plot_palace_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_palace_160a
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats  
+
+plot_palace_160a
+        plotsprite pghost0 sprite_pal Xposition Yposition frame
+        goto plot_next

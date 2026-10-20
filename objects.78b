@@ -846,6 +846,26 @@
         const F_CBARRIER = 1
         const CBARRIER_PAL = 3
 
+        ; PALACE GHOST
+        const PGHOST_HP = 4
+        const PGHOST_SPEED_HI = 0
+        const PGHOST_SPEED_LO = 128
+        const PGHOST_VEL_CAP_HI = 2
+        const PGHOST_VEL_CAP_LO = 0
+        const PGHOST_FRICTION_HI = 0
+        const PGHOST_FRICTION_LO = 0
+        const PGHOST_DAMAGE = 7
+        const PGHOST_DEF = 5
+        const PGHOST_MDEF = 0
+        const PGHOST_ELEM_ATK = %00100010
+        const PGHOST_ELEM_DEF = %00100010
+        const F_PGHOST_1 = 0
+        const F_PGHOST_2 = 1
+        const PGHOST_PAL_A = 0
+        const PGHOST_PAL_B = 3
+        const PGHOST_ANIM_TIME = 4
+
+
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
 

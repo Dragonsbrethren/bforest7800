@@ -721,13 +721,8 @@ check_spell_bits
           cmp #TYPE_SPELL2
           beq check_spell_bits_1
           iny
-
           cmp #TYPE_SPELL3
-          bne check_spell_4
-          lda #TYPE_CHARM2
-          sta item_sub
-          bne check_spell_bits_1
-check_spell_4
+          beq check_spell_bits_1
           iny
           cmp #TYPE_SPELL4
           beq check_spell_bits_1
@@ -2302,11 +2297,11 @@ end
         incbasic elem_weak.78b
 
         data spirit_ptr_lo
-        <.plot_next, #<.plot_forest_160a, #<.plot_castle_160a, #<.plot_rghost, #<.plot_hills_160a, #<.plot_caves_160a 
+        <.plot_next, #<.plot_forest_160a, #<.plot_castle_160a, #<.plot_rghost, #<.plot_hills_160a, #<.plot_caves_160a, #<.plot_palace_160a
 end
 
         data spirit_ptr_hi
-        >.plot_next, #>.plot_forest_160a, #>.plot_castle_160a, #>.plot_rghost, #>.plot_hills_160a, #>.plot_caves_160a
+        >.plot_next, #>.plot_forest_160a, #>.plot_castle_160a, #>.plot_rghost, #>.plot_hills_160a, #>.plot_caves_160a, #>.plot_palace_160a
 end
 
         data sword_widths
@@ -2884,5 +2879,5 @@ end
 end
 
         data spirit_frame
-        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1
+        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1, F_PGHOST_1
 end

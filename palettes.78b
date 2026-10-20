@@ -113,9 +113,9 @@
         const PAL_P_LIGHTN = $AA        ; lightning flash
         const PAL_P_DKWALL = $65
         const PAL_P_LTWALL = $7A
-        const PAL_P_DKTILE = $E4
-        const PAL_P_LTTILE = $E8
-        const PAL_P_BRTILE = $E6        ; window light on tiles
+        const PAL_P_DKTILE = $E3
+        const PAL_P_LTTILE = $E5
+        const PAL_P_BRTILE = $E4        ; window light on tiles
         const PAL_P_LTMOON = $0F
         const PAL_P_DKMOON = $0B
 
