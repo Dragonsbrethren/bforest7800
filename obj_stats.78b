@@ -30,6 +30,7 @@
         obj_hghost_stats_lo        
         <.obj_cghost_stats
         <.obj_fghost_stats
+        <.obj_pghost_stats
         <.obj_firebat_stats
         <.obj_cardinal_stats
         <.obj_octokraken_stats
@@ -80,6 +81,7 @@ end
         obj_hghost_stats_hi
         >.obj_cghost_stats
         >.obj_fghost_stats
+        >.obj_pghost_stats
         >.obj_firebat_stats
         >.obj_cardinal_stats
         >.obj_octokraken_stats

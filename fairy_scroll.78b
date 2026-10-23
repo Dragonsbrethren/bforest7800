@@ -30,6 +30,7 @@
         name_hghost_lo
         name_cghost_lo
         <name_fghost
+        <name_pghost
         <name_firebat
         name_cardinal_lo
         <name_octokraken
@@ -74,6 +75,7 @@ end
         name_hghost_hi
         name_cghost_hi
         >name_fghost
+        >name_pghost
         >name_firebat
         name_cardinal_hi
         >name_octokraken
@@ -257,4 +259,8 @@ end
 
         alphadata name_redbone font_spr
         'Red Bone*'
+end
+
+        alphadata name_pghost font_spr
+        'Wraith'
 end

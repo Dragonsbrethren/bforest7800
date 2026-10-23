@@ -2366,7 +2366,6 @@ decrease_player_mp
         temp1 = player_mp        ; temp1 used to detect underflow
         temp2 = mp_change
         mp_change = mp_change - player_wisdom
-        if mp_change >= temp2 then mp_change = 1
         if player_armor >= LIGHT_ARMOR_START then mp_change = mp_change / 2
         if !mp_change || mp_change > temp2 then mp_change = 1
         player_mp = player_mp - mp_change

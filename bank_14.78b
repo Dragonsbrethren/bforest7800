@@ -10,6 +10,15 @@
         incgraphic gfx/tiles/palace_moon.png 160A 1 0 2 3 6
         incgraphic gfx/sprites/pghost0.png 160A 0 1 2 3
         incgraphic gfx/sprites/pghost1.png 160A 0 1 2 3
+        incgraphic gfx/sprites/pbat0.png 160A 0 1 3 2
+        incgraphic gfx/sprites/pbat1.png 160A 0 1 3 2
+        incgraphic gfx/sprites/pbat2.png 160A 0 1 3 2
+        incgraphic gfx/sprites/pbat3.png 160A 0 1 3 2
+        incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
+        incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
+        incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
+        incgraphic gfx/dragon/pdragon_bot1.png 160A 0 1 2 3
+        incgraphic gfx/dragon/pdragon_eye.png 160A 0 2 
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -203,6 +212,7 @@ end
 end
 
         data palace_room_3_obj
+        TYPE_PGHOST, 15*8, $30
         $00
 end
 

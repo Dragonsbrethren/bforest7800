@@ -30,6 +30,7 @@
         hghost_ai_lo
         <.cghost_ai
         <.fghost_ai
+        <.pghost_ai
         <.firebat_ai
         <.cardinal_ai
         <.octokraken_ai
@@ -83,6 +84,7 @@ end
         hghost_ai_hi
         >.cghost_ai
         >.fghost_ai
+        >.pghost_ai
         >.firebat_ai
         >.cardinal_ai
         >.octokraken_ai
