@@ -1434,6 +1434,12 @@ end
 dragon_psn_ai
         ; TODO: Timer to automatically replace poison blob with cloud
         asm
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          sta object_facing,x
+          lda #DRAGON_PSN_SPEED_HI
+          sta object_Xvel_hi,x
+          sta object_speed_hi,x
           lda #TYPE_PSNCLOUD
           sta temp1
           jmp proj_move_check

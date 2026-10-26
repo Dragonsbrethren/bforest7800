@@ -1273,7 +1273,7 @@ end
           and #%00010000
           beq test_walkable_up
           lda tile_properties
-          and #%00000011
+          and #%00000010
           beq test_walkable_up
           jmp move_up
 test_walkable_up
@@ -1319,10 +1319,7 @@ test_walkable_up_ledge_done
           ; test walkable bit 0
           lsr
           bcs move_up
-          lda #0
-          sta object_Yvel_lo,x
-          sta object_Yvel_hi,x
-          rts
+          jmp destroy_projectile_Y
 move_up
           lda object_flags,x
           and #%11011111
@@ -1386,7 +1383,7 @@ end
           and #%00010000
           beq test_walkable_down
           lda tile_properties
-          and #%00000011
+          and #%00000010
           beq test_walkable_down
           jmp move_down
 test_walkable_down
@@ -1418,10 +1415,7 @@ test_walkable_down_ledge_done
           ; test walkable bit 0
           lsr
           bcs move_down
-          lda #0
-          sta object_Yvel_lo,x
-          sta object_Yvel_hi,x
-          rts
+          jmp destroy_projectile_Y
 move_down
           ldx index
           lda object_flags,x
@@ -1486,7 +1480,7 @@ end
           and #%00010000
           beq test_walkable_left
           lda tile_properties
-          and #%00000011
+          and #%00000010
           beq test_walkable_left
           jmp move_left
 test_walkable_left
@@ -1516,10 +1510,7 @@ test_walkable_left_ledge_done
           ; test walkable bit 0
           lsr
           bcs move_left
-          lda #0
-          sta object_Yvel_lo,x
-          sta object_Yvel_hi,x
-          rts
+          jmp destroy_projectile_X
 move_left
           lda object_Xpos,x
           sec
@@ -1586,7 +1577,7 @@ end
           and #%00010000
           beq test_walkable_right
           lda tile_properties
-          and #%00000011
+          and #%00000010
           beq test_walkable_right
           jmp move_right
 test_walkable_right
@@ -1615,10 +1606,7 @@ test_walkable_right_ledge_done
           ; test walkable bit 0
           lsr
           bcs move_right
-          lda #0
-          sta object_Yvel_lo,x
-          sta object_Yvel_hi,x
-          rts
+          jmp destroy_projectile_X
 move_right
           lda object_Xpos,x
           clc
@@ -1629,32 +1617,7 @@ move_right
 mo_rt_s   sta object_Xpos,x
 move_return
           rts
-
-move_test_vertical_deny
-          rts
-          lda #0
-          sta object_Yvel_hi,x
-          sta object_Yvel_lo,x
-          sta object_Ydir,x
-          lda object_Xvel_lo,x
-          clc
-          adc object_speed_lo,x
-          sta object_Xvel_lo,x
-          lda object_Xvel_hi,x
-          adc object_speed_hi,x
-          sta object_Xvel_hi,x
-          jsr randomize
-          bmi move_test_vertical_deny_right
-          lda #DIR_LEFT
-          bne move_test_vertical_deny_store
-move_test_vertical_deny_right
-          lda #DIR_RIGHT
-move_test_vertical_deny_store
-          sta object_Xdir,x
-          sta object_facing,x
-          rts
 end
-
 test_walkable
         move_tile_1 = move_tile_1 / 2
         move_tile_2 = move_tile_2 / 2
@@ -1704,8 +1667,36 @@ walkable_return_no_elev
           sta move_tile_1_old
           lda move_tile_2
           sta move_tile_2_old
+          rts
+
+destroy_projectile_X
+          lda #0
+          sta object_Xvel_lo,x
+          sta object_Xvel_hi,x
+          beq destroy_projectile_shared
+destroy_projectile_Y
+          lda #0
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+destroy_projectile_shared
+          ldy object_type,x
+          cpy #TYPE_PROJECTILE
+          ; non-projectiles just return
+          bcc destroy_projectile_return
+          ; kind of redundant, this prevents projectiles from "sliding" after colliding in one direction
+          sta object_Xvel_lo,x
+          sta object_Xvel_hi,x
+          sta object_Yvel_lo,x
+          sta object_Yvel_hi,x
+          ; special handler for the dragon's poison blob
+          cpy #TYPE_DRAGON_PSN
+          bne destroy_projectile
+          lda #TYPE_PSNCLOUD
+destroy_projectile
+          sta object_type,x
+destroy_projectile_return
+          rts
 end
-        return thisbank
 
 
         data walkable_jump_lo
@@ -2523,29 +2514,10 @@ fireball_poof
 .hseed_ai
           lda #0
 proj_move_check
-          sta temp1             ; object to replace projectile with
-          lda object_facing,x
-          cmp #DIR_LEFT
-          beq projX
-          cmp #DIR_RIGHT
-          bne projY     ; if no X dir, must be moving Y
-projX     lda object_Xdest,x
-          cmp object_Xpos,x
-          beq proj_die
-          lda object_speed_hi,x
-          sta object_Xvel_hi,x
-          lda object_Ydir,x
-          beq proj_done
+projX
 projY
-          lda object_Ydest,x
-          cmp object_Ypos,x
-          beq proj_die
-          lda object_speed_hi,x
-          sta object_Yvel_hi,x
-proj_done lda object_Xpos,x     ; store current positions
-          sta object_Xdest,x    ; for next frame's tests
-          lda object_Ypos,x
-          sta object_Ydest,x
+
+proj_done
           rts
 proj_die  lda temp1
           sta object_type,x
