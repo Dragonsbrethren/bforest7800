@@ -2510,12 +2510,25 @@ fireball_animate
           bne fireball_poof
           inc object_frame,x
 fireball_poof
-.seed_ai                        ; stone rose seeds share this code
+                       ; stone rose seeds share this code
 .hseed_ai
-          lda #0
 proj_move_check
+          lda object_facing,x
+          cmp #DIR_LEFT
+          beq projX
+          cmp #DIR_RIGHT
+          bne projY
 projX
+          lda object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_speed_lo,x
+          sta object_Xvel_lo,x
+          jmp proj_done
 projY
+          lda object_speed_hi,x
+          sta object_Yvel_hi,x
+          lda object_speed_lo,x
+          sta object_Yvel_lo,x
 
 proj_done
           rts

@@ -14,6 +14,7 @@
         <.hrose_ai
         <.devout_ai
         <.redbone_ai
+        <.pbat_ai
         spider_ai_lo
         spider_ai_lo    ; vertical spider, currently unused
         <.cave_spider_ai
@@ -42,6 +43,7 @@
         <.barrier_ai
         <.cbarrier_ai
         <.bat_spawner_ai
+        <.pbat_spawner_ai
         <.forest_boss_ai
         <.castle_boss
         <.river_boss
@@ -68,6 +70,7 @@ end
         >.hrose_ai
         >.devout_ai
         >.redbone_ai
+        >.pbat_ai
         spider_ai_hi
         spider_ai_hi    ; vertical spider, currently unused
         >.cave_spider_ai
@@ -96,6 +99,7 @@ end
         >.barrier_ai
         >.cbarrier_ai
         >.bat_spawner_ai
+        >.pbat_spawner_ai
         >.forest_boss_ai
         >.castle_boss
         >.river_boss 

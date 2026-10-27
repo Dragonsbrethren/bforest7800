@@ -742,6 +742,17 @@ rodam     lda #SEED_DAMAGE
           rts
 end
 
+seed_ai
+        asm
+          lda object_speed_hi,x
+          sta object_Yvel_hi,x
+          sta object_Xvel_hi,x
+          lda object_speed_lo,x
+          sta object_Yvel_lo,x
+          sta object_Xvel_lo,x
+          rts
+end
+
 ;=========================================================
 ; CAVE SPIDER
 ;---------------------------------------------------------

@@ -14,11 +14,25 @@
         incgraphic gfx/sprites/pbat1.png 160A 0 1 3 2
         incgraphic gfx/sprites/pbat2.png 160A 0 1 3 2
         incgraphic gfx/sprites/pbat3.png 160A 0 1 3 2
+        incgraphic gfx/sprites/pskel0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel3.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel4.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel5.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel6.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel7.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel8.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel9.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel10.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pskel11.png 160A 0 3 1 2
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_eye.png 160A 0 2 
+        incgraphic gfx/necro/necro_big_top0.png 160B
+        incgraphic gfx/necro/necro_big_bot0.png 160B
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -221,6 +235,7 @@ end
 end
 
         data palace_room_5_obj
+        TYPE_PBAT_SPAWNER, $E0, $E0
         TYPE_TORCH, 8*8, $80, TYPE_TORCH, 11*8, $80
         TYPE_DOOR_LOCK, (9*8)+1, $70
         $00
@@ -305,3 +320,159 @@ end
 plot_palace_160a
         plotsprite pghost0 sprite_pal Xposition Yposition frame
         goto plot_next
+
+;==============================================================================
+; PALACE BAT SPAWNER
+;------------------------------------------------------------------------------
+; Unsurprisingly, exists soley to spawn bat enemies
+; - Bats are spawned at player's Yposition
+; - player_Xpos determines if bats spawn flying left or right
+; - Needs to be off screen since it does not have a sprite
+;==============================================================================
+pbat_spawner_ai
+        asm
+          lda object_timer,x    ; timer set after a bat has spawned
+          beq pbatspawn          ; it's bat time!
+          dec object_timer,x    ; timer--
+          rts
+pbatspawn  lda object_parent,x   ; tracker for number of bats
+          cmp #BAT_MAX          ; set to 6 means 5 bats can spawn
+          bcs pbatnspawn         ; at or more than BAT_MAX
+          jsr .find_new_object  ; find an open object slot
+          lda no_empty_slot     ; make sure all object slots aren't full
+          beq pbatsobj           ; slot available, spawn bat object
+pbatnspawn rts
+pbatsobj   inc object_parent,x   ; spawned bat counter + 1
+          txa
+          sta object_parent,y   ; back up the spawner's object index
+          lda #TYPE_PBAT
+          sta object_type,y
+          lda #PBAT_HP
+          sta object_hp,y
+          lda #PBAT_SPEED_HI
+          sta object_speed_hi,y
+          lda #PBAT_VEL_CAP_HI
+          sta object_vel_cap_hi,y
+          lda #PBAT_SPEED_LO
+          sta object_speed_lo,y
+          lda #PBAT_VEL_CAP_LO
+          sta object_vel_cap_lo,y
+          lda #PBAT_DAMAGE
+          sta object_damage,y
+          lda #%00000100        ; object flying
+          sta object_flags,y
+          lda #0
+          sta object_friction_hi,y
+          sta object_friction_lo,y
+          lda #PBAT_PAL
+          sta object_pal,y
+          lda #<.plot_palace_160a
+          sta object_spr_ptr_lo,y
+          lda #>.plot_palace_160a
+          sta object_spr_ptr_hi,y
+pbatpldir  lda player_Xpos       ; determine which side
+          cmp #80               ; of screen to spawn bat
+          bcs pbatright
+pbatleft
+          lda #DIR_LEFT
+          sta object_Xdir,y
+          lda #159
+          sta object_Xpos,y
+          bne pbatsetY
+pbatright
+          lda #DIR_RIGHT
+          sta object_Xdir,y
+          lda #0
+          sta object_Xpos,y
+pbatsetY   lda player_Ypos
+          sta object_Ypos,y
+          sta object_state,y
+          lda #DIR_DOWN
+          sta object_Ydir,y
+pbatstime  lda #BAT_SPAWN_TIME
+          sta object_timer,x
+          rts
+end
+
+;==============================================================================
+; PALACE BAT
+;------------------------------------------------------------------------------
+; Flies in horizontally from off screen, attempts to collide with player
+; - Bat Spawner sets X and Y starting positions
+;==============================================================================
+pbat_ai
+        asm
+; The first thing the Bat AI does is determine if it is on screen
+; There is a 12-pixel grace area off both sides of the screen to allow bats
+; to spawn off screen. If the bat is outside this area, it despawns
+          lda object_Xpos,x
+          cmp #172            ; right edge of screen + 12
+          bcs pbatledge          ; determine if bat is off left edge
+          bcc pbatwave           ; position is on visible screen
+pbatledge cmp #243            ; left edge of screen - 12
+          bcc pbatdie            ; bat isn't on screen, kill it 
+pbatwave  lda object_Ydir,x     ; is the bat moving up or down?
+          cmp #DIR_DOWN
+          beq pbatdown
+pbatup     lda object_Ypos,x     ; take the bat's current Y position
+          clc
+          adc #16               ; add 16 to it
+          cmp object_state,x    ; compare with initial Y position
+          bcs pbatvel            ; current + 16 >= initial, move bat up
+          lda #DIR_DOWN         ; current + 16 < initial
+          sta object_Ydir,x     ; so change direction to down
+          bne pbatvel            ; bypass down comparison this frame
+pbatdown   lda object_state,x    ; start with initial Y position
+          clc
+          adc #16               ; add 16 to it
+          cmp object_Ypos,x     ; compare with current Y position
+          bcs pbatvel            ; initial + 16 >= current, move bat down
+          lda #DIR_UP           ; initial + 16 < current
+          sta object_Ydir,x     ; so change direction to up
+pbatvel    lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x ; add speed to current X velocity
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x ; add speed to current Y velocity
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+pbatanim   lda object_Xdir,x     ; determine bat's X direction again
+          cmp #DIR_LEFT
+          bne pbatanrt
+pbatanlf   lda #F_PBAT_L1         ; left-facing frame 1
+          jmp pbatanfr
+pbatanrt   lda #F_PBAT_R1         ; right-facing frame 1
+pbatanfr   sta object_frame,x    ; store it
+          lda animation_frame   ; check if it needs to animate
+          beq pbatdone
+          inc object_frame,x    ; frame++ - frames are stored R1, R2, L1, L2
+pbatdone   rts
+pbatdie    lda object_parent,x   ; get the spawner object that created this bat
+          tax
+          dec object_parent,x   ; decrement spawner's bat counter
+          ldx index             ; reload this object's index
+          lda #0
+          sta object_type,x     ; and kill it
+          rts
+end
+
+obj_pbat_spawner_stats
+        asm
+          ldx obj_index
+          lda #255
+          sta object_hp,x
+          sta object_def,x
+          sta object_mdef,x
+          lda #<.plot_palace_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_palace_160a
+          sta object_spr_ptr_hi,x
+          jmp .obj_next_stats
+end

@@ -14,6 +14,7 @@
         <name_rose
         <name_devout
         <name_redbone
+        <name_pbat
         name_spider_lo
         name_spider_lo
         name_cspider_lo
@@ -59,6 +60,7 @@ end
         >name_rose
         >name_devout
         >name_redbone
+        >name_pbat
         name_spider_hi
         name_spider_hi
         name_cspider_hi
@@ -262,5 +264,9 @@ end
 end
 
         alphadata name_pghost font_spr
-        'Wraith'
+        'Wraith*'
+end
+
+        alphadata name_pbat font_spr
+        'Necrobat*'
 end
