@@ -125,6 +125,9 @@
         const PAL_P_DKBTILE = $E3
         const PAL_P_LTBTILE = $E5
 
+        const PAL_P_LTBAT   = $B2
+        const PAL_P_DKBAT   = $B4
+
 
         const PAL_DISABLED_1 = $2B
         const PAL_DISABLED_2 = $29

@@ -14,8 +14,8 @@
         const TYPE_HROSE        =  12
         const TYPE_DEVOUT       =  13
         const TYPE_REDBONE      =  14
+        const TYPE_POISONMOB    = TYPE_PBAT
         const TYPE_PBAT         =  15
-        const TYPE_POISONMOB    = TYPE_SPIDER
         const TYPE_SPIDER       =  16
         const TYPE_SPIDER_V     =  17
         const TYPE_CSPIDER      =  18
@@ -884,8 +884,8 @@
         const F_PBAT_R2 = 3
         const F_PBAT_L1 = 4
         const F_PBAT_L2 = 5
-        const PBAT_PAL  = 6
-        const PBAT_SPAWN_TIME = 60 
+        const PBAT_PAL  = 7
+        const PBAT_SPAWN_TIME = 20
         const PBAT_MAX  = 6
 
         ; FAMILIARS

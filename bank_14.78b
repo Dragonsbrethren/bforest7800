@@ -162,6 +162,9 @@ palace_moon_pal
         P5C3 = getfade(PAL_P_LTBTILE)
         P6C2 = getfade(PAL_P_DKMOON)
         P6C3 = getfade(PAL_P_LTMOON)
+        P7C1 = flash_color
+        P7C2 = getfade(PAL_P_LTBAT)
+        P7C3 = getfade(PAL_P_DKBAT, black)
         goto  palace_shared_pals
 
 palace_shared_pals
@@ -336,7 +339,7 @@ pbat_spawner_ai
           dec object_timer,x    ; timer--
           rts
 pbatspawn  lda object_parent,x   ; tracker for number of bats
-          cmp #BAT_MAX          ; set to 6 means 5 bats can spawn
+          cmp #PBAT_MAX          ; set to 6 means 5 bats can spawn
           bcs pbatnspawn         ; at or more than BAT_MAX
           jsr .find_new_object  ; find an open object slot
           lda no_empty_slot     ; make sure all object slots aren't full
@@ -389,7 +392,7 @@ pbatsetY   lda player_Ypos
           sta object_state,y
           lda #DIR_DOWN
           sta object_Ydir,y
-pbatstime  lda #BAT_SPAWN_TIME
+pbatstime  lda #PBAT_SPAWN_TIME
           sta object_timer,x
           rts
 end
