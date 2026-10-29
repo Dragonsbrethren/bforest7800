@@ -485,14 +485,12 @@ bat_spawner_ai
           beq batspawn          ; it's bat time!
           dec object_timer,x    ; timer--
           rts
-batspawn  lda object_parent,x   ; tracker for number of bats
-          cmp #BAT_MAX          ; set to 6 means 5 bats can spawn
-          bcs batnspawn         ; at or more than BAT_MAX
+batspawn  
           jsr .find_new_object  ; find an open object slot
           lda no_empty_slot     ; make sure all object slots aren't full
           beq batsobj           ; slot available, spawn bat object
 batnspawn rts
-batsobj   inc object_parent,x   ; spawned bat counter + 1
+batsobj   
           txa
           sta object_parent,y   ; back up the spawner's object index
           lda #TYPE_BAT
@@ -604,12 +602,9 @@ batanfr   sta object_frame,x    ; store it
           beq batdone
           inc object_frame,x    ; frame++ - frames are stored R1, R2, L1, L2
 batdone   rts
-batdie    lda object_parent,x   ; get the spawner object that created this bat
-          tax
-          dec object_parent,x   ; decrement spawner's bat counter
-          ldx index             ; reload this object's index
+batdie    
           lda #0
-          sta object_type,x     ; and kill it
+          sta object_type,x     ; kill offscreen bat
           rts
 end
 
