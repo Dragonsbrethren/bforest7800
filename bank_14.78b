@@ -26,11 +26,14 @@
         incgraphic gfx/sprites/pskel9.png 160A 0 3 1 2
         incgraphic gfx/sprites/pskel10.png 160A 0 3 1 2
         incgraphic gfx/sprites/pskel11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_eye.png 160A 0 2 
+        incgraphic gfx/sprites/pharpy0.png 160B 0 4 9 12 6 5 8 3 2 1
+        incgraphic gfx/sprites/pharpy1.png 160B 0 4 9 3 12 6 5 8 2 1
         incgraphic gfx/necro/necro_big_top0.png 160B
         incgraphic gfx/necro/necro_big_bot0.png 160B
         incrmtfile necromancer_theme.rmta
@@ -72,7 +75,6 @@ palace_set_room
 palace_init
         asm
           ldx #1
-          stx shadow_offset
           stx alt_torch
           dex   ; 0
           stx no_flash
@@ -225,6 +227,7 @@ end
 end
 
         data palace_room_2_obj
+        TYPE_PHARPY, 6*8, $10, TYPE_PHARPY, 13*8, $10
         $00
 end
 
@@ -324,6 +327,24 @@ plot_palace_160a
         plotsprite pghost0 sprite_pal Xposition Yposition frame
         goto plot_next
 
+palace_160b_sprite
+        asm
+          ldx obj_index
+          lda #<.plot_palace_160b
+          sta object_spr_ptr_lo,x
+          lda #>.plot_palace_160b
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats  
+
+plot_palace_160b
+        plotsprite pharpy0 sprite_pal Xposition Yposition frame
+        if !shadow_offset then goto plot_next
+        frame = F_PHARPY_SH
+        Yposition = Yposition + $10
+        sprite_pal = 7
+        goto plot_palace_160a
+
 ;==============================================================================
 ; PALACE BAT SPAWNER
 ;------------------------------------------------------------------------------
@@ -373,9 +394,8 @@ pbatsobj
           lda #>.plot_palace_160a
           sta object_spr_ptr_hi,y
 pbatpldir 
-          lda player_Xpos       ; determine which side
-          cmp #80               ; of screen to spawn bat
-          bcs pbatright
+          jsr randomize
+          bmi pbatright
 pbatleft
           lda #DIR_LEFT
           sta object_Xdir,y
@@ -477,3 +497,194 @@ obj_pbat_spawner_stats
           sta object_spr_ptr_hi,x
           jmp .obj_next_stats
 end
+
+;=========================================================
+; HARPY
+;---------------------------------------------------------
+; Decends from top of screen, swoops at player
+; Maybe fires feathers as projectile attack?
+;=========================================================
+pharpy_ai
+        asm
+          lda object_timer,x
+          beq pharpy_zero_Yvel
+          jmp pharpy_dive_timer
+pharpy_zero_Yvel
+;         lda #0
+;         sta object_Yvel_lo,x
+;         sta object_Yvel_hi,x
+
+; object data will fill these in as 0
+;        object_pal[index] = 0
+;        frame = F_HARPY_FLY_0
+
+        ; if the player is above the harpy, the harpy flies upward
+          lda player_Ypos
+          sec
+          sbc #32
+          cmp object_Ypos,x
+          bcs pharpy_dive
+          lda object_Ypos,x
+          cmp #$10
+          bcc pharpy_dive        ; don't let the harpy go above zone 1
+
+pharpy_fly_up
+          lda #F_PHARPY_FLY_0
+store_pharpy_fly
+          sta object_frame,x
+          lda #0
+          sta object_Xvel_lo,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+          lda #DIR_UP
+          sta object_Ydir,x
+end
+        ; harpy moves upward 1 pixel every other frame
+        if !animation_frame then pharpy_update_shadow
+        temp7 = rand&3
+        asm
+          ldx index
+          inc object_frame,x
+          dec object_Ypos,x
+end
+        playsfx sfx_pharpyflap temp7
+pharpy_update_shadow
+        asm
+          ldx index             ; sound code modifies x
+          jmp pharpy_shadow_update
+
+pharpy_dive
+          lda object_Ypos,x
+          cmp #$90
+          bcs pharpy_fly_up
+          lda object_type,x
+pharpy_dive_frame
+          lda #F_PHARPY_DIVE
+store_pharpy_dive
+          sta object_frame,x
+          lda object_Xpos,x
+          cmp player_Xpos
+          bcc pharpy_dive_right
+pharpy_dive_left
+;         sec
+;         sbc player_Xpos
+;         sta temp1
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          jmp pharpy_dive_Y
+pharpy_dive_right
+;         lda player_Xpos
+;         sec
+;         sbc object_Xpos,x
+;         sta temp1
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+pharpy_dive_Y
+          lda #DIR_DOWN
+          sta object_Ydir,x
+;         lda object_Ypos,x
+;         cmp player_Ypos
+;         bcc pharpy_dive_Y_greater
+;         sec
+;         sbc player_Ypos
+;         sta temp2
+;         jmp pharpy_dive_arc
+pharpy_dive_Y_greater
+;         lda player_Ypos
+;         sec
+;         sbc object_Ypos,x
+;         sta temp2
+pharpy_dive_arc
+        ; if there's no Y offset, treat this as a fly up frame
+        ; lda temp2
+        ; beq pharpy_dive_vel
+        ; jmp pharpy_fly_up
+
+pharpy_dive_vel
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
+
+;        if temp2 > temp1 then Yvelocity = Yvelocity + move_speed
+;        Yvelocity = Yvelocity + move_speed
+          lda #PHARPY_DIVE_TIME
+          sta object_timer,x
+          ; cut off the current frame here, will resume below
+          rts
+
+pharpy_dive_timer
+          dec object_timer,x
+
+pharpy_shadow_update
+          lda #0
+          sta shadow_offset
+          ; repurposed, hides shadow when Harpy above/below palace bridges
+          lda object_Ypos,x
+          cmp #$50
+          bcc pharpy_done
+          cmp #$78
+          bcs pharpy_done
+          sta shadow_offset
+
+pharpy_done
+          rts
+end
+
+obj_pharpy_stats
+        asm
+          ldx obj_index
+          lda #PHARPY_HP
+          sta object_hp,x
+          lda #PHARPY_VEL_CAP_HI
+          sta object_vel_cap_hi,x
+          lda #PHARPY_VEL_CAP_LO
+          sta object_vel_cap_lo,x
+          lda #PHARPY_DAMAGE
+          sta object_damage,x
+          lda #PHARPY_DEF
+          sta object_def,x
+          lda #PHARPY_MDEF
+          sta object_mdef,x
+          lda #PHARPY_FRICTION_HI
+          sta object_friction_hi,x
+          lda #PHARPY_FRICTION_LO
+          sta object_friction_lo,x
+          lda #PHARPY_SPEED_HI
+          sta object_speed_hi,x
+          lda #PHARPY_SPEED_LO
+          sta object_speed_lo,x
+          lda #PHARPY_FLAGS
+          sta object_flags,x
+          lda #PHARPY_ELEM_ATK
+          sta object_elem_atk,x
+          jmp .palace_160b_sprite
+end
+
+        data sfx_pharpyflap
+        $10,$10,$00 ; version, priority, frames per chunk
+        $00,$08,$06 ; first chunk of freq,channel,volume data 
+        $01,$08,$05
+        $02,$08,$04
+        $03,$08,$03
+        $04,$08,$02
+        $05,$08,$01
+        $06,$08,$01
+        $00,$00,$00
+        end

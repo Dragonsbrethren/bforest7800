@@ -159,9 +159,7 @@ hills_set_room
         characterset hills_ledges
 hills_init
         asm
-        ldx #1
-        stx shadow_offset
-        dex ;0
+        ldx #0
         stx no_flash
         stx alt_palette
         stx alt_torch
@@ -556,10 +554,6 @@ hills_boss_dead
 ; HARPY
 ;---------------------------------------------------------
 ; Decends from top of screen, swoops at player
-; Maybe fires feathers as projectile attack?
-; Has shadow, the shadow object for each Harpy must be
-; placed in map object data directly after
-; shadow_offset number of objects
 ;=========================================================
 
 ; HARPY QUEEN
@@ -719,17 +713,7 @@ harpy_dive_timer
           dec object_timer,x
 
 harpy_shadow_update
-        ; update shadow position TODO: more dynamic shadow movement
-          txa
-          clc
-          adc shadow_offset
-          tay
-          lda object_Ypos,x
-          clc
-          adc #$10
-          sta object_Ypos,y
-          lda object_Xpos,x
-          sta object_Xpos,y
+        ; removed, shadow updated by plotting code
 
 harpy_done
           rts
@@ -1132,11 +1116,6 @@ hills_160b_sprite
 end
         goto obj_next_stats
 
-plot_harpy_sh
-        frame = F_HARPY_SH
-        sprite_pal = 4
-        object_elevation[index] = 1
-
 plot_hills_160a
         asm
           ; don't lock zone if elevation > 0
@@ -1159,7 +1138,10 @@ plot_hills_160a_done
 
 plot_hills_160b
         plotsprite harpy0 sprite_pal Xposition Yposition frame
-        goto plot_next
+        frame = F_HARPY_SH
+        Yposition = Yposition + $10
+        sprite_pal = 4
+        goto plot_hills_160a_no_lock
 
 plot_hills_160b8
         plotsprite hrose4 sprite_pal Xposition Yposition frame

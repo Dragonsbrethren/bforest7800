@@ -14,6 +14,7 @@
         <name_rose
         <name_devout
         <name_redbone
+        <name_pharpy
         <name_pbat
         name_spider_lo
         name_spider_lo
@@ -60,6 +61,7 @@ end
         >name_rose
         >name_devout
         >name_redbone
+        >name_pharpy
         >name_pbat
         name_spider_hi
         name_spider_hi
@@ -269,4 +271,8 @@ end
 
         alphadata name_pbat font_spr
         'Necrobat*'
+end
+
+        alphadata name_pharpy font_spr
+        'Dark Harpy*'
 end

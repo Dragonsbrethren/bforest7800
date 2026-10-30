@@ -14,6 +14,7 @@
         TYPE_LIFEAPPLE  ; stone rose hills
         TYPE_CHARM2     ; devout
         TYPE_SWORD2     ; red bone
+        TYPE_ARMOR7     ; dark harpy
         TYPE_CHARM9     ; necrobat
         TYPE_CHARM9     ; spider
         TYPE_CHARM9     ; vertical spider
@@ -49,6 +50,7 @@ end
         TYPE_SOFT       ; stone rose hills
         TYPE_ETHER      ; devout
         TYPE_SHIELD3    ; red bone
+        TYPE_CHARM4     ; dark harpy
         TYPE_ANTIDOTE   ; necrobat
         TYPE_ANTIDOTE   ; spider
         TYPE_ANTIDOTE   ; vertical spider

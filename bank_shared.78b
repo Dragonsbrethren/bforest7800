@@ -218,11 +218,8 @@ tp_coin   cmp #TYPE_COIN
           bne tp_prism
           jmp .plot_coin
 tp_prism  cmp #TYPE_PRISM
-          bne tp_harpy_sh
-          jmp .plot_prism
-tp_harpy_sh cmp #TYPE_HARPY_SH
           bne tp_blood
-          jmp .plot_harpy_sh
+          jmp .plot_prism
 tp_blood  cmp #TYPE_BLOOD
           bne tp_dooro
           lda #2
@@ -726,12 +723,6 @@ spawn_object
         ; torches have special logic for changing drops
           cmp #TYPE_TORCH
           beq .spawns_torch
-        ; hack - if type was Harpy, remove its shadow
-          cmp #TYPE_HARPY
-          bne spawn_zero_nibble
-          jsr .remove_harpy_shadow
-harpy_shadow_removed
-spawn_zero_nibble
           lda object_Ypos,x
           ; if lower nibble >=8, push object to next zone
           and #$0F
@@ -766,9 +757,6 @@ end
           cmp #COMMON_DROP_RATE
           bcs spawn_common
 spawn_nothing
-          cmp #TYPE_HARPY_QUEEN
-          bne spawn_zero
-          jsr .remove_harpy_shadow
 spawn_zero
           lda #0
           sta object_type,x
