@@ -15,6 +15,7 @@
         <.obj_devout_stats
         <.obj_redbone_stats
         <.obj_pharpy_stats
+        <.obj_pdragon_stats
         <.obj_pbat_spawner_stats
         obj_spider_stats_lo
         obj_spider_stats_lo     ; vertical
@@ -69,6 +70,7 @@ end
         >.obj_devout_stats
         >.obj_redbone_stats
         >.obj_pharpy_stats
+        >.obj_pdragon_stats
         >.obj_pbat_spawner_stats
         obj_spider_stats_hi
         obj_spider_stats_hi     ; vertical

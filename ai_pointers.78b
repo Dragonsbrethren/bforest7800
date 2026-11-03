@@ -15,6 +15,7 @@
         <.devout_ai
         <.redbone_ai
         <.pharpy_ai
+        <.pdragon_ai
         <.pbat_ai
         spider_ai_lo
         spider_ai_lo    ; vertical spider, currently unused
@@ -72,6 +73,7 @@ end
         >.devout_ai
         >.redbone_ai
         >.pharpy_ai
+        >.pdragon_ai
         >.pbat_ai
         spider_ai_hi
         spider_ai_hi    ; vertical spider, currently unused

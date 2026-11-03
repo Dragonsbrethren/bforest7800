@@ -538,7 +538,7 @@ pos_swd_left
         <.lightning_ai
         <.batfireball_ai
         <.rock_ai
-        0
+        <.dragon_fire_ai
         0
         darkspark_ai_lo
         octoink_ai_lo
@@ -569,7 +569,7 @@ end
         >.lightning_ai
         >.batfireball_ai
         >.rock_ai
-        0
+        >.dragon_fire_ai
         0
         darkspark_ai_hi
         octoink_ai_hi
@@ -685,9 +685,12 @@ locked_door_block
 
 torch_tile_block_get_pos
         gosub get_torch_pos
-        pointer = torch_tileset_lo[tileset]
-        pointer_hi = torch_tileset_hi[tileset]
         asm
+          ldx tileset
+          lda torch_tileset_lo,x
+          sta pointer
+          lda torch_tileset_hi,x
+          sta pointer_hi
           jmp (pointer)
 end
 torch_tile_block_set_flag

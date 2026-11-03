@@ -492,23 +492,45 @@ add_item
         goto kill_object
 
 pickup_sword
-        pickup_index = pickup_index - TYPE_SWORD1
-        pickup_ptr_lo = pickup_swords_lo[pickup_index]
-        pickup_ptr_hi = pickup_swords_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_SWORD1
+          tax
+          lda pickup_swords_lo,x
+          sta pickup_ptr_lo
+          lda pickup_swords_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_sword
         m_sword_bits_1 = m_sword_bits_1 | pickup_bits1
         m_sword_bits_2 = m_sword_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_shield
-        pickup_index = pickup_index - TYPE_SHIELD1
-        if !player_shield then player_shield = pickup_index + 1
-        shield_pal = f_shield_pals[player_shield]
-        dec player_def = player_def + shield_def[player_shield]
-        pickup_ptr_lo = pickup_shields_lo[pickup_index]
-        pickup_ptr_hi = pickup_shields_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_SHIELD1
+          tax
+          lda player_shield
+          bne pickup_shield_no_equip
+          ; auto equip the first shield pickup
+          stx player_shield
+          lda f_shield_pals,x
+          sta shield_pal
+          lda shield_def,x
+          clc
+          adc player_def
+          sta player_def
+pickup_shield_no_equip
+          lda pickup_shields_lo,x
+          sta pickup_ptr_lo
+          lda pickup_shields_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_shield
         m_shield_bits_1 = m_shield_bits_1 | pickup_bits1
         m_shield_bits_2 = m_shield_bits_2 | pickup_bits2
@@ -2499,6 +2521,14 @@ end
         $00,$00,$00
 end
 
+        data spell_pal
+        FIREBALL_PAL, ICEFLAKES_PAL, WINDSLASH_PAL
+end
+
+        data spirit_frame
+        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1, F_PGHOST_1
+end
+
         incbasic music.78b
         dmahole 0
         incbasic sounds.78b
@@ -2870,12 +2900,4 @@ end
 
         data spell_frame
         FIREBALL_FRAME, ICEFLAKES_FRAME, WINDSLASH_FRAME
-end
-
-        data spell_pal
-        FIREBALL_PAL, ICEFLAKES_PAL, WINDSLASH_PAL
-end
-
-        data spirit_frame
-        0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1, F_PGHOST_1
 end

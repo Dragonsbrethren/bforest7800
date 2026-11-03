@@ -27,11 +27,12 @@
         incgraphic gfx/sprites/pskel10.png 160A 0 3 1 2
         incgraphic gfx/sprites/pskel11.png 160A 0 3 1 2
         incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
+        incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot1.png 160A 0 1 2 3
-        incgraphic gfx/dragon/pdragon_eye.png 160A 0 2 
+        incgraphic gfx/dragon/pdragon_eye.png 160A 0 3 
         incgraphic gfx/sprites/pharpy0.png 160B 0 4 9 12 6 5 8 3 2 1
         incgraphic gfx/sprites/pharpy1.png 160B 0 4 9 3 12 6 5 8 2 1
         incgraphic gfx/necro/necro_big_top0.png 160B
@@ -227,7 +228,7 @@ end
 end
 
         data palace_room_2_obj
-        TYPE_PHARPY, 6*8, $10, TYPE_PHARPY, 13*8, $10
+        TYPE_PDRAGON, 240, $70
         $00
 end
 
@@ -326,16 +327,6 @@ end
 plot_palace_160a
         plotsprite pghost0 sprite_pal Xposition Yposition frame
         goto plot_next
-
-palace_160b_sprite
-        asm
-          ldx obj_index
-          lda #<.plot_palace_160b
-          sta object_spr_ptr_lo,x
-          lda #>.plot_palace_160b
-          sta object_spr_ptr_hi,x
-end
-        goto obj_next_stats  
 
 plot_palace_160b
         plotsprite pharpy0 sprite_pal Xposition Yposition frame
@@ -650,6 +641,9 @@ end
 obj_pharpy_stats
         asm
           ldx obj_index
+          jsr load_pharpy_stats
+          jmp .obj_next_stats  
+load_pharpy_stats
           lda #PHARPY_HP
           sta object_hp,x
           lda #PHARPY_VEL_CAP_HI
@@ -674,7 +668,12 @@ obj_pharpy_stats
           sta object_flags,x
           lda #PHARPY_ELEM_ATK
           sta object_elem_atk,x
-          jmp .palace_160b_sprite
+palace_160b_sprite
+          lda #<.plot_palace_160b
+          sta object_spr_ptr_lo,x
+          lda #>.plot_palace_160b
+          sta object_spr_ptr_hi,x
+          rts
 end
 
         data sfx_pharpyflap
@@ -688,3 +687,261 @@ end
         $06,$08,$01
         $00,$00,$00
         end
+
+pdragon_ai
+        asm
+          lda object_state,x
+          and #%01000000
+          beq pdragon_player_check
+          jmp pdragon_think
+pdragon_player_check
+          ; dragon walks in from left side, if player
+          ; enters from left, despawn it for two harpies instead
+          lda player_Xpos
+          cmp #32
+          bcs pdragon_walk_forward_intro
+          lda #56
+          sta temp1
+          jmp pdragon_harpy_sub
+pdragon_walk_forward_intro
+          lda object_Xpos,x
+          cmp #88
+          bcc pdragon_set_dir_forward
+          lda #%01000000
+          ora object_state,x
+          sta object_state,x
+          jmp pdragon_think
+
+pdragon_walk_back
+pdragon_set_dir_back
+          lda object_Xpos,x
+;          cmp #128
+;          bcc pdragon_set_dir_forward
+          lda #DIR_LEFT
+          bne pdragon_set_speed
+pdragon_set_dir_forward
+          lda object_Xpos,x
+          cmp #72
+          bcs pdragon_set_dir_back
+          lda #DIR_RIGHT
+pdragon_set_speed
+          sta object_Xdir,x
+          sta object_facing,x
+          lda #object_speed_lo,x
+          clc
+          adc object_Xvel_lo,x
+          sta object_Xvel_lo,x
+          lda object_speed_hi,x
+          adc object_Xvel_hi,x
+          sta object_Xvel_hi,x
+
+pdragon_anim
+          lda #0
+          sta object_frame,x
+          lda animation_frame
+          beq pdragon_return
+          lda #1
+          sta object_frame,x
+end
+          playsfx sfx_pdragonstomp
+          shakescreen lo
+          asm
+pdragon_return
+          rts
+
+        ; the dragon's intro is over, now it decides how to behave
+pdragon_think
+          ; behavior flags
+          ; %10000000 : Quake
+          ; %01000000 : Moving
+          lda object_flags,x
+          and #%11000000
+          beq pdragon_think_randomize
+          ; we know the move flag is set
+          jmp pdragon_move
+
+pdragon_think_randomize
+          dec object_timer,x
+          bmi pdragon_think_ready
+          rts
+pdragon_think_ready
+          jsr randomize
+          bmi pdragon_move
+          jmp pdragon_fire_check
+
+pdragon_move
+          dec object_timer,x
+          bmi pdragon_move_set_timer
+          beq pdragon_move_done
+          lda player_Xpos
+          cmp object_Xpos,x
+          bcs pdragon_move_back
+          lda object_facing,x
+          cmp #DIR_RIGHT
+          beq pdragon_move_back
+          jmp pdragon_set_dir_forward
+pdragon_move_back
+          jmp pdragon_set_dir_back
+
+pdragon_move_done
+          lda #%10111111
+          and object_flags,x
+          sta object_flags,x
+          rts
+
+pdragon_move_set_timer
+          lda #%01000000
+          ora object_flags,x
+          sta object_flags,x
+          lda #PDRAGON_WALK_TIME
+          sta object_timer,x
+pdragon_move_rand
+          jsr randomize
+          bmi pdragon_move_set_back
+          jmp pdragon_set_dir_forward
+pdragon_move_set_back
+          jmp pdragon_set_dir_back
+
+pdragon_fire_check
+          lda object_parent,x
+          tay
+          lda object_type,y
+          bne pdragon_fire_return
+
+pdragon_fire
+        jsr .find_new_object
+        ldy spawn_index
+        beq pdragon_fire_return
+        tya
+        sta object_parent,x
+        lda #TYPE_PDRAGON_FIRE
+        sta object_type,y
+        lda #255
+        sta object_hp,y
+        sta object_def,y
+        sta object_mdef,y
+        lda object_Xpos,x
+        clc
+        adc #29
+        sta object_Xpos,y
+        lda object_Ypos,x
+        sta object_Ypos,y
+        lda #F_PDRAGON_FIRE
+        sta object_frame,y
+        lda #<.plot_palace_160a
+        sta object_spr_ptr_lo,y
+        lda #>.plot_palace_160a
+        sta object_spr_ptr_hi,y
+        lda #PDRAGON_FIRE_SPEED_HI
+        sta object_speed_hi,y
+        sta object_vel_cap_hi,y
+        lda #0
+        sta object_speed_lo,y
+        sta object_vel_cap_lo,y
+        sta object_friction_hi,y
+        sta object_friction_lo,y
+        lda #PDRAGON_FIRE_DAMAGE
+        sta object_damage,y
+        lda #PDRAGON_FIRE_PAL
+        sta object_pal,y
+        lda #DIR_LEFT
+        sta object_Xdir,y
+        sta object_facing,y
+        lda #PDRAGON_FIRE_FLAGS
+        sta object_flags,y
+        lda player_elevation
+        sta object_elevation,y
+        lda player_Ypos
+        cmp #$78
+        bcs pdragon_fire_down
+        lda #0
+        sta object_Ydir,y
+pdragon_fire_return
+        lda #PDRAGON_DELAY_FRAMES
+        sta object_timer,x
+        rts
+
+pdragon_fire_down
+        lda #DIR_DOWN
+        sta object_Ydir,y
+        lda #PDRAGON_FIRE_VERT_SPEED
+        sta object_Yvel,y
+        bne pdragon_fire_return
+
+pdragon_harpy_sub
+        lda #TYPE_PHARPY
+        sta object_type,x
+        lda #0
+        sta object_Ypos,x
+        lda temp1
+        sta object_Xpos,x
+        jsr load_pharpy_stats
+        inx
+        lda #104
+        sta temp1
+        cpx #3
+        bcc pdragon_harpy_sub
+        rts
+end
+
+dragon_fire_ai
+        ; TODO: Timer to automatically replace poison blob with cloud
+        asm
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+          sta object_facing,x
+          lda #PDRAGON_FIRE_SPEED_HI
+          sta object_Xvel_hi,x
+          sta object_speed_hi,x
+          jmp proj_move_check
+end
+
+obj_pdragon_stats
+        asm
+          ldx obj_index
+          lda #PDRAGON_HP
+          sta object_hp,x
+          lda #PDRAGON_DAMAGE
+          sta object_damage,x
+          lda #PDRAGON_DEF
+          sta object_def,x
+          lda #PDRAGON_MDEF
+          sta object_mdef,x
+          lda #PDRAGON_SPEED_HI
+          sta object_speed_hi,x
+          lda #PDRAGON_VEL_CAP_HI
+          sta object_friction_hi,x
+          sta object_vel_cap_hi,x
+          lda #PDRAGON_SPEED_LO
+          sta object_speed_lo,x
+          lda #0
+          sta object_friction_lo,x
+          sta object_vel_cap_lo,x
+          lda #PDRAGON_ELEM_ATK
+          sta object_elem_atk,x
+          lda #PDRAGON_ELEM_DEF
+          sta object_elem_def,x
+          lda #<.plot_pdragon
+          sta object_spr_ptr_lo,x
+          lda #>.plot_pdragon
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
+plot_pdragon
+        Xoffset  = Xposition + 29
+        Yoffset = Yposition + 16
+        plotsprite pdragon_eye  2 Xoffset Yposition 0
+        plotsprite pdragon_top0 7 Xposition Yposition frame
+        plotsprite pdragon_bot0 7 Xposition Yoffset frame
+        goto plot_next
+
+        data sfx_pdragonstomp
+        $10,$10,$00 ; version, priority, frames per chunk
+        $07,$06,$05
+        $0b,$06,$06
+        $0b,$06,$06
+        $0b,$06,$06
+        $07,$06,$02
+        $00,$00,$00
+end

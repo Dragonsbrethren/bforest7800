@@ -15,6 +15,7 @@
         <name_devout
         <name_redbone
         <name_pharpy
+        <name_pdragon
         <name_pbat
         name_spider_lo
         name_spider_lo
@@ -62,6 +63,7 @@ end
         >name_devout
         >name_redbone
         >name_pharpy
+        >name_pdragon
         >name_pbat
         name_spider_hi
         name_spider_hi
@@ -275,4 +277,8 @@ end
 
         alphadata name_pharpy font_spr
         'Dark Harpy*'
+end
+
+        alphadata name_pdragon font_spr
+        'Dragon*'
 end
