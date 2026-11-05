@@ -849,8 +849,8 @@ pdragon_fire
         sta object_facing,y
         lda #PDRAGON_FIRE_FLAGS
         sta object_flags,y
-        lda player_elevation
-        sta object_elevation,y
+        lda #PDRAGON_FIRE_ELEM_ATK
+        sta object_elem_atk,y
         lda player_Ypos
         cmp #$78
         bcs pdragon_fire_down

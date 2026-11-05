@@ -924,10 +924,11 @@
         const PDRAGON_ELEM_DEF = %00110111
 
         const PDRAGON_FIRE_SPEED_HI = 3
-        const PDRAGON_FIRE_VERT_SPEED = 2
+        const PDRAGON_FIRE_VERT_SPEED = 1
         const PDRAGON_FIRE_DAMAGE = 20
         const PDRAGON_FIRE_PAL = 2
         const PDRAGON_FIRE_FLAGS = %00010000
+        const PDRAGON_FIRE_ELEM_ATK = %00000001
         const F_PDRAGON_FIRE = 19
 
         const PDRAGON_QUAKE_FRAMES = 3
