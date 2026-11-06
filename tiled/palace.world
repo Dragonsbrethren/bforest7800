@@ -55,6 +55,13 @@
             "width": 160,
             "x": 0,
             "y": 0
+        },
+        {
+            "fileName": "palace_room_8.tmx",
+            "height": 192,
+            "width": 160,
+            "x": 160,
+            "y": 0
         }
     ],
     "onlyShowAdjacentMaps": false,

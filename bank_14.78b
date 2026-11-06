@@ -135,11 +135,8 @@ end
 palace_pals
         if lightning_timer then goto palace_lightning
 palace_sky
-        asm
-          lda #PAL_P_SKY
-          sta P4C1
-          sta P6C1
-end
+        P4C1 = getfade(PAL_P_SKY, black)
+        P6C1 = getfade(PAL_P_SKY, black)
         goto palace_normal_pal
 
 palace_lightning
