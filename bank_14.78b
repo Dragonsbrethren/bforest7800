@@ -14,18 +14,18 @@
         incgraphic gfx/sprites/pbat1.png 160A 0 1 3 2
         incgraphic gfx/sprites/pbat2.png 160A 0 1 3 2
         incgraphic gfx/sprites/pbat3.png 160A 0 1 3 2
-        incgraphic gfx/sprites/pskel0.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel1.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel2.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel3.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel4.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel5.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel6.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel7.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel8.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel9.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel10.png 160A 0 3 1 2
-        incgraphic gfx/sprites/pskel11.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie0.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie1.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie2.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie3.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie4.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie5.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie6.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie7.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie8.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie9.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie10.png 160A 0 3 1 2
+        incgraphic gfx/sprites/zombie11.png 160A 0 3 1 2
         incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
         incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
