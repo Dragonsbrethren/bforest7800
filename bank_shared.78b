@@ -544,7 +544,7 @@ pos_swd_left
         octoink_ai_lo
         <.seed_ai
         <.hseed_ai
-        0
+        <.zombfist_ai
         0
         0
         0
@@ -575,7 +575,7 @@ end
         octoink_ai_hi
         >.seed_ai
         >.hseed_ai
-        0
+        >.zombfist_ai
         0
         0
         0
@@ -2589,3 +2589,7 @@ cast_poison_no_double
 end
         playsfx sfx_rubbermallet
         goto chant_done
+
+        data spell_frame
+        FIREBALL_FRAME, ICEFLAKES_FRAME, WINDSLASH_FRAME
+end

@@ -17,6 +17,7 @@
         <.pharpy_ai
         <.pdragon_ai
         <.pbat_ai
+        <.zombie_ai
         spider_ai_lo
         spider_ai_lo    ; vertical spider, currently unused
         <.cave_spider_ai
@@ -75,6 +76,7 @@ end
         >.pharpy_ai
         >.pdragon_ai
         >.pbat_ai
+        >.zombie_ai
         spider_ai_hi
         spider_ai_hi    ; vertical spider, currently unused
         >.cave_spider_ai

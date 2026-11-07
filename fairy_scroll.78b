@@ -17,6 +17,7 @@
         <name_pharpy
         <name_pdragon
         <name_pbat
+        <name_zombie
         name_spider_lo
         name_spider_lo
         name_cspider_lo
@@ -65,6 +66,7 @@ end
         >name_pharpy
         >name_pdragon
         >name_pbat
+        >name_zombie
         name_spider_hi
         name_spider_hi
         name_cspider_hi
@@ -281,4 +283,8 @@ end
 
         alphadata name_pdragon font_spr
         'Dragon*'
+end
+
+        alphadata name_zombie font_spr
+        'Zombie*'
 end
