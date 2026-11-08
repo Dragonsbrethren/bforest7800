@@ -1650,3 +1650,17 @@ cbarrier_spr_ptr
           jsr .get_object_pos
           jmp .torch_tile_block_caves
 end
+
+dragon_sword_check
+        Xoffset = Xposition + 12
+        ; this hitbox is super generous for now
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xoffset, Yposition, 40, 32) then return thisbank
+        goto sword_poof
+
+dragon_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition + 10
+        temp4 = Yposition + 7
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 40, 25) then return thisbank
+        goto pc_damage

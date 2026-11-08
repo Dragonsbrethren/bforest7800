@@ -490,41 +490,68 @@ melee_range
 ; Same as player code (can probably be shared with some tweaks)
 ;-=============================================================================
 position_sword
-        if object_facing[index] = DIR_DOWN then pos_swd_down
-        if object_facing[index] = DIR_UP then pos_swd_up
-        if object_facing[index] = DIR_LEFT then pos_swd_left
+        asm
+          ldx index
+          lda object_facing,x
+          cmp #DIR_DOWN
+          beq pos_swd_down
+          cmp #DIR_UP
+          beq pos_swd_up
+          cmp #DIR_LEFT
+          beq pos_swd_left
 
 pos_swd_right
-        Xposition = object_Xpos[index] + SWORD_OFFSET_RIGHT_X
-        Yposition = object_Ypos[index] + SWORD_OFFSET_RIGHT_Y
-        ;temp3 = 12
-        ;temp4 = 4
-        frame = 2
-        return thisbank
+        lda object_Xpos,x
+        clc
+        adc #SWORD_OFFSET_RIGHT_X
+        sta Xposition
+        lda object_Ypos,x
+        clc
+        adc #SWORD_OFFSET_RIGHT_Y
+        sta Yposition
+        lda #2
+        sta frame
+        rts
 
 pos_swd_down
-        Xposition = object_Xpos[index] + SWORD_OFFSET_DOWN_X
-        Yposition = object_Ypos[index] + SWORD_OFFSET_DOWN_Y
-        ;temp3 = 4
-        ;temp4 = 16
-        frame = 0
-        return thisbank
+        lda object_Xpos,x
+        clc
+        adc #SWORD_OFFSET_DOWN_X
+        sta Xposition
+        lda object_Ypos,x
+        clc
+        adc #SWORD_OFFSET_DOWN_Y
+        sta Yposition
+        lda #0
+        sta frame
+        rts
 
 pos_swd_up
-        Xposition = object_Xpos[index] + SWORD_OFFSET_UP_X
-        Yposition = object_Ypos[index] + SWORD_OFFSET_UP_Y
-        ;temp3 = 4
-        ;temp4 = 16
-        frame = 1
-        return thisbank
+        lda object_Xpos,x
+        clc
+        adc #SWORD_OFFSET_UP_X
+        sta Xposition
+        lda object_Ypos,x
+        clc
+        adc #SWORD_OFFSET_UP_Y
+        sta Yposition
+        lda #1
+        sta frame
+        rts
 
 pos_swd_left
-        Xposition = object_Xpos[index] + SWORD_OFFSET_LEFT_X
-        Yposition = object_Ypos[index] + SWORD_OFFSET_LEFT_Y
-        ;temp3 = 12
-        ;temp4 = 4
-        frame = 3
-        return thisbank
+        lda object_Xpos,x
+        clc
+        adc #SWORD_OFFSET_LEFT_X
+        sta Xposition
+        lda object_Ypos,x
+        clc
+        adc #SWORD_OFFSET_LEFT_Y
+        sta Yposition
+        lda #3
+        sta frame
+        rts
+end
 
         incbasic ai_pointers.78b
 
@@ -1873,12 +1900,6 @@ spawner_done
           jmp .cc_next
 end
 
-dragon_sword_check
-        Xoffset = Xposition + 12
-        ; this hitbox is super generous for now
-        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xoffset, Yposition, 40, 32) then return thisbank
-        goto sword_poof
-
 big_sword_check
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 36, 16) then return thisbank
         goto sword_poof
@@ -1900,9 +1921,14 @@ sword_bypass_elevation
           jmp .big_sword_check
 sword_test_dragon
           cmp #TYPE_DRAGON
-          bne sword_normal_check
+          bne sword_test_pdragon
           ; dragon's body gets its own check, normal check used for head
           jsr .dragon_sword_check
+sword_test_pdragon
+          cmp #TYPE_PDRAGON
+          bne sword_normal_check
+          ; pdragon's body gets its own check, normal check used for head
+          jsr .pdragon_sword_check
 sword_normal_check
 end
         if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xposition, Yposition, 12, 16) then return thisbank
@@ -2086,8 +2112,12 @@ test_kraken
           jmp .big_box
 test_tentacle
           cmp #TYPE_TENTACLE
-          bne test_dragon
+          bne test_pdragon
           jmp .tall_box
+test_pdragon
+          cmp #TYPE_PDRAGON
+          bne test_dragon
+          jmp .pdragon_box
 test_dragon
           cmp #TYPE_DRAGON
           bne normal_box
@@ -2098,7 +2128,7 @@ end
         temp2 = player_Ypos + 1
         temp3 = Xposition + 3
         temp4 = Yposition + 2
-        if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 7, 12) then return
+        if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 7, 12) then return thisbank
 
         asm
           ldx index
@@ -2160,14 +2190,6 @@ set_status_temp
           jsr .set_status
           jmp .pc_damage
 end
-
-dragon_box
-        temp1 = player_Xpos + 2
-        temp2 = player_Ypos + 1
-        temp3 = Xposition + 10
-        temp4 = Yposition + 7
-        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 40, 25) then return thisbank
-        goto pc_damage
 
 big_box
         temp1 = player_Xpos + 2

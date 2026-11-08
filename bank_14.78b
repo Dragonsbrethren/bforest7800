@@ -947,6 +947,25 @@ plot_pdragon
         $00,$00,$00
 end
 
+pdragon_sword_check
+        Xoffset = Xposition + 12
+        ; this hitbox is super generous for now
+        if !boxcollision (sword_Xpos, sword_Ypos, sword_width, sword_height, Xoffset, Yposition, 40, 32) then return thisbank
+        goto sword_poof
+
+pdragon_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        temp3 = Xposition + 10
+        temp4 = Yposition + 11
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 40, 25) then pdragon_box2
+        goto pc_damage
+pdragon_box2
+        temp3 = Xposition + 24
+        temp4 = Yposition + 3
+        if !boxcollision (temp1, temp2, 9, 14, temp3, temp4, 14, 8) then return thisbank
+        goto pc_damage
+
 ;==============================================================================
 ; ZOMBIE AI
 ;------------------------------------------------------------------------------
