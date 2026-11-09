@@ -947,8 +947,8 @@
         const ZOMBIE_MDEF        =  2
         const ZOMBIE_FRICTION_HI =  1
         const ZOMBIE_FRICTION_LO =  0
-        const ZOMBIE_SPEED_HI    =  1
-        const ZOMBIE_SPEED_LO    =  0
+        const ZOMBIE_SPEED_HI    =  0
+        const ZOMBIE_SPEED_LO    =  176
         const ZOMBIE_WALK_TIMER  = 10
         const ZOMBIE_CAST_FRAMES = 10
         const ZOMBIE_FLAGS       = %00000000

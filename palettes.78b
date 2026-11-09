@@ -128,8 +128,8 @@
         const PAL_P_LTBAT   = $B2
         const PAL_P_DKBAT   = $B4
 
-        const PAL_P_LTZOMB  = $57
-        const PAL_P_DKZOMB  = $65
+        const PAL_P_LTZOMB  = $2E
+        const PAL_P_DKZOMB  = $D5
 
 
         const PAL_DISABLED_1 = $2B
