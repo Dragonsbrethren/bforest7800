@@ -1008,10 +1008,14 @@ player_attack_bypass_save
         if player_exiting_chant then test_joy_done
         if retract_counter then retract_sword
         if player_sword then temp1 = PLAYER_WIDTH : temp2 = PLAYER_HEIGHT else temp1 = 4 : temp2 = 4 
-        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_Xpos = player_Xpos + SWORD_OFFSET_UP_X   : sword_Ypos = player_Ypos + SWORD_OFFSET_UP_Y   : sword_width = 3 : sword_height = temp2 : sword_frame = 1 : goto sword_done
-        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_Xpos = player_Xpos + SWORD_OFFSET_LEFT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_LEFT_Y : sword_width = temp1 : sword_height = 3 :sword_frame = 3 : goto sword_done
-        if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : sword_Xpos = player_Xpos + SWORD_OFFSET_RIGHT_X : sword_Ypos = player_Ypos + SWORD_OFFSET_RIGHT_Y : sword_width = temp1 : sword_height = 3 : sword_frame = 2 : goto sword_done
-        player_frame = FRAME_ATK_D : sword_Xpos = player_Xpos + SWORD_OFFSET_DOWN_X : sword_Ypos = player_Ypos + SWORD_OFFSET_DOWN_Y : sword_width = 3 : sword_height = temp2 : sword_frame = 0 : player_facing = DIR_DOWN
+        gosub position_sword
+        sword_frame = frame
+        sword_Xpos = Xposition
+        sword_Ypos = Yposition
+        if player_facing = DIR_UP   then player_frame = FRAME_ATK_U : sword_width = 3 : sword_height = temp2 :goto sword_done
+        if player_facing = DIR_LEFT then player_frame = FRAME_ATK_L : sword_width = temp1 : sword_height = 3 : goto sword_done
+        if player_facing = DIR_RIGHT then player_frame = FRAME_ATK_R : sword_width = temp1 : sword_height = 3 : goto sword_done
+        player_frame = FRAME_ATK_D : sword_width = 3 : sword_height = temp2 : player_facing = DIR_DOWN
 sword_done
 
 player_attack_return
