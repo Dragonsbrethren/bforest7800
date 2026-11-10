@@ -2294,7 +2294,7 @@ damage_player_hp
 end
         hp_change = hp_change / 2
 damage_player_hp_no_elem
-        hp_change = hp_change - temp3
+        if hp_change < temp3 then hp_change = 1 else hp_change = hp_change - temp3
         ; don't want total immunity to damage, that's boring!
         if !hp_change then hp_change = 1
         if hp_change > temp2 then hp_change = 1
@@ -2437,7 +2437,7 @@ decrease_player_mp
         ; TODO: This currently can't scale, only works with max HP 48...
         temp1 = player_mp        ; temp1 used to detect underflow
         temp2 = mp_change
-        mp_change = mp_change - player_wisdom
+        if player_wisdom >= mp_change then mp_change = 1 else mp_change = mp_change - player_wisdom
         if player_armor >= LIGHT_ARMOR_START then mp_change = mp_change / 2
         if !mp_change || mp_change > temp2 then mp_change = 1
         player_mp = player_mp - mp_change
