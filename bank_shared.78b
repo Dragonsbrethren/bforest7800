@@ -1257,8 +1257,12 @@ move_test_up
         jmp move_up
 move_test_up_no_fly
         lda object_Xpos,x
+        ldy object_type,x
+        cpy #TYPE_PROJECTILE
+        bcs move_test_up_proj
         clc
         adc #3
+move_test_up_proj
         lsr
         lsr
         lsr
@@ -1279,8 +1283,16 @@ end
 ;        peekX = (Xposition + 8) / TILE_WIDTH
         asm
         lda object_Xpos,x
+        ldy object_type,x
+        cpy #TYPE_PROJECTILE
+        bcs move_test_up_proj2
         clc
         adc #8
+        jmp move_test_up_peekX_2
+move_test_up_proj2
+        clc
+        adc #5
+move_test_up_peekX_2
         lsr
         lsr
         lsr
@@ -1366,18 +1378,27 @@ move_test_down
         ;peekY = ((Yposition + Yvelocity_hi) + 15) / TILE_HEIGHT
 move_test_down_no_fly
           lda object_Xpos,x
+          ldy object_type,x
+          cmp #TYPE_PROJECTILE
+          bcs move_test_down_proj
           clc
           adc #3
+move_test_down_proj
           lsr
           lsr
           lsr
           sta peekX
           lda object_Ypos,x
-          clc
+          cpy #TYPE_PROJECTILE
+          bcs move_test_down_proj2
           adc #15
+          bne move_test_down_peekY
+move_test_down_proj2
+          clc
+          adc #5
+move_test_down_peekY
           clc
           adc object_Yvel_hi,x
-move_test_down_peekY
           lsr
           lsr
           lsr
@@ -1389,8 +1410,15 @@ move_down_map_peek
         ;peekX = (Xposition + 8) / TILE_WIDTH
         asm
           lda object_Xpos,x
-          clc
+          ldy object_type,x
+          cpy #TYPE_PROJECTILE
+          bcs move_test_down_peekX_proj2
           adc #8
+          bne move_test_down_peekX_2
+move_test_down_peekX_proj2
+          clc
+          adc #5
+move_test_down_peekX_2
           lsr
           lsr
           lsr
@@ -1464,8 +1492,12 @@ move_test_left
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
 move_test_left_no_fly
         lda object_Xpos,x
+        ldy object_type,x
+        cpy #TYPE_PROJECTILE
+        bcs move_test_left_proj
         clc
         adc #2
+move_test_left_proj
         sec
         sbc object_Xvel_hi,x
         lsr
@@ -1485,8 +1517,16 @@ end
 ;        peekY = (Yposition + 15) / TILE_HEIGHT
         asm
         lda object_Ypos,x
+        ldy object_type,x
+        cpy #TYPE_PROJECTILE
+        bcs move_test_left_proj2
         clc
         adc #15
+        bne move_test_left_peekY_2
+move_test_left_proj2
+        clc
+        adc #5
+move_test_left_peekY_2
         lsr
         lsr
         lsr
@@ -1563,8 +1603,12 @@ move_test_right
 ;        peekY = (Yposition + 8) / TILE_HEIGHT
 move_test_right_no_fly
         lda object_Xpos,x
+        ldy object_type,x
+        cpy #TYPE_PROJECTILE
+        bcs move_test_right_proj
         clc
         adc #9
+move_test_right_proj
         clc
         adc object_Xvel_hi,x
         lsr
@@ -1584,8 +1628,16 @@ end
 ;        peekY = (Yposition + 15) / TILE_HEIGHT
         asm
         lda object_Ypos,x
+        ldy object_type,x
+        cmp #TYPE_PROJECTILE
+        bcs move_test_right_proj2
         clc
         adc #15
+        bne move_test_right_peekY2
+move_test_right_proj2
+        clc
+        adc #5
+move_test_right_peekY2
         lsr
         lsr
         lsr
