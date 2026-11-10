@@ -1301,15 +1301,8 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
           jsr .test_walkable
-          ldx index
-          ; floating objects bypass solidity check if floatable tile
-          lda object_flags,x
-          and #%00010000
-          beq test_walkable_up
-          lda tile_properties
-          and #%00000010
-          beq test_walkable_up
-          jmp move_up
+          ; carry set = tile floatable
+          bcs move_up
 test_walkable_up
           ldx index
           bne test_walkable_up_ledge_done
@@ -1427,15 +1420,8 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
           jsr .test_walkable
-          ldx index
-          ; floating objects bypass solidity check if floatable tile
-          lda object_flags,x
-          and #%00010000
-          beq test_walkable_down
-          lda tile_properties
-          and #%00000010
-          beq test_walkable_down
-          jmp move_down
+          ; carry set = tile floatable
+          bcs move_down
 test_walkable_down
           ; test for waterfall
           lda tile_properties
@@ -1487,9 +1473,6 @@ move_test_left
           and #4
           beq move_test_left_no_fly
           jmp move_left
-;        peekX = ((Xposition + 2) - Xvelocity_hi) / TILE_WIDTH
-        ; Add 8 to Y position to allow object to overlap solid tiles above it slightly
-;        peekY = (Yposition + 8) / TILE_HEIGHT
 move_test_left_no_fly
         lda object_Xpos,x
         ldy object_type,x
@@ -1536,15 +1519,8 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
           jsr .test_walkable
-          ldx index
-          ; floating objects bypass solidity check if floatable tile
-          lda object_flags,x
-          and #%00010000
-          beq test_walkable_left
-          lda tile_properties
-          and #%00000010
-          beq test_walkable_left
-          jmp move_left
+          ; carry set = tile floatable
+          bcs move_left
 test_walkable_left
         ; test for leftward ledge, set hopping flag
           lda tile_properties
@@ -1647,15 +1623,8 @@ end
         move_tile_2 = peekchar (current_map, peekX, peekY, 20, 14)
         asm
           jsr .test_walkable
-          ldx index
-          ; floating objects bypass solidity check if floatable tile
-          lda object_flags,x
-          and #%00010000
-          beq test_walkable_right
-          lda tile_properties
-          and #%00000010
-          beq test_walkable_right
-          jmp move_right
+          ; carry set = tile floatable
+          bcs move_right
 test_walkable_right
           lda tile_properties
           and #%00100000
@@ -1694,6 +1663,7 @@ mo_rt_s   sta object_Xpos,x
 move_return
           rts
 end
+
 test_walkable
         move_tile_1 = move_tile_1 / 2
         move_tile_2 = move_tile_2 / 2
@@ -1743,6 +1713,21 @@ walkable_return_no_elev
           sta move_tile_1_old
           lda move_tile_2
           sta move_tile_2_old
+
+test_floatable
+          ; inlined, carry used to determine if the tile is floatable
+          ldx index
+          lda object_flags,x
+          and #%00010000
+          beq test_floatable_no
+          lda tile_properties
+          and #%00000010
+          beq test_floatable_no
+test_floatable_yes
+          sec
+          rts
+test_floatable_no
+          clc
           rts
 
 destroy_projectile_X
@@ -1942,7 +1927,8 @@ kill_object
           ldx index
           bne spawner_flag
 change_to_spawner
-          cpx #TYPE_BOSSMONSTER
+          lda object_type,x
+          cmp #TYPE_BOSSMONSTER
           bcc spawner_flag
           ; bosses won't spawn items
           lda #0
