@@ -2159,8 +2159,12 @@ test_player_elevation_match
         asm
           lda object_type,x
           cmp #TYPE_SKELSWORD
-          bne test_kraken
+          bne test_projectile
           jmp .enemy_sword_collision
+test_projectile
+          cmp #TYPE_PROJECTILE
+          bcc test_kraken
+          jmp .projectile_box
 test_kraken
           cmp #TYPE_OCTOKRAKEN
           bne test_tentacle
@@ -2185,6 +2189,7 @@ end
         temp4 = Yposition + 2
         if !boxcollision (player_Xpos, player_Ypos, 9, 14, temp3, temp4, 7, 12) then return thisbank
 
+projectile_hit
         asm
           ldx index
           lda object_type,x
@@ -2245,6 +2250,12 @@ set_status_temp
           jsr .set_status
           jmp .pc_damage
 end
+
+projectile_box
+        temp1 = player_Xpos + 2
+        temp2 = player_Ypos + 1
+        if !boxcollision (player_Xpos, player_Ypos, 9, 14, Xposition, Yposition, 5, 5) then return thisbank
+        goto projectile_hit
 
 big_box
         temp1 = player_Xpos + 2
