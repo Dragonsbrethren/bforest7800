@@ -984,9 +984,6 @@ spark_ai
           bne spark_move_right
 spark_move_left
           inc object_Xpos,x
-          lda animation_frame
-          bne spark_move_left_return
-          inc object_Ypos,x
 spark_move_left_return
           rts
 spark_flip
@@ -996,9 +993,6 @@ spark_flip
           rts
 spark_move_right
           dec object_Xpos,x
-          lda animation_frame
-          bne spark_move_right_return
-          dec object_Ypos,x
 spark_move_right_return 
           rts
 spark_init_timer
