@@ -224,6 +224,7 @@ end
 end
 
         data palace_room_1_obj
+        TYPE_ZOMBIE, 50, $40
         $00
 end
 
@@ -973,7 +974,38 @@ pdragon_box2
 ; Walks slowly until aligned with player, then attacks
 ;==============================================================================
 zombie_ai
+spark_ai
         asm
+          dec object_timer,x
+          bmi spark_init_timer
+          beq spark_flip
+          lda object_flags,x
+          and #%01000000
+          bne spark_move_right
+spark_move_left
+          inc object_Xpos,x
+          lda animation_frame
+          bne spark_move_left_return
+          inc object_Ypos,x
+spark_move_left_return
+          rts
+spark_flip
+          lda object_flags,x
+          eor #%01000000
+          sta object_flags,x
+          rts
+spark_move_right
+          dec object_Xpos,x
+          lda animation_frame
+          bne spark_move_right_return
+          dec object_Ypos,x
+spark_move_right_return 
+          rts
+spark_init_timer
+          lda #12
+          sta object_timer,x
+          rts
+
           ; check flag 6
           lda object_flags,x
           and #%01000000

@@ -255,7 +255,7 @@ plot_door
         goto plot_next
 
 plot_torch
-        PLOTSPRITE torch0 0 Xposition Yposition frame
+        plotsprite torch0 0 Xposition Yposition frame
         goto plot_next
 
 plot_coin
@@ -487,7 +487,7 @@ melee_range
 ;==============================================================================
 ; POSITION SWORD
 ;------------------------------------------------------------------------------
-; Same as player code (can probably be shared with some tweaks)
+; Used by player, Skeletal Knights, and Zombies
 ;-=============================================================================
 position_sword
         asm
