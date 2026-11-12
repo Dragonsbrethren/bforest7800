@@ -1923,17 +1923,40 @@ find_target_next
 end
 
 check_item_qtys
-        if !m_item_qty[1] then m_item_bits_1{0} = 0
-        if !m_item_qty[2] then m_item_bits_1{1} = 0
-        if !m_item_qty[3] then m_item_bits_1{2} = 0
-        if !m_item_qty[4] then m_item_bits_1{3} = 0
-        if !m_item_qty[5] then m_item_bits_1{4} = 0
-        if !m_item_qty[6] then m_item_bits_2{0} = 0
-        if !m_item_qty[7] then m_item_bits_2{1} = 0
-        if !m_item_qty[8] then m_item_bits_2{2} = 0
-        if !m_item_qty[9] then m_item_bits_2{3} = 0
-        if !m_item_qty[10] then m_item_bits_2{4} = 0
-        return thisbank
+        asm
+          ldx #1
+check_item_qtys_loop
+          lda m_item_qty,x
+          bne check_item_qtys_next
+
+          cpx #6
+          bcs check_item_qtys_2
+          txa
+          sec
+          sbc #1
+          tay
+          lda item_bits,y
+          eor #$FF
+          and m_item_bits_1
+          sta m_item_bits_1
+          jmp check_item_qtys_next
+
+check_item_qtys_2
+          txa
+          sec
+          sbc #6
+          tay
+          lda item_bits,y
+          eor #$FF
+          and m_item_bits_2
+          sta m_item_bits_2
+
+check_item_qtys_next
+          inx
+          cpx #11
+          bne check_item_qtys_loop
+          rts
+end
 
 clear_menu_debounce
 debug_jo_tile
