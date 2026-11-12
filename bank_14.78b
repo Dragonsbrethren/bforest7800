@@ -27,6 +27,7 @@
         incgraphic gfx/sprites/zombie10.png 160A 0 1 2 3
         incgraphic gfx/sprites/zombie11.png 160A 0 1 2 3
         incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
+        incgraphic gfx/sprites/column.png 160A 1 0 2 3
         incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
@@ -969,11 +970,10 @@ pdragon_box2
         goto pc_damage
 
 ;==============================================================================
-; ZOMBIE AI
+; COLUMN SPARK AI
 ;------------------------------------------------------------------------------
-; Walks slowly until aligned with player, then attacks
+; Rotates around a column
 ;==============================================================================
-zombie_ai
 spark_ai
         asm
           dec object_timer,x
@@ -999,7 +999,47 @@ spark_init_timer
           lda #12
           sta object_timer,x
           rts
+end
 
+obj_spark_stats
+        asm
+          ldx obj_index
+          lda #255
+          sta object_hp,x
+          sta object_def,x
+          sta object_mdef,x
+          lda #SPARK_DAMAGE
+          sta object_damage,x
+          lda #<.plot_spark
+          sta object_spr_ptr_lo,x
+          lda #>.plot_spark
+          sta object_spr_ptr_hi,x
+;         leave palette unitialized so it is set to 0
+;         lda #SPARK_PAL
+;         sta object_pal,x
+          lda #F_SPARK
+          sta object_frame,x
+end
+        goto obj_next_stats
+
+plot_spark
+        asm
+          ldx index
+          lda object_flags,x
+          and #%01000000
+          ; don't draw the column sprite if the spark is moving left
+          beq .plot_spark_bypass_column
+end
+        plotsprite column 4 Xposition Yposition 0
+plot_spark_bypass_column
+
+;==============================================================================
+; ZOMBIE AI
+;------------------------------------------------------------------------------
+; Walks slowly until aligned with player, then attacks
+;==============================================================================
+zombie_ai
+        asm
           ; check flag 6
           lda object_flags,x
           and #%01000000

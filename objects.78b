@@ -972,6 +972,11 @@
         const ZOMBFIST_ELEM_ATK = %00100000
         const ZOMBFIST_PAL = 0
 
+        ; COLUMN SPARK
+        const SPARK_DAMAGE = 20
+        const SPARK_PAL = 0
+        const F_SPARK = 2
+
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
 

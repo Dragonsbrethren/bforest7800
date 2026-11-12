@@ -437,40 +437,86 @@ password_display
 end
 
 prep_inv_bits
-        if pickup_index >= 5 then prep_bits_2
-        pickup_bits1 = inv_bits[pickup_index]
-        pickup_bits2 = 0
-        return
-prep_bits_2
-        pickup_index = pickup_index - 5
-        pickup_bits2 = inv_bits[pickup_index]
-        pickup_bits1 = 0
-        return
+; filepath: c:\Users\drago\7800\bforest7800\bank_1.78b
+prep_inv_bits
+        asm
+          lda pickup_index
+          cmp #5
+          bcs prep_inv_bits_2
+
+          tay
+          lda inv_bits,y
+          sta pickup_bits1
+          lda #0
+          sta pickup_bits2
+          rts
+
+prep_inv_bits_2
+          sec
+          sbc #5
+          tay
+          lda inv_bits,y
+          sta pickup_bits2
+          lda #0
+          sta pickup_bits1
+          rts
+end
 
 pickup_map
-        pickup_index = pickup_index - TYPE_MAP1
-        pickup_ptr_lo = pickup_maps_lo[pickup_index]
-        pickup_ptr_hi = pickup_maps_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_MAP1
+          sta pickup_index
+          tax
+          lda pickup_maps_lo,x
+          sta pickup_ptr_lo
+          lda pickup_maps_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_map
         m_map_bits = m_map_bits | pickup_bits1
         goto kill_object
 
 pickup_key
-        pickup_index = pickup_index - TYPE_KEY1
-        pickup_ptr_lo = pickup_keys_lo[pickup_index]
-        pickup_ptr_hi = pickup_keys_hi[pickup_index]
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_KEY1
+          sta pickup_index
+          tax
+          lda pickup_keys_lo,x
+          sta pickup_ptr_lo
+          lda pickup_keys_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
         gosub prep_inv_bits
 add_key
         m_key_bits = m_key_bits | pickup_bits1
         goto kill_object
 
 pickup_spell
-        pickup_index = pickup_index - TYPE_SPELL1
-        if !player_spell then player_spell = pickup_index+1 : burn_tutorial = 1
-        pickup_ptr_lo = pickup_spells_lo[pickup_index]
-        pickup_ptr_hi = pickup_spells_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_SPELL1
+          sta pickup_index
+          tax
+          lda player_spell
+          bne pickup_spell_no_equip
+          ; auto-equip the first spell pickup
+          clc
+          adc #1
+          sta player_spell
+pickup_spell_no_equip
+          lda pickup_spells_lo,x
+          sta pickup_ptr_lo
+          lda pickup_spells_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_spell
         m_spell_bits_1 = m_spell_bits_1 | pickup_bits1
         m_spell_bits_2 = m_spell_bits_2 | pickup_bits2
@@ -537,32 +583,69 @@ add_shield
         goto kill_object
 
 pickup_armor
-        pickup_index = pickup_index - TYPE_ARMOR1
-        pickup_ptr_lo = pickup_armor_lo[pickup_index]
-        pickup_ptr_hi = pickup_armor_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_ARMOR1
+          sta pickup_index
+          tax
+          lda pickup_armor_lo,x
+          sta pickup_ptr_lo
+          lda pickup_armor_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_armor
         m_armor_bits_1 = m_armor_bits_1 | pickup_bits1
         m_armor_bits_2 = m_armor_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_charm
-        pickup_index = pickup_index - TYPE_CHARM1
-        if !player_charm then player_charm = pickup_index + 1
-        pickup_ptr_lo = pickup_charms_lo[pickup_index]
-        pickup_ptr_hi = pickup_charms_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_CHARM1
+          sta pickup_index
+          tax
+          lda player_charm
+          bne pickup_charm_no_equip
+          ; auto equip the first charm pickup
+          clc
+          adc #1
+          sta player_charm
+pickup_charm_no_equip
+          lda pickup_charms_lo,x
+          sta pickup_ptr_lo
+          lda pickup_charms_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_charm
         m_charm_bits_1 = m_charm_bits_1 | pickup_bits1
         m_charm_bits_2 = m_charm_bits_2 | pickup_bits2
         goto kill_object
 
 pickup_relic
-        pickup_index = pickup_index - TYPE_RELIC1
-        if pickup_index < 4 && !toggled_familiar then toggled_familiar = pickup_index+1
-        pickup_ptr_lo = pickup_relics_lo[pickup_index]
-        pickup_ptr_hi = pickup_relics_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_RELIC1
+          sta pickup_index
+          tax
+          cmp #4
+          bcs pickup_relic_no_equip
+          ldy toggled_familiar
+          bne pickup_relic_no_equip
+          clc
+          adc #1
+          sta toggled_familiar
+pickup_relic_no_equip
+          lda pickup_relics_lo,x
+          sta pickup_ptr_lo
+          lda pickup_relics_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_relic
         m_relic_bits_1 = m_relic_bits_1 | pickup_bits1
         m_relic_bits_2 = m_relic_bits_2 | pickup_bits2
@@ -1927,9 +2010,6 @@ clear_palettes
           sta P2C1
           sta P2C2
           sta P2C3
-          sta P3C1
-          sta P3C2
-          sta P3C3
           sta P3C1
           sta P3C2
           sta P3C3
