@@ -16,6 +16,7 @@
         <.redbone_ai
         <.pharpy_ai
         <.pdragon_ai
+        <.spark_ai
         <.pbat_ai
         <.zombie_ai
         spider_ai_lo
@@ -75,6 +76,7 @@ end
         >.redbone_ai
         >.pharpy_ai
         >.pdragon_ai
+        >.spark_ai
         >.pbat_ai
         >.zombie_ai
         spider_ai_hi

@@ -16,6 +16,7 @@
         <name_redbone
         <name_pharpy
         <name_pdragon
+        <name_blank
         <name_pbat
         <name_zombie
         name_spider_lo
@@ -65,6 +66,7 @@ end
         >name_redbone
         >name_pharpy
         >name_pdragon
+        >name_blank
         >name_pbat
         >name_zombie
         name_spider_hi

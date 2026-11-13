@@ -27,8 +27,8 @@
         incgraphic gfx/sprites/zombie10.png 160A 0 1 2 3
         incgraphic gfx/sprites/zombie11.png 160A 0 1 2 3
         incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
-        incgraphic gfx/sprites/column.png 160A 1 0 2 3
         incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/column.png 160A 1 0 2 3
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
@@ -225,7 +225,7 @@ end
 end
 
         data palace_room_1_obj
-        TYPE_ZOMBIE, 50, $40
+        TYPE_SPARK, 50, $46, TYPE_SPARK, 90, $46
         $00
 end
 
@@ -996,7 +996,7 @@ spark_move_right
 spark_move_right_return 
           rts
 spark_init_timer
-          lda #12
+          lda #16
           sta object_timer,x
           rts
 end
@@ -1023,15 +1023,8 @@ end
         goto obj_next_stats
 
 plot_spark
-        asm
-          ldx index
-          lda object_flags,x
-          and #%01000000
-          ; don't draw the column sprite if the spark is moving left
-          beq .plot_spark_bypass_column
-end
-        plotsprite column 4 Xposition Yposition 0
-plot_spark_bypass_column
+        plotsprite iceflake0 0 Xposition Yposition animation_frame
+        goto plot_next
 
 ;==============================================================================
 ; ZOMBIE AI

@@ -16,6 +16,7 @@
         <.obj_redbone_stats
         <.obj_pharpy_stats
         <.obj_pdragon_stats
+        <.obj_spark_stats
         <.obj_pbat_spawner_stats
         <.obj_zombie_stats
         obj_spider_stats_lo
@@ -72,6 +73,7 @@ end
         >.obj_redbone_stats
         >.obj_pharpy_stats
         >.obj_pdragon_stats
+        >.obj_spark_stats
         >.obj_pbat_spawner_stats
         >.obj_zombie_stats
         obj_spider_stats_hi

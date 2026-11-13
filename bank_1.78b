@@ -2584,6 +2584,11 @@ end
         <.torch_tile_block_palace
 end
 
+        data torch_tileset_hi
+        0, torch_tile_block_forest_hi, torch_tile_block_castle_hi, torch_tile_block_river_hi, torch_tile_block_hills_hi, >.torch_tile_block_caves
+        >.torch_tile_block_palace
+end
+
         data sfx_crystalchimes
         $10,$10,$00 ; version, priority, frames per chunk
         $03,$04,$05 ; first chunk of freq,channel,volume
@@ -2729,7 +2734,6 @@ end
         0, F_FGHOST_1, F_GHOST_1, F_RGHOST_1, F_HGHOST_1, F_CGHOST_1, F_PGHOST_1
 end
 
-        incbasic music.78b
         dmahole 0
         incbasic sounds.78b
         inline updateobjects.asm
@@ -2780,11 +2784,6 @@ end
 
         incbasic fairy_scroll.78b
         incbasic item_names.78b
-
-        data torch_tileset_hi
-        0, torch_tile_block_forest_hi, torch_tile_block_castle_hi, torch_tile_block_river_hi, torch_tile_block_hills_hi, >.torch_tile_block_caves
-        >.torch_tile_block_palace
-end
 
         data torch_unblock_tileset_lo
         0, torch_tile_unblock_forest_lo, torch_tile_unblock_castle_lo, torch_tile_unblock_river_lo, torch_tile_unblock_hills_lo, <.torch_tile_unblock_caves
