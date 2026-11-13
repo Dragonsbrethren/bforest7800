@@ -1596,15 +1596,97 @@ end
 
 fairy_pick_item
         ; prioritize curing status effects
-        if player_state = STATE_DEATH && m_item_qty[10] then temp2 = 10 : goto  fairy_revive
-        if player_status{3} && m_item_qty[9] then temp1 = MASK_STONE  : temp2 = 9 : goto fairy_use_soft
-        if player_status{0} && m_item_qty[6] then temp1 = MASK_POISON : temp2 = 6 : goto fairy_use_heal
-        if player_status{1} && m_item_qty[7] then temp1 = MASK_DARK   : temp2 = 7 : goto fairy_use_eyedrop
-        if player_status{2} && m_item_qty[8] then temp1 = MASK_CURSE  : temp2 = 8 : goto fairy_use_heal
-        if player_hp < PLAYER_HP_QUARTER && m_item_qty[2] then temp2 = 2 : goto fairy_use_hipotion
-        if player_hp < PLAYER_HP_HALF && m_item_qty[1] then temp2 = 1 : goto fairy_use_potion
-        if player_mp < PLAYER_MP_QUARTER && m_item_qty[4] then temp2 = 4 : goto fairy_use_hiether
-        if player_mp < PLAYER_MP_HALF && m_item_qty[3] then temp2 = 3 : goto fairy_use_ether
+        asm
+          lda player_state
+          cmp #STATE_DEATH
+          bne fairy_pick_soft
+          lda m_item_qty+10
+          beq fairy_pick_soft
+          lda #10
+          sta temp2
+          jmp .fairy_revive
+fairy_pick_soft
+          lda player_status
+          and #BITS_STONE
+          beq fairy_pick_antidote
+          lda m_item_qty+9
+          beq fairy_pick_antidote
+          lda #MASK_STONE
+          sta temp1
+          lda #9
+          sta temp2
+          jmp .fairy_use_soft
+fairy_pick_antidote
+          lda player_status
+          lsr
+          bcc fairy_pick_eyedrop
+          lda m_item_qty+6
+          beq fairy_pick_eyedrop
+          lda #MASK_POISON
+          sta temp1
+          lda #6
+          sta temp2
+          jmp .fairy_use_heal
+fairy_pick_eyedrop
+          lda player_status
+          and #BITS_DARK
+          beq fairy_pick_uncurse
+          lda m_item_qty+7
+          beq fairy_pick_uncurse
+          lda #MASK_DARK
+          sta temp1
+          lda #7
+          sta temp2
+          jmp .fairy_use_eyedrop
+fairy_pick_uncurse
+          lda player_status
+          and #BITS_CURSE
+          beq fairy_pick_hipotion
+          lda m_item_qty+8
+          beq fairy_pick_hipotion
+          lda #MASK_CURSE
+          sta temp1
+          lda #8
+          sta temp2
+          jmp .fairy_use_heal
+fairy_pick_hipotion
+          lda player_hp
+          cmp #PLAYER_HP_QUARTER
+          bcs fairy_pick_potion
+          lda m_item_qty+2
+          beq fairy_pick_potion
+          lda #2
+          sta temp2
+          jmp .fairy_use_hipotion
+fairy_pick_potion
+          lda player_hp
+          cmp #PLAYER_HP_HALF
+          bcs fairy_pick_hiether
+          lda m_item_qty+1
+          beq fairy_pick_hiether
+          lda #1
+          sta temp2
+          jmp .fairy_use_potion
+fairy_pick_hiether
+          lda player_mp
+          cmp #PLAYER_MP_QUARTER
+          bcs fairy_pick_ether
+          lda m_item_qty+4
+          beq fairy_pick_ether
+          lda #4
+          sta temp2
+          jmp .fairy_use_hiether
+fairy_pick_ether
+          lda player_mp
+          cmp #PLAYER_MP_HALF
+          bcs fairy_pick_done
+          lda m_item_qty+3
+          beq fairy_pick_done
+          lda #3
+          sta temp2
+          jmp .fairy_use_ether
+fairy_pick_done
+end
         ; TODO: should the fairy use Elixirs?
         goto fairy_item_done
 
