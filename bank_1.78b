@@ -524,15 +524,29 @@ add_spell
         goto kill_object
 
 pickup_item
-        pickup_index = pickup_index - TYPE_ITEM1
-        ; quanities start at 1, not 0, to simplify menu code
-        pickup_qty = pickup_index + 1
-        m_item_qty[pickup_qty] = m_item_qty[pickup_qty] + 1
-        ; cap at 9 so we don't need to deal with BCD and so qty can be stored in a nibble
-        if m_item_qty[pickup_qty] >= 9 then m_item_qty[pickup_qty] = 9
-        pickup_ptr_lo = pickup_items_lo[pickup_index]
-        pickup_ptr_hi = pickup_items_hi[pickup_index]
-        gosub prep_inv_bits
+        asm
+          lda pickup_index
+          sec
+          sbc #TYPE_ITEM1
+          sta pickup_index
+          tax
+          ; quanities start at 1, not 0, to simplify menu code
+          inx
+          inc m_item_qty,x
+          lda #9
+          cmp m_item_qty,x
+          bcs pickup_item_qty_done
+          ; cap at 9 so we don't need to deal with BCD and so qty can be stored in a nibble
+          sta m_item_qty,x
+          ; dec X to get pickup index again
+pickup_item_qty_done
+          dex
+          lda pickup_items_lo,x
+          sta pickup_ptr_lo
+          lda pickup_items_hi,x
+          sta pickup_ptr_hi
+          jsr .prep_inv_bits
+end
 add_item
         m_item_bits_1 = m_item_bits_1 | pickup_bits1
         m_item_bits_2 = m_item_bits_2 | pickup_bits2
