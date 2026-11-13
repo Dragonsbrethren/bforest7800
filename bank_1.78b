@@ -427,17 +427,18 @@ end
 password_display
         exit_room_index = 0
         menu = MENU_GAMEOVER
-        menu_debounce = 1
-        pause_debounce = 1
-        action_debounce = 1
+        asm
+          lda #1
+          sta menu_debounce
+          sta pause_debounce
+          sta action_debounce
+end
         goto menu_init bank11
 
         data inv_bits
         %00000001, %00000010, %00000100, %00001000, %00010000
 end
 
-prep_inv_bits
-; filepath: c:\Users\drago\7800\bforest7800\bank_1.78b
 prep_inv_bits
         asm
           lda pickup_index
