@@ -170,6 +170,7 @@
         const TYPE_NIXTAIL   = TYPE_RELIC6
         const TYPE_WATERFALL = TYPE_RELIC7
         const TYPE_HTALON    = TYPE_RELIC8
+        const TYPE_DISPEL    = TYPE_RELIC9
         const TYPE_SWORD1   = 210
         const TYPE_SWORD2   = 211
         const TYPE_SWORD3   = 212
@@ -1088,9 +1089,34 @@
         const DARKBOLT_DAMAGE = 8
         const F_DARKBOLT = 0
 
-        ; BOSS FLAME AND BLOCK FLAME
-        const F_FLAME = 31
-        const F_BLANK = 33
+        ; STATIC OBJECTS
+        const F_BLANK = 0
+        const F_COIN    = 1
+        const COIN_PAL  = 3
+        const F_PRISM   = 2
+        const PRISM_PAL = 0
+        const F_FOOD    = 3
+        const FOOD_PAL  = 1
+        const F_POTION  = 4
+        const F_VIAL    = 5
+        const F_APPLE   = 6
+        const F_ARMOR   = 7
+        const F_ROBE    = 8
+        const F_TOP     = 9
+        const F_PENDANT = 10
+        const F_ROSARY  = 11
+        const F_SPECS   = 12
+        const F_CARD    = 13
+        const F_BOOK    = 14
+        const F_TAIL    = 15
+        const F_MAP     = 16
+        const MAP_PAL   = 1
+        const F_FLAME   = 17
+        const F_FLAME2  = 18
+        const F_LIGHTNING  = 19
+        const F_LIGHTNING2 = 20
+        const F_KEY     = 21
+        const KEY_PAL   = 3
 
         ; AI POINTERS
         const torch_ai_lo     = #<.torch_tile_block

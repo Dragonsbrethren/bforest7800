@@ -259,79 +259,158 @@ plot_torch
         goto plot_next
 
 plot_coin
-        plotsprite coin sprite_pal Xposition Yposition frame
-        goto plot_next
+        frame = F_COIN
+        sprite_pal = COIN_PAL
+        goto plot_bank1_160a_8
 
 plot_prism
-        plotsprite prism 0 Xposition Yposition 0
-        goto plot_next
+        frame = F_PRISM
+        sprite_pal = PRISM_PAL
+        goto plot_bank1_160a_8
 
 plot_food
-        plotsprite chimkin sprite_pal Xposition Yposition frame
-        goto plot_next
+        frame = F_FOOD
+        goto plot_bank1_160a_8
 
 plot_items
-        temp1 = object_type[index] - (TYPE_ITEM1 - 1)
-        sprite_pal = f_item_pals[temp1]
-        frame = f_item_frames[temp1]
-        plotsprite potion0 sprite_pal Xposition Yposition frame
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_ITEM1
+          tax
+          lda f_item_pals,x
+          sta sprite_pal
+          lda f_item_frames,x
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_relics
-        temp2 = object_type[index]
-        temp1 = temp2 - (TYPE_RELIC1 - 1)
-        sprite_pal = f_relic_pals[temp1]
-        object_elevation[index] = 1
-        if temp2 = TYPE_HTALON then frame = F_HARPY_TALON : goto plot_hills_160a
-        if temp2 = TYPE_RELIC9 then frame = F_RUNE : goto plot_caves_160a_8
-        frame = f_relic_frames[temp1]
-        goto plot_coin
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_RELIC1
+          tay
+          lda f_relic_pals,y
+          sta sprite_pal
+          lda #1
+          sta object_elevation,x
+          ; special handlers for Harpy's Talon and Dispel Rune
+          lda object_type,x
+          cmp #TYPE_HTALON
+          bne plot_relics_test_rune
+          lda #F_HARPY_TALON
+          sta frame
+          jmp .plot_hills_160a 
+plot_relics_test_rune
+          cmp #TYPE_DISPEL
+          bne plot_relics_frame_table
+          lda #F_RUNE
+          sta frame
+          jmp .plot_caves_160a_8
+plot_relics_frame_table
+          lda f_relic_frames,y
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_spells
-        temp1 = object_type[index] - (TYPE_SPELL1 - 1)
-        sprite_pal = f_spell_pals[temp1]
-        plotsprite relic0 sprite_pal Xposition Yposition 1
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_SPELL1
+          tax
+          lda f_spell_pals,x
+          sta sprite_pal
+          lda #F_BOOK
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_keys
-        temp1 = object_type[index] - (TYPE_KEY1 - 1)
-        sprite_pal = f_key_pals[temp1]
-        plotsprite key0 sprite_pal Xposition Yposition 0
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_KEY1
+          tax
+          lda f_key_pals,x
+          sta sprite_pal
+          lda #F_KEY
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_maps
-        temp1 = object_type[index] - (TYPE_MAP1 - 1)
-        sprite_pal = f_item_pals[temp1]
-        plotsprite map0 1 Xposition Yposition
-        goto plot_next
+        asm
+          lda #MAP_PAL
+          sta sprite_pal
+          lda #F_MAP
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 
 plot_swords
-        temp1 = object_type[index] - (TYPE_SWORD1 - 1)
-        sprite_pal = f_sword_pals[temp1]
-        frame = 0
-        gosub plot_shared_160a
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_SWORD1
+          tax
+          lda f_sword_pals,x
+          sta sprite_pal
+          lda #0
+          sta frame
+          jsr .plot_shared_160a
+          jmp .plot_next
+end
 
 plot_shields
-        temp1 = object_type[index] - (TYPE_SHIELD1 - 1)
-        sprite_pal = f_shield_pals[temp1]
-        frame = 0
-        gosub plot_shared_160a_4
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_SHIELD1
+          tax
+          lda f_shield_pals,x
+          sta sprite_pal
+          lda #0
+          sta frame
+          jsr .plot_shared_160a
+          jmp .plot_next
+end
 
 plot_armor
-        temp1 = object_type[index] - (TYPE_ARMOR1 - 1)
-        sprite_pal = f_armor_pals[temp1]
-        frame = f_armor_frames[temp1]
-        plotsprite armor0 sprite_pal Xposition Yposition frame
-        goto plot_next
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_ARMOR1
+          tax
+          lda f_armor_pals,x
+          sta sprite_pal
+          lda f_armor_frames,x
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_charms
-        temp1 = object_type[index] - (TYPE_CHARM1 - 1)
-        sprite_pal = f_charm_pals[temp1]
-        frame = f_charm_frames[temp1]
-        goto plot_coin
+        asm
+          ldx index
+          lda object_type,x
+          sec
+          sbc #TYPE_CHARM1
+          tax
+          lda f_charm_pals,x
+          sta sprite_pal
+          lda f_charm_frames,x
+          sta frame
+          jmp .plot_bank1_160a_8
+end
 
 plot_fireball
         plotsprite fireball0 sprite_pal Xposition Yposition frame
