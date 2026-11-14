@@ -1248,7 +1248,7 @@ zombie_sword_pos
         sta object_Xpos,y
         lda Yposition
         sta object_Ypos,y
-        lda frame
+        lda #F_BLANK
         sta object_frame,y
         lda object_facing,x
         sta object_facing,y
@@ -1256,9 +1256,9 @@ zombie_sword_pos
         sta object_timer,y
         lda #ZOMBFIST_PAL
         sta object_pal,y
-        lda #<.plot_palace_160a
+        lda #<.plot_bank1_160a_8
         sta object_spr_ptr_lo,y
-        lda #>.plot_palace_160a
+        lda #>.plot_bank1_160a_8
         sta object_spr_ptr_hi,y
         lda object_flags,x
         ora #%10000000
