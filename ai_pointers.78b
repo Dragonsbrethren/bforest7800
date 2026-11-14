@@ -42,6 +42,7 @@
         <.tentacle_ai
         harpy_queen_ai_lo
         <.dragon_ai
+        <.necromancer_ai
         <.burnbush_ai
         <.blockflame_ai
         <.barrier_ai
@@ -102,6 +103,7 @@ end
         >.tentacle_ai
         harpy_queen_ai_hi
         >.dragon_ai
+        >.necromancer_ai
         >.burnbush_ai
         >.blockflame_ai
         >.barrier_ai

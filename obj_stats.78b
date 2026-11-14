@@ -42,6 +42,7 @@
         <.obj_tentacle_stats
         obj_harpy_stats_lo      ; harpy queen
         <.obj_dragon_stats
+        <.obj_necromancer_stats
         <.obj_burnbush_stats
         <.obj_boss_stats
         <.obj_boss_stats
@@ -99,6 +100,7 @@ end
         >.obj_tentacle_stats
         obj_harpy_stats_hi      ; harpy queen
         >.obj_dragon_stats
+        >.obj_necromancer_stats
         >.obj_burnbush_stats
         >.obj_boss_stats
         >.obj_boss_stats

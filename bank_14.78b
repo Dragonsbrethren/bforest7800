@@ -36,8 +36,8 @@
         incgraphic gfx/dragon/pdragon_eye.png 160A 0 3 
         incgraphic gfx/sprites/pharpy0.png 160B 0 4 9 12 6 5 8 3 2 1
         incgraphic gfx/sprites/pharpy1.png 160B 0 4 9 3 12 6 5 8 2 1
-        incgraphic gfx/necro/necro_big_top0.png 160B
-        incgraphic gfx/necro/necro_big_bot0.png 160B
+        incgraphic gfx/necro/necro_big_top0.png 160B 0 4 8 12 10 5 11
+        incgraphic gfx/necro/necro_big_bot0.png 160B 0 4 8 12 10 5
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -47,6 +47,7 @@
         palace_room_3_obj_lo
         palace_room_4_obj_lo
         palace_room_5_obj_lo
+        palace_room_6_obj_lo
 end
 
         data palace_obj_hi
@@ -56,6 +57,7 @@ end
         palace_room_3_obj_hi
         palace_room_4_obj_hi
         palace_room_5_obj_hi
+        palace_room_6_obj_hi
 end
 
 load_palace
@@ -141,11 +143,8 @@ palace_sky
         goto palace_normal_pal
 
 palace_lightning
-        asm
-          lda #PAL_P_LIGHTN
-          sta P4C1
-          sta P6C1
-end
+        P4C1 = getfade(PAL_P_LIGHTN, black)
+        P6C1 = getfade(PAL_P_LIGHTN, black)
 
 palace_normal_pal
         if alt_palette then goto palace_moon_pal
@@ -167,9 +166,15 @@ palace_moon_pal
         P6C2 = getfade(PAL_P_DKMOON)
         P6C3 = getfade(PAL_P_LTMOON)
         P7C1 = flash_color
+        if alt_palette = 2 then palace_necro_pal
         P7C2 = getfade(PAL_P_LTBAT)
         P7C3 = getfade(PAL_P_DKBAT, black)
         goto  palace_shared_pals
+
+palace_necro_pal
+        P5C1 = getfade(PAL_P_NECRO_ROBE)
+        P7C2 = getfade(PAL_P_NECRO_GRN)
+        P7C3 = getfade(PAL_P_NECRO_SKIN)
 
 palace_shared_pals
         bg_color = flash_color
@@ -215,7 +220,7 @@ end
         00, 00, 00, 00, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
-        00, 05, 04, 03, 00, 00, 00
+        00, 06, 04, 03, 00, 00, 00
         00, 04, 02, 01, 00, 00, 00
         00, 00, 00, 00, 00, 00, 00
 end
@@ -248,6 +253,11 @@ end
         TYPE_PBAT_SPAWNER, $E0, $E0
         TYPE_TORCH, 8*8, $80, TYPE_TORCH, 11*8, $80
         TYPE_DOOR_LOCK, (9*8)+1, $70
+        $00
+end
+
+        data palace_room_6_obj
+        TYPE_NECROMANCER, 9*8, $60
         $00
 end
 
@@ -1363,3 +1373,58 @@ obj_zombie_stats
           sta object_frame,x
 end
         goto obj_next_stats
+
+;==============================================================================
+; THE NECROMANCER
+;------------------------------------------------------------------------------
+; The cause of everything--this guy needs a name!
+;==============================================================================
+necromancer_ai
+        asm
+          rts
+end
+
+obj_necromancer_stats
+        asm
+          ldx obj_index
+          lda #100
+          sta object_hp,x
+          lda #<.plot_necromancer
+          sta object_spr_ptr_lo,x
+          lda #>.plot_necromancer
+          sta object_spr_ptr_hi,x
+end
+        goto obj_next_stats
+
+necro_spark_ai
+        asm
+          lda #20
+          sta object_Xdest,x
+          lda #$50
+          sta object_Ydest,x
+          lda object_Xpos,x
+          cmp object_Xdest,x
+          bcc necro_spark_right
+necro_spark_left
+          dec object_Xpos,x
+          bne necro_spark_vert
+necro_spark_right
+          inc object_Xpos,x
+necro_spark_vert
+          lda object_Ypos,x
+          cmp object_Ydest,x
+          bcc necro_spark_down
+necro_spark_up
+          dec object_Ypos,x
+          bne necro_spark_return
+necro_spark_down
+          inc object_Ypos,x
+necro_spark_return
+          rts
+end
+
+plot_necromancer
+        Yoffset = Yposition - 16
+        plotsprite necro_big_top0 4 Xposition Yoffset frame
+        plotsprite necro_big_bot0 4 Xposition Yposition frame
+        goto plot_next

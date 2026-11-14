@@ -14,26 +14,26 @@
  </tileset>
  <layer id="1" name="Tile Layer 1" width="20" height="12">
   <data>
+   <tile gid="38"/>
+   <tile gid="38"/>
    <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
-   <tile gid="37"/>
+   <tile gid="38"/>
    <tile gid="37"/>
    <tile gid="37"/>
    <tile gid="37"/>
    <tile gid="38"/>
    <tile gid="37"/>
+   <tile gid="38"/>
+   <tile gid="37"/>
+   <tile gid="38"/>
+   <tile gid="37"/>
+   <tile gid="37"/>
+   <tile gid="37"/>
+   <tile gid="38"/>
+   <tile gid="37"/>
+   <tile gid="38"/>
+   <tile gid="37"/>
+   <tile gid="38"/>
    <tile gid="36"/>
    <tile gid="36"/>
    <tile gid="36"/>

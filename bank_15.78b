@@ -10,6 +10,10 @@
         incmapfile tiled/palace_room_3.tmx
         incmapfile tiled/palace_room_4.tmx
         incmapfile tiled/palace_room_5.tmx
+        incmapfile tiled/palace_room_6.tmx
+        incmapfile tiled/palace_room_7.tmx
+        incmapfile tiled/palace_room_8.tmx
+        
 
         data palace_map_b15_lo
         <.plot_palace_room_0
@@ -18,6 +22,9 @@
         <.plot_palace_room_3
         <.plot_palace_room_4
         <.plot_palace_room_5
+        <.plot_palace_room_6
+        <.plot_palace_room_7
+        <.plot_palace_room_8
 end
 
         data palace_map_b15_hi
@@ -27,6 +34,9 @@ end
         >.plot_palace_room_3
         >.plot_palace_room_4
         >.plot_palace_room_5
+        >.plot_palace_room_6
+        >.plot_palace_room_7
+        >.plot_palace_room_8
 end
 
 palace_room_bank_15
@@ -79,5 +89,29 @@ plot_palace_room_5
         menu_map_room[menu_map_index_2] = ROOMR_N
         memcpy map12 palace_room_5 240
         plotmapfile tiled/palace_room_5.tmx map12 0 1 20 12
+        alt_palette = 1
+        return otherbank
+
+plot_palace_room_6
+        menu_map_room[menu_map_index] = ROOML_D
+        menu_map_room[menu_map_index_2] = ROOMR_D
+        memcpy map12 palace_room_6 240
+        plotmapfile tiled/palace_room_6.tmx map12 0 1 20 12
+        alt_palette = 2
+        return otherbank
+
+plot_palace_room_7
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_7 240
+        plotmapfile tiled/palace_room_7.tmx map12 0 1 20 12
+        alt_palette = 1
+        return otherbank
+
+plot_palace_room_8
+        menu_map_room[menu_map_index] = ROOML_N
+        menu_map_room[menu_map_index_2] = ROOMR_N
+        memcpy map12 palace_room_8 240
+        plotmapfile tiled/palace_room_8.tmx map12 0 1 20 12
         alt_palette = 1
         return otherbank

@@ -42,6 +42,7 @@
         <name_octokraken        ; tentacle
         name_harpyqueen_lo
         <name_dragon
+        <name_necromancer
         <name_bush
         <name_blank             ; blocking flame
         <door_sealed
@@ -92,6 +93,7 @@ end
         >name_octokraken        ; tentacle
         name_harpyqueen_hi
         >name_dragon
+        >name_necromancer
         >name_bush
         >name_blank             ; blocking flame
         >door_sealed
@@ -289,4 +291,8 @@ end
 
         alphadata name_zombie font_spr
         'Zombie*'
+end
+
+        alphadata name_necromancer font_spr
+        'Necromancer*'
 end

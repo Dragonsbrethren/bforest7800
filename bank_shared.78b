@@ -1227,6 +1227,53 @@ position_shield_done
         shield_Xpos = player_Xpos + temp1
         shield_Ypos = player_Ypos + temp2
         return thisbank
+        
+stone_handler
+        if stone_duration then stone_set
+        ; make sure Johanna is zone-aligned
+        temp1 = player_Ypos && $0F
+        ; prevent player from getting stuck when overlapping higher zone
+        if temp1 >= 8 then player_Ypos = player_Ypos + 16
+        ; align Johanna to her zone
+        player_Ypos = player_Ypos && $F0
+        ; face her downward
+        asm
+          lda #DIR_DOWN
+          sta player_facing
+          sta player_Ydir
+end
+        ; set her to moving so shield doesn't work
+        player_state = STATE_MOVING
+        ; fix shield position and palette
+        gosub position_shield
+        shield_pal = 5
+        ; deceleration code can't handle zeroing velocity
+        asm
+          lda #0
+          sta player_Xvel_lo
+          sta player_Xvel_hi
+          sta player_Yvel_lo
+          sta player_Yvel_hi
+          sta object_invuln
+end
+        stone_duration = 120
+stone_set
+        if !menu_debounce && joy0fire0 && action_button = 1 then goto open_menu
+        if !menu_debounce && joy0fire1 && action_button = 0 then goto open_menu
+;       if joy0any then stone_duration--
+        player_timer--
+        stone_duration--
+        if !stone_duration then stone_done
+        ; continue checking invuln frames while stone
+        if !player_invuln then player_flags{0} = 0
+        goto player_handler_done
+
+stone_done
+        ; clear ledge hopping flag
+        player_flags{5} = 0
+        player_status{3} = 0
+        shield_pal = f_shield_pals[player_shield]
+        goto player_handler_done
 
 decelerate_player
 decelerate_object
