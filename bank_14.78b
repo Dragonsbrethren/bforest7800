@@ -1024,16 +1024,15 @@ obj_spark_stats
           sta object_spr_ptr_lo,x
           lda #>.plot_spark
           sta object_spr_ptr_hi,x
-;         leave palette unitialized so it is set to 0
-;         lda #SPARK_PAL
-;         sta object_pal,x
+          lda #SPARK_PAL
+          sta object_pal,x
           lda #F_SPARK
           sta object_frame,x
 end
         goto obj_next_stats
 
 plot_spark
-        plotsprite iceflake0 0 Xposition Yposition animation_frame
+        plotsprite iceflake0 sprite_pal Xposition Yposition animation_frame
         goto plot_next
 
 ;==============================================================================
@@ -1381,6 +1380,71 @@ end
 ;==============================================================================
 necromancer_ai
         asm
+          lda object_flags,x
+          and #%10000000
+          beq necrospark_attack
+          rts
+necrospark_attack
+          stx spawn_index
+          ; create five target spots
+          ldx #2
+necrospark_loop
+          stx index
+necrospark_spot_X
+          jsr randomize
+          cmp #160
+          bcs necrospark_spot_X
+          sta object_Xpos,x
+necrospark_spot_Y
+          jsr randomize
+          ; this is the first walkable row of the boss arena
+          cmp #$60
+          bcc necrospark_spot_Y
+          cmp #$C0
+          bcs necrospark_spot_Y
+          sta object_Ypos,x
+          jsr .get_object_pos
+end
+        ; test if the necrospark spot is a walkable tile
+        move_tile_1 = peekchar(current_map, peekX, peekY, 20, 14)
+        move_tile_2 = move_tile_1
+        asm
+          jsr .test_walkable
+          ldx index
+          lda tile_properties
+          and #%00000001
+          ; non-walkable, redo it
+          beq necrospark_loop
+          lda #0
+          sta object_type,x
+          inx
+          cpx #7
+          bne necrospark_loop
+          stx index
+necrospark_pos_left
+          lda object_Xpos+1
+          sec
+          sbc #8
+          sta object_Xpos,x
+necrospark_spawn
+          lda object_Ypos+1
+          sta object_Ypos,x
+          jsr .load_necrospark
+          inx
+          stx index
+          cpx #12
+          beq necrospark_done
+          cpx #10
+          bcc necrospark_pos_left
+          lda object_Xpos+1
+          clc
+          adc #16
+          sta object_Xpos,x
+          bne necrospark_spawn
+necrospark_done
+          ldx spawn_index
+          lda #%10000000
+          sta object_flags,x
           rts
 end
 
@@ -1398,29 +1462,86 @@ end
 
 necro_spark_ai
         asm
-          lda #20
+          ldy object_parent,x
+          lda object_Xpos,y
           sta object_Xdest,x
-          lda #$50
+          lda object_Ypos,y
           sta object_Ydest,x
           lda object_Xpos,x
           cmp object_Xdest,x
           bcc necro_spark_right
 necro_spark_left
-          dec object_Xpos,x
-          bne necro_spark_vert
+          lda #DIR_LEFT
+          sta object_Xdir,x
+          bne necro_spark_horz
 necro_spark_right
-          inc object_Xpos,x
+          lda #DIR_RIGHT
+          sta object_Xdir,x
+necro_spark_horz
+          lda object_Xvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Xvel_lo,x
+          lda object_Xvel_hi,x
+          adc object_speed_hi,x
+          sta object_Xvel_hi,x
 necro_spark_vert
+          lda object_Yvel_lo,x
+          clc
+          adc object_speed_lo,x
+          sta object_Yvel_lo,x
+          lda object_Yvel_hi,x
+          adc object_speed_hi,x
+          sta object_Yvel_hi,x
           lda object_Ypos,x
           cmp object_Ydest,x
           bcc necro_spark_down
 necro_spark_up
-          dec object_Ypos,x
+          lda #DIR_UP
+          sta object_Ydir,x
           bne necro_spark_return
 necro_spark_down
-          inc object_Ypos,x
+          lda #DIR_DOWN
+          sta object_Ydir,x
 necro_spark_return
           rts
+end
+
+load_necrospark
+        asm
+        lda index
+        sec
+        sbc #5
+        sta object_parent,x
+        lda #TYPE_NECROSPARK
+        sta object_type,x
+        sta object_hp,x
+        lda #NECROSPARK_VEL_CAP_HI
+        sta object_vel_cap_hi,x
+        lda #NECROSPARK_SPEED_HI
+        sta object_speed_hi,x
+        lda #NECROSPARK_VEL_CAP_LO
+        sta object_vel_cap_lo,x
+        lda #NECROSPARK_SPEED_LO
+        sta object_speed_lo,x
+        lda #NECROSPARK_DAMAGE
+        sta object_damage,x
+        lda #%00010000
+        sta object_flags,x
+        lda #NECROSPARK_ELEM_ATK
+        sta object_elem_atk,x
+        lda #0
+        sta object_friction_hi,x
+        sta object_friction_lo,x
+        lda #F_NECROSPARK
+        sta object_frame,x
+        lda #NECROSPARK_PAL
+        sta object_pal,x
+        lda #<.plot_spark
+        sta object_spr_ptr_lo,x
+        lda #>.plot_spark
+        sta object_spr_ptr_hi,x
+        rts
 end
 
 plot_necromancer

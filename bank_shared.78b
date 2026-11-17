@@ -651,7 +651,7 @@ end
         <.seed_ai
         <.hseed_ai
         <.zombfist_ai
-        0
+        <.necro_spark_ai
         0
         0
         <.poison_ai
@@ -682,7 +682,7 @@ end
         >.seed_ai
         >.hseed_ai
         >.zombfist_ai
-        0
+        >.necro_spark_ai
         0
         0
         >.poison_ai

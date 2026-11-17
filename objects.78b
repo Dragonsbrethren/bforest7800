@@ -90,6 +90,7 @@
         const TYPE_SEED         = 142
         const TYPE_HSEED        = 143
         const TYPE_ZOMBFIST     = 144
+        const TYPE_NECROSPARK   = 145
         const TYPE_PLAYERSPELL = TYPE_POISON
         const TYPE_POISON       = 148
         const TYPE_WINDSLASH    = 149
@@ -979,6 +980,16 @@
         const SPARK_DAMAGE = 20
         const SPARK_PAL = 0
         const F_SPARK = 2
+
+        ; NECRO SPARK
+        const NECROSPARK_SPEED_HI = 4
+        const NECROSPARK_SPEED_LO = 0
+        const NECROSPARK_VEL_CAP_HI = 4
+        const NECROSPARK_VEL_CAP_LO = 0
+        const NECROSPARK_DAMAGE = 20
+        const NECROSPARK_ELEM_ATK = %00000000
+        const F_NECROSPARK   = 2
+        const NECROSPARK_PAL = 7
 
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
