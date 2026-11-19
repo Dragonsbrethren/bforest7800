@@ -1392,8 +1392,8 @@ necromancer_ai
           rts
 necrospark_attack
           stx spawn_index
-          ; create five target spots
-          ldx #2
+          ; create four target spots
+          ldx #5
 necrospark_loop
           stx index
 necrospark_spot_X
@@ -1424,13 +1424,13 @@ end
           lda #0
           sta object_type,x
           inx
-          cpx #7
+          cpx #9
           bne necrospark_loop
           stx index
 necrospark_pos_left
           lda object_Xpos+1
           sec
-          sbc #8
+          sbc #6
           sta object_Xpos,x
 necrospark_spawn
           lda object_Ypos+1
@@ -1438,13 +1438,13 @@ necrospark_spawn
           jsr .load_necrospark
           inx
           stx index
-          cpx #12
+          cpx #13
           beq necrospark_done
-          cpx #10
+          cpx #11
           bcc necrospark_pos_left
           lda object_Xpos+1
           clc
-          adc #16
+          adc #14
           sta object_Xpos,x
           bne necrospark_spawn
 necrospark_done
@@ -1549,7 +1549,7 @@ load_necrospark
         asm
         lda index
         sec
-        sbc #5
+        sbc #4
         sta object_parent,x
         lda #TYPE_NECROSPARK
         sta object_type,x
