@@ -153,9 +153,9 @@ palace_normal_pal
         P5C1 = getfade(PAL_P_BRTILE)
         P5C2 = getfade(PAL_P_DKTILE, black)
         P5C3 = getfade(PAL_P_LTTILE, black)
-        P6C1 = PAL_BLACK
-        P6C2 = getfade(PAL_P_DKZOMB, black)
-        P6C3 = getfade(PAL_P_LTZOMB)
+        P7C1 = PAL_BLACK
+        P7C2 = getfade(PAL_P_DKZOMB, black)
+        P7C3 = getfade(PAL_P_LTZOMB)
         goto palace_shared_pals
 
 palace_moon_pal
@@ -1336,6 +1336,12 @@ end
 obj_zombie_stats
         asm
           ldx obj_index
+          jsr .load_zombie_stats
+          jmp .obj_next_stats
+end
+
+load_zombie_stats
+        asm
           lda #ZOMBIE_HP
           sta object_hp,x
           lda #ZOMBIE_VEL_CAP_HI
@@ -1370,8 +1376,8 @@ obj_zombie_stats
           sta object_pal,x
           lda #F_ZOMBIE_DOWN_1
           sta object_frame,x
+          rts
 end
-        goto obj_next_stats
 
 ;==============================================================================
 ; THE NECROMANCER
@@ -1462,13 +1468,22 @@ end
 
 necro_spark_ai
         asm
-          ldy object_parent,x
-          lda object_Xpos,y
-          sta object_Xdest,x
-          lda object_Ypos,y
-          sta object_Ydest,x
+          lda object_timer,x
+          beq necro_spark_init
+          cmp #NECROSPARK_SEEK_TIME
+          beq necro_spark_seek
+          dec object_timer,x
+          lda object_Xpos,x
+          cmp object_Xpos+1
+          bcc necro_spark_left
+          bcs necro_spark_right
+necro_spark_seek
+          lda object_flags,x
+          ora #%10000000
+          sta object_flags,x
           lda object_Xpos,x
           cmp object_Xdest,x
+          beq necro_spark_target_x
           bcc necro_spark_right
 necro_spark_left
           lda #DIR_LEFT
@@ -1485,6 +1500,8 @@ necro_spark_horz
           lda object_Xvel_hi,x
           adc object_speed_hi,x
           sta object_Xvel_hi,x
+          lda object_flags,x
+          beq necro_spark_return
 necro_spark_vert
           lda object_Yvel_lo,x
           clc
@@ -1495,6 +1512,7 @@ necro_spark_vert
           sta object_Yvel_hi,x
           lda object_Ypos,x
           cmp object_Ydest,x
+          beq necro_spark_target_y
           bcc necro_spark_down
 necro_spark_up
           lda #DIR_UP
@@ -1505,6 +1523,26 @@ necro_spark_down
           sta object_Ydir,x
 necro_spark_return
           rts
+necro_spark_init
+          ldy object_parent,x
+          lda object_Xpos,y
+          sta object_Xdest,x
+          lda object_Ypos,y
+          sta object_Ydest,x
+          lda #NECROSPARK_TIME
+          sta object_timer,x
+necro_spark_target_x
+          lda object_flags,x
+          ora #%01000000
+          sta object_flags,x
+          jmp necro_spark_vert
+necro_spark_target_y
+          lda object_flags,x
+          and #%01000000
+          beq necro_spark_return
+          lda #TYPE_ZOMBIE
+          sta object_type,x
+          jmp .load_zombie_stats
 end
 
 load_necrospark
@@ -1526,7 +1564,7 @@ load_necrospark
         sta object_speed_lo,x
         lda #NECROSPARK_DAMAGE
         sta object_damage,x
-        lda #%00010000
+        lda #NECROSPARK_FLAGS
         sta object_flags,x
         lda #NECROSPARK_ELEM_ATK
         sta object_elem_atk,x

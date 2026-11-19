@@ -970,7 +970,7 @@
         const F_ZOMBIE_CAST_UP    = 15
         const F_ZOMBIE_CAST_LEFT  = 16
         const F_ZOMBIE_CAST_RIGHT = 17
-        const ZOMBIE_PAL = 6
+        const ZOMBIE_PAL = 7
 
         const ZOMBFIST_DAMAGE = 12
         const ZOMBFIST_ELEM_ATK = %00100000
@@ -982,14 +982,17 @@
         const F_SPARK = 2
 
         ; NECRO SPARK
-        const NECROSPARK_SPEED_HI = 4
+        const NECROSPARK_SPEED_HI = 2
         const NECROSPARK_SPEED_LO = 0
-        const NECROSPARK_VEL_CAP_HI = 4
+        const NECROSPARK_VEL_CAP_HI = 2
         const NECROSPARK_VEL_CAP_LO = 0
         const NECROSPARK_DAMAGE = 20
         const NECROSPARK_ELEM_ATK = %00000000
+        const NECROSPARK_FLAGS = %00000100
         const F_NECROSPARK   = 2
         const NECROSPARK_PAL = 7
+        const NECROSPARK_TIME = 4
+        const NECROSPARK_SEEK_TIME = 1
 
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
