@@ -54,7 +54,7 @@
         <.river_boss
         <.hills_boss_ai
         <.caves_boss_ai
-        0
+        <.necro_boss_ai
         0
         <.castle_spawner_ai
 end
@@ -115,7 +115,7 @@ end
         >.river_boss 
         >.hills_boss_ai
         >.caves_boss_ai
-        0
+        >.necro_boss_ai
         0
         >.castle_spawner_ai
 end

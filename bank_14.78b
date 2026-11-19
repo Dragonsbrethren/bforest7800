@@ -258,6 +258,7 @@ end
 
         data palace_room_6_obj
         TYPE_NECROMANCER, 9*8, $60
+        TYPE_NECRO_BOSS, $C0, $C0
         $00
 end
 
@@ -1587,3 +1588,22 @@ plot_necromancer
         plotsprite necro_big_top0 4 Xposition Yoffset frame
         plotsprite necro_big_bot0 4 Xposition Yposition frame
         goto plot_next
+
+necro_boss_ai
+        asm
+          lda #<.plot_palace_160a
+          sta object_spr_ptr_lo,x
+          lda #>.plot_palace_160a
+          sta object_spr_ptr_hi,x
+          lda #TYPE_BOSS_FLAME
+          sta object_type+3
+          sta object_type+4
+          lda #72
+          sta object_Xpos+3
+          lda #80
+          sta object_Xpos+4
+          lda #$C0
+          sta object_Ypos+3
+          sta object_Ypos+4
+          rts
+end

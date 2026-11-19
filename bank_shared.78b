@@ -237,8 +237,11 @@ tp_doorl  cmp #TYPE_DOOR_LOCK
           bne tp_rock
           jmp .plot_door
 tp_rock   cmp #TYPE_BLOCKROCK
-          bne tp_food
+          bne tp_flame
           jmp .plot_blockrock
+tp_flame  cmp #TYPE_BOSS_FLAME
+          bne tp_food
+          jmp .plot_flame
 tp_food   lda #1
           sta object_pal,x
           lda #0
@@ -270,6 +273,7 @@ plot_prism
 
 plot_food
         frame = F_FOOD
+plot_flame
         goto plot_bank1_160a_8
 
 plot_items
