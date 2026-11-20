@@ -1470,7 +1470,9 @@ end
 necro_spark_ai
         asm
           lda object_timer,x
-          beq necro_spark_init
+          bne necro_spark_check_seek
+          jmp necro_spark_init
+necro_spark_check_seek
           cmp #NECROSPARK_SEEK_TIME
           beq necro_spark_seek
           dec object_timer,x
@@ -1482,6 +1484,11 @@ necro_spark_seek
           lda object_flags,x
           ora #%10000000
           sta object_flags,x
+          lda object_Xpos,x
+          sec
+          sbc object_Xdest,x
+          cmp #4
+          bcc necro_spark_target_x
           lda object_Xpos,x
           cmp object_Xdest,x
           beq necro_spark_target_x
@@ -1511,6 +1518,11 @@ necro_spark_vert
           lda object_Yvel_hi,x
           adc object_speed_hi,x
           sta object_Yvel_hi,x
+          lda object_Ypos,x
+          sec
+          sbc object_Ydest,x
+          cmp #4
+          bcc necro_spark_target_y
           lda object_Ypos,x
           cmp object_Ydest,x
           beq necro_spark_target_y
@@ -1595,6 +1607,11 @@ necro_boss_ai
           sta object_spr_ptr_lo,x
           lda #>.plot_palace_160a
           sta object_spr_ptr_hi,x
+;         lda player_Ypos
+;         cmp #$A0
+;         bcc necro_flame_on
+          rts
+necro_flame_on
           lda #TYPE_BOSS_FLAME
           sta object_type+3
           sta object_type+4
