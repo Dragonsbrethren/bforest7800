@@ -656,7 +656,7 @@ end
         <.hseed_ai
         <.zombfist_ai
         <.necro_spark_ai
-        0
+        <.lightning_ai
         0
         <.poison_ai
         <.windslash_ai
@@ -687,7 +687,7 @@ end
         >.hseed_ai
         >.zombfist_ai
         >.necro_spark_ai
-        0
+        >.lightning_ai
         0
         >.poison_ai
         >.windslash_ai

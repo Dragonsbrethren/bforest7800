@@ -18,7 +18,7 @@
         TYPE_ELIXIR     ; dragon
         0               ; spark
         TYPE_CHARM9     ; necrobat
-        TYPE_HIPOTION   ; zombie
+        TYPE_POTION     ; zombie
         TYPE_CHARM9     ; spider
         TYPE_CHARM9     ; vertical spider
         TYPE_CHARM9     ; cave spider
@@ -57,7 +57,7 @@ end
         TYPE_HIPOTION   ; dragon
         0               ; spark
         TYPE_ANTIDOTE   ; necrobat
-        TYPE_ANTIDOTE   ; zombie
+        TYPE_FOOD       ; zombie
         TYPE_ANTIDOTE   ; spider
         TYPE_ANTIDOTE   ; vertical spider
         TYPE_ANTIDOTE   ; cave spider

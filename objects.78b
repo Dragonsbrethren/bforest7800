@@ -91,6 +91,7 @@
         const TYPE_HSEED        = 143
         const TYPE_ZOMBFIST     = 144
         const TYPE_NECROSPARK   = 145
+        const TYPE_NECROBOLT    = 146
         const TYPE_PLAYERSPELL = TYPE_POISON
         const TYPE_POISON       = 148
         const TYPE_WINDSLASH    = 149
@@ -993,6 +994,12 @@
         const NECROSPARK_PAL = 7
         const NECROSPARK_TIME = 4
         const NECROSPARK_SEEK_TIME = 1
+
+        ; NECRO BOLT
+        const NECROBOLT_DURATION = 5
+        const NECROBOLT_DAMAGE = 20
+        const NECROBOLT_PAL = 7
+        const F_NECROBOLT = 0
 
         ; FAMILIARS
         const FAMILIAR_OBJ_START = TYPE_F_FAIRY - 1
