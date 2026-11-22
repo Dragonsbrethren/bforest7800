@@ -28,7 +28,6 @@
         incgraphic gfx/sprites/zombie11.png 160A 0 1 2 3
         incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
         incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
-        incgraphic gfx/sprites/column.png 160A 1 0 2 3
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
@@ -37,7 +36,8 @@
         incgraphic gfx/sprites/pharpy0.png 160B 0 4 9 12 6 5 8 3 2 1
         incgraphic gfx/sprites/pharpy1.png 160B 0 4 9 3 12 6 5 8 2 1
         incgraphic gfx/necro/necro_big_top0.png 160B 0 4 8 12 10 9 11 5 6
-        incgraphic gfx/necro/necro_big_bot0.png 160B 0 4 6 12 10
+        incgraphic gfx/necro/necro_big_bot0.png 160B 0 4 5 12 10 6
+        incgraphic gfx/necro/necro_big_bot1.png 160B 0 4 5 12 10 6
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -1638,7 +1638,7 @@ end
 plot_necromancer
         Yoffset = Yposition - 16
         plotsprite necro_big_top0 4 Xposition Yoffset frame
-        plotsprite necro_big_bot0 4 Xposition Yposition frame
+        plotsprite necro_big_bot0 4 Xposition Yposition animation_frame
         goto plot_next
 
 necro_boss_ai
