@@ -1390,9 +1390,6 @@ necromancer_ai
           lda object_flags,x
           and #%10000000
           beq necrospark_attack
-          ldy object_parent,x
-          lda object_type,y
-          bne necrobolt_active
           jsr .cast_necrobolt
 necrobolt_active
           rts
@@ -1600,11 +1597,28 @@ load_necrospark
         rts
 end
 
+necrobolt_init_timer
+        asm
+          lda #NECROBOLT_DELAY_TIME
+          sta object_timer,x
+          lda #0
+          sta object_parent,x
+end
+
 cast_necrobolt
         asm
+          dec object_timer,x
+          bmi .necrobolt_init_timer
+          beq check_necrobolts
+          rts
+check_necrobolts
+          lda object_parent,x
+          cmp #6
+          bcc necrobolt_find_slot
+          rts
+necrobolt_find_slot
+          inc object_parent,x
           jsr .find_new_object
-          tya
-          sta object_parent,x
           lda #TYPE_NECROBOLT
           sta object_type,y
 necrobolt_X_rand

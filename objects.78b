@@ -999,6 +999,7 @@
         const NECROBOLT_DURATION = 5
         const NECROBOLT_DAMAGE = 20
         const NECROBOLT_PAL = 7
+        const NECROBOLT_DELAY_TIME = 25
         const F_NECROBOLT = 0
 
         ; FAMILIARS
