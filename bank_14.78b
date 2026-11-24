@@ -419,8 +419,16 @@ pbatsetY
           lda #DIR_DOWN
           sta object_Ydir,y
 pbatstime 
+          lda object_flags,x
+          and #%01000000
+          beq pbat_long
+          lda #PBAT_SPAWN_SWARM
+          sta object_timer,x
+          bne pbat_return
+pbat_long
           lda #PBAT_SPAWN_TIME
           sta object_timer,x
+pbat_return
           rts
 end
 
@@ -1395,6 +1403,8 @@ necromancer_ai
           bne necrobolt_done
           jsr .cast_necrobolt
 necrobolt_done
+          jsr .pbat_spawner_ai
+          ldx index
           ; TODO: Logic to clear flags and reinitiate attacks
           rts
 necrospark_attack
@@ -1622,10 +1632,13 @@ check_necrobolts
           lda object_flags,x
           ora #%01000000
           sta object_flags,x
+necrobolt_return
           rts
 necrobolt_find_slot
           inc object_parent,x
           jsr .find_new_object
+          lda no_empty_slot     ; make sure all object slots aren't full
+          bne necrobolt_return  
           lda #TYPE_NECROBOLT
           sta object_type,y
 necrobolt_X_rand

@@ -896,6 +896,7 @@
         const F_PBAT_L2 = 5
         const PBAT_PAL  = 7
         const PBAT_SPAWN_TIME = 30
+        const PBAT_SPAWN_SWARM = 5
         const PBAT_MAX  = 6
 
         ; DARK HARPY
