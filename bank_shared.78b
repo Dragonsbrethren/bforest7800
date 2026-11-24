@@ -646,17 +646,17 @@ end
         <.dragon_psn_ai
         <.psncloud_ai
         <.lightning_ai
+        <.lightning_ai
         <.batfireball_ai
         <.rock_ai
         <.dragon_fire_ai
-        0
         darkspark_ai_lo
         octoink_ai_lo
         <.seed_ai
         <.hseed_ai
         <.zombfist_ai
         <.necro_spark_ai
-        <.lightning_ai
+        0
         0
         <.poison_ai
         <.windslash_ai
@@ -677,17 +677,17 @@ end
         >.dragon_psn_ai
         >.psncloud_ai
         >.lightning_ai
+        >.lightning_ai
         >.batfireball_ai
         >.rock_ai
         >.dragon_fire_ai
-        0
         darkspark_ai_hi
         octoink_ai_hi
         >.seed_ai
         >.hseed_ai
         >.zombfist_ai
         >.necro_spark_ai
-        >.lightning_ai
+        0
         0
         >.poison_ai
         >.windslash_ai

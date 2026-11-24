@@ -1393,7 +1393,7 @@ necromancer_ai
           ldy object_parent,x
           lda object_type,y
           bne necrobolt_active
-;         jsr .cast_necrobolt
+          jsr .cast_necrobolt
 necrobolt_active
           rts
 necrospark_attack
@@ -1607,7 +1607,12 @@ cast_necrobolt
           sta object_parent,x
           lda #TYPE_NECROBOLT
           sta object_type,y
-          lda player_Xpos
+necrobolt_X_rand
+          jsr randomize
+          cmp #32
+          bcc necrobolt_X_rand
+          cmp #128
+          bcs necrobolt_X_rand
           sta object_Xpos,y
           lda #0
           sta object_speed_hi,y
