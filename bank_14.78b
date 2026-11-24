@@ -1390,8 +1390,12 @@ necromancer_ai
           lda object_flags,x
           and #%10000000
           beq necrospark_attack
+          lda object_flags,x
+          and #%01000000
+          bne necrobolt_done
           jsr .cast_necrobolt
-necrobolt_active
+necrobolt_done
+          ; TODO: Logic to clear flags and reinitiate attacks
           rts
 necrospark_attack
           stx spawn_index
@@ -1454,6 +1458,8 @@ necrospark_done
           ldx spawn_index
           lda #%10000000
           sta object_flags,x
+          lda #0
+          sta object_parent,x
           rts
 end
 
@@ -1601,8 +1607,6 @@ necrobolt_init_timer
         asm
           lda #NECROBOLT_DELAY_TIME
           sta object_timer,x
-          lda #0
-          sta object_parent,x
 end
 
 cast_necrobolt
@@ -1613,8 +1617,11 @@ cast_necrobolt
           rts
 check_necrobolts
           lda object_parent,x
-          cmp #6
+          cmp #NECROBOLT_MAX
           bcc necrobolt_find_slot
+          lda object_flags,x
+          ora #%01000000
+          sta object_flags,x
           rts
 necrobolt_find_slot
           inc object_parent,x
