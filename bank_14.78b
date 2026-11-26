@@ -38,6 +38,8 @@
         incgraphic gfx/necro/necro_big_top0.png 160B 0 4 8 12 10 9 11 5 6
         incgraphic gfx/necro/necro_big_bot0.png 160B 0 4 5 12 10 6
         incgraphic gfx/necro/necro_big_bot1.png 160B 0 4 5 12 10 6
+        incgraphic gfx/necro/necro_staff0.png 160B 0 4 8 12 10 9 11 5 6
+        incgraphic gfx/necro/necro_staff1.png 160A 0 1 2 3
         incrmtfile necromancer_theme.rmta
 
         data palace_obj_lo
@@ -1675,9 +1677,12 @@ necrobolt_X_rand
 end
 
 plot_necromancer
+        Xoffset = Xposition - 3
         Yoffset = Yposition - 16
         plotsprite necro_big_top0 4 Xposition Yoffset frame
         plotsprite necro_big_bot0 4 Xposition Yposition animation_frame
+        plotsprite necro_staff0 4 Xoffset Yoffset 0
+        plotsprite necro_staff1 1 Xoffset Yposition 0
         goto plot_next
 
 necro_boss_ai

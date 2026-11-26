@@ -133,7 +133,7 @@
 
         const PAL_P_NECRO_ROBE = $62
         const PAL_P_NECRO_GRN  = $C9
-        const PAL_P_NECRO_SKIN = $3F
+        const PAL_P_NECRO_SKIN = $3D ; $3F
 
 
         const PAL_DISABLED_1 = $2B
