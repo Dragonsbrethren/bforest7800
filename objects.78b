@@ -916,7 +916,7 @@
         const F_PHARPY_FLY_0 = 0
         const F_PHARPY_FLY_1 = 1
         const F_PHARPY_DIVE  = 1
-        const F_PHARPY_SH    = 18
+        const F_PHARPY_SH    = 19
 
         const PDRAGON_HP = 30
         const PDRAGON_DAMAGE = 20
@@ -937,7 +937,7 @@
         const PDRAGON_FIRE_PAL = 2
         const PDRAGON_FIRE_FLAGS = %00010000
         const PDRAGON_FIRE_ELEM_ATK = %00000001
-        const F_PDRAGON_FIRE = 19
+        const F_PDRAGON_FIRE = 18
 
         const PDRAGON_QUAKE_FRAMES = 3
         const PDRAGON_QUAKE_CHANCE = 16
@@ -982,6 +982,10 @@
         const SPARK_DAMAGE = 20
         const SPARK_PAL = 0
         const F_SPARK = 2
+
+        ; NECROMANCER
+        const NECRO_MOON_XPOS = 72
+        const NECRO_MOON_YPOS = $32
 
         ; NECRO SPARK
         const NECROSPARK_SPEED_HI = 2

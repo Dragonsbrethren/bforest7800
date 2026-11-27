@@ -26,8 +26,8 @@
         incgraphic gfx/sprites/zombie9.png 160A 0 1 2 3
         incgraphic gfx/sprites/zombie10.png 160A 0 1 2 3
         incgraphic gfx/sprites/zombie11.png 160A 0 1 2 3
-        incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
         incgraphic gfx/dragon/pdragon_fire0.png 160A 0 1 2 3
+        incgraphic gfx/sprites/pharpy_sh0.png 160A 0 1
         incgraphic gfx/dragon/pdragon_top0.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_top1.png 160A 0 1 2 3
         incgraphic gfx/dragon/pdragon_bot0.png 160A 0 1 2 3
@@ -347,10 +347,10 @@ plot_palace_160a
 plot_palace_160b
         plotsprite pharpy0 sprite_pal Xposition Yposition frame
         if !shadow_offset then goto plot_next
-        frame = F_PHARPY_SH
+        Xposition = Xposition + 2
         Yposition = Yposition + $10
-        sprite_pal = 7
-        goto plot_palace_160a
+        plotsprite pharpy_sh0 7 Xposition Yposition 0
+        goto plot_next
 
 ;==============================================================================
 ; PALACE BAT SPAWNER
@@ -1403,6 +1403,7 @@ necromancer_ai
           lda object_flags,x
           and #%01000000
           bne necrobolt_done
+          jsr .necro_float_up
           jsr .cast_necrobolt
 necrobolt_done
           jsr .pbat_spawner_ai
@@ -1474,6 +1475,28 @@ necrospark_done
           sta object_parent,x
           rts
 end
+
+necro_float_up
+        asm
+          lda object_Ypos,x
+          cmp #NECRO_MOON_YPOS
+          bcc necro_float_X
+necro_inc_Y
+          dec object_Ypos,x
+necro_float_X
+          lda object_Xpos,x
+          cmp #NECRO_MOON_XPOS
+          beq necro_float_return
+          bcc necro_float_right
+necro_float_left
+          dec object_Xpos,x
+          bcc necro_float_return
+necro_float_right
+          inc object_Xpos,x
+necro_float_return
+          rts
+end
+          
 
 obj_necromancer_stats
         asm
