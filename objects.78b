@@ -986,6 +986,10 @@
         ; NECROMANCER
         const NECRO_MOON_XPOS = 72
         const NECRO_MOON_YPOS = $32
+        const NECRO_POS_MOON_Y  = %00000001
+        const NECRO_POS_MOON_X  = %00000010
+        const NECRO_POS_MOON_XY = %00000011
+        const NECRO_ANIM_DONE   = %00000100
 
         ; NECRO SPARK
         const NECROSPARK_SPEED_HI = 2

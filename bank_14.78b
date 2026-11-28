@@ -1397,18 +1397,22 @@ end
 ;==============================================================================
 necromancer_ai
         asm
+          jsr .necro_float_up
+          lda object_state,x
+          cmp #NECRO_POS_MOON_XY
+          bne necromancer_return
           lda object_flags,x
           and #%10000000
           beq necrospark_attack
           lda object_flags,x
           and #%01000000
           bne necrobolt_done
-          jsr .necro_float_up
           jsr .cast_necrobolt
 necrobolt_done
           jsr .pbat_spawner_ai
           ldx index
           ; TODO: Logic to clear flags and reinitiate attacks
+necromancer_return
           rts
 necrospark_attack
           stx spawn_index
@@ -1478,15 +1482,20 @@ end
 
 necro_float_up
         asm
+          lda object_state,x
+          ora #NECRO_POS_MOON_Y
+          sta object_state,x
           lda object_Ypos,x
           cmp #NECRO_MOON_YPOS
           bcc necro_float_X
 necro_inc_Y
+          lda #0
+          sta object_state,x
           dec object_Ypos,x
 necro_float_X
           lda object_Xpos,x
           cmp #NECRO_MOON_XPOS
-          beq necro_float_return
+          beq necro_float_set
           bcc necro_float_right
 necro_float_left
           dec object_Xpos,x
@@ -1494,6 +1503,12 @@ necro_float_left
 necro_float_right
           inc object_Xpos,x
 necro_float_return
+          rts
+necro_float_set
+          ; Update the Necromancer's state to indicate we're good for animation/attack
+          lda object_state,x
+          ora #NECRO_POS_MOON_X
+          sta object_state,x
           rts
 end
           
